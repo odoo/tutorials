@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real-estate property"
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -101,9 +102,10 @@ class EstateProperty(models.Model):
 
     def action_property_sold_best(self):
         for record in self:
-            record.offer_ids.filtered(
+            best_price_record = record.offer_ids.filtered(
                 lambda x: x.price == record.best_price
-            ).action_accept()
+            )
+            best_price_record.action_accept()
         return True
 
     @api.constrains('selling_price')
@@ -147,3 +149,40 @@ class EstateProperty(models.Model):
     def _unlink_if_new_cancelled(self):
         if any(record.state not in ['new', 'cancelled', 'sold'] for record in self):
             raise ValidationError(_("Only new and cancelled property can be deleted."))
+
+    def action_sold_mail_send(self):
+        
+        template = self._find_mail_template()
+
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_composition_mode': 'comment',
+            'default_template_id': template.id if template else False,
+            'default_partner_ids': [
+                self.buyer_id.id,
+                self.salesman_id.partner_id.id
+            ],
+            'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+            'email_notification_allow_footer': True,
+            'hide_mail_template_management_options': True,
+            'proforma': self.env.context.get('proforma', False),
+        }
+        action = {
+            'name': _('Send'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
+        return action
+
+    def _find_mail_template(self):
+        self.ensure_one()
+        return self.env.ref(
+            'estate.mail_template_estate_property_sold_mail6',
+            raise_if_not_found=False
+        )

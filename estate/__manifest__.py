@@ -7,7 +7,7 @@
     'version': "0.1",
     'application': True,
     'installable': True,
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'data': [
         "security/ir.model.access.csv",
         "views/estate_property_tag_views.xml",
@@ -17,6 +17,7 @@
         "views/estate_property_views.xml",
         "views/invester_view.xml",
         "views/res_users_view.xml",
+        "views/mail_templet.xml",
         "views/estate_menus.xml",
     ],
     'assets': {},

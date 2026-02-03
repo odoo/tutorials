@@ -36,6 +36,15 @@
                     <button name='action_property_sold' type="object" string='sold' invisible="state=='sold' or state=='cancelled'"/>
                     <button name='action_property_cancel' type='object' string='cancel' invisible="state in ['sold', 'cancelled']"/>
                     <button name='action_property_sold_best' type='object' string='sold AS best'/>
+                    <button
+                    string="Send"
+                    id="property_mail_send_primary"
+                    name="action_sold_mail_send"
+                    type="object"
+                    context="{'validate_analytic': True, 'check_document_layout': True}"
+                    class="btn-primary"
+                    data-hotkey="g"
+                    />
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -91,6 +100,7 @@
                         </page>
                     </notebook>
                 </sheet>
+              <chatter/>
             </form>
         </field>
     </record>

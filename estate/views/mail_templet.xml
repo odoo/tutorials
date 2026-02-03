@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="mail_template_estate_property_sold_mail6" model="mail.template">
+            <field name="name">Estate Property: Sold Confirmation</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">Offer Accepted: {{ object.name }}</field>
+
+            <field name="email_from">{{ object.salesman_id.email_formatted }}</field>
+
+            <field name="partner_to">{{ object.buyer_id.id }}</field>
+
+            <field name="description">Template used to notify the buyer that their offer has been accepted.</field>
+
+            <field name="body_html" type="html">
+                <div style="font-size: 14px;">
+                    <p>Dear <t t-out="object.buyer_id.name or 'Customer'"/>
+,</p>
+
+                    <p>We are excited to inform you that your offer for the property 
+                        <strong>
+                            <t t-out="object.name"/>
+                        </strong> has been officially accepted!
+                    </p>
+
+                    <div>
+                        <h4 style="margin-top: 0;">Property Details:</h4>
+                        <div style="width: 100%;">
+                            <div>
+                                <div style="width: 150px;">
+                                    <strong>Property Type:</strong>
+                                </div>
+                                <div>
+                                    <t t-out="object.property_type.name"/>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <strong>Total Area:</strong>
+                                </div>
+                                <div>
+                                    <t t-out="object.total_area"/>sqm
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <strong>Accepted Price:</strong>
+                                </div>
+                                <div>
+                                    <strong>
+                                        <t t-out="object.selling_price"/>
+                                    </strong>
+                                </div>
+                            </div>
+                            <div t-if="object.postcode">
+                                <div>
+                                    <strong>Postcode:</strong>
+                                </div>
+                                <div>
+                                    <t t-out="object.postcode"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Our agent, <strong>
+                        <t t-out="object.salesman_id.name"/>
+                    </strong>, will contact you shortly to discuss the next steps regarding the documentation and payment.</p>
+
+                <p>Thank you for choosing us!</p>
+
+                <p style="color: #888888;">Best regards,<br/>
+                    The Real Estate Team</p>
+            </div>
+        </field>
+
+    </record>
+
+</data>
+</odoo>

@@ -12,7 +12,7 @@ class InheritedResUsers(models.Model):
     def _compute_total_unsold_value(self):
         result = dict(
             self.env['estate.property']._read_group(
-                [('salesman_id', '=', self.id), ('state', '!=', 'sold')],
+                [('salesman_id', 'in', self.ids), ('state', '!=', 'sold')],
                 ['salesman_id'],
                 ['expected_price:sum'],
             )
