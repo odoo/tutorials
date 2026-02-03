@@ -129,13 +129,7 @@ class EstateProperty(models.Model):
         if not self.buyer_id:
             raise UserError(_("Cannot sell a property with no buyer"))
         self.state = "sold"
-        return {
-            "effect": {
-                "fadeout": "slow",
-                "message": "Congratulation This property mark as sold",
-                "type": "rainbow_man",
-            }
-        }
+        return self.action_send_mail()
 
     def action_cancelled(self):
         self.ensure_one()
@@ -160,3 +154,19 @@ class EstateProperty(models.Model):
             record.selling_price = target_offer.price
             record.buyer_id = target_offer.partner_id
             record.state = "offer_accepted"
+
+    def action_send_mail(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'target': 'new',
+            'context': {
+                'default_model': 'estate.property',
+                'default_res_ids': [self.id],
+                'default_partner_ids': [self.buyer_id.id] if self.buyer_id else [],
+                'default_subject': f"Update on {self.name}",
+                'default_body': "Hello, <br/> just writing to inform you that "
+            }
+        }

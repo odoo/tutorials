@@ -1,4 +1,4 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onMounted, useRef} from "@odoo/owl";
 import { TodoItem } from "./todo_item";
 
 export class TodoList extends Component{
@@ -6,15 +6,33 @@ export class TodoList extends Component{
     static components = { TodoItem };
 
     setup(){
-        this.state = useState({
-            todos: [
-                { id:1, description: "Read documentation", isCompleted: true},
-                { id:2, description: "Complete Collage Work", isCompleted: false},
-                { id:3, description: "Bought Milk", isCompleted: true},
-                { id:4, description: "something", isCompleted: true},
-                { id:5, description: "somethingpending Task", isCompleted: true},
-                { id:6, description: "Try to complete task", isCompleted: true}
-            ]
+        this.state = useState({ todos : [] });
+        this.nextID = 1;
+        this.inputref = useRef("add-input");
+        onMounted(() =>{
+            if(this.inputref.el){
+                this.inputref.el.focus();
+            }
         });
+    }
+    removeTodo(todoId){
+        const index = this.state.todos.findIndex((todo) => todo.id === todoId);
+        if(index >= 0){
+            this.state.todos.splice(index, 1);
+        }
+    }
+    addTodo(ev){
+        if(ev.keyCode === 13 ){
+            const text = ev.target.value.trim();
+            if(text.length >0){
+                const newTodo = {
+                    id: this.nextID++,
+                    description: text,
+                    isCompleted: false
+                };
+                this.state.todos.push(newTodo);
+                ev.target.value = "";
+            }
+        }
     }
 }

@@ -22,6 +22,7 @@ This Module provide functionalities from where you manage the real estate proper
         'views/res_users_views.xml',
         'views/account_move.xml',
         'views/estate_menus.xml',
+        'report/estate_property_reports.xml'
     ],
     'installable': True,
     'application': True,

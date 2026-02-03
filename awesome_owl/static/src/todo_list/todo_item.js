@@ -10,6 +10,10 @@ export class TodoItem extends Component{
                 description: String,
                 isCompleted: Boolean
             }
-        }
+        },
+        removeTodo: { type: Function }
     };
+    toggleState(){
+        this.props.todo.isCompleted = !this.props.todo.isCompleted;
+    }
 }

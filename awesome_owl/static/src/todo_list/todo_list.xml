@@ -4,10 +4,17 @@
             <div class="card-header active">
                 <h4>Todo List</h4>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body"> <input type="text" 
+                       class="form-control mb-2" 
+                       placeholder="Enter a new task" 
+                       t-on-keyup="addTodo"
+                       t-ref="add-input"/>
+                
+                <div class="list-group">
                     <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
-                        <TodoItem todo="todo"/>
+                        <TodoItem todo="todo" removeTodo="() => this.removeTodo(todo.id)"/>
                     </t>
+                </div>
             </div>
         </div>
     </t>
