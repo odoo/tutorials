@@ -22,8 +22,8 @@ class EstatePropertyMaintenance(models.Model):
 
     @api.constrains('cost', 'status')
     def _check_cost(self):
-        for record in self:
-            if record.status == 'approved' and record.cost <= 0:
-                raise UserError(
-                    'Approved cost must be greater then 0'
-                )
+        invalid_records = self.filtered(
+            lambda r: r.status == 'approved' and r.cost <= 0
+        )
+        if invalid_records:
+            raise UserError('Approved cost must be greater than 0')

@@ -1,9 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
+    <t t-name="awesome_owl.playground" owl="1">
         <div class="p-3">
-            hello world
+            <h3>Hello World</h3>
+
+            <Counter onChange="updateSum"/>
+            <Counter onChange="updateSum"/>
+
+            <p>Sum: <t t-esc="state.sum"/>
+            </p>
+
+            <h4>This is to say that form here Card Starts</h4>
+            <Card title="'Kunj'" content="'The name is Kunj'"/>
+            <Card title="'Koradiya'" content="'The Suraname is Koradiya'"/>
+            <Card title="'Patel'" content="'The cast is Patel'"/>
+            <br/>
+            <Card title="'Kunj'" content="this.textContent"/>
+            <Card title="'Kunj'" content="this.htmlContent"/>
+            <TodoList/>
         </div>
     </t>
 

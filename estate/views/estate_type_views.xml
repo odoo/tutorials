@@ -9,7 +9,7 @@
         <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="bottom">
+            <list string="Channel" editable="bottom" open_form_view="True">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
@@ -23,6 +23,8 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+
+                    <field name="name"/>
                     <div class="oe_button_box" name="button_box">
                         <button type="action" name="%(estate_property_offers_action)d" icon="fa-tag">
                             <div class="o_form_field o_stat_info">

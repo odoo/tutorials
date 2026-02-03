@@ -43,6 +43,9 @@ class EstatePropertyOffer(models.Model):
             raise UserError(
                 _("An offer has already been accepted for this property.")
             )
+
+        other_offer = self.property_id.offer_ids - self
+        other_offer.write({'status': 'refused'})
         self.write({'status': 'accepted'})
         for offer in self:
             offer.property_id.write({
@@ -68,6 +71,7 @@ class EstatePropertyOffer(models.Model):
         property_id = vals_list[0].get('property_id')
         if not property_id:
             return super().create(vals_list)
+
         max_new_price = max(vals.get('price', 0) for vals in vals_list)
         result = self.env['estate.property.offer']._read_group(
             [('property_id', '=', property_id)],

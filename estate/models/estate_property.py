@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate Property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "sequence"
 
     name = fields.Char(default="Unknown", required=True)
@@ -28,6 +29,7 @@ class EstateProperty(models.Model):
     last_seen = fields.Datetime(default=fields.Datetime.now)
     garden_area = fields.Integer("Garden Area (sqm)")
     active = fields.Boolean(default=True)
+    offer_count = fields.Integer(compute='_offer_count')
     priority = fields.Selection([
         ('0', 'Low priority'),
         ('1', 'Medium priority'),
@@ -67,9 +69,10 @@ class EstateProperty(models.Model):
         required=True,
         help="This field tells us the state of the property.",
     )
-    total_area = fields.Integer(compute='_compute_total_area')
+    total_area = fields.Integer(compute='_compute_total_area', search='_search_total_area')
     total_cost = fields.Integer(compute='_compute_total_cost')
-    best_price = fields.Integer(compute='_compute_best_price', store=True)
+    best_price = fields.Integer(
+        compute='_compute_best_price', store=True)
 
     # SQL CONSTRAINT
     _check_expected_price = models.Constraint(
@@ -94,6 +97,11 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = result.get(record, 0)
 
+    @api.depends('offer_ids')
+    def _offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
+
     @api.depends('maintenance_id.cost')
     def _compute_total_cost(self):
         result = dict(self.env['estate.property.maintenance']._read_group(
@@ -104,7 +112,15 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_cost = result.get(record, 0)
 
+    def _search_total_area(self, operator, value):
+        # WARNING: Python-level filtering
+        records = self.search([]).filtered(
+            lambda r: eval(f"r.total_area {operator} value")
+        )
+        return [('id', 'in', records.ids)]
+
     # ONCHANGE DECORATOR
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -139,3 +155,34 @@ class EstateProperty(models.Model):
             raise UserError("Sold Property can not be cancel!")
         else:
             self.state = 'cancelled'
+
+    def action_offer_accept(self):
+        result = self.env['estate.property.offer'].search(
+            [('property_id', '=', self.ids),
+             ('price', '=', self.best_price)]
+        )
+        result.action_accept()
+        # breakpoint()
+
+        template = self.env.ref(
+            'estate.mail_template_estate_property_offer_accepted',
+            raise_if_not_found=False
+        )
+        return {
+            'name': 'Send Email',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mail.compose.message',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_model': 'estate.property',
+                'default_res_ids': [self.id],
+                'default_use_template': bool(template),
+                'default_partner_ids': [
+                    self.buyer_id.id,
+                    self.partner_id.partner_id.id,
+                ],
+                'default_template_id': template.id if template else False,
+                'default_composition_mode': 'comment',
+            }
+        }

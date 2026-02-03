@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_estate_property_offer_accepted" model="mail.template">
+        <field name="name">Estate Property: Offer Accepted</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="email_from">{{ object.partner_id.partner_id.email}}</field>
+        <field name="email_to">{{object.buyer_id.email,object.partner_id.partner_id.email}}</field>
+        <field name="use_default_to" eval="True"/>
+        <field name="subject">Offer Accepted – {{ object.name }}</field>
+        <field name="description">Sent when an offer is accepted on a property</field>
+        <field name="body_html" type="html">
+            <div style="font-size:13px;">
+                <p>
+                    <strong>From:</strong>
+                    <t t-out="object.partner_id.partner_id.email or 'N/A'"/>
+                    <br/>
+                    <strong>To:</strong>
+                    <t t-out="object.buyer_id.email or 'N/A'"/>
+                </p>
+                <p>
+                        Dear <t t-out="object.buyer_id.name or 'Customer'"/>
+,
+                <br/>
+                <br/>
+                        We are pleased to inform you that the offer for the property
+                <strong t-out="object.name"/>
+ has been accepted.
+            </p>
+            <p>
+                <strong>Expected Price:</strong>
+                <t t-out="format_amount(object.expected_price, object.env.company.currency_id)"/>
+                <br/>
+                <strong>Best Offer:</strong>
+                <t t-out="format_amount(object.best_price, object.env.company.currency_id)"/>
+            </p>
+            <p>
+                <strong>Property Type:</strong>
+                <t t-out="object.property_type_id.name"/>
+                <br/>
+                <strong>Total Area:</strong>
+                <t t-out="object.total_area"/>
+ sqm
+            </p>
+            <p>Please contact us for further steps.</p>
+        </div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+</record>
+</odoo>

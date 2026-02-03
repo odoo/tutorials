@@ -1,7 +1,7 @@
 from odoo import fields, models, api
 
 
-class ResUsers(models.Model):
+class res_users(models.Model):
     _inherit = 'res.users'
 
     property_ids = fields.One2many('estate.property', 'partner_id')

@@ -4,14 +4,15 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook" position="inside">
+            <notebook position="inside">
                 <page string="Properties">
                     <group>
                         <field name="property_ids"/>
                         <field name="unsold_cost"/>
                     </group>
                 </page>
-            </xpath>
+            </notebook>
+            
         </field>
         </record>
 </odoo>
