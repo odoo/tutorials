@@ -4,12 +4,14 @@ from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError, RedirectWarning
 from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.tools import is_html_empty
+import base64
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real state Property"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _inherits = {"estate.property.address": "address_id"}
 
     address_id = fields.Many2one(
@@ -83,7 +85,8 @@ class EstateProperty(models.Model):
         help_title = "Create a new property"
         sub_title = "click on new button to create a new property"
         return super().get_empty_list_help(
-            f'<p class="o_view_nocontent_smiling_face">{help_title}</p><p class="oe_view_nocontent_alias">{sub_title}</p>')
+            f'<p class="o_view_nocontent_smiling_face">{help_title}</p><p class="oe_view_nocontent_alias">{sub_title}</p>'
+        )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -131,14 +134,14 @@ class EstateProperty(models.Model):
             if record.state in ("offer_received", "offer_accepted", "sold"):
                 raise UserError(_("you can not delete a property!"))
 
-    @api.model
     def write(self, vals):
-        state_value = vals.get("state")
-        if state_value:
-            if self.state == "cancelled" and state_value == "sold":
-                raise UserError(_("cancelled property can not be sold!"))
-            elif self.state == "sold" and state_value == "cancelled":
-                raise UserError(_("sold property can not be cancelled!"))
+        for record in self:
+            state_value = vals.get("state")
+            if state_value:
+                if record.state == "cancelled" and state_value == "sold":
+                    raise UserError(_("Cancelled property cannot be sold!"))
+                elif record.state == "sold" and state_value == "cancelled":
+                    raise UserError(_("Sold property cannot be cancelled!"))
         return super().write(vals)
 
     def action_cancelled(self):
@@ -165,4 +168,39 @@ class EstateProperty(models.Model):
         if not accepted_offer:
             raise UserError(_("Property can not be sold without an accepted offer"))
         self.state = "sold"
-        return True
+        report_template_id = 'estate.action_report_saleorder'
+        pdf_content, content_type = self.env['ir.actions.report']._render_qweb_pdf(report_template_id, self.ids)
+
+        attachment = self.env['ir.attachment'].create({
+            'name': f'Property{self.name}.pdf',
+            'type': 'binary',
+            'datas': base64.b64encode(pdf_content),
+            'res_model': 'estate.property',
+            'res_id': self.id,
+            'mimetype': 'application/pdf',
+        })
+        body = _("Hello, the property <b>%s</b> has been sold for <b>%s</b>.") % (
+            self.name,
+            self.selling_price,
+        )
+        ctx = {
+            "default_model": "estate.property",
+            "default_res_ids": self.ids,
+            "default_composition_mode": "comment",
+            "default_use_template": False,
+            "defaultsubject": ("Sale Confirmation: %s") % self.name,
+            "default_body": body,
+            "default_partner_ids": [self.buyer_id.id] if self.buyer_id else [],
+            'default_attachment_ids': [(6, 0, [attachment.id])],
+        }
+        action = {
+            "name": _("Send"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": ctx,
+        }
+        return action

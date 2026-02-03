@@ -7,6 +7,7 @@ export class TodoList extends Component {
 
   setup() {
     this.todoInput = useRef("todoInput");
+    console.log(this.todoInput.el)
     this.todos = useState([]);
     this.uniqueId = 1;
 
@@ -40,6 +41,7 @@ export class TodoList extends Component {
 
   removeTodo(id) {
     const index = this.todos.findIndex((todo) => todo.id === id);
+    console.log(index)
     if (index >= 0) {
       this.todos.splice(index, 1);
     }

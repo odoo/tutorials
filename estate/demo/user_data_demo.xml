@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_tag_01" model="estate.property.tag">
+        <field name="name">Free</field>
+    </record>
+
+</odoo>

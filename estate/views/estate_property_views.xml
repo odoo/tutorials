@@ -12,8 +12,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="state">
-                <progressbar field="state"
-                    colors='{"new": "info", "offer_received": "primary", "offer_accepted": "warning", "sold": "sucess", "cancelled": "danger"}' />
+                <progressbar field="state" colors='{"new": "info", "offer_received": "primary", "offer_accepted": "warning", "sold": "success", "cancelled": "danger"}' />
                 <field name="state" />
                 <field name="expected_price" />
                 <field name="best_price" />
@@ -31,19 +30,17 @@
                             </div>
 
                             <div>
-                                <t t-if="record.state.raw_value == 'offer_recieved' or record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
+                                <t t-if="record.state.raw_value == 'offer_received' or record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
                                     Best Price: <field name="best_price" />
                                 </t>
                             </div>
 
-                            <div
-                                t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
+                            <div t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
                                 Selling Price: <field name="selling_price" />
                             </div>
 
                             <div>
-                                <field name="tag_ids" widget="many2many_tags"
-                                    options="{'color_field': 'color'}" />
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                             </div>
                         </div>
                     </t>
@@ -56,17 +53,14 @@
         <field name="name">estate_property_list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties"
-                decoration-success="state in ('offer_received')"
-                decoration-bf="state in ('offer_accepted')" decoration-muted="state in ('sold')">
+            <list string="Properties" decoration-success="state in ('offer_received')" decoration-bf="state in ('offer_accepted')" decoration-muted="state in ('sold')">
                 <field name="name" />
                 <field name="postcode" optional="hide" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
-                    optional="hide" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="hide" />
                 <field name="date_availability" optional="hide" />
             </list>
         </field>
@@ -89,8 +83,7 @@
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group>
                         <group>
-                            <field name="property_type_id"
-                                options="{'no_create': True, 'no_edit': True}" />
+                            <field name="property_type_id" options="{'no_create': True, 'no_edit': True}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -120,28 +113,21 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"
-                                readonly="state in ('offer_accepted','sold','cancelled')">
-                                <list decoration-success="status in ('accepted')"
-                                    decoration-danger="status in ('rejected')">
+                            <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')">
+                                <list decoration-success="status in ('accepted')" decoration-danger="status in ('rejected')">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
-                                    <button name="action_accepted" states="draft" type="object"
-                                        icon="fa-check" title="accepted"
-                                        invisible="status in ('accepted or rejected')" />
-                                    <button name="action_rejected" states="draft,open" type="object"
-                                        icon="fa-times" title="refused"
-                                        invisible="status in ('accepted or rejected')" />
+                                    <button name="action_accepted" states="draft" type="object" icon="fa-check" title="accepted" invisible="status in ('accepted or rejected')" />
+                                    <button name="action_rejected" states="draft,open" type="object" icon="fa-times" title="refused" invisible="status in ('accepted or rejected')" />
                                     <field name="status" />
                                 </list>
                             </field>
                         </page>
                         <page string="other info">
                             <group>
-                                <field name="buyer_id"
-                                    readonly="1" />
+                                <field name="buyer_id" readonly="1" />
                                 <field name="seller_id" />
                             </group>
                         </page>
@@ -154,6 +140,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -170,30 +157,17 @@
                 <field name="living_area" filter_domain="[('living_area','>=',self)]" />
                 <field name="facades" />
 
-                <filter name="available"
-                    string="Available"
-                    domain="['|',('state','=','new'),
-                            ('state','=','offer_received')]" />
+                <filter name="available" string="Available" domain="['|',('state','=','new'), ('state','=','offer_received')]" />
 
-                <filter name="cheap"
-                    string="Cheap"
-                    domain="[('expected_price','&lt;',1000000)]" />
+                <filter name="cheap" string="Cheap" domain="[('expected_price','&lt;',1000000)]" />
 
-                <filter name="expensive"
-                    string="Expensive"
-                    domain="[('expected_price','&gt;',1000000)]" />
+                <filter name="expensive" string="Expensive" domain="[('expected_price','&gt;',1000000)]" />
 
-                <filter name="group_by_postcode"
-                    string="Postcode"
-                    context="{'group_by': 'postcode'}" />
+                <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}" />
 
-                <filter name="group_by_bedrooms"
-                    string="Bedrooms"
-                    context="{'group_by': 'bedrooms'}" />
+                <filter name="group_by_bedrooms" string="Bedrooms" context="{'group_by': 'bedrooms'}" />
 
-                <filter name="group_by_state"
-                    string="State"
-                    context="{'group_by': 'state'}" />
+                <filter name="group_by_state" string="State" context="{'group_by': 'state'}" />
             </search>
         </field>
     </record>
