@@ -1,12 +1,16 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+import operator as dp
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property Planning'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    # _primary_email = 'email_from'
+    # _mailing_enabled = True
     _order = 'id desc'  # defaultvalue = asc
 
     name = fields.Char(required=True, default="Unknown")
@@ -53,7 +57,8 @@ class EstateProperty(models.Model):
         'res.partner', string="Partner/Buyer", copy=False)
     tags_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
-    total_area = fields.Float(compute='_compute_total_area')
+    total_area = fields.Float(
+        compute='_compute_total_area', search='_search_total_area')
     best_price = fields.Float(
         "Best offer", compute='_compute_best_price', store=True)
     property_maintenance_requests = fields.One2many(
@@ -82,6 +87,25 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    def _search_total_area(self, operator, value):
+        # breakpoint()
+        ops = {
+            '=': dp.eq,
+            '!=': dp.ne,
+            '>': dp.gt,
+            '>=': dp.ge,
+            '<': dp.lt,
+            '<=': dp.le,
+        }
+
+        if operator not in ops:
+            return NotImplemented
+        records = self.search([])
+        matched = records.filtered(
+            lambda r: ops[operator](r.total_area, value)
+        )
+        return [('id', 'in', matched.ids)]
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -126,6 +150,22 @@ class EstateProperty(models.Model):
                     raise UserError(
                         "Property cannot be sold without any offer.")
         self.state = 'sold'
+        template = self.env.ref("estate.email_template_estate")
+        return {
+            'name': _('Send Email'),
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {
+                'default_model': self._name,
+                'default_res_ids': self.ids,
+                'default_composition_mode': 'comment',
+                'default_use_template': True,
+                'default_template_id': template.id,
+                'default_partner_id': [self.buyer_id.id, self.seller_id.partner_id.id],
+            }
+        }
 
     def action_cancel(self):
         if 'sold' in self.mapped('state'):

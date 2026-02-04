@@ -1,10 +1,30 @@
-<templates xml:space="preserve">
-  <t t-name="awesome_owl.Card">
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+  <t t-name="awesome_owl.card" owl="1">
     <div class="card d-inline-block m-2" style="width: 18rem;">
-    <div class="card-body">
-        <h5><t t-esc="props.title"/></h5>
-        <p><t t-esc="props.content"/></p>
-    </div>
+      <div class="card-body">
+
+        <h5 class="card-title">
+          <t t-out="props.title"/>
+        </h5>
+
+        <t t-if="props.collapsible">
+          <button class="btn btn-sm btn-secondary" t-on-click="toggle">
+          Toggle
+          </button>
+        </t>
+
+        <t t-if="!props.collapsible or state.open">
+          <div class="card-text">
+            <t t-if="props.slots">
+              <t t-slot="default"/>
+            </t>
+            <t t-else="">
+              <t t-esc="props.content"/>
+            </t>
+          </div>
+        </t>
+      </div>
     </div>
   </t>
 </templates>

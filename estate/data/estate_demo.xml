@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- PROPERTY TYPES -->
+    <record id="type_villa" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+
+    <record id="type_house" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
+    <!-- PROPERTY TAGS -->
+    <record id="tag_expensive" model="estate.property.tag">
+        <field name="name">Expensive</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="tag_cheap" model="estate.property.tag">
+        <field name="name">Cheap</field>
+        <field name="color">7</field>
+    </record>
+
+    <!-- PROPERTIES -->
+    <record id="estate_property_demo_1" model="estate.property">
+        <field name="name">MONA</field>
+        <field name="state">new</field>
+        <field name="expected_price">111</field>
+        <field name="property_type_id" ref="type_villa"/>
+        <field name="tags_ids" eval="[(4, ref('tag_expensive'))]"/>
+    </record>
+
+    <record id="estate_property_demo_2" model="estate.property">
+        <field name="name">Patel</field>
+        <field name="state">offer_accepted</field>
+        <field name="expected_price">222</field>
+        <field name="property_type_id" ref="type_house"/>
+        <field name="tags_ids" eval="[(4, ref('tag_cheap'))]"/>
+    </record>
+
+    <record id="estate_property_demo_3" model="estate.property">
+        <field name="name">MONA</field>
+        <field name="state">offer_received</field>
+        <field name="expected_price">333</field>
+        <field name="property_type_id" ref="type_house"/>
+        <field name="tags_ids" eval="[(4, ref('tag_expensive'))]"/>
+    </record>
+
+    <record id="estate_property_demo_4" model="estate.property">
+        <field name="name">TOM</field>
+        <field name="state">sold</field>
+        <field name="expected_price">333</field>
+        <field name="property_type_id" ref="type_house"/>
+        <field name="tags_ids" eval="[(4, ref('tag_cheap'))]"/>
+    </record>
+
+    <!-- OFFERS -->
+    <record id="offer_1" model="estate.property.offer">
+        <field name="price">111</field>
+        <field name="validity">7</field>
+        <field name="property_id" ref="estate_property_demo_1"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+    </record>
+
+    <record id="offer_2" model="estate.property.offer">
+        <field name="price">222</field>
+        <field name="validity">10</field>
+        <field name="property_id" ref="estate_property_demo_1"/>
+        <field name="partner_id" ref="base.res_partner_2"/>
+    </record>
+
+    <record id="offer_3" model="estate.property.offer">
+        <field name="price">333</field>
+        <field name="validity">5</field>
+        <field name="property_id" ref="estate_property_demo_3"/>
+        <field name="partner_id" ref="base.res_partner_3"/>
+    </record>
+
+    <record id="offer_4" model="estate.property.offer">
+        <field name="price">555</field>
+        <field name="validity">5</field>
+        <field name="status">accepted</field>
+        <field name="property_id" ref="estate_property_demo_2"/>
+        <field name="partner_id" ref="base.res_partner_3"/>
+    </record>
+</odoo>

@@ -8,11 +8,29 @@
         </div>
         <br/>
         <br/>
-        <Counter/>
-        <Counter/>
+        <Counter onChange="updateSum"/>
+        <Counter onChange="updateSum"/>
         <br/>
         <br/>
         <Card title="'MEE'" content="'SEE HERE'"/>
-        
+
+        <p>Sum: <t t-esc="state.sum"/>
+        </p>
+
+        <h4>This is to say that form here Card Starts</h4>
+        <Card title="'DHUDEEP'" content="'HELLO HELLO'"/>
+        <Card title="'CAR'" content="'Welcome home a brand new...'"/>
+        <Card title="'LOOK'" content="'Why did u see me'"/>
+        <br/>
+        <Card title="'WITH TEXT'" content="this.textContent"/>
+        <Card title="'WITH HTML'" content="this.htmlContent"/>
+        <Card title="'SLOT CARD'">
+            <Counter onChange="updateSum"/>
+        </Card>
+        <Card title="'TOGGLE'" collapsible="true">
+            <TodoList/>
+        </Card>
+        <TodoList/>
+
     </t>
 </templates>

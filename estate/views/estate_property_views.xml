@@ -109,6 +109,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
+                <field name="total_area"/>
                 <field name="living_area" string="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <separator/>
