@@ -151,7 +151,6 @@ class EstateProperty(models.Model):
             raise ValidationError(_("Only new and cancelled property can be deleted."))
 
     def action_sold_mail_send(self):
-        
         template = self._find_mail_template()
 
         ctx = {
