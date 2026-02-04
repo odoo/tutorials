@@ -3,11 +3,13 @@ from dateutil.relativedelta import relativedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
+from odoo.tools import is_html_empty
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is the table of real estate property data"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
 
     name = fields.Char(required=True)
@@ -87,6 +89,16 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    @api.model
+    def get_empty_list_help(self, help_message):
+        if not is_html_empty(help_message):
+            return help_message
+        help_title = "Create a new property"
+        sub_title = "click on new button to create a new property"
+        return super().get_empty_list_help(
+            f'<p class="o_view_nocontent_smiling_face">{help_title}</p><p class="oe_view_nocontent_alias">{sub_title}</p>'
+        )
+
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
@@ -121,6 +133,7 @@ class EstateProperty(models.Model):
         self.write({"state": "cancelled"})
 
     def action_sold(self):
+        self.ensure_one()
         if self.filtered(lambda record: record.state == "cancelled"):
             raise UserError(
                 _("You cannot Sold the property offer that already Cancelled")
@@ -128,6 +141,27 @@ class EstateProperty(models.Model):
         if not self.customer_id:
             raise UserError(_("You cannot sold the property that has no customer"))
         self.write({"state": "sold"})
+        body = _("Hello, the property <b>%s</b> has been sold for <b>%s</b>.", self.name, self.selling_price)
+        ctx = {
+            "default_model": "estate.property",
+            "default_res_ids": self.ids,
+            "default_composition_mode": "comment",
+            "default_use_template": False,
+            "default_subject": _("Sale Confirmation: %s", self.name),
+            "default_body": body,
+            "default_partner_ids": [self.customer_id.id] if self.customer_id else [],
+        }
+        action = {
+            "name": _("Send"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": ctx,
+        }
+        return action
 
     def action_best_offer(self):
         self.ensure_one()

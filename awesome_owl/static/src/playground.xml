@@ -12,5 +12,9 @@
                 <Card title="'Card Title 2'" content="cardContent"/>
             </div>
         </div>
+        <h2 class="text-center">Todo List</h2>
+        <div class="d-flex justify-content-center">
+            <TodoList/>
+        </div>
     </div>
 </t>

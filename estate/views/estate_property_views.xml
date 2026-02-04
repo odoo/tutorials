@@ -5,6 +5,14 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
         <field name="context">{'search_default_state': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Property.
+            </p>
+            <p>
+                Once the property creation is done.<br/> You will be able to sold the property.
+            </p>
+        </field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -97,6 +105,7 @@
                     </page>
                 </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

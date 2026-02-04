@@ -82,6 +82,7 @@ class EstatePropertyOffer(models.Model):
             lambda s: s.status != self.status
         )
         other_offer.status = "refused"
+        return True
 
     def action_refuse_offer(self):
         self.ensure_one()

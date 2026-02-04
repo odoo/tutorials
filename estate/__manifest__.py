@@ -4,6 +4,7 @@
     'category': 'Real Estate/Brokerage',
     'summary': 'This is the Real Estate Advertisement module',
     'description': 'This is the Real Estate Advertisement module.',
+    'depends': ["base", "mail", "purchase"],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -17,6 +18,9 @@
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml'
+    ],
+    'demo': [
+        'data/estate_property_demo.xml',
     ],
     'installable': True,
     'application': True,
