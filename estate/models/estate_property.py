@@ -1,4 +1,5 @@
-from odoo import models,fields
+from odoo import models, fields
+
 
 class TestModal(models.Model):
     _name = "estate.property"
@@ -15,13 +16,13 @@ class TestModal(models.Model):
     _garden_area = "estate.garden_area"
     _garden_orientation = "estate.garden_orientation"
 
-    name = fields.Char(required = True)
-    postcode = fields.Char(required = True)
-    date_availability = fields.Date(required = True)
-    expected_price = fields.Float(required = True)
-    selling_price = fields.Float(required = True)
-    bedrooms = fields.Integer(required = True)
-    living_area = fields.Integer(required = True)
+    name = fields.Char(required=True)
+    postcode = fields.Char(required=True)
+    date_availability = fields.Date(required=True)
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(required=True)
+    bedrooms = fields.Integer(required=True)
+    living_area = fields.Integer(required=True)
     facades = fields.Integer(required=True)
     garage = fields.Boolean(required=True)
     garden = fields.Boolean(required=True)
