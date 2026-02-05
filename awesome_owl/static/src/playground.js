@@ -16,7 +16,6 @@ export class Playground extends Component {
         this.textContent = "OK <strong> NOW </strong>";
         this.htmlContent = markup("NOW <strong> OK </strong>");
 
-
         this.updateSum = (value) => {
             this.state.sum = this.state.sum + value
         }

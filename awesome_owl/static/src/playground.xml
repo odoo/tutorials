@@ -17,7 +17,7 @@
         <p>Sum: <t t-esc="state.sum"/>
         </p>
 
-        <h4>This is to say that form here Card Starts</h4>
+        <h4>Card Area Here!!!</h4>
         <Card title="'DHUDEEP'" content="'HELLO HELLO'"/>
         <Card title="'CAR'" content="'Welcome home a brand new...'"/>
         <Card title="'LOOK'" content="'Why did u see me'"/>

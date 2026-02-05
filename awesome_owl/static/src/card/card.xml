@@ -3,17 +3,14 @@
   <t t-name="awesome_owl.card" owl="1">
     <div class="card d-inline-block m-2" style="width: 18rem;">
       <div class="card-body">
-
         <h5 class="card-title">
           <t t-out="props.title"/>
         </h5>
-
         <t t-if="props.collapsible">
           <button class="btn btn-sm btn-secondary" t-on-click="toggle">
           Toggle
           </button>
         </t>
-
         <t t-if="!props.collapsible or state.open">
           <div class="card-text">
             <t t-if="props.slots">

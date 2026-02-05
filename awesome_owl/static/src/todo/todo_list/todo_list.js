@@ -6,7 +6,6 @@ export class TodoList extends Component {
     static props = {};
     static template = "awesome_owl.TodoList";
     static components = { TodoItem };
-
     setup() {
         this.state = useState({
             todos: [],

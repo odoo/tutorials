@@ -11,7 +11,6 @@ export class Counter extends Component {
     setup() {
         this.state = useState({ value: 0 });
     }
-
     // debugger;
     increment() {
         this.state.value++;
