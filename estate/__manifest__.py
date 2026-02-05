@@ -11,5 +11,5 @@
     """,
     'website': 'https://odoo.com',
     'license': 'LGPL-3',
-    'installable' : True,
+    'installable': True,
 }
