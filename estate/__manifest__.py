@@ -4,9 +4,6 @@
     'depends': ['base'],
     'author': 'viwar-odoo',
     'category': 'real estate',
-    'description': """
-    real estate App.
-    """,
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
