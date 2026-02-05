@@ -11,8 +11,8 @@
             <div class="h3">Total Sum: <t t-esc="state.sum"/></div>
       </div>
       <div class="d-flex flex-wrap">
-                <Card title="'Hello'" content="'value'"/>
-                <Card title="'Bye'" content="'value'"/>
+                <Card title="'Card 1'"> Content of Card 1</Card>
+                <Card title="'Card 2'"><Counter /></Card>
             </div>
          </div>
          <TodoList />
