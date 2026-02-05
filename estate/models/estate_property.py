@@ -168,18 +168,23 @@ class EstateProperty(models.Model):
         if not accepted_offer:
             raise UserError(_("Property can not be sold without an accepted offer"))
         self.state = "sold"
-        report_template_id = 'estate.action_report_saleorder'
-        pdf_content, content_type = self.env['ir.actions.report']._render_qweb_pdf(report_template_id, self.ids)
+        report_template_id = "estate.action_report_saleorder"
+        pdf_content = self.env["ir.actions.report"]._render_qweb_pdf(
+            report_template_id, self.ids
+        )[0]
 
-        attachment = self.env['ir.attachment'].create({
-            'name': f'Property{self.name}.pdf',
-            'type': 'binary',
-            'datas': base64.b64encode(pdf_content),
-            'res_model': 'estate.property',
-            'res_id': self.id,
-            'mimetype': 'application/pdf',
-        })
-        body = _("Hello, the property <b>%s</b> has been sold for <b>%s</b>.") % (
+        attachment = self.env["ir.attachment"].create(
+            {
+                "name": f"Property{self.name}.pdf",
+                "type": "binary",
+                "datas": base64.b64encode(pdf_content),
+                "res_model": "estate.property",
+                "res_id": self.id,
+                "mimetype": "application/pdf",
+            }
+        )
+        body = _(
+            "Hello, the property <b>%s</b> has been sold for <b>%s</b>.",
             self.name,
             self.selling_price,
         )
@@ -191,7 +196,7 @@ class EstateProperty(models.Model):
             "defaultsubject": ("Sale Confirmation: %s") % self.name,
             "default_body": body,
             "default_partner_ids": [self.buyer_id.id] if self.buyer_id else [],
-            'default_attachment_ids': [(6, 0, [attachment.id])],
+            "default_attachment_ids": [(6, 0, [attachment.id])],
         }
         action = {
             "name": _("Send"),
