@@ -7,17 +7,49 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <t t-if="statistics.loading">
+                <div class="fs-1 fw-bold text-center">
+                    Loading data...
+                </div>
+            </t>
+            <t t-else="">
             <div class="d-flex flex-wrap">
                 <DashboardItem>
-                    some content
-                </DashboardItem>
-                <DashboardItem size="2">
-                    I love cricket
+                    Average amount of t-shirt by order this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.data.average_quantity"/>
+                    </div>
                 </DashboardItem>
                 <DashboardItem>
-                    some content
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.data.average_time"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.data.nb_new_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.data.nb_cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.data.total_amount"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    Shirt orders by size
+                    <PieChart data="statistics.data.orders_by_size" label="'Shirt orders by size'"/>
                 </DashboardItem>
             </div>
+            </t>
         </Layout>
     </t>
 
