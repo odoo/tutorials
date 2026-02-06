@@ -33,11 +33,12 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Estate_Property">
-
                     <header>
                         <button name="action_sold" type="object" string="Sold" title="Accept Property" class="btn-primary" invisible="state == 'sold'" />
                         <button name="action_cancel" type="object" string="Cancel" title="Cancel Property" class="btn-secondary" invisible="state == 'cancelled'" />
                         <button name="accept_best_price" type="object" string="Best Offer" title="Best Offer" />
+                        <button name="action_print_report" string="Print PDF" type="object" />
+
                         <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled" options="{'clickable': '1'}" />
                     </header>
                     <sheet>
@@ -101,11 +102,12 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <chatter/>
                 </form>
             </field>
         </record>
-
-        <record id="estate_property_kanban_view" model="ir.ui.view">
+                    
+        <record id ="estate_property_kanban_view" model="ir.ui.view">
             <field name="name">estate.property.kanban</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">

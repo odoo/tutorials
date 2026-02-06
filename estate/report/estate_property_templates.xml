@@ -1,0 +1,48 @@
+<odoo>
+    <template id="report_property">
+        <t t-call="web.external_layout">
+            <main>
+                <t t-foreach="docs" t-as="o">
+                    <h2>
+                        <t t-esc="o.name"/>
+                    </h2>
+                    <p>
+                        <strong>Salesman:</strong>
+                        <t t-esc="o.user_id.name or 'System'"/>
+                    </p>
+                    <p>
+                        <strong>Expected Price:</strong>
+                        <t t-esc="o.expected_price"/>
+                    </p>
+                    <p>
+                        <strong>Status:</strong>
+                        <t t-esc="o.state"/>
+                    </p>
+                    <br/>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>Price</th>
+                                <th>Partner</th>
+                                <th>Validity (days)</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.offer_ids" t-as="offer">
+                                <tr>
+                                    <td><t t-esc="offer.price"/></td>
+                                    <td><t t-esc="offer.partner_id.name"/></td>
+                                    <td><t t-esc="offer.validity"/></td>
+                                    <td><t t-esc="offer.date_deadline"/></td>
+                                    <td><t t-esc="offer.status"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </main>
+        </t>
+    </template>
+</odoo>

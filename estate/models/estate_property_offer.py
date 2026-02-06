@@ -9,6 +9,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
+
     price = fields.Float(string="Price")
     expected_price = fields.Float(related="property_id.expected_price", store=True)
     status = fields.Selection(
@@ -40,6 +41,10 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
     )
 
+    _check_offer_price = models.Constraint(
+        "CHECK(price > 0)", "The Offer price must be strictly positive"
+    )
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
@@ -60,6 +65,15 @@ class EstatePropertyOffer(models.Model):
                     record.date_deadline - record.create_date.date()
                 ).days
 
+    @api.constrains("price", "expected_price")
+    def _check__price(self):
+        for record in self:
+            if float_is_zero(record.price, precision_rounding=0.01):
+                continue
+            min_price = record.expected_price * 0.9
+            if float_compare(record.price, min_price, precision_rounding=0.01) < 0:
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
+
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
@@ -73,12 +87,9 @@ class EstatePropertyOffer(models.Model):
             if property_rec.offer_ids:
                 max_offer = max(property_rec.offer_ids.mapped("price"))
                 if price <= max_offer:
-                    raise ValidationError(
-                        _("The offer must be higher than existing offers")
-                    )
+                    raise ValidationError(_("The offer must be higher than existing offers"))
 
         offers = super().create(vals_list)
-
         for offer in offers:
             if offer.property_id.state == "new":
                 offer.property_id.state = "offer_received"
@@ -88,13 +99,11 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
-                raise UserError("Only one offer can be accepted")
+                raise UserError(_("Only one offer can be accepted"))
             record.status = "accepted"
 
             offers = record.property_id.offer_ids.filtered(lambda t: t.id != record.id)
-
             offers.write({"status": "refused"})
-
             record.property_id.write(
                 {
                     "buyer_id": record.partner_id,
@@ -115,18 +124,4 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.write({"status": "refused"})
-
         return True
-
-    _check_offer_price = models.Constraint(
-        "CHECK(price > 0)", "The Offer price must be strictly positive"
-    )
-
-    @api.constrains("price", "expected_price")
-    def _check__price(self):
-        for record in self:
-            if float_is_zero(record.price, precision_rounding=0.01):
-                continue
-            min_price = record.expected_price * 0.9
-            if float_compare(record.price, min_price, precision_rounding=0.01) < 0:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")

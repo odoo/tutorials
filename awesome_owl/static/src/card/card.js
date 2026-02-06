@@ -14,7 +14,6 @@ export class Card extends Component {
             isOpen: true,  
         });
     }
-
     
     toggle() {
         this.state.isOpen = !this.state.isOpen;

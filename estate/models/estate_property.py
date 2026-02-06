@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -47,6 +48,7 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
+    salesperson_id = fields.Many2one('res.users', string="Salesperson")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one(
         "res.partner",
@@ -65,15 +67,13 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
-    salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
-    )
     total_area = fields.Float(
         compute="_compute_total_area", string="Total Area", readonly=False
     )
     best_price = fields.Float(
         compute="_compute_best_price", string="Best Offer", store=True
     )
+    
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
         "The expected price must be strictly positive",
@@ -81,14 +81,6 @@ class EstateProperty(models.Model):
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)", "The selling price must be positive"
     )
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_allowed(self):
-        for record in self:
-            if record.state not in ("new", "cancelled"):
-                raise ValidationError(
-                    _("You can only delete properties that are New or Cancelled.")
-                )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -100,28 +92,6 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
-
-    def action_sold(self):
-        self.ensure_one()
-        if self.filtered(lambda x: x.state == "cancelled"):
-            raise UserError(_("A cancelled Property cannot be sold."))
-        self.write({"state": "sold"})
-
-    def action_cancel(self):
-        self.ensure_one()
-        if self.filtered(lambda x: x.state == "sold"):
-            raise UserError(_("A sold Property cannot be cancelled."))
-        self.write({"state": "cancelled"})
-
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for record in self:
@@ -129,17 +99,61 @@ class EstateProperty(models.Model):
                 continue
             min_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_price, precision_rounding=0.01) < 0:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
+            
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_allowed(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise ValidationError(
+                    _("You can only delete properties that are New or Cancelled.")
+                )
+
+    def action_sold(self):
+        self.ensure_one()
+        if self.filtered(lambda x: x.state == "cancelled"):
+            raise UserError(_("A cancelled Property cannot be sold."))
+        self.write({"state": "sold"})
+        return self.action_send_mail()  
+
+    def action_cancel(self):
+        self.ensure_one()
+        if self.state == "sold":
+            raise UserError(_("A sold Property cannot be cancelled."))
+        self.write({"state": "cancelled"})
 
     def accept_best_price(self):
         for record in self:
             if not record.offer_ids:
-                raise UserError("There are no offers to accept.")
+                raise UserError(_("There are no offers to accept."))
 
-            best_offer = max(record.offer_ids, key=lambda t: t.price)
+            best_offer = record.offer_ids.filtered_domain([('price', '=', record.best_price)])
             record.offer_ids.write({"status": "refused"})
             best_offer.write({"status": "accepted"})
 
             record.selling_price = record.best_price
             record.buyer_id = best_offer.partner_id
-        return True
+
+    def action_send_mail(self, res_ids=None):
+        action = {
+            'name': _('Send'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+        }
+        return action
+
+    def action_print_report(self):    
+        return self.env.ref('estate.action_estate_property_report').report_action(self)
