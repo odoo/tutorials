@@ -69,7 +69,8 @@ class EstateProperty(models.Model):
         required=True,
         help="This field tells us the state of the property.",
     )
-    total_area = fields.Integer(compute='_compute_total_area', search='_search_total_area')
+    total_area = fields.Integer(search='_search_total_area',
+        compute='_compute_total_area')
     total_cost = fields.Integer(compute='_compute_total_cost')
     best_price = fields.Integer(
         compute='_compute_best_price', store=True)
@@ -111,15 +112,6 @@ class EstateProperty(models.Model):
         ))
         for record in self:
             record.total_cost = result.get(record, 0)
-
-    def _search_total_area(self, operator, value):
-        # WARNING: Python-level filtering
-        records = self.search([]).filtered(
-            lambda r: eval(f"r.total_area {operator} value")
-        )
-        return [('id', 'in', records.ids)]
-
-    # ONCHANGE DECORATOR
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -186,3 +178,11 @@ class EstateProperty(models.Model):
                 'default_composition_mode': 'comment',
             }
         }
+
+    def _search_total_area(self, operator, value):
+            # WARNING: Python-level filtering
+            records = self.search([]).filtered(
+                lambda r: eval(f"r.total_area {operator} value")
+            )
+            return [('id', 'in', records.ids)]
+
