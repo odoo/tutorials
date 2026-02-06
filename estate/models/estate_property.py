@@ -1,16 +1,20 @@
 from odoo import fields, models
+from datetime import date
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Management Module"
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Title", required=True)
+    description = fields.Text(string="Description")
     postcode = fields.Char(string="Post Code")
-    date_availability = fields.Date(string="Availability Date")
+    date_availability = fields.Date(
+        string="Availability From", default=date.today(), copy=False
+    )
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price")
-    bedrooms = fields.Integer(string="Bed Rooms")
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer(string="Bed Rooms", default=2)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
     garage = fields.Boolean(string="Garage")
@@ -25,3 +29,24 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
+    state = fields.Selection(
+        string="Status",
+        default="new",
+        copy=False,
+        required=True,
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("accepted", "Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Cancelled"),
+        ],
+    )
+    active = fields.Boolean(string="Active", default=True)
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesman_id = fields.Many2one(
+        "res.users", string="Salesman", default=lambda self: self.env.uid
+    )
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
