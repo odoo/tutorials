@@ -2,7 +2,7 @@ from odoo import models, fields
 
 
 class TestModal(models.Model):
-    _name = "estate.property"
+    _name = "estate_property"
     _description = "Estate Property"
     _postcode = "estate.postcode"
     _date_avalilabilty = "estate.date_availability"
