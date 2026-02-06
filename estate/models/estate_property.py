@@ -2,7 +2,7 @@ from odoo import models, fields
 
 
 class TestModal(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Estate Property"
     _postcode = "estate.postcode"
     _date_avalilabilty = "estate.date_availability"
@@ -18,10 +18,12 @@ class TestModal(models.Model):
 
     name = fields.Char(required=True)
     postcode = fields.Char(required=True)
-    date_availability = fields.Date(required=True)
+    date_availability = fields.Date(
+        copy=False,
+    )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(required=True)
-    bedrooms = fields.Integer(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(required=True)
     facades = fields.Integer(required=True)
     garage = fields.Boolean(required=True)
