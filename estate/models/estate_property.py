@@ -160,3 +160,6 @@ class EstateProperty(models.Model):
         if self.state not in ['new', 'cancelled']:
             raise UserError(
                 _("Only new and cancelled property can be deleted."))
+
+    def action_print_doc(self):
+        return self.env.ref("estate.estate_property_report").report_action(self)

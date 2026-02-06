@@ -29,6 +29,7 @@
                     <button name="action_property_sold" class="btn btn-primary" type="object" string="SOLD" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_property_cancel" type="object" string="CANCEL" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_accept_best_offer" type="object" string="Accept Best Offer" invisible="state not in ('offer_received')"/>
+                    <button string="Print" name="action_print_doc" class="btn btn-info" type="object" invisible="state not in ('sold')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>

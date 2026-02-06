@@ -21,19 +21,38 @@
     <record id="demo_property1" model="estate.property">
         <field name="name">Sea View House(PUNE)</field>
         <field name="expected_price">30000000</field>
+        <field name="selling_price">29600000</field>
         <field name="bedrooms">4</field>
         <field name="postcode">411023</field>
         <field name="living_area">2500</field>
         <field name="garage">False</field>
         <field name="garden">False</field>
+        <field name="state">sold</field>
         <field name="tag_ids" eval="[(4,ref('demo_tag2'))]"/>
         <field name="property_type_id" ref="demo_type1"/>
         <field name="user_id" ref="base.demo_user0"/>
+        <field name="partner_id" ref="base.res_partner_10"/>
     </record>
 
     <record id="demo_property2" model="estate.property">
         <field name="name">Samarpan Co.op.Society(102)</field>
         <field name="expected_price">25000000</field>
+        <field name="selling_price">25600000</field>
+        <field name="bedrooms">3</field>
+        <field name="postcode">411070</field>
+        <field name="living_area">2300</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="state">offer_accepted</field>
+        <field name="tag_ids" eval="[(4,ref('demo_tag1'))]"/>
+        <field name="property_type_id" ref="demo_type2"/>
+        <field name="user_id" ref="base.user_demo"/>
+        <field name="partner_id" ref="base.res_partner_10"/>
+    </record>
+
+    <record id="demo_property3" model="estate.property">
+        <field name="name">Samarpan Co.op.Society(601)</field>
+        <field name="expected_price">27000000</field>
         <field name="bedrooms">3</field>
         <field name="postcode">411070</field>
         <field name="living_area">2300</field>
@@ -46,8 +65,44 @@
 
     <record id="demo_offer1" model="estate.property.offer">
         <field name="price">29000000</field>
+        <field name="status">refused</field>
         <field name="partner_id" ref="base.res_partner_12"/>
         <field name="property_id" ref="demo_property1"/>
+    </record>
+
+    <record id="demo_offer2" model="estate.property.offer">
+        <field name="price">29500000</field>
+        <field name="status">refused</field>
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="property_id" ref="demo_property1"/>
+    </record>
+
+    <record id="demo_offer3" model="estate.property.offer">
+        <field name="price">29600000</field>
+        <field name="status">accepted</field>
+        <field name="partner_id" ref="base.res_partner_10"/>
+        <field name="property_id" ref="demo_property1"/>
+    </record>
+
+    <record id="demo_offer4" model="estate.property.offer">
+        <field name="price">25000000</field>
+        <field name="status">refused</field>
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="demo_property2"/>
+    </record>
+
+    <record id="demo_offer5" model="estate.property.offer">
+        <field name="price">25300000</field>
+        <field name="status">refused</field>
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="property_id" ref="demo_property2"/>
+    </record>
+
+    <record id="demo_offer6" model="estate.property.offer">
+        <field name="price">25600000</field>
+        <field name="status">accepted</field>
+        <field name="partner_id" ref="base.res_partner_10"/>
+        <field name="property_id" ref="demo_property2"/>
     </record>
 
 </odoo>
