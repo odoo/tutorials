@@ -5,9 +5,13 @@
     "summary": "Manage real estate properties",
     "author": "sasri-odoo",
     "license": "LGPL-3",
-    "depends": ["base"],
+    "depends": [
+        "base",
+    ],
     "data": [
         "security/ir.model.access.csv",
+        "views/estate_property_views.xml",
+        "views/estate_menus.xml",
     ],
     "application": True,
 }
