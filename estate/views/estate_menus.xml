@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<odoo>
+    <data>
+        <menuitem id='test_menu_root' name="Real Estate">
+            <menuitem id='first_level_menu' name="menu">
+            <!-- __experimented a bit , if we remove the name from the menu item then it will use the id as name -->
+                <menuitem id='decond_level_menu' name="second menu">
+                    <!-- experimented , if we remove the name from the menu item then it will use the action's name as name -->
+                    <menuitem id='test_model_menu_action' name="property" action='estate_model_action'/>
+                </menuitem>
+            </menuitem>
+
+        <!-- #experimental added extra direct menu for learning-->
+        <menuitem id='direct_property_menu' name="property" action='estate_model_action'/>
+        <!---->
+
+        </menuitem>
+    </data>
+</odoo>
