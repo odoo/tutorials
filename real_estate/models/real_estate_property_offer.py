@@ -28,6 +28,7 @@ class RealEstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         store=True
     )
+    lead_id = fields.Many2one("crm.lead", string="CRM Lead", readonly=True)
     _check_offer_price_positive = models.Constraint(
         'CHECK(price > 0)',
         'The offer price must be strictly positive.',
@@ -49,7 +50,15 @@ class RealEstatePropertyOffer(models.Model):
             if property and property.stage == 'new':
                 property.stage = 'offer_received'
 
-        return super().create(vals)
+        offer = super().create(vals)
+        lead = self.env["crm.lead"].create({
+            "name": f"Offer for {offer.property_id.name}",
+            "partner_id": offer.partner_id.id,
+            "expected_revenue": offer.price,
+            "type": "opportunity",
+        })
+        offer.lead_id = lead.id
+        return offer
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -90,12 +99,16 @@ class RealEstatePropertyOffer(models.Model):
             'stage': 'offer_accepted',
             'buyer_id': self.partner_id.id,
         })
+        if self.lead_id:
+            self.lead_id.action_set_won()
         refused_offer = self.property_id.offer_ids.filtered_domain([
             ('id', '!=', self.id),
             ('status', '!=', 'accepted')
         ])
         for refuse in refused_offer:
             refuse.status = 'refused'
+            if refuse.lead_id:
+                refuse.lead_id.action_set_lost()
 
     def action_refuse(self):
         self.status = 'refused'

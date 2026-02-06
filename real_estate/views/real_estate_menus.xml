@@ -5,7 +5,7 @@
     <menuitem id="real_estate_menu_Advertisements" name="Advertisements" parent="real_estate_menu" sequence="265"/>
 
     <menuitem id="real_estate_menu_properties" name="Properties" parent="real_estate_menu_Advertisements"
-              action="real_estate_action_view"/>
+              action="real_estate_action_view" sequence="99"/>
 
     <menuitem id="real_estate_menu_configuration" name="configuration" parent="real_estate_menu" sequence="267"/>
 
@@ -13,6 +13,7 @@
               name="Property Offers"
               parent="real_estate_menu_Advertisements"
               action="real_estate_property_offer_action_view"
+              sequence="100"
              />
 <!--     groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
 

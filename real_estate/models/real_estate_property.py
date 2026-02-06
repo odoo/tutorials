@@ -71,10 +71,47 @@ class RealEstate(models.Model):
         string='Salesperson',
         default=lambda self: self.env.user
     )
+    project_id = fields.Many2one("project.project", string="Project")
+    task_progress = fields.Float(string="Task Progress", compute="_compute_task_progress", store=True)
     _check_expected_price_positive = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price must be strictly positive.',
     )
+
+    @api.depends("project_id.task_ids.state")
+    def _compute_task_progress(self):
+        for rec in self:
+            if rec.project_id and rec.project_id.task_ids:
+                total = len(rec.project_id.task_ids)
+                done = len(rec.project_id.task_ids.filtered(lambda t: t.state == '1_done'))
+                rec.task_progress = (done / total) * 100 if total else 0
+            else:
+                rec.task_progress = 0
+
+    def write(self, vals):
+        res = super().write(vals)
+        if vals.get("stage") == "sold":
+            for rec in self:
+                if not rec.project_id:
+                    project = self.env["project.project"].create({
+                        "name": f"Property: {rec.name}",
+                    })
+
+                    rec.project_id = project.id
+                    task_data = [
+                        ("Legal Documentation"),
+                        ("Payment Settlement"),
+                        ("Property Handover"),
+                    ]
+
+                    for name in task_data:
+                        self.env["project.task"].create({
+                            "name": name,
+                            "project_id": project.id,
+                            # "user_id": user,
+                        })
+
+        return res
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
@@ -103,22 +140,22 @@ class RealEstate(models.Model):
         for record in self:
             record.best_price = dataa.get(record, 0.0)
 
-    def _search_best_price(self, operator, value):
-        records = self.search([])
-        domain = [('best_price', operator, value)]
-        filtered = records.filtered_domain(domain)
-        return [('id', 'in', filtered.ids)]
-
     # def _search_best_price(self, operator, value):
-    #     if operator not in ('=', '!=', '<', '<=', '>', '>='):
-    #         return NotImplemented
-    #     groups = self.env['real.estate.property.offer']._read_group(
-    #         [],
-    #         ['property_id'],
-    #         having=[(f'price:max', operator, value)]
-    #     )
-    #     property_ids = [g[0].id for g in groups if g and g[0]]
-    #     return [('id', 'in', property_ids)]
+    #     records = self.search([])
+    #     domain = [('best_price', operator, value)]
+    #     filtered = records.filtered_domain(domain)
+    #     return [('id', 'in', filtered.ids)]
+
+    def _search_best_price(self, operator, value):
+        if operator not in ('!=', '<', '<=', '>', '>='):
+            return NotImplemented
+        groups = self.env['real.estate.property.offer']._read_group(
+            [],
+            ['property_id'],
+            having=[('price:max', operator, value)]
+        )
+        property_ids = [g[0].id for g in groups if g and g[0]]
+        return [('id', 'in', property_ids)]
 
     @api.depends('maintenance_request_ids.cost')
     def _compute_total_maintenance_cost(self):
@@ -207,3 +244,18 @@ class RealEstate(models.Model):
 
     def action_print_sale_doc(self):
         return self.env.ref('real_estate.real_estate_report_action_property_sale').report_action(self)
+
+    # def _search_total_area(self, operator, value):
+    #     if operator not in ('=', '!=', '>', '>=', '<', '<='):
+    #         raise UserError(("Operator %s is not supported") % operator)
+    #
+    #     query = f"""
+    #         SELECT id
+    #         FROM estate_property
+    #         WHERE (COALESCE(living_area, 0) + COALESCE(garden_area, 0)) {operator} %s
+    #     """
+    #
+    #     self.env.cr.execute(query, (value,))
+    #     ids = [row[0] for row in self.env.cr.fetchall()]
+    #
+    #     return [('id', 'in', ids)]

@@ -5,7 +5,7 @@ export class Card extends Component {
     static template = "awesome_owl.Card";
     static props = {
         title: { type: String },
-        slots: { type: Object, optional: true },
+        slots: { type: Object},
         content: { type: String, optional: true },
     };
     setup() {

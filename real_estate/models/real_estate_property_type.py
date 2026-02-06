@@ -5,7 +5,7 @@ class RealEstatePropertyType(models.Model):
     _name = 'real.estate.property.type'
     _description = 'Real Estate Property Type'
     _order = "sequence, name desc"
-    _rec_name = "id"
+    # _rec_name = "id"
 
     name = fields.Char(required=True)
     sequence = fields.Integer(string="Sequence", default=10)

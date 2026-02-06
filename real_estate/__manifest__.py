@@ -5,7 +5,7 @@
     'author': "Ruchita Gothi (Rugot)",
     'category': 'Real Estate',
     'version': '0.1',
-    'depends': ['base', 'web', 'mail'],
+    'depends': ['base', 'web', 'mail', 'project', 'crm'],
     'data': [
         'security/category.xml',
         'security/real_estate_security.xml',
