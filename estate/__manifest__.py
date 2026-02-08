@@ -7,7 +7,7 @@
     "website": "https://www.odoo.com/app/estate",
     "summary": "This module is for Real estate advertisement.",
     "category": "estate",
-    "data": [],
+    "data": ["security/ir.model.access.csv"],
     "installable": True,
     "application": True,
     "author": "odoo-pupat",
