@@ -1,0 +1,6 @@
+<t t-name="awesome_dashboard.PieChartCard">
+    <div class="h-100">
+        <div class="fw-bold mb-2" t-esc="props.title"/>
+        <PieChart data="props.data" label="props.title"/>
+    </div>
+</t>

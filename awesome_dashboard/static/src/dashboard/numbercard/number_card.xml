@@ -1,0 +1,6 @@
+<t t-name="awesome_dashboard.NumberCard">
+    <div>
+        <div t-esc="props.title" class="text-muted text-uppercase fw-bold small"/>
+        <h2 t-esc="props.value" class="mt-2"/>
+    </div>
+</t>

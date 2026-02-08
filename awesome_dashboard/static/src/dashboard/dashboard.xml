@@ -4,57 +4,22 @@
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
             <t t-set-slot="control-panel-create-button">
                 <div class="btn-group">
-                    <button class="btn btn-primary" t-on-click="opencustomers">
-                        Customers
-                    </button>
-                    <button class="btn btn-primary" t-on-click='openlead'>
-                        Leads
-                    </button>
-                    <button class="btn btn-secondary">
+                    <button class="btn btn-primary" t-on-click="opencustomers">Customers</button>
+                    <button class="btn btn-primary" t-on-click="openlead">Leads</button>
+                    <button class="btn btn-secondary" t-on-click="openConfiguration">
                         <i class="fa fa-cog"/>
                     </button>
                 </div>
             </t>
 
-            <div class="row d-flex flex-wrap gap-3 p-3" t-if="state.statistics.data">
-                <DashboardItem class="'col-12 col-md-4'">
-                    <div>Average amount of t-shirt by order this month</div>
-                    <h2>
-                        <t t-esc="state.statistics.data.average_quantity"/>
-                    </h2>
-                </DashboardItem>
-                <DashboardItem class="'col-12 col-md-4'">
-                    <div>Average Time for an order to go from 'new' to 'send' or 'cancelled'</div>
-                    <h2>
-                        <t t-esc="state.statistics.data.average_time"/>
-                    </h2>
-                </DashboardItem>
-                <DashboardItem class="'col-12 col-md-4'">
-                    <div>Number of new orders this month</div>
-                    <h2>
-                        <t t-esc="state.statistics.data.nb_new_orders"/>
-                    </h2>
-                </DashboardItem>
-                <div class="col-12 col-md-4 d-flex flex-column gap-3">
-                    <DashboardItem>
-                        <div>Number of cancelled orders this month</div>
-                        <h2>
-                            <t t-esc="state.statistics.data.nb_cancelled_orders"/>
-                        </h2>
+            <div class="row d-flex flex-wrap gap-3 p-3" t-if="statistics.data">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics.data) : {'data': statistics.data}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
                     </DashboardItem>
-                    <DashboardItem>
-                        <div>Total amount of new orders this month</div>
-                        <h2>
-                            <t t-esc="state.statistics.data.total_amount"/>
-                        </h2>
-                    </DashboardItem>
-                </div>
-                <DashboardItem class="'col-12 col-md-8'">
-                    <div>T-Shirt Sizes Distribution</div>
-                    <PieChart t-if="state.statistics.data.orders_by_size" data="state.statistics.data.orders_by_size" label="'Quantity by Size'" />
-                </DashboardItem>
+                </t>
             </div>
-
         </Layout>
     </t>
 </templates>

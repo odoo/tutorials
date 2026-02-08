@@ -10,12 +10,9 @@ export class PieChart extends Component {
 
     setup() {
         this.canvasRef = useRef("canvas");
-
         onWillStart(async () => {
-            // Lazy load Chart.js
             await loadJS("/web/static/lib/Chart/Chart.js");
         });
-
         onMounted(() => {
             this.renderChart();
         });
