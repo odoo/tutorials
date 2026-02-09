@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-primary me-2" t-on-click="openCustomers">
+                Customers
+                </button>
+                <button class="btn btn-secondary" t-on-click="openLeads">
+                Leads
+                </button>
+            </t>
+
+            <t t-if="state.data">
+                <div class="d-flex flex-wrap gap-3 mt-3">
+
+                    <div class="card p-3" style="width: 18rem;">
+                        <div class="fw-bold">Number of new orders this month</div>
+                        <div class="display-6 text-success">
+                            <t t-esc="state.data.nb_new_orders"/>
+                        </div>
+                    </div>
+
+                    <div class="card p-3" style="width: 18rem;">
+                        <div class="fw-bold">Total amount of new orders this month</div>
+                        <div class="display-6 text-success">
+                            <t t-esc="state.data.total_amount"/>
+                        </div>
+                    </div>
+
+                    <div class="card p-3" style="width: 18rem;">
+                        <div class="fw-bold">Average amount of t-shirt by order this month</div>
+                        <div class="display-6 text-success">
+                            <t t-esc="state.data.average_quantity"/>
+                        </div>
+                    </div>
+
+                    <div class="card p-3" style="width: 18rem;">
+                        <div class="fw-bold">Number of cancelled orders this month</div>
+                        <div class="display-6 text-success">
+                            <t t-esc="state.data.nb_cancelled_orders"/>
+                        </div>
+                    </div>
+
+                    <div class="card p-3" style="width: 18rem;">
+                        <div class="fw-bold">Average time from 'new' to 'sent'/'cancelled'</div>
+                        <div class="display-6 text-success">
+                            <t t-esc="state.data.average_time"/>
+                        </div>
+                    </div>
+                    <div class="card p-3 mt-3" style="width: 40rem;">
+                        <div class="fw-bold mb-2">Shirt orders by size</div>
+                        <PieChart data="state.data.orders_by_size" size="260"/>
+                    </div>
+
+                </div>
+            </t>
+
+            <t t-else="">
+                <div class="mt-3 text-muted">Loading statistics...</div>
+            </t>
+
+
+            <div>
+        hello dashboard
+            </div>
+            <br/>
+
+            <div>
+                <p>Service Counter: <t t-esc="myService.get()"/>
+                </p>
+                <button class="btn btn-primary" t-on-click="inc">Increase</button>
+            </div>
+        </Layout>
+    </t>
+</templates>
