@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_estateproperty_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <div class="oe_structure">
+                    <div class="row">
+                        <h1>
+                            <strong>Property Name:-</strong>
+                            <span t-field="doc.name"/>
+                        </h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <h3>
+                            <strong>Description:-</strong>
+                            <span t-field="doc.description"></span>
+                        </h3>
+                    </div>
+                </div>
+                <h5>
+                    <div class="row">
+                        <div class="col-5">
+                            <strong>Postcode:- </strong>
+                            <span t-field="doc.postcode"></span>
+                        </div>
+                        <div class="col-5">
+                            <strong>Date Availability:- </strong>
+                            <span t-field="doc.date_availability"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <strong>Expected Price:- </strong>
+                            <span t-field="doc.expected_price"></span>
+                        </div>
+                        <div class="col-5">
+                            <strong>Selling Price:- </strong>
+                            <span t-field="doc.selling_price"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <strong>Bedrooms:- </strong>
+                            <span t-field="doc.bedrooms"></span>
+                        </div>
+                        <div class="col-5">
+                            <strong>Living Area:- </strong>
+                            <span t-field="doc.living_area"></span>
+                        </div>
+                    </div>
+                </h5>
+                <table class="table table-sm" style="font-size: 20px">
+                    <tr>
+                        <th><strong>Price</strong></th>
+                        <th><strong>Status</strong></th>
+                        <th><strong>Customer</strong></th>
+                    </tr>
+                    <tr t-foreach="doc.offer_ids" t-as="offer">
+                        <td><span t-field="offer.price"></span></td>
+                        <td><span t-field="offer.status"></span></td>
+                        <td><span t-field="offer.partner_id"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_estateproperty_raw">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="estate.report_estateproperty_document"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_estateproperty">
+        <t t-call="estate.report_estateproperty_raw"/>
+    </template>
+</odoo>

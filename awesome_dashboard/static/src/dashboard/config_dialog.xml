@@ -1,0 +1,19 @@
+<t t-name="awesome_dashboard.ConfigDialog">
+    <Dialog title="'Configure Dashboard'" size="'md'">
+        <div class="container">
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
+                <div class="form-check py-2 d-flex align-items-center">
+                    <CheckBox value="!state.disabledItems.includes(item.id)" onChange="() => this.toggleItem(item.id)">
+                        <span class="ms-2">
+                            <t t-esc="item.description"/>
+                        </span>
+                    </CheckBox>
+                </div>
+            </t>
+        </div>
+        <t t-set-slot="footer">
+            <button class="btn btn-primary" t-on-click="onApply">Apply</button>
+            <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+        </t>
+    </Dialog>
+</t>
