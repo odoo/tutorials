@@ -1,24 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-    <data>
+        <record id="estate_property_view_search" model="ir.ui.view">
+            <field name="name">estate_property_search</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <search string="estate_property_search">
+
+                    <field name="name" />
+                    <field name="postcode" />
+
+                    <filter name="state_equal_to_new_or_received"
+                        string="Available Properties"
+                        domain="[('state','in',['new','offer_received'])]" />
+
+
+                    <filter name="group_by_postcode"
+                        string="Postcode"
+                        context="{'group_by': 'postcode'}" />
+                </search>
+            </field>
+        </record>
+
+
         <record id="estate_property_view_list" model="ir.ui.view">
             <field name="name">estate_property_list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list>
+                <list string="estate_property_list">
                     <field name="name" />
                     <field name="description" />
+                    <field name="expected_price" />
+                    <field name="postcode" />
+                    <field name="bedrooms" />
+                    <field name="facades" />
+                    <field name="garden" optional="1" />
+                    <field name="garden_orientation" />
                 </list>
             </field>
         </record>
-        <record id="estate_property_action" model="ir.actions.act_window">
-            <field name="name">property</field>
-            <field name="res_model">estate.property</field>
-            <field name="view_mode">list</field>
+        <record id="estate_property_view_form" model="ir.ui.view">
+            <field name="name">estate_property_form</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <form string="estate.property.form">
+                    <header>
+                        <field name="state" widget="statusbar"
+                            options="{'fold_field': 'fold'}" />
+                    </header>
+                    <sheet class="o_sheet_custom">
+                        <group>
+                            <field name="name" class="oe_title" />
+                        </group>
+                        <group>
+                            <group>
+                                <field name="postcode" />
+                                <field name="date_availability" />
+
+                            </group>
+                            <group>
+                                <field name="expected_price" />
+                                <field name="selling_price" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <group>
+                                        <field name="description" />
+                                        <field name="bedrooms" />
+                                        <field name="facades" />
+                                        <field name="garden" />
+                                        <field name="garden_orientation" />
+
+                                    </group>
+                                    <group>
+                                        <field name="active" />
+                                        <field name="living_area" />
+                                        <field name="garage" />
+                                        <field name="garden_area" />
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
         </record>
-        <menuitem id="estate_property_menu_root" name="Property" />
-        <menuitem id="estate_property_list" name="Properties" parent="estate_property_menu_root"
-            action="estate_property_action" />
-    </data>
+
+        <record id="estate_property_action" model="ir.actions.act_window">
+            <field name="name">Properties</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form</field>
+        </record>
 </odoo>
