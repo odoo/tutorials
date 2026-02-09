@@ -167,6 +167,7 @@ class EstateProperty(models.Model):
     def action_best_offer(self):
         for record in self:
             best_offer = max(record.offer_ids, key=lambda p: p.price)
+            # best_offer = record.offer_ids.sorted('price', reverse=True)[:1]
             best_offer.action_accept()
 
         return True

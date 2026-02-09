@@ -19,3 +19,8 @@ class ResUsers(models.Model):
         ))
         for record in self:
             record.total_expected = sum_expected.get(record, 0.0)
+        # for record in self:
+        #     validate_property = record.property_ids.filtered(
+        #         lambda p: p.state != 'sold'
+        #     )
+        #     record.total_expected = sum(validate_property.mapped('expected_price'))
