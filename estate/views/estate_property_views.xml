@@ -15,6 +15,7 @@
             <list string="Properties">
                 <field name="name"/>
                 <field name="state"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
@@ -36,6 +37,7 @@
                             <field name="postcode"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="property_type_id"/>
                         </group>
 
                         <group>
@@ -53,6 +55,12 @@
                         <page string="description">
                             <field name="description"/>
                         </page>
+                        <page string="Sales">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="user_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -67,6 +75,7 @@
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="state"/>
+                <field name="property_type_id"/>
 
                 <separator/>
 

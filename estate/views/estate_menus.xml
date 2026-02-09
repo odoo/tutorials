@@ -8,5 +8,12 @@
                 action="estate_property_action"
             />
         </menuitem>
+        <menuitem id="estate_menu_property_type" name="Property Type">
+            <menuitem
+                id="estate_menu_property_type_action"
+                action="estate_property_type_action"
+            />
+        </menuitem>
+
     </menuitem>
 </odoo>
