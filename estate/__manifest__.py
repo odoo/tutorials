@@ -1,7 +1,3 @@
-
-
-
-
 {
     'name': 'Real Estate Kapat',
     'version': '1.1',
