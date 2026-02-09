@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
-    <menuitem id="estate_menu_root" name="Real Estate">
-        <menuitem id="estate_menu_properties" name="Properties">
-            <menuitem
-                id="estate_menu_properties_action"
-                action="estate_property_action"
-            />
-        </menuitem>
-    </menuitem>
+
+    <!-- App root -->
+    <menuitem
+        id="estate_menu_root"
+        name="Real Estate"
+        sequence="10"
+    />
+
+    <!-- Main entry point -->
+    <menuitem
+        id="estate_menu_properties"
+        name="Properties"
+        parent="estate_menu_root"
+        action="estate_property_action"
+        sequence="10"
+    />
+
 </odoo>
