@@ -32,3 +32,16 @@ class TestModal(models.Model):
     garden_orientation = fields.Selection(
         selection=[("north", "North"), ("south", "South")], required=True
     )
+    description = fields.Text()
+    state = fields.Selection(
+        [
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="new",
+        required=True,
+        copy=False,
+    )
