@@ -1,0 +1,84 @@
+<odoo>
+    <record id="action_report_estate_property" model="ir.actions.report">
+        <field name="name">Property Details</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">real_estate.report_property_details</field>
+        <field name="report_file">real_estate.report_property_details</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_property_details">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Salesperson:</strong> <span t-field="property.salesperson_id"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>Status:</strong> <span t-field="property.state"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Expected Price</strong></td>
+                                    <td>
+                                        <span t-field="property.expected_price"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Selling Price</strong></td>
+                                    <td>
+                                        <span t-field="property.selling_price"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Buyer</strong></td>
+                                    <td><span t-field="property.buyer_id"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Postcode</strong></td>
+                                    <td><span t-field="property.postcode"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div t-if="property.offer_ids">
+                            <h3>Offers History</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Partner</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="property.offer_ids" t-as="offer">
+                                        <td><span t-field="offer.partner_id"/></td>
+                                        <td><span t-field="offer.price"/></td>
+                                        <td><span t-field="offer.status"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
