@@ -12,17 +12,15 @@ class EstateProperty(models.Model):
     )
     date_availability = fields.Date(
         string="Date of Availability",
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
+        copy=False,
     )
     expected_price = fields.Float(
         string="Expected Price",
         required=True,
     )
-    selling_price = fields.Float(
-        string="Selling Price",
-    )
-    bedrooms = fields.Integer(
-        string="Bedrooms",
-    )
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(
         string="Living Area (sqm)",
     )
@@ -47,3 +45,16 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
+    state = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        string="Status",
+        default="new",
+        copy=False,
+    )
+    active = fields.Boolean(string="Active", default=False)
