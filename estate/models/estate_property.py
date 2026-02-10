@@ -56,7 +56,7 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offers")
-    total_area = fields.Float(string="Total Area", compute="_compute_total_area", search="_search_total_area")
+    total_area = fields.Float(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     maintenance_ids = fields.One2many("estate.property.maintenance", "property_id")
     total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost")
@@ -75,19 +75,6 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for property in self:
             property.total_area = property.living_area + property.garden_area
-
-    def _search_total_area(self, operator, value):
-        if operator == '>' and value == 500:
-            records = self.search([])
-            ids = []
-
-            for rec in records:
-                if (rec.living_area) + (rec.garden_area) > 500:
-                    ids.append(rec.id)
-
-            return [('id', 'in', ids)]
-
-        return []
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):

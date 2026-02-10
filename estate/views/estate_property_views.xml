@@ -106,7 +106,6 @@
                 <field name="expected_price"/>
                 <filter string="Available Properties" name="available_properties" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
-                <filter string="Total Area > 500" name="total_area_gt_500" domain="[('total_area', '>', 500)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>
