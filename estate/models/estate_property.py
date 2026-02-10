@@ -1,5 +1,6 @@
-from odoo import fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
@@ -29,7 +30,7 @@ class EstateProperty(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
-        ]
+        ],
     )
 
     state = fields.Selection(
