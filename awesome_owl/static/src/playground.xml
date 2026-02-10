@@ -1,10 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
+    <t t-name="awesome_owl.Playground">
         <div class="p-3">
-            hello world
+            <Card title="'Escaped content'" ><t t-esc="state.rawHtml"/></Card>
+            <Card title="'HTML content'" ><t t-esc="state.safeHtml"/></Card>
+            <div class="t" style="display:flex; gap:2rem; margin-left:1rem; margin-top:1rem">
+            <h4>Total sum: <t t-esc="state.sum"/></h4>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            </div>
+            <h2>Todo List</h2>
+            <TodoList/>
         </div>
     </t>
-
 </templates>

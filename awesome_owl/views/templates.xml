@@ -1,15 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-          <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
-            <html>
-                <head>
-                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+    <templates xml:space="preserve">
+        <t t-name="awesome_owl.Playground">
+            <t t-call="web.layout">
+                <t t-set="head">
                     <t t-call-assets="awesome_owl.assets_playground"/>
-                </head>
-
-                <body>
-                </body>
-            </html>
-          </template>
-    </data>
+                </t>
+                <div class="container mt-4">
+                    <h2>Awesome Owl Playground</h2>
+                    <div id="playground"></div>
+                </div>
+            </t>
+        </t>
+    </templates>
 </odoo>

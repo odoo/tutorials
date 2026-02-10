@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_estate_property_report" model="ir.actions.report">
+        <field name="name">Property Report</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property</field>
+        <field name="report_file">estate.report_property</field>
+        <field name="print_report_name">'Property - %s' % (object.name)</field>
+    </record>
+
+    <record id="estate_invoice_report" model="ir.actions.report">
+        <field name="name">Estate Invoice</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_invoice_template</field>
+        <field name="report_file">estate.report_invoice_template</field>
+    </record>
+</odoo>
