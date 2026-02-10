@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Level 1: Root Menu -->
-    <menuitem
-        id="estate_menu_root"
-        name="Real Estate">
-    <!-- Level 2: Sub Menu -->
-    <menuitem
-        id="estate_menu_advertisements"
-        name="Advertisements">
-    <!-- Level 3: Action Menu -->
-    <menuitem
-        id="estate_menu_advertisements_properties"
-        name="Properties"
-        action="estate_property_action">
-    </menuitem>
-    </menuitem>
-    </menuitem>
+    <data>
+
+        <menuitem
+            id="estate_menu_root"
+            name="Real Estate" />
+
+        <menuitem
+            id="estate_menu_advertisements"
+            name="Advertisements"
+            parent="estate_menu_root" />
+
+        <menuitem
+            id="estate_menu_properties"
+            name="Properties"
+            parent="estate_menu_advertisements"
+            action="estate_property_action" />
+
+    </data>
 </odoo>

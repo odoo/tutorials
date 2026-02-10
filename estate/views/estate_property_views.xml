@@ -1,8 +1,28 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-    <field name="name">Estate Property</field>
-    <field name="res_model">estate.property</field>
-    <field name="view_mode">list,form</field>
-</record>
+    <data>
+
+        <record id="estate_property_tree" model="ir.ui.view">
+            <field name="name">estate.property.tree</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name" string="Title" />
+                    <field name="postcode" />
+                    <field name="bedrooms" />
+                    <field name="living_area" />
+                    <field name="expected_salary" />
+                    <field name="selling_price" />
+                    <field name="date_availability" />
+                </list>
+            </field>
+        </record>
+
+        <record id="estate_property_action" model="ir.actions.act_window">
+            <field name="name">Properties</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
 </odoo>
