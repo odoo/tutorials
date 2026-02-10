@@ -45,3 +45,5 @@ class TestModal(models.Model):
         required=True,
         copy=False,
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
