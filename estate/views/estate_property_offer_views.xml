@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="test_estate_property_offer_statbutton_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_ids', '=', active_id)]</field>
+    </record>
+
+    <record id="test_estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers Registered" editable="bottom" decoration-danger="status=='refused'" decoration-success="status=='accepted'">
+                <field name="partner_id" string="Proposed By"/>
+                <field name="price" string="Price"/>
+                <field name="date_deadline" string="Deadline"/>
+                <field name="validity" string="Validity (days)"/>
+                <field name="property_state" column_invisible="True"/>
+                <button title="accept" name="accept_offer_action"  type="object" icon="oi-plus" invisible="status or property_state in ['sold', 'cancelled', 'offer_accepted']"/>
+                <button title="refuse" name="refuse_offer_action" type="object" icon="oi-minus" invisible="status or property_state in ['sold', 'cancelled', 'offer_accepted']"/>
+                <field name="status" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="test_estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer Form">
+                <sheet>
+                    <group>
+                        <field name="price" string="Price"/>
+                        <field name="validity" string="Validity (days)"/>
+                        <field name="date_deadline" string="Deadline"/>
+                        <field name="partner_id" string="Partner"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

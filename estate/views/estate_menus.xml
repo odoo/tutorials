@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<odoo>
+    <!-- Real Estate Main Menu -->
+    <menuitem id="test_estate_root_menu" name="Real Estate">
+        <!-- Advertisements -->
+        <menuitem id="test_estate_first_level_menu" name="Advertisements">
+            <menuitem id="test_estate_model_menu_action" action="test_estate_model_action"/>
+        </menuitem>
+        <!-- Real Estate: Type of property + Tags -->
+        <menuitem id="test_property_type_first_level_menu" name="Settings">
+            <menuitem id="test_property_type_menu_action" action="test_estate_property_type_action"/>
+            <menuitem id="test_property_tag_menu_action" action="test_estate_property_tag_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
