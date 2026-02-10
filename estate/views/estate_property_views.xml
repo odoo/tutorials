@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- List View -->
-    <record id="estate_property_view_list" model="ir.ui.view">
+    <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name" string="Title" />
+                <field name="property_type_id"/>
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" />
+                <field name="tag_ids"/>
             </list>
         </field>
     </record>
 
     <!-- Form View -->
-    <record id="estate_property_view_form" model="ir.ui.view">
+    <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                     <group>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Title"/>
+                        </h1>
+                    </div>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <group>
                         <group>
-                            <field name="name" string="Title"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -37,22 +45,37 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                        <group>
                             <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" string="Living Area (sqm)" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" string="Living Area (sqm)" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
+                                </group>
+                                <group>
+                                    <field name="active"/>
+                                    <field name="state"/>
+                                </group>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
                             <group>
-                                <field name="active"/>
-                                <field name="state"/>
+                                <field name="user_id"/>
+                                <field name="buyer_id"/>
                             </group>
-                        </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -61,12 +84,13 @@
     </record>
     
     <!-- Search View -->
-    <record id="estate_property_search_view" model="ir.ui.view">
+    <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Property Search">
                 <field name="name" string="Title"/>
+                <field name="property_type_id"/>
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
@@ -80,7 +104,7 @@
     </record>
 
     <!-- Action -->
-    <record id="estate_property_action" model="ir.actions.act_window">
+    <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
