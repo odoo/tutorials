@@ -2,13 +2,13 @@ from odoo import models, fields
 from dateutil.relativedelta import relativedelta
 
 
-class RealEstateProperty(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property model"
 
     name = fields.Char("Title", required=True)
     description = fields.Text("Description", help="write the desc of this prop")
-    postcode = fields.Char("Post Code", help="address postal code")
+    postcode = fields.Char("Postcode", help="address postal code")
     date_availability = fields.Date(
         "Available From",
         default=lambda self: fields.Date.today() + relativedelta(months=3),
@@ -30,7 +30,7 @@ class RealEstateProperty(models.Model):
             ("west", "West"),
         ],
     )
-    active = fields.Boolean("active", default=False)
+    active = fields.Boolean("active", default=True)
     state = fields.Selection(
         string="Status",
         selection=[
@@ -43,4 +43,9 @@ class RealEstateProperty(models.Model):
         required=True,
         default="new",
         copy=False,
+    )
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_tag_ids = fields.Many2many(
+        "estate.property.tag", "estate_propery_tags_relation", string="Tags"
     )
