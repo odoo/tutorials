@@ -41,7 +41,6 @@
                     id="property_mail_send_primary"
                     name="action_sold_mail_send"
                     type="object"
-                    context="{'validate_analytic': True, 'check_document_layout': True}"
                     class="btn-primary"
                     data-hotkey="g"
                     />
@@ -139,13 +138,14 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                 <field name="facades"/>
-                <field name="total_area"/>
+                <field name="total_area" filter_domain="[('total_area','>=',self)]"/>
                 <field name="property_type"/>
                 <field name="state"/>
                 <separator/>
                 <filter string="property type" name="property_type" domain="[('property_type', '=', 'house')]"/>
                 <filter string="Available" name="active" domain="[('state', 'in', ['new', 'offer_accepted'])]"/>
                 <filter string="Archive" name="archive" domain="[('active', '=', 'False')]"/>
+                 <filter string="Large Area" name="large_area" domain="[('total_area', '>=', 150)]"/>
                 <filter string="postcode" name="postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>

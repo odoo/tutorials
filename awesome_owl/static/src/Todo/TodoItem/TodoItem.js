@@ -16,7 +16,7 @@ export class TodoItem extends Component {
     };
 
     onChange() {
-        this.props.toggleTodo(this.props.todo.id)
+        this.props.toggleTodo?.(this.props.todo.id)
     }
 
     deleteTodo() {

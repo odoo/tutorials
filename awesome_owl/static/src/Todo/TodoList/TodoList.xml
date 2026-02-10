@@ -6,8 +6,8 @@
             <div class="m-2 p-3 border d-inline-block bg-secondary">
                 <input type="text" placeholder="Add a todo" t-on-keyup="addTodo" t-ref="input"/>
                 <div class="mt-2">
-                    <t t-foreach="todos" t-as="i" t-key="i.id">
-                        <TodoItem todo="i" toggleTodo.bind="toggleState" removeTodo.bind="deleteTodo"/>
+                    <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                        <TodoItem todo="todo" toggleTodo.bind="toggleState" removeTodo.bind="deleteTodo"/>
                     </t>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import { Component, useState, auto, useEffect } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "../TodoItem/TodoItem";
 import { useAutofocus } from "../../utils"
 
@@ -28,7 +28,7 @@ export class TodoList extends Component {
     }
 
     addTodo(ev) {
-        if (ev.keyCode === 13 && ev.target.value != "") {
+        if (ev.key === "Enter" && ev.target.value != "") {
             this.todos.push({
                 id: this.nextId++,
                 description: ev.target.value,

@@ -7,7 +7,7 @@ export class Card extends Component {
         title: { type: String },
         slots: {
             type: Object,
-        //     shape: { default: true },
+            shape: { default: true },
          }
     };
 

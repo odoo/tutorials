@@ -55,7 +55,7 @@ class EstateProperty(models.Model):
     maintenance_request_ids = fields.One2many(
         'estate.property.maintenance.request', 'property_id'
     )
-    total_area = fields.Float(compute='_compute_total_area')
+    total_area = fields.Float(compute='_compute_total_area', search='_search_upper_total_area')
     best_price = fields.Float(compute='_compute_best_price')
     total_maintenance_cost = fields.Float(compute='_compute_total_maintenance_cost')
     _chek_expected_price = models.Constraint(
@@ -88,8 +88,11 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("cancelled property cannot be sold")
-            else:
-                record.state = 'sold'
+
+            if not record.offer_ids:
+                raise ValidationError("No offer avilable so property cannot be sold")
+            
+            record.state = 'sold'
         return True
 
     def action_property_cancel(self):
@@ -107,6 +110,23 @@ class EstateProperty(models.Model):
             )
             best_price_record.action_accept()
         return True
+
+    def _search_upper_total_area(self, operator, value):
+        
+        if hasattr(value, '__iter__') and not isinstance(value, (str)):
+            value = next(iter(value)) if value else 0.0
+        else:
+            value = value
+        actual_value = float(value)
+
+        if operator == '>=':
+            records = self.search([]).filtered(lambda x: x.total_area >= actual_value)
+        elif operator == '<=':
+            records = self.search([]).filtered(lambda x: x.total_area <= actual_value)
+        else:
+            records = self.search([]).filtered(lambda x: x.total_area == actual_value)
+
+        return [('id', 'in', records.ids)]
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
@@ -156,16 +176,11 @@ class EstateProperty(models.Model):
         ctx = {
             'default_model': 'estate.property',
             'default_res_ids': self.ids,
-            'default_composition_mode': 'comment',
             'default_template_id': template.id if template else False,
             'default_partner_ids': [
                 self.buyer_id.id,
                 self.salesman_id.partner_id.id
             ],
-            'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
-            'email_notification_allow_footer': True,
-            'hide_mail_template_management_options': True,
-            'proforma': self.env.context.get('proforma', False),
         }
         action = {
             'name': _('Send'),
