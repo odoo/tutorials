@@ -13,7 +13,7 @@
         <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="form_view_hai">
                 <sheet>
                     <group>
                         <field name="name" />

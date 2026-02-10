@@ -82,9 +82,8 @@
                 <filter string="Available" name="available"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <separator />
-                <group>
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
-                </group>
+                <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}" />
+                <filter string="State" name="group_by_state" context="{'group_by':'state'}" />
             </search>
         </field>
     </record>
@@ -92,5 +91,9 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available':1}</field>
+        <!-- default group by -->
+        <!-- <field
+        name="context">{'search_default_available':1,'search_default_group_by_postcode':1}</field> -->
     </record>
 </odoo>

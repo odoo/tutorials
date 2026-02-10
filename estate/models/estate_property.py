@@ -1,5 +1,5 @@
 from odoo import fields, models
-from datetime import date
+from datetime import date, timedelta
 
 
 class EstateProperty(models.Model):
@@ -10,7 +10,9 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Post Code")
     date_availability = fields.Date(
-        string="Availability From", default=date.today(), copy=False
+        string="Availability From",
+        default=lambda self: fields.Date.today() + timedelta(days=90),
+        copy=False,
     )
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
