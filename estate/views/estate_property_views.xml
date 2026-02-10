@@ -43,6 +43,7 @@
                     <group>
                         <group>
                             <field name="postcode"/>
+                            <field name="property_type_id"/>
                             <field name="date_availability"/>
                         </group>
 
@@ -57,6 +58,10 @@
                             <group>
                                 <field name="description"/>
                             </group>
+                            <group>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </group>
+
 
                             <group>
                                 <field name="bedrooms"/>
@@ -68,7 +73,28 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Sales">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="user_id"/>
+                            </group>
+                        </page>
                     </notebook>
+
+                
+
+                    
+
+
 
                 </sheet>
             </form>
