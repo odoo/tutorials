@@ -1,28 +1,23 @@
 from datetime import timedelta
 from odoo import fields, models
 
+
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-
-    
-
     date_availability = fields.Date(
         default=lambda self: fields.Date.today() + timedelta(days=90),
         copy=False,
     )
-
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
-
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
@@ -34,9 +29,7 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ]
     )
-
     active = fields.Boolean(default=True)
-
     state = fields.Selection(
         [
             ("new", "New"),
@@ -49,35 +42,24 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
     )
-    
     property_type_id = fields.Many2one(
-        'estate.property.type',
+        "estate.property.type",
         string="Property Type",
     )
-
-
-    
     buyer_id = fields.Many2one(
-        'res.partner',
+        "res.partner",
         string="Buyer",
         copy=False,
         readonly=True,
     )
-
     user_id = fields.Many2one(
-        'res.users',
+        "res.users",
         string="Salesperson",
         default=lambda self: self.env.user,
     )
-    tag_ids = fields.Many2many(
-        'estate.property.tag',
-        string='Tags'
-    )
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many(
-        'estate.property.offer',
-        'property_id',
+        "estate.property.offer",
+        "property_id",
         string="Offers",
     )
-
-
-    
