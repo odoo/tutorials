@@ -18,6 +18,48 @@
             </field>
         </record>
 
+        <record id="estate_property_form" model="ir.ui.view">
+            <field name="name">estate.property.form</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="postcode" />
+                            </group>
+                            <group>
+                                <field name="date_availability" />
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="expected_salary" string="Expected Price" />
+                            </group>
+                            <group>
+                                <field name="selling_price" string="Selling Price" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="Description" string="Description">
+                                <group name="name" string="Enter the required fields ">
+                                    <field name="description" string="Description"/>
+                                    <field name="bedrooms" string="Bedrooms"/>
+                                    <field name="living_area" string="Living Area" />
+                                    <field name="facades" string="Facades" />
+                                    <field name="garage" string="Garage"/>
+                                    <field name="garden" string="Garden "/>
+                                    <field name="garden_area" string="Garden Area"/>
+                                    <field name="garden_orientation" string="Gardem Orientation"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
         <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
