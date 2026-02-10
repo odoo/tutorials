@@ -6,6 +6,18 @@ class EstateProperty(models.Model):
     _name = "estate.estate.property"
     _description = "Real Estate Property Module Tutorial"
     _order = "id desc"
+
+    ## SQL Constraints Section ##
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price should be a positive number'
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price should be a positive number'
+    )
+
     name = fields.Char(
         "Property Name",
         required=True,
@@ -23,33 +35,32 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         "Date Availability",
         copy=False,
-        help="Enter the date at which the property is available. By default set to 2 weeks",
-        default=fields.Date.today() + datetime.timedelta(weeks=12)    # Equivalent to 3 months
+        help="Enter the date at which the property is available. By default set to 3 months",
+        default=lambda _: fields.Date.today() + datetime.timedelta(weeks=12)    # Equivalent to 3 months
     )
     expected_price = fields.Float(
         "Expected Price",
         required=True,
-        help="Enter the expected price for the property. This field is required."
+        help="The expected price for the property."
     )
     selling_price = fields.Float(
         "Selling Price",
         readonly=True,
         copy=False,
         default=0.0,
-        help="This field is readonly. It should be calculated automatically."
     )
     bedrooms = fields.Integer(
         "Nb Bedrooms",
         default=2,
-        help="Enter the number of bedrooms that the property has. By default set to 2."
+        help="The number of bedrooms that the property has. By default set to 2."
     )
     living_area = fields.Integer(
         "Living Area",
-        help="Enter the number of square meters the living area has."
+        help="The number of square meters the living area has."
     )
     facades = fields.Integer(
         "Nb Facades",
-        help="Enter the number of facades the property has. Cannot be more that four."
+        help="The number of facades the property has. Cannot be more that four."
     )
     garage = fields.Boolean(
         "Garage",
@@ -131,17 +142,6 @@ class EstateProperty(models.Model):
         help="The best offer proposed so far"
     )
 
-    ## SQL Constaints Section ##
-
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected price should be a positive number'
-    )
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'The selling price should be a positive number'
-    )
-
     ## API Constraints Section ##
 
     @api.constrains("selling_price", "expected_price")
@@ -153,6 +153,10 @@ class EstateProperty(models.Model):
     ## Method Section ##
 
     def sold_property_action(self):
+
+        if not self.env.user.has_group('estate.group_system'):
+            exceptions.UserError("You do not have permission to perform this action!")
+
         for record in self:
             if record.state != "cancelled":
                 record.state = "sold"

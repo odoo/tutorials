@@ -80,4 +80,4 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.UserError("The offer price cannot be lower than price of another offer!")
         property = self.env["estate.estate.property"].browse(vals[0]["property_id"])
         property.state = "offer_received"
-        return super(EstatePropertyOffer, self).create(vals)
+        return super().create(vals)
