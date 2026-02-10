@@ -7,7 +7,7 @@
                 <button class="btn-primary btn" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-         <div class="d-flex flex-wrap">
+         <div class="d-flex flex-wrap" t-if="statistics.isReady">
                 <DashboardItem>
                     Average amount of t-shirt by order this month
                     <div class="fs-1 fw-bold text-success text-center">
@@ -37,6 +37,10 @@
                     <div class="fs-1 fw-bold text-success text-center">
                         <t t-esc="statistics.total_amount"/>
                     </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    Shirt orders by size
+                    <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
                 </DashboardItem>
             </div>
         </Layout>
