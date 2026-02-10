@@ -2,7 +2,7 @@
     "name": "Estate",
     "application": True,
     "description": "Specific Real Estate Module",
-    "depends": ["base", "crm"],
+    "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",

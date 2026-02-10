@@ -1,5 +1,5 @@
 from odoo import fields, models
-from datetime import date, timedelta
+from datetime import timedelta
 
 
 class EstateProperty(models.Model):
