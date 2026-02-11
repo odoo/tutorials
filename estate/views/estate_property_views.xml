@@ -23,7 +23,6 @@
         </field>
     </record>
 
-
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate_property_list</field>
         <field name="model">estate.property</field>
@@ -41,6 +40,7 @@
             </list>
         </field>
     </record>
+
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate_property_form</field>
         <field name="model">estate.property</field>
@@ -89,6 +89,17 @@
                                     <field name="garage" />
                                     <field name="garden_area" />
                                 </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+
+                            <field name="offer_ids" widget="one2many" editable="top" />
+
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
                             </group>
                         </page>
                     </notebook>

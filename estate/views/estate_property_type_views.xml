@@ -11,6 +11,7 @@
             </list>
         </field>
     </record>
+
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name='name'>estate_property_type_form</field>
         <field name='model'>estate.property.type</field>
