@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
@@ -15,11 +16,15 @@
             </list>
         </field>
     </record>
+
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable':'1'}" />
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -36,6 +41,7 @@
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="best_offer" />
                         </group>
                     </group>
                     <notebook>
@@ -49,7 +55,7 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                <field name="state" />
+                                <field name="total_area" readonly="True" />
                             </group>
                         </page>
                         <page string="Offers">
@@ -66,6 +72,7 @@
             </form>
         </field>
     </record>
+
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -81,12 +88,22 @@
                 <separator />
                 <filter string="Available" name="available"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+                <filter string="cozy" name="filter_cozy" domain="[('tag_ids.name','like','cozy')]" />
+                <filter string="Luxury" name="filter_luxury"
+                    domain="['|','&amp;',('expected_price','&gt;',1500000), ('bedrooms','&gt;',3),'!',('tag_ids', '=', 'old')]" />
                 <separator />
+                <filter string="More Than 2 Bedroom" name="more_than_2bedroom"
+                    domain="[('bedrooms','&gt;','2')]" />
+                <filter string="Accepted" name="filter_accepted" domain="[('state','=','accepted')]" />
+                <separator />
+                <filter string="Bedrooms" name="group_by_bedrooms" context="{'group_by':'bedrooms'}" />
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}" />
+                <separator />
                 <filter string="State" name="group_by_state" context="{'group_by':'state'}" />
             </search>
         </field>
     </record>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
@@ -96,4 +113,5 @@
         <!-- <field
         name="context">{'search_default_available':1,'search_default_group_by_postcode':1}</field> -->
     </record>
+
 </odoo>
