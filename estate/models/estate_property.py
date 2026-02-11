@@ -5,7 +5,7 @@ from odoo import fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "estate property definition"
+    _description = "estate property used to buy and sell houses"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.context_today(self) + relativedelta(months=3),
         copy=False,
     )
-    expected_salary = fields.Float(required=True)
+    expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(
         default=2,
@@ -34,11 +34,11 @@ class EstateProperty(models.Model):
     )
     state = fields.Selection(
         selection=[
-            ("New", "New"),
-            ("Offer Accepted", "Offer Accepted"),
-            ("Offer Received", "Offer Received"),
-            ("Sold", "Sold"),
-            ("Cancelled", "Cancelled"),
+            ("new", "New"),
+            ("offer_accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         string="State",
     )

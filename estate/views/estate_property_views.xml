@@ -2,23 +2,23 @@
 <odoo>
     <data>
 
-        <record id="estate_property_tree" model="ir.ui.view">
-            <field name="name">estate.property.tree</field>
+        <record id="estate_property_view_list" model="ir.ui.view">
+            <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="name" string="Title" />
+                    <field name="name" string="Title"/>
                     <field name="postcode" />
                     <field name="bedrooms" />
                     <field name="living_area" />
-                    <field name="expected_salary" />
+                    <field name="expected_price" />
                     <field name="selling_price" />
                     <field name="date_availability" />
                 </list>
             </field>
         </record>
 
-        <record id="estate_property_form" model="ir.ui.view">
+        <record id="estate_property_view_form" model="ir.ui.view">
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
@@ -34,7 +34,7 @@
                         </group>
                         <group>
                             <group>
-                                <field name="expected_salary" string="Expected Price" />
+                                <field name="expected_price" string="Expected Price" />
                             </group>
                             <group>
                                 <field name="selling_price" string="Selling Price" />
@@ -60,19 +60,17 @@
             </field>
         </record>
 
-        <record id="estate.property_view_search" model="ir.ui.view">
+        <record id="estate_property_view_search" model="ir.ui.view">
             <field name="name">estate.property.view.search</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name" string="Title" />
-                    <field name="postcode" string="Postcode"/>
-                    <field name="expected_salary" string="Expected Price" />
+                    <field name="name" string="Title"/>
+                    <field name="postcode" string="Postcode" />
+                    <field name="expected_price" string="Expected Price" />
                     <field name="bedrooms" string="Bedrooms" />
                     <field name="living_area" string="Living Area" />
                 </search>
-
-
             </field>
         </record>
 
