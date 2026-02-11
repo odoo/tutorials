@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data >
+        <record id="email_template_estate" model="mail.template">
+            <field name="name">Estate: Send Mail</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">Property Sold Confirmation</field>
+            <field name="email_from">test</field>
+            <field name="partner_to">{{ object.buyer_id.id }},{{ object.seller_id.partner_id.id }}</field>
+            <field name="use_default_to" eval="False"></field>
+            <field name="description">Estate Property</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <t t-set="doc_name" t-value="object.name"/>
+        Hello,
+                        <br/>
+                        <br/>
+        Your <t t-out="doc_name or ''">Property</t>
+                        <span style="font-weight: bold;" t-out="object.name or ''"></span>
+        has been sold.
+                        <br/>
+        Selling Price: <span style="font-weight: bold;" t-out="object.selling_price or ''"/>
+                    <br/>
+        Buyer: <span t-out="object.buyer_id.name"></span>
+                    <br />
+                    <br />
+                    <br/>
+        Do not hesitate to contact us if you have any questions.
+                </p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</data>
+</odoo>

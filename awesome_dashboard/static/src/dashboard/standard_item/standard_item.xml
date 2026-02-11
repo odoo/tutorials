@@ -1,0 +1,10 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.StandardItem">
+        <div class="p-3 border bg-white text-center">
+            <div><t t-esc="props.title"/></div>
+            <h2 class="text-success">
+                <t t-esc="props.value"/>
+            </h2>
+        </div>
+    </t>
+</templates>

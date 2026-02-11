@@ -1,0 +1,192 @@
+from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+import operator as dp
+
+
+class EstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = 'Estate Property Planning'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    # _primary_email = 'email_from'
+    # _mailing_enabled = True
+    _order = 'id desc'  # defaultvalue = asc
+
+    name = fields.Char(required=True, default="Unknown")
+    description = fields.Text()
+    postcode = fields.Integer()
+    date_availability = fields.Date(
+        "Available From", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
+    )
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        selection=[
+            ('north', "North"),
+            ('west', "West"),
+            ('east', "East"),
+            ('south', "South"),
+        ],
+        help="Direction for the garden"
+    )
+    active = fields.Boolean(default=True)
+    state = fields.Selection(
+        selection=[
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
+        ],
+        string="Status",
+        default='new',
+    )
+    property_type_id = fields.Many2one(
+        'estate.property.type', string="Property Type")
+    seller_id = fields.Many2one(
+        'res.users', string="Salesman", default=lambda self: self.env.user
+    )
+    buyer_id = fields.Many2one(
+        'res.partner', string="Partner/Buyer", copy=False)
+    tags_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    total_area = fields.Float(
+        compute='_compute_total_area', search='_search_total_area')
+    best_price = fields.Float(
+        "Best offer", compute='_compute_best_price', store=True)
+    property_maintenance_requests = fields.One2many(
+        'estate.property.maintenance.requests', 'property_id')
+    total_maintenance_cost = fields.Float(
+        compute='_compute_total_maintenance_cost', string="Total Maintenance Cost")
+    is_favorite = fields.Boolean(string="Favorite")
+    # priority = fields.Integer(string='Sequence', default=16, required=True)
+
+    # SQL Constraint
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)', "The expected price must be strictly positive")
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)', "The selling price must be  positive")
+
+    # Python Constriant
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price(self):
+        if self.buyer_id and self.selling_price < (self.expected_price * 0.9):
+            raise ValidationError(
+                "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
+
+    # Compute Methods
+    # Depends Decorator
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    def _search_total_area(self, operator, value):
+        # breakpoint()
+        ops = {
+            '=': dp.eq,
+            '!=': dp.ne,
+            '>': dp.gt,
+            '>=': dp.ge,
+            '<': dp.lt,
+            '<=': dp.le,
+        }
+
+        if operator not in ops:
+            return NotImplemented
+        records = self.search([])
+        matched = records.filtered(
+            lambda r: ops[operator](r.total_area, value)
+        )
+        return [('id', 'in', matched.ids)]
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        result = dict(self.env['estate.property.offer']._read_group(
+            [('property_id', 'in', self.ids)],
+            ['property_id'],
+            ['price:max']
+        ))
+        for record in self:
+            record.best_price = result.get(record, 0)
+
+    @api.depends('property_maintenance_requests.cost')
+    def _compute_total_maintenance_cost(self):
+        result = dict(self.env['estate.property.maintenance.requests']._read_group(
+            [('property_id', 'in', self.ids)],
+            ['property_id'],
+            ['cost:sum']
+        ))
+        for record in self:
+            record.total_maintenance_cost = result.get(record, 0)
+
+    # Onchange Decorator
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+
+    # Action Methods
+    def action_sold(self):
+        if 'cancelled' in self.mapped('state'):
+            raise UserError("Cancelled properties cannot be sold.")
+        else:
+            for record in self:
+                if record.property_maintenance_requests.status != 'done':
+                    raise UserError(
+                        "Property cannot be sold if there is any maintenance request not done.")
+                if not record.offer_ids:
+                    raise UserError(
+                        "Property cannot be sold without any offer.")
+        self.state = 'sold'
+        template = self.env.ref("estate.email_template_estate")
+        return {
+            'name': _('Send Email'),
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {
+                'default_model': self._name,
+                'default_res_ids': self.ids,
+                'default_composition_mode': 'comment',
+                'default_use_template': True,
+                'default_template_id': template.id,
+                'default_partner_id': [self.buyer_id.id, self.seller_id.partner_id.id],
+            }
+        }
+
+    def action_cancel(self):
+        if 'sold' in self.mapped('state'):
+            raise UserError("Sold properties cannot be cancelled.")
+        return self.write({'state': 'cancelled'})
+
+    def accept_offer(self):
+        for rec in self:
+            best_offer = self.env['estate.property.offer'].search([
+                ('property_id', '=', rec.id),
+                ('price', '=', rec.best_price)
+            ])
+            best_offer.status = 'accepted'
+            best_offer.action_accept()
+
+    # Ondelete Decorator
+    @api.ondelete(at_uninstall=False)
+    def _check_state(self):
+        count = self.search_count([
+            ('id', 'in', self.ids),
+            ('state', 'in', ('offer_received', 'offer_accepted'))
+        ])
+        if count:
+            raise UserError("Only new and canceled properties can be deleted.")

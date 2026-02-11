@@ -2,9 +2,35 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="text-danger">
+            HELLO U
+            <br/>
         </div>
-    </t>
+        <br/>
+        <br/>
+        <Counter onChange="updateSum"/>
+        <Counter onChange="updateSum"/>
+        <br/>
+        <br/>
+        <Card title="'MEE'" content="'SEE HERE'"/>
 
+        <p>Sum: <t t-esc="state.sum"/>
+        </p>
+
+        <h4>Card Area Here!!!</h4>
+        <Card title="'DHUDEEP'" content="'HELLO HELLO'"/>
+        <Card title="'CAR'" content="'Welcome home a brand new...'"/>
+        <Card title="'LOOK'" content="'Why did u see me'"/>
+        <br/>
+        <Card title="'WITH TEXT'" content="this.textContent"/>
+        <Card title="'WITH HTML'" content="this.htmlContent"/>
+        <Card title="'SLOT CARD'">
+            <Counter onChange="updateSum"/>
+        </Card>
+        <Card title="'TOGGLE'" collapsible="true">
+            <TodoList/>
+        </Card>
+        <TodoList/>
+
+    </t>
 </templates>
