@@ -1,9 +1,9 @@
-import { Component, onWillStart, useRef, onMounted, onWillUnmount } from "@odoo/owl";
+import { Component, onWillStart, useRef, onMounted, onWillUnmount, useEffect } from "@odoo/owl";
 import { loadJS } from '@web/core/assets';
 
 
 export class PieChart extends Component {
-    static template = "dashboard.pieChat";
+    static template = "awesome_dashborad.PieChat";
 
     static props = {
         data: { type: Object },
@@ -19,9 +19,17 @@ export class PieChart extends Component {
         onWillUnmount(() => {
             this.chart.destroy();
         });
+
+        useEffect(
+            () => {
+                this.renderChart();
+            },
+            () => [this.props.data]
+        );
     }
 
     renderChart() {
+        this.chart?.destroy();
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);
         this.chart = new Chart(this.canvas.el, {

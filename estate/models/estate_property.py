@@ -78,12 +78,17 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offer_ids.price', 'offer_ids.property_id')
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        best_price = dict(self.env['estate.property.offer']._read_group(domain=[
-                          ('property_id', 'in', self.ids)], aggregates=['price:max'], groupby=['property_id']))
         for record in self:
-            record.best_price = best_price.get(record, 0.0)
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = None
+        # best_price = dict(self.env['estate.property.offer']._read_group(domain=[
+        #                   ('property_id', 'in', self.ids)], aggregates=['price:max'], groupby=['property_id']))
+        # for record in self:
+        #     record.best_price = best_price.get(record, 0.0)
 
     def _search_best_price(self, operator, value):
         if operator in ('in', 'not in'):
@@ -150,10 +155,13 @@ class EstateProperty(models.Model):
 
     @api.depends('property_maintainance_ids.cost', 'property_maintainance_ids.property_id')
     def _compute_total_maintenance_cost(self):
-        maintenace_cost = dict(self.env['estate.property.maintenance']._read_group(domain=[(
-            'property_id', 'in', self.ids)], aggregates=['cost:sum'], groupby=['property_id']))
         for record in self:
-            record.total_maintenance_cost = maintenace_cost.get(record, 0.0)
+            record.total_maintenance_cost = sum(
+                record.property_maintainance_ids.mapped('cost')) or 0
+        # maintenace_cost = dict(self.env['estate.property.maintenance']._read_group(domain=[(
+        #     'property_id', 'in', self.ids)], aggregates=['cost:sum'], groupby=['property_id']))
+        # for record in self:
+        #     record.total_maintenance_cost = maintenace_cost.get(record, 0.0)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_property(self):

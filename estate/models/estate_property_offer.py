@@ -63,11 +63,11 @@ class PropertyOffer(models.Model):
             self.property_id.state = 'offer_received'
         self.status = 'refused'
 
-    @api.ondelete(at_uninstall=False)
-    def _ondelete_offer(self):
-        accepted_records = self.filtered(lambda a: a.status == 'accepted')
-        if accepted_records:
-            raise UserError(_("Accepted offer cannot be deleted."))
+    # @api.ondelete(at_uninstall=False)
+    # def _ondelete_offer(self):
+    #     accepted_records = self.filtered(lambda a: a.status == 'accepted')
+    #     if accepted_records:
+    #         raise UserError(_("Accepted offer cannot be deleted."))
 
     @api.model
     def create(self, vals):

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="dashborad.dashboardItem">
-        <!-- <div class="card d-inline-block m-2" t-attf-style="width:{{ (props.size || 1)*18 }}rem;"> -->
-        <div class="card d-inline-block m-3">
+    <t t-name="awesome_dashborad.DashboardItem">
+        <!-- <div class="card m-2" t-attf-style="width:{{ (props.size || 1)*18 }}rem;"> -->
+        <div class="card m-2">
             <div class="card-body text-center">
                 <t t-slot="default"/>
             </div>
