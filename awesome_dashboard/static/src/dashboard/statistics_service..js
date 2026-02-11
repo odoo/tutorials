@@ -4,7 +4,6 @@ import { reactive } from "@odoo/owl";
 
 
 export const statisticsService = {
-//  async: ["loadStatistics"],
   start(env) {
         const statistics = reactive({
               isReady: false,
@@ -15,10 +14,10 @@ export const statisticsService = {
           Object.assign(statistics, newData, { isReady: true });
      }
      loadData();
-     setInterval(loadData, 10 * 60 * 1000);
+     setInterval(loadData,10000);
 
      return statistics;
-     
+
   },
 };
 

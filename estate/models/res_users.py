@@ -16,8 +16,3 @@ class res_users(models.Model):
         ))
         for record in self:
             record.unsold_cost = result.get(record, 0.0)
-
-# Task 2: Compute total unsold value on res.partner:
-# Sum of expected_price
-# From estate.property
-# State ≠ sold

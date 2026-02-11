@@ -12,6 +12,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name='sequence' widget='handle'/>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>

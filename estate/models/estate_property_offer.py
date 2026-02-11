@@ -72,20 +72,35 @@ class EstatePropertyOffer(models.Model):
         if not property_id:
             return super().create(vals_list)
 
-        max_new_price = max(vals.get('price', 0) for vals in vals_list)
-        result = self.env['estate.property.offer']._read_group(
-            [('property_id', '=', property_id)],
-            [],
-            ['price:max']
-        )
-        # result = [(max_price_from_db),]
-        # result[0] = (max_price_form_db,)
-        # result[0][0] = max_price_from_db
-        max_db_price = result[0][0] if result else 0.0
-        if max_new_price <= max_db_price:
+        # max_new_price = max(vals.get('price', 0) for vals in vals_list)
+        max_new_price = 0
+        for vals in vals_list:
+            price = vals.get('price', 0)
+            if price > max_new_price:
+                max_new_price = price
+
+        max_dp_price = 0
+        for offer in property_id.offer_ids:
+            if offer.price > max_dp_price:
+                max_dp_price = offer.price
+
+        if max_new_price <= max_dp_price:
             raise UserError(
-                "Offer price should be higher than the existing one!"
-            )
+                'Offer price should be greater then the existing one!')
+        # result = self.env['estate.property.offer']._read_group(
+        #     [('property_id', '=', property_id)],
+        #     [],
+        #     ['price:max']
+        # )
+        # # result = [(max_price_from_db),]
+        # # result[0] = (max_price_form_db,)
+        # # result[0][0] = max_price_from_db
+        # max_db_price = result[0][0] if result else 0.0
+
+        # if max_new_price <= max_db_price:
+        #     raise UserError(
+        #         "Offer price should be higher than the existing one!"
+        #     )
         self.env['estate.property'].browse(
             property_id).state = 'offer_received'
         return super().create(vals_list)

@@ -17,8 +17,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + relativedelta(months=3),
         copy=False
     )
-    sequence = fields.Integer('Sequence', default=1,
-                              help="Used to order Property Type")
+    sequence = fields.Integer('Sequence', help="Used to order Property Type")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True)
     bedrooms = fields.Integer(default=2)
@@ -37,8 +36,7 @@ class EstateProperty(models.Model):
         ('3', 'Urgent'),
         ('4', 'Very Urgent'),
     ], default='0')
-    partner_id = fields.Many2one(
-        'res.users', string="Salesperson", default=lambda self: self.env.user)
+    partner_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner')
     property_type_id = fields.Many2one('estate.property.type')
     pop_id = fields.Integer('estate.property.type',
@@ -69,7 +67,7 @@ class EstateProperty(models.Model):
         required=True,
         help="This field tells us the state of the property.",
     )
-    total_area = fields.Integer(search='_search_total_area',
+    total_area = fields.Integer(
         compute='_compute_total_area')
     total_cost = fields.Integer(compute='_compute_total_cost')
     best_price = fields.Integer(
@@ -169,7 +167,6 @@ class EstateProperty(models.Model):
             'context': {
                 'default_model': 'estate.property',
                 'default_res_ids': [self.id],
-                'default_use_template': bool(template),
                 'default_partner_ids': [
                     self.buyer_id.id,
                     self.partner_id.partner_id.id,
@@ -178,11 +175,3 @@ class EstateProperty(models.Model):
                 'default_composition_mode': 'comment',
             }
         }
-
-    def _search_total_area(self, operator, value):
-            # WARNING: Python-level filtering
-            records = self.search([]).filtered(
-                lambda r: eval(f"r.total_area {operator} value")
-            )
-            return [('id', 'in', records.ids)]
-
