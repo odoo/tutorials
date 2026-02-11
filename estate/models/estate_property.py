@@ -32,7 +32,6 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
-
     state = fields.Selection(
         selection=[
             ("New", "New"),
