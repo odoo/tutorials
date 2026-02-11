@@ -10,48 +10,47 @@
                 Leads
                 </button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
 
-            <t t-if="state.data">
+            <t t-if="stats.data">
                 <div class="d-flex flex-wrap gap-3 mt-3">
-
-                    <div class="card p-3" style="width: 18rem;">
-                        <div class="fw-bold">Number of new orders this month</div>
-                        <div class="display-6 text-success">
-                            <t t-esc="state.data.nb_new_orders"/>
-                        </div>
-                    </div>
-
-                    <div class="card p-3" style="width: 18rem;">
-                        <div class="fw-bold">Total amount of new orders this month</div>
-                        <div class="display-6 text-success">
-                            <t t-esc="state.data.total_amount"/>
-                        </div>
-                    </div>
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <t t-if="!ui.disabledItems.includes(item.id)">
+                            <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                <t t-set="itemProps" t-value="item.props ? item.props(stats,{openOrdersBySize: openOrdersBySize.bind(this)}) : { data: stats }"/>
+                                <t t-component="item.Component" t-props="itemProps"/>
+                            </div>
+                        </t>
+                    </t>
 
                     <div class="card p-3" style="width: 18rem;">
                         <div class="fw-bold">Average amount of t-shirt by order this month</div>
                         <div class="display-6 text-success">
-                            <t t-esc="state.data.average_quantity"/>
+                            <t t-esc="stats.data.average_quantity"/>
                         </div>
                     </div>
 
                     <div class="card p-3" style="width: 18rem;">
                         <div class="fw-bold">Number of cancelled orders this month</div>
                         <div class="display-6 text-success">
-                            <t t-esc="state.data.nb_cancelled_orders"/>
+                            <t t-esc="stats.data.nb_cancelled_orders"/>
                         </div>
                     </div>
 
                     <div class="card p-3" style="width: 18rem;">
                         <div class="fw-bold">Average time from 'new' to 'sent'/'cancelled'</div>
                         <div class="display-6 text-success">
-                            <t t-esc="state.data.average_time"/>
+                            <t t-esc="stats.data.average_time"/>
                         </div>
                     </div>
-                    <div class="card p-3 mt-3" style="width: 40rem;">
+                    <!-- <div class="card p-3 mt-3" style="width: 40rem;">
                         <div class="fw-bold mb-2">Shirt orders by size</div>
-                        <PieChart data="state.data.orders_by_size" size="260"/>
-                    </div>
+                        <PieChart data="stats.data.orders_by_size" size="260"/>
+                    </div> -->
 
                 </div>
             </t>
@@ -72,5 +71,20 @@
                 <button class="btn btn-primary" t-on-click="inc">Increase</button>
             </div>
         </Layout>
+    </t>
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration')">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 </templates>

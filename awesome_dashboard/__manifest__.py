@@ -23,8 +23,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_dashboard/static/src/dashboard_action.js',
-            "awesome_dashboard/static/src/dashboard_action.xml"
+            'awesome_dashboard/static/src/dashboard_loader.js',
         ],
 
         "awesome_dashboard.dashboard": [

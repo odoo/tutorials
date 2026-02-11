@@ -8,6 +8,9 @@ const statisticsService = {
     start() {
         const stats = reactive({ data: null });
 
+        // const loadStatistics = memoize(async () => rpc("/awesome_dashboard/statistics", {}));
+        // return { loadStatistics };
+
         const load = async () => {
             const result = await rpc("/awesome_dashboard/statistics", {});
             stats.data = result; // update in place
