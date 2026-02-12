@@ -1,0 +1,266 @@
+<odoo>
+
+    <record id="real_estate_view_list" model="ir.ui.view">
+        <field name="name">real.estate.view.list</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <list
+                    decoration-success="stage == 'offer_accepted'"
+                    decoration-bf="stage == 'offer_accepted'"
+                    decoration-muted="stage == 'sold'">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="expected_price"/>
+                <field name="selling_price"
+                />
+                <!--                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
+                <field name="tag_ids" widget="many2many_tags" optional="show"/>
+                <field name="best_price"/>
+                <field name="total_area"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="real_estate_view_form" model="ir.ui.view">
+        <field name="name">real.estate.view.form</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                            name="action_sold"
+                            type="object"
+                            string="Sold"
+                            class="btn-primary"
+                            invisible="stage in ('sold', 'cancelled')"
+                    />
+                    <button
+                            name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            class="btn-secondary"
+                            invisible="stage in ('sold', 'cancelled')"
+                    />
+                    <button
+                            name="action_best_offer"
+                            type="object"
+                            string="Best Offer"
+                            class="btn-primary"
+                            invisible="not stage == 'offer_received'"
+                    />
+                    <button name="action_print_sale_doc"
+                            string="Print"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not stage == 'sold'"/>
+                    <field name="stage" widget="statusbar"
+                           options="{'clickable': False}"
+                           statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="property_type_id" options="{'no_create_edit': True}"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="expected_price"/>
+                            <field name="best_price" readonly="1"/>
+                            <field name="salesperson_id" options="{'no_open' : True}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <group string="Property Features">
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                </group>
+                                <group string="Area Details">
+                                    <field name="living_area"/>
+                                    <field name="total_area"/>
+                                </group>
+                            </group>
+                            <group string="Interior Details">
+                                <field name="bedrooms"/>
+                                <field name="bathrooms"/>
+                                <field name="facades"/>
+                            </group>
+
+                        </page>
+
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" readonly="stage in ('offer_accepted', 'sold', 'cancelled')">
+                                    <list decoration-danger="status == 'refused'"
+                                          decoration-success="status == 'accepted'" editable="top">
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <button
+                                                name="action_accept"
+                                                type="object"
+                                                icon="fa-check"
+                                                title="accept"
+                                                invisible="status in ('accepted' ,'refused')"
+                                        />
+                                        <!--                                                groups="real_estate.group_real_estate_manager"-->
+
+                                        <button
+                                                name="action_refuse"
+                                                type="object"
+                                                icon="fa-times"
+                                                title="refused"
+                                                invisible="status in ('accepted' ,'refused')"
+                                        />
+                                        <!--                                                groups="real_estate.group_real_estate_manager"-->
+                                        <field name="status" readonly="1"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Maintenance Requests">
+                            <group>
+                                <field name="maintenance_request_ids">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="cost"/>
+                                        <!--                                         groups="real_estate.group_maintenance_staff"-->
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                                <field name="total_maintenance_cost"/>
+                                <!--                                 groups="real_estate.group_maintenance_staff"-->
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+                            <group string="Selling Info">
+                                <field name="selling_price" readonly="1"
+                                />
+                                <!--                                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
+                                <field name="buyer_id" readonly="1"/>
+                            </group>
+                            <group string="Project Tracking">
+                                <field name="project_id" readonly="1"/>
+<!--                                <field name="task_progress" widget="progressbar"/>-->
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="real_estate_view_search" model="ir.ui.view">
+        <field name="name">real.estate.view.search</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="best_price"/>
+                <field name="total_area"/>
+                <field name="living_area"
+                       filter_domain="[('living_area', '>=', self)]"/>
+                <field name="description"
+                       filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"/>
+                <filter
+                        string="Active"
+                        name="active_record"
+                        domain="[('active', '=', True)]"
+                />
+                <filter
+                        name="In_active_record"
+                        string="IN Active"
+                        domain="[('active', '=', False)]"
+                />
+                <filter
+                        string="Garden orientation"
+                        name="name"
+                        domain="['|',('garden_orientation', '=' , 'north'),
+                                ('garden_orientation', '=' , 'south')]"
+                />
+                <filter
+                        name="Best_Price"
+                        domain="[('best_price', '>', 100)]"/>
+                <group>
+                    <filter
+                            string="Orientation"
+                            name="group_by_garden_orientation"
+                            context="{'group_by': 'garden_orientation'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="real_estate_view_kanban" model="ir.ui.view">
+        <field name="name">real.estate.view.kanban</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="stage"
+                    default_order="expected_price desc"
+                    records_draggable="true"
+                    highlight_color="color">
+                <progressbar field="activity_state"
+                             colors='{"planned": "success", "today": "warning", "overdue": "danger"}'
+                             sum_field="expected_price"/>
+                <templates>
+                    <t t-name="card">
+                        <strong>
+                            <field name="name"/>
+                        </strong>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
+                        <div>
+                            <span class="text-muted">Expected:</span>
+                            <field name="expected_price"/>
+                        </div>
+                        <div>
+                            <t t-if="record.best_price.raw_value">
+                                <span class="text-muted">Best Offer:</span>
+                                <field name="best_price"/>
+                            </t>
+                        </div>
+                        <div>
+                            <t t-if="record.selling_price.raw_value != 'sold'">
+                                <span class="text-muted">Selling:</span>
+                                <field name="selling_price"
+                                />
+                                <!--                                 groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
+                            </t>
+                        </div>
+                        <footer>
+                            <field name="activity_ids" widget="kanban_activity"/>
+                            <field name="salesperson_id" widget="many2one_avatar_user" class="ms-auto"/>
+                        </footer>
+                    </t>
+                    <t t-name="menu">
+                        <a t-if="widget.deletable" type="delete" class="dropdown-item">Delete</a>
+                        <field name="color" widget="kanban_color_picker"/>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="real_estate_action_view" model="ir.actions.act_window">
+        <field name="name">Real Estate</field>
+        <field name="res_model">real.estate</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">
+            {
+            'search_default_active_record': 1,
+            }
+        </field>
+    </record>
+
+</odoo>

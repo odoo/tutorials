@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_property,property base,model_real_estate,base.group_user,1,1,1,1
+access_offer,offer base,model_real_estate_property_offer,base.group_user,1,1,1,1
+access_maintenance,maintenance base,model_real_estate_property_maintenance_request,base.group_user,1,1,1,1
+
+access_property_agent,property agent,model_real_estate,group_real_estate_agent,1,1,1,0
+access_property_manager,property manager,model_real_estate,group_real_estate_manager,1,1,1,1
+access_property_staff,property staff,model_real_estate,group_maintenance_staff,1,0,0,0
+
+real_estate_tag,real_estate_tag,model_real_estate_tag,base.group_user,1,1,1,1
+real_estate_property_type,real_estate_property_type,model_real_estate_property_type,base.group_user,1,1,1,1
+
+access_offer_agent,offer agent,model_real_estate_property_offer,group_real_estate_agent,1,1,1,0
+access_offer_manager,offer manager,model_real_estate_property_offer,group_real_estate_manager,1,1,1,1
+
+access_maintenance_manager,maintenance manager,model_real_estate_property_maintenance_request,group_real_estate_manager,1,0,0,0
+access_maintenance_staff,maintenance staff,model_real_estate_property_maintenance_request,group_maintenance_staff,1,1,1,0
+access_maintenance_agent,maintenance agent,model_real_estate_property_maintenance_request,group_real_estate_agent,1,0,0,0
+
+real_estate_property_investor,real_estate_property_investor,model_real_estate_property_investor,base.group_user,1,1,1,1

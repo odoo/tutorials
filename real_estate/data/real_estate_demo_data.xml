@@ -1,0 +1,87 @@
+<odoo>
+
+    <record id="real_estate_tag_01" model="real.estate.tag">
+        <field name="name">1 BHK</field>
+    </record>
+    <record id="real_estate_tag_02" model="real.estate.tag">
+        <field name="name">2 BHK</field>
+    </record>
+    <record id="real_estate_tag_03" model="real.estate.tag">
+        <field name="name">AVG</field>
+    </record>
+    <record id="real_estate_tag_04" model="real.estate.tag">
+        <field name="name">3 BHK</field>
+    </record>
+
+    <record id="real_estate_property_type_01" model="real.estate.property.type">
+        <field name="name">Home</field>
+    </record>
+    <record id="real_estate_property_type_02" model="real.estate.property.type">
+        <field name="name">Hostel</field>
+    </record>
+    <record id="real_estate_property_type_03" model="real.estate.property.type">
+        <field name="name">Flat</field>
+    </record>
+    <record id="real_estate_property_type_04" model="real.estate.property.type">
+        <field name="name">Ground</field>
+    </record>
+
+    <record id="real_estate_property_01" model="real.estate">
+        <field name="name">Test Property 1</field>
+        <field name="expected_price" eval="100"/>
+        <field name="stage">new</field>
+        <field name="tag_ids" eval="[Command.link(ref('real_estate.real_estate_tag_04'))]"/>
+    </record>
+    <record id="real_estate_property_02" model="real.estate">
+        <field name="name">Test Property 2</field>
+        <field name="expected_price" eval="100"/>
+        <field name="stage">offer_received</field>
+        <field name="tag_ids" eval="[Command.link(ref('real_estate.real_estate_tag_04'))]"/>
+    </record>
+    <record id="real_estate_property_03" model="real.estate">
+        <field name="name">Test Property 3</field>
+        <field name="expected_price" eval="100"/>
+        <field name="stage">offer_accepted</field>
+        <field name="property_type_id" ref="real_estate.real_estate_property_type_03"/>
+        <field name="tag_ids" eval="[Command.link(ref('real_estate.real_estate_tag_04'))]"/>
+    </record>
+<!--    <record id="real_estate_property_04" model="real.estate">-->
+<!--        <field name="name">Test Property 4</field>-->
+<!--        <field name="expected_price" eval="100"/>-->
+<!--        <field name="stage">sold</field>-->
+<!--        <field name="tag_ids" eval="[Command.link(ref('real_estate.real_estate_tag_04'))]"/>-->
+<!--    </record>-->
+    <record id="real_estate_property_05" model="real.estate">
+        <field name="name">Test Property 5</field>
+        <field name="expected_price" eval="100"/>
+        <field name="stage">cancelled</field>
+        <field name="tag_ids" eval="[Command.link(ref('real_estate.real_estate_tag_04'))]"/>
+    </record>
+
+    <record id="real_estate_property_offer_01" model="real.estate.property.offer">
+        <field name="price">100</field>
+        <field name="partner_id" ref="base.partner_admin"/>
+        <field name="property_id"  ref="real_estate.real_estate_property_05"/>
+    </record>
+        <record id="real_estate_property_offer_01" model="real.estate.property.offer">
+        <field name="price">100</field>
+        <field name="partner_id" ref="base.partner_admin"/>
+        <field name="property_id"  ref="real_estate.real_estate_property_03"/>
+    </record>
+        <record id="real_estate_property_offer_02" model="real.estate.property.offer">
+        <field name="price">100</field>
+        <field name="partner_id" ref="base.partner_admin"/>
+        <field name="property_id"  ref="real_estate.real_estate_property_03"/>
+    </record>
+        <record id="real_estate_property_offer_03" model="real.estate.property.offer">
+        <field name="price">100</field>
+        <field name="partner_id" ref="base.partner_admin"/>
+        <field name="property_id"  ref="real_estate.real_estate_property_02"/>
+    </record>
+        <record id="real_estate_property_offer_04" model="real.estate.property.offer">
+        <field name="price">100</field>
+        <field name="partner_id" ref="base.partner_admin"/>
+        <field name="property_id"  ref="real_estate.real_estate_property_01"/>
+    </record>
+
+</odoo>

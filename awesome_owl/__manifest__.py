@@ -22,7 +22,6 @@
     # any module necessary for this one to work correctly
     'depends': ['base', 'web'],
     'application': True,
-    'installable': True,
     'data': [
         'views/templates.xml',
     ],
@@ -35,9 +34,12 @@
             'web/static/lib/bootstrap/scss/_maps.scss',
             ('include', 'web._assets_bootstrap'),
             ('include', 'web._assets_core'),
-            'web/static/src/libs/fontawesome/css/font-awesome.css',
-            'awesome_owl/static/src/**/*',
+            # 'web/static/src/libs/fontawesome/css/font-awesome.css',
+            # 'awesome_owl/static/src/**/*',
+            'awesome_owl/static/src/**/*.js',
+            'awesome_owl/static/src/**/*.xml',
         ],
     },
+    "installable": True,
     'license': 'AGPL-3'
 }

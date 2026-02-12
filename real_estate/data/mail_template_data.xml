@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <record id="mail_template_data_real_estate" model="mail.template">
+            <field name="name">Real estate: Property Sale Acknowledgment</field>
+            <field name="model_id" ref="real_estate.model_real_estate"/>
+            <field name="subject">{{ object.name }}</field>
+            <field name="email_from">{{ object.buyer_id.email }}</field>
+            <field name="use_default_to" eval="True"/>
+            <field name="description">Automatically send an email to customers when a property sold</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear,
+                    <br/>
+                    Buyer name :
+                    <t t-out="object.buyer_id.name"/>
+                    Selling Price :
+                    <t t-out="object.selling_price"/>
+                    Sales Person :
+                    <t t-out="object.salesperson_id.name"/>
+                    Property Name :
+                    <t t-out="object.name"/>
+                    <br/>
+                    Thank you for contacting us. We appreciate your interest in our property.
+                    <br/>
+                    If you have any further questions or concerns in the meantime, please do not hesitate to let us
+                    know. We are here to help.
+                    <br/>
+                    <br/>
+                    Thank you for your patience.
+                    <br/>
+                    Best regards,
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>
