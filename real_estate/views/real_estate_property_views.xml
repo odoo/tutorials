@@ -151,7 +151,7 @@
                             </group>
                             <group string="Project Tracking">
                                 <field name="project_id" readonly="1"/>
-                                <field name="task_progress" widget="progressbar"/>
+<!--                                <field name="task_progress" widget="progressbar"/>-->
                             </group>
                         </page>
                     </notebook>

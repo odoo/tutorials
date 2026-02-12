@@ -14,6 +14,9 @@ class RealEstate(models.Model):
     def _get_default_color(self):
         return randint(1, 11)
 
+    def _get_default_date_availability(self):
+        return fields.Date.add(fields.Date.today(), months=3)
+
     name = fields.Char(required=True, tracking=True)
     property_type_id = fields.Many2one(
         "real.estate.property.type", string="Property Type")
@@ -72,21 +75,21 @@ class RealEstate(models.Model):
         default=lambda self: self.env.user
     )
     project_id = fields.Many2one("project.project", string="Project")
-    task_progress = fields.Float(string="Task Progress", compute="_compute_task_progress", store=True)
+    # task_progress = fields.Float(string="Task Progress", compute="_compute_task_progress", store=True)
     _check_expected_price_positive = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price must be strictly positive.',
     )
 
-    @api.depends("project_id.task_ids.state")
-    def _compute_task_progress(self):
-        for rec in self:
-            if rec.project_id and rec.project_id.task_ids:
-                total = len(rec.project_id.task_ids)
-                done = len(rec.project_id.task_ids.filtered(lambda t: t.state == '1_done'))
-                rec.task_progress = (done / total) * 100 if total else 0
-            else:
-                rec.task_progress = 0
+    # @api.depends("project_id.task_ids.state")
+    # def _compute_task_progress(self):
+    #     for rec in self:
+    #         if rec.project_id and rec.project_id.task_ids:
+    #             total = len(rec.project_id.task_ids)
+    #             done = len(rec.project_id.task_ids.filtered(lambda t: t.state == '1_done'))
+    #             rec.task_progress = (done / total) * 100 if total else 0
+    #         else:
+    #             rec.task_progress = 0
 
     def write(self, vals):
         res = super().write(vals)
@@ -108,7 +111,6 @@ class RealEstate(models.Model):
                         self.env["project.task"].create({
                             "name": name,
                             "project_id": project.id,
-                            # "user_id": user,
                         })
 
         return res
@@ -132,36 +134,43 @@ class RealEstate(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        dataa = dict(self.env['real.estate.property.offer']._read_group(
+        data = dict(self.env['real.estate.property.offer']._read_group(
             domain=[('property_id', 'in', self.ids)],
             groupby=['property_id'],
             aggregates=['price:max'],
         ))
         for record in self:
-            record.best_price = dataa.get(record, 0.0)
-
-    # def _search_best_price(self, operator, value):
-    #     records = self.search([])
-    #     domain = [('best_price', operator, value)]
-    #     filtered = records.filtered_domain(domain)
-    #     return [('id', 'in', filtered.ids)]
+            record.best_price = data.get(record, 0.0)
 
     def _search_best_price(self, operator, value):
-        if operator not in ('!=', '<', '<=', '>', '>='):
-            return NotImplemented
-        groups = self.env['real.estate.property.offer']._read_group(
-            [],
-            ['property_id'],
-            having=[('price:max', operator, value)]
-        )
-        property_ids = [g[0].id for g in groups if g and g[0]]
-        return [('id', 'in', property_ids)]
+        records = self.search([])
+        domain = [('best_price', operator, value)]
+        filtered = records.filtered_domain(domain)
+        return [('id', 'in', filtered.ids)]
+
+    # def _search_best_price(self, operator, value):
+    #     if operator not in ('!=', '<', '<=', '>', '>='):
+    #         return NotImplemented
+    #     groups = self.env['real.estate.property.offer']._read_group(
+    #         [],
+    #         ['property_id'],
+    #         having=[('price:max', operator, value)]
+    #     )
+    #     property_ids = [g[0].id for g in groups if g and g[0]]
+    #     return [('id', 'in', property_ids)]
 
     @api.depends('maintenance_request_ids.cost')
     def _compute_total_maintenance_cost(self):
         for record in self:
             costs = record.maintenance_request_ids.mapped('cost')
             record.total_maintenance_cost = sum(costs) if costs else 0.0
+
+    # @api.depends('maintenance_request_ids.cost', 'maintenance_request_ids.property_id')
+    # def _compute_total_maintenance_cost(self):
+    #     maintenace_cost = dict(self.env['estate.property.maintenance']._read_group(domain=[(
+    #         'property_id', 'in', self.ids)], aggregates=['cost:sum'], groupby=['property_id']))
+    #     for record in self:
+    #         record.total_maintenance_cost = maintenace_cost.get(record, 0.0)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
@@ -222,7 +231,6 @@ class RealEstate(models.Model):
         if mail_template:
             ctx.update({
                 'default_template_id': mail_template.id,
-
             })
         action = {
             'name': _('Send'),

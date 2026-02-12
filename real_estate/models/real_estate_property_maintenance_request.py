@@ -21,6 +21,14 @@ class RealEstatePropertiesMaintenanceRequest(models.Model):
         if self.status == 'approved' and self.cost <= 0:
             raise UserError("Approved cost must be greater than 0")
 
+    # @api.constrains('cost', 'status')
+    # def _check_cost(self):
+    #     invalid_records = self.filtered(
+    #         lambda r: r.status == 'approved' and r.cost <= 0
+    #     )
+    #     if invalid_records:
+    #         raise UserError('Approved cost must be greater than 0')
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_maintenance_request_not_done(self):
         maintenace_request = self.filtered_domain([('status', '!=', 'done')])
