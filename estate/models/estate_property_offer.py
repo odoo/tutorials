@@ -1,0 +1,78 @@
+from datetime import timedelta
+
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+
+
+class EstatePropertyOffer(models.Model):
+    _name = "estate.property.offer"
+    _description = "Estate Property Offer"
+    _order = "price desc"
+
+    price = fields.Float()
+    status = fields.Selection(
+        selection=[("accepted", "Accepted"), ("refused", "Refused")],
+        copy=False,
+    )
+    partner_id = fields.Many2one("res.partner", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
+    validity = fields.Integer(default=7, string="Validity(Days)")
+    date_deadline = fields.Date(
+        string="Deadline",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+    )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", string="Property Type", store=True
+    )
+    _check_offer_price = models.Constraint(
+        "CHECK(price>=0)", "Offer Price must be strictly positive"
+    )
+
+    @api.depends("validity", "date_deadline")
+    def _compute_date_deadline(self):
+        for record in self:
+            if record.create_date:
+                creation_date = record.create_date.date()
+            else:
+                creation_date = fields.Date.today()
+            record.date_deadline = timedelta(days=record.validity) + creation_date
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            if record.create_date:
+                creation_date = record.create_date.date()
+            else:
+                creation_date = fields.Date.today()
+            date_diff = record.date_deadline - creation_date
+            record.validity = date_diff.days
+
+    def action_refuse_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                raise UserError(_("You cant refuse an already accepted offer"))
+            record.status = "refused"
+        return True
+
+    def action_accept_offer(self):
+        for record in self:
+            if "accepted" in record.property_id.offer_ids.mapped("status"):
+                raise UserError(_("An Offer has already been accepted for this offer"))
+
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
+            record.property_id.buyer_id = record.partner_id
+            records = record.property_id.offer_ids.filtered(lambda x: x.id != record.id)
+            records.write({"status": "refused"})
+
+        return True
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            linked_property = self.env["estate.property"].browse(val["property_id"])
+            if val["price"] < linked_property.best_price:
+                raise UserError("An offer with higher price already exists")
+            linked_property.state = "offer_received"
+        return super().create(vals)
