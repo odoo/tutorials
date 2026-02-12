@@ -5,9 +5,11 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
-            <field name="tax_totals" position="after">
-                <button string="discount" name="action_open_discount_wizard" type="object" class="btn btn-secondary"/>
-            </field>
+            <xpath expr="//field[@name='order_line']" position="after">
+                <div class="d-flex justify-content-end mt-2 mb-2">
+                    <button string="Discount" name="action_open_discount_wizard" type="object" class="btn btn-secondary"/>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

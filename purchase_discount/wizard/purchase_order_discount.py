@@ -27,7 +27,7 @@ class PurchaseOrderDiscount(models.TransientModel):
             if (
                 (wizard.discount_type in ('percentage')
                 and wizard.discount_percentage > 100.0)
-                or (wizard.discount_type in ('amount') 
+                or (wizard.discount_type in ('amount')
                 and wizard.discount_percentage > wizard.purchase_order_id.amount_untaxed)
             ):
                 raise ValidationError("Invalid discount amount")
