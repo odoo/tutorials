@@ -26,6 +26,19 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <header>
+                        <button name="action_sold"
+                                type="object"
+                                string="Sold"
+                                class="btn-primary"/>
+                        
+                        <button name="action_cancel"
+                                type="object"
+                                string="Cancel"
+                                class="btn-secondary"/>
+                        
+                        <field name="state" widget="statusbar"/>
+                    </header>
                     <h1>
                         <field name="name"/>
                     </h1>
@@ -39,6 +52,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price" readonly="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -47,7 +61,7 @@
                                 <field name="description"/>
                             </group>
                             <group>
-                                <field name="tag_ids" widget="many2many_tags"/>
+                                <field name="tag_ids"/>
                             </group>
 
 
@@ -58,18 +72,14 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
+                                <field name="total_area" readonly="1"/>
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list editable="bottom">
-                                    <field name="price"/>
-                                    <field name="partner_id"/>
-                                    <field name="status"/>
-                                </list>
-                            </field>
+                            <field name="offer_ids"/>
                         </page>
+
                         <page string="Sales">
                             <group>
                                 <field name="buyer_id"/>
@@ -94,7 +104,6 @@
                 <field name="facades"/>
                 <separator/>
                 <filter name="available" string="Available" domain="[
-                        '|',
                         ('state', '=', 'new'),
                         ('state', '=', 'offer_received')
                     ]" />
