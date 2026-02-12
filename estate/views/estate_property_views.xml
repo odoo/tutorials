@@ -14,9 +14,10 @@
             <list string="Properties">
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="bedrooms"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="bedrooms"/>
+                <field name="available_from"/>
             </list>
         </field>
     </record>
@@ -27,29 +28,36 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
-                            <field name="name"/>
                             <field name="postcode"/>
+                            <field name="property_type_id"/>
+                            <field name="available_from"/>
+                        </group>
+                        <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
-                            <field name="bedrooms"/>
+                            <field name="state"/>
                         </group>
-
-                        <group>
-                            <field name="bedrooms"/>
-                            <field name="date_availability"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
-                            <field name="living_area"/>
-                        </group>
-
-
                     </group>
                     <notebook>
-                        <page string="description">
-                            <field name="description"/>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
