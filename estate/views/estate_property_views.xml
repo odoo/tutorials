@@ -40,6 +40,8 @@
                             <field name="selling_price"/>
                             <field name="property_type_id"/>
                             <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="total_area"/>
+                            <field name="best_price"/>
                         </group>
 
                         <group>
@@ -69,6 +71,8 @@
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="status"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
                                 </list>
                             </field>
                         </page>

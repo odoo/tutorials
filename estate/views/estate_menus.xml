@@ -20,6 +20,12 @@
                 action="estate_property_tag_action"
             />
         </menuitem>
+        <menuitem id="estate_menu_property_offer" name="Property Offer">
+            <menuitem
+                id="estate_menu_property_offer_action"
+                action="estate_property_offer_action"
+            />
+        </menuitem>
 
     </menuitem>
 </odoo>
