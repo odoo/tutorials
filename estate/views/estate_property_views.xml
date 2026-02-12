@@ -69,6 +69,7 @@
                         </group>
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" />
                             <field name="selling_price" />
                         </group>
                     </group>
@@ -88,13 +89,12 @@
                                     <field name="living_area" />
                                     <field name="garage" />
                                     <field name="garden_area" />
+                                    <field name="total_area" />
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
-
-                            <field name="offer_ids" widget="one2many" editable="top" />
-
+                            <field name="offer_ids" />
                         </page>
                         <page string="Other Info">
                             <group>
