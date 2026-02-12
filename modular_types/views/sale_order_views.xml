@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <button name="action_open_modular_values_wizard" type="object" icon="fa-flask" title="Set modular values" invisible="not has_modular_types"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
