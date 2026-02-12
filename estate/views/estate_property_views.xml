@@ -24,6 +24,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" />
+                    <button name="action_cancel" type="object" string="Cancel" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -88,7 +94,7 @@
                 <field name="property_type_id" />
                 <separator />
                 <filter string="available" name="available"
-                    domain="['|',('state','=','new'),('state','=','offer_received')]" />
+                    domain="[('state','in',['new','offer_received'])]" />
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
             </search>
         </field>
