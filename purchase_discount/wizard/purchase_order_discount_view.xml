@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="purchase_order_line_wizard_form" model="ir.ui.view">
+        <field name="name">purchase.order.discount.form</field>
+        <field name="model">purchase.order.discount</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <!-- <field name="purchase_order_id" invisible="1"/> -->
+                    <field name="discount_percentage" nolabel="1"/>
+                    <field name="discount_type" nolabel="1"/>
+                    <field name="percentage" class='text-muted' nolabel="1"/>
+                </sheet>
+                <footer>
+                    <button type="object" string="Apply" name="action_apply_discount" class="btn btn-primary" data-hotkey="q"/>
+                    <button special="cancel" string="Discard" class="btn btn-secondary" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
