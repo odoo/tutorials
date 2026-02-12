@@ -4,7 +4,7 @@ from odoo import fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "real estate property"
+    _description = "Real Estate Property"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -22,20 +22,20 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         [
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         required=True,
         copy=False,
@@ -57,3 +57,5 @@ class EstateProperty(models.Model):
     )
 
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
