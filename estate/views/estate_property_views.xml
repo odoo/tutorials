@@ -94,7 +94,19 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" />
+                            <field
+                                name="offer_ids"
+                            >
+                                <list
+                                    editable="top"
+                                >
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                    <field name="price" />
+                                </list>
+                            </field>
                         </page>
                         <page string="Other Info">
                             <group>
