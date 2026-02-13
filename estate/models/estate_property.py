@@ -34,18 +34,13 @@ class EstateProperty(models.Model):
         ]
     )
     active = fields.Boolean(default=True)
-    state = fields.Selection(
-        [
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
-        ],
-        default="new",
-        required=True,
-        copy=False,
-    )
+    state = fields.Selection([
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled'),
+    ], compute="_compute_state", store=True)
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
@@ -87,6 +82,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+    
+    @api.depends('offer_ids.status')
+    def _compute_state(self):
+        for property_rec in self:
+            offers = property_rec.offer_ids
+            if property_rec.state in ['sold', 'cancelled']:
+                continue
+            if not offers:
+                property_rec.state = 'new'
+            elif any(o.status == 'accepted' for o in offers):
+                property_rec.state = 'offer_accepted'
+            else:
+                property_rec.state = 'offer_received'
 
     def action_cancel(self):
         for record in self:

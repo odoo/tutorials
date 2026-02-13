@@ -97,18 +97,4 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.property_id.state == 'sold':
                 raise UserError("You cannot delete an offer of a sold property.")
-        properties = self.mapped('property_id')
-        result = super().unlink()
-        for property_rec in properties:
-            offers = property_rec.offer_ids
-            if not offers:
-                property_rec.write({
-                    'state': 'new',
-                    'buyer_id': False,
-                    'selling_price': 0.0,
-                })
-            elif any(o.status == 'accepted' for o in offers):
-                property_rec.state = 'offer_accepted'
-            else:
-                property_rec.state = 'offer_received'
-        return result
+        return super().unlink()
