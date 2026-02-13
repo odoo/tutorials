@@ -1,4 +1,3 @@
-from datetime import timedelta
 from odoo import fields, models, api
 
 
@@ -17,24 +16,40 @@ class EstatePropertyOffer(models.Model):
             ("refuse", "Refused"),
         ],
     )
+    date_deadline = fields.Date(
+        string="Deadline Date",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+        store=True,
+    )
     validity = fields.Integer(
         string="Validity",
         default=7,
-        compute="_compute_validity",
-        inverse="_inverse_validity",
-    )
-    date_deadline = fields.Date(
-        string="Deadline Date",
-        default=lambda self: fields.Date.today() + timedelta(days=7),
+        store=True,
     )
 
-    @api.depends("date_deadline")
-    def _compute_validity(self):
+    # alternative : create_date = record.create_date.date()
+    @api.depends("validity")
+    def _compute_date_deadline(self):
+        for record in self:
+            if record.validity:
+                create_date = (
+                    fields.Date.to_date(record.create_date) or fields.Date.today()
+                )
+                record.date_deadline = fields.Date.add(
+                    create_date, days=record.validity
+                )
+
+    def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
-                today = fields.Date.today()
-                record.validity = (record.date_deadline - today).days
+                create_date = (
+                    fields.Date.to_date(record.create_date) or fields.Date.today()
+                )
+                record.validity = (record.date_deadline - create_date).days
 
-    def _inverse_validity(self):
-        for record in self:
-            record.date_deadline = record.create_date + timedelta(days=record.validity)
+    @api.onchange("date_deadline")
+    def _onchange_validity(self):
+        if self.date_deadline:
+            create_date = fields.Date.to_date(self.create_date) or fields.Date.today()
+            self.validity = (self.date_deadline - create_date).days

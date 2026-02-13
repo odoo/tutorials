@@ -1,4 +1,4 @@
-from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
 
 
@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char(string="Post Code")
     date_availability = fields.Date(
         string="Availability From",
-        default=lambda self: fields.Date.today() + timedelta(days=90),
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
         copy=False,
     )
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -67,3 +67,12 @@ class EstateProperty(models.Model):
                 record.best_offer = max(prices)
             else:
                 record.best_offer = 0.0
+
+    @api.onchange("garden")
+    def onchange_garden(self):
+        if self.garden:
+            self.garden_area = 1000
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
