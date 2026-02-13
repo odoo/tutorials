@@ -31,10 +31,18 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                        <button name="action_sold"
+                                type="object"
+                                string="Sold"
+                                class="btn-secondary"/>
+                        <button name="action_cancel"
+                                type="object"
+                                string="Cancel"
+                                class="btn-secondary"/>
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="state"/>
+                            <field name="state" readonly="1"/>
                             <field name="postcode"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
@@ -61,7 +69,7 @@
                         </page>
                         <page string="Sales">
                             <group>
-                                <field name="buyer_id"/>
+                                <field name="buyer_id" readonly="state=='sold'"/>
                                 <field name="user_id"/>
                             </group>
                         </page>
@@ -71,6 +79,16 @@
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="status"/>
+                                    <button name="action_accept"
+                                            type="object"
+                                            string="Accept"
+                                            icon="fa-check"
+                                            class="btn-primary"/>
+                                    <button name="action_refuse"
+                                            type="object"
+                                            string="Refuse"
+                                            icon="fa-times"
+                                            class="btn-secondary"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                 </list>
