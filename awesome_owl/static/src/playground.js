@@ -13,7 +13,7 @@ export class Playground extends Component {
         this.rawString = "<div class='text-primary'>some content</div>";
     }
 
-    incrementSum() {
-        this.state.sum++;
+    changeSum(value) {
+        this.state.sum += value;
     }
 }
