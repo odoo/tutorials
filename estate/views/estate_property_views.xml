@@ -29,7 +29,7 @@
             <form string="Property">
                 <sheet>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" string="Ttile"/>
                     </h1>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
@@ -56,8 +56,24 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
+                                <field name="total_area"/>
                                 <field name="garden_orientation"/>
                             </group>
+                        </page>
+                        <page string="Sales">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="user_id"/>
+                            </group>
+                        </page>
+                        <page string="offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
@@ -75,14 +91,12 @@
                 <field name="garden_orientation"/>
                 <field name="state"/>
                 <separator/>
-
                 <filter name="available" string="Available" domain="[
                     '|',
                     ('state', '=', 'new'),
                     ('state', '=', 'offer_received')
                     ]" />
                 <separator/>
-
                 <filter name="group_by_garden" string="group by garden" context="{'group_by': 'garden'}" />
             </search>
         </field>
