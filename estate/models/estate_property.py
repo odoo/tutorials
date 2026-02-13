@@ -5,7 +5,6 @@ from odoo import fields, models, api
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Management Module"
-
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Post Code")
