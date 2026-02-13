@@ -68,7 +68,7 @@ class EstateProperty(models.Model):
     )
     total_area = fields.Float(
         string="Total Area",
-        compute="_compute_total_area_"
+        compute="_compute_total_area"
     )
     best_price = fields.Float(
         string="Best Price",
@@ -79,7 +79,7 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0.0) + (record.garden_area or 0.0)
-  
+
     @api.depends("offer_ids.price")
     def _computer_best_price(self):
         for record in self:
