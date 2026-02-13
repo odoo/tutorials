@@ -112,4 +112,4 @@ class EstatePropertyOffer(models.Model):
             else:
                 property_rec.state = 'offer_received'
         return result
-
+    

@@ -105,4 +105,4 @@ class EstateProperty(models.Model):
             if not accepted_offer:
                 raise UserError("You must accept an offer before selling the property.")
             record.state = 'sold'
-            
+
