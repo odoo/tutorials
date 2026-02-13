@@ -5,13 +5,13 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property module for Odoo 19 tutorials Hello World"
 
-    name = fields.Char(required=True)
+    name = fields.Char(default="Unknown", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date()
+    date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -23,3 +23,11 @@ class EstateProperty(models.Model):
         ("east", "East"),
         ("west", "West"),
     ])
+    active = fields.Boolean(default=True)
+    state = fields.Selection([
+        ("new", "New"),
+        ("offer_received", "Offer Received"),
+        ("offer_accepted", "Offer Accepted"),
+        ("sold", "Sold"),
+        ("canceled", "Canceled"),
+    ], copy=False, default="new")
