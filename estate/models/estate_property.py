@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api,fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -67,6 +67,7 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -104,9 +105,4 @@ class EstateProperty(models.Model):
             if not accepted_offer:
                 raise UserError("You must accept an offer before selling the property.")
             record.state = 'sold'
-
-
-
-
-    
-
+            

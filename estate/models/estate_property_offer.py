@@ -39,12 +39,12 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             create_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.date_deadline = create_date + timedelta(days=record.validity)
-        
+    
     def _inverse_date_deadline(self):
         for record in self:
             create_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - create_date).days
-    
+
     @api.model_create_multi
     def create(self, vals_list):
         offers = super().create(vals_list)
@@ -112,6 +112,4 @@ class EstatePropertyOffer(models.Model):
             else:
                 property_rec.state = 'offer_received'
         return result
-
-
 
