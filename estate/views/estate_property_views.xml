@@ -7,6 +7,7 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list>
+                    <field name="property_type_id" string="Property Type"/>
                     <field name="name" string="Title"/>
                     <field name="postcode" />
                     <field name="bedrooms" />
@@ -24,21 +25,16 @@
             <field name="arch" type="xml">
                 <form string="">
                     <sheet>
-                        <group>
-                            <group>
-                                <field name="postcode" />
-                            </group>
-                            <group>
-                                <field name="date_availability" />
-                            </group>
+                        <group name="name" >
+                            <field name="property_type_id" string="Property Type"/>
+                            <field name="name"  />
+                            <field name="tag_id" widget="many2many_tags"/>
+                            <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
-                            <group>
-                                <field name="expected_price" string="Expected Price" />
-                            </group>
-                            <group>
-                                <field name="selling_price" string="Selling Price" />
-                            </group>
+                            <field name="expected_price" string="Expected Price" />
+                            <field name="selling_price" string="Selling Price"/>
                         </group>
                         <notebook>
                             <page name="Description" string="Description">
@@ -50,7 +46,9 @@
                                     <field name="garage" string="Garage" />
                                     <field name="garden" string="Garden " />
                                     <field name="garden_area" string="Garden Area" />
-                                    <field name="garden_orientation" string="Gardem Orientation" />
+                                    <field name="garden_orientation" string="Garden Orientation"/>
+                                    <field name="salesman_id" string="Salesman"/>
+                                    <field name="buyer_id" string="Buyer"/>
                                 </group>
                             </page>
                         </notebook>
