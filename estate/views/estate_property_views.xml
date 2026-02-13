@@ -36,11 +36,12 @@
                                 type="object"
                                 string="Cancel"
                                 class="btn-secondary"/>
-                        
-                        <field name="state" widget="statusbar"/>
+                        <field name="state"
+                            widget="statusbar"
+                            statusbar_visible="new, offer_received, offer_accepted, sold, cancelled"/>
                     </header>
                     <h1>
-                        <field name="name"/>
+                        <field name="name"/>,
                     </h1>
                     <group>
                         <group>
@@ -77,9 +78,28 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                    <field name="status"/>
+                                    <button name="action_accept"
+                                            type="object"
+                                            icon="fa-check"
+                                            class="btn-success"
+                                            title="Accept Offer"
+                                            attrs="{'invisible': [('status', '!=', 'pending')]}"/>
+                                    <button name="action_refuse"
+                                            type="object"
+                                            icon="fa-times"
+                                            class="btn-danger"
+                                            title="Refuse Offer"
+                                            attrs="{'invisible': [('status', '!=', 'pending')]}"/>
+                                </list>
+                            </field>
                         </page>
-
                         <page string="Sales">
                             <group>
                                 <field name="buyer_id"/>

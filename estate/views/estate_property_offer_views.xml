@@ -9,6 +9,16 @@
                 <field name="status"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
+                <button name="action_accept"
+                        type="object"
+                        icon="fa-check"
+                        class="btn-success"
+                        attrs="{'invisible': [('status', '!=', 'pending')]}"/>
+                <button name="action_refuse"
+                        type="object"
+                        icon="fa-times"
+                        class="btn-danger"
+                        attrs="{'invisible': [('status', '!=', 'pending')]}"/>
             </list>
         </field>
     </record>
@@ -17,20 +27,6 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <button name="action_accept"
-                            type="object"
-                            string="Accept"
-                            class="btn-primary"/>
-
-                    <button name="action_refuse"
-                            type="object"
-                            string="Refuse"
-                            class="btn-secondary"/>
-
-                    <field name="status" widget="statusbar"/>
-                </header>
-
                 <sheet>
                     <group>
                         <field name="price"/>
