@@ -14,7 +14,6 @@
 %
     )
                 </span>
-
                 <footer>
                     <button name="action_apply_discount" string="Apply" type="object" class="btn btn-primary"/>
                     <button special="cancel" string="Discard" class="btn btn-secondary" data-hotkey="x"/>

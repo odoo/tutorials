@@ -32,5 +32,5 @@ class PurchaseOrderDiscount(models.TransientModel):
             order.order_line.write({"discount": self.discount})
         else:
             raise UserError(
-                ("Cannot apply fixed discount because Total Amount is already zero.")
+                "Cannot apply fixed discount because Total Amount is already zero."
             )
