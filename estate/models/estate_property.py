@@ -29,7 +29,6 @@ class EstateProperty(models.Model):
         ],
         required=True,
     )
-    description = fields.Text()
     state = fields.Selection(
         [
             ("new", "New"),
