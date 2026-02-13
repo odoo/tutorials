@@ -36,11 +36,13 @@
                             <field name="state"/>
                             <field name="postcode"/>
                             <field name="property_type_id"/>
+                            <field name="facades"/>
                         </group>
                         <group>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     
@@ -62,6 +64,7 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
