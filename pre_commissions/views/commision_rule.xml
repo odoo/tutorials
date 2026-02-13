@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action -->
+    <record id="sale_commission_rule_action" model="ir.actions.act_window">
+        <field name="name">Commission Rules</field>
+        <field name="res_model">commission.rule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Form View -->
+    <record id="commission_rule_view_form" model="ir.ui.view">
+        <field name="name">commission.rule.view.form</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <form string="Commission Rules">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="commission_rate" widget="percentage" style="width:60px;"/>
+                            <field name="due_at"/>
+                        </group>
+                        <group>
+                            <field name="commission_for"/>
+                        </group>
+                    </group>
+                    <group string="Apply on">
+                        <group>
+                            <field name="product_category_id" placeholder="All"/>
+                            <field name="product_id" placeholder="All"/>
+                            <field name="product_expired"/>
+                            <field name="max_discount" widget="percentage" style="width:60px;"/>
+                        </group>
+                        <group>
+                            <label for="fast_payment" string="On fast payment"/>
+                            <div class="o_row">
+                                <field name="fast_payment" nolabel="1"/>
+                                <span invisible="not fast_payment">before</span>
+                                <field name="fast_payment_days" nolabel="1" invisible="not fast_payment" class="oe_inline" style="width:60px;"/>
+                                <span invisible="not fast_payment">days</span>
+                            </div>
+                            <field name="salesperson_id" placeholder="All" string="Salesperson" invisible = "commission_for and commission_for != 'salesperson'"/>
+                            <field name="team_id" placeholder="All" string="Sales team" invisible = "commission_for and commission_for != 'team'"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="commission_rule_view_list" model="ir.ui.view">
+        <field name="name">commission.rule.view.list</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <list string="Commission Rules">
+                <field name="sequence" widget="handle"/>
+                <field name="due_at"/>
+                <field name="commission_rate" widget="percentage"/>
+                <field name="commission_for"/>
+                <field name="condition_display"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>

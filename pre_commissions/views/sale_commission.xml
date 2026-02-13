@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_commission_action" model="ir.actions.act_window">
+        <field name="name">Sale Commission</field>
+        <field name="res_model">sale.commission</field>
+        <field name="view_mode">list,form,pivot,graph</field>
+
+    </record>
+
+    <!-- List View -->
+    <record id="sale_commission_view_list" model="ir.ui.view">
+        <field name="name">sale.commission.view.list</field>
+        <field name="model">sale.commission</field>
+        <field name="arch" type="xml">
+            <list string="Commission Rules">
+                <field name="date"/>
+                <field name="user_id"/>
+                <field name="team_id"/>
+                <field name="invoice_id"/>
+                <field name="amount"/>
+            </list>
+        </field>
+    </record>
+
+
+    <!-- Pivot View -->
+    <record id="sale_commission_view_pivot" model="ir.ui.view">
+        <field name="name">sale.commission.view.pivot</field>
+        <field name="model">sale.commission</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="date" type="row" />
+                <field name="team_id" type="col" />
+                <field name="user_id" type="col" />
+                <field name="amount" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+     <record id="sale_commission_view_graph" model="ir.ui.view">
+        <field name="name">sale.commission.view.graph</field>
+        <field name="model">sale.commission</field>
+        <field name="arch" type="xml">
+            <graph string="" type="bar">
+                <field name="date" type="row"/>
+                <field name="user_id" type="col"/>
+                <field name="amount" type="measure" widget="percentage" string="Current Level"/>
+            </graph>
+        </field>
+     </record>
+</odoo>
