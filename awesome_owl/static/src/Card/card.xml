@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <div class="d-inline-flex align-items-center gap-2">
+                    <h5 class="card-title mb-0">
+                        <t t-esc="props.title"/>
+                    </h5>
+                    <button type="button" t-on-click="onToggle">
+                        <t t-if="state.toggle">Hide</t>
+                        <t t-else="">Show</t>
+                    </button>
+                </div>
+                <t t-if="this.state.toggle">
+                    <t t-slot="default"/>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

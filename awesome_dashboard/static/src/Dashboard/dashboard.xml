@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="viewCustomers" class="btn btn-primary">Customers</button>
+                <button t-on-click="createLead" class="btn btn-secondary">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfig" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+            <t t-if="state.isReady">
+                <!-- <DashboardItem>
+                    <p class="o_dashboarditem_title">Average Amount of T-shirt by order this month</p>
+                    <h1 class="text-success">
+                        <t t-esc="state.average_quantity"/>
+                    </h1>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <p class="o_dashboarditem_title">Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                    <h1 class="text-success">
+                        <t t-esc="state.average_time"/>
+                    </h1>
+                </DashboardItem>
+                <DashboardItem>
+                    <p class="o_dashboarditem_title">Number of new orders this month</p>
+                    <h1 class="text-success">
+                        <t t-esc="state.nb_new_orders"/>
+                    </h1>
+                </DashboardItem>
+                <DashboardItem>
+                    <p class="o_dashboarditem_title">Number of cancelled orders this month</p>
+                    <h1 class="text-success">
+                        <t t-esc="state.nb_cancelled_orders"/>
+                    </h1>
+                </DashboardItem> -->
+                <div class="d-flex flex-wrap gap-3">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <t t-if="!hiddenItems.has(item.id)">
+                            <DashboardItem size="item.size || 1">
+                                <t t-component="item.Component" t-props="item.props ? item.props(state) : {}"/>
+                            </DashboardItem>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.config">
+        <Dialog>
+
+            <div class="p-3">
+                <h4>Dashboard Items</h4>
+
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <div class="form-check mt-2">
+
+                        <input type="checkbox" class="form-check-input" t-att-checked="!localHidden.has(item.id)" t-on-change="(ev) => toggleItem(item.id, ev.target.checked)"/>
+
+                        <label class="form-check-label">
+                            <t t-esc="item.description"/>
+                        </label>
+
+                    </div>
+                </t>
+
+            </div>
+
+            <!-- FOOTER APPLY BUTTON -->
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary" t-on-click="() => this.props.close()">
+                Cancel
+                </button>
+                <button class="btn btn-primary" t-on-click="apply">
+                Apply
+                </button>
+            </t>
+
+        </Dialog>
+    </t>
+
+</templates>

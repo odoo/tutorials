@@ -1,0 +1,9 @@
+<odoo>
+
+    <record id="estate_investor_action" model="ir.actions.act_window">
+        <field name='name'>Investor</field>
+        <field name='res_model'>estate.investor</field>
+        <field name='view_mode'>list,form</field>
+    </record>
+
+</odoo>
