@@ -1,0 +1,13 @@
+<odoo>
+
+    <template id="report_invoice_document_inherit_print_option"
+              inherit_id="account.report_invoice_document">
+        <xpath expr="//t[@t-set='lines_to_report']" position="attributes">
+            <attribute name="t-value">
+                o._get_move_lines_to_report().filtered(lambda l: not (any(sl.is_kit_product for sl in l.sale_line_ids)
+                and not any(sl.order_id.print_in_report for sl in l.sale_line_ids)))
+            </attribute>
+        </xpath>
+    </template>
+
+</odoo>
