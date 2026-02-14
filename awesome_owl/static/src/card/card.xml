@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="awesome_owl.card" owl="1">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                <h5 class="mb-0 fw-semibold">
+                    <t t-esc="props.title"/>
+                </h5>
+                <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
+                        t-on-click="toggle">
+                    <i t-att-class="'fa fa-chevron-' + (state.open ? 'up' : 'down')"></i>
+                    <t t-if="state.open">Hide</t>
+                    <t t-else="">Show</t>
+                </button>
+            </div>
+            <t t-if="state.open">
+                <div class="card-body">
+                    <t t-slot="default"/>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

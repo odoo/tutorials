@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- PROPERTY TYPES -->
+    <record id="type_mansion" model="estate.property.type">
+        <field name="name">Mansion</field>
+    </record>
+
+    <record id="type_villa" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+
+    <record id="type_flat" model="estate.property.type">
+        <field name="name">Flat</field>
+    </record>
+
+    <record id="type_house" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
+    <!-- PROPERTY TAGS -->
+    <record id="tag_house" model="estate.property.tags">
+        <field name="name">House</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="tag_mansion" model="estate.property.tags">
+        <field name="name">Mansion</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="tag_flat" model="estate.property.tags">
+        <field name="name">Flat</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="tag_home" model="estate.property.tags">
+        <field name="name">Home</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="tag_a" model="estate.property.tags">
+        <field name="name">A</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="tag_aa" model="estate.property.tags">
+        <field name="name">AA</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="tag_bb" model="estate.property.tags">
+        <field name="name">BB</field>
+        <field name="color">7</field>
+    </record>
+
+    <!-- PROPERTIES -->
+    <record id="estate_property_demo_1" model="estate.property">
+        <field name="name">Kunj</field>
+        <field name="state">new</field>
+        <field name="postcode">362001</field>
+        <field name="expected_price">12</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="type_mansion"/>
+        <field name="property_tag_ids"
+               eval="[(6, 0, [ref('tag_flat'), ref('tag_aa')])]"/>
+    </record>
+
+    <record id="estate_property_demo_2" model="estate.property">
+        <field name="name">Patel</field>
+        <field name="state">offer_accepted</field>
+        <field name="postcode">121221</field>
+        <field name="expected_price">12</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">95</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="property_type_id" ref="type_flat"/>
+        <field name="property_tag_ids"
+               eval="[(6, 0, [ref('tag_house'), ref('tag_home')])]"/>
+    </record>
+
+    <record id="estate_property_demo_3" model="estate.property">
+        <field name="name">Kunj</field>
+        <field name="state">offer_received</field>
+        <field name="postcode">123212</field>
+        <field name="expected_price">12</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">95</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="property_type_id" ref="type_villa"/>
+        <field name="property_tag_ids"
+               eval="[(6, 0, [ref('tag_a'), ref('tag_bb')])]"/>
+    </record>
+
+    <record id="estate_property_demo_4" model="estate.property">
+        <field name="name">Koradiya</field>
+        <field name="state">sold</field>
+        <field name="postcode">123456</field>
+        <field name="expected_price">12</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">95</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">60</field>
+        <field name="property_type_id" ref="type_house"/>
+        <field name="property_tag_ids"
+               eval="[(6, 0, [ref('tag_house'), ref('tag_mansion')])]"/>
+    </record>
+
+    <!-- OFFERS -->
+    <record id="offer_1" model="estate.property.offer">
+        <field name="price">12</field>
+        <field name="validity">7</field>
+        <field name="property_id" ref="estate_property_demo_1"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+    </record>
+
+    <record id="offer_2" model="estate.property.offer">
+        <field name="price">112</field>
+        <field name="validity">10</field>
+        <field name="property_id" ref="estate_property_demo_1"/>
+        <field name="partner_id" ref="base.res_partner_2"/>
+    </record>
+
+    <record id="offer_3" model="estate.property.offer">
+        <field name="price">132</field>
+        <field name="validity">5</field>
+        <field name="property_id" ref="estate_property_demo_3"/>
+        <field name="partner_id" ref="base.res_partner_3"/>
+    </record>
+
+</odoo>

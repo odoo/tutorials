@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <li class="list-group-item d-flex align-items-center justify-content-between py-2 px-3"
+            t-att-class="props.todo.isCompleted ? 'text-muted bg-light' : ''"
+            style="transition: background 0.2s">
+            <div class="d-flex align-items-center gap-2">
+                <input type="checkbox"
+                       class="form-check-input"
+                       t-att-checked="props.todo.isCompleted"
+                       t-on-change="() => props.toggleState(props.todo.id)"/>
+                <span t-att-class="props.todo.isCompleted ? 'text-decoration-line-through' : ''">
+                    <strong><t t-esc="props.todo.id"/></strong> –
+                    <t t-esc="props.todo.description"/>
+                </span>
+            </div>
+            <span class="fa fa-trash text-danger cursor-pointer"
+                  t-on-click="() => props.removeTodo(props.todo.id)"
+                  title="Remove task"/>
+        </li>
+    </t>
+</templates>

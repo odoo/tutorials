@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_investor_action" model="ir.actions.act_window">
+        <field name="name">Investor</field>
+        <field name="res_model">estate.investor</field>
+    </record>
+
+    <record id="estate_property_investor_view_form" model="ir.ui.view">
+        <field name="name">Investor</field>
+        <field name="model">estate.investor</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- listview -->
+    <record id="res_partner_" model="ir.ui.view">
+        <field name="name">estate.investorr.view.list</field>
+        <field name="model">estate.investor</field>
+        <field name="arch" type="xml">
+            <list string="Channel" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+</odoo>

@@ -1,10 +1,61 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.playground" owl="1">
+        <div class="container py-4">
+            <h4 class="fw-semibold mb-3">Counters</h4>
+            <div class="d-flex align-items-center gap-4 mb-2">
+                <Counter onChange="updateSum"/>
+                <Counter onChange="updateSum"/>
+                <span class="badge bg-primary fs-6">
+                    Sum: <t t-esc="state.sum"/>
+                </span>
+            </div>
+            <hr class="my-4"/>
+            <h4 class="fw-semibold mb-3">Name Cards</h4>
+            <div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+                <div class="col">
+                    <Card title="'Kunj'">
+                        <p class="mb-0">The name is Kunj</p>
+                    </Card>
+                </div>
+                <div class="col">
+                    <Card title="'Koradiya'">
+                        <p class="mb-0">The surname is Koradiya</p>
+                    </Card>
+                </div>
+                <div class="col">
+                    <Card title="'Patel'">
+                        <p class="mb-0">The caste is Patel</p>
+                    </Card>
+                </div>
+            </div>
+            <h4 class="fw-semibold mb-3">Content Cards</h4>
+            <div class="row row-cols-1 row-cols-md-2 g-3 mb-4">
+                <div class="col">
+                    <Card title="'Text Content'">
+                        <t t-esc="this.textContent"/>
+                    </Card>
+                </div>
+                <div class="col">
+                    <Card title="'HTML Content'">
+                        <t t-out="this.htmlContent"/>
+                    </Card>
+                </div>
+            </div>
+            <hr class="my-4"/>
+            <h4 class="fw-semibold mb-3">Interactive Cards</h4>
+            <div class="row row-cols-1 row-cols-md-2 g-3">
+                <div class="col">
+                    <Card title="'Todo List'">
+                        <TodoList/>
+                    </Card>
+                </div>
+                <div class="col">
+                    <Card title="'Counter Card'">
+                        <Counter/>
+                    </Card>
+                </div>
+            </div>
         </div>
     </t>
-
 </templates>

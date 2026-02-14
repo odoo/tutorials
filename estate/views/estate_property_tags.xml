@@ -1,0 +1,49 @@
+<odoo>
+    <record id="estate_property_tags_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tags</field>
+         <field name="context">{'search_default_group_by_name': 1}</field>
+    </record>
+
+    <!-- listview -->
+    <record id="estate_property_tags_view_list" model="ir.ui.view">
+        <field name="name">estate.property.tags.view.list</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- formview -->
+    <record id="estate_property_tags_view_form" model="ir.ui.view">
+        <field name="name">estate.property.tags.view.form</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- searchview -->
+    <record id="estate_property_tags_view_search" model="ir.ui.view">
+        <field name="name">estate.property.tags.view.search</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <group>
+                    <filter name="name" context="{'group_by': 'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
