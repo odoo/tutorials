@@ -6,7 +6,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate Property Offer description"
 
     price = fields.Float(string="Price")
-    property_offer_ids = fields.Integer(Sting="Offer")
+    property_offer_ids = fields.Integer(string="Offer")
     state = fields.Selection(
         string="Status",
         copy=False,
