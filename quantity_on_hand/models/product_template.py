@@ -16,4 +16,5 @@ class ProductTemplate(models.Model):
                 )
                 if loc.usage == "internal"
             }
+
             record.is_multilocation = len(internal_location_ids) > 1
