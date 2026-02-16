@@ -60,9 +60,11 @@ class EstatePropertyOffer(models.Model):
             if not (record.property_id.selling_price):
                 record.property_id.selling_price = record.price
                 record.status = "accepted"
+                record.property_id.buyer_id = record.partner_id
             else:
                 raise UserError("You cannot accept multiple offer")
 
     def action_refuse_offer(self):
         for record in self:
             record.status = "refuse"
+        return True

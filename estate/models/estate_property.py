@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Management Module"
-    
+
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Post Code")
@@ -78,17 +78,23 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-    
+
     def action_sold(self):
         for record in self:
-            if record.state != 'canceled':
-                record.state = 'sold'
+            if record.state != "canceled":
+                record.state = "sold"
             else:
-                raise UserError("You cannot move to canceled stage after sold the property")
+                raise UserError(
+                    "You cannot move to canceled stage after sold the property"
+                )
+        return True
 
     def action_cencel(self):
         for record in self:
-            if record.state != 'sold':
-                record.state = 'canceled'
+            if record.state != "sold":
+                record.state = "canceled"
             else:
-                raise UserError("You cannot move to sold stage after cenceled the property")
+                raise UserError(
+                    "You cannot move to sold stage after cenceled the property"
+                )
+        return True
