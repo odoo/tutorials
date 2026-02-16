@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="my_module.Card">
+        <div  border="5px solid #000000">
+            <h5 class="card-title"> <t t-esc="state.title"/>
+                <button class="btn btn-primary" t-on-click="toggleVisibility"> toggle </button>
+            </h5>
+            <t t-if="state.visibile">
+                <t t-slot="default"/>
+            </t>
+        </div>
+    </t>
+
+</templates>

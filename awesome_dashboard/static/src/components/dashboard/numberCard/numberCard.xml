@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.NumberCard">
+        <span class="o_number_card">
+            <div t-out="state.title" t-att-style="'font-size: 0.9rem; font-weight: 700; color: #111827;'"/>
+            <div t-out="state.value"/>
+        </span>
+    </t>
+
+</templates>
