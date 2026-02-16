@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Real Estate",
 
@@ -18,7 +17,11 @@
     'installable': True,
     'depends': ['base'],
 
-    'data': [],
+    'data': [
+        "data/estate.tag.csv",
+        "data/estate.property.csv",
+        "security/ir.model.access.csv"
+    ],
     'assets': {
     },
     'license': 'LGPL-3'

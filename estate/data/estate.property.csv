@@ -1,0 +1,3 @@
+"id","name","expecting_price","area","property_type"
+estate_tag_1,"Odoo Farm 2",300000,2000,"house"
+estate_tag_2,"Odoo LLN",1000000,40000,"apartment"

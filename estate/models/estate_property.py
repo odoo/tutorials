@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
@@ -10,7 +9,7 @@ class Property(models.Model):
     _order = "expecting_price, selling_price, sequence, id"
 
     name = fields.Char("Name", required=True, translate=True)
-    
+
     property_type = fields.Selection(
         [
             ("house", "House"),
