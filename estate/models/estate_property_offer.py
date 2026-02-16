@@ -28,7 +28,7 @@ class EstatePropertyOffer(models.Model):
             )
             record.date_deadline = date + relativedelta(days=record.validity)
 
-    @api.depends("date_deadline")
+    @api.onchange("date_deadline")
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
@@ -55,3 +55,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "rejected"
         return True
+
+    _check_price_positive = models.Constraint(
+        "CHECK (price > 0)", "The property offer should be strictly positive"
+    )
