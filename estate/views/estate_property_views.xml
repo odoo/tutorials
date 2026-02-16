@@ -28,6 +28,11 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <header>
+                        <button name="action_sold" string="Sold" type="object" class="btn-primary"/>
+                        <button name="action_cancel" string="Cancel" type="object" class="btn-secondary"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
                     <h1>
                         <field name="name" string="Ttile"/>
                     </h1>
@@ -72,6 +77,11 @@
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="status"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                    <field name="status"/>
+                                    <button name="accept_offer" type="object" icon="fa-check" string="Accept" attrs="{'invisible':[('status', '!=', 'pending')]}"/>
+                                    <button name="reject_offer" type="object" icon="fa-times" class="btn-danger" title="Refuse Offer" attrs="{'invisible': [('status', '!=', 'pending')]}"/>
                                 </list>
                             </field>
                         </page>
