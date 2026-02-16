@@ -4,6 +4,7 @@
     "description": "Specific Real Estate Module",
     "depends": ["base"],
     "data": [
+        "security/res_groups.xml",
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/estate_property_tag_views.xml",

@@ -24,6 +24,8 @@
             <form>
                 <header>
                     <field name="state" widget="statusbar" options="{'clickable':'1'}" />
+                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_cencel" type="object" string="Cencel" />
                 </header>
                 <sheet>
                     <group>
@@ -94,6 +96,7 @@
                 <separator />
                 <filter string="More Than 2 Bedroom" name="more_than_2bedroom"
                     domain="[('bedrooms','&gt;','2')]" />
+                <filter string="3-4 bedroom" name="3_4_bedroom" domain="[('bedrooms', 'in', [3,4])]" />
                 <filter string="Accepted" name="filter_accepted" domain="[('state','=','accepted')]" />
                 <separator />
                 <filter string="Bedrooms" name="group_by_bedrooms" context="{'group_by':'bedrooms'}" />
@@ -115,3 +118,4 @@
     </record>
 
 </odoo>
+ 
