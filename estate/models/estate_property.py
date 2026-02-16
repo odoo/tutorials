@@ -1,0 +1,45 @@
+from odoo import fields, models
+
+def get_date_in_3_months():
+    '''
+    This function calculates the date that is three months from the current date.
+
+    returns:
+        A date object representing the date that is three months from today.
+    '''
+    today_data = fields.Date.today()
+    three_months_later = fields.Date.add(today_data, months=3)
+    return three_months_later
+
+class EstateProperty(models.Model):
+    _name = "estate.property"
+    _description = "Estate Property Model"
+ 
+    name = fields.Char(required=True)
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date(copy=False, default=get_date_in_3_months())
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection([
+        ('north', 'North'),
+        ('south', 'South'),
+        ('east', 'East'),
+        ('west', 'West'),
+    ])
+    state = fields.Selection([
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('canceled', 'Canceled'),
+    ], default="new", required=True, copy=False)
+    active = fields.Boolean(default=True)
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
