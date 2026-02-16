@@ -1,8 +1,6 @@
 from datetime import timedelta
 from odoo import fields, models, api
-import logging
-
-_logger = logging.getLogger(__name__)
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -63,13 +61,12 @@ class EstateProperty(models.Model):
 
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
-    total_area = fields.Float(compute="_compute_total_area")
+    total_area = fields.Float(compute="_compute_total_area", store=True)
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
-            record.facades = 600
 
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
@@ -80,3 +77,26 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped("price"))
             else:
                 record.best_price = 0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be sold.")
+            record.state = "sold"
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("A sold property cannot be cancelled.")
+            record.state = "cancelled"
+        return True
