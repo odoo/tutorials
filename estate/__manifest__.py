@@ -7,5 +7,8 @@
     'application': True,
     'description': """
     A app for real estate
-    """
+    """,
+    'data': [
+        'security/ir.model.access.csv',
+    ]
 }
