@@ -67,3 +67,14 @@ class EstateProperty(models.Model):
         string='Tags',
         comodel_name='estate.property.tag',
     )
+    property_id = fields.One2many(
+        string='property',
+        comodel_name='estate.property.offer',
+        inverse_name='property_id',
+    )
+
+    offer_id = fields.One2many(
+        'estate.property.offer',
+        'property_id',
+        string='Offers',
+        )

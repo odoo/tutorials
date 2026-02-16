@@ -1,14 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-    <data>
-
         <record id="estate_property_view_list" model="ir.ui.view">
             <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="property_type_id" string="Property Type"/>
-                    <field name="name" string="Title"/>
+                    <field name="property_type_id" string="Property Type" />
+                    <field name="name" string="Title" />
                     <field name="postcode" />
                     <field name="bedrooms" />
                     <field name="living_area" />
@@ -25,16 +23,16 @@
             <field name="arch" type="xml">
                 <form string="">
                     <sheet>
-                        <group name="name" >
-                            <field name="property_type_id" string="Property Type"/>
-                            <field name="name"  />
-                            <field name="tag_id" widget="many2many_tags"/>
+                        <group name="name">
+                            <field name="property_type_id" string="Property Type" />
+                            <field name="name" />
+                            <field name="tag_id" widget="many2many_tags" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" string="Expected Price" />
-                            <field name="selling_price" string="Selling Price"/>
+                            <field name="selling_price" string="Selling Price" />
                         </group>
                         <notebook>
                             <page name="Description" string="Description">
@@ -46,14 +44,26 @@
                                     <field name="garage" string="Garage" />
                                     <field name="garden" string="Garden " />
                                     <field name="garden_area" string="Garden Area" />
-                                    <field name="garden_orientation" string="Garden Orientation"/>
-                                    <field name="salesman_id" string="Salesman"/>
-                                    <field name="buyer_id" string="Buyer"/>
+                                    <field name="garden_orientation" string="Garden Orientation" />
+                                </group>
+                            </page>
+                            <page name="Offers" string="Offers">
+                                <field name="offer_id">
+                                    <list>
+                                        <field name="price" />
+                                        <field name="partner_id" />
+                                        <field name="status" />
+                                    </list>
+                                </field>
+                            </page>
+                            <page name="other_info" string="Other Info">
+                                <group>
+                                    <field name="salesman_id" string="Salesman" />
+                                    <field name="buyer_id" string="Buyer" />
                                 </group>
                             </page>
                         </notebook>
                     </sheet>
-
                 </form>
             </field>
         </record>
@@ -63,7 +73,7 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name" string="Title"/>
+                    <field name="name" string="Title" />
                     <field name="postcode" string="Postcode" />
                     <field name="expected_price" string="Expected Price" />
                     <field name="bedrooms" string="Bedrooms" />
@@ -77,6 +87,4 @@
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form</field>
         </record>
-
-    </data>
 </odoo>
