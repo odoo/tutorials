@@ -75,10 +75,10 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
-                                <list>
+                                <list editable="top">
                                     <field name="price"/>
                                     <field name="partner_id"/>
-                                    <field name="status"/>
+                                    <field name="status" readonly="1"/>
                                     <button name="action_accept"
                                             type="object"
                                             string="Accept"
