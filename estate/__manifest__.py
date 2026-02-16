@@ -6,9 +6,7 @@
         'base',
     ],
     'data': [
-        
     ],
-    
     'installable': True,
     'application': True,
     'author': 'ahham',
