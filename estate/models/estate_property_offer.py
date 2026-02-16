@@ -52,8 +52,6 @@ class EstatePropertyOffer(models.Model):
             property_rec = offer.property_id
             if property_rec.state in ['offer_accepted', 'sold', 'cancelled']:
                 raise UserError("Cannot create offer for this property.")
-            if property_rec.state == 'new':
-                property_rec.state = 'offer_received'
         return offers
 
     def action_accept(self):
@@ -92,9 +90,3 @@ class EstatePropertyOffer(models.Model):
                     property_rec.state = 'new'
             else:
                 offer.status = "refused"
-
-    def unlink(self):
-        for offer in self:
-            if offer.property_id.state == 'sold':
-                raise UserError("You cannot delete an offer of a sold property.")
-        return super().unlink()

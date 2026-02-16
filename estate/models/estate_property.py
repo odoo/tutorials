@@ -82,7 +82,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-    
+
     @api.depends('offer_ids.status')
     def _compute_state(self):
         for property_rec in self:
@@ -101,7 +101,6 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("Sold property cannot be cancelled.")
             record.state = "cancelled"
-        return True
 
     def action_sold(self):
         for record in self:
