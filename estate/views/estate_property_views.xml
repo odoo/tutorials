@@ -47,6 +47,13 @@
         <field name="arch" type="xml">
             <form string="estate_property_form">
                 <header>
+                    <button
+                        name='action_mark_as_sold' type="object" string="Mark as Sold"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name='action_mark_as_cancelled' type="object" string="Cancel"
+                    />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet class="o_sheet_custom">
@@ -103,6 +110,12 @@
                                     <field name="partner_id" />
                                     <field name="status" />
                                     <field name="validity" />
+                                    <button name="action_accept" type="object" title="Accept"
+                                        status="accepted"
+                                        icon="fa-check" />
+                                    <button name="action_refuse" type="object" title="Refuse"
+                                        status="rejected"
+                                        icon="fa-times" />
                                     <field name="date_deadline" />
                                     <field name="price" />
                                 </list>
