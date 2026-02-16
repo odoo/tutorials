@@ -1,47 +1,47 @@
-from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+import re
+from odoo import api, models
+from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
-    _inherit = "sale.order"
+    _inherit = 'sale.order'
 
-    discount_percentage = fields.Float(
-        string="Discount Amount",
-    )
+    @api.onchange('order_line')
+    def _onchange_recalculate_global_discount(self):
+        discount_lines = self.env['sale.order.line']
+        for line in self.order_line:
+            if line._is_global_discount():
+                discount_lines += line
 
-    @api.model
-    def _get_discount_product(self):
-        return self.env["product.product"].search([("name", "=", "Discount")], limit=1)
+        if not discount_lines:
+            return
 
-    def _update_discount(self):
-        discount_product = self._get_discount_product()
-        discount_line = self.order_line.filtered(
-            lambda l: l.product_id == discount_product
-        )
-        product_lines = self.order_line.filtered(
-            lambda l: l.product_id != discount_product
-        )
+        product_lines = self.env['sale.order.line']
+        for line in self.order_line:
+            if not line._is_global_discount():
+                product_lines += line
 
-        # if not product_lines and discount_line:
-        #     discount_line.unlink()
-        #     return
+        if not product_lines:
+            self.order_line -= discount_lines
+            return
 
-        total = sum(product_lines.mapped("price_subtotal"))
-        discount_amount = -(total * self.discount_percentage / 100.0)
+        subtotal = 0
+        for line in product_lines:
+            subtotal += line.price_subtotal
 
-        if discount_line:
-            discount_line.write({"price_unit": discount_amount})
+        for discount_line in discount_lines:
+            match = re.search(r"(\d+(?:\.\d+)?)%", discount_line.name)
+            if match:
+                percent = float(match.group(1))
+                discount_line.price_unit = -(subtotal * percent / 100)
 
-    def action_confirm(self):
-        res = super().action_confirm()
-        if self.amount_total <= 0:
-            raise ValidationError(
-                "Cannot confirm the sale order with zero total amount."
+    @api.constrains('order_line')
+    def _check_single_global_discount(self):
+        for order in self:
+            discounts = order.order_line.filtered(
+                lambda l: l._is_global_discount()
             )
-        return res
-
-#    if discount_line:
-#         discount_line.write({
-#             "price_unit": discount_amount,
-#             "product_uom_qty": 1,
-#         })
+            if len(discounts) > 1:
+                raise UserError(
+                    "Only one global discount is allowed per order."
+                )
