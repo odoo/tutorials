@@ -21,4 +21,14 @@
             </search>
         </field>
     </record>
+
+    <record id="estate_type_view_search" model="ir.ui.view">
+        <field name="name">estate.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
 </odoo>

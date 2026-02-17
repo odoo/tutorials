@@ -2,8 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
-import datetime
-
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -25,6 +23,14 @@ class EstateProperty(models.Model):
         string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Type is used to choose the orientation")
+    
+    property_type_id = fields.Many2one('estate.property.type', string='Property Types')
+    seller_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
     
     active = fields.Boolean(default=True)
     state = fields.Selection(
