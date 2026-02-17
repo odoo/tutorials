@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
             if property_rec.state in ['offer_accepted', 'sold', 'cancelled']:
                 raise UserError("Cannot create offer for this property.")
             if property_rec.state == 'new':
-                property_rec.state = 'offer_received'   
+                property_rec.state = 'offer_received'
         return offers
 
     def action_accept(self):

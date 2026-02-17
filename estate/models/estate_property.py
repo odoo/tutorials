@@ -1,8 +1,8 @@
 from datetime import timedelta
-from jsonschema import ValidationError
+
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    total_area = fields.Float(compute="_compute_total_area",store=True)
+    total_area = fields.Float(compute="_compute_total_area", store=True)
     garden_orientation = fields.Selection(
         [
             ("north", "North"),
