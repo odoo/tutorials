@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_modular_type,modular_type,model_modular_type,base.group_user,1,1,1,1
+access_sale_order_line_modular_value,sale_order_line_modular_value,model_sale_order_line_modular_value,base.group_user,1,1,1,1
+access_set_modular_values_wizard,set_modular_values_wizard,model_set_modular_values_wizard,base.group_user,1,1,1,1
+access_set_modular_values_line_wizard,set_modular_values_line_wizard,model_set_modular_values_line_wizard,base.group_user,1,1,1,1

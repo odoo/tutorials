@@ -1,0 +1,19 @@
+<odoo>
+    <record id="view_modular_type_tree" model="ir.ui.view">
+        <field name="name">modular.type.list</field>
+        <field name="model">modular.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_modular_type" model="ir.actions.act_window">
+        <field name="name">Modular Types</field>
+        <field name="res_model">modular.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_modular_type" name="Modular Types" parent="mrp.menu_mrp_configuration" action="action_modular_type" sequence="100"/>
+</odoo>
