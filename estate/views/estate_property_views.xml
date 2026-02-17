@@ -19,6 +19,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="tags_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -59,7 +60,11 @@
                         </h1>
                     </div>
                     <group class="mb32">
+                        <field name="tags_ids" widget="many2many_tags"/>
+                    </group>
+                    <group class="mb32">
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -78,11 +83,17 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
-                                <!-- <field name="garden_orientation"/> -->
+                                <field name="garden_orientation"/>
                             </group>
                         </page>
-                        <page string="Other Information">
-                            Empty for now ...
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
