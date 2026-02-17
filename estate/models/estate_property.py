@@ -26,7 +26,6 @@ class EstateProperty(models.Model):
             ('east', 'East'), 
             ('west', 'West')
         ],
-        help="Select one of the four cardinal points (North, South, East, West).",
     ),
     active = fields.Boolean(default=True),
     state = fields.Selection(

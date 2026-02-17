@@ -1,2 +1,0 @@
-class mymodel():
-    pass
