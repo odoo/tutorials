@@ -16,11 +16,12 @@ def get_date_in_3_months() -> fields.Date:
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
+    _order = "id desc"
  
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=get_date_in_3_months())
+    date_availability = fields.Date(copy=False, default= lambda self: get_date_in_3_months())
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -100,7 +101,7 @@ class EstateProperty(models.Model):
             record.state = "sold"
         return True
 
-    def action_cancel(self):
+    def action_set_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("Sold properties cannot be canceled.")

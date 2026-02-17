@@ -28,7 +28,7 @@
             <form string="Property">
                 <header>
                   <button name="action_set_sold" string="Mark as Sold" type="object"/>
-                  <button name="action_cancel" string="Cancel" type="object"/>
+                  <button name="action_set_cancel" string="Cancel" type="object"/>
                 </header>
                 <sheet>
                   <h1>
