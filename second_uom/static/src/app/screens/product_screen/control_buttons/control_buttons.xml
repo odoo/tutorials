@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('more-btn')]" position="before">
+            <button t-if="displaySecondUomBtn()" 
+                    class="btn btn-secondary btn-lg flex-shrink-0" 
+                    t-on-click="clickSecondUom">
+                <t t-esc="currentOrder.getSelectedOrderline().product_id.pos_second_uom_id.name"/>
+            </button>
+        </xpath>
+    </t>
+</templates>
