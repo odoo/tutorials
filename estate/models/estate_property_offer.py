@@ -23,3 +23,16 @@ class EstatePropertyOffer(models.Model):
             if offer.date_deadline and start:
                 delta = offer.date_deadline - start
                 offer.validity = delta.days
+
+    def accept_offer(self):
+        for offer in self:
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
+            offer.property_id.buyer_id = offer.partner_id
+
+    def refuse_offer(self):
+        for offer in self:
+            offer.status = 'refused'
+            if offer.property_id.state != 'offer_accepted':
+                offer.property_id.state = 'offer_received'
