@@ -17,9 +17,18 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
-                    <group>
-                        <field name="name" />
-                    </group>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <field name="property_ids">
+                        <list>
+                            <field name="name" />
+                            <field name="expected_price" />
+                            <field name="state" />
+                        </list>
+                    </field>
                 </sheet>
             </form>
         </field>

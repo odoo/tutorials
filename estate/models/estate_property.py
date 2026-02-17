@@ -63,6 +63,14 @@ class EstateProperty(models.Model):
         compute="_compute_best_price",
     )
 
+    _check_expected_price_positive = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The property expected price must be strictly positive",
+    )
+    _check_selling_price_positive = models.Constraint(
+        "CHECK(selling_price >= 0)", "The property selling price must be positive"
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -111,11 +119,3 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
-
-    _check_expected_price_positive = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "The property expected price must be strictly positive",
-    )
-    _check_selling_price_positive = models.Constraint(
-        "CHECK(selling_price >= 0)", "The property selling price must be positive"
-    )
