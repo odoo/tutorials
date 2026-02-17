@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="sale_commission_rule"
+        name="Commision Rules"
+        parent="sale.menu_sale_config"
+        action="sale_commission_rule_action"/>
+
+        <menuitem
+        id="sale_sales_commission"
+        name="Sales Commissions"
+        parent="sale.menu_sale_report"
+        action="sale_commission_action"/>
+        
+</odoo>
