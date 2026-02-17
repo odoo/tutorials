@@ -1,5 +1,6 @@
 from datetime import timedelta
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,10 +22,10 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7, string="Validity (days)")
 
     date_deadline = fields.Date(
-        string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
         store=True,
+        string="Deadline",
     )
 
     @api.depends("validity")
@@ -43,3 +44,29 @@ class EstatePropertyOffer(models.Model):
             if record.date_deadline and record.create_date:
                 delta = record.date_deadline - record.create_date.date()
                 record.validity = delta.days
+
+    def action_accept(self):
+        for record in self:
+            record.property_id.buyer_id = record.partner_id
+            record.status = "accepted"
+            record.property_id.state = "offer_accepted"
+            record.property_id.selling_price = record.price
+
+            other_offers = record.property_id.offer_ids.filtered(
+                lambda o: o.id != record.id
+            )
+
+            other_offers.write({"status": "refused"})
+
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            if record.status == "accepted":
+                raise UserError("You cannot refuse an accepted offer.")
+            record.status = "refused"
+        return True
+
+    _price_check = models.Constraint(
+        "CHECK(price > 0)", "The offer price must be strictly positive."
+    )
