@@ -2,12 +2,15 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
+
 
     name = fields.Char()
     description = fields.Text(required=True)
@@ -16,7 +19,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + timedelta(days=90),
         copy=False,
     )
-    expected_price = fields.Float(readonly=True, copy=False)
+    expected_price = fields.Float(copy=False)
     selling_price = fields.Float()
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -77,6 +80,11 @@ class EstateProperty(models.Model):
         string="Best Price",
         compute="_computer_best_price"
     )
+    property_type_id = fields.Many2one(
+    "estate.property.type",
+    string="Property Type",
+    )
+
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -116,3 +124,30 @@ class EstateProperty(models.Model):
             if not accepted:
                 raise UserError("You must accept an offer before selling.")
             record.state = "sold"
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "The selling price must be strictly positive",
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+
+            minimum_price = record.expected_price * 0.9
+
+            if float_compare(
+                record.selling_price,
+                minimum_price,
+                precision_rounding=0.01,
+            ) < 0:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )

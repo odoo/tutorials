@@ -42,7 +42,10 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="state" readonly="1"/>
+                            <field name="state"
+                                   widget="statusbar"
+                                   statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
+                            />
                             <field name="postcode"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
