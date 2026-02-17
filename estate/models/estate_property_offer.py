@@ -67,7 +67,17 @@ class EstatePropertyOffer(models.Model):
             # Set property state
             property_rec.state = "offer_received"
 
-        return super().create(vals_list)
+        offers = super().create(vals_list)
+
+        for offer in offers:
+            lead = self.env['crm.lead'].create({
+                'name': offer.property_id.name,
+                'partner_id': offer.partner_id.id,
+                'expected_revenue': offer.price,
+                'type': 'lead', 
+            })
+        breakpoint()
+        return offers
 
     @api.constrains('property_id')
     def _check_property_state(self):
@@ -97,3 +107,35 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = "refused"
         return True
+
+# @api.model
+# def create(self, vals_list):
+
+#     for vals in vals_list:
+#         property_id = vals.get("property_id")
+#         price = vals.get("price")
+#         property_rec = self.env["estate.property"].browse(property_id)
+
+#         existing_prices = property_rec.offer_ids.mapped("price")
+#         if existing_prices and price < max(existing_prices):
+#             raise UserError("You cannot create an offer lower than an existing offer")
+
+#         property_rec.state = "offer_received"
+
+#     # ---- Create offers first ----
+#     offers = super().create(vals_list)
+
+#     # ---- Create CRM Leads ----
+#     for offer in offers:
+#         lead = self.env['crm.lead'].create({
+#             'name': f"Offer for {offer.property_id.name}",
+#             'partner_id': offer.partner_id.id,
+#             'expected_revenue': offer.price,
+#             'description': f"Offer created for property {offer.property_id.name}",
+#             'type': 'lead',   # or 'opportunity'
+#         })
+
+#         # Optional: store link
+#         offer.lead_id = lead.id
+
+#     return offers
