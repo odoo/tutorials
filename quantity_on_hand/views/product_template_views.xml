@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_product_template_form_forecast_decor" model="ir.ui.view">
+        <field name="name">product.template.form.forecast.decor</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[.//field[@name='virtual_available']]" position="attributes">
+                <attribute name="decoration-danger">virtual_available &lt; 0</attribute>
+                <attribute name="decoration-primary">virtual_available == 0</attribute>
+                <attribute name="icon" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.common.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='qty_available']" position="replace" />
+            <xpath expr="//field[@name='qty_available']" position="replace" />
+            <xpath expr="//field[@name='uom_name']" position="replace" />
+
+            <xpath expr="//field[@name='is_storable']" position="after">
+                <label for="qty_available" invisible="not is_storable" />
+                <div class="o_row"
+                    invisible="not is_storable">
+
+                    <field name="qty_available" readonly="is_multilocation" />
+
+                    <field name="uom_name" class="oe_inline text-muted" />
+                    <button type="action"
+                        name="%(stock.action_product_stock_view)d"
+                        string="Update"
+                        class="btn btn-secondary" invisible="is_multilocation" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
