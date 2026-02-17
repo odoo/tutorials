@@ -17,26 +17,34 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
-    @api.depends("validity")
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        "The offer price must be strictly positive."
+    )
+
+    @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date + relativedelta(days=record.validity)
+        for offer in self:
+            base_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = base_date + relativedelta(days=offer.validity)
+
     def _inverse_date_deadline(self):
-        for record in self:
-            if record.create_date and record.date_deadline:
-                record.validity = (record.date_deadline - record.create_date.date()).days
+        for offer in self:
+            base_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            if offer.date_deadline:
+                offer.validity = (offer.date_deadline - base_date).days
 
     def action_accept_offer(self):
-        for record in self:
-            record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
-            for offer in record.property_id.offer_ids:
-                if offer != record:
-                    offer.status = "refused"
+        for offer in self:
+            offer.status = "accepted"
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            for competing_offer in offer.property_id.offer_ids:
+                if competing_offer != offer:
+                    competing_offer.status = "refused"
         return True
+
     def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
+        for offer in self:
+            offer.status = "refused"
         return True

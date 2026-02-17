@@ -1,6 +1,7 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.date_utils import relativedelta
+from odoo.tools.float_utils import float_compare
 
 GARDEN_ORIENTATION = [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
 PROPERTY_STATE = [("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")]
@@ -30,21 +31,30 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    property_tag_ids = fields.Many2many("estate.property.tag")
+    property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        "The expected price must be strictly positive."
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        "The selling price must be positive."
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
-        for record in self:
-            record.best_offer = max(record.offer_ids.mapped("price"), default=0)
+        for property in self:
+            property.best_offer = max(property.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -56,16 +66,25 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_cancel_property(self):
-        for record in self:
-            if record.state == "sold":
+        for property in self:
+            if property.state == "sold":
                 raise UserError("Sold properties cannot be cancelled")
             else:
-                record.state = "cancelled"
+                property.state = "cancelled"
         return True
+
     def action_sold_property(self):
-        for record in self:
-            if record.state == "cancelled":
+        for property in self:
+            if property.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold")
             else:
-                record.state = "sold"
+                property.state = "sold"
         return True
+
+    @api.constrains("selling_price")
+    def _check_selling_price_minimum_ratio(self):
+        for property in self:
+            if not property.selling_price:
+                continue
+            if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError("The selling price must be at least 90% of the expected price.")
