@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="sale_commission_action" model="ir.actions.act_window">
         <field name="name">Sale Commission</field>
         <field name="res_model">sale.commission</field>
         <field name="view_mode">list,form,pivot,graph</field>
+        <field name="context">{'group_by': ['date','team_id','user_id']}</field>
 
     </record>
 
@@ -23,7 +23,6 @@
         </field>
     </record>
 
-
     <!-- Pivot View -->
     <record id="sale_commission_view_pivot" model="ir.ui.view">
         <field name="name">sale.commission.view.pivot</field>
@@ -39,15 +38,43 @@
     </record>
 
     <!-- Graph View -->
-     <record id="sale_commission_view_graph" model="ir.ui.view">
+    <record id="sale_commission_view_graph" model="ir.ui.view">
         <field name="name">sale.commission.view.graph</field>
         <field name="model">sale.commission</field>
         <field name="arch" type="xml">
             <graph string="" type="bar">
                 <field name="date" type="row"/>
                 <field name="user_id" type="col"/>
-                <field name="amount" type="measure" widget="percentage" string="Current Level"/>
+                <field name="amount" type="measure"/>
             </graph>
         </field>
-     </record>
+    </record>
+
+
+    <record id="sale_commission_view_search" model="ir.ui.view">
+        <field name="name">sale.commission.view.search</field>
+        <field name="model">sale.commission</field>
+        <field name="arch" type="xml">
+            <search string="Commissions">
+
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="team_id"/>
+                <field name="date"/>
+
+                <group>
+                    <filter name="group_user" string="Salesperson" context="{'group_by':'user_id'}"/>
+                    <filter name="group_team" string="Sales Team" context="{'group_by':'team_id'}"/>
+                    <filter name="group_date" string="Date" context="{'group_by':'date'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+
+
+
 </odoo>
+
+ 

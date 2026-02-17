@@ -1,0 +1,336 @@
+<odoo>
+    <!-- ==========================
+         Users (Salespersons)
+    =========================== -->
+    <record id="user_alice" model="res.users">
+        <field name="name">Alice</field>
+        <field name="login">alice</field>
+    </record>
+    <record id="user_bob" model="res.users">
+        <field name="name">Bob</field>
+        <field name="login">bob</field>
+    </record>
+    <record id="user_charlie" model="res.users">
+        <field name="name">Charlie</field>
+        <field name="login">charlie</field>
+    </record>
+    <record id="user_diana" model="res.users">
+        <field name="name">Diana</field>
+        <field name="login">diana</field>
+    </record>
+    <record id="user_ellen" model="res.users">
+        <field name="name">Ellen</field>
+        <field name="login">ellen</field>
+    </record>
+
+    <!-- ==========================
+         Sales Teams
+    =========================== -->
+    <record id="team_alpha" model="crm.team">
+        <field name="name">Alpha Team</field>
+        <field name="member_ids" eval="[(4, ref('user_alice')), (4, ref('user_bob'))]"/>
+    </record>
+    <record id="team_beta" model="crm.team">
+        <field name="name">Beta Team</field>
+        <field name="member_ids" eval="[(4, ref('user_charlie')), (4, ref('user_diana'))]"/>
+    </record>
+    <record id="team_gamma" model="crm.team">
+        <field name="name">Gamma Team</field>
+        <field name="member_ids" eval="[(4, ref('user_ellen'))]"/>
+    </record>
+
+    <!-- ==========================
+         Products & Categories
+    =========================== -->
+    <record id="categ_electronics" model="product.category">
+        <field name="name">Electronics</field>
+    </record>
+    <record id="categ_furniture" model="product.category">
+        <field name="name">Furniture</field>
+    </record>
+
+    <record id="product_laptop" model="product.product">
+        <field name="name">Laptop</field>
+        <field name="categ_id" ref="categ_electronics"/>
+    </record>
+    <record id="product_phone" model="product.product">
+        <field name="name">Phone</field>
+        <field name="categ_id" ref="categ_electronics"/>
+    </record>
+    <record id="product_table" model="product.product">
+        <field name="name">Table</field>
+        <field name="categ_id" ref="categ_furniture"/>
+    </record>
+    <record id="product_chair" model="product.product">
+        <field name="name">Chair</field>
+        <field name="categ_id" ref="categ_furniture"/>
+    </record>
+    <record id="product_monitor" model="product.product">
+        <field name="name">Monitor</field>
+        <field name="categ_id" ref="categ_electronics"/>
+    </record>
+
+    <!-- ==========================
+         Commission Rules
+    =========================== -->
+    <record id="rule_1" model="commission.rule">
+        <field name="sequence">1</field>
+        <field name="active">True</field>
+        <field name="commission_rate">0.05</field>
+        <field name="commission_for">salesperson</field>
+        <field name="salesperson_id" ref="user_alice"/>
+    </record>
+
+    <record id="rule_2" model="commission.rule">
+        <field name="sequence">2</field>
+        <field name="active">True</field>
+        <field name="commission_rate">0.03</field>
+        <field name="commission_for">team</field>
+        <field name="team_id" ref="team_alpha"/>
+    </record>
+
+    <record id="rule_3" model="commission.rule">
+        <field name="sequence">3</field>
+        <field name="active">True</field>
+        <field name="commission_rate">0.07</field>
+        <field name="commission_for">salesperson</field>
+        <field name="product_id" ref="product_laptop"/>
+    </record>
+
+    <record id="rule_4" model="commission.rule">
+        <field name="sequence">4</field>
+        <field name="active">True</field>
+        <field name="commission_rate">0.04</field>
+        <field name="commission_for">team</field>
+        <field name="team_id" ref="team_beta"/>
+        <field name="product_category_id" ref="categ_furniture"/>
+    </record>
+
+    <record id="rule_5" model="commission.rule">
+        <field name="sequence">5</field>
+        <field name="active">True</field>
+        <field name="commission_rate">0.06</field>
+        <field name="commission_for">salesperson</field>
+        <field name="max_discount">10.0</field>
+    </record>
+
+    <!-- ==========================
+         Partners (Customers)
+    =========================== -->
+    <record id="partner_acme" model="res.partner">
+        <field name="name">ACME Corp</field>
+    </record>
+    <record id="partner_globex" model="res.partner">
+        <field name="name">Globex Inc</field>
+    </record>
+
+    <!-- ==========================
+         Sale Orders
+    =========================== -->
+    <record id="sale_order_1" model="sale.order">
+        <field name="partner_id" ref="partner_acme"/>
+        <field name="user_id" ref="user_alice"/>
+        <field name="team_id" ref="team_alpha"/>
+    </record>
+    <record id="sale_order_2" model="sale.order">
+        <field name="partner_id" ref="partner_globex"/>
+        <field name="user_id" ref="user_bob"/>
+        <field name="team_id" ref="team_beta"/>
+    </record>
+    <record id="sale_order_3" model="sale.order">
+        <field name="partner_id" ref="partner_acme"/>
+        <field name="user_id" ref="user_charlie"/>
+        <field name="team_id" ref="team_gamma"/>
+    </record>
+
+    <!-- ==========================
+         Sale Order Lines
+    =========================== -->
+    <record id="sale_order_line_1" model="sale.order.line">
+        <field name="order_id" ref="sale_order_1"/>
+        <field name="product_id" ref="product_laptop"/>
+        <field name="product_uom_qty">2</field>
+        <field name="price_unit">1000.0</field>
+        <field name="discount">5.0</field>
+    </record>
+    <record id="sale_order_line_2" model="sale.order.line">
+        <field name="order_id" ref="sale_order_2"/>
+        <field name="product_id" ref="product_table"/>
+        <field name="product_uom_qty">1</field>
+        <field name="price_unit">300.0</field>
+        <field name="discount">0.0</field>
+    </record>
+    <record id="sale_order_line_3" model="sale.order.line">
+        <field name="order_id" ref="sale_order_3"/>
+        <field name="product_id" ref="product_chair"/>
+        <field name="product_uom_qty">4</field>
+        <field name="price_unit">50.0</field>
+        <field name="discount">0.0</field>
+    </record>
+
+    <!-- ==========================
+         Invoices
+    =========================== -->
+    <record id="invoice_1" model="account.move">
+        <field name="move_type">out_invoice</field>
+        <field name="partner_id" ref="partner_acme"/>
+        <field name="invoice_date">2026-02-17</field>
+        <field name="invoice_line_ids" eval="[(0,0,{'product_id': ref('product_laptop'), 'quantity': 2, 'price_unit': 1000.0, 'sale_line_ids': [(6,0,[ref('sale_order_line_1')])]}), (0,0,{'product_id': ref('product_monitor'), 'quantity': 1, 'price_unit': 200.0, 'sale_line_ids': []})]"/>
+    </record>
+
+    <record id="invoice_2" model="account.move">
+        <field name="move_type">out_invoice</field>
+        <field name="partner_id" ref="partner_globex"/>
+        <field name="invoice_date">2026-02-17</field>
+        <field name="invoice_line_ids" eval="[(0,0,{'product_id': ref('product_table'), 'quantity': 1, 'price_unit': 300.0, 'sale_line_ids': [(6,0,[ref('sale_order_line_2')])]}), (0,0,{'product_id': ref('product_chair'), 'quantity': 2, 'price_unit': 50.0, 'sale_line_ids': []})]"/>
+    </record>
+
+    <record id="invoice_3" model="account.move">
+        <field name="move_type">out_invoice</field>
+        <field name="partner_id" ref="partner_acme"/>
+        <field name="invoice_date">2026-02-17</field>
+        <field name="invoice_line_ids" eval="[(0,0,{'product_id': ref('product_chair'), 'quantity': 4, 'price_unit': 50.0, 'sale_line_ids': [(6,0,[ref('sale_order_line_3')])]}), (0,0,{'product_id': ref('product_phone'), 'quantity': 3, 'price_unit': 500.0, 'sale_line_ids': []})]"/>
+    </record>
+
+    <!-- ==========================
+     Sale Commissions Extended Demo Data
+=========================== -->
+
+<!-- Alice commissions -->
+<record id="commission_1" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_alice"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_1"/>
+    <field name="amount">110.0</field>
+    <field name="rule_id" ref="rule_1"/>
+    <field name="sale_order_id" ref="sale_order_1"/>
+</record>
+
+<record id="commission_2" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_alice"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_1"/>
+    <field name="amount">60.0</field>
+    <field name="rule_id" ref="rule_3"/>
+    <field name="sale_order_id" ref="sale_order_1"/>
+</record>
+
+<record id="commission_3" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_alice"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_1"/>
+    <field name="amount">35.0</field>
+    <field name="rule_id" ref="rule_2"/>
+    <field name="sale_order_id" ref="sale_order_1"/>
+</record>
+
+<record id="commission_4" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_alice"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_1"/>
+    <field name="amount">15.0</field>
+    <field name="rule_id" ref="rule_5"/>
+    <field name="sale_order_id" ref="sale_order_1"/>
+</record>
+
+<!-- Bob commissions -->
+<record id="commission_5" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_bob"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_2"/>
+    <field name="amount">9.0</field>
+    <field name="rule_id" ref="rule_2"/>
+    <field name="sale_order_id" ref="sale_order_2"/>
+</record>
+
+<!-- Diana commissions (Beta Team, Furniture category) -->
+<record id="commission_6" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_diana"/>
+    <field name="team_id" ref="team_beta"/>
+    <field name="invoice_id" ref="invoice_2"/>
+    <field name="amount">12.0</field>
+    <field name="rule_id" ref="rule_4"/>
+    <field name="sale_order_id" ref="sale_order_2"/>
+</record>
+
+<!-- Charlie commissions -->
+<record id="commission_7" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_charlie"/>
+    <field name="team_id" ref="team_gamma"/>
+    <field name="invoice_id" ref="invoice_3"/>
+    <field name="amount">14.0</field>
+    <field name="rule_id" ref="rule_5"/>
+    <field name="sale_order_id" ref="sale_order_3"/>
+</record>
+
+<!-- Ellen commissions -->
+<record id="commission_8" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_ellen"/>
+    <field name="team_id" ref="team_gamma"/>
+    <field name="invoice_id" ref="invoice_3"/>
+    <field name="amount">21.0</field>
+    <field name="rule_id" ref="rule_5"/>
+    <field name="sale_order_id" ref="sale_order_3"/>
+</record>
+
+<!-- Multiple rules per invoice -->
+<record id="commission_9" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_bob"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_2"/>
+    <field name="amount">6.0</field>
+    <field name="rule_id" ref="rule_5"/>
+    <field name="sale_order_id" ref="sale_order_2"/>
+</record>
+
+<record id="commission_10" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_charlie"/>
+    <field name="team_id" ref="team_gamma"/>
+    <field name="invoice_id" ref="invoice_3"/>
+    <field name="amount">10.5</field>
+    <field name="rule_id" ref="rule_3"/>
+    <field name="sale_order_id" ref="sale_order_3"/>
+</record>
+
+<record id="commission_11" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_diana"/>
+    <field name="team_id" ref="team_beta"/>
+    <field name="invoice_id" ref="invoice_2"/>
+    <field name="amount">8.0</field>
+    <field name="rule_id" ref="rule_5"/>
+    <field name="sale_order_id" ref="sale_order_2"/>
+</record>
+
+<record id="commission_12" model="sale.commission">
+    <field name="date">2026-02-17</field>
+    <field name="user_id" ref="user_alice"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_1"/>
+    <field name="amount">5.0</field>
+    <field name="rule_id" ref="rule_4"/>
+    <field name="sale_order_id" ref="sale_order_1"/>
+</record>
+
+<!-- Alice commissions -->
+<record id="commission_13" model="sale.commission">
+    <field name="date">2025-02-17</field>
+    <field name="user_id" ref="user_alice"/>
+    <field name="team_id" ref="team_alpha"/>
+    <field name="invoice_id" ref="invoice_1"/>
+    <field name="amount">710.0</field>
+    <field name="rule_id" ref="rule_1"/>
+    <field name="sale_order_id" ref="sale_order_1"/>
+</record>
+
+</odoo>

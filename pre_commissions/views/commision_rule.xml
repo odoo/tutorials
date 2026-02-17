@@ -55,7 +55,7 @@
             <list string="Commission Rules">
                 <field name="sequence" widget="handle"/>
                 <field name="due_at"/>
-                <field name="commission_rate" widget="percentage"/>
+                <field name="commission_rate"/>
                 <field name="commission_for"/>
                 <field name="condition_display"/>
             </list>
