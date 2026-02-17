@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -8,3 +8,18 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string='Status', copy=False)
     partner_id = fields.Many2one('res.partner', string='Partner')
     property_id = fields.Many2one('estate.property', string='Property')
+    validity = fields.Integer(string='Validity (days)', default=7)
+    date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+
+    @api.depends('validity', 'create_date')
+    def _compute_date_deadline(self):
+        for offer in self:
+            start = fields.Date.to_date(offer.create_date) or fields.Date.today()
+            offer.date_deadline = fields.Date.add(start, days=offer.validity)
+
+    def _inverse_date_deadline(self):
+        for offer in self:
+            start = fields.Date.to_date(offer.create_date) or fields.Date.today()
+            if offer.date_deadline and start:
+                delta = offer.date_deadline - start
+                offer.validity = delta.days
