@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -31,10 +32,20 @@ class EstatePropertyOffer(models.Model):
 
     def accept_offer(self):
         for offer in self:
+            # Check no other offer has been accepted for the same property
+            if offer.property_id.offer_ids.filtered(lambda o: o.status == 'accepted'):
+                raise UserError('Another offer has already been accepted for this property.')
+        
+            # Accept the offer
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.state = 'offer_accepted'
             offer.property_id.buyer_id = offer.partner_id
+
+            # Refuse all other offers for the same property
+            other_offers = offer.property_id.offer_ids.filtered(lambda o: o.id != offer.id and o.status != 'refused')
+            for other_offer in other_offers:
+                other_offer.status = 'refused'
 
     def refuse_offer(self):
         for offer in self:
