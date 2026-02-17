@@ -6,6 +6,10 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Property Offer">
+                <header>
+                    <button name="action_accept" type="object" string="Accept" class="btn-success"/>
+                    <button name="action_refuse" type="object" string="Refuse" class="btn-danger"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="price"/>
