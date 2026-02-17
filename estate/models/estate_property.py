@@ -83,7 +83,7 @@ class EstateProperty(models.Model):
         compute="_auto_total_area",
         string='Total Area',
         store=True,
-        hint="Auto Computed field",
+        help="Auto Computed field",
         )
     best_price = fields.Integer(string="Best Price", compute="_compute_best_price")
 

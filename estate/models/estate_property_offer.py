@@ -28,7 +28,7 @@ class EstatePropertyOffer(models.Model):
     )
     validity = fields.Integer(string="Validity")
     date_deadline = fields.Date(
-        string='date_deadline',
+        string='Date Deadline',
         default=fields.Date.context_today,
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
