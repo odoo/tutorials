@@ -12,6 +12,8 @@
         <field name="arch" type="xml">
             <list string="Estate Properties">
                 <field name="name" string="Title"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
@@ -22,6 +24,7 @@
             </list>
         </field>
     </record>
+
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -30,11 +33,13 @@
                <sheet>
                     <div class="oe_title">
                             <h1>
-                                <field name="name" string="Property Title"/>
+                                <field name="name" placeholder="Property Title"/>
                             </h1>
+                            <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Availability From"/>
                         </group>
@@ -57,11 +62,21 @@
                                 <field name="state" string="Status"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                                <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" string="Salesperson"/>
+                                <field name="buyer_id" string="Buyer"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
+
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -74,10 +89,12 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 <separator/>
                 <filter name="available" string="Only Available" domain="[('state', '=', ['new','offer_received'])]"/>
                 <filter name="group_by_postcode" string="Postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>
+
 </odoo>
