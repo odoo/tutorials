@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -17,10 +18,28 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
-        for record in self:
-            create_date = record.create_date.date() if record.create_date else fields.Date.today()
-            record.date_deadline = create_date + relativedelta(days=record.validity)
+        for offer in self:
+            create_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = create_date + relativedelta(days=offer.validity)
 
     def _inverse_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
+        for offer in self:
+            offer.validity = (offer.date_deadline - offer.create_date.date()).days
+
+    def action_accept_offer(self):
+        for offer in self:
+            if 'accepted' in offer.mapped("property_id.offer_ids.status"):
+                raise UserError("Only one offer can be accepeted !")        
+            offer.status = 'accepted'
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            (offer.property_id.offer_ids - offer).write({'status': 'refused'})
+        return True
+
+    def action_refuse_offer(self):
+        for offer in self:
+            if offer.status == 'accepted':
+                offer.property_id.buyer_id = False
+                offer.property_id.selling_price = False
+            offer.status = 'refused'            
+        return True
