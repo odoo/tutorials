@@ -2,11 +2,14 @@ from datetime import timedelta
 
 from odoo import api, models, fields
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Offer Price")
     status = fields.Selection(
@@ -28,10 +31,19 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         required=True,
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        store=True
+    )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+    )
+    _price_check = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive.'
     )
 
     @api.depends("create_date", "validity")
@@ -52,10 +64,19 @@ class EstatePropertyOffer(models.Model):
             property_rec = offer.property_id
             if property_rec.state in ['offer_accepted', 'sold', 'cancelled']:
                 raise UserError("Cannot create offer for this property.")
+            if property_rec.state == 'new':
+                property_rec.state = 'offer_received'   
         return offers
 
     def action_accept(self):
         for offer in self:
+            property = offer.property_id
+            minimum_price = property.expected_price * 0.9
+            if float_compare(offer.price, minimum_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! "
+                    "You must reduce the expected price if you want to accept this offer."
+                )
             if offer.property_id.state in ['sold', 'cancelled']:
                 raise UserError("You cannot accept an offer on a sold or cancelled property.")
             accepted_offer = offer.property_id.offer_ids.filtered(

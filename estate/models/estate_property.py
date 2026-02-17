@@ -1,12 +1,15 @@
 from datetime import timedelta
+from jsonschema import ValidationError
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -24,7 +27,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    total_area = fields.Float(compute="_compute_total_area")
+    total_area = fields.Float(compute="_compute_total_area",store=True)
     garden_orientation = fields.Selection(
         [
             ("north", "North"),
@@ -40,7 +43,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
-    ], compute="_compute_state", store=True)
+    ], default='new')
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
@@ -61,6 +64,14 @@ class EstateProperty(models.Model):
         "estate.property.offer",
         "property_id",
         string="Offers",
+    )
+    _expected_price_check = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.'
+    )
+    _selling_price_check = models.Constraint(
+        'CHECK(selling_price IS NULL OR selling_price >= 0)',
+        'The selling price must be positive.'
     )
 
     @api.depends("living_area", "garden_area")
@@ -83,18 +94,20 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.depends('offer_ids.status')
-    def _compute_state(self):
-        for property_rec in self:
-            offers = property_rec.offer_ids
-            if property_rec.state in ['sold', 'cancelled']:
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_digits=2):
                 continue
-            if not offers:
-                property_rec.state = 'new'
-            elif any(o.status == 'accepted' for o in offers):
-                property_rec.state = 'offer_accepted'
-            else:
-                property_rec.state = 'offer_received'
+            minimum_price = property.expected_price * 0.9
+            if float_compare(
+                property.selling_price,
+                minimum_price,
+                precision_digits=2
+            ) < 0:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
 
     def action_cancel(self):
         for record in self:
