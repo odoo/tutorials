@@ -49,10 +49,11 @@
                 <header>
                     <button
                         name='action_mark_as_sold' type="object" string="Mark as Sold"
-                        class="oe_highlight"
+                        class="oe_highlight" invisible="state in ['sold','cancelled']"
                     />
                     <button
                         name='action_mark_as_cancelled' type="object" string="Cancel"
+                        invisible="state in ['cancelled','sold']"
                     />
                     <field name="state" widget="statusbar" />
                 </header>

@@ -18,9 +18,22 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="name" />
-                    <field name="property_ids" />
+                    <h1>
+                        <field name="name" />
+                    </h1>
                 </group>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name='name'/>
+                                <field name="expected_price" />
+                                <field name="state"/>
+                            </list>
+
+                        </field>
+                    </page>
+                </notebook>
             </form>
         </field>
     </record>

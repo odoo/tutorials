@@ -21,7 +21,9 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date(
-        "Date Deadline", compute="_compute_deadline", inverse="_inverse_deadline"
+        "Date Deadline",
+        compute="_compute_deadline",
+        inverse="_inverse_deadline",
     )
 
     @api.depends("create_date", "validity")
@@ -71,7 +73,7 @@ class EstatePropertyOffer(models.Model):
                 rec.status = "rejected"
         return True
 
-    @api.constrains("price", "property_id")
+    @api.constrains("price")
     def _check_selling_price(self):
         for rec in self:
             expected_price = rec.property_id.expected_price
