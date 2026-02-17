@@ -2,28 +2,21 @@
 <odoo>
 
     <!-- Root Menu -->
-    <menuitem 
-        id="estate_menu_root" 
-        name="Real Estate"/>
+    <menuitem id="estate_menu_root" name="Real Estate">
 
-    <!-- First Level -->
-    <menuitem 
-        id="estate_menu_properties"
-        name="Properties"
-        parent="estate_menu_root"/>
+        <menuitem id="estate_menu_properties" name="Properties">
+            <menuitem id="estate_menu_properties_action" action="estate_property_action"/>
+        </menuitem>
 
-    <!-- Action Menu -->
-    <menuitem 
-        id="estate_menu_properties_action"
-        parent="estate_menu_properties"
-        action="estate_property_action"/>
+        <menuitem id="estate_menu_type" name="Property Type">
+            <menuitem id="estate_menu_type_action" action="estate_property_type_action"/>
+        </menuitem>
 
+        <menuitem id="estate_menu_tags" name="Property Tags">
+            <menuitem id="estate_menu_tags_action" action="estate_property_tag_action"/>
+        </menuitem>
 
-    <!-- Property Type Menu -->
-    <menuitem 
-        id="estate_menu_type"
-        name="Property Type"
-        parent="estate_menu_root"/>
+    </menuitem>
 
     <!-- Property Type Action -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
@@ -32,28 +25,10 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem
-        id="estate_menu_type_action"
-        parent="estate_menu_type"
-        action="estate_property_type_action"/>
-
-
-    <!-- Property Tags Menu -->
-    <menuitem 
-        id="estate_menu_tags"
-        name="Property Tags"
-        parent="estate_menu_root"/>
-
     <!-- Property Tags Action -->
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
-
-    <menuitem
-        id="estate_menu_tags_action"
-        parent="estate_menu_tags"
-        action="estate_property_tag_action"/>
 </odoo>
-
