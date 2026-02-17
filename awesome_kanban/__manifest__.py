@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Awesome Kanban",
     'summary': """
@@ -23,5 +22,5 @@
         ],
     },
     'author': 'Odoo S.A.',
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
 }

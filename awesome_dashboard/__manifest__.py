@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Awesome Dashboard",
 
@@ -26,5 +25,5 @@
             'awesome_dashboard/static/src/**/*',
         ],
     },
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
 }

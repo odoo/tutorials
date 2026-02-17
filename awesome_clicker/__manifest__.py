@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Awesome Clicker",
 
@@ -25,5 +24,5 @@
         ],
 
     },
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
 }
