@@ -15,13 +15,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="available_from"/>
+                <field name="name" width="100px"/>
+                <field name="postcode" width="100px"/>
+                <field name="bedrooms" width="100px"/>
+                <field name="living_area" width="200px"/>
+                <field name="expected_price" width="200px"/>
+                <field name="selling_price" width="200px"/>
+                <field name="available_from" width="200px"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+
             </list>
         </field>
     </record>
@@ -42,6 +44,7 @@
 
                     <group>
                         <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
                             <field name="available_from"/>
                         </group>
@@ -64,6 +67,21 @@
                                 <field name="garden_orientation"/>
                                 <field name="active"/>
                                 <field name="state"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -94,21 +112,14 @@
                             name="group_by_postcode"
                             context="{'group_by':'postcode'}"/>
                 </group>
+                <group>
+                    <filter string="Type" name="group_by_type" context="{'group_by':'property_type_id'}"/>
+                </group>
 
                 
 
             </search>
         </field>
     </record>
-
-
-
-
-
-
-    
-
-
-
 
 </odoo>
