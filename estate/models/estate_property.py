@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -43,7 +43,7 @@ class EstateProperty(models.Model):
         string="State",
     )
 
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
 
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -78,3 +78,33 @@ class EstateProperty(models.Model):
         'property_id',
         string='Offers',
         )
+
+    total_area = fields.Float(
+        compute="_auto_total_area",
+        string='Total Area',
+        store=True,
+        hint="Auto Computed field",
+        )
+    best_price = fields.Integer(string="Best Price", compute="_compute_best_price")
+
+    @api.depends('living_area', 'garden_area')
+    def _auto_total_area(self):
+        for rec in self:
+            rec.total_area = rec.living_area + rec.garden_area
+
+    @api.depends('offer_id.price')
+    def _compute_best_price(self):
+        for rec in self:
+            if rec.offer_id:
+                rec.best_price = max(rec.offer_id.mapped("price"))
+            else:
+                rec.best_price = 0.0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
