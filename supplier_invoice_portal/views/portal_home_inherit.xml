@@ -1,0 +1,13 @@
+<odoo>
+    <template id="portal_my_home_inherit_supplier_invoice" inherit_id="portal.portal_my_home" name="Portal: add Upload Vendor Invoice card">
+        <xpath expr="//div[contains(@class,'o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/supplier_invoice_portal/static/src/image/invoice.png'"/>
+                <t t-set="title">Upload Vendor Invoice</t>
+                <t t-set="text">Upload PDF + XML to create a draft bill</t>
+                <t t-set="url" t-value="'/my/supplier/invoice/upload'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>

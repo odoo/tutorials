@@ -1,0 +1,48 @@
+<odoo>
+    <template id="supplier_invoice_upload_form" name="Supplier Invoice Upload Form">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-4">
+                <h3>Upload Vendor Invoice</h3>
+
+                <t t-if="error">
+                    <div class="alert alert-danger" role="alert">
+                        <t t-esc="error"/>
+                    </div>
+                </t>
+                <t t-if="success">
+                    <div class="alert alert-success" role="alert">
+                        <t t-esc="success"/>
+                    </div>
+                </t>
+
+                <form action="/my/supplier/invoice/upload/submit" method="post" enctype="multipart/form-data" class="mt-3">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="mb-3">
+                        <label class="form-label">Select organization</label>
+                        <select class="form-select" name="company_id" required="required">
+                            <option value="">-- Select --</option>
+                            <t t-foreach="companies" t-as="c">
+                                <option t-att-value="c.id">
+                                    <t t-esc="c.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload PDF</label>
+                        <input class="form-control" type="file" name="pdf_file" accept="application/pdf" required="required"/>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload XML</label>
+                        <input class="form-control" type="file" name="xml_file" accept=".xml,application/xml,text/xml" required="required"/>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>
