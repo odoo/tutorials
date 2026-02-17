@@ -1,6 +1,6 @@
 from odoo import fields, models
 
-def get_date_in_3_months():
+def get_date_in_3_months() -> fields.Date:
     '''
     This function calculates the date that is three months from the current date.
 
@@ -43,3 +43,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
