@@ -4,6 +4,8 @@ import base64
 from odoo import http
 from odoo.http import request
 
+MAX_FILE_SIZE = 15 * 1024 * 1024  # 15 *(1024*1024) = 15 * 1MB =15MB
+
 
 class SupplierInvoicePortal(http.Controller):
 
@@ -37,6 +39,10 @@ class SupplierInvoicePortal(http.Controller):
         # validations check
         if not pdf_name.endswith(".pdf"):
             return request.redirect("/my/supplier/invoice/upload?error=PDF+must+be+.pdf+file")
+
+        # breakpoint()
+        if len(pdf_file.read()) > MAX_FILE_SIZE:
+            return request.redirect("/my/supplier/invoice/upload?error=PDF+size+must+be+smaller+than+15MB")
 
         if not xml_name.endswith(".xml"):
             return request.redirect("/my/supplier/invoice/upload?error=XML+must+be+.xml+file")
