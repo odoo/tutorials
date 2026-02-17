@@ -1,13 +1,22 @@
 from odoo import models, fields, api
 from odoo.tools.date_utils import relativedelta
 
+
 PROPERTY_OFFER_STATE = [("accepted", "Accepted"), ("refused", "Refused")]
 
 
 class PropertyOffer(models.Model):
+
+    # -------------------------------------------------------------------------
+    # Private attributes
+    # -------------------------------------------------------------------------
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
+    # -------------------------------------------------------------------------
+    # Field declarations
+    # -------------------------------------------------------------------------
     price = fields.Float()
     status = fields.Selection(selection=PROPERTY_OFFER_STATE, copy=False)
 
@@ -17,11 +26,24 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
+
+    # -------------------------------------------------------------------------
+    # SQL constraints
+    # -------------------------------------------------------------------------
     _check_price = models.Constraint(
         'CHECK(price > 0)',
         "The offer price must be strictly positive."
     )
 
+    # -------------------------------------------------------------------------
+    # Compute and inverse methods
+    # -------------------------------------------------------------------------
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for offer in self:
@@ -34,14 +56,27 @@ class PropertyOffer(models.Model):
             if offer.date_deadline:
                 offer.validity = (offer.date_deadline - base_date).days
 
+    # -------------------------------------------------------------------------
+    # ORM methods
+    # -------------------------------------------------------------------------
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        property_record = offer.property_id
+        if property_record.state == 'new':
+            property_record.state = 'offer_received'
+        return offer
+
+    # -------------------------------------------------------------------------
+    # Action methods
+    # -------------------------------------------------------------------------
     def action_accept_offer(self):
         for offer in self:
+            offer.property_id.offer_ids.status = "refused"
             offer.status = "accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
-            for competing_offer in offer.property_id.offer_ids:
-                if competing_offer != offer:
-                    competing_offer.status = "refused"
+            offer.property_id.state = "offer_accepted"
         return True
 
     def action_refuse_offer(self):

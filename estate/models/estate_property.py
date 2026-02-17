@@ -1,16 +1,25 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.date_utils import relativedelta
-from odoo.tools.float_utils import float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero
+
 
 GARDEN_ORIENTATION = [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
 PROPERTY_STATE = [("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")]
 
 
 class EstateProperty(models.Model):
+
+    # -------------------------------------------------------------------------
+    # Private attributes
+    # -------------------------------------------------------------------------
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
+    # -------------------------------------------------------------------------
+    # Field declarations
+    # -------------------------------------------------------------------------
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -23,8 +32,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
-    garden_orientation = fields.Selection(string="Garden Orientation",
-                                          selection=GARDEN_ORIENTATION)
+    garden_orientation = fields.Selection(string="Garden Orientation", selection=GARDEN_ORIENTATION)
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(string="Status", selection=PROPERTY_STATE, required=True, copy=False, default="new")
 
@@ -37,6 +45,9 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
 
+    # -------------------------------------------------------------------------
+    # SQL constraints
+    # -------------------------------------------------------------------------
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
         "The expected price must be strictly positive."
@@ -46,6 +57,9 @@ class EstateProperty(models.Model):
         "The selling price must be positive."
     )
 
+    # -------------------------------------------------------------------------
+    # Compute methods
+    # -------------------------------------------------------------------------
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for property in self:
@@ -56,6 +70,17 @@ class EstateProperty(models.Model):
         for property in self:
             property.best_offer = max(property.offer_ids.mapped("price"), default=0)
 
+    # -------------------------------------------------------------------------
+    # Constraints and onchange methods
+    # -------------------------------------------------------------------------
+    @api.constrains("selling_price")
+    def _check_selling_price_minimum_ratio(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_digits=2):
+                continue
+            if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError("The selling price must be at least 90% of the expected price.")
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -65,26 +90,19 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    # -------------------------------------------------------------------------
+    # Action methods
+    # -------------------------------------------------------------------------
     def action_cancel_property(self):
         for property in self:
             if property.state == "sold":
                 raise UserError("Sold properties cannot be cancelled")
-            else:
-                property.state = "cancelled"
+            property.state = "cancelled"
         return True
 
     def action_sold_property(self):
         for property in self:
             if property.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold")
-            else:
-                property.state = "sold"
+            property.state = "sold"
         return True
-
-    @api.constrains("selling_price")
-    def _check_selling_price_minimum_ratio(self):
-        for property in self:
-            if not property.selling_price:
-                continue
-            if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
-                raise ValidationError("The selling price must be at least 90% of the expected price.")
