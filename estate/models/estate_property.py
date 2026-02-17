@@ -19,9 +19,19 @@ class Property(models.Model):
         required=True
     )
 
+    active = fields.Boolean("Active", default=True)
+
+    stage = fields.Selection([
+        ("new", "New"),
+        ("offer_received", "Offer Received"),
+        ("offer_accepted","Offer Accepted"),
+        ("sold", "Sold"),
+        ("cancelled","Cancelled")
+    ], default="new")
+
     currency_id = fields.Many2one('res.currency', 'Currency', readonly=True)
     expecting_price = fields.Monetary("Expecting Price", required=True)
-    selling_price = fields.Monetary("Selling Price", default=0)
+    selling_price = fields.Monetary("Selling Price", default=0, readonly=True)
 
     bedroom_number = fields.Integer("Bedrooms", default=0)
     area = fields.Integer("Living Area (sqm)", required=True)

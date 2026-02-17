@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="estate_menu_root"
+        name="Real Estate"
+        web_icon="estate,static/description/icon.png"
+        sequence="99"
+    >
+        <menuitem id="estate_menu_properties"
+            name="Properties"
+            sequence="10"
+        >
+            <menuitem id="estate_menu_property"
+                name="Properties"
+                sequence="10"
+                action="estate.estate_property_action"
+            />
+        </menuitem>
+    </menuitem>
+</odoo>
