@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='order_line']" position="after">
                 <div class="d-flex justify-content-end mt-2 mb-2">
-                    <button string="Discount" name="action_purchase_global_discount" type="object" class="btn btn-secondary"/>
+                    <button string="Discount" name="%(purchase_discount.action_purchase_order_discount)d" type="action" class="btn btn-secondary"/>
                 </div>
             </xpath>
         </field>

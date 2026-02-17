@@ -6,11 +6,11 @@
     "category": "Task-1",
     "description": "This perfrom global discount in purchase",
     "license": "LGPL-3",
-    "application": True,
+    "auto_install": True,
     "installable": True,
     "data": [
         "security/ir.model.access.csv",
-        "views/purchase_order_view.xml",
         "wizard/purchase_order_discount.xml",
+        "views/purchase_order_view.xml",
     ],
 }
