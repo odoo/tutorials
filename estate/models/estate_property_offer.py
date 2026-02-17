@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-from odoo import fields, models, api
+
+from odoo import api, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -26,7 +26,17 @@ class EstatePropertyOffer(models.Model):
                 offer.date_deadline = offer.create_date + timedelta(days=offer.validity)
             else:
                 offer.date_deadline = fields.Date.today() + timedelta(days=offer.validity)
-    
+
     def _inverse_date_deadline(self):
         for offer in self:
             offer.validity = (offer.date_deadline - offer.create_date.date()).days
+
+    def action_accept_offer(self):
+        for record in self:
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = 'refused'

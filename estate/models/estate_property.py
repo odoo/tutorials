@@ -1,7 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -36,7 +37,6 @@ class EstateProperty(models.Model):
     total_area = fields.Integer('Total Area (sqm)', compute="_compute_total_area")
     best_price = fields.Float('Best Offer', compute='_compute_best_price')
 
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for line in self:
@@ -58,4 +58,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-    
+
+    def action_sold(self):
+        for record in self:
+            if record.state != 'canceled':
+                record.state = 'sold'
+            else:
+                raise UserError("You cannot sell a canceled property.")
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = 'canceled'
+            else:
+                raise UserError("You cannot cancel a sold property.")
+        return True
