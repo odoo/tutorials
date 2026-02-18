@@ -4,12 +4,14 @@ from odoo import fields, models
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Property Type"
+    _order = "sequence, name"
 
+    sequence = fields.Integer(default=10)
     name = fields.Char(required=True)
     property_ids = fields.One2many(
-    "estate.property",      # target model
-    "property_type_id",     # field in that model pointing back
-    string="Properties",    # label shown in UI
+    "estate.property",      
+    "property_type_id",     
+    string="Properties",
     )
 
     _unique_name = models.Constraint(
