@@ -11,4 +11,4 @@ class ResUsers(models.Model):
     # -------------------------------------------------------------------------
     # Field declarations
     # -------------------------------------------------------------------------
-    property_ids = fields.One2many("estate.property", "salesman_id", string="Properties", domain="[('state', 'in', ('new', 'offer_received'))]")
+    property_ids = fields.One2many("estate.property", "salesman_id", string="Estate Properties", domain="[('state', 'in', ('new', 'offer_received'))]")
