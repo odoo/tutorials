@@ -6,6 +6,7 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -23,6 +24,13 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         required=True,
         ondelete='cascade'
+    )
+
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        string="Property Type",
+        related='property_id.property_type_id',
+        store=True
     )
 
     validity = fields.Integer(
@@ -71,3 +79,12 @@ class EstatePropertyOffer(models.Model):
             'The offer price must be strictly positive.',
         ),
     ]
+
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        property = offer.property_id
+        # Si la propriété est encore "new", on passe à "offer_received"
+        if property.state == 'new':
+            property.state = 'offer_received'
+        return offer
