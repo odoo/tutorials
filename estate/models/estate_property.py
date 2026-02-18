@@ -11,7 +11,6 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
-
     name = fields.Char()
     description = fields.Text(required=True)
     postcode = fields.Char()
@@ -80,11 +79,6 @@ class EstateProperty(models.Model):
         string="Best Price",
         compute="_computer_best_price"
     )
-    property_type_id = fields.Many2one(
-    "estate.property.type",
-    string="Property Type",
-    )
-
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
