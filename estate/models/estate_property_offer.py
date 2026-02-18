@@ -2,6 +2,7 @@ from datetime import date, timedelta
 
 from odoo import api, fields, models
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer"

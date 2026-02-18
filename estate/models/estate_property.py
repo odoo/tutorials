@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate properties"
@@ -14,7 +15,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area= fields.Integer(string='Living area (sqm)')
+    living_area = fields.Integer(string='Living area (sqm)')
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
