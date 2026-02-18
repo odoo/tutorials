@@ -44,11 +44,11 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
 
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
                             <field name="available_from"/>
                         </group>
@@ -75,7 +75,7 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
-                                <list editable="bottom">
+                                <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity" width="200px"/>
