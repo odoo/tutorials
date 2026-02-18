@@ -4,6 +4,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{"search_default_available": 1}</field>
     </record>
 
     <record id="estate_type_model_action" model="ir.actions.act_window">
@@ -17,4 +18,12 @@
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <record id="action_view_offers" model="ir.actions.act_window">
+        <field name="name">Property Type Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', 'in', active_ids)]</field>
+    </record>
+
 </odoo>
