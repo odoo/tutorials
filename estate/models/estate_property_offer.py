@@ -60,7 +60,7 @@ class PropertyOffer(models.Model):
     # -------------------------------------------------------------------------
     # ORM methods
     # -------------------------------------------------------------------------
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         for val in vals:
             property_record = self.env["estate.property"].browse(val.get("property_id"))
@@ -69,12 +69,9 @@ class PropertyOffer(models.Model):
             max_property_offers = max(existing_prices) if existing_prices else 0
             if float_compare(val.get("price"), max_property_offers, precision_digits=2) <= 0:
                 raise UserError(f"The offer must be higher than {max_property_offers}")
-
-        offers = super().create(vals)
-        for offer in offers:
-            if offer.property_id.state == "new":
-                offer.property_id.state = "offer_received"
-        return offers
+            if property_record.state == "new":
+                property_record.state = "offer_received"
+        return super().create(vals)
 
     # -------------------------------------------------------------------------
     # Action methods

@@ -8,14 +8,14 @@ class PropertyType(models.Model):
     # -------------------------------------------------------------------------
     _name = "estate.property.type"
     _description = "Real Estate Property Type"
-    _order = "name"
+    _order = "sequence, name"
 
     # -------------------------------------------------------------------------
     # Field declarations
     # -------------------------------------------------------------------------
     name = fields.Char(string="Property Type", required=True)
     property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
-    sequence = fields.Integer('Sequence', default=1)
+    sequence = fields.Integer('Sequence', default=10)
 
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offers")
     offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count")

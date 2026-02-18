@@ -6,11 +6,11 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//notebook" position="inside">
+            <notebook position="inside">
                 <page name="estate_properties" string="Real Estate Properties">
                     <field name="property_ids"/>
                 </page>
-            </xpath>
+            </notebook>
         </field>
     </record>
 </odoo>
