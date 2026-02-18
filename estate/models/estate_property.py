@@ -91,6 +91,15 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     # -------------------------------------------------------------------------
+    # ORM methods
+    # -------------------------------------------------------------------------
+    @api.ondelete(at_uninstall=False)
+    def _unlink_new_cancelled_property(self):
+        for property in self:
+            if property.state not in ["new", "cancelled"]:
+                raise UserError("Only new and canceled properties can be deleted")
+
+    # -------------------------------------------------------------------------
     # Action methods
     # -------------------------------------------------------------------------
     def action_cancel_property(self):
