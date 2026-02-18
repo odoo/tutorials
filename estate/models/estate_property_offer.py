@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Offer for an estate property'
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
@@ -15,6 +16,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     _price_gt_zero = models.Constraint(
         'CHECK(price>0)', 'An offer price must be strictly positive',
@@ -37,6 +39,7 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'accepted'
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
             (offer.property_id.offer_ids - offer).write({'status': 'refused'})
         return True
 
@@ -45,5 +48,6 @@ class EstatePropertyOffer(models.Model):
             if offer.status == 'accepted':
                 offer.property_id.buyer_id = False
                 offer.property_id.selling_price = False
+                offer.property_id.state = 'offer_received'
             offer.status = 'refused'
         return True
