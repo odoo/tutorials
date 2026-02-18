@@ -1,11 +1,11 @@
-
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is my first model"
 
+    # Atomic fields
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -19,7 +19,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string='Orientation',
+        string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation of the estate",
     )
@@ -36,8 +36,35 @@ class EstateProperty(models.Model):
         help='Status of the estate',
         default='new',
     )
+
+    # Relational fields
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one("res.users", string="Salesman")
     buyer_id = fields.Many2one("res.partner", string="Buyer", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    # Computed fields
+    total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    # Compute methods
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = (record.garden_area or 0) + (record.living_area or 0)
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0) or 0
+
+    # Onchange
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden is True:
+            self.garden_orientation = 'north'
+            self.garden_area = 10
+        else:
+            self.garden_orientation = False
+            self.garden_area = False
