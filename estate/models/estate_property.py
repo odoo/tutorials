@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -70,22 +70,29 @@ class EstateProperty(models.Model):
             self.garden_area = False
             self.garden_orientation = False
 
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        precision = 2
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=precision) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=precision) < 0:
+                raise ValidationError(_('The selling price cannot be lower than 90% of the expected price'))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(_("You cannot delete a property that is not new or cancelled."))
+
     def action_set_sold(self):
         for record in self:
             if record.state == 'canceled':
-                raise UserError("Canceled properties can't be sold.")
+                raise UserError(_("Canceled properties can't be sold."))
             record.state = 'sold'
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Canceled properties can't be canceled.")
+                raise UserError(_("Canceled properties can't be canceled."))
             record.state = 'canceled'
         return True
-
-    @api.constrains('expected_price', 'selling_price')
-    def _check_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, 2) and float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0:
-                raise ValidationError('The selling price cannot be lower than 90% of the expected price')

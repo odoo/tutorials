@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -32,10 +33,21 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.validity = (offer.date_deadline - offer.create_date.date()).days
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        precision = 2
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            if float_compare(vals.get('price', 0.0), property_id.best_price, precision_digits=precision) < 0:
+                raise UserError(_("Your offer is too low. You cannot create an offer lower than the best offer."))
+            if property_id.state == "new":
+                property_id.state = "offer_received"
+        return super().create(vals_list)
+
     def action_accept_offer(self):
         for offer in self:
             if 'accepted' in offer.mapped("property_id.offer_ids.status"):
-                raise UserError("Only one offer can be accepeted !")
+                raise UserError(_("Only one offer can be accepted !"))
             offer.status = 'accepted'
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
