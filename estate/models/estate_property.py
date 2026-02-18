@@ -12,6 +12,7 @@ class EstateProperty(models.Model):
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)", "expected price must be greator than 0"
     )
+    _order = "id desc"
 
     name = fields.Char("Title", required=True)
     description = fields.Text("Description", help="write the desc of this prop")

@@ -10,6 +10,7 @@ class EstatePropertyOffer(models.Model):
     _check_price = models.Constraint(
         "CHECK(price > 0)", "offer price must be greator than zero"
     )
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(

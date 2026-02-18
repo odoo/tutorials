@@ -65,8 +65,10 @@
                     </div>
                     <group>
 
-                        <field name="property_tag_ids" widget="many2many_tags" />
-                        <field name="property_type_id" colspan="2" />
+                        <field name="property_tag_ids" widget="many2many_tags"
+                            options="{'color_field':'color'}" />
+                        <field name="property_type_id" colspan="2"
+                            options="{'no_create':true, 'no_edit_color':false}" />
 
                     </group>
                     <group>
