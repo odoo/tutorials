@@ -19,9 +19,13 @@
 
     'data': [
         "data/estate.tag.csv",
+        "data/estate.property.type.csv",
         "data/estate.property.csv",
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/estate_property_offer.xml",
+        "views/estate_tag_views.xml",
         "views/estate_menu_views.xml",
     ],
     'assets': {

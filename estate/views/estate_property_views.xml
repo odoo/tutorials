@@ -7,10 +7,7 @@
             <search string="Search Properties">
                 <field name="name" />
                 <separator />
-                <filter string="House" name="house" domain="[('property_type', '=', 'house')]" />
-                <filter string="Apartment" name="apartment"
-                    domain="[('property_type', '=', 'apartment')]" />
-                <filter string="Land" name="land" domain="[('property_type', '=', 'land')]" />
+
             </search>
         </field>
     </record>
@@ -25,36 +22,51 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
-                        <h1 class="mb32">
-                            <field name="name" placeholder="Apartment Bellevue" class="mb16" />
-                        </h1>
+                        <group col="2">
+                            <group>
+                                <h1>
+                                    <field name="name" placeholder="Apartment Bellevue"/>
+                                </h1>
+                            </group>
+                            <group>
+                                
+                            </group>
+                        </group>
                     </div>
+                    <field name="tag_ids" class="mb16" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group col="2">
                         <group>
-                            <field name="property_type" />
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="available_from" />
                         </group>
                         <group>
-                            <field name="expecting_price" />
-                            <field name="best_offer" />
-                            <field name="selling_price" />
+                            <field name="expecting_price" options="{'currency_field': 'currency_id'}" />
+                            <field name="best_offer" options="{'currency_field': 'currency_id'}" />
+                            <field name="selling_price" options="{'currency_field': 'currency_id'}" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
                                 <field name="description" />
-                                <field name="bedroom_number" />
-                                <field name="living_area" />
+                                <field name="bedroom_number" invisible="not property_livable" />
+                                <field name="living_area" invisible="not property_livable" />
                                 <field name="garage" />
                                 <field name="garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
                         </page>
                         <page string="Other Info">
+                            <group>
+                                <field name="seller_id" />
+                                <field name="buyer_id" />
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -68,7 +80,7 @@
         <field name="arch" type="xml">
             <list string="Properties" sample="1">
                 <field name="name" />
-                <field name="property_type" />
+                <field name="property_type_id" />
                 <field name="expecting_price" />
                 <field name="selling_price" />
                 <field name="bedroom_number" />

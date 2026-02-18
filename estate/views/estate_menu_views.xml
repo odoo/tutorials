@@ -14,6 +14,21 @@
                 sequence="10"
                 action="estate.estate_property_action"
             />
+            <menuitem id="estate_menu_property_offer"
+                name="Offers"
+                sequence="20"
+                action="estate.estate_property_offer_action"
+            />
+        </menuitem>
+        <menuitem id="estate_menu_config"
+            name="Configuration"
+            sequence="20"
+        >
+            <menuitem id="estate_menu_property_type"
+                name="Property Types"
+                sequence="20"
+                action="estate.estate_property_type_action"
+            />
         </menuitem>
     </menuitem>
 </odoo>

@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class Property(models.Model):
@@ -10,14 +10,14 @@ class Property(models.Model):
 
     name = fields.Char("Name", required=True, translate=True)
 
-    property_type = fields.Selection(
+    """property_type = fields.Selection(
         [
             ("house", "House"),
             ("apartment", "Apartment"),
             ("land", "Land")
         ],
         required=True
-    )
+    )"""
 
     description = fields.Char("Description")
 
@@ -27,13 +27,16 @@ class Property(models.Model):
         ("offer_accepted", "Offer Accepted"),
         ("sold", "Sold"),
         ("cancelled", "Cancelled")
-    ], default="new")
+    ], default="new", copy=False)
 
     currency_id = fields.Many2one('res.currency', 'Currency', readonly=True)
     expecting_price = fields.Monetary("Expecting Price", required=True)
-    best_offer = fields.Monetary("Best Offer", default=True)
+    best_offer = fields.Monetary("Best Offer", default=0)
     selling_price = fields.Monetary("Selling Price", default=0, readonly=True)
-    
+
+    seller_id = fields.Many2one("res.users", string="Salesperson", index=True, default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", index=True)
+
     postcode = fields.Integer("Postcode")
     bedroom_number = fields.Integer("Bedrooms", default=0)
     facade_number = fields.Integer("Facades", default=0)
@@ -51,7 +54,17 @@ class Property(models.Model):
     active = fields.Boolean("Active", default=True)
     sequence = fields.Integer(default=10)
 
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_livable = fields.Boolean("Livable", compute="_compute_property_livable")
+
     tag_ids = fields.Many2many("estate.tag", string="Tags")
+
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    @api.depends("property_type_id.livable")
+    def _compute_property_livable(self):
+        for property in self:
+            property.property_livable = property.property_type_id.livable
 
     _check_bedroom_number = models.Constraint(
         'CHECK(bedroom_number >= 0)',

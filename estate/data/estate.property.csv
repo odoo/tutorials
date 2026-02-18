@@ -1,3 +1,3 @@
-"id","name","expecting_price","living_area","total_area","property_type"
-estate_tag_1,"Odoo Farm 2",300000,1900,2000,"house"
-estate_tag_2,"Odoo LLN",1000000,0,40000,"apartment"
+"id","name","expecting_price","living_area","total_area","property_type_id:id"
+estate_tag_1,"Odoo Farm 2",300000,1900,2000,estate_property_type_1
+estate_tag_2,"Odoo LLN",1000000,0,40000,estate_property_type_3
