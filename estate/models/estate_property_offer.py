@@ -43,17 +43,18 @@ class EstatePropertyOffer(models.Model):
 
     def accept_offer(self):
         for offer in self:
-            if offer.property_id.state in ["sold", "cancelled"]:
+            property_rec = offer.property_id
+            if property_rec.state in ["sold", "cancelled"]:
                 raise UserError(
                     "you cannot accpet an offer on a solid or cancelled property."
                 )
-            accepted_offer = offer.property_id.offer_ids.filtered(
+            accepted_offer = property_rec.offer_ids.filtered(
                 lambda o: o.status == "accepted" and o != offer
             )
             if accepted_offer:
                 raise UserError("only one offer can be accpeted for a property.")
             offer.status = "accepted"
-            offer.property_id.write(
+            property_rec.write(
                 {
                     "selling_price": offer.price,
                     "buyer_id": offer.partner_id.id,
