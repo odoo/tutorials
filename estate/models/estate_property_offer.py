@@ -16,6 +16,10 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
 
+    _price_gt_zero = models.Constraint(
+        'CHECK(price>0)', 'An offer price must be strictly positive',
+    )
+
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
         for offer in self:
@@ -29,7 +33,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         for offer in self:
             if 'accepted' in offer.mapped("property_id.offer_ids.status"):
-                raise UserError("Only one offer can be accepeted !")        
+                raise UserError("Only one offer can be accepeted !")
             offer.status = 'accepted'
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
@@ -41,5 +45,5 @@ class EstatePropertyOffer(models.Model):
             if offer.status == 'accepted':
                 offer.property_id.buyer_id = False
                 offer.property_id.selling_price = False
-            offer.status = 'refused'            
+            offer.status = 'refused'
         return True

@@ -1,4 +1,4 @@
-{ 
+{
     'name': 'Real Estate',
     'author': 'Odoo S.A.',
     'depends': [
@@ -10,9 +10,9 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
-        'views/estate_menus.xml'
+        'views/estate_menus.xml',
     ],
     'installable': True,
     'application': True,
-    'auto_install': False
+    'auto_install': False,
 }
