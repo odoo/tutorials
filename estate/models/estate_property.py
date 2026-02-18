@@ -1,10 +1,12 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, tools
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate_property"
     _description = "A new model to store real estate properties"
+    _check_expected = models.Constraint('CHECK(expected_price > 0)', 'The price must be positive!')
+    _check_selling = models.Constraint('CHECK(selling_price >= 0)', 'The price must be positive!')
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -70,6 +72,16 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.constrains('selling_price')
+    def _check_selling_above_90(self):
+        for record in self:
+            for offer in record.offer_ids:
+                if offer.status == 'accepted':
+                    offer_accepted = True
+            compare = tools.float_utils.float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2)
+            if offer_accepted and compare != 1:
+                raise exceptions.ValidationError("Cannot sell bellow 90% of expected price!")
             
     def property_set_sold(self):
         for record in self:
