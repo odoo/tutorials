@@ -4,6 +4,8 @@
     'depends': [
         'base',
     ],
+    "author": "Karim Gamaleldin",
+    "license": "LGPL-3",
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
