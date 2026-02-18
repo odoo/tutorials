@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.translate import _
 
 
 class EstateProperty(models.Model):
@@ -44,7 +45,7 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
     )
-    active = fields.Boolean(string="Active", default=False)
+    active = fields.Boolean(string="Active", default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one(
         "res.partner",
@@ -101,7 +102,7 @@ class EstateProperty(models.Model):
     def action_sold_property(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("Properties which are cancelled cannot be sold.")
+                raise UserError(_("Properties which are cancelled cannot be sold."))
             else:
                 record.state = "sold"
         return True
@@ -109,7 +110,7 @@ class EstateProperty(models.Model):
     def action_cancel_property(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("Properties which are sold cannot be cancelled.")
+                raise UserError(_("Properties which are sold cannot be cancelled."))
             else:
                 record.state = "cancelled"
         return True
@@ -119,13 +120,13 @@ class EstateProperty(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
-
             min_price = record.expected_price * 0.9
-
             if (
                 float_compare(record.selling_price, min_price, precision_rounding=0.01)
                 < 0
             ):
                 raise ValidationError(
-                    "The selling price cannot be lower then 90% of the expected price."
+                    _(
+                        "The selling price cannot be lower then 90% of the expected price."
+                    )
                 )

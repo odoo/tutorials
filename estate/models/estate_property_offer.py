@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 
 class EstatePropertyOffer(models.Model):
@@ -62,7 +63,9 @@ class EstatePropertyOffer(models.Model):
                 lambda o: o.status == "accepted"
             )
             if accepted_offer:
-                raise UserError("Another offer is already accepted for this property.")
+                raise UserError(
+                    _("Another offer is already accepted for this property.")
+                )
 
             record.status = "accepted"
             record.property_id.selling_price = record.price
