@@ -2,6 +2,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+
 def get_date_in_3_months() -> fields.Date:
     '''
     This function calculates the date that is three months from the current date.
@@ -13,15 +14,16 @@ def get_date_in_3_months() -> fields.Date:
     three_months_later = fields.Date.add(today_data, months=3)
     return three_months_later
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
     _order = "id desc"
- 
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default= lambda self: get_date_in_3_months())
+    date_availability = fields.Date(copy=False, default=lambda self: get_date_in_3_months())
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -44,7 +46,7 @@ class EstateProperty(models.Model):
         ('canceled', 'Canceled'),
     ], default="new", required=True, copy=False)
     active = fields.Boolean(default=True)
-    
+
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer", string="Best Offer")
 
@@ -55,7 +57,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     _check_expected_price_pos = models.Constraint(
-        'CHECK(expected_price > 0)', 
+        'CHECK(expected_price > 0)',
         'The expected price must be strictly positive.'
     )
 
@@ -73,7 +75,7 @@ class EstateProperty(models.Model):
     def _compute_best_offer(self):
         for record in self:
             # If the property has offers, the best offer is the maximum of the expected prices of the offers. Otherwise, it is 0.
-            if record.offer_ids: 
+            if record.offer_ids:
                 record.best_offer = max(record.offer_ids.mapped("price"))
             else:
                 record.best_offer = 0.0
@@ -86,7 +88,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_vs_expected_price(self):

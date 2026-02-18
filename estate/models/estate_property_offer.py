@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
@@ -12,7 +13,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string='Property')
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
-    
+
     property_type_id = fields.Many2one(
         'estate.property.type',
         related='property_id.property_type_id',
@@ -23,7 +24,7 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'The offer price must be strictly positive.'
     )
-    
+
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for offer in self:
@@ -42,7 +43,7 @@ class EstatePropertyOffer(models.Model):
             # Check no other offer has been accepted for the same property
             if offer.property_id.offer_ids.filtered(lambda o: o.status == 'accepted'):
                 raise UserError('Another offer has already been accepted for this property.')
-        
+
             # Accept the offer
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
