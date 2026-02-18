@@ -1,7 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -64,7 +65,8 @@ class EstateProperty(models.Model):
             if record.state != 'canceled':
                 record.state = 'sold'
             else:
-                raise UserError("You cannot sell a canceled property.")
+                error_msg = "You cannot sell a canceled property."
+                raise UserError(error_msg)
         return True
 
     def action_cancel(self):
@@ -72,5 +74,27 @@ class EstateProperty(models.Model):
             if record.state != 'sold':
                 record.state = 'canceled'
             else:
-                raise UserError("You cannot cancel a sold property.")
+                error_msg = "You cannot cancel a sold property."
+                raise UserError(error_msg)
         return True
+
+    _check_positive_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property should be strictly positive.',
+    )
+
+    _check_positive_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price of a property should be positive or zero.',
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price_offer(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            expected_price = record.expected_price
+            selling_price = record.selling_price
+            if float_compare(selling_price, expected_price * 0.9, precision_digits=2) < 0:
+                error_msg = "The selling price should be at least 90% of the expected price."
+                raise ValidationError(error_msg)
