@@ -1,0 +1,36 @@
+<odoo>
+    <record id="purchase_global_discount_view_form" model="ir.ui.view">
+        <field name="name">purchase.global.discount.form</field>
+        <field name="model">purchase.global.discount</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <label for="discount_value" string="Discount" />
+
+                            <div class="o_row">
+                                <field name="discount_value" class="oe_inline" />
+                                <field name="discount_type" widget="radio"
+                                    options="{'horizontal': true}" />
+                            </div>
+
+                            <field name="discount_percentage"
+                                class="text-muted"
+                                invisible="discount_type != 'amount'"
+                                readonly="1" />
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert" invisible="discount_type != 'amount'">
+                        Rounding error may occur when applying a fixed amount discount.
+                    </div>
+                </sheet>
+                <footer>
+                    <button string="Apply" name="action_apply_discount" type="object"
+                        class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
