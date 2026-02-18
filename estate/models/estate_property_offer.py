@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -39,3 +39,20 @@ class EstatePropertyOffer(models.Model):
             start_date = record.create_date or fields.Date.today()
 
             record.validity = (record.date_deadline - start_date.date()).days
+
+    # Button logic
+    def accept_button(self):
+        for record in self:
+            offer_recordset = record.property_id.offer_ids
+            for offer in offer_recordset:
+                if offer.status == 'accepted' and offer != record:
+                    error_message = "You can not accept multiple offer!"
+                    raise exceptions.UserError(error_message)
+
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            record.status = 'accepted'
+
+    def refuse_button(self):
+        for record in self:
+            record.status = 'refused'

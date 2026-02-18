@@ -29,6 +29,8 @@
         <field name="arch" type="xml">
             <list string="SplishSplosh">
                 <field name="price"/>
+                <button name="accept_button" type="object" icon="fa-check" invisible="status == 'accepted'" title='Accept the offer'/>
+                <button name="refuse_button" type="object" icon="fa-times" invisible="status == 'refused'" title='Refuse the offer'/>
                 <field name="status"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="validity"/>
