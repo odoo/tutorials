@@ -61,7 +61,6 @@
                                     <field name="garden_area" />
                                     <field name="total_area" />
                                     <field name="garden_orientation" />
-                                    <field name="state" />
                                 </group>
                             </group>
                         </page>
