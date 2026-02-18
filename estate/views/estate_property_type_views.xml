@@ -12,13 +12,40 @@
         <field name="arch" type="xml">
             <form string="Estate property types">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button">
+                            <field name="offer_count" string="Offers" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="House"/>
                         </h1>
                     </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state" string="Status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="SplishSplosh">
+                <field name="name" string="Name"/>
+                <field name="sequence" string="Sequence" widget="handle"/>
+            </list>
         </field>
     </record>
 </odoo>

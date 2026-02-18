@@ -4,6 +4,14 @@ from odoo import api, exceptions, fields, models, tools
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is my first model"
+    _order = "id desc"
+
+    @api.ondelete(at_uninstall=False)
+    def cannot_delete_new_cancelled_properties(self):
+        for property in self:
+            if not property.state in ['new', 'cancelled']:
+                error_message = "You can not delete a property in new or cancelled state!"
+                raise exceptions.ValidationError(error_message)
 
     # Atomic fields
     name = fields.Char(required=True)
@@ -75,7 +83,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = (record.garden_area or 0) + (record.living_area or 0)
 
-    @api.depends("offer_ids.price")
+    @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0) or 0
