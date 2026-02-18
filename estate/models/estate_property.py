@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, exceptions, fields, models, tools
 
 
 class EstateProperty(models.Model):
@@ -47,6 +47,27 @@ class EstateProperty(models.Model):
     # Computed fields
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+
+    # Constraints
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price should be strictly greater than zero!',
+    )
+
+    _check_seling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The seling price should be greater than zero!',
+    )
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if tools.float_is_zero(record.selling_price, precision_digits=2) is True:
+                continue
+
+            if tools.float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 1:
+                error_message = "Selling price can not be lower than 90% of the expected price"
+                raise exceptions.ValidationError(error_message)
 
     # Compute methods
     @api.depends("living_area", "garden_area")
