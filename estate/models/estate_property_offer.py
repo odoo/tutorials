@@ -33,6 +33,18 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.date_create).days
 
+    @api.model
+    def create(self, vals):
+        for record in vals:
+            id = record.get('property_id')
+            price = record.get('price')
+            property = self.env['estate_property'].browse(id)
+            if property.offer_ids:
+                if price < max(property.offer_ids.mapped('price')):
+                    raise exceptions.UserError('New offer price must be higher or equal to the existing offers!')
+            property.state = 'offer_received'
+        return super().create(vals)
+
     def offer_accept(self):
         for record in self:
             for offer in record.property_id.offer_ids:
@@ -47,5 +59,4 @@ class EstatePropertyOffer(models.Model):
     def offer_refuse(self):
         for record in self:
             record.status = 'refused'
-            record.property_id.state = 'offer_recieved'
         return True

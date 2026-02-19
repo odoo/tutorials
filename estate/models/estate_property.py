@@ -83,11 +83,20 @@ class EstateProperty(models.Model):
             compare = tools.float_utils.float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2)
             if offer_accepted and compare != 1:
                 raise exceptions.ValidationError("Cannot sell bellow 90% of expected price!")
-            
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise exceptions.UserError('Cannot delete a property with offers or that is sold!')
+        return True
+    
     def property_set_sold(self):
         for record in self:
             if record.state == 'canceled':
                 raise exceptions.UserError('Canceled propery cannot be sold!')
+            elif record.state != 'offer_accepted':
+                raise exceptions.UserError('An offer must be accepted in order to mark a property as sold!')
             else:
                 record.state = 'sold'
         return True
