@@ -14,6 +14,7 @@
         'views/estate_list_views.xml',
         'views/estate_form_views.xml',
         'views/estate_search_views.xml',
-        'views/estate_menus.xml'
-    ]
+        'views/estate_menus.xml',
+        'views/estate_kanban_views.xml',
+    ],
 }

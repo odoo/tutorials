@@ -3,7 +3,7 @@
 from odoo import models
 
 
-class EstatePropertyInherited(models.Model):
+class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def action_sold(self):
