@@ -89,6 +89,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'canceled']:
                 raise exceptions.UserError('Cannot delete a property with offers or that is sold!')
+            elif len(record.offer_ids) > 0:
+                raise exceptions.UserError('Cannot delete a property that already recieved offers!')
         return True
     
     def property_set_sold(self):
