@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _description = "A new model to store real estate properties"
     _check_expected = models.Constraint('CHECK(expected_price > 0)', 'The price must be positive!')
     _check_selling = models.Constraint('CHECK(selling_price >= 0)', 'The price must be positive!')
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()

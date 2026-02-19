@@ -3,6 +3,7 @@
     'depends': ['base'],
     'author': "Olivier Renson",
     'application': True,
+    'license': "AGPL-3",
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
