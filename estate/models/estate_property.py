@@ -158,3 +158,9 @@ class EstateProperty(models.Model):
                 raise ValidationError("The expected price must be strictly positive.")
             if record.selling_price and float_compare(record.selling_price, 0.0, precision_rounding=0.01) < 0:
                 raise ValidationError("The selling price cannot be negative.")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_can_delete(self):
+        for prop in self:
+            if prop.state not in ('new', 'cancelled'):
+                raise UserError("Only properties in 'New' or 'Cancelled' state can be deleted.")

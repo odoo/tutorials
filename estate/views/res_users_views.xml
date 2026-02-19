@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_users_form_inherit_estate" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+
+            <!-- On cible le notebook principal du formulaire -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Properties">
+                    <field name="property_ids" readonly="1">
+                        <list string="Properties"
+                            decoration-success="state in ('offer_accepted')"
+                            decoration-bf="state == 'offer_accepted'">
+                            <field name="name" width="100px"/>
+                            <field name="property_type_id" width="100px"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="bedrooms" width="100px"/>
+                            <field name="living_area" width="200px"/>
+                            <field name="expected_price" width="200px"/>
+                            <field name="selling_price" width="200px"/>
+                            <field name="available_from" width="200px" optional="hide"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

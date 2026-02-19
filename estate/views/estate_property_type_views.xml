@@ -19,7 +19,7 @@
                 <header>
                     <button type="action"
                             name="%(estate_property_offer_action)d"
-                            class="oe_stat_button oe_stat_button_vertical"
+                            class="oe_stat_button"
                             invisible="offer_count == 0">
                         <div style="display: flex; align-items: center; justify-content: space-between; width: 120px;">
                             <div class="oe_stat_button_icon">

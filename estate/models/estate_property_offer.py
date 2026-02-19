@@ -72,19 +72,23 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'refused'
         return True
 
-    _sql_constraints = [
-        (
-            'estate_property_offer_price_check',
-            'CHECK(price > 0)',
-            'The offer price must be strictly positive.',
-        ),
-    ]
-
     @api.model
-    def create(self, vals):
-        offer = super().create(vals)
-        property = offer.property_id
-        # Si la propriété est encore "new", on passe à "offer_received"
-        if property.state == 'new':
-            property.state = 'offer_received'
-        return offer
+    def create(self, vals_list):
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
+
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property.offer_ids:
+                max_offer_price = max(property.offer_ids.mapped('price'))
+                if vals['price'] <= max_offer_price:
+                    raise UserError(
+                        f"Cannot create an offer lower or equal to existing offers. "
+                        f"Current highest offer: {max_offer_price}"
+                    )
+        offers = super().create(vals_list)
+        for offer in offers:
+            property = offer.property_id
+            if property.state == 'new':
+                property.state = 'offer_received'
+        return offers
