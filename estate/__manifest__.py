@@ -2,14 +2,33 @@
     'name': "Real Estate",
 
     'summary': """
-        Starting module for "Master the Odoo web framework, chapter 1: Build a new application"
+        Real Estate management module developed throughout the Odoo Web Framework tutorial
     """,
 
     'description': """
-        Starting module for "Master the Odoo web framework, chapter 1: Build a new application"
+        This module is developed across the full tutorial series
+        "Master the Odoo Web Framework".
+
+        Throughout approximately 15 chapters, the Real Estate application is built
+        step by step to demonstrate core Odoo development concepts, including:
+
+        - Module structure and manifest configuration
+        - Creating and extending models
+        - Field types and computed fields
+        - Business logic and constraints
+        - Views (form, tree, kanban, search)
+        - Actions and menus
+        - Security and access rights
+        - ORM features and inheritance
+        - Server actions and automated actions
+        - Customizations and best practices
+
+        The module serves as a complete practical example of how to design,
+        develop, and extend a business application using Odoo.
     """,
 
-    'author': "Odoo",
+
+    'author': "Odoo S.A.",
     'website': "https://www.odoo.com/",
     'category': 'Tutorials',
     'version': '0.1',
@@ -26,7 +45,5 @@
         'views/res_users_views.xml',
         'views/estate_menus.xml'
     ],
-
-    'assets': {},
     'license': 'AGPL-3'
 }

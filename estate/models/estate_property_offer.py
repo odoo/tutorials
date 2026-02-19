@@ -23,7 +23,7 @@ class EstatePropertyOffer(models.Model):
         'estate.property',
         string="Property",
         required=True,
-        ondelete='cascade'
+        ondelete='restrict'
     )
 
     property_type_id = fields.Many2one(
@@ -61,6 +61,10 @@ class EstatePropertyOffer(models.Model):
             # Check if another offer was already accepted
             if property.offer_ids.filtered(lambda o: o.status == 'accepted'):
                 raise UserError("Only one offer can be accepted per property.")
+            # Refuse others offers
+            other_offers = property.offer_ids.filtered(lambda o: o != offer)
+            other_offers.write({'status': 'refused'})
+            # Accept current offer
             offer.status = 'accepted'
             property.selling_price = offer.price
             property.buyer_id = offer.partner_id

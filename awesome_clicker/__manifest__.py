@@ -11,7 +11,6 @@
     """,
 
     'author': "Odoo",
-    'editor': "jupao",
     'website': "https://www.odoo.com/",
     'category': 'Tutorials',
     'version': '0.1',
