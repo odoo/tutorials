@@ -18,22 +18,24 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
+                    <button name="action_set_as_sold" type="object" string="Sold" invisible="stage in ['sold','cancelled']"/>
+                    <button name="action_set_as_cancelled" type="object" string="Cancel" invisible="stage in ['sold','cancelled']"/>
                     <field name="stage" widget="statusbar" options="{'clickable': '1'}" />
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="stage != 'sold'"/>
                     <div class="oe_title">
                         <group col="2">
                             <group>
-                                <h1>
+                                <h1 class="mb16">
                                     <field name="name" placeholder="Apartment Bellevue"/>
                                 </h1>
                             </group>
                             <group>
-                                
+                                <field name="tag_ids" class="mb16" widget="many2many_tags" options="{'color_field': 'color'}" />
                             </group>
                         </group>
                     </div>
-                    <field name="tag_ids" class="mb16" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group col="2">
                         <group>
                             <field name="property_type_id" />
@@ -43,8 +45,8 @@
                         </group>
                         <group>
                             <field name="expecting_price" options="{'currency_field': 'currency_id'}" />
-                            <field name="best_offer" widget="monetary" options="{'currency_field': 'best_offer_currency_id'}" />
-                            <field name="selling_price" options="{'currency_field': ''}" />
+                            <field name="best_offer" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                            <field name="selling_price" options="{'currency_field': 'currency_id'}" />
                             <field name="currency_id" />
                         </group>
                     </group>

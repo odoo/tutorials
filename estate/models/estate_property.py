@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -23,7 +24,6 @@ class Property(models.Model):
     currency_id = fields.Many2one("res.currency", "Currency")
     expecting_price = fields.Monetary("Expecting Price", required=True)
     best_offer = fields.Monetary("Best Offer", default=0, compute="_compute_best_offer", store=True)
-    best_offer_currency_id = fields.Many2one("res.currency", "Best Offer Currency", readonly=True)
     selling_price = fields.Monetary("Selling Price", default=0, readonly=True)
 
     seller_id = fields.Many2one("res.users", string="Salesperson", index=True, default=lambda self: self.env.user)
@@ -88,29 +88,24 @@ class Property(models.Model):
         for property in self:
             property.property_livable = property.property_type_id.livable
 
-    def _compute_currency(self, offer):
-        if offer.currency_id == self.currency_id:
-            return offer.price
-        return offer.currency_id._convert(offer.price, self.currency_id)
-
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for property in self:
-            temp_best = 0
+            property.best_offer = max([0, *property.offer_ids.mapped("translated_price")])
+    
+    def action_set_as_cancelled(self):
+        for property in self:
+            if property.stage in ["sold", "cancelled"]:
+                raise UserError(_("This property was already set as '%s'", Property.stage._selection[property.stage]))
+            property.stage = "cancelled"
+        return True
 
-            best_offer_currency_id = None
-            best_offer = 0
-            # property.best_offer = max(property.offer_ids.mapped("price"))
-            # Could do it if we weren't checking the currencies
-            for offer in property.offer_ids:
-                val = property._compute_currency(offer)
-                if val > temp_best:
-                    temp_best = val
-                    best_offer_currency_id = offer.currency_id
-                    best_offer = offer.price
-
-            property.best_offer = best_offer
-            property.best_offer_currency_id = best_offer_currency_id
+    def action_set_as_sold(self):
+        for property in self:
+            if property.stage in ["sold", "cancelled"]:
+                raise UserError(_("This property was already set as '%s'", Property.stage._selection[property.stage]))
+            property.stage = "sold"
+        return True
 
     _check_bedroom_number = models.Constraint(
         'CHECK(bedroom_number >= 0)',
