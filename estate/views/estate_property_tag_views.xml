@@ -14,7 +14,7 @@
             <field name="name">estate.property.tag.view.form</field>
             <field name="model">estate.property.tag</field>
             <field name="arch" type="xml">
-                <form string="">
+                <form>
                     <sheet>
                         <group>
                             <field name="name" string="Name"/>
