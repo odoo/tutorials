@@ -4,6 +4,7 @@ from odoo import fields, models
 class TestModel(models.Model):
     _name = "estate.property"
     _description = "Test Model for real estate"
+
     name = fields.Char(default="Unknown")
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     description = fields.Text()
