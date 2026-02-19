@@ -26,7 +26,7 @@
                         <group name="name">
                             <field name="property_type_id" string="Property Type"/>
                             <field name="name"/>
-                            <field name="tag_id" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="best_price" string="Best Price"/>
@@ -51,7 +51,7 @@
                                 </group>
                             </page>
                             <page name="Offers" string="Offers">
-                                <field name="offer_id">
+                                <field name="offer_ids">
                                     <list>
                                         <field name="price"/>
                                         <field name="partner_id"/>

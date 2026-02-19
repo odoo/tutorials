@@ -26,17 +26,17 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(required=True)
     garden_orientation = fields.Selection(
         selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ],
     )
     state = fields.Selection(
         selection=[
-            ("new", "New"),
-            ("offer_accepted", "Offer Accepted"),
-            ("offer_received", "Offer Received"),
+            ('new', "New"),
+            ('offer_accepted', "Offer Accepted"),
+            ('offer_received', "Offer Received"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -53,8 +53,7 @@ class EstateProperty(models.Model):
     salesman_id = fields.Many2one(
         'res.users',
         string="Salesman",
-        default=lambda self: self.env.user,
-
+        default=lambda self:self.env.user
     )
 
     buyer_id = fields.Many2one(
@@ -63,24 +62,24 @@ class EstateProperty(models.Model):
         copy=False,
     )
 
-    tag_id = fields.Many2many(
-        string='Tags',
+    tag_ids = fields.Many2many(
+        string="Tags",
         comodel_name='estate.property.tag',
     )
-    property_id = fields.One2many(
+    property_ids = fields.One2many(
         string='property',
         comodel_name='estate.property.offer',
         inverse_name='property_id',
     )
 
-    offer_id = fields.One2many(
+    offer_ids = fields.One2many(
         'estate.property.offer',
         'property_id',
         string='Offers',
         )
 
     total_area = fields.Float(
-        compute="_auto_total_area",
+        compute="_compute_total_area",
         string='Total Area',
         store=True,
         help="Auto Computed field",
@@ -88,15 +87,15 @@ class EstateProperty(models.Model):
     best_price = fields.Integer(string="Best Price", compute="_compute_best_price")
 
     @api.depends('living_area', 'garden_area')
-    def _auto_total_area(self):
+    def _compute_total_area(self):
         for rec in self:
             rec.total_area = rec.living_area + rec.garden_area
 
-    @api.depends('offer_id.price')
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for rec in self:
-            if rec.offer_id:
-                rec.best_price = max(rec.offer_id.mapped("price"))
+            if rec.offer_ids:
+                rec.best_price = max(rec.offer_ids.mapped("price"))
             else:
                 rec.best_price = 0.0
 
@@ -108,3 +107,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+        
+    def func(self):
+        self=self.env.user
