@@ -49,14 +49,11 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Offers" sample="1">
-                <field name="translated_price" options="{'currency_field': 'property_currency_id'}" />
                 <field name="price" options="{'currency_field': 'currency_id'}" />
                 <field name="property_id" />
                 <field name="partner_id" />
                 <field name="validity" />
                 <field name="deadline" />
-                <button name="action_confirm" type="object" title="Confirm" icon="fa-check" invisible="status"/>
-                <button name="action_refuse" type="object" title="Refuse" icon="fa-times" invisible="status"/>
                 <field name="status"/>
             </list>
         </field>
@@ -66,5 +63,12 @@
         <field name="name">Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_type_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>

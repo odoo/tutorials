@@ -7,7 +7,8 @@
             <search string="Search Properties">
                 <field name="name" />
                 <separator />
-
+                <field name="total_area" string="Total Area"
+                    filter_domain="[('total_area', '>=', self)]"/>
             </search>
         </field>
     </record>
@@ -38,7 +39,7 @@
                     </div>
                     <group col="2">
                         <group>
-                            <field name="property_type_id" />
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode" />
                             <field name="available_from" />
                             <field name="total_area" />
@@ -63,7 +64,18 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="stage in ['sold','cancelled']">
+                                <list string="Offers" editable="bottom" default_order="translated_price desc" decoration-success="status=='accepted'" decoration-danger="status=='refused'" sample="1">
+                                    <field name="translated_price" options="{'currency_field': 'property_currency_id'}" />
+                                    <field name="price" options="{'currency_field': 'currency_id'}" />
+                                    <field name="currency_id" />
+                                    <field name="partner_id" />
+                                    <field name="validity" />
+                                    <field name="deadline" />
+                                    <button name="action_confirm" type="object" title="Confirm" icon="fa-check" invisible="status"/>
+                                    <button name="action_refuse" type="object" title="Refuse" icon="fa-times" invisible="status"/>
+                                </list>
+                            </field>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -81,9 +93,10 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" sample="1">
+            <list string="Properties" sample="1" decoration-muted="stage=='cancelled'" decoration-bf="stage == 'offer_accepted'" decoration-success="stage in ['offer_accepted', 'offer_received']" >
                 <field name="name" />
                 <field name="property_type_id" />
+                <field name="tag_ids" class="mb16" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="expecting_price" />
                 <field name="selling_price" />
                 <field name="bedroom_number" />

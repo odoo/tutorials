@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _order = "expecting_price, selling_price, sequence, id"
+    _order = "id"
 
     name = fields.Char("Name", required=True, translate=True)
 
@@ -88,7 +88,7 @@ class Property(models.Model):
         for property in self:
             property.property_livable = property.property_type_id.livable
 
-    @api.depends("offer_ids.price")
+    @api.depends("offer_ids.translated_price")
     def _compute_best_offer(self):
         for property in self:
             property.best_offer = max([0, *property.offer_ids.mapped("translated_price")])
