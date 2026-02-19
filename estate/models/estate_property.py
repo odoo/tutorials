@@ -92,7 +92,7 @@ class Property(models.Model):
     def _compute_best_offer(self):
         for property in self:
             property.best_offer = max([0, *property.offer_ids.mapped("translated_price")])
-    
+
     def action_set_as_cancelled(self):
         for property in self:
             if property.stage in ["sold", "cancelled"]:
@@ -125,4 +125,14 @@ class Property(models.Model):
     _check_total_area = models.Constraint(
         'CHECK(total_area >= 0)',
         'The total area can\'t be negative.',
+    )
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expecting_price > 0)',
+        'The expected price has to be stricly positive'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price has to be stricly positive'
     )

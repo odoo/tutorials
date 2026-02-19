@@ -10,7 +10,6 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     partner_id = fields.Many2one("res.partner", string="Partner", index=True, required=True)
 
-
     # Beginning of the deadline part
     def _current_date(self):
         return fields.Date.today()
@@ -34,7 +33,6 @@ class PropertyOffer(models.Model):
             offer.deadline = fields.Date.add(offer.creation_date, days=offer.validity)
 
     # End of the deadline part
-
 
     # Beginning of the currency part
     currency_id = fields.Many2one("res.currency", "Currency")
@@ -63,7 +61,6 @@ class PropertyOffer(models.Model):
 
     # End of the currency part
 
-
     # Beginning of the state / validation part
     status = fields.Selection([
         ("accepted", "Accepted"),
@@ -82,8 +79,12 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         for offer in self:
             offer.status = "refused"
-    
+
     # End of the state / validation part
 
-
     sequence = fields.Integer("Sequence", default=0)
+
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price has to be stricly positive'
+    )
