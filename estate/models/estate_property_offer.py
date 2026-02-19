@@ -3,6 +3,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -16,7 +17,7 @@ class EstatePropertyOffer(models.Model):
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
-    property_id = fields.Many2one('estate.property', string='Property', required=True)
+    property_id = fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
@@ -48,3 +49,17 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'The price of an offer should be strictly positive.',
     )
+
+    @api.model
+    def create(self, vals):
+        if len(vals) == 0:
+            return super().create(vals)
+        property_id = vals[0].get('property_id')
+        price = vals[0].get('price')
+        if property_id and price:
+            property_record = self.env['estate.property'].browse(property_id)
+            if property_record.best_price and price <= property_record.best_price:
+                error_msg = "The offer price should be higher than the best offer of the property."
+                raise ValidationError(error_msg)
+            property_record.state = 'offer_received'
+        return super().create(vals)
