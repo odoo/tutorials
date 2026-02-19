@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
     salesman_id = fields.Many2one(
         'res.users',
         string="Salesman",
-        default=lambda self:self.env.user
+        default=lambda self: self.env.user,
     )
 
     buyer_id = fields.Many2one(
@@ -107,6 +107,3 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-        
-    def func(self):
-        self=self.env.user
