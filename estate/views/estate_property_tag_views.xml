@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <odoo>
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name"> Estate Property Tag</field>
@@ -14,7 +12,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"></field>
-                </list>
+            </list>
         </field>
     </record>
     
@@ -24,7 +22,6 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <form string="My Property Tag">
-                
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -35,5 +32,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

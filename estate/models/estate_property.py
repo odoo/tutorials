@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -48,14 +49,30 @@ class EstateProperty(models.Model):
     )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+
+    def action_btn_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError(msg="property can't be cancelled")
+            record.state = "sold"
+        return True
+
+    def action_btn_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(msg="Cancelled property can't be sold")
+            record.state = "cancelled"
+        return True
+
     salesman_id = fields.Many2one(
         "res.users",
-        string=" Salesman",
+        string="Salesman",
         default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one("res.partner", string=" Buyer")
-    property_tag_ids = fields.Many2many("estate.property.tag")
-    property_offer_ids = fields.One2many("estate.property.offer", "salesman_id")
+
+    property_offer_ids = fields.One2many("estate.property.offer", "property_id")
+    property_tag_ids = fields.Many2many("estate.property.tag", string="tag")
     total_area = fields.Float(compute="_compute_total_area", string="Total Area")
     best_price = fields.Float(
         string="Best Offer",
@@ -65,7 +82,6 @@ class EstateProperty(models.Model):
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
-
         for estate in self:
             estate.total_area = estate.garden_area + estate.living_area
 
