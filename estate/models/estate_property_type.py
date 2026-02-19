@@ -37,33 +37,7 @@ class EstatePropertyType(models.Model):
         for record in self:
             record.offer_count = len(record.offer_ids)
 
-    @api.constrains('name')
-    def _check_name_unique(self):
-        for record in self:
-            existing = self.search([
-                ('name', '=', record.name),
-                ('id', '!=', record.id)
-            ])
-            if existing:
-                raise ValidationError("The property type name must be unique.")
-
-class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Real Estate Property"
-
-    name = fields.Char(required=True)
-    expected_price = fields.Float()
-    state = fields.Selection(
-        [
-            ('new', 'New'),
-            ('offer_received', 'Offer Received'),
-            ('offer_accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('canceled', 'Canceled')
-        ],
-        default='new'
-    )
-    property_type_id = fields.Many2one(
-        'estate.property.type',
-        string='Property Type'
+    _check_name_unique = models.Constraint(
+        "UNIQUE(name)",
+        "The property type name must be unique.",
     )

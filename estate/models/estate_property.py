@@ -41,14 +41,16 @@ class EstateProperty(models.Model):
         ],
     )
 
+    # Constraints and Onchange methods
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        for property in self:
+            if property.garden:
+                property.garden_area = 10
+                property.garden_orientation = 'north'
+            else:
+                property.garden_area = 0
+                property.garden_orientation = False
 
     active = fields.Boolean(default=True)
 
@@ -101,8 +103,8 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
     best_offer = fields.Float(
         string="Best Offer",
@@ -112,52 +114,42 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
-        for record in self:
-            if record.offer_ids:
-                record.best_offer = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_offer = 0.0
+        for property in self:
+            property.best_offer = max(property.offer_ids.mapped('price'), default=0)
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
+        for property in self:
+            if property.state == 'sold':
                 raise UserError("Sold properties cannot be cancelled.")
-            record.state = 'cancelled'
+            property.state = 'cancelled'
         return True
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
+        for property in self:
+            if property.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
-            record.state = 'sold'
+            property.state = 'sold'
         return True
 
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
+    _check_selling_price_min = models.Constraint(
+        """
+        CHECK(
+            selling_price > 0
+            OR selling_price >= expected_price * 0.9
+        )
+        """,
+        "The selling price cannot be lower than 90% of the expected price.",
+    )
 
-            # Ignore si selling_price == 0
-            if float_is_zero(record.selling_price, precision_rounding=0.01):
-                continue
+    _check_expected_price_positive = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
 
-            min_price = record.expected_price * 0.9
-
-            if float_compare(
-                record.selling_price,
-                min_price,
-                precision_rounding=0.01,
-            ) < 0:
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
-                )
-    @api.constrains('expected_price', 'selling_price')
-    def _check_prices_positive(self):
-        """Ensure expected_price > 0 and selling_price >= 0"""
-        for record in self:
-            if float_compare(record.expected_price, 0.0, precision_rounding=0.01) <= 0:
-                raise ValidationError("The expected price must be strictly positive.")
-            if record.selling_price and float_compare(record.selling_price, 0.0, precision_rounding=0.01) < 0:
-                raise ValidationError("The selling price cannot be negative.")
+    _check_selling_price_positive = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "The selling price cannot be negative.",
+    )
 
     @api.ondelete(at_uninstall=False)
     def _check_can_delete(self):

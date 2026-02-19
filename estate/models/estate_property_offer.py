@@ -92,3 +92,7 @@ class EstatePropertyOffer(models.Model):
             if property.state == 'new':
                 property.state = 'offer_received'
         return offers
+
+    _check_offer_price_min = models.Constraint(
+        "CHECK(price > 0)"
+    )

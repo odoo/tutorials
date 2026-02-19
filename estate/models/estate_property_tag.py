@@ -9,10 +9,7 @@ class EstatePropertyTag(models.Model):
     color = fields.Integer("Color")
     name = fields.Char(required=True)
 
-    @api.constrains('name')
-    def _check_name_unique(self):
-        for record in self:
-            # Recherche d'autres tags avec le même nom
-            existing = self.search([('name', '=', record.name), ('id', '!=', record.id)])
-            if existing:
-                raise ValidationError("The property tag name must be unique.")
+    _check_name_unique = models.Constraint(
+        "UNIQUE(name)",
+        "The property tag name must be unique.",
+    )
