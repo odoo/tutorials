@@ -46,6 +46,7 @@
                         <group>    
                             <field name="expected_price" string="Expected Price"/>
                             <field name="selling_price" string="Selling Price"/>
+                            <field name="best_price" string="Best Offer Price" readonly="1"/>
                         </group>
                     </group> 
                     <notebook>
@@ -53,6 +54,7 @@
                             <group>
                                 <field name="description" string="Description"/>
                                 <field name="bedrooms" string="Bedrooms"/>
+                                <field name="total_area" string="Total Area (sqm)" readonly="1"/>
                                 <field name="living_area" string="Living Area (sqm)"/>
                                 <field name="facades" string="Number of Facades"/>
                                 <field name="garage" string="Garage"/>
