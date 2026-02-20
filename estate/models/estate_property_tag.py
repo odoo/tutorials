@@ -10,3 +10,7 @@ class EstatePropertyTag(models.Model):
     )
 
     name = fields.Char(string="Name", required=True)
+    _unique_tag_id = models.Constraint(
+        'UNIQUE(name)',
+        'This tag is alread available',
+    )
