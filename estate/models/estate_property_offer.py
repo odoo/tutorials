@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -25,7 +25,7 @@ class EstatePropertyOffer(models.Model):
     def action_btn_accepted(self):
         for record in self:
             if record.status == "refused":
-                raise UserError(msg="Sorry offer sold out.")
+                raise UserError(_("Sorry offer sold out."))
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
@@ -34,7 +34,7 @@ class EstatePropertyOffer(models.Model):
     def action_btn_refused(self):
         for record in self:
             if record.status == "accepted":
-                raise UserError(msg="Offer is already refudsed")
+                raise UserError(_("Offer is already refused"))
             record.status = "refused"
             record.property_id.selling_price = "0"
             record.property_id.buyer_id = ""
@@ -53,3 +53,8 @@ class EstatePropertyOffer(models.Model):
             fields.Date.today() == record.date_deadline - timedelta(
                 days=record.validity,
             )
+
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "Offer Price field should always be positive",
+    )

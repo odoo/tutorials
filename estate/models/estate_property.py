@@ -1,5 +1,6 @@
-from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -53,14 +54,14 @@ class EstateProperty(models.Model):
     def action_btn_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError(msg="property can't be cancelled")
+                raise UserError(_(msg="property can't be cancelled"))
             record.state = "sold"
         return True
 
     def action_btn_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError(msg="Cancelled property can't be sold")
+                raise UserError(_("Cancelled property can't be sold"))
             record.state = "cancelled"
         return True
 
@@ -101,3 +102,28 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price >= 0)",
+        "Expected price must be positive",
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_validation(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            if float_is_zero(record.expected_price, precision_digits=2):
+                continue
+
+            price_limit = record.expected_price * 0.9
+            if (
+                float_compare(record.selling_price, price_limit, precision_digits=2)
+                == -1
+            ):
+                raise ValidationError(
+                    _(
+                        "Selling price must not be less than 90%% of the expected price.",
+                    ),
+                )
