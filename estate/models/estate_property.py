@@ -7,6 +7,7 @@ from odoo.tools.translate import _
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Description", required=True)

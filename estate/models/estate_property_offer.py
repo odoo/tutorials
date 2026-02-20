@@ -6,6 +6,7 @@ from odoo.tools.translate import _
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -31,6 +32,12 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        store=True,
+        string="Property Type",
     )
 
     _check_offer_price = models.Constraint(
@@ -68,6 +75,7 @@ class EstatePropertyOffer(models.Model):
                 )
 
             record.status = "accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
         return True
