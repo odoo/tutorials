@@ -38,6 +38,7 @@
             <list string="Offers" editable="bottom"
                 decoration-success="status=='accepted'"
                 decoration-danger="status=='refused'">
+                <!-- Status is hidden but used for row decorations -->
                 <field name="status" column_invisible="True"/>
                 <field name="price"/>
                 <field name="partner_id" string="Partner"/>
