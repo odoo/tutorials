@@ -61,9 +61,8 @@ class EstatePropertyOffer(models.Model):
             # Check if another offer was already accepted
             if property.offer_ids.filtered(lambda o: o.status == 'accepted'):
                 raise UserError("Only one offer can be accepted per property.")
-            # Refuse others offers
-            other_offers = property.offer_ids.filtered(lambda o: o != offer)
-            other_offers.write({'status': 'refused'})
+            # Refuse every offers
+            property.offer_ids.status = 'refused'
             # Accept current offer
             offer.status = 'accepted'
             property.selling_price = offer.price
@@ -76,25 +75,31 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'refused'
         return True
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        if isinstance(vals_list, dict):
-            vals_list = [vals_list]
-
         for vals in vals_list:
-            property = self.env['estate.property'].browse(vals['property_id'])
+            property_id = vals.get("property_id")
+            price = vals.get("price")
+
+            if not property_id or not price:
+                continue
+
+            property = self.env["estate.property"].browse(property_id)
+
             if property.offer_ids:
-                max_offer_price = max(property.offer_ids.mapped('price'))
-                if vals['price'] <= max_offer_price:
+                max_offer_price = max(property.offer_ids.mapped("price"))
+                if price <= max_offer_price:
                     raise UserError(
                         f"Cannot create an offer lower or equal to existing offers. "
                         f"Current highest offer: {max_offer_price}"
                     )
+
         offers = super().create(vals_list)
+
         for offer in offers:
-            property = offer.property_id
-            if property.state == 'new':
-                property.state = 'offer_received'
+            if offer.property_id.state == "new":
+                offer.property_id.state = "offer_received"
+
         return offers
 
     _check_offer_price_min = models.Constraint(

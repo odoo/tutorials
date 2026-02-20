@@ -4,30 +4,37 @@ class EstatePropertyInherited(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        res = super(EstatePropertyInherited, self).action_sold()
+        res = super().action_sold()
 
-        for offer in self:
-            if not offer.buyer_id or not offer.selling_price:
+        AccountMove = self.env["account.move"]
+        sales_journal = self.env["account.journal"].search(
+            [("type", "=", "sale")],
+            limit=1,
+        )
+
+        for property in self:
+            if not property.buyer_id or not property.selling_price:
                 continue
 
             invoice_vals = {
-                "partner_id": offer.buyer_id.id,
+                "partner_id": property.buyer_id.id,
                 "move_type": "out_invoice",
+                "journal_id": sales_journal.id,
                 "invoice_line_ids": [
                     Command.create({
-                        "name": f"Commission (6%) for {offer.name}",
+                        "name": f"Commission (6%) for {property.name}",
                         "quantity": 1,
-                        "price_unit": offer.selling_price * 0.06,
+                        "price_unit": property.selling_price * 0.06,
                     }),
                     Command.create({
-                        "name": "Administrative fees",
+                        "name": f"Selling price for {property.name}",
                         "quantity": 1,
-                        "price_unit": offer.selling_price,
+                        "price_unit": property.selling_price,
                     }),
                 ],
             }
 
-            invoice = self.env["account.move"].create(invoice_vals)
-            print(f"Invoice created: {invoice.name}")
+            invoice = AccountMove.create(invoice_vals)
+            invoice.action_post()  # optional: automatically post invoice
 
         return res

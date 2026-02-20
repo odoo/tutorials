@@ -18,7 +18,7 @@
             <form string="Property Type">
                 <header>
                     <button type="action"
-                        name="%(estate_property_offer_action_by_type)d"
+                        name="%(estate_property_offer_action)d"
                         class="oe_stat_button"
                         invisible="offer_count == 0">
                         <div style="display: flex; align-items: center; justify-content: space-between; width: 120px;">

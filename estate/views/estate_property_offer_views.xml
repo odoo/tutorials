@@ -5,20 +5,7 @@
         <field name="name">Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[]</field>
-        <field name="views" eval="[(ref('view_estate_property_offer_list'), 'list'),
-                                (ref('view_estate_property_offer_form'), 'form')]"/>
-    </record>
-
-    <record id="estate_property_offer_action_by_type" model="ir.actions.act_window">
-        <field name="name">Offers</field>
-        <field name="res_model">estate.property.offer</field>
-        <field name="view_mode">list,form</field>
-        <field name="views" eval="[
-            (ref('view_estate_property_offer_list'), 'list'),
-            (ref('view_estate_property_offer_form'), 'form')
-        ]"/>
-        <field name="domain">[('property_id.property_type_id','=',active_id)]</field>
+        <field name="domain">[('property_type_id','=',active_id)]</field>
     </record>
 
     <!-- Offer Form View -->

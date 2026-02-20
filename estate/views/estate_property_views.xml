@@ -34,11 +34,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id"
-                    create="true"
-                    edit="true"
-                    delete="true"
-                    class="o_kanban_small_column"
-                    quick_create="false"
                     records_draggable="false">
                 <field name="name"/>
                 <field name="expected_price"/>
