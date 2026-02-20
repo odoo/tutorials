@@ -1,21 +1,19 @@
-<?xml version='1.0'?>
+<?xml version="1.0"?>
 <odoo>
-    <data>
-        <record id='estate_model_action' model='ir.actions.act_window'>
-            <field name='name'>Real-estate Property's</field>
-            <field name='res_model'>estate.property</field>
-            <field name='view_mode'>list,form</field>
+        <record id="estate_model_action" model="ir.actions.act_window">
+            <field name="name">Real-estate Property"s</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form</field>
         </record>
-        <record id='estate_property_list_view' model='ir.ui.view'>
-            <field name='name'>estate.property.list.view</field>
-            <field name='model'>estate.property</field>
-            <field name='arch' type='xml'>
+        <record id="estate_property_list_view" model="ir.ui.view">
+            <field name="name">estate.property.list.view</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
                 <list string="Tests">
-                    <field name='name'/>
-                    <field name='last_seen'/>
-                    <field name='bedrooms'/>
+                    <field name="name"/>
+                    <field name="last_seen"/>
+                    <field name="bedrooms"/>
                 </list>
             </field>
         </record>
-        </data>
 </odoo>
