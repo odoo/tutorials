@@ -1,12 +1,14 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property used to buy and sell houses"
 
+    status = fields.Char(default="New")
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -37,8 +39,9 @@ class EstateProperty(models.Model):
             ('new', "New"),
             ('offer_accepted', "Offer Accepted"),
             ('offer_received', "Offer Received"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
+            ('reset', "reset"),
         ],
         string="State",
     )
@@ -65,11 +68,6 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many(
         string="Tags",
         comodel_name='estate.property.tag',
-    )
-    property_ids = fields.One2many(
-        string='property',
-        comodel_name='estate.property.offer',
-        inverse_name='property_id',
     )
 
     offer_ids = fields.One2many(
@@ -107,3 +105,27 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def sold(self):
+        for rec in self:
+            if rec.state == "cancelled":
+                message = "Property already cancelled"
+                raise UserError(message)
+            rec.state = "sold"
+            rec.status = "Sold"
+
+    def cancel(self):
+        for rec in self:
+            if rec.state == "sold":
+                message = "Cannot be cancelled as its already sold"
+                raise UserError(message)
+            rec.state = "cancelled"
+            rec.status = "Cancelled"
+
+    def reset(self):
+        for rec in self:
+            if rec.state == 'sold' or rec.state == 'cancelled':
+                rec.state = 'reset'
+            else:
+                message = "Only for sold and cancelled items "
+                raise UserError(message)

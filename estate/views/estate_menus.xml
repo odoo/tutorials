@@ -4,7 +4,8 @@
 
         <menuitem
             id="estate_menu_root"
-            name="Real Estate" />
+            name="Real Estate"
+            web_icon="estate,static/description/logo.png"/>
 
         <menuitem
             id="estate_menu_advertisements"
@@ -36,7 +37,6 @@
             action="estate_property_tag_action"
             parent="estate_property_menu_settings"
             sequence="50"/>
-
 
     </data>
 </odoo>
