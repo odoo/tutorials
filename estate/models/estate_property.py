@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 from dateutil.relativedelta import relativedelta
 
 
@@ -133,9 +134,10 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_min(self):
         for record in self:
-            if (
-                record.selling_price and record.expected_price and record.selling_price < record.expected_price * 0.9
-            ):
+            if not record.selling_price or not record.expected_price:
+                continue
+            # approximate comparison: selling_price >= 90% of expected_price
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )

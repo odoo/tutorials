@@ -28,9 +28,9 @@ class EstatePropertyInherited(models.Model):
                         "price_unit": property.selling_price * 0.06,
                     }),
                     Command.create({
-                        "name": f"Selling price for {property.name}",
+                        "name": "Administrative fees",
                         "quantity": 1,
-                        "price_unit": property.selling_price,
+                        "price_unit": 100,
                     }),
                 ],
             }
