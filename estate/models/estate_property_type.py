@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
