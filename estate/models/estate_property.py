@@ -74,14 +74,17 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
-        data = self.env["estate.property.offer"]._read_group(
+        max_price_list = self.env["estate.property.offer"]._read_group(
             domain=[("property_id", "in", self.ids)],
             aggregates=["price:max"],
             groupby=["property_id"],
         )
-        price_list = {record.id: price for record, price in data}
+        price_list = {record.id: price for record, price in max_price_list}
         for record in self:
-            record.best_offer = price_list.get(record.id, 0.0)
+            if record.id:
+                record.best_offer = price_list.get(record.id, 0.0)
+            else:
+                record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def onchange_garden(self):
@@ -93,23 +96,17 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        for record in self:
-            if record.state != "canceled":
-                record.state = "sold"
-            else:
-                raise UserError(
-                    "You cannot move to canceled stage after sold the property"
-                )
+        if self.state != "canceled":
+            self.state = "sold"
+        else:
+            raise UserError("You cannot move to canceled stage after sold the property")
         return True
 
     def action_cencel(self):
-        for record in self:
-            if record.state != "sold":
-                record.state = "canceled"
-            else:
-                raise UserError(
-                    "You cannot move to sold stage after cenceled the property"
-                )
+        if self.state != "sold":
+            self.state = "canceled"
+        else:
+            raise UserError("You cannot move to sold stage after cenceled the property")
         return True
 
     @api.constrains("selling_price")

@@ -13,7 +13,7 @@ class EstatePropertyOffer(models.Model):
         copy=False,
         selection=[
             ("accepted", "Accepted"),
-            ("refuse", "Refused"),
+            ("refused", "Refused"),
         ],
     )
     date_deadline = fields.Date(
@@ -57,15 +57,21 @@ class EstatePropertyOffer(models.Model):
             self.validity = (self.date_deadline - create_date).days
 
     def action_accept_offer(self):
-        for record in self:
-            if not (record.property_id.selling_price):
-                record.property_id.selling_price = record.price
-                record.status = "accepted"
-                record.property_id.buyer_id = record.partner_id
-            else:
-                raise UserError("You cannot accept multiple offer")
+        accepted_records = self.search(
+            [
+                ("property_id", "=", self.property_id),
+                ("status", "=", "accepted"),
+            ]
+        )
+        if accepted_records:
+            raise UserError("cannot accept multiple offer")
+        else:
+            self.property_id.selling_price = self.price
+            self.status = "accepted"
+            self.property_id.buyer_id = self.partner_id
+        return True
 
     def action_refuse_offer(self):
         for record in self:
-            record.status = "refuse"
+            record.status = "refused"
         return True
