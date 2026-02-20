@@ -1,6 +1,7 @@
 from odoo import models, fields, api, exceptions
 from datetime import timedelta
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "An offer for a specific property, made by a specific buyer at lower or higher price than the expected price"
@@ -11,13 +12,13 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         string="Status",
         selection=[
-            ('accepted', 'Accepted'), 
+            ('accepted', 'Accepted'),
             ('refused', 'Refused')
-        ], 
+        ],
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
-    property_id = fields.Many2one("estate_property", string="Property", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     date_create = fields.Date(default=fields.Date.today)
@@ -38,7 +39,7 @@ class EstatePropertyOffer(models.Model):
         for record in vals:
             id = record.get('property_id')
             price = record.get('price')
-            property = self.env['estate_property'].browse(id)
+            property = self.env['estate.property'].browse(id)
             if property.offer_ids:
                 if price < max(property.offer_ids.mapped('price')):
                     raise exceptions.UserError('New offer price must be higher or equal to the existing offers!')
@@ -55,7 +56,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.state = 'offer_accepted'
         return True
-        
+
     def offer_refuse(self):
         for record in self:
             record.status = 'refused'

@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Group properties by type of building"
@@ -7,12 +8,12 @@ class EstatePropertyType(models.Model):
     _order = "sequence,name asc"
 
     name = fields.Char(required=True)
-    property_ids = fields.One2many('estate_property', 'property_type_id')
+    property_ids = fields.One2many('estate.property', 'property_type_id')
     sequence = fields.Integer('Sequence', help="Used to order property types.")
     offer_ids = fields.One2many("estate.property.offer", "property_type_id")
-    offer_count = fields.Integer(compute="_count_offers")
+    offer_count = fields.Integer(compute="_compute_offers_count")
 
-    def _count_offers(self):
+    def _compute_offers_count(self):
         for record in self:
-            self.offer_count = len(record.offer_ids)
+            record.offer_count = len(record.offer_ids)
         return True

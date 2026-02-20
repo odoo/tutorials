@@ -1,9 +1,11 @@
-from odoo import models, fields, api, exceptions, tools
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
+from odoo import models, fields, api, exceptions, tools
+
+
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "A new model to store real estate properties"
     _check_expected = models.Constraint('CHECK(expected_price > 0)', 'The price must be positive!')
     _check_selling = models.Constraint('CHECK(selling_price >= 0)', 'The price must be positive!')
@@ -24,9 +26,9 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
-            ('north', 'North'), 
-            ('south', 'South'), 
-            ('east', 'East'), 
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
             ('west', 'West')
         ],
     )
@@ -34,10 +36,10 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string="Status",
         selection=[
-            ('new', 'New'), 
-            ('offer_received', 'Offer Received'), 
-            ('offer_accepted', 'Offer Accepted'), 
-            ('sold', 'Sold'), 
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
             ('canceled', 'Canceled')
         ], 
         default='new',
@@ -64,7 +66,7 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0.0
-    
+
     @api.onchange('garden')
     def _onchange_offer_ids(self):
         if self.garden:
@@ -83,7 +85,7 @@ class EstateProperty(models.Model):
             compare = tools.float_utils.float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2)
             if offer_accepted and compare != 1:
                 raise exceptions.ValidationError("Cannot sell bellow 90% of expected price!")
-    
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_canceled(self):
         for record in self:
@@ -92,7 +94,7 @@ class EstateProperty(models.Model):
             elif len(record.offer_ids) > 0:
                 raise exceptions.UserError('Cannot delete a property that already recieved offers!')
         return True
-    
+
     def property_set_sold(self):
         for record in self:
             if record.state == 'canceled':
@@ -102,7 +104,7 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'sold'
         return True
-    
+
     def property_set_cancel(self):
         for record in self:
             if record.state == 'sold':
