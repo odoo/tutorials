@@ -1,5 +1,5 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class PropertyOffer(models.Model):
@@ -36,7 +36,7 @@ class PropertyOffer(models.Model):
 
     sequence = fields.Integer("Sequence", default=0)
 
-    # Beginning of the deadline part
+    # Deadline part
     @api.depends("deadline")
     def _compute_validity(self):
         for offer in self:
@@ -48,9 +48,7 @@ class PropertyOffer(models.Model):
         for offer in self:
             offer.deadline = fields.Date.add(offer.creation_date, days=offer.validity)
 
-    # End of the deadline part
-
-    # Beginning of the currency part
+    # Currency part
 
     # Translate currency to the one of the property so it's easier to compare
     # Also, the webpage doesn't like showing multiple currency signs (as $ and €),
@@ -66,9 +64,7 @@ class PropertyOffer(models.Model):
         for offer in self:
             offer.translated_price = offer._compute_currency()
 
-    # End of the currency part
-
-    # Beginning of the state / validation part
+    # Validation part
     def action_confirm(self):
         for offer in self:
             if offer.property_id.stage in ["offer_accepted", "sold", "cancelled"]:
@@ -82,7 +78,17 @@ class PropertyOffer(models.Model):
         for offer in self:
             offer.status = "refused"
 
-    # End of the state / validation part
+    @api.model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            property = self.env["estate.property"].browse(val["property_id"])
+            if property.stage == "new":
+                property.stage = "offer_received"
+
+            if property.stage != "offer_received":
+                raise ValidationError(_("You can't create offers at this point"))
+
+        return super().create(vals_list)
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',

@@ -107,6 +107,12 @@ class Property(models.Model):
             property.stage = "sold"
         return True
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_if_advanced_stage(self):
+        for property in self:
+            if property.stage not in ["new", "cancelled"]:
+                raise UserError(_("You cannot delete this property (%s), it is not in a new or cancelled stage.", property.name))
+
     _check_bedroom_number = models.Constraint(
         'CHECK(bedroom_number >= 0)',
         'The number of bedrooms can\'t be negative.',
