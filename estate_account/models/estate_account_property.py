@@ -1,13 +1,17 @@
-from odoo import models, Command
+from odoo import models, fields, Command
 
 
 class EstateAccountProperty(models.Model):
     _inherit = "estate.property"
 
+    invoice_ids = fields.One2many("account.move", "property_id", string="Invoice", copy=False)
+    display_invoice_btn = fields.Boolean(default=False)
+
     def property_set_sold(self):
         for record in self:
-            record.env['account.move'].create({
+            invoice = record.env['account.move'].create({
                 "name": record.name,
+                "property_id": record.id,
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
                 "line_ids": [
@@ -23,4 +27,6 @@ class EstateAccountProperty(models.Model):
                     })
                 ],
             })
+            print("New invoice created with id: ", invoice.id)
+            record.display_invoice_btn = True
         return super().property_set_sold()

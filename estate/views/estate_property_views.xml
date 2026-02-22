@@ -91,7 +91,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
+                    <div name="title" class="oe_title">
                         <h1 class="mt16 mb32">
                             <field name="name" placeholder="e.g. My Beautiful Property"/>
                         </h1>
