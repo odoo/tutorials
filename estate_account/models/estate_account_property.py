@@ -5,11 +5,10 @@ class EstateAccountProperty(models.Model):
     _inherit = "estate.property"
 
     invoice_ids = fields.One2many("account.move", "property_id", string="Invoice", copy=False)
-    display_invoice_btn = fields.Boolean(default=False)
 
     def property_set_sold(self):
         for record in self:
-            invoice = record.env['account.move'].create({
+            record.env['account.move'].create({
                 "name": record.name,
                 "property_id": record.id,
                 "partner_id": record.buyer_id.id,
@@ -18,7 +17,7 @@ class EstateAccountProperty(models.Model):
                     Command.create({
                         "name": "Deposit (6%)",
                         "quantity": 1,
-                        "price_unit": record.selling_price*0.06
+                        "price_unit": record.selling_price * 0.06
                     }),
                     Command.create({
                         "name": "Admin fees",
@@ -27,6 +26,4 @@ class EstateAccountProperty(models.Model):
                     })
                 ],
             })
-            print("New invoice created with id: ", invoice.id)
-            record.display_invoice_btn = True
         return super().property_set_sold()

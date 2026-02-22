@@ -41,7 +41,7 @@ class EstateProperty(models.Model):
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Canceled')
-        ], 
+        ],
         default='new',
         required=True,
         copy=False,
@@ -82,7 +82,7 @@ class EstateProperty(models.Model):
             for offer in record.offer_ids:
                 if offer.status == 'accepted':
                     offer_accepted = True
-            compare = tools.float_utils.float_compare(record.selling_price, record.expected_price*0.9, precision_digits=2)
+            compare = tools.float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2)
             if offer_accepted and compare != 1:
                 raise exceptions.ValidationError("Cannot sell bellow 90% of expected price!")
 
