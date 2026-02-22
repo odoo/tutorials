@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -14,13 +14,9 @@ class EstatePropertyOffer(models.Model):
             ('refused', "Refused"),
         ]
     )
-
     partner_id = fields.Many2one("res.partner", string="Partner")
-
     property_id = fields.Many2one("estate.property", string="Property")
-
     validity = fields.Integer(default=7, string="Validity (days)")
-
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
@@ -28,15 +24,14 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
     )
 
+    _price_check = models.Constraint(
+        "CHECK(price >= 0)", "The offer price must be greater then 0"
+    )
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            base_date = record.create_date
-            if not base_date:
-                base_date = fields.Date.today()
-            else:
-                base_date = base_date.date()
-
+            base_date = record.create_date or fields.Date.today()
             record.date_deadline = base_date + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
@@ -53,7 +48,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
 
             other_offers = record.property_id.offer_ids.filtered(
-                lambda o: o.id != record.id
+                lambda offers: offers.id != record.id
             )
 
             other_offers.write({"status": "refused"})
@@ -66,7 +61,3 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You cannot refuse an accepted offer.")
             record.status = "refused"
         return True
-
-    _price_check = models.Constraint(
-        "CHECK(price > 0)", "The offer price must be strictly positive."
-    )
