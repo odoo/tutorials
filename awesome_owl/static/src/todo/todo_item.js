@@ -4,9 +4,18 @@ export class TodoItem extends Component {
     static template = "awesome_owl.TodoItem";
 
     static props = {
-        todo: Object,
-        toggleState: Function,
-        removeTodo: Function,
+        // Define a shape for the todo object
+        todo: {
+            type: Object,
+            shape: {
+                id: { type: [String, Number], required: true },
+                description: { type: String, required: true },
+                isCompleted: { type: Boolean, required: true },
+            },
+            required: true,
+        },
+        toggleState: { type: Function, required: true },
+        removeTodo: { type: Function, required: true },
     };
 
     onCheckboxChange() {

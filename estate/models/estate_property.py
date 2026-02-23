@@ -112,22 +112,19 @@ class EstateProperty(models.Model):
     #
     # SQL constraints
     #
-    _sql_constraints = [
-        (
-            'expected_price_positive',
-            'CHECK(expected_price > 0)',
-            "The expected price must be strictly positive.",
-        ),
-        (
-            'selling_price_positive',
-            'CHECK(selling_price >= 0)',
-            "The selling price cannot be negative.",
-        ),
-    ]
+    _expected_price_positive = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
 
+    _selling_price_positive = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price cannot be negative.",
+    )
     #
     # Compute methods
     #
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for prop in self:

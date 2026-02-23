@@ -1,10 +1,8 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
-        <div 
-            class="mb-1 d-flex align-items-center"
-            t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''"
-        >
-            <!-- Checkbox to toggle completed -->
+        <div class="mb-1 d-flex align-items-center">
+            
+            <!-- Checkbox -->
             <input
                 type="checkbox"
                 class="me-2"
@@ -12,15 +10,29 @@
                 t-on-change="onCheckboxChange"
             />
 
-            <strong class="me-2"><t t-out="props.todo.id"/>:</strong>
-            <span class="flex-grow-1"><t t-out="props.todo.description"/></span>
+            <!-- ID -->
+            <strong 
+                class="me-2"
+                t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''"
+            >
+                <t t-out="props.todo.id"/>:
+            </strong>
+
+            <!-- Description -->
+            <span 
+                class="flex-grow-1"
+                t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''"
+            >
+                <t t-out="props.todo.description"/>
+            </span>
 
             <!-- Delete button -->
-            <span 
-                class="fa fa-remove ms-2 text-danger"
-                style="cursor:pointer;"
+            <button
+                type="button"
+                class="fa fa-remove ms-2 text-danger btn btn-link p-0"
                 t-on-click="onRemoveClick"
-            />
+                aria-label="Remove todo"
+            ></button>
         </div>
     </t>
 </templates>
