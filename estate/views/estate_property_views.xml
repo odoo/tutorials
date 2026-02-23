@@ -86,12 +86,14 @@
                                             type="object"
                                             string="Accept"
                                             icon="fa-check"
-                                            class="btn-primary"/>
+                                            class="btn-primary"
+                                            invisible="status in ['accepted','refused']"/>
                                     <button name="action_refuse"
                                             type="object"
                                             string="Refuse"
                                             icon="fa-times"
-                                            class="btn-secondary"/>
+                                            class="btn-secondary"
+                                            invisible="status in ['accepted','refused']"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                 </list>

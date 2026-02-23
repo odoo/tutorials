@@ -57,6 +57,10 @@ class EstatePropertyOffer(models.Model):
             accepted_offers = record.property_id.offer_ids.filtered(
                 lambda o: o.status == "accepted"
             )
+            other_offers = record.property_id.offer_ids.filtered(
+            lambda offer: offer.id != record.id
+            )
+            other_offers.write({'status': 'refused'})
             if accepted_offers:
                 raise UserError("an offer has already been accepted for this property")
             record.status = "accepted"
