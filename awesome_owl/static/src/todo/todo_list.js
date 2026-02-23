@@ -1,4 +1,4 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, useRef } from "@odoo/owl";
 import { TodoItem } from "./todo_item";
 
 export class TodoList extends Component {
@@ -6,11 +6,20 @@ export class TodoList extends Component {
     static components = { TodoItem };
 
     setup() {
-        // Reactive state: list of todos
-        this.todos = useState([
-            { id: 1, description: "buy milk", isCompleted: false },
-            { id: 2, description: "walk the dog", isCompleted: true },
-            { id: 3, description: "read a book", isCompleted: false },
-        ]);
+        this.todos = useState([]);
+        this.nextId = 1;
+        this.inputRef = useRef("newTodoInput");
+    }
+    addTodo(ev) {
+        if (ev.keyCode === 13) {
+            const description = this.inputRef.el.value.trim();
+            if (!description) return;
+            this.todos.push({
+                id: this.nextId++,
+                description,
+                isCompleted: false,
+            });
+            this.inputRef.el.value = "";
+        }
     }
 }
