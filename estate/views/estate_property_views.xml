@@ -30,6 +30,7 @@
                         <notebook>
                             <page string="Description">
                                 <group>
+                                    <field name="property_type_id"/><!-- experimented -->
                                     <field name="postcode"/>
                                     <field name="date_availability"/>
                                     <field name="expected_price"/>
@@ -68,7 +69,7 @@
                     <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
                     
                     <!-- experimented-->
-                    <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('bedrooms','=','2'),('state','=','new')]"/>
+                    <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('state','=','new'),'|',('bedrooms','=','2'),('active','=',False)]"/>
                 </search>
             </field>
         </record>
