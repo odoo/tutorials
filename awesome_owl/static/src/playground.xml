@@ -14,7 +14,12 @@
         <!-- Card with multiple components -->
         <Card title="'Multiple Items'">
             <Counter/>
-            <p>Some extra text beacause, I can.</p>
+            <p>Some extra text because, I can.</p>
+        </Card>
+
+        <!-- Card with a Todo List -->
+        <Card title="'Todo List Card'">
+            <TodoList/>
         </Card>
 
     </div>

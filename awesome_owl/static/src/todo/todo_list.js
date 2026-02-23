@@ -24,6 +24,7 @@ export class TodoList extends Component {
                 description,
                 isCompleted: false,
             });
+            this.inputRef.el.value = "";
         }
     }
 

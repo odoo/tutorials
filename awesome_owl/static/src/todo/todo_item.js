@@ -8,14 +8,14 @@ export class TodoItem extends Component {
         todo: {
             type: Object,
             shape: {
-                id: { type: [String, Number], required: true },
-                description: { type: String, required: true },
-                isCompleted: { type: Boolean, required: true },
+                id: { type: [String, Number], optional: true },
+                description: { type: String, optional: true },
+                isCompleted: { type: Boolean, optional: true },
             },
-            required: true,
+            optional: true,
         },
-        toggleState: { type: Function, required: true },
-        removeTodo: { type: Function, required: true },
+        toggleState: { type: Function, optional: true },
+        removeTodo: { type: Function, optional: true },
     };
 
     onCheckboxChange() {

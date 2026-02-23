@@ -10,21 +10,14 @@
                 t-on-change="onCheckboxChange"
             />
 
-            <!-- ID -->
-            <strong 
-                class="me-2"
+            <!-- Todo content (ID + description) -->
+            <div 
+                class="flex-grow-1 d-flex"
                 t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''"
             >
-                <t t-out="props.todo.id"/>:
-            </strong>
-
-            <!-- Description -->
-            <span 
-                class="flex-grow-1"
-                t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''"
-            >
-                <t t-out="props.todo.description"/>
-            </span>
+                <strong class="me-2"><t t-out="props.todo.id"/>:</strong>
+                <span><t t-out="props.todo.description"/></span>
+            </div>
 
             <!-- Delete button -->
             <button
