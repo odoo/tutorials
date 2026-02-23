@@ -1,19 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Playground">
         <div class="p-3">
-            <Card 
-                title="'Normal String'" 
-                content="'Just a text'"
-            />
-            <Card 
-                title="'HTML Without markup()'" 
-                content="htmlContent"
-            />
-            <Card 
-                mytitle="'HTML With markup()'" 
-                content="safeHtmlContent"
-            />
+
+            <h3>Sum of Counters: <t t-esc="state.sum"/></h3>
+
+            <Counter onChange.bind="onCounter0Change"/>
+            <Counter onChange.bind="onCounter1Change"/>
 
         </div>
     </t>
