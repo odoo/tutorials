@@ -9,5 +9,6 @@
     A app for real estate invoices.
     """,
     'data': [
+        'views/estate_account_form_views.xml',
     ],
 }
