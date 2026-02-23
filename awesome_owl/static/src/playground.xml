@@ -11,7 +11,7 @@
                 content="htmlContent"
             />
             <Card 
-                title="'HTML With markup()'" 
+                mytitle="'HTML With markup()'" 
                 content="safeHtmlContent"
             />
 
