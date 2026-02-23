@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.settings">
+        <Dialog title="props.title || 'Dashboard settings'">
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <div class="o_dashboard_settings_item">
+                    <input type="checkbox" t-att-checked="isItemEnabled(item)" t-att-data-item-id="item.id" t-on-change="onToggleItem" class="o_dashboard_settings_checkbox" id="checkbox-{{item.id}}"/>
+                    <p class="o_header_settings_p"><t t-esc="item.description"/></p>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button type="button" class="btn btn-primary" t-on-click="onApply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

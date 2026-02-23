@@ -1,0 +1,20 @@
+.o_dashboard {
+    background: #2A7B9B;
+    background: linear-gradient(90deg,rgba(42, 123, 155, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%);
+
+    .o_dashboard_row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .o_header_dashboard_item {
+        font-size: 1.5em;
+    }
+
+    .o_average_quantity {
+        font-size: 2em;
+        color: #008528;
+        font-weight: bold;
+    }
+}

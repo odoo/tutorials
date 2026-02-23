@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.NumberCard">
+        <p class="o_header_dashboard_item"><t t-esc="props.title"/></p>
+        <p class="o_average_quantity"><t t-esc="props.value"/></p>
+    </t>
+
+</templates>
