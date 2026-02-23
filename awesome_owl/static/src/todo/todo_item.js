@@ -6,16 +6,14 @@ export class TodoItem extends Component {
     static props = {
         // Define a shape for the todo object
         todo: {
-            type: Object,
             shape: {
-                id: { type: [String, Number], optional: true },
-                description: { type: String, optional: true },
-                isCompleted: { type: Boolean, optional: true },
+                id:  [String, Number],
+                description:  String,
+                isCompleted: Boolean, 
             },
-            optional: true,
         },
-        toggleState: { type: Function, optional: true },
-        removeTodo: { type: Function, optional: true },
+        toggleState:  Function, 
+        removeTodo: Function,
     };
 
     onCheckboxChange() {
