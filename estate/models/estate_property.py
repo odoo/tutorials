@@ -1,17 +1,12 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property model"
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)", "selling price must be positive"
-    )
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "expected price must be greator than 0"
-    )
     _order = "id desc"
 
     name = fields.Char("Title", required=True)
@@ -66,6 +61,13 @@ class EstateProperty(models.Model):
         "Best Price", readonly=True, compute="_compute_best_price"
     )
 
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)", "selling price must be positive"
+    )
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)", "expected price must be greator than 0"
+    )
+
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
         for rec in self:
@@ -85,12 +87,18 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_not_in(self):
+        for rec in self:
+            if rec.state not in ("new", "cancelled"):
+                raise UserError(_("Only New and Cancelled property can be deleted"))
+
     def action_mark_as_sold(self):
         for rec in self:
             if rec.state == "sold":
-                raise UserError("Already SOLD")
+                raise UserError(_("Already SOLD"))
             elif rec.state == "cancelled":
-                raise UserError("Cancelled Property can't be SOLD")
+                raise UserError(_("Cancelled Property can't be SOLD"))
             else:
                 rec.state = "sold"
         return True
@@ -98,9 +106,9 @@ class EstateProperty(models.Model):
     def action_mark_as_cancelled(self):
         for rec in self:
             if rec.state == "cancelled":
-                raise UserError("Already CANCELLED")
+                raise UserError(_("Already CANCELLED"))
             elif rec.state == "sold":
-                raise UserError("SOLD Property can't be CANCELLED")
+                raise UserError(_("SOLD Property can't be CANCELLED"))
             else:
                 rec.state = "cancelled"
         return True

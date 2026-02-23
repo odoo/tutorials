@@ -18,23 +18,49 @@
         <field name='model'>estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <group>
-                    <h1>
-                        <field name="name" />
-                    </h1>
-                </group>
-                <notebook>
-                    <page string="Properties">
-                        <field name="property_ids">
-                            <list>
-                                <field name='name' />
-                                <field name="expected_price" />
-                                <field name="state" />
-                            </list>
-
-                        </field>
-                    </page>
-                </notebook>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            name="%(estate.estate_property_offer_action)d"
+                            icon="fa-money fa-2x"
+                        >
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count" />
+                                </span>
+                                <span class="o_stat_text">
+                                    Offers
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <group>
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name='name' />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>
@@ -44,5 +70,4 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-
 </odoo>
