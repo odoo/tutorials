@@ -13,6 +13,7 @@
                     <field name="name"/>
                     <field name="last_seen"/>
                     <field name="bedrooms"/>
+                    <field name="state"/>
                 </list>
             </field>
         </record>
@@ -23,12 +24,8 @@
                 <form string="Test">
                     <sheet>
                         <group>
-                            <group>
                                 <field name="name"/>
-                            </group>
-                            <group>
                                 <field name="last_seen"/>
-                            </group>
                         </group>
                         <notebook>
                             <page string="Description">
@@ -44,7 +41,6 @@
                                     <field name="state"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
-                                    
                                 </group>
                             </page>
                             <page string="others">
@@ -53,10 +49,27 @@
                                     <field name="active"/>
                                 </group>
                             </page>
-                            
                         </notebook>
                     </sheet>
                 </form>
+            </field>
+        </record>
+        <record id="estate_property_view_search" model="ir.ui.view">
+            <field name="name">estate.property.search.view</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="name"/>
+                    <field name="postcode"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="available" name="active" domain="[('active','=','True')]"/>
+                    <filter string="new property" name="state" domain="[('state','=','new')]"/>
+                    <filter string="2bhk" name="bedrooms" domain="[('bedrooms','=','2')]"/>
+                    <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
+                    
+                    <!-- experimented-->
+                    <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('bedrooms','=','2'),('state','=','new')]"/>
+                </search>
             </field>
         </record>
 </odoo>
