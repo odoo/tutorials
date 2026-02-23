@@ -202,8 +202,3 @@ class EstateProperty(models.Model):
             raise UserError("Cancelled properties cannot be sold.")
         self.state = 'sold'
         return True
-
-    #
-    # Business methods (if any)
-    #
-    # (none beyond actions in this model)
