@@ -1,6 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools.translate import _
 
 
 class EstatePropertyOffer(models.Model):
@@ -8,7 +7,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
     _order = "price desc"
 
-    price = fields.Float(string="Price")
+    price = fields.Float(string="Price", required=True)
     status = fields.Selection(
         selection=[
             ("accepted", "Accepted"),
@@ -88,3 +87,18 @@ class EstatePropertyOffer(models.Model):
 
             record.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property_id = val.get("property_id")
+            price = val.get("price")
+            if not property_id or not price:
+                continue
+            property_rec = self.env["estate.property"].browse(property_id)
+            if property_rec.best_price and price <= property_rec.best_price:
+                raise UserError(_("The offer must be higher than existing offers."))
+            if property_rec.state == "new":
+                property_rec.state = "offer_received"
+
+        return super().create(vals)

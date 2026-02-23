@@ -42,7 +42,7 @@
                         name="action_cancel_property" 
                         type="object" 
                         string="Cancel" 
-                        invisible="state in ('sold', 'canceled')"
+                        invisible="state in ('sold', 'cancelled')"
                     />
                     <field 
                         name="state"
@@ -99,7 +99,7 @@
                         <page string="Offers">
                             <field 
                                 name="offer_ids" 
-                                readonly="state in ('offer_accepted', 'sold', 'canceled')"
+                                readonly="state in ('offer_accepted', 'sold', 'cancelled')"
                             />
                         </page>
                         <page string="Other Info">

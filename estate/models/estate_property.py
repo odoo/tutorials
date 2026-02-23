@@ -1,7 +1,6 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from odoo.tools.translate import _
 
 
 class EstateProperty(models.Model):
@@ -10,7 +9,7 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     name = fields.Char(string="Property Name", required=True)
-    description = fields.Text(string="Description", required=True)
+    description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
         string="Date of Availability",
@@ -130,4 +129,12 @@ class EstateProperty(models.Model):
                     _(
                         "The selling price cannot be lower then 90% of the expected price."
                     )
+                )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    _("You can only delete properties in new or cancelled state.")
                 )
