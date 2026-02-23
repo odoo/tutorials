@@ -1,6 +1,7 @@
 from odoo import models
 from odoo.fields import Command
 
+
 class Property(models.Model):
     _inherit = "estate.property"
 
@@ -15,7 +16,7 @@ class Property(models.Model):
                     "name": self.name,
                 }),
                 Command.create({
-                    "price_unit": self.selling_price*0.06,
+                    "price_unit": self.selling_price * 0.06,
                     "quantity": 1,
                     "name": "Commission",
                 }),
