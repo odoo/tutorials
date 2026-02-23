@@ -1,12 +1,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Playground">
         <div class="p-3">
-
-            <h3>Sum of Counters: <t t-esc="state.sum"/></h3>
-
-            <Counter onChange.bind="onCounter0Change"/>
-            <Counter onChange.bind="onCounter1Change"/>
-
+            <TodoList/>
         </div>
     </t>
 </templates>
