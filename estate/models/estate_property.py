@@ -1,13 +1,14 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Management Module"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -41,7 +42,7 @@ class EstateProperty(models.Model):
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),
-            ("accepted", "Accepted"),
+            ("accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Cancelled"),
         ],
@@ -99,14 +100,18 @@ class EstateProperty(models.Model):
         if self.state != "canceled":
             self.state = "sold"
         else:
-            raise UserError("You cannot move to canceled stage after sold the property")
+            raise UserError(
+                _("You cannot move to canceled stage after sold the property")
+            )
         return True
 
     def action_cencel(self):
         if self.state != "sold":
             self.state = "canceled"
         else:
-            raise UserError("You cannot move to sold stage after cenceled the property")
+            raise UserError(
+                _("You cannot move to sold stage after cenceled the property")
+            )
         return True
 
     @api.constrains("selling_price")
@@ -116,6 +121,8 @@ class EstateProperty(models.Model):
                 minimum_price = record.expected_price * 0.9
 
                 if float_compare(record.selling_price, minimum_price, 4) <= 0:
-                    raise UserError(
-                        "Selling price cannot be lower than 90% of the expected price."
+                    raise ValidationError(
+                        _(
+                            "Selling price cannot be lower than 90% of the expected price."
+                        )
                     )

@@ -1,10 +1,11 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(required=True, string="Offer Price")
     partner_id = fields.Many2one("res.partner", required=True, string="Partner")
@@ -64,7 +65,7 @@ class EstatePropertyOffer(models.Model):
             ]
         )
         if accepted_records:
-            raise UserError("cannot accept multiple offer")
+            raise UserError(_("cannot accept multiple offer"))
         else:
             self.property_id.selling_price = self.price
             self.status = "accepted"
