@@ -9,28 +9,41 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
+    #
+    # Default methods
+    #
+    def _default_available_from(self):
+        return fields.Date.today() + relativedelta(months=3)
+
+    #
+    # Fields declaration
+    #
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
 
     available_from = fields.Date(
         copy=False,
-        default=lambda self: fields.Date.today() + relativedelta(months=3)
+        default=_default_available_from
     )
 
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(
+        required=True,
+        digits=(12, 2)
+    )
 
     selling_price = fields.Float(
         readonly=True,
-        copy=False
+        copy=False,
+        digits=(12, 2)
     )
 
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer("Living Area (sqm)")
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer("Garden Area (sqm)")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
 
     garden_orientation = fields.Selection(
         [
@@ -40,17 +53,6 @@ class EstateProperty(models.Model):
             ('west', 'West'),
         ],
     )
-
-    # Constraints and Onchange methods
-    @api.onchange('garden')
-    def _onchange_garden(self):
-        for property in self:
-            if property.garden:
-                property.garden_area = 10
-                property.garden_orientation = 'north'
-            else:
-                property.garden_area = 0
-                property.garden_orientation = False
 
     active = fields.Boolean(default=True)
 
@@ -66,45 +68,40 @@ class EstateProperty(models.Model):
         copy=False,
         default='new'
     )
-    # Many2one links
+
     property_type_id = fields.Many2one(
         'estate.property.type',
         string='Property Type'
     )
+
     buyer_id = fields.Many2one(
         'res.partner',
         string='Buyer',
         copy=False
     )
+
     salesperson_id = fields.Many2one(
         'res.users',
         string='Salesperson',
         default=lambda self: self.env.user
     )
-    # Many2many links
+
     tag_ids = fields.Many2many(
         'estate.property.tag',
         string="Tags"
     )
 
-    # One2many links
     offer_ids = fields.One2many(
         'estate.property.offer',
         'property_id',
         string="Offers"
     )
 
-    # Computed Fields
     total_area = fields.Float(
         string="Total Area (sqm)",
         compute="_compute_total_area",
         store=True
     )
-
-    @api.depends('living_area', 'garden_area')
-    def _compute_total_area(self):
-        for property in self:
-            property.total_area = property.living_area + property.garden_area
 
     best_offer = fields.Float(
         string="Best Offer",
@@ -112,48 +109,101 @@ class EstateProperty(models.Model):
         store=True
     )
 
+    #
+    # SQL constraints
+    #
+    _sql_constraints = [
+        (
+            'expected_price_positive',
+            'CHECK(expected_price > 0)',
+            "The expected price must be strictly positive.",
+        ),
+        (
+            'selling_price_positive',
+            'CHECK(selling_price >= 0)',
+            "The selling price cannot be negative.",
+        ),
+    ]
+
+    #
+    # Compute methods
+    #
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for prop in self:
+            prop.total_area = prop.living_area + prop.garden_area
+
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
-        for property in self:
-            property.best_offer = max(property.offer_ids.mapped('price'), default=0)
+        for prop in self:
+            prop.best_offer = max(prop.offer_ids.mapped('price'), default=0)
 
-    def action_cancel(self):
-        for property in self:
-            if property.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
-            property.state = 'cancelled'
-        return True
+    #
+    # Selection methods (if any)
+    #
+    # (none in this model)
 
-    def action_sold(self):
-        for property in self:
-            if property.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
-            property.state = 'sold'
-        return True
+    #
+    # Onchange methods
+    #
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        for prop in self:
+            if prop.garden:
+                prop.garden_area = 10
+                prop.garden_orientation = 'north'
+            else:
+                prop.garden_area = 0
+                prop.garden_orientation = False
 
+    #
+    # Constraint methods
+    #
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_min(self):
-        for record in self:
-            if not record.selling_price or not record.expected_price:
+        for prop in self:
+            if not prop.selling_price or not prop.expected_price:
                 continue
-            # approximate comparison: selling_price >= 90% of expected_price
-            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+            if float_compare(
+                prop.selling_price,
+                prop.expected_price * 0.9,
+                precision_digits=2
+            ) < 0:
                 raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
+                    "The selling price cannot be lower than 90% "
+                    "of the expected price."
                 )
 
-    _check_expected_price_positive = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "The expected price must be strictly positive.",
-    )
-
-    _check_selling_price_positive = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "The selling price cannot be negative.",
-    )
-
+    #
+    # CRUD overrides
+    #
     @api.ondelete(at_uninstall=False)
     def _check_can_delete(self):
         for prop in self:
             if prop.state not in ('new', 'cancelled'):
-                raise UserError("Only properties in 'New' or 'Cancelled' state can be deleted.")
+                raise UserError(
+                    "Only properties in 'New' or 'Cancelled' state "
+                    "can be deleted."
+                )
+
+    #
+    # Action methods
+    #
+    def action_cancel(self):
+        self.ensure_one()
+        if self.state == 'sold':
+            raise UserError("Sold properties cannot be cancelled.")
+        self.state = 'cancelled'
+        return True
+
+    def action_sold(self):
+        self.ensure_one()
+        if self.state == 'cancelled':
+            raise UserError("Cancelled properties cannot be sold.")
+        self.state = 'sold'
+        return True
+
+    #
+    # Business methods (if any)
+    #
+    # (none beyond actions in this model)

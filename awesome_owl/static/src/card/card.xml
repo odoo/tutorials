@@ -4,7 +4,7 @@
             <h3><t t-out="props.title"/></h3>
             <button t-on-click="toggleContent">
                 <t t-if="state.showContent">Hide</t>
-                <t t-else>Show</t>
+                <t t-else="">Show</t>
             </button>
         </div>
         <div class="card-content" t-if="state.showContent">
