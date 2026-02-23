@@ -4,7 +4,7 @@ export class Counter extends Component {
     static template = "awesome_owl.Counter";
 
     static props = {
-        onChange: { type: Function, required: false }, // optional callback
+        onChange: { type: Function, optional: true }, // optional callback
     };
 
     setup() {
