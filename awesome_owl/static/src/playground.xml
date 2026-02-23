@@ -2,9 +2,19 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Playground">
         <div class="p-3">
-            <Card title="'My First Card'" content="'This is the first card.'"/>
-            <Card title="'Another Card'" content="'This is another card'"/>
-            <Card title="'Last Card'" content="'Well it had to end :)'"/>
+            <Card 
+                title="'Normal String'" 
+                content="'Just a text'"
+            />
+            <Card 
+                title="'HTML Without markup()'" 
+                content="htmlContent"
+            />
+            <Card 
+                title="'HTML With markup()'" 
+                content="safeHtmlContent"
+            />
+
         </div>
     </t>
 </templates>
