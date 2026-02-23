@@ -4,16 +4,15 @@ export class Card extends Component {
     static template = "awesome_owl.Card";
 
     static props = {
-        title: String,
+        title: { type: String, optional: true },
+        slots: { type: Object, optional: true },
     };
 
     setup() {
-        this.state = useState({
-            showContent: true,
-        });
+        this.state = useState({ open: true });
     }
 
-    toggleContent() {
-        this.state.showContent = !this.state.showContent;
+    toggle() {
+        this.state.open = !this.state.open;
     }
 }

@@ -1,7 +1,21 @@
-<templates xml:space="preserve">
-    <t t-name="awesome_owl.Playground">
-        <div class="p-3">
-            <TodoList/>
-        </div>
-    </t>
-</templates>
+<t t-name="awesome_owl.Playground">
+    <div class="p-3">
+
+        <!-- Card with normal content -->
+        <Card title="'Simple Card'">
+            <p>Just a basic text card.</p>
+        </Card>
+
+        <!-- Card containing a Counter component -->
+        <Card title="'Counter Card'">
+            <Counter/>
+        </Card>
+
+        <!-- Card with multiple components -->
+        <Card title="'Multiple Items'">
+            <Counter/>
+            <p>Some extra text beacause, I can.</p>
+        </Card>
+
+    </div>
+</t>
