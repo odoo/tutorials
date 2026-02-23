@@ -7,8 +7,10 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
 
-    name = fields.Char(required=True, string="Title")
-    description = fields.Text(string="Description")
+    name = fields.Char(
+        required=True,
+    )
+    description = fields.Text()
     postcode = fields.Char(required=True)
     available_from = fields.Date(
         string="Availble From",
@@ -18,10 +20,10 @@ class EstateProperty(models.Model):
     selling_price = fields.Float(copy=False, readonly=True)
     bedrooms = fields.Integer(default=2)
     facades = fields.Integer(default=0)
-    living_area = fields.Integer(required=True)
-    garage = fields.Boolean(required=True)
-    garden = fields.Boolean(required=True)
-    garden_area = fields.Integer(required=True)
+    living_area = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
@@ -29,7 +31,6 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        required=True,
     )
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)", "The expected price must be strictly positive"
@@ -90,14 +91,11 @@ class EstateProperty(models.Model):
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        for property in self:
-            if float_is_zero(property.selling_price, precision_digits=2):
+        for prop in self:
+            if float_is_zero(prop.selling_price, precision_digits=2):
                 continue
-            minimum_price = property.expected_price * 0.9
-            if (
-                float_compare(property.selling_price, minimum_price, precision_digits=2)
-                < 0
-            ):
+            minimum_price = prop.expected_price * 0.9
+            if float_compare(prop.selling_price, minimum_price, precision_digits=2) < 0:
                 raise ValidationError(
                     "The selling price cannot be lower than 90 percent of the expected price."
                 )

@@ -29,9 +29,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
-            create_date = (
-                record.create_date.date() if record.create_date else fields.Date.today()
-            )
+            create_date = record.create_date or fields.Date.today()
             record.date_deadline = create_date + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
@@ -49,7 +47,7 @@ class EstatePropertyOffer(models.Model):
                     "you cannot accpet an offer on a solid or cancelled property."
                 )
             accepted_offer = property_rec.offer_ids.filtered(
-                lambda o: o.status == "accepted" and o != offer
+                lambda offer_: offer_.status == "accepted" and offer_ != offer
             )
             if accepted_offer:
                 raise UserError("only one offer can be accpeted for a property.")
@@ -70,15 +68,16 @@ class EstatePropertyOffer(models.Model):
                     "you cannot refuse an offer on an sold or cancelled property."
                 )
             if offer.status == "accepted":
-                offer.status = "refused"
+                other_pending = property_rec.offer_ids.filtered(
+                    lambda offer_: offer_.status == "pending" and offer_ != offer
+                )
+
                 property_rec.write(
                     {
                         "selling_price": 0.0,
                         "buyer_id": False,
+                        "state": "offer_recieved" if other_pending else "new",
                     }
-                )
-                other_pending = property_rec.offer_ids.filtered(
-                    lambda o: o.status == "pending"
                 )
                 if other_pending:
                     property_rec.state = "offer_received"
