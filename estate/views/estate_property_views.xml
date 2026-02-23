@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
@@ -37,10 +36,11 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="state"/>
+                            <field name="state" widget="statusbar"/>
                             <field name="postcode"/>
                             <field name="property_type_id"/>
                             <field name="facades"/>
+                            <field name="active"/>
                         </group>
                         <group>
                             <field name="tag_ids" widget="many2many_tags"/>
@@ -100,8 +100,10 @@
                     string="Available"
                     domain="[
                         '|',
+                        '|',
                         ('state', '=', 'new'),
-                        ('state', '=', 'offer_received')
+                        ('state', '=', 'offer_received'),
+                        ('active','=', 'True')
                     ]"
                 />
 
@@ -114,5 +116,4 @@
             </search>
         </field>
     </record>
-
 </odoo>
