@@ -1,14 +1,20 @@
 from dateutil.relativedelta import relativedelta
-
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError,ValidationError
+from odoo.tools.float_utils import float_compare,float_is_zero
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property used to buy and sell houses"
 
-    status = fields.Char(default="New")
+    _positive_price = models.Constraint('CHECK (expected_price>=0)',
+                    'Expected price must be positive',
+                    )
+    _selling_price = models.Constraint('CHECK(selling_price>=0)',
+    'Selling price must be positive')
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -32,18 +38,31 @@ class EstateProperty(models.Model):
             ('south', "South"),
             ('east', "East"),
             ('west', "West"),
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
         ],
     )
+
     state = fields.Selection(
         selection=[
+            ("New", "New"),
+            ("Offer Accepted", "Offer Accepted"),
+            ("Offer Received", "Offer Received"),
+            ("Sold", "Sold"),
+            ("Cancelled", "Cancelled"),
+        ],
+    )
+    status = fields.Selection(
+        selection=[
             ('new', "New"),
-            ('offer_accepted', "Offer Accepted"),
-            ('offer_received', "Offer Received"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
             ('reset', "reset"),
         ],
-        string="State",
+        string="Status",
+        default='new',
     )
 
     active = fields.Boolean(default=True)
@@ -108,24 +127,36 @@ class EstateProperty(models.Model):
 
     def sold(self):
         for rec in self:
-            if rec.state == "cancelled":
+            if rec.status == 'cancelled':
                 message = "Property already cancelled"
                 raise UserError(message)
-            rec.state = "sold"
-            rec.status = "Sold"
+            if rec.status == 'sold':
+                message = "Already sold cannot be sold again"
+            rec.status = 'sold'
 
     def cancel(self):
         for rec in self:
-            if rec.state == "sold":
+            if rec.status == 'sold':
                 message = "Cannot be cancelled as its already sold"
                 raise UserError(message)
-            rec.state = "cancelled"
-            rec.status = "Cancelled"
+            if rec.status == 'cancelled':
+                message = "Already cancelled cannot be cancelled again"
+            rec.status = 'cancelled'
 
     def reset(self):
         for rec in self:
-            if rec.state == 'sold' or rec.state == 'cancelled':
-                rec.state = 'reset'
+            if rec.status == 'sold' or rec.status == 'cancelled':
+                rec.status = 'new'
             else:
                 message = "Only for sold and cancelled items "
                 raise UserError(message)
+    
+    @api.constrains('selling_price')
+    def selling_price(self):
+        for rec in self:
+            if float_is_zero(rec.selling_price,precision_digits=2):
+                continue
+            min_price=rec.expected_price*0.9
+            if float_compare(rec.selling_price,min_price,precision_digits=2)<0:
+                message="Price cannot be less than 90%"
+                raise ValidationError(message)

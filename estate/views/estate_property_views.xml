@@ -62,19 +62,21 @@
                                 <list>
                                     <field name="price" />
                                     <field name="partner_id" />
+                                    <field name="status"/>
 
                                     <button name="accept"
                                         type="object"
                                         icon="fa-check"
                                         title="Accept Offer"
-                                        class="btn btn-success" />
+                                        class="btn btn-success"
+                                        invisible="parent.status == 'sold'" />
 
                                     <button name="reject"
                                         type="object"
                                         icon="fa-times"
                                         title="Reject Offer"
-                                        class="btn btn-danger" />
-                                    <field name="status" />
+                                        class="btn btn-danger"
+                                        invisible="parent.status == 'sold'" />
                                 </list>
                             </field>
                         </page>

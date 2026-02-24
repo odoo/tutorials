@@ -1,20 +1,24 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Real Estate Property Offer"
 
-    price = fields.Float(string="Price")
+    _offer_price = models.Constraint('CHECK(price>0)', 'Offer Price must be positive')
+
+    price = fields.Float(string="Price", default=1.0)
     status = fields.Selection(
         selection=[
-            ("accepted", "Accepted"),
-            ("refused", "Refused"),
+            ('new', "New"),
+            ('offer_accepted', "Offer Accepted"),
+            ('offer_rejected', "Offer Rejected"),
         ],
         string="Status",
-        copy=False,
+        default='new',
     )
     partner_id = fields.Many2one(
         "res.partner",
@@ -33,8 +37,6 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
     )
-    is_accepted = fields.Boolean(string="Accepted")
-    is_refused = fields.Boolean(string="Refused")
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -53,17 +55,51 @@ class EstatePropertyOffer(models.Model):
 
     def accept(self):
         for rec in self:
-            rec.status = "accepted"
-            rec.is_accepted = True
-            rec.is_refused = False
+            if rec.property_id.status == 'accepted':
+                return
 
-            rec.property_id.selling_price = rec.price
-            rec.property_id.buyer_id = rec.partner_id
+            other_offers = self.search([
+                ('property_id', '=', rec.property_id.id),
+                ('status', '=', 'new'),
+                ('id', '!=', rec.id),
+            ])
+            other_offers.write({'status': 'offer_rejected'})
+
+            rec.status = 'offer_accepted'
+
+            rec.property_id.write({
+                'selling_price': rec.price,
+                'buyer_id': rec.partner_id.id,
+                'status': 'sold',
+            })
 
     def reject(self):
         for rec in self:
-            rec.status = "refused"
-            rec.is_accepted = False
-            rec.is_refused = True
+            rec.status = 'offer_rejected'
 
-            rec.property_id.selling_price = 0
+            rec.property_id.write({
+                'selling_price': 0,
+            })
+
+    def reset(self):
+        for rec in self:
+
+            self.search([
+                ('property_id', '=', rec.property_id.id),
+            ]).write({
+                'status': 'new',
+            })
+
+            rec.property_id.write({
+                'selling_price': 0,
+                'buyer_id': False,
+                'status': 'new',
+            })
+
+    # @api.constrains('price')
+    # def check_price(self):
+    #     for rec in self:
+    #         if rec.price <= 0:
+    #             message = "Price needs to positive only"
+    #             raise ValidationError(message)
+    
