@@ -9,11 +9,9 @@
                     <menuitem id="test_model_menu_action" name="property" action="estate_model_action"/>
                 </menuitem>
             </menuitem>
-
         <!-- #experimental added extra direct menu for learning-->
         <menuitem id="direct_property_menu" name="property" action="estate_model_action"/>
         <!---->
-
         <menuitem id="property_type_menu" name="property type" action="estate_property_type_action"/>
         </menuitem>
     </data>

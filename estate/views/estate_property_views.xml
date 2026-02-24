@@ -67,7 +67,6 @@
                     <filter string="new property" name="state" domain="[('state','=','new')]"/>
                     <filter string="2bhk" name="bedrooms" domain="[('bedrooms','=','2')]"/>
                     <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
-                    
                     <!-- experimented-->
                     <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('state','=','new'),'|',('bedrooms','=','2'),('active','=',False)]"/>
                 </search>
