@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -104,8 +105,9 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("A cancelled property cannot be sold.")
+                raise UserError(_("A cancelled property cannot be sold."))
             record.state = "sold"
+            record.action_archive()
         return True
 
     def action_cancel(self):
@@ -114,3 +116,14 @@ class EstateProperty(models.Model):
                 raise UserError("A sold property cannot be cancelled.")
             record.state = "cancelled"
         return True
+
+    def action_best_offer(self):
+        for record in self:
+            # max_recordset
+            maxi = -1
+            for offer in record.offer_ids:
+                if offer.price > maxi:
+                    max_record = offer
+                    maxi = offer.price
+
+            max_record.action_accept()

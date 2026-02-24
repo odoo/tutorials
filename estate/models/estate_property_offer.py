@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -52,7 +53,6 @@ class EstatePropertyOffer(models.Model):
             )
 
             other_offers.write({"status": "refused"})
-
         return True
 
     def action_refuse(self):
