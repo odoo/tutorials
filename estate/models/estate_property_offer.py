@@ -88,7 +88,6 @@ class EstatePropertyOffer(models.Model):
                 'buyer_id': offer.partner_id.id,
                 'state': 'offer_accepted'
             })
-            
             other_pending_offers = offer.property_id.offer_ids.filtered(
                 lambda o: o.status != 'refused' and o != offer
             )
