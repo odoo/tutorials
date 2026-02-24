@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
             ('cancelled', "Cancelled"),
         ],
         readonly=True,
-        default="new",
+        default='new',
         required=True,
         copy=False,
     )
@@ -77,7 +77,17 @@ class EstateProperty(models.Model):
     )
     best_price = fields.Float(
         string="Best Price",
-        compute="_computer_best_price"
+        compute="_compute_best_price"
+    )
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "The selling price must be strictly positive",
     )
 
     @api.depends("living_area", "garden_area")
@@ -86,12 +96,29 @@ class EstateProperty(models.Model):
             record.total_area = (record.living_area or 0.0) + (record.garden_area or 0.0)
 
     @api.depends("offer_ids.price")
-    def _computer_best_price(self):
+    def _compute_best_price(self):
         for record in self:
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped("price"))
             else:
                 record.best_price = 0.0
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+
+            minimum_price = record.expected_price * 0.9
+
+            if float_compare(
+                record.selling_price,
+                minimum_price,
+                precision_rounding=0.01,
+            ) < 0:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -113,35 +140,8 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold")
             accepted = record.offer_ids.filtered(
-                lambda o: o.status == "accepted"
+                lambda offer: offer.status == "accepted"
             )
             if not accepted:
                 raise UserError("You must accept an offer before selling.")
             record.state = "sold"
-
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "The expected price must be strictly positive.",
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price > 0)",
-        "The selling price must be strictly positive",
-    )
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_rounding=0.01):
-                continue
-
-            minimum_price = record.expected_price * 0.9
-
-            if float_compare(
-                record.selling_price,
-                minimum_price,
-                precision_rounding=0.01,
-            ) < 0:
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
-                )
