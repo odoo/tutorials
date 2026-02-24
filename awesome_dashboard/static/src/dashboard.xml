@@ -6,8 +6,13 @@
     </t>
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <div>
-            Hello Dashboard
+        <div class="d-flex gap-3 p-3">
+            <button type="button" class="btn btn-primary" t-on-click="openCustomers">
+                Customers
+            </button>
+            <button type="button" class="btn btn-secondary" t-on-click="openLeads">
+                Leads
+            </button>
         </div>
     </t>
 </templates>
