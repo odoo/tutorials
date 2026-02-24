@@ -5,8 +5,6 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list>
-                  <button name="accept" type="object" class="oe_stat_button" icon="fa-check">
-                  </button>
                 
                 <field name="price" />
                 <field name="partner_id" />

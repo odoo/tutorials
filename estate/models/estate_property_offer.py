@@ -1,7 +1,6 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -102,4 +101,3 @@ class EstatePropertyOffer(models.Model):
     #         if rec.price <= 0:
     #             message = "Price needs to positive only"
     #             raise ValidationError(message)
-    

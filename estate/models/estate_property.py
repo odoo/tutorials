@@ -1,8 +1,8 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
-from odoo.exceptions import UserError,ValidationError
-from odoo.tools.float_utils import float_compare,float_is_zero
-from odoo import fields, models
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -14,6 +14,25 @@ class EstateProperty(models.Model):
                     )
     _selling_price = models.Constraint('CHECK(selling_price>=0)',
     'Selling price must be positive')
+
+    request = fields.Text()
+    estimated_cost = fields.Float(string="Estimated Cost")
+
+    request_ids = fields.One2many(
+        'estate.property.request',
+        'request_id',
+        string="Requests",
+    )
+
+    progress_state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('assigned', 'Assigned'),
+            ('inprogress', 'In Progress'),
+            ('done', 'done'),
+        ],
+        default='new',
+    )
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -48,8 +67,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ("New", "New"),
-            ("Offer Accepted", "Offer Accepted"),
-            ("Offer Received", "Offer Received"),
+            ("Offer Accepted", "offer_accepted"),
+            ("Offer Received", "offer_received"),
             ("Sold", "Sold"),
             ("Cancelled", "Cancelled"),
         ],
@@ -143,20 +162,68 @@ class EstateProperty(models.Model):
                 message = "Already cancelled cannot be cancelled again"
             rec.status = 'cancelled'
 
-    def reset(self):
+    # def reset(self):
+    #     properties = self.mapped('property_id')
+
+    #     offers = self.env['estate.property.offer'].search([
+    #         ('property_id', 'in', properties.ids)
+    #     ])
+    #     offers.write({'status': 'new'})
+
+    #     properties.write({
+    #         'selling_price': 0,
+    #         'buyer_id': False,
+    #         'state': 'new',
+    #     })
+
+    def accept_best_offer(self):
         for rec in self:
-            if rec.status == 'sold' or rec.status == 'cancelled':
-                rec.status = 'new'
-            else:
-                message = "Only for sold and cancelled items "
-                raise UserError(message)
-    
+            offers = rec.offer_ids
+            if not offers:
+                raise UserError({"No offers to accept."})
+
+            best_offer = offers.sorted('price', reverse=True)[0]
+
+            offers.write({'status': 'offer_rejected'})
+            best_offer.write({'status': 'offer_accepted'})
+
+            rec.write({
+                'selling_price': best_offer.price,
+                'status': 'sold',
+            })
+
     @api.constrains('selling_price')
-    def selling_price(self):
+    def _selling_price(self):
         for rec in self:
-            if float_is_zero(rec.selling_price,precision_digits=2):
+            if float_is_zero(rec.selling_price, precision_digits=2):
                 continue
-            min_price=rec.expected_price*0.9
-            if float_compare(rec.selling_price,min_price,precision_digits=2)<0:
-                message="Price cannot be less than 90%"
+            min_price = rec.expected_price * 0.9
+            if float_compare(rec.selling_price, min_price, precision_digits=2) < 0:
+                message = "Price cannot be less than 90%"
                 raise ValidationError(message)
+
+    def action_assign(self):
+        for rec in self:
+            rec.progress_state = 'assigned'
+
+    def action_done(self):
+        for rec in self:
+            if rec.progress_state != 'inprogress':
+                raise UserError(_("Work must be In Progress before marking Done."))
+            rec.progress_state = 'done'
+
+    def action_start(self):
+        for rec in self:
+            rec.progress_state = 'inprogress'
+
+    def action_stop(self):
+        for rec in self:
+            rec.progress_state = 'done'
+
+    @api.onchange('technician')
+    def _onchange_technician(self):
+        for rec in self:
+            if rec.technician():
+                rec.progress_state = 'assigned'
+            else:
+                rec.progress_state = 'new'
