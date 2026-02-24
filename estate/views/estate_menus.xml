@@ -12,7 +12,13 @@
         <!-- #experimental added extra direct menu for learning-->
         <menuitem id="direct_property_menu" name="property" action="estate_model_action"/>
         <!---->
-        <menuitem id="property_type_menu" name="property type" action="estate_property_type_action"/>
         </menuitem>
+        <menuitem
+            id="settings_menu_root"
+            name="settings"
+            sequence="10"
+            parent="test_menu_root"
+        />
+        <menuitem id="property_type_menu" parent="settings_menu_root" name="property type" action="estate_property_type_action"/>
     </data>
 </odoo>

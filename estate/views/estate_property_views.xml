@@ -48,6 +48,8 @@
                                 <group>
                                     <field name="description"/>
                                     <field name="active"/>
+                                    <field name="salesperson_id"/>
+                                    <field name="buyer_id"/>
                                 </group>
                             </page>
                         </notebook>
