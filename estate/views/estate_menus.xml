@@ -20,5 +20,6 @@
             parent="test_menu_root"
         />
         <menuitem id="property_type_menu" parent="settings_menu_root" name="property type" action="estate_property_type_action"/>
+        <menuitem id="estate_property_tag_menu" parent="settings_menu_root" name="property tag" action="estate_property_tag_action"/>
     </data>
 </odoo>
