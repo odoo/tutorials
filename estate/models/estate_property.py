@@ -47,13 +47,16 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         copy=False,
+        readonly=True,
+        default="new",
     )
-    total_area = fields.Float(compute="_compute_total_area")
+    total_area = fields.Float(compute="_compute_total_area", readonly=False)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", readonly=True, copy=False)
     user_id = fields.Many2one(
         "res.users", string="SalesPerson", default=lambda self: self.env.user
     )
+
     offer_ids = fields.One2many(
         "estate.property.offer",
         "property_id",

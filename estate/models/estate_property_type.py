@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class EstatePropertyType(models.Model):
@@ -12,3 +12,11 @@ class EstatePropertyType(models.Model):
     _unique_name = models.Constraint(
         "UNIQUE(name)", "The property type name must be unique"
     )
+
+    @api.depends("name", "bedrooms")
+    def _compute_display_name(self):
+        for record in self:
+            if record.bedrooms:
+                record.display_name = f"{record.name} ({record.bedrooms})"
+            else:
+                record.display_name = record.name

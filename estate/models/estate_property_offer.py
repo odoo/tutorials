@@ -10,10 +10,10 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float(string="Price Offered")
     status = fields.Selection(
         copy=False,
+        readonly=True,
         selection=[
             ("accepted", "Accepted"),
             ("refused", "Refused"),
-            ("pending", "Pending"),
         ],
     )
     partner_id = fields.Many2one("res.partner", required=True, string="Buyer")
@@ -39,26 +39,44 @@ class EstatePropertyOffer(models.Model):
             )
             record.validity = (record.date_deadline - create_date).days
 
+    # def accept_offer(self):
+    #     for offer in self:
+    #         property_rec = offer.property_id
+    #         if property_rec.state in ["sold", "cancelled"]:
+    #             raise UserError(
+    #                 "you cannot accpet an offer on a solid or cancelled property."
+    #             )
+    #         remaining_offers = property_rec.offer_ids.filtered(
+    #             lambda offer_: offer_.status == "accepted" and offer_ != offer
+    #         )
+    #         mark_refused = property_rec.offer_ids.filtered(
+    #             lambda offer_: offer_.property_id != property_rec
+    #         )
+    #         breakpoint()
+    #         if accepted_offer:
+    #             raise UserError("only one offer can be accpeted for a property.")
+    #         offer.status = "accepted"
+
+    #         if mark_refused:
+    #             offer.status = "refused"
+
+    #         property_rec.write(
+    #             {
+    #                 "selling_price": offer.price,
+    #                 "buyer_id": offer.partner_id.id,
+    #                 "state": "offer_accepted",
+    #             }
+    #         )
+
     def accept_offer(self):
         for offer in self:
-            property_rec = offer.property_id
-            if property_rec.state in ["sold", "cancelled"]:
-                raise UserError(
-                    "you cannot accpet an offer on a solid or cancelled property."
-                )
-            accepted_offer = property_rec.offer_ids.filtered(
-                lambda offer_: offer_.status == "accepted" and offer_ != offer
-            )
-            if accepted_offer:
-                raise UserError("only one offer can be accpeted for a property.")
             offer.status = "accepted"
-            property_rec.write(
-                {
-                    "selling_price": offer.price,
-                    "buyer_id": offer.partner_id.id,
-                    "state": "offer_accepted",
-                }
+            remaining_offers = offer.property_id.offer_ids.filtered(
+                lambda offer_: offer_.id != offer.id
             )
+            remaining_offers.status = "refused"
+            # remaining_offers.write({ 'status' : 'refused'})
+            return
 
     def reject_offer(self):
         for offer in self:
@@ -67,21 +85,22 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     "you cannot refuse an offer on an sold or cancelled property."
                 )
-            if offer.status == "accepted":
-                other_pending = property_rec.offer_ids.filtered(
-                    lambda offer_: offer_.status == "pending" and offer_ != offer
-                )
+            # if offer.status == "accepted":
+            #     other_pending = property_rec.offer_ids.filtered(
+            #         lambda offer_: offer_.status == "" and offer_ != offer
+            #     )
 
-                property_rec.write(
-                    {
-                        "selling_price": 0.0,
-                        "buyer_id": False,
-                        "state": "offer_recieved" if other_pending else "new",
-                    }
-                )
-                if other_pending:
-                    property_rec.state = "offer_received"
-                else:
-                    property_rec.state = "new"
+            #     property_rec.write(
+            #         {
+            #             "selling_price": 0.0,
+            #             "buyer_id": False,
+            #             "state": "offer_recieved" if other_pending else "new",
+            #         }
+            #     )
+            #     if other_pending:
+            #         property_rec.state = "offer_received"
+            #     else:
+            #         property_rec.state = "new"
             else:
                 offer.status = "refused"
+                property_rec.state = "offer_received"

@@ -89,9 +89,9 @@
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
 
-                                    <button name="accept_offer" type="object" icon="fa-check" class="btn-success" string="Accept" invisible="status != 'pending' or parent.state in ['offer_accepted', 'cancelled']"/>
+                                    <button name="accept_offer" type="object" icon="fa-check" class="btn-success" string="Accept" invisible="status"/>
 
-                                    <button name="reject_offer" type="object" icon="fa-times" class="btn-danger" string="Reject" invisible="status != 'pending' or parent.state in ['offer_accepted', 'cancelled']"/>
+                                    <button name="reject_offer" type="object" icon="fa-times" class="btn-danger" string="Reject" invisible="status"/>
                                 </list>
                             </field>
                         </page>
