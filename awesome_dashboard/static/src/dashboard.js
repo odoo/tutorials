@@ -3,8 +3,27 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 
+/* ---------------------------
+   Dashboard Item (Reusable)
+----------------------------*/
+class DashboardItem extends Component {
+    static template = "awesome_dashboard.DashboardItem";
+    static props = {
+        size: { type: Number, optional: true },
+    };
+
+    get width() {
+        const size = this.props.size || 1;
+        return `width: ${18 * size}rem`;
+    }
+}
+
+/* ---------------------------
+   Main Dashboard
+----------------------------*/
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
+    static components = { DashboardItem };
 
     setup() {
         this.action = useService("action");
@@ -28,6 +47,9 @@ class AwesomeDashboard extends Component {
     }
 }
 
+/* ---------------------------
+   Layout Wrapper
+----------------------------*/
 class AwesomeDashboardWrapper extends Component {
     static template = "awesome_dashboard.AwesomeDashboardWrapper";
     static components = { Layout, AwesomeDashboard };
@@ -40,4 +62,7 @@ class AwesomeDashboardWrapper extends Component {
     }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboardWrapper);
+registry.category("actions").add(
+    "awesome_dashboard.dashboard",
+    AwesomeDashboardWrapper
+);

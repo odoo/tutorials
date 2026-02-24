@@ -1,18 +1,49 @@
 <templates xml:space="preserve">
+
+    <!-- Layout Wrapper -->
     <t t-name="awesome_dashboard.AwesomeDashboardWrapper">
         <Layout t-props="layoutProps">
             <AwesomeDashboard/>
         </Layout>
     </t>
 
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-        <div class="d-flex gap-3 p-3">
-            <button type="button" class="btn btn-primary" t-on-click="openCustomers">
-                Customers
-            </button>
-            <button type="button" class="btn btn-secondary" t-on-click="openLeads">
-                Leads
-            </button>
+    <!-- Reusable Card Component -->
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="card shadow-sm m-2"
+             t-att-style="width">
+            <div class="card-body">
+                <t t-slot="default"/>
+            </div>
         </div>
     </t>
+
+    <!-- Main Dashboard -->
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <div class="d-flex flex-wrap p-3">
+
+            <!-- Default size (1) -->
+            <DashboardItem>
+                <h5 class="card-title">Customers</h5>
+                <p class="card-text">Open all customers.</p>
+                <button class="btn btn-primary"
+                        t-on-click="openCustomers">
+                    Open
+                </button>
+            </DashboardItem>
+
+            <!-- Size = 2 -->
+            <DashboardItem size="2">
+                <h5 class="card-title">Leads</h5>
+                <p class="card-text">
+                    Access CRM leads list and form view.
+                </p>
+                <button class="btn btn-secondary"
+                        t-on-click="openLeads">
+                    Open
+                </button>
+            </DashboardItem>
+
+        </div>
+    </t>
+
 </templates>
