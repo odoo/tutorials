@@ -27,6 +27,7 @@ class EstatePropertyOffer(models.Model):
         default=7,
         store=True,
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
     _check_price = models.Constraint(
         "CHECK(price > 0)",
         "Offer Price Must be in Positive",
@@ -70,6 +71,12 @@ class EstatePropertyOffer(models.Model):
             self.property_id.selling_price = self.price
             self.status = "accepted"
             self.property_id.buyer_id = self.partner_id
+            self.search(
+                [
+                    ("property_id", "=", self.property_id),
+                    ("status", "!=", "accepted"),
+                ]
+            ).status = "refused"
         return True
 
     def action_refuse_offer(self):

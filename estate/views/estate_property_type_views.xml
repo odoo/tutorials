@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+    <record id="action_property_type_offers" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">
+            [('property_type_id', '=', active_id)]
+        </field>
+    </record>
+
     <record id="estate_property_type_view_list" model="ir.ui.view">
         <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
@@ -18,7 +27,14 @@
         <field name="arch" type="xml">
             <form string="form_view_hai">
                 <sheet>
-                    <group>
+                    <div name="button_box" class="oe_button_box">
+                        <button type="action" name="%(estate.action_property_type_offers)d"
+                            string="Offers" class="oe_stat_button"
+                            icon="fa-tags">
+                            <field name="offer_count" widget="statinfo" />
+                        </button>
+                    </div>
+                    <group class="oe_title" col="2">
                         <h1>
                             <field name="name" />
                         </h1>
@@ -44,5 +60,6 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
+
 
 </odoo>

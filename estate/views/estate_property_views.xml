@@ -5,15 +5,17 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state in ('offer_received','accepted')"
+                decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'">
                 <field name="name" />
-                <field name="best_offer" />
+                <field name="property_type_id" />
                 <field name="postcode" />
+                <field name="tag_ids" widget="many2many_tags" />
                 <field name="bedrooms" />
-                <field name="living_area" optional="hide" />
+                <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -66,7 +68,7 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state in ('offer_accepted', 'sold', 'cancelled')" />
+                                readonly="state in ('accepted', 'sold', 'cancelled')" />
                         </page>
                         <page string="Others">
                             <group>
@@ -89,7 +91,7 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" />
+                <field name="living_area" filter_domain="[('living_area','&gt;=',self)]" />
                 <field name="facades" />
                 <field name="state" />
                 <separator />
@@ -116,7 +118,7 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_available':1}</field>
+        <field name="context">{'search_default_available':True}</field>
     </record>
 
 </odoo>
