@@ -160,5 +160,10 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
         <field name="context">{'search_default_state_equal_to_new_or_received':True}</field>
+        <field name="help" type="html">
+            <p>
+                Add New Properties
+            </p>
+        </field>
     </record>
 </odoo>
