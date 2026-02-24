@@ -10,11 +10,15 @@
     """,
     'data': [
         'security/ir.model.access.csv',
+        'data/estate.property.type.csv',
         'views/estate_views.xml',
         'views/estate_list_views.xml',
         'views/estate_form_views.xml',
         'views/estate_search_views.xml',
         'views/estate_menus.xml',
         'views/estate_kanban_views.xml',
+    ],
+    'demo': [
+        'demo/estate_property_demo.xml',
     ],
 }
