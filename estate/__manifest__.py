@@ -1,11 +1,15 @@
 {
     'name': 'Real Estate',
+    'version': '1.0',
+    'category': 'Real Estate/Brokerage',
+    'summary': 'Manage your real estate properties and offers',
     'author': 'Odoo S.A.',
     'license': 'LGPL-3',
     'depends': [
         'base',
     ],
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
