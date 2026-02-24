@@ -3,11 +3,23 @@
     <!-- Layout Wrapper -->
     <t t-name="awesome_dashboard.AwesomeDashboardWrapper">
         <Layout t-props="layoutProps">
+
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary"
+                        t-on-click="openCustomers">
+                    Customers
+                </button>
+
+                <button class="btn btn-secondary"
+                        t-on-click="openLeads">
+                    Leads
+                </button>
+            </t>
+
             <AwesomeDashboard/>
         </Layout>
     </t>
 
-    <!-- Reusable Card -->
     <t t-name="awesome_dashboard.DashboardItem">
         <div class="card shadow-sm m-2"
              t-att-style="width">
@@ -17,23 +29,8 @@
         </div>
     </t>
 
-    <!-- Dashboard Content -->
     <t t-name="awesome_dashboard.AwesomeDashboard">
 
-        <!-- 🔹 Navigation Buttons -->
-        <div class="d-flex gap-3 p-3">
-            <button class="btn btn-primary"
-                    t-on-click="openCustomers">
-                Customers
-            </button>
-
-            <button class="btn btn-secondary"
-                    t-on-click="openLeads">
-                Leads
-            </button>
-        </div>
-
-        <!-- 🔹 Statistics -->
         <div class="d-flex flex-wrap px-3"
              t-if="state.stats">
 
