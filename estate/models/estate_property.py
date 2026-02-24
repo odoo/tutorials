@@ -6,7 +6,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property definition"
-
+    _order = "id desc"
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Description", required=True)
     postcode = fields.Char(string="Postcode")
@@ -19,6 +19,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    available = fields.Char()
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
@@ -104,7 +105,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     _check_expected_price = models.Constraint(
-        "CHECK(expected_price >= 0)",
+        "CHECK(expected_price > 0)",
         "Expected price must be positive",
     )
 
@@ -127,3 +128,12 @@ class EstateProperty(models.Model):
                         "Selling price must not be less than 90%% of the expected price.",
                     ),
                 )
+
+        @api.ondelete(at_uninstall=False)
+        def unlink(self):
+            for record in self:
+                if record.state not in ("new", "cancelled"):
+                    raise UserError(_("User can delete only new or cancelled property"))
+                if record.property_offer_ids:
+                    raise UserError(_("Property can't be deleted"))
+            return super(EstateProperty, self).unlink()

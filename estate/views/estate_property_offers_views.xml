@@ -4,20 +4,23 @@
             <field name="name"> Estate Property offer</field>
             <field name="res_model">estate.property.offer</field>
             <field name="view_mode">list,form</field>
+            <field name="domain">[('property_type_id', '=', active_id)]</field>
         </record>
 
         <record id="estate_property_offer_view_list" model="ir.ui.view">
             <field name="name">estate.property.offer.list</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <list>
+                <list editable="bottom"
+                    decoration-success="status=='accepted'"
+                    decoration-danger="status=='refused'">
                     <field name="price"></field>
                     <field name="partner_id"></field>
                     <field name="validity"></field>
                     <field name="date_deadline"/>
-                    <button name="action_btn_accepted" string = "accepted" type="object"  class = "oe_stat_button"  icon="fa-check"/>
-                    <button name="action_btn_refused" string = "refused"  type="object"  class = "oe_stat_button"  icon="fa-solid fa-times"/>
-                    <field name="status"></field>
+                    <button name="action_btn_accepted" string = "accepted" type="object"  class = "oe_stat_button"  icon="fa-check" invisible="status in ('accepted','refused')"/>
+                    <button name="action_btn_refused" string = "refused"  type="object"  class = "oe_stat_button"  icon="fa-solid fa-times" invisible="status in ('accepted','refused')"/>
+                    <field name="status" optional="hide"></field>
                 </list>
             </field>
         </record>
@@ -33,7 +36,9 @@
                                 <field name="price" placeholder="Property Offer Price Title"/>
                                 <field name="partner_id" placeholder="Partner"/>
                                 <field name="validity"></field>
-                                <field name="status" placeholder="Property Offer Status"/>
+                                <field name="status"
+                                
+                                placeholder="Property Offer Status"/>
                             </h1>
                         </div>
                     </sheet>
