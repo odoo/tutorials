@@ -14,12 +14,10 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float(string="Offer Price")
     status = fields.Selection(
         [
-            ("pending", "Pending"),
             ("accepted", "Accepted"),
             ("refused", "Refused"),
         ],
         copy=False,
-        default="pending",
     )
     partner_id = fields.Many2one(
         "res.partner",
@@ -90,6 +88,11 @@ class EstatePropertyOffer(models.Model):
                 'buyer_id': offer.partner_id.id,
                 'state': 'offer_accepted'
             })
+            
+            other_pending_offers = offer.property_id.offer_ids.filtered(
+                lambda o: o.status != 'refused' and o != offer
+            )
+            other_pending_offers.write({'status': 'refused'})
 
     def action_refuse(self):
         for offer in self:
@@ -103,7 +106,7 @@ class EstatePropertyOffer(models.Model):
                     'buyer_id': False,
                 })
                 other_pending = property_rec.offer_ids.filtered(
-                    lambda o: o.status == 'pending'
+                    lambda offer: offer.status == 'refused'
                 )
                 if other_pending:
                     property_rec.state = 'offer_received'

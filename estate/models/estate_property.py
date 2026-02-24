@@ -8,7 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _order = "id desc"
+    _order = "date_availability desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -19,7 +19,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(required=True, default=0.0)
     selling_price = fields.Float(readonly=True, copy=False)
-    best_price = fields.Float(compute="_compute_best_price")
+    best_price = fields.Float(compute="_compute_best_price", store=True)
     bedrooms = fields.Integer(default=2, copy=False)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -29,19 +29,19 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", store=True)
     garden_orientation = fields.Selection(
         [
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection([
-        ('new', 'New'),
-        ('offer_received', 'Offer Received'),
-        ('offer_accepted', 'Offer Accepted'),
-        ('sold', 'Sold'),
-        ('cancelled', 'Cancelled'),
+        ('new', "New"),
+        ('offer_received', "Offer Received"),
+        ('offer_accepted', "Offer Accepted"),
+        ('sold', "Sold"),
+        ('cancelled', "Cancelled"),
     ], default='new')
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -119,7 +119,7 @@ class EstateProperty(models.Model):
             if record.state == 'cancelled':
                 raise UserError("Cancelled property cannot be sold.")
             accepted_offer = record.offer_ids.filtered(
-                lambda o: o.status == 'accepted'
+                lambda offer: offer.status == 'accepted'
             )
             if not accepted_offer:
                 raise UserError("You must accept an offer before selling the property.")

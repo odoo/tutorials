@@ -19,7 +19,7 @@
                         ('state', '=', 'offer_received')
                     ]" />
                 <separator/>
-                <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}" />
+                <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
     </record>
@@ -55,7 +55,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
-                <sheet>
                     <header>
                         <button name="action_sold"
                                 type="object"
@@ -69,6 +68,7 @@
                             widget="statusbar"
                             statusbar_visible="new, offer_received, offer_accepted, sold, cancelled"/>
                     </header>
+                <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
@@ -123,13 +123,13 @@
                                             icon="fa-check"
                                             class="btn-success"
                                             title="Accept Offer"
-                                            invisible="status != 'pending'"/>
+                                            invisible="status in ['accepted','refused'] or parent.state == 'offer_accepted'"/>
                                     <button name="action_refuse"
                                             type="object"
                                             icon="fa-times"
                                             class="btn-danger"
                                             title="Refuse Offer"
-                                            invisible="status != 'pending'"/>
+                                            invisible="status in ['accepted', 'refused'] or parent.state == 'offer_accepted'"/>
                                 </list>
                             </field>
                         </page>
