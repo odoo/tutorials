@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="settings_menu" name="Settings" parent="estate_root_menu">
+    <menuitem id="settings_menu" name="Settings" parent="estate_root_menu" groups="estate.estate_group_manager">
             <menuitem id="estate_property_type_menu" action="estate_property_type_action"/>
     </menuitem>
 </odoo>

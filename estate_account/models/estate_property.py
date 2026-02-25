@@ -14,12 +14,14 @@ class EstateProperty(models.Model):
             'price_unit': 100,
         }
 
-        self.env['account.move'].create({
+        self.check_access('write')
+
+        self.sudo().env['account.move'].create({
             'move_type': move_type,
             'partner_id': partner_id,
             "line_ids": [
-                Command.create(property_fee_invoice),
-                Command.create(adminstration_fee_invoice),
+            Command.create(property_fee_invoice),
+            Command.create(adminstration_fee_invoice),
             ]
         })
 
