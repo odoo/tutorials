@@ -10,6 +10,17 @@ export class AwesomeDashboardWrapper extends Component {
 
     setup() {
         this.action = this.env.services.action;
+        this.dashboardOpenSettings = null;
+
+        this.setDashboardSettingsCallback = (fn) => {
+            this.dashboardOpenSettings = fn;
+        };
+    }
+
+    openSettings() {
+        if (this.dashboardOpenSettings) {
+            this.dashboardOpenSettings();
+        }
     }
 
     openCustomers() {
