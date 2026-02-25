@@ -6,12 +6,20 @@ class PurchaseOrderDiscount(models.TransientModel):
     _name = "purchase.order.discount"
     _description = "Apply Global Discount on Purchase Order"
 
-    discount = fields.Float(string="Discount", required=True)
+    discount = fields.Float(string="discount", required=True)
     discount_type = fields.Selection(
-        [("amount", "$"), ("percent", "%")], default="percent", string="Discount Type"
+        [("amount", "$"), ("percent", "%")],
+        default="percent",
+        string="Discount Type",
+        required=True,
     )
     discount_percent = fields.Float(
         compute="_calculate_percentage", string="Calculated Percentage"
+    )
+    order_id = fields.Many2one(
+        "purchase.order",
+        string="Purchase Order",
+        required=True,
     )
 
     @api.constrains("discount", "discount_type")
@@ -27,8 +35,7 @@ class PurchaseOrderDiscount(models.TransientModel):
 
     @api.depends("discount", "discount_type")
     def _calculate_percentage(self):
-        order = self.env["purchase.order"].browse(self.env.context.get("active_id"))
-        base_amount = self._get_base_untaxed_amount(order)
+        base_amount = self._get_base_untaxed_amount(self.order_id)
         if self.discount_type == "percent":
             self.discount_percent = self.discount
         elif base_amount > 0:
@@ -38,12 +45,10 @@ class PurchaseOrderDiscount(models.TransientModel):
 
     def action_apply_discount(self):
         self.ensure_one()
-        order = self.env["purchase.order"].browse(self.env.context.get("active_id"))
-
-        if not order.order_line:
+        if not self.order_id.order_line:
             raise UserError("There are no lines on this order to discount.")
 
-        base_amount = self._get_base_untaxed_amount(order)
+        base_amount = self._get_base_untaxed_amount(self.order_id)
 
         if self.discount_type == "percent":
             target_discount = self.discount
@@ -56,4 +61,4 @@ class PurchaseOrderDiscount(models.TransientModel):
         if target_discount > 100:
             raise UserError("The discount amount exceeds the total value of the order.")
 
-        order.order_line.write({"discount": target_discount})
+        self.order_id.order_line.write({"discount": target_discount})
