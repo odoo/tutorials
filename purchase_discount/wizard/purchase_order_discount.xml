@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_purchase_order_discount" model="ir.actions.act_window">
+        <field name="name">Discount</field>
+        <field name="res_model">purchase.order.discount</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_order_id': active_id}</field>
+    </record>
+
+    <record id="purchase_order_line_wizard_form" model="ir.ui.view">
+        <field name="name">purchase.order.discount.form</field>
+        <field name="model">purchase.order.discount</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="discount" string="Discount"/>
+                            <div class="col-1">
+                                <field name="discount"/>
+                            </div>
+                            <div class="col-1">
+                                <field name="discount_type" nolabel="1"/>
+                            </div>
+                            <span class="text-muted" invisible="discount_type =='percent'">
+ (
+                                <field name="discount_percent" nolabel="1" class="w-auto d-inline"/>
+    %
+    )    
+                            </span>
+                        </div>
+                    </group>
+                    <footer>
+                        <button name="action_apply_discount" string="Apply" type="object" class="btn btn-primary"/>
+                        <button special="cancel" string="Discard" class="btn btn-secondary" data-hotkey="x"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
