@@ -55,11 +55,16 @@ class EstatePropertyOffer(models.Model):
         if len(vals) == 0:
             return super().create(vals)
         property_id = vals[0].get('property_id')
+        property_record = self.env['estate.property'].browse(property_id)
+
+        if property_record.state in ['sold']:
+            error_msg = "You cannot make an offer on a property that is already sold."
+            raise ValidationError(error_msg)
+
         price = vals[0].get('price')
-        if property_id and price:
-            property_record = self.env['estate.property'].browse(property_id)
-            if property_record.best_price and price <= property_record.best_price:
-                error_msg = "The offer price should be higher than the best offer of the property."
-                raise ValidationError(error_msg)
-            property_record.state = 'offer_received'
+        if property_record.best_price and price <= property_record.best_price:
+            error_msg = "The offer price should be higher than the best offer of the property."
+            raise ValidationError(error_msg)
+
+        property_record.state = 'offer_received'
         return super().create(vals)
