@@ -1,8 +1,38 @@
 /** @odoo-module **/
 
-import { rpc } from "@web/core/network/rpc";
-import { memoize } from "@web/core/utils/functions";
+import { reactive } from "@odoo/owl";
 
-export const loadStatistics = memoize(async function () {
-    return await rpc("/awesome_dashboard/statistics", {});
+const REFRESH_INTERVAL = 600000;
+
+export const statisticsStore = reactive({
+    data: null,
+    isReady: false,
 });
+
+async function loadStatistics() {
+    const response = await fetch("/awesome_dashboard/statistics", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            jsonrpc: "2.0",
+            method: "call",
+            params: {},
+            id: Date.now(),
+        }),
+    });
+
+    const payload = await response.json();
+
+    statisticsStore.data = payload.result;
+    statisticsStore.isReady = true;
+}
+
+// Initial load
+loadStatistics();
+
+// Auto refresh
+setInterval(() => {
+    loadStatistics();
+}, REFRESH_INTERVAL);

@@ -32,42 +32,42 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
 
         <div class="d-flex flex-wrap px-3"
-             t-if="state.stats">
+             t-if="stats.isReady">
 
             <DashboardItem>
                 <h6>New Orders</h6>
-                <h3><t t-esc="state.stats.nb_new_orders"/></h3>
+                <h3><t t-esc="stats.data.nb_new_orders"/></h3>
                 <small>This month</small>
             </DashboardItem>
 
             <DashboardItem>
                 <h6>Total Amount</h6>
-                <h3><t t-esc="state.stats.total_amount"/></h3>
+                <h3><t t-esc="stats.data.total_amount"/></h3>
                 <small>This month</small>
             </DashboardItem>
 
             <DashboardItem>
                 <h6>Avg T-Shirts / Order</h6>
-                <h3><t t-esc="state.stats.average_quantity"/></h3>
+                <h3><t t-esc="stats.data.average_quantity"/></h3>
             </DashboardItem>
 
             <DashboardItem>
                 <h6>Cancelled Orders</h6>
-                <h3><t t-esc="state.stats.nb_cancelled_orders"/></h3>
+                <h3><t t-esc="stats.data.nb_cancelled_orders"/></h3>
                 <small>This month</small>
             </DashboardItem>
 
             <DashboardItem size="2">
                 <h6>Avg Processing Time (hours)</h6>
-                <h3><t t-esc="state.stats.average_time"/></h3>
+                <h3><t t-esc="stats.data.average_time"/></h3>
             </DashboardItem>
 
             <DashboardItem size="2">
                 <h6>T-Shirt Sizes Sold</h6>
 
-                <t t-if="state.stats.orders_by_size">
+                <t t-if="stats.data.orders_by_size">
                     <PieChart t-props='{
-                        "data": state.stats.orders_by_size
+                        "data": stats.data.orders_by_size
                     }'/>
                 </t>
 
