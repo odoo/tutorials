@@ -70,6 +70,10 @@ class EstatePropertyOffer(models.Model):
             if has_higher_offer:
                 raise UserError('The offer price must be higher than the current best offer for the property.')
 
+            is_sold = self.env['estate.property'].browse(property_id).state == 'sold'
+            if is_sold:
+                raise UserError('Cannot make an offer on a sold property.')
+
         # Create the offer
         offer = super().create(vals_list)
         if offer.property_id.state == 'new':
