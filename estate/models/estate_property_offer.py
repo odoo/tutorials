@@ -36,3 +36,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.status = "refused"
+
+    _check_offer_price_positive = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive.',
+    )
