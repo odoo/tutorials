@@ -38,6 +38,8 @@ class EstatePropertyOffer(models.Model):
         precision = 2
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.state == 'sold':
+                raise UserError(_("You cannot make an offer on a sold property."))
             if float_compare(vals.get('price', 0.0), property_id.best_price, precision_digits=precision) < 0:
                 raise UserError(_("Your offer is too low. You cannot create an offer lower than the best offer."))
             if property_id.state == "new":
