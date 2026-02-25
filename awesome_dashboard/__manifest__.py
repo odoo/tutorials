@@ -26,7 +26,8 @@
             'awesome_dashboard/static/src/dashboard_action.js',  # loader
         ],
         'awesome_dashboard.dashboard': [
-            'awesome_dashboard/static/src/dashboard/**/*',       # everything else
+            'awesome_dashboard/static/src/dashboard/**/*',
+            'awesome_dashboard/static/src/dashboard/xml/**/*',
         ],
     },
     'license': 'AGPL-3'

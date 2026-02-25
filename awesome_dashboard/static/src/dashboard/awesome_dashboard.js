@@ -3,6 +3,7 @@ import { useService } from "@web/core/utils/hooks";
 import { statisticsStore } from "./services/statistics_service";
 import { DashboardItem } from "./dashboard_item";
 import { PieChart } from "./pie_chart";
+import { items } from "./dashboard_items";
 
 export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -12,6 +13,7 @@ export class AwesomeDashboard extends Component {
         this.action = useService("action");
 
         this.stats = useState(statisticsStore);
+        this.items = items;
     }
 }
 

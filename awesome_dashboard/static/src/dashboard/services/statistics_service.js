@@ -1,7 +1,7 @@
 /** @odoo-module **/
 import { reactive } from "@odoo/owl";
 
-const REFRESH_INTERVAL = 10000; // for testing
+const REFRESH_INTERVAL = 10000; // make it 600000 for 10mins
 
 export const statisticsStore = reactive({
     data: null,
