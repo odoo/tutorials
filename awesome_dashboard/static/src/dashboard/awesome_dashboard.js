@@ -1,8 +1,8 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
-import { statisticsStore } from "@awesome_dashboard/services/statistics_service";
-import { DashboardItem } from "../js/dashboard_item";
-import { PieChart } from "../js/pie_chart";
+import { statisticsStore } from "./services/statistics_service";
+import { DashboardItem } from "./dashboard_item";
+import { PieChart } from "./pie_chart";
 
 export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,3 +14,4 @@ export class AwesomeDashboard extends Component {
         this.stats = useState(statisticsStore);
     }
 }
+

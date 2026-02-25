@@ -1,8 +1,7 @@
 /** @odoo-module **/
-
 import { reactive } from "@odoo/owl";
 
-const REFRESH_INTERVAL = 600000;
+const REFRESH_INTERVAL = 10000; // for testing
 
 export const statisticsStore = reactive({
     data: null,
@@ -12,19 +11,10 @@ export const statisticsStore = reactive({
 async function loadStatistics() {
     const response = await fetch("/awesome_dashboard/statistics", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            jsonrpc: "2.0",
-            method: "call",
-            params: {},
-            id: Date.now(),
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", method: "call", params: {}, id: Date.now() }),
     });
-
     const payload = await response.json();
-
     statisticsStore.data = payload.result;
     statisticsStore.isReady = true;
 }
@@ -32,7 +22,5 @@ async function loadStatistics() {
 // Initial load
 loadStatistics();
 
-// Auto refresh
-setInterval(() => {
-    loadStatistics();
-}, REFRESH_INTERVAL);
+// Auto-refresh
+setInterval(loadStatistics, REFRESH_INTERVAL);
