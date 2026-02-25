@@ -53,4 +53,14 @@ export class TodoList extends Component {
     deleteTodo(id) {
         this.state.todos = this.state.todos.filter(todo => todo.id !== id);
     }
+
+    addTodo() {
+        if (!this.todoInputRef.el.value) {
+            return;
+        }
+
+        this.#pushTodo(this.todoInputRef.el.value);
+
+        this.todoInputRef.el.value = "";    
+    }        
 }

@@ -3,7 +3,12 @@
     <t t-name="awesome_owl.TodoList">
         <div class="border p-2 rounded" style="width: fit-content;">
             <div class="border p-1" style="width: fit-content;">
-                <input class="form-control" type="text" placeholder="Enter a new task" t-on-keyup="onKeyupTask" t-ref="todoInput"/>
+                <div class="d-flex justify-content-between align-items-start my-2">
+                    <input class="form-control" style="width: 70%" type="text" placeholder="Enter a new task" t-on-keyup="onKeyupTask" t-ref="todoInput"/>
+                    <div class="flex-grow-1 d-flex justify-content-center">
+                        <button class="btn btn-primary" t-on-click="addTodo">Add</button>
+                    </div>
+                </div>
                 <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
                     <div t-att-class="todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
                         <TodoItem deleteTodo.bind="deleteTodo" switchIsCompleted.bind="switchIsCompleted" id="todo.id" description="todo.description" isCompleted="todo.isCompleted"/>
