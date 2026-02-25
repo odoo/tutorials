@@ -18,20 +18,17 @@
                     <group>
                         <div class="d-flex align-items-center gap-2">
                             <label for="discount" string="Discount"/>
-                            <div style="width:50px;">
+                            <div class="col-1">
                                 <field name="discount"/>
                             </div>
-                            <div style="width:50px;">
+                            <div class="col-1">
                                 <field name="discount_type" nolabel="1"/>
                             </div>
                             <span class="text-muted" invisible="discount_type =='percent'">
-    
  (
                                 <field name="discount_percent" nolabel="1" class="w-auto d-inline"/>
     %
-    )
-
-    
+    )    
                             </span>
                         </div>
                     </group>

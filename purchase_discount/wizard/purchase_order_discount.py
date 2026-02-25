@@ -24,14 +24,16 @@ class PurchaseOrderDiscount(models.TransientModel):
 
     @api.constrains("discount", "discount_type")
     def _check_discount_limit(self):
-        if self.discount < 0 or self.discount > 100:
+        if (
+            self.discount < 0 or self.discount > 100
+        ) and self.discount_type == "percent":
             raise ValidationError("Discount value is invalid")
 
     def _get_base_untaxed_amount(self, order):
         total = 0.0
         for line in order.order_line:
             total += line.price_unit * line.product_qty
-            return total
+        return total
 
     @api.depends("discount", "discount_type")
     def _calculate_percentage(self):
