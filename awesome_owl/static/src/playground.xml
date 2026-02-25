@@ -6,8 +6,9 @@
         </div>
         This is the sum of the two counters: <t t-esc="state.counter1 + state.counter2"/>
         <div>
-            <Card title="state.html" content="state.html2"/>
-            <Card title="'my title'" content="'some content'"/>
+            <Card title="state.html">
+                <Counter/>
+            </Card>
         </div>
         <div>
             <TodoList/>

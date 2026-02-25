@@ -12,7 +12,7 @@ export class Playground extends Component {
         super.setup();
 
         this.state = useState({
-            html: "<i>my html content</i>" ,
+            html: "The sunset dipped below the jagged horizon, painting the sky in bruised purples and burnt oranges. Blablabla" ,
             html2: markup("<i>my html content</i>"),
             counter1: 0,
             counter2: 0,

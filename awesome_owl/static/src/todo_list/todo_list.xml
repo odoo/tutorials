@@ -6,7 +6,7 @@
                 <input class="form-control" type="text" placeholder="Enter a new task" t-on-keyup="onKeyupTask" t-ref="todoInput"/>
                 <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
                     <div t-att-class="todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
-                        <TodoItem id="todo.id" description="todo.description" isCompleted="todo.isCompleted"/>
+                        <TodoItem deleteTodo.bind="deleteTodo" switchIsCompleted.bind="switchIsCompleted" id="todo.id" description="todo.description" isCompleted="todo.isCompleted"/>
                     </div>
                 </t>
             </div>
