@@ -1,19 +1,18 @@
+/** @odoo-module **/
+
 import { Component, useState } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
 import { statisticsStore } from "./services/statistics_service";
 import { DashboardItem } from "./dashboard_item";
-import { PieChart } from "./pie_chart";
-import { items } from "./dashboard_items";
+import { dashboardItemRegistry } from "./dashboard_registry";
 
 export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { DashboardItem, PieChart };
+    static components = { DashboardItem };
 
     setup() {
-        this.action = useService("action");
-
         this.stats = useState(statisticsStore);
-        this.items = items;
+
+        // Get all registered dashboard items
+        this.items = dashboardItemRegistry.getAll();
     }
 }
-
