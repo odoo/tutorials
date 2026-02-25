@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.counter">
+        <div>
+            <Counter onChange.bind="incrementSum" />
+            <Counter onChange.bind="incrementSum" />
+            <div>The sum is: <t t-esc="sum.value"/>
+            </div>
+        </div>
+        <div>
+            <Card name="'Mehul'">
+                <div>
+                    <h2>
+             backend developer
+                    </h2>
+                </div>
+
+            </Card>
+            <Card name="'Meet'">
+                <Counter/>
+            </Card>
+        </div>
+        <div>
+            <TodoList />
         </div>
     </t>
 
 </templates>
+
