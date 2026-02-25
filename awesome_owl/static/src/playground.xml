@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.Playground">
+        <div>
+            <Counter callback="increment1"/><Counter callback="increment2"/>
+        </div>
+        This is the sum of the two counters: <t t-esc="state.counter1 + state.counter2"/>
+        <div>
+            <Card title="state.html" content="state.html2"/>
+            <Card title="'my title'" content="'some content'"/>
+        </div>
+        <div>
+            <TodoList/>
         </div>
     </t>
-
 </templates>
