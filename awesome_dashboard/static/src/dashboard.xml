@@ -62,6 +62,16 @@
                 <h3><t t-esc="state.stats.average_time"/></h3>
             </DashboardItem>
 
+            <DashboardItem size="2">
+                <h6>T-Shirt Sizes Sold</h6>
+
+                <t t-if="state.stats.orders_by_size">
+                    <PieChart t-props='{
+                        "data": state.stats.orders_by_size
+                    }'/>
+                </t>
+
+            </DashboardItem>
         </div>
 
         <!-- Loading State -->
