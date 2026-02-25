@@ -13,8 +13,6 @@ export class TodoList extends Component {
   }
 
   add(ev) {
-    console.log(ev);
-
     if (ev.keyCode === 13 && ev.target.value != "") {
       this.todos.push({
         id: this.id++,

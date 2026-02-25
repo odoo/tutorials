@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 from odoo.tools import is_html_empty
@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _description = "Storing Properties of Real Estate"
     _order = "id desc"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+  
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -71,9 +72,9 @@ class EstateProperty(models.Model):
             and (float_compare(self.selling_price, (0.9 * self.expected_price), 2))
             == -1
         ):
-            raise ValidationError(
+            raise ValidationError(_(
                 "The selling price is must greater than 90% of expected price"
-            )
+            ))
 
     @api.onchange("garden")
     def _onchange_gaden(self):
