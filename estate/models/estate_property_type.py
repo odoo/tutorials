@@ -14,6 +14,14 @@ class EstatePropertyType(models.Model):
         "property_type_id",
         string="Properties",
     )
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_type_id",
+        string="Offers",
+    )
+    offer_count = fields.Integer(
+        compute="_compute_offer_count",
+    )
 
     _unique_name = models.Constraint(
         "UNIQUE(name)",
@@ -27,3 +35,8 @@ class EstatePropertyType(models.Model):
                 record.display_name = f"{record.name} ({record.create_date.date()})"
             else:
                 record.display_name = record.name
+
+    @api.depends("offer_ids")
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)

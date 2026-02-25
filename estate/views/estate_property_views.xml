@@ -93,7 +93,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ['offer_accepted','sold','cancelled']">
+                            <field name="offer_ids" readonly="state in ['sold','cancelled']">
                                 <list editable="top"
                                       decoration-danger="status == 'refused'"
                                       decoration-success="status == 'accepted'" 
