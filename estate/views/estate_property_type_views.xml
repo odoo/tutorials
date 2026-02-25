@@ -10,6 +10,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list editable="top">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="bedrooms"/>
             </list>

@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "total_area asc"
 
     name = fields.Char(
         required=True,
@@ -50,7 +51,7 @@ class EstateProperty(models.Model):
         readonly=True,
         default="new",
     )
-    total_area = fields.Float(compute="_compute_total_area", readonly=False)
+    total_area = fields.Float(compute="_compute_total_area", readonly=False, store=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", readonly=True, copy=False)
     user_id = fields.Many2one(
