@@ -36,10 +36,10 @@
                 </header>
                <sheet>
                     <div class="oe_title">
-                            <h1>
-                                <field name="name" placeholder="Property Title"/>
-                            </h1>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                        <h1>
+                            <field name="name" placeholder="Property Title"/>
+                        </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
@@ -69,7 +69,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                                <field name="offer_ids"/>
+                            <field name="offer_ids"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -97,7 +97,7 @@
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <separator/>
-                <filter name="available" string="Only Available" domain="[('state', '=', ['new','offer_received'])]"/>
+                <filter name="available" string="Only Available" domain="[('state', 'in', ['new','offer_received'])]"/>
                 <filter name="group_by_postcode" string="Postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>

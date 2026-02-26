@@ -15,6 +15,6 @@
         'views/estate_property_offer_views.xml',
     ],
     'application': True,
-    'author': 'Odoo S.A.',
+    'author': 'kapat-odoo',
     'license': 'LGPL-3',
 }
