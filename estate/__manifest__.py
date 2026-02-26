@@ -18,6 +18,8 @@
         "views/estate_property_menus.xml",
         "views/estate_property_type_menus.xml",
         "views/estate_property_tag_menus.xml",
+        "data/estate.property.type.csv",
+        "data/estate_property.xml",
     ],
     'application': True,
 }
