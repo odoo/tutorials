@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="estate_property_offer_azure_villa" model="estate.property.offer">
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_villa"/>
+    </record>
+
+    <record id="estate_property_offer_azure_villa_2" model="estate.property.offer">
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_villa"/>
+    </record>
+
+    <record id="estate_property_offer_acme_corporation_villa" model="estate.property.offer">
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate_property_villa"/>
+    </record>
+
+    <function model="estate.property.offer" name="refuse_button">
+        <value eval="[ref('estate_property_offer_azure_villa')]"/>
+    </function>
+
+    <function model="estate.property.offer" name="accept_button">
+        <value eval="[ref('estate_property_offer_azure_villa_2')]"/>
+    </function>
+
+    <function model="estate.property.offer" name="refuse_button">
+        <value eval="[ref('estate_property_offer_acme_corporation_villa')]"/>
+    </function>
+    
+</odoo>
