@@ -71,7 +71,7 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
-    maintenance_ids=fields.One2many(
+    maintenance_ids = fields.One2many(
         "estate.property.maintenance",
         "property_id",
         string="maintenance requests"
