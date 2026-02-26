@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     name = fields.Char("Title", required=True)
-    description = fields.Text("Description", help="write the desc of this prop")
+    description = fields.Text("Description", help="write the description of this property")
     postcode = fields.Char("Postcode", help="address postal code")
     date_availability = fields.Date(
         "Available From",
@@ -95,9 +95,7 @@ class EstateProperty(models.Model):
 
     def action_mark_as_sold(self):
         for rec in self:
-            if rec.state == "sold":
-                raise UserError(_("Already SOLD"))
-            elif rec.state == "cancelled":
+            if rec.state == "cancelled":
                 raise UserError(_("Cancelled Property can't be SOLD"))
             else:
                 rec.state = "sold"
@@ -105,18 +103,16 @@ class EstateProperty(models.Model):
 
     def action_mark_as_cancelled(self):
         for rec in self:
-            if rec.state == "cancelled":
-                raise UserError(_("Already CANCELLED"))
-            elif rec.state == "sold":
+            if rec.state == "sold":
                 raise UserError(_("SOLD Property can't be CANCELLED"))
             else:
                 rec.state = "cancelled"
         return True
-
-
+    
+    
 class ResUsers(models.Model):
     _inherit = "res.users"
 
     property_ids = fields.One2many(
-        "estate.property", "salesperson_id", string="Properties"
+        "estate.property", "salesperson_id", string="Estate Properties"
     )

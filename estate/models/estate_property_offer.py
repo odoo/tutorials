@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     _description = "estate property offer model"
     _order = "price desc"
 
-    price = fields.Float("Price")
+    price = fields.Float("Price", required=True)
     status = fields.Selection(
         string="Status",
         selection=[("accepted", "Accepted"), ("rejected", "Rejected")],
@@ -56,12 +56,9 @@ class EstatePropertyOffer(models.Model):
     def _check_selling_price(self):
         for rec in self:
             expected_price = rec.property_id.expected_price
-
             if float_is_zero(expected_price, precision_digits=2):
                 continue
-
             min_price = expected_price * 0.9
-
             if float_compare(rec.price, min_price, precision_digits=2) < 0:
                 raise ValidationError(
                     _("The offer price must be at least 90% of the expected price.")
@@ -72,6 +69,11 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property_rec = self.env["estate.property"].browse(vals["property_id"])
             if property_rec.offer_ids:
+                accepted_rec = property_rec.offer_ids.filtered(
+                    lambda o: o.status == "accepted"
+                )
+                if accepted_rec:
+                    raise UserError(_("offer can not be created"))
                 max_offer = max(property_rec.offer_ids.mapped("price"))
                 if vals.get("price") <= max_offer:
                     raise ValidationError(
@@ -82,30 +84,30 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept(self):
-        for rec in self:
-            if rec.status == "accepted":
-                raise UserError(_("offer already accepted"))
-            else:
-                rec.property_id.offer_ids.filtered(lambda o: o.id != rec.id).write(
-                    {"status": "rejected"}
-                )
-                rec.property_id.write(
-                    {
-                        "buyer_id": rec.partner_id.id,
-                        "selling_price": rec.price,
-                        "state": "offer_accepted",
-                    }
-                )
-                rec.status = "accepted"
+        if self.status == "accepted":
+            raise UserError(_("offer already accepted"))
+        if self.property_id.state == "cancelled":
+            raise UserError(_("cancelled property cant be accepted"))
+        else:
+            self.property_id.offer_ids.filtered(lambda o: o.id != self.id).write(
+                {"status": "rejected"}
+            )
+            self.property_id.write(
+                {
+                    "buyer_id": self.partner_id.id,
+                    "selling_price": self.price,
+                    "state": "offer_accepted",
+                }
+            )
+            self.status = "accepted"
         return True
 
     def action_refuse(self):
-        for rec in self:
-            if rec.status == "rejected":
-                raise UserError("already refused")
-            elif rec.status == "accepted":
-                rec.property_id.selling_price = max(
-                    rec.property_id.offer_ids.mapped("price")
-                )
-                rec.status = "rejected"
+        if self.status == "rejected":
+            raise UserError("already refused")
+        elif self.status == "accepted":
+            self.property_id.selling_price = max(
+                self.property_id.offer_ids.mapped("price")
+            )
+            self.status = "rejected"
         return True

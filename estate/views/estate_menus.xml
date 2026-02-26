@@ -27,6 +27,12 @@
                 id="estate_property_tag_menu_action" name="Property Tags"
                 action="estate_property_tag_action"
             />
+           
         </menuitem>
+        <menuitem
+            id="estate_property_offer_menu_action"
+            name="Property Offers"
+            action="estate_property_offer_action"
+        />
     </menuitem>
 </odoo>
