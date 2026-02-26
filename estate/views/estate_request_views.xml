@@ -1,0 +1,63 @@
+<odoo> 
+    <record id="estate_property_request_action_property" model="ir.actions.act_window">
+        <field name="name">Property Requests</field>
+        <field name="res_model">estate.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('request_id', '=', active_id)]</field>
+    </record>
+    <record id="estate_property_request_list" model="ir.ui.view">
+        <field name="name">estate.property.request.list</field>
+        <field name="model">estate.request</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="request_id"/>
+                <field name="technician_id"/>
+                <field name="priority"/>
+                <field name="estimated_price"/>
+                <field name="actual_price"/>
+                <field name="request_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="estate_property_request_form" model="ir.ui.view">
+        <field name="name">estate.property.request.form</field>
+        <field name="model">estate.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_progress" type="object" string="Start"
+                            class="oe_highlight" 
+                            invisible="state not in ['Assigned']"/>
+                    <button name="action_done" type="object" string="Stop"
+                            class="oe_highlight" 
+                            invisible="state != 'Progress'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            class="oe_link" 
+                            invisible="state in ['Done', 'cancelled']"/>
+                    <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="new,Assigned,Progress,Done,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <group>
+                            <field name="request_id" invisible="1"/>
+                            <field name="technician_id"/>
+                            <field name="priority"/>
+                        </group>
+                        <group>
+                            <field name="estimated_price"/>
+                            <field name="actual_price"/>
+                            <field name="request_date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
