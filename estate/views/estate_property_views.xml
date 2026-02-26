@@ -40,6 +40,16 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(estate_property_maintenance_action)d"
+                                    type="action"
+                                    class="oe_stat_button"
+                                >
+                                <field name="maintenance_count"
+                                        widget="statinfo"
+                                    string="Maintenance"/>
+                            </button>
+                        </div>
                         <button name="action_sold"
                                 type="object"
                                 string="Sold"

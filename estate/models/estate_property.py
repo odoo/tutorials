@@ -71,6 +71,11 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
+    maintenance_ids=fields.One2many(
+        "estate.property.maintenance",
+        "property_id",
+        string="maintenance requests"
+    )
     total_area = fields.Float(
         string="Total Area",
         compute="_compute_total_area"
@@ -78,6 +83,9 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         string="Best Price",
         compute="_compute_best_price"
+    )
+    maintenance_count = fields.Integer(
+        compute="_compute_request_count"
     )
 
     _check_expected_price = models.Constraint(
@@ -145,3 +153,7 @@ class EstateProperty(models.Model):
             if not accepted:
                 raise UserError("You must accept an offer before selling.")
             record.state = "sold"
+
+    def _compute_request_count(self):
+        for record in self:
+            record.maintenance_count = len(record.maintenance_ids)
