@@ -1,14 +1,16 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offers"
+    _order = "price desc"
 
-    price = fields.Float(string="Offer Price")
+    price = fields.Float(string="Offer Price", required=True)
     status = fields.Selection(
         [("accepted", "Accepted"), ("rejected", "Rejected")], copy=False
     )
@@ -20,13 +22,18 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+        store=True,
+        related="property_id.property_type_id",
+    )
 
     _check_price_positive = models.Constraint(
         "CHECK (price > 0)", "The property offer should be strictly positive"
     )
 
     def _get_create_date(self):
-        self.ensure_one()
         return self.create_date.date() if self.create_date else fields.Date.today()
 
     @api.depends("create_date", "validity")
@@ -35,36 +42,43 @@ class EstatePropertyOffer(models.Model):
             date = record._get_create_date()
             record.date_deadline = date + relativedelta(days=record.validity)
 
-    @api.onchange("date_deadline")
     def _inverse_date_deadline(self):
         for record in self:
-            if record.date_deadline:
-                date = record._get_create_date()
-                record.validity = (record.date_deadline - date).days
+            date = record._get_create_date()
+            record.validity = (record.date_deadline - date).days
 
     def action_accept(self):
-        for record in self:
-            if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
-                raise UserError("An offer has already been accepted for this property")
-
-            record.status = "accepted"
-            record.property_id.state = "offer_accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+        if self.property_id.offer_ids.filtered(
+            lambda offer: offer.status == "accepted"
+        ):
+            raise UserError(_("An offer has already been accepted for this property"))
+        self.status = "accepted"
+        refuse = self.property_id.offer_ids.filtered(lambda offer: not offer.status)
+        refuse.write({"status": "rejected"})
+        self.property_id.state = "offer_accepted"
+        self.property_id.buyer_id = self.partner_id
         return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = "rejected"
+        self.status = "rejected"
         return True
 
     @api.constrains("price")
-    def _check_selling_price(self):
+    def _check_offer_price(self):
         for record in self:
-            if float_is_zero(record.price, precision_digits=2):
-                continue
-            min_price = record.property_id.expected_price * 0.9
+            min_price = max(
+                record.property_id.expected_price * 0.9, record.property_id.best_price
+            )
             if float_compare(record.price, min_price, precision_digits=2) == -1:
                 raise ValidationError(
-                    "The offer price can't be less than 90% of expected price"
+                    _(
+                        "The offer price can't be less than 90% of expected price and The offer price can't be less than biggest offer"
+                    )
                 )
+
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        if offer.property_id.state == "new":
+            offer.property_id.state = "offer_received"
+        return offer

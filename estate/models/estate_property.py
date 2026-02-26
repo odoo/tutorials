@@ -1,30 +1,31 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties Table"
+    _order = "sequence, id desc"
 
     name = fields.Char(string="Property Name", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date(
         string="Available From",
         copy=False,
         default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    expected_price = fields.Monetary(required=True)
+    selling_price = fields.Monetary(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("south", "South"),
@@ -32,9 +33,8 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="Status",
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),
@@ -57,17 +57,18 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
-    best_price = fields.Float(
-        string="Best Price",
+    best_price = fields.Monetary(
         compute="_compute_best_price",
+        store=True
+    )
+    sequence = fields.Integer(default=1)
+    currency_id = fields.Many2one(
+        "res.currency", default=lambda self: self.env.company.currency_id
     )
 
     _check_expected_price_positive = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "The property expected price must be strictly positive",
-    )
-    _check_selling_price_positive = models.Constraint(
-        "CHECK(selling_price >= 0)", "The property selling price must be positive"
+        "CHECK(expected_price > 0 AND selling_price >= 0) ",
+        "The property expected price and selling price must be higher than 0",
     )
 
     @api.depends("living_area", "garden_area")
@@ -93,15 +94,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled properties can not be sold.")
-            record.state = "sold"
+        if self.state == "cancelled":
+            raise UserError(_("Cancelled properties can not be sold."))
+        self.state = "sold"
         return True
 
     def action_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold properties can not be cancelled.")
-            record.state = "cancelled"
+        if self.state == "sold":
+            raise UserError(_("Sold properties can not be cancelled."))
+        self.state = "cancelled"
         return True
