@@ -21,5 +21,21 @@
         />
         <menuitem id="property_type_menu" parent="settings_menu_root" name="property type" action="estate_property_type_action"/>
         <menuitem id="estate_property_tag_menu" parent="settings_menu_root" name="property tag" action="estate_property_tag_action"/>
+        <menuitem
+            id="property_offer"
+            name="property offer"
+            sequence="10"
+            parent="settings_menu_root"
+            action="estate_property_offer_action"
+            />
+            
+        <menuitem
+            id="maintainance_request"
+            name="maintainance_request"
+            sequence="10"
+            parent="settings_menu_root"
+            action="estate_maintainance_action"
+            />
+            
     </data>
 </odoo>

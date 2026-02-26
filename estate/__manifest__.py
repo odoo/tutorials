@@ -10,6 +10,8 @@
         'views/estate_property_view.xml',
         'views/estate_property_tag_view.xml',
         'views/estate_property_type_view.xml',
+        'views/estate_property_offer_view.xml',
+        'views/estate_maintainance_form.xml',
         'views/estate_menus.xml'
     ],
     'application': True,

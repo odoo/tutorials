@@ -14,6 +14,7 @@
                     <field name="last_seen"/>
                     <field name="bedrooms"/>
                     <field name="state"/>
+                    <field name="total_area"/>
                 </list>
             </field>
         </record>
@@ -55,7 +56,28 @@
                                 </group>
                             </page>
                             <page string="offers">
-                                <field name="offer_ids"/>
+                                <field name="offer_ids">
+                                <list>
+                                        <field name="price"/>
+                                        <field name="status"/>
+                                        <field name="partner_id"/>
+                                </list>
+                                </field>
+                            </page>
+                            <page string="maintainance request">
+                            <field name="estate_maintainance_id">
+
+                             <list>
+                                        
+                                        <field name="buyer_id"/>
+                                        <field name="technician_id"/>
+                                        <field name="state"/>
+                                        <field name="estimate_cost"/>
+                                        <field name="actual_cost"/>
+                                        <field name="current_stage"/>
+                            </list>
+
+                            </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -76,6 +98,7 @@
                     <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
                     <!-- experimented-->
                     <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('state','=','new'),'|',('bedrooms','=','2'),('active','=',False)]"/>
+                    <!--filter string="below 15h" name="below_15h" domain="[('total_area','&lt;','1500')]"/-->
                 </search>
             </field>
         </record>
