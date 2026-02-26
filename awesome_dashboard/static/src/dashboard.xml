@@ -2,7 +2,39 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-primary" type="action" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" type="action" t-on-click="openLeads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
+            <t t-foreach="item_list" t-as="item" t-key="item.id">
+                <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(stat) : {'data': stat}"/>
+                    <t t-component="item.Component" t-props="itemProp"/>
+                </DashboardItem>
+            </t>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 
 </templates>
