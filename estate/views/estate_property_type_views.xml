@@ -25,14 +25,11 @@
             <form>
                 <sheet>
                  <div class="oe_button_box" name="button_box">
-                    <button name="%(estate_property_offer_action)d"
+                    <button name="%(estate_property_offer_action_from_type)d"
                             type="action"
                             class="oe_stat_button"
                             icon="fa-handshake-o"
-                            context="{
-                                    'search_default_property_type_id': id,
-                                    'default_property_type_id': id
-                                }">
+                            >
                         <field name="offer_count" widget="statinfo" string="Offers"/>
                     </button>
                 </div>
