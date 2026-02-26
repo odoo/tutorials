@@ -37,7 +37,7 @@
                     <button name="action_sold" type="object" string="Sold" invisible="state in ('sold','cancelled')" class="btn-primary"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')"/>
                     <button name="action_best_offer" type="object" string="Accept Best Offer"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/> 
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <group>
@@ -87,6 +87,21 @@
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')"/>
                         </page>
+                        <page string="Maintanance">
+                            <field name="maintanance_req">
+                                <list editable="bottom">
+                                    <field name="title"/>
+                                    <field name="description"/>
+                                    <field name="technision"/>
+                                    <field name="created_by"/>
+                                    <field name="request_date"/>
+                                    <field name="estimate_cost" readonly="state in ('new','progress','done','cancelled')"/>
+                                    <field name="actual_cost" readonly="state in ('new','progress','assign','cancelled')"/>
+                                    <field name="state" readonly='1'/>
+                                    <field name="priority"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -108,13 +123,7 @@
                 <filter
                     name="available"
                     string="Available"
-                    domain="[
-                        '|',
-                        '|',
-                        ('state', '=', 'new'),
-                        ('state', '=', 'offer_received'),
-                        ('active','=', 'True')
-                    ]"
+                    domain="[('state', 'in', ('new', 'offer_received'))]"
                 />
                 <filter name="archive"
                         string="Archive"
