@@ -25,6 +25,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    active = fields.Boolean(default=True)
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
@@ -51,6 +52,7 @@ class EstateProperty(models.Model):
         readonly=True,
         default="new",
     )
+
     total_area = fields.Float(compute="_compute_total_area", readonly=False, store=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", readonly=True, copy=False)
@@ -64,6 +66,12 @@ class EstateProperty(models.Model):
         string="offers",
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+
+    maintenance_ids = fields.One2many(
+        "estate.property.maintenance",
+        "property_id",
+        string="Maintenance"
+    )
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):

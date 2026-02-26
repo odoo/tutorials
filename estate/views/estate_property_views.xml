@@ -41,7 +41,11 @@
                     <h1>
                         <field name="name" string="Title"/>
                     </h1>
-
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate_property_maintenance_action)d" type="action" class="oe_stat_button">
+                            <field name="maintenance_ids" widget="statinfo" string="Maintenance"/>
+                        </button>
+                    </div>
                     <field name="tag_ids" widget="many2many_tags" options   ="{'color_field': 'color'}"/>
 
                     <group>
@@ -63,6 +67,7 @@
                                 <field name="description"/>
                             </group>
                             <group>
+                                <field name="active"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
@@ -96,6 +101,18 @@
                                 </list>
                             </field>
                         </page>
+
+                        <page string="Maintenance">
+                            <field name="maintenance_ids">
+                                <list decoration-danger="state == 'cancel'" decoration-success="state == 'done'">
+                                    <field name="problem"/>
+                                    <field name="technician_id"/>
+                                    <field name="estimated_cost"/>
+                                    <field name="actual_cost"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -112,10 +129,11 @@
                 <field name="postcode"/>
                 <field name="garden_orientation"/>
                 <field name="state"/>
-
+                <field name="bedrooms" filter_domain="[('bedrooms', '>', self)]"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <separator/>
 
-                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received']), ('garage', '=', True)]"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received']), ('active', '=', True)]"/>
 
                 <separator/>
 
