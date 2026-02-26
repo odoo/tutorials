@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+
+            <setting id="product_attributes_setting" position="before">
+                <setting string="Unpublish out-of-stock products" id="unpublish_products" help="Unpublish/Republish product based on stock availability">
+                    <field name="auto_unpublish_out_of_stock"/>
+                </setting>
+            </setting>
+
+        </field>
+    </record>
+</odoo>
