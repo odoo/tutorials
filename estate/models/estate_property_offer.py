@@ -1,5 +1,6 @@
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -28,6 +29,7 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
     property_type_id = fields.Many2one(related="property_id.property_type_id")
+
     _check_price = models.Constraint(
         "CHECK(price > 0)",
         "Offer Price Must be in Positive",
@@ -59,18 +61,20 @@ class EstatePropertyOffer(models.Model):
             self.validity = (self.date_deadline - create_date).days
 
     def action_accept_offer(self):
-        accepted_records = self.search(
+        accepted_records = self.search_count(
             [
                 ("property_id", "=", self.property_id),
                 ("status", "=", "accepted"),
-            ]
+            ],
+            limit=1,
         )
         if accepted_records:
             raise UserError(_("cannot accept multiple offer"))
         else:
-            self.property_id.selling_price = self.price
             self.status = "accepted"
+            self.property_id.selling_price = self.price
             self.property_id.buyer_id = self.partner_id
+            self.property_id.state = "accepted"
             self.search(
                 [
                     ("property_id", "=", self.property_id),
@@ -83,3 +87,34 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.constrains("price")
+    def _check_offer_price(self):
+        for record in self:
+            if (
+                float_compare(record.price, record.property_id.expected_price * 0.9, 2)
+                == -1
+            ):
+                raise ValidationError(
+                    _("offer price cannot be lower than 90% of the expected price.")
+                )
+
+    @api.model
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        if offers.property_id.state == "new":
+            offers.property_id.state = "offer_received"
+        for record in offers:
+            db_best_offer_record = self._read_group(
+                domain=[
+                    ("property_id", "=", record.property_id.id),
+                    ("id", "!=", record.id),
+                ],
+                aggregates=["price:max"],
+                groupby=[],
+            )
+            if record.price <= db_best_offer_record[0][0]:
+                raise ValidationError(
+                    _("new offer price should be greater than best offer.")
+                )
+        return offers

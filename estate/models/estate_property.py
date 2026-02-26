@@ -1,8 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -58,7 +57,8 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
-    best_offer = fields.Float(compute="_compute_best_offer")
+    best_offer = fields.Float(compute="_compute_best_offer", store=True)
+
     _check_positive_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
         "Expected Price Must be in Positive",
@@ -101,7 +101,7 @@ class EstateProperty(models.Model):
             self.state = "sold"
         else:
             raise UserError(
-                _("You cannot move to canceled stage after sold the property")
+                _("Property is already canceled, cannot be marked as sold.")
             )
         return True
 
@@ -109,20 +109,11 @@ class EstateProperty(models.Model):
         if self.state != "sold":
             self.state = "canceled"
         else:
-            raise UserError(
-                _("You cannot move to sold stage after cenceled the property")
-            )
+            raise UserError(_("Property is already sold, cannot be canceled."))
         return True
 
-    @api.constrains("selling_price")
-    def _check_selling_price(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_is_new_or_cancelled(self):
         for record in self:
-            if record.expected_price:
-                minimum_price = record.expected_price * 0.9
-
-                if float_compare(record.selling_price, minimum_price, 4) <= 0:
-                    raise ValidationError(
-                        _(
-                            "Selling price cannot be lower than 90% of the expected price."
-                        )
-                    )
+            if record.state not in ("new", "canceled"):
+                raise UserError(_("Only new and cancelled properties can be deleted"))
