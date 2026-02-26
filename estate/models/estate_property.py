@@ -78,6 +78,7 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price')
     def _check_selling_above_90(self):
+        offer_accepted = False
         for record in self:
             for offer in record.offer_ids:
                 if offer.status == 'accepted':
