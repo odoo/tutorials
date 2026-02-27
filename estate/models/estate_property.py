@@ -68,9 +68,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
 
     maintenance_ids = fields.One2many(
-        "estate.property.maintenance",
-        "property_id",
-        string="Maintenance"
+        "estate.property.maintenance", "property_id", string="Maintenance"
     )
 
     @api.depends("garden_area", "living_area")
