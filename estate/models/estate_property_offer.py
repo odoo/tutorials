@@ -40,7 +40,9 @@ class EstatePropertyOffer(models.Model):
             id = record.get('property_id')
             price = record.get('price')
             property = self.env['estate.property'].browse(id)
-            if property.offer_ids:
+            if property.state == 'sold':
+                raise exceptions.UserError('You cannot make an offer on a sold property!')
+            elif property.offer_ids:
                 if price < max(property.offer_ids.mapped('price')):
                     raise exceptions.UserError('New offer price must be higher or equal to the existing offers!')
             property.state = 'offer_received'
