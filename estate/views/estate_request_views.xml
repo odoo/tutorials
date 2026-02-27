@@ -4,6 +4,7 @@
         <field name="res_model">estate.request</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[('request_id', '=', active_id)]</field>
+        <field name="context">{'default_request_id': active_id}</field>
     </record>
     <record id="estate_property_request_list" model="ir.ui.view">
         <field name="name">estate.property.request.list</field>
@@ -32,7 +33,7 @@
                             class="oe_highlight" 
                             invisible="state not in ['Assigned']"/>
                     <button name="action_done" type="object" string="Stop"
-                            class="oe_highlight" 
+                            class="oe_highlight"
                             invisible="state != 'Progress'"/>
                     <button name="action_cancel" type="object" string="Cancel"
                             class="oe_link" 

@@ -74,6 +74,7 @@ class EstateProperty(models.Model):
     request_count = fields.Integer(
         string="Request Count",
         compute="_compute_request_count",
+        store=True,  # store so it can be used in search/buttons
     )
 
     _expected_price_check = models.Constraint(
@@ -101,6 +102,7 @@ class EstateProperty(models.Model):
             prices = record.offer_ids.mapped("price")
             record.best_price = max(prices) if prices else 0.0
 
+    @api.depends('request_ids')
     def _compute_request_count(self):
         for rec in self:
             rec.request_count = len(rec.request_ids)

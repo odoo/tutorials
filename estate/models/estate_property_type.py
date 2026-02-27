@@ -33,6 +33,7 @@ class EstatePropertyType(models.Model):
         for record in self:
             record.display_name = f"[{record.sequence}] {record.name} ({record.offer_count} Offers)"
 
+    @api.depends('offer_ids')
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)

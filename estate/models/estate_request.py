@@ -14,6 +14,7 @@ class EstateRequest(models.Model):
     request_id = fields.Many2one(
         "estate.property",
         string="Property",
+        required=True,
     )
     technician_id = fields.Many2one(
         "res.users",
