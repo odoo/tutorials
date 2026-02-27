@@ -22,6 +22,14 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                name="%(estate.estate_property_offer_action)d"
+                                type="action"
+                                icon="fa-tag">
+                            <field name="offer_count" string="Offers" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
                     </group>

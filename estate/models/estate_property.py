@@ -58,11 +58,11 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", store=True)
-    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    best_price = fields.Float(
+        compute="_compute_best_price", string="Best Offer", store=True
+    )
     maintanance_req = fields.One2many(
-        'estate.property.maintanance',
-        'property_id',
-        string="Maintanace Request"
+        "estate.property.maintanance", "property_id", string="Maintanace Request"
     )
 
     _expected_price_check = models.Constraint(
@@ -107,6 +107,12 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("You can only delete New or Cancelled properties.")
+
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
@@ -124,7 +130,6 @@ class EstateProperty(models.Model):
 
     def action_best_offer(self):
         for record in self:
-            # max_recordset
             maxi = -1
             for offer in record.offer_ids:
                 if offer.price > maxi:

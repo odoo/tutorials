@@ -24,10 +24,32 @@ class EstatePropertyOffer(models.Model):
         store=True,
         string="Deadline",
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
 
     _price_check = models.Constraint(
         "CHECK(price >= 0)", "The offer price must be greater then 0"
     )
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            property_record = self.env["estate.property"].browse(property_id)
+            property_record.state = "offer_received"
+
+            existing_offers = property_record.offer_ids.mapped("price")
+
+            if existing_offers and vals.get("price") <= max(existing_offers):
+                raise UserError(
+                    "Offer price must be greater than existing offers price !!"
+                )
+
+        return super().create(vals_list)
 
     @api.depends("validity")
     def _compute_date_deadline(self):
