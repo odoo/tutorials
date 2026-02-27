@@ -41,9 +41,40 @@
         <field name="arch" type="xml">
             <form string="properties">
                 <header>
+
+                    <field name="progress_state"
+                        widget="statusbar"
+                        statusbar_visible="new,assigned,inprogress,done" />
+
+
+                    <button string="Assign"
+                        name="action_assign"
+                        type="object"
+                        class="btn-primary"
+                        invisible="progress_state != 'new'" />
+
+                    <button name="action_start"
+                        string="Start"
+                        type="object"
+                        class="btn-primary"
+                        invisible="progress_state != 'assigned'" />
+
+                    <button name="action_stop"
+                        string="Stop"
+                        type="object"
+                        class="btn-danger"
+                        invisible="progress_state != 'inprogress'" />
+                    <button string="Done"
+                        name="action_done"
+                        type="object"
+                        class="btn-success"
+                        invisible="progress_state != 'in_progress'" />
+
+
                     <button string="Sold" name="sold" type="object" class="btn-success" />
                     <button string="Cancel" name="cancel" type="object" class="btn-danger" />
-                    <button string="Reset " name="reset" type="object" class="btn-secondary" />
+                    <!-- <button string="Reset " name="reset" type="object" class="btn-secondary" /> -->
+                    <button string="Accept Best" name="accept_best_offer" type="object" />
                 </header>
                 <sheet>
                     <group name="name">
@@ -79,7 +110,7 @@
                                 <list>
                                     <field name="price" />
                                     <field name="partner_id" />
-                                    <field name="status"/>
+                                    <field name="status" />
 
                                     <button name="accept"
                                         type="object"
@@ -94,6 +125,7 @@
                                         title="Reject Offer"
                                         class="btn btn-danger"
                                         invisible="parent.status == 'sold'" />
+
                                 </list>
                             </field>
                         </page>
@@ -103,6 +135,42 @@
                                 <field name="buyer_id" string="Buyer" />
                             </group>
                         </page>
+                        <!-- <page name="request" string="Request">
+                            <group name="request" string="string">
+                                <field name="request" />
+                                <field name="technichine" />
+                            </group>
+
+                        </page> -->
+
+
+                        
+                        <page string="Requests">
+                            <field name="request_ids">
+                                <list editable="bottom">
+                                    <field name="name" />
+                                    <field name="technician_id" />
+                                    <field name="estimated_cost" />
+                                    <field name="state" />
+
+                                    <button name="action_start"
+                                        type="object"
+                                        string="Start"
+                                        invisible="state != 'assigned'"
+                                        class="btn-primary" />
+
+                                    <button name="action_stop"
+                                        type="object"
+                                        string="Stop"
+                                        invisible="state != 'inprogress'"
+                                        class="btn-success" />
+                                </list>
+                            </field>
+                        </page>
+
+
+
+
                     </notebook>
                 </sheet>
             </form>
@@ -146,7 +214,7 @@
 
                     <button string="Sold" name="sold" type="object" class="btn-success" />
                     <button string="Cancel" name="cancel" type="object" class="btn-danger" />
-                    <button string="Reset " name="reset" type="object" class="btn-secondary" />
+                    <!-- <button string="Reset " name="reset" type="object" class="btn-secondary" /> -->
                     <button string="Accept Best" name="accept_best_offer" type="object" />
                 </header>
                 <sheet>
@@ -255,6 +323,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
+                <filter name="Available Properties" string="Available Properties"
+                    domain="[('status', 'in', ['new','offer_received'])]" />
+
+
                 <field name="name" string="Title" />
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />

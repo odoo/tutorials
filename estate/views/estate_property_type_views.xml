@@ -19,6 +19,16 @@
                     <group>
                         <field name="name" placeholder="Estate Property Type"/>
                     </group>
+                    <notebook>
+                        <page name="Properties" string="Properties">
+                            <field name="property_ids">
+                            <list>
+                                <field name="expected_price" string="Expected Price"/>
+                                <field name="status" />
+                            </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

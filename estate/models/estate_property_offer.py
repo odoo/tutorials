@@ -95,6 +95,7 @@ class EstatePropertyOffer(models.Model):
                 'status': 'new',
             })
 
+
     # @api.constrains('price')
     # def check_price(self):
     #     for rec in self:
