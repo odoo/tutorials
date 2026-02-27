@@ -50,6 +50,23 @@ class EstatePropertyOffer(models.Model):
             base_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.date_deadline = base_date + timedelta(days=record.validity)
 
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_record = self.env['estate.property'].browse(vals.get('property_id'))
+
+            if property_record.state in ('offer_accepted', 'sold'):
+                raise UserError("Cannot create new offer. An offer is already accepted.")
+            if property_record.offer_ids:
+                highest_price = max(property_record.offer_ids.mapped('price'))
+                if vals.get('price') <= highest_price:
+                    raise UserError("New offer must not cost less than the previous offers")
+    
+        offers = super().create(vals_list)
+        for offer in offers:
+            property_record.state = 'offer_received'
+        return offer
+
     def _inverse_date_deadline(self):
         for record in self:
             if record.create_date and record.date_deadline:

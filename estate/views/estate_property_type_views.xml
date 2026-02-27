@@ -41,6 +41,8 @@
                                 <field name="state"/>
                             </list>
                         </field>
+                        <field name="name"/>
+                        <field name="sequence"/>
                     </group>
                 </sheet>
             </form>
