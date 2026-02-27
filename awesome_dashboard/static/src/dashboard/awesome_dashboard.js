@@ -1,4 +1,3 @@
-/** @odoo-module **/
 import { Component, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { statisticsStore } from "./services/statistics_service";

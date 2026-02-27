@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { dashboardItemRegistry } from "./dashboard_registry";
 import { NumberCard } from "./number_card";
 import { PieChartCard } from "./pie_chart_card";

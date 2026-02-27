@@ -1,4 +1,3 @@
-/** @odoo-module **/
 import { reactive } from "@odoo/owl";
 
 const REFRESH_INTERVAL = 10000; // make it 600000 for 10mins

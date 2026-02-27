@@ -1,4 +1,3 @@
-/** @odoo-module **/
 import { Component } from "@odoo/owl";
 import { Layout } from "@web/search/layout";
 import { AwesomeDashboard } from "./awesome_dashboard";
