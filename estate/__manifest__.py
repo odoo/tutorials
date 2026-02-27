@@ -2,13 +2,14 @@
     'name': "Real Estate",
     'depends': ['base'],
     'author': "Odoo",
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'license': 'LGPL-3',
     'application': True,
     'description': """
     A app for real estate
     """,
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
         'views/estate_views.xml',

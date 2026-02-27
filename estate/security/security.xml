@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="groups_privilege_real_estate" model="res.groups.privilege">
+        <field name="name">Real Estate</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="privilege_id" ref="groups_privilege_real_estate"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="groups_privilege_real_estate"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+
+    <record id="agent_property_rule" model="ir.rule">
+        <field name="name">Agent Property Rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="domain_force">['|', ('seller_id', '=', user.id), ('seller_id', '=', False)]</field>
+    </record>
+
+    <record id="manager_property_rule" model="ir.rule">
+        <field name="name">Manager Property Rule</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+</odoo>
