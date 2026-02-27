@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_rule_agent" model="ir.rule">
+        <field name="name">Estate: agent can only see own or unassigned properties in their company</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[
+            '&amp;',
+            '|', ('company_id', '=', False), ('company_id', 'in', company_ids),
+            '|', ('salesperson_id', '=', False), ('salesperson_id', '=', user.id)
+        ]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="estate_property_rule_manager" model="ir.rule">
+        <field name="name">Estate: manager can see all properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+</odoo>

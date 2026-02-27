@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<odoo>
+        <menuitem id="estate_property_tag_menu" action="estate_property_tag_action" parent="settings_menu"/>
+</odoo>
