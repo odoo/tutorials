@@ -1,0 +1,19 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <t t-out="props.title"/>
+                </h5>
+                <button class="btn btn-sm btn-outline-primary" t-on-click="toggle">
+                    <t t-out="state.open ? 'Hide' : 'Show'"/>
+                </button>
+            </div>
+
+            <div class="card-body" t-if="state.open">
+                <!-- Default slot for arbitrary content -->
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+</templates>

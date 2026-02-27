@@ -1,0 +1,49 @@
+<templates xml:space="preserve">
+
+    <!-- Layout Wrapper -->
+    <t t-name="awesome_dashboard.AwesomeDashboardWrapper">
+        <Layout t-props="layoutProps">
+
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">
+                    Customers
+                </button>
+
+                <button class="btn btn-secondary" t-on-click="openLeads">
+                    Leads
+                </button>
+
+                <button class="btn btn-outline-secondary" t-on-click="openSettings">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+
+            <AwesomeDashboard t-props="{ onSettingsOpen: setDashboardSettingsCallback }"/>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="card shadow-sm m-2"
+             t-att-style="width">
+            <div class="card-body">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <div class="d-flex flex-wrap px-3" t-if="stats.isReady">
+            <t t-foreach="state.items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(stats.data) : {'data': stats.data}"/>
+                    <t t-component="item.Component" t-props="itemProp"/>
+                </DashboardItem>
+            </t>
+        </div>
+
+        <div t-else="" class="p-5 text-center">
+            Loading statistics...
+        </div>
+    </t>
+
+</templates>
