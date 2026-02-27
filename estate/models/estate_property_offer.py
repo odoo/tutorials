@@ -76,11 +76,9 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Cannot create offer for this property.")
             if property_rec.state == 'new':
                 property_rec.state = 'offer_received'
-        
         return offers
 
     def action_accept(self):
-        breakpoint()
         for offer in self:
             property = offer.property_id
             minimum_price = property.expected_price * 0.9

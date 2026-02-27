@@ -72,7 +72,7 @@ class EstateProperty(models.Model):
         string="Requests",
     )
     request_count = fields.Integer(
-        string="Requests",
+        string="Request Count",
         compute="_compute_request_count",
     )
 
