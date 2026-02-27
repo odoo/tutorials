@@ -1,5 +1,6 @@
 # custom ignore
 custom_module/
+estate/demo/
 
 # Odoo translations (managed by translate.odoo.com)
 *.po

@@ -8,7 +8,14 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate Property Offer"
     _order = "price desc"
 
-    price = fields.Float(required=True, string="Offer Price")
+    price = fields.Monetary(
+        currency_field="currency_id", required=True, string="Offer Price"
+    )
+    currency_id = fields.Many2one(
+        "res.currency",
+        default=lambda self: self.env.company.currency_id,
+        required=True,
+    )
     partner_id = fields.Many2one("res.partner", required=True, string="Partner")
     property_id = fields.Many2one("estate.property", required=True, string="Property")
     status = fields.Selection(
@@ -75,12 +82,13 @@ class EstatePropertyOffer(models.Model):
             self.property_id.selling_price = self.price
             self.property_id.buyer_id = self.partner_id
             self.property_id.state = "accepted"
-            self.search(
+            other_offers = self.search(
                 [
                     ("property_id", "=", self.property_id),
                     ("status", "!=", "accepted"),
                 ]
-            ).status = "refused"
+            )
+            other_offers.write({"status": "refused"})
         return True
 
     def action_refuse_offer(self):
@@ -92,7 +100,11 @@ class EstatePropertyOffer(models.Model):
     def _check_offer_price(self):
         for record in self:
             if (
-                float_compare(record.price, record.property_id.expected_price * 0.9, 2)
+                float_compare(
+                    record.price,
+                    record.property_id.expected_price * 0.9,
+                    precision_rounding=record.currency_id.rounding,
+                )
                 == -1
             ):
                 raise ValidationError(

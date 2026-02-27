@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+        <record id="res_users_view_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Properties">
+                        <group>
+                            <field name="property_ids" />
+                        </group>
+                    </page>
+                </xpath>
+                <div class="oe_button_box" name="button_box" position="inside">
+                    <button name="action_user_property" type="object"
+                        class="oe_stat_button" icon="fa-users">
+                        <field string="Properties" name="property_count" widget="statinfo" />
+                    </button>
+                </div>
+            </field>
+        </record>
+    </data>
+
+</odoo>

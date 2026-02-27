@@ -17,8 +17,17 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + relativedelta(months=3),
         copy=False,
     )
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    expected_price = fields.Monetary(currency_field="currency_id", required=True)
+    selling_price = fields.Monetary(
+        currency_field="currency_id", readonly=True, copy=False
+    )
+    currency_id = fields.Many2one(
+        "res.currency",
+        string="Currency",
+        default=lambda self: self.env.company.currency_id,
+        required=True,
+    )
+
     bedrooms = fields.Integer(string="Bed Rooms", default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -57,7 +66,9 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
-    best_offer = fields.Float(compute="_compute_best_offer", store=True)
+    best_offer = fields.Monetary(
+        compute="_compute_best_offer", currency_field="currency_id", store=True
+    )
 
     _check_positive_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
