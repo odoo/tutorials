@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
         offers = super().create(vals_list)
         for offer in offers:
             property_record.state = 'offer_received'
-        return offer
+        return offers
 
     def _inverse_date_deadline(self):
         for record in self:
