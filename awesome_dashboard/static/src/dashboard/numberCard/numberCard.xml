@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.NumberCard">
+        <span style="text-align: center; display:block;"><t t-esc="props.title"/></span>
+        <span style="color: green; font-size:30px; text-align: center; display:block;"><t t-esc="props.value"/></span>
+    </t>
+</templates>

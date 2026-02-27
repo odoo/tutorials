@@ -1,0 +1,18 @@
+<templates id="template" xml:space="preserve">
+<t t-name="awesome_dashboard.DashboardDialog">
+    <Dialog
+        size="size"
+        title="title"
+        modalRef="modalRef">
+        <p>Which cards do you wish to see ?</p>
+        <t t-foreach="items" t-as="item" t-key="item.id">
+            <span style="display:block; margin:5px">
+                <input t-att-tag="item.id" t-on-input="changeChoices" t-att-checked="!disabled.includes(item.id)" style="margin-right:5px" type="checkbox" /> <t t-esc="item.props ? item.props({}).title : item.id"/>
+            </span>
+        </t>
+        <t t-set-slot="footer">
+            <button class="btn btn-primary" t-on-click="close">Done</button>
+        </t>
+    </Dialog>
+</t>
+</templates>

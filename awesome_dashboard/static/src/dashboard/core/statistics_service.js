@@ -5,12 +5,10 @@ import { reactive } from "@odoo/owl";
 
 export const statistics = {
     async start() {
-        const data = reactive({statistics: await rpc("/awesome_dashboard/statistics")})
+        const data = reactive({loadStatistics: memoize(() => rpc("/awesome_dashboard/statistics"))})
 
         setInterval(async () => {
-            const getStatistics = await rpc("/awesome_dashboard/statistics");
-            data.statistics = getStatistics;
-            console.log(data)
+            data.loadStatistics = memoize(() => rpc("/awesome_dashboard/statistics"));
         }, 1_000*10)
 
         return {
