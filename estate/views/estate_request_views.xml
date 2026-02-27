@@ -46,7 +46,6 @@
                         <field name="name"/>
                         <field name="description"/>
                         <group>
-                            <field name="request_id" invisible="1"/>
                             <field name="technician_id"/>
                             <field name="priority"/>
                         </group>

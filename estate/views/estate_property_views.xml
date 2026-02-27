@@ -11,6 +11,8 @@
                 <field name="bedrooms"/>
                 <field name="living_area"
                     filter_domain="[('living_area', '>=', self)]"/>
+                <field name="squared_area"
+                    filter_domain="[('squared_area', '>', 500)]"/>
                 <field name="facades"/>
                 <separator/>
                 <filter name="available" string="Available" domain="[
@@ -19,6 +21,8 @@
                         ('state', '=', 'offer_received')
                     ]" />
                 <separator/>
+                <filter name="square" string="available" domain="
+                    [('squared_area', '>', '500')]"/>
                 <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
@@ -41,6 +45,7 @@
                 decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="squared_area"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
@@ -50,6 +55,7 @@
             </list>
         </field>
     </record>
+    
     <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -64,11 +70,21 @@
                                 type="object"
                                 string="Cancel"
                                 invisible="state in ['sold', 'cancelled']"/>
+                        <button name="best_accept"
+                                type="object"
+                                string="best"/>
+                        <button type="action"
+                                name="%(estate_property_request_action_property)d"
+                                class="oe_stat_button"
+                                icon="fa-wrench">
+                            <field name="request_count" widget="statinfo" string="Requests"/>
+                        </button>
                         <field name="state"
                             widget="statusbar"
                             statusbar_visible="new, offer_received, offer_accepted, sold, cancelled"/>
                     </header>
                 <sheet>
+                    
                     <h1>
                         <field name="name"/>
                     </h1>
@@ -106,6 +122,7 @@
                                 <field name="total_area" readonly="1"/>
                                 <field name="garden_orientation"
                                     invisible="not garden"/>
+                                <field name="squared_area" />
                             </group>
                         </page>
                         <page string="Offers">
@@ -116,8 +133,9 @@
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
-                                    <field name="date_deadline"/>
-                                    <field name="status"/>
+                                    <field name="date_deadline"/>   
+                                    <field name="status" 
+                                        column_invisible="parent.state != 'offer_accepted'"/>
                                     <button name="action_accept"
                                             type="object"
                                             icon="fa-check"
@@ -130,6 +148,20 @@
                                             class="btn-danger"
                                             title="Refuse Offer"
                                             invisible="status in ['accepted', 'refused'] or parent.state == 'offer_accepted'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Requests">
+                            <field name="request_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="technician_id"/>
+                                    <field name="priority"/>
+                                    <field name="estimated_price"/>
+                                    <field name="actual_price"/>
+                                    <field name="request_date"/>
+                                    <field name="state"/>
+                                    <button name="action_cancel" type="object" icon="fa-times" class="btn-link" title="Cancel"/>
                                 </list>
                             </field>
                         </page>

@@ -27,6 +27,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     total_area = fields.Float(compute="_compute_total_area", store=True)
+    squared_area = fields.Float(compute="_compute_squared_area", store=True)
     garden_orientation = fields.Selection(
         [
             ('north', "North"),
@@ -64,6 +65,17 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
+
+    request_ids = fields.One2many(
+        "estate.request",
+        "request_id",
+        string="Requests",
+    )
+    request_count = fields.Integer(
+        string="Requests",
+        compute="_compute_request_count",
+    )
+
     _expected_price_check = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price must be strictly positive.'
@@ -72,6 +84,11 @@ class EstateProperty(models.Model):
         'CHECK(selling_price IS NULL OR selling_price >= 0)',
         'The selling price must be positive.'
     )
+
+    @api.depends("total_area")
+    def _compute_squared_area(self):
+        for record in self:
+            record.squared_area = record.total_area**2
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -84,6 +101,10 @@ class EstateProperty(models.Model):
             prices = record.offer_ids.mapped("price")
             record.best_price = max(prices) if prices else 0.0
 
+    def _compute_request_count(self):
+        for rec in self:
+            rec.request_count = len(rec.request_ids)
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -92,6 +113,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_check_state(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(
+                    f"Cannot delete property '{record.name}' with state '{record.state}'. "
+                    f"Only properties in 'New' or 'Cancelled' state can be deleted."
+                )
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -124,3 +154,22 @@ class EstateProperty(models.Model):
             if not accepted_offer:
                 raise UserError("You must accept an offer before selling the property.")
             record.state = 'sold'
+
+    def best_accept(self):
+        for record in self:
+            best = 0
+            for offer in record.offer_ids:
+                if offer.price > best:
+                    best_record = offer
+                    best = offer.price
+            best_record.action_accept()
+            # best_record.status = "accepted"
+            # record.write({
+            #     'selling_price': best_record.price,
+            #     'buyer_id': best_record.partner_id.id,
+            #     'state': 'offer_accepted'
+            # })
+            # other_pending_offers = record.offer_ids.filtered(
+            #         lambda o: o.id != best_record.id
+            #     )
+            # other_pending_offers.write({'status': 'refused'})

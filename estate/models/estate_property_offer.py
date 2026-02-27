@@ -57,6 +57,18 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            if property_id:
+                property_rec = self.env['estate.property'].browse(property_id)
+                existing_offers = property_rec.offer_ids
+                if existing_offers:
+                    highest_offer = max(existing_offers.mapped('price'))
+                    if vals.get('price', 0) < highest_offer:
+                        raise ValidationError(
+                            f"The offer price cannot be lower than the highest existing offer "
+                            f"of {highest_offer}."
+                        )
         offers = super().create(vals_list)
         for offer in offers:
             property_rec = offer.property_id
@@ -64,9 +76,11 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Cannot create offer for this property.")
             if property_rec.state == 'new':
                 property_rec.state = 'offer_received'
+        
         return offers
 
     def action_accept(self):
+        breakpoint()
         for offer in self:
             property = offer.property_id
             minimum_price = property.expected_price * 0.9
