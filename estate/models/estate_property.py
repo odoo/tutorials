@@ -55,7 +55,7 @@ class EstateProperty(models.Model):
     def action_btn_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError(_(msg="property can't be cancelled"))
+                raise UserError(_("property can't be cancelled"))
             record.state = "sold"
         return True
 
@@ -129,11 +129,8 @@ class EstateProperty(models.Model):
                     ),
                 )
 
-        @api.ondelete(at_uninstall=False)
-        def unlink(self):
-            for record in self:
-                if record.state not in ("new", "cancelled"):
-                    raise UserError(_("User can delete only new or cancelled property"))
-                if record.property_offer_ids:
-                    raise UserError(_("Property can't be deleted"))
-            return super(EstateProperty, self).unlink()
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_allowed(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(_("User can delete only new or cancelled property"))

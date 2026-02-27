@@ -12,6 +12,10 @@
         "views/estate_property_tag_views.xml",
         "views/estate_property_offers_views.xml",
         "views/estate_menus.xml",
+        "views/res_users_view.xml",
+    ],
+    "demo": [
+        "demo/demo_data.xml",
     ],
     "installable": True,
     "application": True,

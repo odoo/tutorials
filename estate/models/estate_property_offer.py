@@ -65,3 +65,22 @@ class EstatePropertyOffer(models.Model):
         "CHECK(price > 0)",
         "Offer Price field should always be positive",
     )
+
+    @api.model
+    def create(self, vals_list):
+
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            price = vals.get("price")
+
+            if property_id and price:
+                property_rec = self.env["estate.property"].browse(property_id)
+
+            if property_rec.best_price and price <= property_rec.best_price:
+                raise UserError(
+                    _("Offer price must be higher than the current best price."),
+                )
+            if property_rec.state == "new":
+                property_rec.state = "offer_received"
+
+        return super().create(vals_list)
