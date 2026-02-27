@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -64,9 +65,25 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden == True:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    def button_cancel(self):
+        if self.state == "cancelled":
+            raise UserError("The property is already cancelled")
+        elif self.state == "sold":
+            raise UserError("The property is already sold, you cannot cancel it")
+        else:
+            self.state = "cancelled"
+
+    def button_sold(self):
+        if self.state == "sold":
+            raise UserError("The property is already sold")
+        elif self.state == "cancelled":
+            raise UserError("The property is already cancelled, and cannot be sold")
+        else:
+            self.state = "sold"
