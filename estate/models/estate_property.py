@@ -74,7 +74,7 @@ class EstateProperty(models.Model):
     request_count = fields.Integer(
         string="Request Count",
         compute="_compute_request_count",
-        store=True,  
+        store=True,
     )
 
     _expected_price_check = models.Constraint(
