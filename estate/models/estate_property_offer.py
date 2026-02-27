@@ -61,7 +61,7 @@ class EstatePropertyOffer(models.Model):
                 highest_price = max(property_record.offer_ids.mapped('price'))
                 if vals.get('price') <= highest_price:
                     raise UserError("New offer must not cost less than the previous offers")
-    
+
         offers = super().create(vals_list)
         for offer in offers:
             property_record.state = 'offer_received'
