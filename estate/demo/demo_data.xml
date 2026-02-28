@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_property_type_house" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
+    <record id="demo_property_tag_cozy" model="estate.property.tag">
+        <field name="name">Cozy</field>
+    </record>
+
+    <record id="demo_property_villa" model="estate.property">
+        <field name="name">Beautiful Gandhinagar Villa</field>
+        <field name="expected_price">1000</field>
+
+        <field name="property_type_id" ref="demo_property_type_house" />
+        <field name="tag_ids" eval="[(4, ref('demo_property_tag_cozy'))]" />
+    </record>
+
+    <record id="demo_property_offers" model="estate.property.offer">
+        <field name="price">1000</field>
+        <field name="partner_id" ref="base.user_demo" />
+        <field name="property_id" ref="demo_property_villa" />
+    </record>
+
+</odoo>

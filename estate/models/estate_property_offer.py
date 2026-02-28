@@ -57,6 +57,8 @@ class EstatePropertyOffer(models.Model):
         refuse.write({"status": "rejected"})
         self.property_id.state = "offer_accepted"
         self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+
         return True
 
     def action_refuse(self):
@@ -66,19 +68,23 @@ class EstatePropertyOffer(models.Model):
     @api.constrains("price")
     def _check_offer_price(self):
         for record in self:
-            min_price = max(
-                record.property_id.expected_price * 0.9, record.property_id.best_price
-            )
+            min_price = record.property_id.expected_price * 0.9
             if float_compare(record.price, min_price, precision_digits=2) == -1:
                 raise ValidationError(
-                    _(
-                        "The offer price can't be less than 90% of expected price and The offer price can't be less than biggest offer"
-                    )
+                    _("The offer price can not be less than 90% of expected price")
                 )
 
-    @api.model
-    def create(self, vals):
-        offer = super().create(vals)
-        if offer.property_id.state == "new":
-            offer.property_id.state = "offer_received"
-        return offer
+    @api.model_create_multi
+    def create(self, val_list):
+        for vals in val_list:
+            property_rec = self.env["estate.property"].browse(vals["property_id"])
+            if vals.get("price", 0) <= property_rec.best_price:
+                raise UserError(
+                    _("The offer price can not be less than best offer price")
+                )
+        offers = super().create(val_list)
+        offers.filtered(
+            lambda offer: offer.property_id.state == "new"
+        ).property_id.write({"state": "offer_received"})
+
+        return offers

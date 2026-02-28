@@ -57,10 +57,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
-    best_price = fields.Monetary(
-        compute="_compute_best_price",
-        store=True
-    )
+    best_price = fields.Monetary(compute="_compute_best_price", store=True)
     sequence = fields.Integer(default=1)
     currency_id = fields.Many2one(
         "res.currency", default=lambda self: self.env.company.currency_id
@@ -104,3 +101,9 @@ class EstateProperty(models.Model):
             raise UserError(_("Sold properties can not be cancelled."))
         self.state = "cancelled"
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(_("This property can not be deleted"))

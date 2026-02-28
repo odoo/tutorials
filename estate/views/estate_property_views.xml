@@ -17,7 +17,8 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="selling_price" />
-                <field name="currency_id" column_invisible="1" /> <!-- required by monetary widget (selling_price, expected_price) -->
+                <field name="currency_id" column_invisible="1" /> <!-- required by monetary widget
+                (selling_price, expected_price) -->
             </list>
         </field>
     </record>
@@ -29,11 +30,11 @@
             <form string="Property">
                 <header>
                     <button name="action_sold" type="object" string="Sold" class="oe_highlight"
-                        invisible="state == 'sold'" />
+                        invisible="state in ('sold','cancelled')" />
                     <button name="action_cancel" type="object" string="Cancel"
-                        invisible="state == 'sold'" />
+                        invisible="state in ('sold','cancelled')" />
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold"
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
                         options="{'clickable':'1'}" />
                 </header>
                 <sheet>
@@ -47,7 +48,8 @@
                             <field name="date_availability" />
                         </group>
                         <group>
-                            <field name="currency_id" invisible="1" /> <!-- required by monetary widget (expected_price, selling_price, best_price) -->
+                            <field name="currency_id" invisible="1" /> <!-- required by monetary
+                            widget (expected_price, selling_price, best_price) -->
                             <field name="expected_price" />
                             <field name="selling_price" />
                             <field name="best_price" />
