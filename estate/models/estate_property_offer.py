@@ -1,9 +1,11 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer module for Odoo 19 tutorials"
+    _order = "price desc"
 
     price = fields.Float(required=True, string="Offer Price")
     status = fields.Selection([
@@ -14,6 +16,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string="Validity (in days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True, string="Property Type")
 
     _check_offer_price_positive = models.Constraint(
         'CHECK(price > 0)',
@@ -35,10 +38,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         self.ensure_one()
+        if "accepted" in self.property_id.offer_ids.mapped("status"):
+            raise UserError(_("Offer already accepted"))
+
         self.status = "accepted"
         self.property_id.state = "offer_accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
+        remaining_offers = self.property_id.offer_ids - self
+        remaining_offers.action_refuse()
 
     def action_refuse(self):
         self.status = "refused"

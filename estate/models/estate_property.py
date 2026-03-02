@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property module for Odoo 19 tutorials"
+    _order = "id desc"
 
     name = fields.Char(default="Unknown", required=True)
     description = fields.Text()
@@ -63,6 +64,16 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+    @api.constrains('expected_price', 'selling_price')
+    def _check_offer_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=2):
+                continue
+
+            discounted_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, discounted_price, precision_rounding=2) < 0:
+                raise ValidationError(_("The Offer selling price must be at least 90 Percent of the expected price, it should be minimum %s", discounted_price))
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -81,13 +92,3 @@ class EstateProperty(models.Model):
         if self.state == "sold":
             raise UserError(_("Sold properties cannot be canceled."))
         self.state = "canceled"
-
-    @api.constrains('expected_price', 'selling_price')
-    def _check_offer_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_rounding=2):
-                continue
-
-            discounted_price = record.expected_price * 0.9
-            if float_compare(record.selling_price, discounted_price, precision_rounding=2) < 0:
-                raise ValidationError(_("The Offer selling price must be at least 90 Percent of the expected price, it should be minimum %s" %discounted_price))
