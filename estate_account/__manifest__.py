@@ -7,5 +7,5 @@
     "depends": ["estate", "account"],
     "data": [],
     "application": True,
-    
+
 }
