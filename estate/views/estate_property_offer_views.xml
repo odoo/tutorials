@@ -38,6 +38,9 @@
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list</field>
-        <field name="domain">[]</field>
+        <field name="domain">
+            context.get('active_id') and [('property_type_id', '=', context.get('active_id'))] or []
+        </field>
+        <field name="context">{}</field>
     </record>
 </odoo>

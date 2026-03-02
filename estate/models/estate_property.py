@@ -9,9 +9,11 @@ class EstateProperty(models.Model):
     _description = "estate property model"
     _order = "id desc"
 
-    name = fields.Char("Title", required=True)
-    description = fields.Text("Description", help="write the description of this property")
-    postcode = fields.Char("Postcode", help="address postal code")
+    name = fields.Char("Title", required=True, size=100)
+    description = fields.Text(
+        "Description", help="write the description of this property"
+    )
+    postcode = fields.Char("Postcode", size=10, help="address postal code")
     date_availability = fields.Date(
         "Available From",
         default=lambda self: fields.Date.today() + relativedelta(months=3),
@@ -46,12 +48,13 @@ class EstateProperty(models.Model):
         required=True,
         default="new",
         copy=False,
+        readonly=True,
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_ids = fields.Many2many(
         "estate.property.tag", "estate_propery_tags_relation", string="Tags"
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
@@ -61,11 +64,17 @@ class EstateProperty(models.Model):
         "Best Price", readonly=True, compute="_compute_best_price"
     )
 
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)", "selling price must be positive"
+    _check_selling_and_expected_price = models.Constraint(
+        "CHECK(selling_price >= 0 and expected_price > 0)",
+        "expected price must be greator than 0 and selling price must be positive",
     )
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "expected price must be greator than 0"
+    _check_bedrooms_and_facades = models.Constraint(
+        "CHECK(bedrooms >= 0 and facades >= 0)",
+        "bedrooms & facades can't be less than 0",
+    )
+    _check_living_and_garden_area = models.Constraint(
+        "CHECK(living_area >= 0 and garden_area >= 0)",
+        "living_area & garden_area can't be less than 0",
     )
 
     @api.depends("garden_area", "living_area")
@@ -108,8 +117,8 @@ class EstateProperty(models.Model):
             else:
                 rec.state = "cancelled"
         return True
-    
-    
+
+
 class ResUsers(models.Model):
     _inherit = "res.users"
 

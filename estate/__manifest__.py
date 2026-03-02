@@ -4,6 +4,7 @@
     "author": "Yatiw",
     "depends": ["base"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/res_users_views.xml",
         "views/estate_property_offer_views.xml",
@@ -14,6 +15,6 @@
     ],
     "application": True,
     "installable": True,
-    "category": "real estate",
+    "category": "Real Estate/Brokerage",
     "license": "LGPL-3",
 }

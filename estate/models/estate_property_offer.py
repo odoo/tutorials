@@ -75,7 +75,8 @@ class EstatePropertyOffer(models.Model):
                 if accepted_rec:
                     raise UserError(_("offer can not be created"))
                 max_offer = max(property_rec.offer_ids.mapped("price"))
-                if vals.get("price") <= max_offer:
+                new_offer_price = vals.get("price")
+                if float_compare(new_offer_price, max_offer, precision_digits=2) < 1:
                     raise ValidationError(
                         _("offer must me greator than existing offers")
                     )
