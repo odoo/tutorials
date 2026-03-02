@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
         copy=False, default=fields.Date.add(fields.Date.today(), months=3)
     )
     expected_price = fields.Float()
-    selling_price = fields.Float(copy=False, readonly=True)
+    selling_price = fields.Float(copy=False, readonly=True, default=0)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='offers')
     total_area = fields.Float(compute='_compute_total_area')
-
+    max_offer_price = fields.Float(default=None, compute = "_compute_max_offer_price", store=True)
     estate_maintainance_id = fields.One2many(
         'estate.maintainance.request', 'property_id'
     )
@@ -87,3 +87,10 @@ class EstateProperty(models.Model):
             raise UserError("The property is already cancelled, and cannot be sold")
         else:
             self.state = "sold"
+    
+    @api.depends('offer_ids.price')
+    def _compute_max_offer_price(self):
+        if self.offer_ids:
+            new_max_offer_price = max(self.offer_ids.mapped('price'))
+            if self.max_offer_price != new_max_offer_price:
+                self.max_offer_price = new_max_offer_price
