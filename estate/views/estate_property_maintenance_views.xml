@@ -30,7 +30,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="state" widget="statusbar" statusbar_visible="new,assigned,in_progress,done,cancel" />
+                            <field name="state" widget="statusbar"/>
                             <field name="problem"/>
                             <field name="property_id"/>
                         </group>
