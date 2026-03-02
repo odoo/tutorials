@@ -11,9 +11,8 @@
     <record id="demo_property_villa" model="estate.property">
         <field name="name">Beautiful Gandhinagar Villa</field>
         <field name="expected_price">1000</field>
-
         <field name="property_type_id" ref="demo_property_type_house" />
-        <field name="tag_ids" eval="[(4, ref('demo_property_tag_cozy'))]" />
+        <field name="tag_ids" eval="[Command.set([ref('demo_property_tag_cozy')])]" />
     </record>
 
     <record id="demo_property_offers" model="estate.property.offer">

@@ -13,9 +13,7 @@
         "views/estate_menus.xml",
         "views/res_users_views.xml",
     ],
-    "demo": [
-        "demo/demo_data.xml"
-        ],
+    "demo": ["demo/demo_data.xml"],
     "installable": True,
     "application": True,
     "author": "Ayush Chavda",

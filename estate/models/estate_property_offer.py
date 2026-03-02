@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -30,7 +30,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     _check_price_positive = models.Constraint(
-        "CHECK (price > 0)", "The property offer should be strictly positive"
+        "CHECK(price > 0)", "The property offer should be strictly positive"
     )
 
     def _get_create_date(self):
@@ -47,7 +47,32 @@ class EstatePropertyOffer(models.Model):
             date = record._get_create_date()
             record.validity = (record.date_deadline - date).days
 
+    @api.constrains("price")
+    def _check_offer_price(self):
+        for record in self:
+            min_price = record.property_id.expected_price * 0.9
+            if float_compare(record.price, min_price, precision_digits=2) == -1:
+                raise ValidationError(
+                    _("The offer price can not be less than 90% of expected price")
+                )
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_rec = self.env["estate.property"].browse(vals["property_id"])
+            price = vals.get("price", 0)
+            if float_compare(price, property_rec.best_price, precision_digits=2) < 0:
+                raise UserError(
+                    _("The offer price can not be less than best offer price")
+                )
+        offers = super().create(vals_list)
+        offers.filtered(
+            lambda offer: offer.property_id.state == "new"
+        ).property_id.write({"state": "offer_received"})
+        return offers
+
     def action_accept(self):
+        self.ensure_one()
         if self.property_id.offer_ids.filtered(
             lambda offer: offer.status == "accepted"
         ):
@@ -58,33 +83,9 @@ class EstatePropertyOffer(models.Model):
         self.property_id.state = "offer_accepted"
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
-
         return True
 
     def action_refuse(self):
+        self.ensure_one()
         self.status = "rejected"
         return True
-
-    @api.constrains("price")
-    def _check_offer_price(self):
-        for record in self:
-            min_price = record.property_id.expected_price * 0.9
-            if float_compare(record.price, min_price, precision_digits=2) == -1:
-                raise ValidationError(
-                    _("The offer price can not be less than 90% of expected price")
-                )
-
-    @api.model_create_multi
-    def create(self, val_list):
-        for vals in val_list:
-            property_rec = self.env["estate.property"].browse(vals["property_id"])
-            if vals.get("price", 0) <= property_rec.best_price:
-                raise UserError(
-                    _("The offer price can not be less than best offer price")
-                )
-        offers = super().create(val_list)
-        offers.filtered(
-            lambda offer: offer.property_id.state == "new"
-        ).property_id.write({"state": "offer_received"})
-
-        return offers

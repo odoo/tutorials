@@ -1,13 +1,13 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties Table"
-    _order = "sequence, id desc"
+    _order = "id desc"
 
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text()
@@ -58,13 +58,12 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_price = fields.Monetary(compute="_compute_best_price", store=True)
-    sequence = fields.Integer(default=1)
     currency_id = fields.Many2one(
         "res.currency", default=lambda self: self.env.company.currency_id
     )
 
     _check_expected_price_positive = models.Constraint(
-        "CHECK(expected_price > 0 AND selling_price >= 0) ",
+        "CHECK(expected_price > 0 AND selling_price >= 0)",
         "The property expected price and selling price must be higher than 0",
     )
 
@@ -90,20 +89,24 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    _("properties can not be deleted if they are not new or cancelled")
+                )
+
     def action_sold(self):
+        self.ensure_one()
         if self.state == "cancelled":
             raise UserError(_("Cancelled properties can not be sold."))
         self.state = "sold"
         return True
 
     def action_cancel(self):
+        self.ensure_one()
         if self.state == "sold":
             raise UserError(_("Sold properties can not be cancelled."))
         self.state = "cancelled"
         return True
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled(self):
-        for record in self:
-            if record.state not in ("new", "cancelled"):
-                raise UserError(_("This property can not be deleted"))
