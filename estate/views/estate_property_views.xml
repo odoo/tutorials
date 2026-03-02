@@ -42,7 +42,8 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="name"/>    
+                            <field name="name"/>
+                            <field name="state"/>
                             <field name="postcode"/>
                             <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="facades"/>

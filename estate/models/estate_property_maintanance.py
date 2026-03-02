@@ -5,6 +5,7 @@ from odoo.exceptions import ValidationError
 class EstatePropertyMaintanance(models.Model):
     _name = "estate.property.maintanance"
     _description = "Estate Property Maintanance"
+    _rec_name = "title"
 
     title = fields.Char(required=True)
     created_by = fields.Many2one(

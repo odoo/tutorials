@@ -7,12 +7,11 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Assigned Properties">
                     <field name="property_ids">
-                        <list>
+                        <list editable="bottom">
                             <field name="name"/>
                             <field name="postcode"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="state"/>
                         </list>
                     </field>
