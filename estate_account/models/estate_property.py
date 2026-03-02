@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
             invoice_vals_list = {
                 "move_type": "out_invoice",
                 "partner_id": record.buyer_id.id,
-                "name": record.name,
+                "invoice_origin": record.name,
                 "invoice_line_ids": [
                     Command.create(
                         {

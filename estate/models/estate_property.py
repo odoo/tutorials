@@ -112,7 +112,7 @@ class EstateProperty(models.Model):
             self.state = "sold"
         else:
             raise UserError(
-                _("Property is already canceled, cannot be marked as sold.")
+                _("Property is already cancelled, cannot be marked as sold.")
             )
         return True
 
@@ -120,7 +120,14 @@ class EstateProperty(models.Model):
         if self.state != "sold":
             self.state = "canceled"
         else:
-            raise UserError(_("Property is already sold, cannot be canceled."))
+            raise UserError(_("Property is already sold, cannot be cancelled."))
+        return True
+
+    def action_restore(self):
+        if self.state == "canceled":
+            self.state = "new"
+        else:
+            raise UserError(_("Property is not cancelled."))
         return True
 
     @api.ondelete(at_uninstall=False)
