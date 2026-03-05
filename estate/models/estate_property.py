@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property used to buy and sell houses"
+    _order = "id desc"
 
     _positive_price = models.Constraint('CHECK (expected_price>=0)',
                     'Expected price must be positive',
@@ -63,8 +64,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ('new', "New"),
-            ('offer_accepted', "Offer Accepted"),
             ('offer_received', "Offer Recieved"),
+            ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
@@ -149,8 +150,7 @@ class EstateProperty(models.Model):
                 rec.state = 'sold'
             else:
                 raise UserError(_("No accepted offer in prop"))
-            if rec.state == 'sold':
-                message = "Already sold cannot be sold again"
+
             rec.state = 'sold'
 
     def cancel(self):
@@ -207,24 +207,10 @@ class EstateProperty(models.Model):
     #         if rec.progress_state=='new':
     #             rec.progress_state = 'assigned'
 
-    def action_done(self):
+    @api.onchange('salesman_id')
+    def _onchange_salesman(self):
         for rec in self:
-            if rec.progress_state != 'inprogress':
-                raise UserError(_("Work must be In Progress before marking Done."))
-            rec.progress_state = 'done'
-
-    def action_start(self):
-        for rec in self:
-            rec.progress_state = 'inprogress'
-
-    def action_stop(self):
-        for rec in self:
-            rec.progress_state = 'done'
-
-    @api.onchange('technician')
-    def _onchange_technician(self):
-        for rec in self:
-            if rec.technician():
+            if rec.salesman_id:
                 rec.progress_state = 'assigned'
             else:
                 rec.progress_state = 'new'

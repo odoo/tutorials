@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name" />
+                <field name="sequence" widget="handle" />
             </list>
         </field>
     </record>

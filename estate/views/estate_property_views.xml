@@ -28,6 +28,7 @@
 
                     <field name="state"
                         widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
                     />
 
 
@@ -37,22 +38,7 @@
                         class="btn-primary"
                         invisible="progress_state != 'new'" /> -->
 
-                    <button name="action_start"
-                        string="Start"
-                        type="object"
-                        class="btn-primary"
-                        invisible="progress_state != 'assigned'" />
-
-                    <button name="action_stop"
-                        string="Stop"
-                        type="object"
-                        class="btn-danger"
-                        invisible="progress_state != 'inprogress'" />
-                    <button string="Done"
-                        name="action_done"
-                        type="object"
-                        class="btn-success"
-                        invisible="progress_state != 'in_progress'" />
+                    
 
 
                     <button string="Sold" name="sold" type="object" class="btn-success" />

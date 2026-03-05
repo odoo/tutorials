@@ -32,7 +32,7 @@
                         <field name="status" />
                     </group>
                     <group name="validity" string="validity">
-                        <field name="price" />
+                        <field name="price"/>
                         <field name="partner_id" />
                         <field name="status" />
                         <field name="validity" string="Validity" />

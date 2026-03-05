@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -40,8 +40,7 @@ class EstatePropertyRequest(models.Model):
     def action_start(self):
         for rec in self:
             if not rec.technician_id:
-                message = "Please assign technician first."
-                raise UserError(message)
+                raise UserError(_("Please assign technician first."))
             rec.state = 'inprogress'
 
     def action_stop(self):
