@@ -19,14 +19,13 @@
         </field>
     </record>
     
-  
     <record id="estate_property_view_type_form" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="My Living Rooms">
                 <sheet>
-                     <div class="oe_button_box" name="button_box">
+                    <div class="oe_button_box" name="button_box">
                         <button name="action_view_offers"
                             type="object"
                             class="oe_stat_button"

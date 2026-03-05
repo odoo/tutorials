@@ -16,7 +16,6 @@
         </field>
     </record>
     
-  
     <record id="estate_property_view_tag_form" model="ir.ui.view">
         <field name="name">estate.property.tag.form</field>
         <field name="model">estate.property.tag</field>

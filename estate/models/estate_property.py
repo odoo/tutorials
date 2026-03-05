@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property definition"
     _order = "id desc"
+
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Description", required=True)
     postcode = fields.Char(string="Postcode")
@@ -52,20 +53,6 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
 
-    def action_btn_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError(_("property can't be cancelled"))
-            record.state = "sold"
-        return True
-
-    def action_btn_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError(_("Cancelled property can't be sold"))
-            record.state = "cancelled"
-        return True
-
     salesman_id = fields.Many2one(
         "res.users",
         string="Salesman",
@@ -82,6 +69,11 @@ class EstateProperty(models.Model):
         store=True,
     )
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "Expected price must be positive",
+    )
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for estate in self:
@@ -94,20 +86,6 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.property_offer_ids.mapped("price"))
             else:
                 record.best_price = 0.0
-
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = ""
-
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "Expected price must be positive",
-    )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_validation(self):
@@ -129,8 +107,31 @@ class EstateProperty(models.Model):
                     ),
                 )
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_not_allowed(self):
         for record in self:
             if record.state not in ("new", "cancelled"):
                 raise UserError(_("User can delete only new or cancelled property"))
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError(_("property can't be cancelled"))
+            record.state = "sold"
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(_("Cancelled property can't be sold"))
+            record.state = "cancelled"
+        return True

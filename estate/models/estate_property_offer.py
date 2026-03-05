@@ -23,24 +23,6 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
     )
 
-    def action_btn_accepted(self):
-        for record in self:
-            if record.status == "refused":
-                raise UserError(_("Offer is already refused"))
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-        return True
-
-    def action_btn_refused(self):
-        for record in self:
-            if record.status == "accepted":
-                raise UserError(_("Sorry offer sold out."))
-            record.status = "refused"
-            record.property_id.selling_price = 0
-            record.property_id.buyer_id = ""
-        return True
-
     partner_id = fields.Many2one("res.partner", required=True, string="Partner")
     property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(
@@ -55,16 +37,22 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
 
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "Offer Price field should always be positive",
+    )
+
     def _compute_validity(self):
         for record in self:
             fields.Date.today() == record.date_deadline - timedelta(
                 days=record.validity,
             )
 
-    _check_price = models.Constraint(
-        "CHECK(price > 0)",
-        "Offer Price field should always be positive",
-    )
+    @api.onchange("date_deadline")
+    def _onchange_validity(self):
+        if self.date_deadline:
+            create_date = fields.Date.to_date(self.create_date) or fields.Date.today()
+            self.validity = (self.date_deadline - create_date).days
 
     @api.model
     def create(self, vals_list):
@@ -84,3 +72,32 @@ class EstatePropertyOffer(models.Model):
                 property_rec.state = "offer_received"
 
         return super().create(vals_list)
+
+    def action_accepted(self):
+        accepted_records = self.search_count(
+            [
+                ("property_id", "=", self.property_id),
+                ("status", "=", "accepted"),
+            ],
+            limit=1,
+        )
+        if accepted_records:
+            raise UserError(_(" multiple offer can't be accepted"))
+
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
+        other_offers = self.search(
+            [
+                ("property_id", "=", self.property_id),
+                ("status", "!=", "accepted"),
+            ],
+        )
+        other_offers.write({"status": "refused"})
+        return True
+
+    def action_refused(self):
+        for record in self:
+            record.status = "refused"
+        return True
