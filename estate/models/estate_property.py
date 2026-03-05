@@ -57,33 +57,20 @@ class EstateProperty(models.Model):
             ('south', "South"),
             ('east', "East"),
             ('west', "West"),
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
         ],
     )
 
     state = fields.Selection(
         selection=[
-            ("New", "New"),
-            ("Offer Accepted", "offer_accepted"),
-            ("Offer Received", "offer_received"),
-            ("Sold", "Sold"),
-            ("Cancelled", "Cancelled"),
-        ],
-    )
-    status = fields.Selection(
-        selection=[
             ('new', "New"),
+            ('offer_accepted', "Offer Accepted"),
+            ('offer_received', "Offer Recieved"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
-            ('reset', "reset"),
         ],
         string="Status",
         default='new',
     )
-
     active = fields.Boolean(default=True)
 
     property_type_id = fields.Many2one(
@@ -144,23 +131,36 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    def offer_accepted(self):
+        for rec in self:
+            rec.state = 'offer_accepted'
+
+    def offer_recieved(self):
+        for rec in self:
+            if rec.offer_ids:
+                rec.state = 'offer_received'
+
     def sold(self):
         for rec in self:
-            if rec.status == 'cancelled':
+            if rec.state == 'cancelled':
                 message = "Property already cancelled"
                 raise UserError(message)
-            if rec.status == 'sold':
+            if rec.offer_ids and rec.state == 'offer_accepted':
+                rec.state = 'sold'
+            else:
+                raise UserError(_("No accepted offer in prop"))
+            if rec.state == 'sold':
                 message = "Already sold cannot be sold again"
-            rec.status = 'sold'
+            rec.state = 'sold'
 
     def cancel(self):
         for rec in self:
-            if rec.status == 'sold':
+            if rec.state == 'sold':
                 message = "Cannot be cancelled as its already sold"
                 raise UserError(message)
-            if rec.status == 'cancelled':
+            if rec.state == 'cancelled':
                 message = "Already cancelled cannot be cancelled again"
-            rec.status = 'cancelled'
+            rec.state = 'cancelled'
 
     # def reset(self):
     #     properties = self.mapped('property_id')
@@ -189,7 +189,7 @@ class EstateProperty(models.Model):
 
             rec.write({
                 'selling_price': best_offer.price,
-                'status': 'sold',
+                'state': 'offer_accepted',
             })
 
     @api.constrains('selling_price')
@@ -202,9 +202,10 @@ class EstateProperty(models.Model):
                 message = "Price cannot be less than 90%"
                 raise ValidationError(message)
 
-    def action_assign(self):
-        for rec in self:
-            rec.progress_state = 'assigned'
+    # def action_assign(self):
+    #     for rec in self:
+    #         if rec.progress_state=='new':
+    #             rec.progress_state = 'assigned'
 
     def action_done(self):
         for rec in self:

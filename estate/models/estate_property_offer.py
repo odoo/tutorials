@@ -1,6 +1,7 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -54,8 +55,8 @@ class EstatePropertyOffer(models.Model):
 
     def accept(self):
         for rec in self:
-            if rec.property_id.status == 'accepted':
-                return
+            if rec.property_id.state == 'offer_accepted':
+                raise UserError(_("Property already has an accepted offer"))
 
             other_offers = self.search([
                 ('property_id', '=', rec.property_id.id),
@@ -69,7 +70,7 @@ class EstatePropertyOffer(models.Model):
             rec.property_id.write({
                 'selling_price': rec.price,
                 'buyer_id': rec.partner_id.id,
-                'status': 'sold',
+                'state': 'offer_accepted',
             })
 
     def reject(self):
@@ -79,6 +80,10 @@ class EstatePropertyOffer(models.Model):
             rec.property_id.write({
                 'selling_price': 0,
             })
+
+    def offer_accepted(self):
+        for rec in self:
+            rec.status = 'offer_accepted'
 
     def reset(self):
         for rec in self:
@@ -94,7 +99,6 @@ class EstatePropertyOffer(models.Model):
                 'buyer_id': False,
                 'status': 'new',
             })
-
 
     # @api.constrains('price')
     # def check_price(self):

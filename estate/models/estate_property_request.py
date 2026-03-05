@@ -35,10 +35,7 @@ class EstatePropertyRequest(models.Model):
 
     @api.onchange('technician_id')
     def _onchange_technician(self):
-        if self.technician_id:
-            self.state = 'assigned'
-        else:
-            self.state = 'new'
+        self.state = 'assigned' if self.technician_id else 'new'
 
     def action_start(self):
         for rec in self:
