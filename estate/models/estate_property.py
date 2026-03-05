@@ -87,17 +87,19 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            offers = record.offer_ids
+            if not offers:
+                raise UserError("offers should be created first to get sold")
             if record.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold.")
             record.state = "sold"
-        return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("Sold property cannot be cancelled.")
             record.state = "cancelled"
-        return True
+        return True   
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -117,3 +119,20 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "you cannot delete a property unless it is New or Cancelled"
                 )
+    
+
+    def best_offer(self):
+        for record in self:
+            offers = record.offer_ids
+            if offers:
+                max_price = max(offers.mapped("price"))   
+
+            else:
+                raise UserError("offer should be created for finding best offer")
+
+            best_offered_price = offers.filtered(lambda offer : offer.price == max_price)
+
+            if best_offered_price:
+                for offer in best_offered_price:
+                    offer.accept_offer()
+                record.action_sold()
