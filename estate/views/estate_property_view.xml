@@ -70,6 +70,8 @@
                                         <field name="price"/>
                                         <field name="status"/>
                                         <field name="partner_id"/>
+                                        <button name='action_accept_offer' type='object' string="accept"/>
+                                        <button name='action_reject_offer' type='object' string="reject"/>
                                 </list>
                                 </field>
                             </page>

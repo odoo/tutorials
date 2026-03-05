@@ -36,6 +36,5 @@
             parent="settings_menu_root"
             action="estate_maintainance_action"
             />
-            
     </data>
 </odoo>

@@ -19,6 +19,7 @@
             <field name="partner_id"/>
             <field name="property_id"/>
             
+            
         </list>
     </field>
 </record>
@@ -29,7 +30,7 @@
     <field name="arch" type="xml">
         <form string="offers">
             <sheet>
-                <group name="offer_form" string="Offer Details" invisible="not property_id">
+                <group name="offer_form" string="Offer Details" >
                     <field name="property_id" readonly='1' invisible='1'/>
                     <field name="partner_id"/>
                     <field name="price"/>

@@ -87,7 +87,7 @@ class EstateProperty(models.Model):
             raise UserError("The property is already cancelled, and cannot be sold")
         else:
             self.state = "sold"
-    
+
     @api.depends('offer_ids.price')
     def _compute_max_offer_price(self):
         if self.offer_ids:
