@@ -2,9 +2,9 @@ from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class EstatePropertyMaintanance(models.Model):
-    _name = "estate.property.maintanance"
-    _description = "Estate Property Maintanance"
+class EstatePropertyMaintenance(models.Model):
+    _name = "estate.property.maintenance"
+    _description = "Estate Property Maintenance"
     _rec_name = "title"
 
     title = fields.Char(required=True)

@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -61,9 +62,10 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         compute="_compute_best_price", string="Best Offer", store=True
     )
-    maintanance_req = fields.One2many(
-        "estate.property.maintanance", "property_id", string="Maintanace Request"
+    maintenance_req = fields.One2many(
+        "estate.property.maintenance", "property_id", string="Maintenance Request"
     )
+    maintenance_count = fields.Integer(compute="_compute_maintenance_count")
 
     _expected_price_check = models.Constraint(
         "CHECK(expected_price > 0)", "The expected price must be strictly positive."
@@ -107,12 +109,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.ondelete(at_uninstall=False)
-    def _check_state_before_delete(self):
-        for record in self:
-            if record.state not in ("new", "cancelled"):
-                raise UserError("You can only delete New or Cancelled properties.")
-
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
@@ -130,6 +126,8 @@ class EstateProperty(models.Model):
 
     def action_best_offer(self):
         for record in self:
+            if len(record.offer_ids) == 0:
+                raise UserError("There is no offer to accept !!")
             maxi = -1
             for offer in record.offer_ids:
                 if offer.price > maxi:
@@ -137,3 +135,8 @@ class EstateProperty(models.Model):
                     maxi = offer.price
 
             max_record.action_accept()
+
+    @api.depends("maintenance_req")
+    def _compute_maintenance_count(self):
+        for record in self:
+            record.maintenance_count = len(record.maintenance_req)

@@ -5,5 +5,5 @@
     "depends": ["estate", "account"],
     "data": [],
     "installable": True,
-    "application": False,
+    "auto_install": True,
 }

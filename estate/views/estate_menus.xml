@@ -23,8 +23,8 @@
     />
 
     <menuitem
-        id="estate_menu_maintainance"
-        action="estate_property_maintanance_action"
+        id="estate_menu_maintenance"
+        action="estate_property_maintenance_action"
         parent="estate_menu_root"
     />
 

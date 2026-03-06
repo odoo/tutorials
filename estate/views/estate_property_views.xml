@@ -3,8 +3,8 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_available': 1}</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -40,6 +40,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                name="%(estate.estate_property_maintenance_action)d"
+                                type="action"
+                                icon="fa-tag">
+                            <field name="maintenance_count" string="Maintenance" widget="statinfo"/>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="name"/>
@@ -88,24 +96,46 @@
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')"/>
                         </page>
-                        <page string="Maintanance">
-                            <field name="maintanance_req">
-                                <list editable="bottom">
-                                    <field name="title"/>
-                                    <field name="description"/>
-                                    <field name="technision"/>
-                                    <field name="created_by"/>
-                                    <field name="request_date"/>
-                                    <field name="estimate_cost" readonly="state in ('new','progress','done','cancelled')"/>
-                                    <field name="actual_cost" readonly="state in ('new','progress','assign','cancelled')"/>
-                                    <field name="state" readonly='1'/>
-                                    <field name="priority"/>
-                                </list>
-                            </field>
-                        </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="false">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <strong>
+                            <field name="name"/>
+                        </strong>
+
+                        <div>
+                            Expected Price:
+                            <field name="expected_price"/>
+                        </div>
+
+                        <div t-if="record.state.raw_value == 'offer_received'">
+                            Best Offer:
+                            <field name="best_price"/>
+                        </div>
+
+                        <div t-if="record.state.raw_value == 'offer_accepted'">
+                            Selling Price:
+                            <field name="selling_price"/>
+                        </div>
+
+                        <div>
+                            <field name="tag_ids"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
