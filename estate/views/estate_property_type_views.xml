@@ -7,6 +7,7 @@
             <list>
                 <field name="name" />
                 <field name="sequence" widget="handle" />
+                <field name="offer_count" readonly="1" string="Number of Offers"/>
             </list>
         </field>
     </record>
@@ -22,7 +23,7 @@
                     </group>
                     <notebook>
                         <page name="Properties" string="Properties">
-                            <field name="property_ids">
+                            <field name="property_ids" options="{'no_create': True, 'no_create_edit': True}">
                                 <list>
                                     <field name="expected_price" string="Expected Price" />
                                     <field name="state" />

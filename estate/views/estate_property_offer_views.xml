@@ -5,15 +5,17 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list editable="bottom">
-                
+
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="status" />
                 <field name="validity" string="Validity" />
                 <field name="date_deadline" />
-                  <button name="accept" string = "accepted" type="object"  class = "oe_stat_button"  icon="fa-check"/>
-                    <button name="reject" string = "refused"  type="object"  class = "oe_stat_button"  icon="fa-solid fa-times"/>
-                    
+                <button name="accept" string="accepted" type="object" class="oe_stat_button"
+                    icon="fa-check" />
+                <button name="reject" string="refused" type="object" class="oe_stat_button"
+                    icon="fa-solid fa-times" />
+
             </list>
         </field>
     </record>
@@ -32,7 +34,7 @@
                         <field name="status" />
                     </group>
                     <group name="validity" string="validity">
-                        <field name="price"/>
+                        <field name="price" />
                         <field name="partner_id" />
                         <field name="status" />
                         <field name="validity" string="Validity" />

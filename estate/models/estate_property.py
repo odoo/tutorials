@@ -71,6 +71,7 @@ class EstateProperty(models.Model):
         ],
         string="Status",
         default='new',
+        readonly=True,
     )
     active = fields.Boolean(default=True)
 
@@ -136,6 +137,7 @@ class EstateProperty(models.Model):
         for rec in self:
             rec.state = 'offer_accepted'
 
+    @api.onchange('offer_ids')
     def offer_recieved(self):
         for rec in self:
             if rec.offer_ids:
@@ -151,7 +153,16 @@ class EstateProperty(models.Model):
             else:
                 raise UserError(_("No accepted offer in prop"))
 
-            rec.state = 'sold'
+            message = "Wohoo!! Property Sold!!"
+
+        return {
+            "effect": {
+                "fadeout": "fast",
+                "message": message,
+                "img_url": "/web/static/img/smile.svg",
+                "type": "rainbow_man",
+            },
+        }
 
     def cancel(self):
         for rec in self:

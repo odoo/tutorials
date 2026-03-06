@@ -15,6 +15,7 @@
     "views/estate_property_offer_views.xml",
     "views/estate_property_tag_views.xml",
     "views/estate_property_views.xml",
+    "demo/demo_data.xml",
     "views/estate_menus.xml",
     ],
     "website": "https://odoo.com",
