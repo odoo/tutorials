@@ -10,5 +10,7 @@
 
         <Card title="'Escaped HTML'" content="normalString"/>
         <Card title="'Rendered HTML'" content="htmlContent"/>
+
+        <TodoList/>
     </t>
 </templates>
