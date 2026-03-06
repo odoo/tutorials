@@ -9,5 +9,7 @@
     <menuitem id="estate_setting_menu" name="Settings" parent="estate_menu_root">
         <menuitem id="estate_property_type_menu" action="estate_property_type_action" sequence="20" />
         <menuitem id="estate_property_tag_menu" action="estate_property_tag_action" sequence="10" />
+        <menuitem id="estate_property_offers_menu" action="estate_property_offer_action"
+            sequence="30" />
     </menuitem>
 </odoo>

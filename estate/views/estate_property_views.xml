@@ -13,7 +13,7 @@
                 <field name="property_type_id" />
                 <field name="expected_price" />
                 <field name="postcode" />
-                <field name="bedrooms" />
+                <field name="bedrooms" optional="hide" />
                 <field name="living_area" />
                 <field name="selling_price" />
                 <field name="currency_id" column_invisible="1" /> <!-- required by monetary widget
@@ -28,7 +28,8 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"
+                    <button name="action_sold" data-hotkey="w" type="object" string="Sold"
+                        class="oe_highlight"
                         invisible="state in ('sold','cancelled')" />
                     <button name="action_cancel" type="object" string="Cancel"
                         invisible="state in ('sold','cancelled')" />
@@ -37,12 +38,13 @@
                         options="{'clickable':'1'}" />
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Sold" invisible="state != 'sold'" />
                     <group>
                         <group>
+                            <field name="name" />
                             <field name="property_type_id" options="{'no_create':True}" />
                             <field name="tag_ids" widget="many2many_tags"
                                 options="{'color_field': 'color'}" />
-                            <field name="name" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -113,10 +115,11 @@
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="false">
+            <kanban default_group_by="state" records_draggable="false">
                 <field name="state" />
                 <templates>
                     <t t-name="card">
+                        <widget name="web_ribbon" title="Sold" invisible="state != 'sold'" />
                         <div class="o_kanban_record_title">
                             <strong>
                                 <field name="name" />

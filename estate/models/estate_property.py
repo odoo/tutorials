@@ -69,8 +69,8 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -102,6 +102,18 @@ class EstateProperty(models.Model):
         if self.state == "cancelled":
             raise UserError(_("Cancelled properties can not be sold."))
         self.state = "sold"
+
+        message = "Property is sold"
+        if message:
+            return {
+                "effect": {
+                    "fadeout": "slow",
+                    "message": message,
+                    "img_url": "/web/static/img/smile.svg",
+                    "type": "rainbow_man",
+                }
+            }
+
         return True
 
     def action_cancel(self):
