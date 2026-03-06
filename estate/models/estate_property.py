@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='offers')
     total_area = fields.Float(compute='_compute_total_area')
-    max_offer_price = fields.Float(default=None, compute = "_compute_max_offer_price", store=True)
+    max_offer_price = fields.Float(default=None, compute="_compute_max_offer_price", store=True)
     estate_maintainance_id = fields.One2many(
         'estate.maintainance.request', 'property_id'
     )
