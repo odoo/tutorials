@@ -99,14 +99,15 @@ class EstateProperty(models.Model):
 
     def accept_best_offer(self):
         for offers in self.offer_ids:
-            breakpoint()
             if self.max_offer_price == offers.price:
                 offers.action_accept_offer(offers)
-
-                #offers.status = 'accepted'
-                #self.state = 'offer accepted'
-                #self.buyer_id = offers.partner_id
-                #self.selling_price = offers.price
+                ##################################
+                # old code
+                # offers.status = 'accepted'
+                # self.state = 'offer accepted'
+                # self.buyer_id = offers.partner_id
+                # self.selling_price = offers.price
+                ##################################
             else:
                 offers.status = 'refused'
 
