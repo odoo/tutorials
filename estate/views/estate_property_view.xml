@@ -15,6 +15,7 @@
                     <field name="bedrooms"/>
                     <field name="state"/>
                     <field name="total_area"/>
+                    <field name="garden"/>
                 </list>
             </field>
         </record>
@@ -26,6 +27,8 @@
                 <header>
                 <button name="button_sold" type="object" string="Sold"/>
                 <button name="button_cancel" class="btn btn-primary" type="object" string="Cancel"/>
+                <button name="accept_best_offer" class="btn btn-secondary" type="object" string="accept best offer" invisible="state != 'offer received'"/>
+                <field name="state" widget="statusbar"/>
                 </header>
                     <sheet>
                         <group>
@@ -70,8 +73,8 @@
                                         <field name="price"/>
                                         <field name="status"/>
                                         <field name="partner_id"/>
-                                        <button name='action_accept_offer' type='object' string="accept"/>
-                                        <button name='action_reject_offer' type='object' string="reject"/>
+                                        <button name='action_accept_offer' type='object' string="accept" invisible="status"/>
+                                        <button name='action_reject_offer' type='object' string="reject" invisible="status"/>
                                 </list>
                                 </field>
                             </page>

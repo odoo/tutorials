@@ -31,7 +31,6 @@
         <form string="offers">
             <sheet>
                 <group name="offer_form" string="Offer Details" >
-                    <field name="property_id" readonly='1' invisible='1'/>
                     <field name="partner_id"/>
                     <field name="price"/>
                     <field name="status"/>

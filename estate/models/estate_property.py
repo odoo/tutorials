@@ -30,6 +30,8 @@ class EstateProperty(models.Model):
             ('cancelled', "Cancelled"),
         ],
         default='new',
+        compute="_compute_statusbar",
+        store=True
     )
     active = fields.Boolean(default=True)
     garden_area = fields.Integer()
@@ -94,3 +96,22 @@ class EstateProperty(models.Model):
             new_max_offer_price = max(self.offer_ids.mapped('price'))
             if self.max_offer_price != new_max_offer_price:
                 self.max_offer_price = new_max_offer_price
+
+    def accept_best_offer(self):
+        for offers in self.offer_ids:
+            breakpoint()
+            if self.max_offer_price == offers.price:
+                offers.action_accept_offer(offers)
+
+                #offers.status = 'accepted'
+                #self.state = 'offer accepted'
+                #self.buyer_id = offers.partner_id
+                #self.selling_price = offers.price
+            else:
+                offers.status = 'refused'
+
+    @api.depends('offer_ids')
+    def _compute_statusbar(self):
+        for record in self:
+            if record.offer_ids and record.state == 'new':
+                record.state = "offer received"
