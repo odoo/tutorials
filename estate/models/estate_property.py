@@ -1,6 +1,7 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+from datetime import timedelta
 
 
 class EstateProperty(models.Model):
@@ -11,7 +12,7 @@ class EstateProperty(models.Model):
     name = fields.Char(default="Unknown", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date(copy=False, default=lambda t: fields.Date.today() + timedelta(days=90))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -92,3 +93,9 @@ class EstateProperty(models.Model):
         if self.state == "sold":
             raise UserError(_("Sold properties cannot be canceled."))
         self.state = "canceled"
+
+    @api.ondelete(at_uninstall=False)
+    def _check_if_can_be_deleted(self):
+        for record in self:
+            if record.state in ("offer_accepted", "offer_received", "sold"):
+                raise UserError(_("You cannot delete a property which has %s state.", record.state))

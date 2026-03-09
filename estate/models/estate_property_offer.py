@@ -23,6 +23,15 @@ class EstatePropertyOffer(models.Model):
         'The offer price must be strictly positive.',
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            current_property = self.env["estate.property"].browse(val["property_id"])
+            if val["price"] < current_property.best_price:
+                raise UserError(_("An offer with higher price already exists"))
+            current_property.state = "offer_received"
+        return super().create(vals_list)
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
