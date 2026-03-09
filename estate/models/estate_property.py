@@ -1,10 +1,13 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Test Model for real estate"
+    _check_positive_expected_price = models.Constraint("CHECK (expected_price >= 0)","expected_price should be positive")
+    _check_positive_selling_price = models.Constraint("CHECK (selling_price >= 0)","selling_price should be positive")
 
     name = fields.Char(default="Unknown")
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
@@ -100,7 +103,7 @@ class EstateProperty(models.Model):
     def accept_best_offer(self):
         for offers in self.offer_ids:
             if self.max_offer_price == offers.price:
-                offers.action_accept_offer(offers)
+                offers.action_accept_offer()
                 ##################################
                 # old code
                 # offers.status = 'accepted'
@@ -116,3 +119,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.offer_ids and record.state == 'new':
                 record.state = "offer received"
+
+    @api.constrains('selling_price','expected_price')
+    def check_percentage(self):
+        for record in self:
+            if record.selling_price and record.expected_price:
+                if float_compare(record.selling_price,record.expected_price * 0.9,precision_digits=1) < 0:
+                    raise ValidationError("the selling perice cant be less than 90% of the expected price")

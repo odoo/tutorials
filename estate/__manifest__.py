@@ -7,6 +7,7 @@
     'description': "real estate App.",
     'data': [
         'security/ir.model.access.csv',
+        'data/estate_property_demo.xml',
         'views/estate_property_view.xml',
         'views/estate_property_tag_view.xml',
         'views/estate_property_type_view.xml',
