@@ -13,13 +13,11 @@ class EstateProperty(models.Model):
                     "move_type": "out_invoice",
                     "partner_id": record.buyer_id.id,
                     "invoice_line_ids": [
-                        Command.create(
-                            {
+                        [0, 0, {
                                 "name": "6% Commission",
                                 "quantity": 1,
                                 "price_unit": record.selling_price * 0.06,
-                            }
-                        ),
+                        }],
                         Command.create(
                             {
                                 "name": "Administrative Fees",

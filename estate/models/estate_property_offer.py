@@ -100,3 +100,4 @@ class EstatePropertyOffer(models.Model):
             else:
                 offer.status = "refused"
                 property_rec.state = "offer_received"
+    

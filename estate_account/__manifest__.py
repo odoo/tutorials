@@ -5,7 +5,7 @@
     "summary": "Estate Managment",
     "depends": ["estate", "account"],
     "data": [],
-    "application": True,
+    'auto_install': True,
     "author": "assri",
     "license": "LGPL-3",
 }

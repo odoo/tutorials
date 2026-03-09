@@ -6,7 +6,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">View Estate Property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': 1}</field>
     </record>
 
@@ -19,7 +19,7 @@
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="available_from" optional="hide"/>
@@ -36,7 +36,7 @@
                 <header>
                     <button name="action_sold" string="Sold" type="object" class="btn-primary"/>
                     <button name="action_cancel" string="Cancel" type="object" class="btn-secondary"/>
-                    <button name="best_offer" string="Best Offer" type="object" class="btn-primary"/>
+                    <button name="best_offer" string="Best Offer" type="object" class="btn-primary" invisible="state != 'offer_received'"/>
                     <field name="state" widget="statusbar"/>
 
                 </header>
@@ -61,7 +61,6 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
-                            <field name="state"/>
                         </group>
                     </group>
 
@@ -134,5 +133,48 @@
             </search>
         </field>
     </record>
+
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_coloum" create="true" default_group_by="property_type_id" draggable="false">
+                <field name="state"/>
+                <field name="selling_price"/>
+                <field name="expected_price"/>
+                <field name="tag_ids"/>
+                <field name="property_type_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card">
+                            <strong>
+                                <field name="name"/>
+                            </strong>
+
+                            <div>
+                                Expected: <field name="expected_price"/>
+                            </div>
+
+                            <div>
+                                State: <field name="state"/>
+                            </div>
+
+                            <div>
+                                Property Type: <field name="property_type_id"/>
+                            </div>
+
+                            <div t-if="record.state.raw_value == 'sold'">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
+
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+</record>
 
 </odoo>

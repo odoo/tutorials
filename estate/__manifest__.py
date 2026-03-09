@@ -1,6 +1,6 @@
 {
     "name": "estate",
-    "verison": "1.0",
+    "version": "1.0",
     "category": "Estate",
     "summary": "Estate Managment",
     "depends": ["base"],

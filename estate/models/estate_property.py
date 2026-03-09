@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+# from .estate_property_offer import accept_offer
 
 
 class EstateProperty(models.Model):
@@ -133,6 +134,6 @@ class EstateProperty(models.Model):
             best_offered_price = offers.filtered(lambda offer : offer.price == max_price)
 
             if best_offered_price:
-                for offer in best_offered_price:
-                    offer.accept_offer()
+                offers.accept_offer()
                 record.action_sold()
+    
