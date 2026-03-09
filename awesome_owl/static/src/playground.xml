@@ -8,8 +8,12 @@
             Sum: <t t-esc="state.sum"/>
         </div>
 
-        <Card title="'Escaped HTML'" content="normalString"/>
-        <Card title="'Rendered HTML'" content="htmlContent"/>
+        <Card title="'Simple Text Card'">
+            This is a simple card with text.
+        </Card>
+        <Card title="'Counter Card'">
+            <Counter/>
+        </Card>
 
         <TodoList/>
     </t>

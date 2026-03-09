@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 	<t t-name="awesome_owl.todolist">
-        <h2>Todo List</h2>
-        <input
-            t-ref="todo_input"
-            class="form-control mb-2 w-25"
-            placeholder="Enter a new task"
-            t-on-keyup="addTodo"
-        />
-		<div>
-            <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem 
-                    todo="todo"
-                    toggleState.bind="toggleState"
-                />
-            </t>
+        <div class="p-2 m-2">
+            <h2>Todo List</h2>
+            <input
+                t-ref="todo_input"
+                class="form-control mb-2 w-25"
+                placeholder="Enter a new task"
+                t-on-keyup="addTodo"
+            />
+            <div>
+                <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                    <TodoItem 
+                        todo="todo"
+                        toggleState.bind="toggleState"
+                        removeTodo.bind="removeTodo"
+                    />
+                </t>
+            </div>
         </div>
 	</t>
 </templates>
