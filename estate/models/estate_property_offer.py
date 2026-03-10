@@ -67,35 +67,6 @@ class EstatePropertyOffer(models.Model):
             create_date = fields.Date.to_date(self.create_date) or fields.Date.today()
             self.validity = (self.date_deadline - create_date).days
 
-    def action_accept_offer(self):
-        accepted_records = self.search_count(
-            [
-                ("property_id", "=", self.property_id),
-                ("status", "=", "accepted"),
-            ],
-            limit=1,
-        )
-        if accepted_records:
-            raise UserError(_("cannot accept multiple offer"))
-        else:
-            self.status = "accepted"
-            self.property_id.selling_price = self.price
-            self.property_id.buyer_id = self.partner_id
-            self.property_id.state = "accepted"
-            other_offers = self.search(
-                [
-                    ("property_id", "=", self.property_id),
-                    ("status", "!=", "accepted"),
-                ]
-            )
-            other_offers.write({"status": "refused"})
-        return True
-
-    def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
-        return True
-
     @api.constrains("price")
     def _check_offer_price(self):
         for record in self:
@@ -111,22 +82,41 @@ class EstatePropertyOffer(models.Model):
                     _("offer price cannot be lower than 90% of the expected price.")
                 )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
-        if offers.property_id.state == "new":
-            offers.property_id.state = "offer_received"
-        for record in offers:
-            db_best_offer_record = self._read_group(
-                domain=[
-                    ("property_id", "=", record.property_id.id),
-                    ("id", "!=", record.id),
-                ],
-                aggregates=["price:max"],
-                groupby=[],
+        for vals in vals_list:
+            best_offer = self.env["estate.property.offer"].search(
+                [("property_id", "=", vals["property_id"])], order="price desc", limit=1
             )
-            if record.price <= db_best_offer_record[0][0]:
-                raise ValidationError(
-                    _("new offer price should be greater than best offer.")
-                )
+            if vals["price"] <= best_offer.price:
+                raise ValidationError(_("new offer should be greater than best offer."))
+        offers = super().create(vals_list)
         return offers
+
+    def action_accept_offer(self):
+        accepted_records = self.search_count(
+            [
+                ("property_id", "=", self.property_id.id),
+                ("status", "=", "accepted"),
+            ],
+        )
+        if accepted_records:
+            raise UserError(_("cannot accept multiple offer"))
+        else:
+            self.status = "accepted"
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.state = "accepted"
+            other_offers = self.search(
+                [
+                    ("property_id", "=", self.property_id.id),
+                    ("status", "!=", "accepted"),
+                ]
+            )
+            other_offers.write({"status": "refused"})
+        return True
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
+        return True

@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EstatePropertyType(models.Model):
@@ -21,5 +21,9 @@ class EstatePropertyType(models.Model):
         "A Property Type with the same name already exists.",
     )
 
+    @api.depends("offer_ids")
     def _compute_offer_count(self):
-        self.offer_count = self.search_count([])
+        for record in self:
+            record.offer_count = self.env["estate.property.offer"].search_count(
+                [("property_type_id", "=", record.ids)]
+            )

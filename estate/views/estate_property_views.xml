@@ -10,11 +10,11 @@
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="postcode" />
+                <field name="expected_price" />
+                <field name="selling_price" />
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="bedrooms" optional="hide" />
                 <field name="living_area" optional="hide" />
-                <field name="expected_price" />
-                <field name="selling_price" />
                 <field name="date_availability" optional="hide" />
                 <field name="currency_id" column_invisible="1" /> <!-- required by monetary widget
                 (selling_price, expected_price) -->
@@ -81,13 +81,20 @@
                 <header>
                     <field name="state" widget="statusbar"
                         statusbar_visible="new, offer_received, accepted, sold" />
-                    <button name="action_sold" type="object" string="Sold" class="btn-primary"
+                    <button
+                        name="action_sold" type="object" string="Sold" class="btn-primary"
                         invisible="state != 'accepted'" />
-                    <button name="action_cencel" type="object" string="Cencel"
+                    <button
+                        name="action_cancel" type="object" string="Cancel"
                         invisible="state not in ['new', 'offer_received'] " />
-                    <button name="action_restore" type="object" string="Restore Property"
+                    <button
+                        name="action_restore" type="object" string="Restore Property"
                         class="btn-primary"
                         invisible="state != 'canceled'" />
+                    <button name="action_accept_best_offer"
+                        type="object" string="Accept Best Offer"
+                        class="btn-primary"
+                        invisible="state in ['sold', 'accepted'] " />
                 </header>
                 <sheet>
                     <group>
@@ -138,6 +145,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

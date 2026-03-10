@@ -3,11 +3,26 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError
 
+PROPERTY_STATE = [
+    ("new", "New"),
+    ("offer_received", "Offer Received"),
+    ("accepted", "Offer Accepted"),
+    ("sold", "Sold"),
+    ("canceled", "Cancelled"),
+]
+GARDEN_ORIENTATION = [
+    ("north", "North"),
+    ("south", "South"),
+    ("east", "East"),
+    ("west", "West"),
+]
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Management Module"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -34,31 +49,16 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(
-        selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
-        ],
-    )
+    garden_orientation = fields.Selection(selection=GARDEN_ORIENTATION)
     state = fields.Selection(
         string="Status",
         default="new",
         copy=False,
         required=True,
-        selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("canceled", "Cancelled"),
-        ],
+        selection=PROPERTY_STATE,
     )
     active = fields.Boolean(default=True)
-    tag_ids = fields.Many2many(
-        "estate.property.tag", relation="mahiv", string="Property Tag"
-    )
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
@@ -86,17 +86,8 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
-        max_price_list = self.env["estate.property.offer"]._read_group(
-            domain=[("property_id", "in", self.ids)],
-            aggregates=["price:max"],
-            groupby=["property_id"],
-        )
-        price_list = {record.id: price for record, price in max_price_list}
         for record in self:
-            if record.id:
-                record.best_offer = price_list.get(record.id, 0.0)
-            else:
-                record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def onchange_garden(self):
@@ -116,7 +107,7 @@ class EstateProperty(models.Model):
             )
         return True
 
-    def action_cencel(self):
+    def action_cancel(self):
         if self.state != "sold":
             self.state = "canceled"
         else:
@@ -129,6 +120,13 @@ class EstateProperty(models.Model):
         else:
             raise UserError(_("Property is not cancelled."))
         return True
+
+    @api.depends("offer_ids.price")
+    def action_accept_best_offer(self):
+        max_price_record = self.env["estate.property.offer"].search(
+            domain=[("property_id", "in", self.ids)], order="price desc", limit=1
+        )
+        max_price_record.action_accept_offer()
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_is_new_or_cancelled(self):
