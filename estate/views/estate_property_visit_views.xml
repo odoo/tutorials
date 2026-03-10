@@ -1,0 +1,69 @@
+<odoo>
+    <record id="estate_property_visit_action_property" model="ir.actions.act_window">
+        <field name="name">Property Visits</field>
+        <field name="res_model">estate.property.visit</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="domain">[('property_id', '=', active_id)]</field>
+        <field name="context">{'default_property_id': active_id}</field>
+    </record>
+    <record id="view_estate_visit_list" model="ir.ui.view">
+        <field name="name">estate.visit.list</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="customer_id"/>
+                <field name="agent_id"/>
+                <field name="visit_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_estate_visit_calendar" model="ir.ui.view">
+        <field name="name">estate.visit.calendar</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <calendar date_start="visit_date" color="agent_id">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="customer_id"/>
+                <field name="agent_id"/>
+            </calendar>
+        </field>
+    </record>
+    <record id="view_estate_visit_form" model="ir.ui.view">
+        <field name="name">estate.visit.form</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_done"
+                            string="Mark Done"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'schedule'"/>
+                    <button name="action_cancel"
+                            string="Cancel"
+                            type="object"
+                            invisible="state != 'schedule'"/>
+                    <button name="action_reset"
+                            string="Reset"
+                            type="object"
+                            invisible="state == 'schedule'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="property_id"/>
+                        <field name="customer_id"/>
+                        <field name="agent_id"/>
+                        <field name="visit_date"/>
+                        <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
