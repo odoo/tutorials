@@ -47,17 +47,27 @@
         <field name="state">offer_received</field>
     </record>
 
+    <record id="estate_property_buyer_1" model="res.partner">
+        <field name="name">Sampath</field>
+    </record>
+
+    <record id="estate_property_buyer_2" model="res.partner">
+        <field name="name">htapmas</field>
+    </record>
+
     <record id="estate_property_offer_1" model="estate.property.offer">
         <field name="price">123123123</field>
         <field name="property_id" ref="estate_property_1"/>
-        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="partner_id" ref="estate_property_buyer_1"/>
     </record>
 
     <record id="estate_property_offer_2" model="estate.property.offer">
         <field name="price">123123123</field>
         <field name="property_id" ref="estate_property_4"/>
-        <field name="partner_id" ref="base.res_partner_4"/>
+        <field name="partner_id" ref="estate_property_buyer_2"/>
     </record>
+
+    
 
 
 </odoo>
