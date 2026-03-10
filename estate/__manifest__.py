@@ -16,6 +16,8 @@
         "views/estate_property_type_views.xml",
         "views/estate_menus.xml",
         "views/estate_res_user_views.xml",
+        "demo/estate_property_data.xml",
+
     ],
     "application": True,
 }
