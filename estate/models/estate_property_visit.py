@@ -2,8 +2,8 @@ from odoo import fields, models, api
 
 
 class EstatePropertyVisit(models.Model):
-    _name="estate.property.visit"
-    _description="Property Visit"
+    _name = "estate.property.visit"
+    _description = "Property Visit"
 
     name = fields.Char(default="New Event")
     property_id = fields.Many2one(
@@ -37,4 +37,3 @@ class EstatePropertyVisit(models.Model):
             'UNIQUE(property_id, visit_date)',
             'another visit is already scheduled on this date',
         )
-    

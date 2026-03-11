@@ -169,7 +169,7 @@ class EstateProperty(models.Model):
     def _compute_request_count(self):
         for record in self:
             record.maintenance_count = len(record.maintenance_ids)
-    
+
     def _compute_visit_count(self):
         for record in self:
             record.visit_count = len(record.visit_ids)
