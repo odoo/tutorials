@@ -1,0 +1,28 @@
+<odoo>
+    <data noupdate="1">
+        <record id="offer_1" model="estate.property.offer">
+            <field name="property_id" ref="property_beach_villa"/>
+            <field name="partner_id" ref="base.partner_admin"/>
+            <field name="price">8970</field>
+        </record>
+
+        <record id="offer_2" model="estate.property.offer">
+            <field name="property_id" ref="property_city_appartment"/>
+            <field name="partner_id" ref="base.partner_admin"/>
+            <field name="price">87870</field>
+        </record>
+
+        <record id="offer_3" model="estate.property.offer">
+            <field name="property_id" ref="property_city_appartment"/>
+            <field name="partner_id" ref="base.partner_admin"/>
+            <field name="price">678900</field>
+        </record>
+
+        <record id="offer_4" model="estate.property.offer">
+            <field name="property_id" ref="property_beach_villa"/>
+            <field name="price">8787999</field>
+            <field name="partner_id" ref="base.partner_admin"/>
+            <field name="status">accepted</field>
+        </record>
+    </data>
+</odoo>

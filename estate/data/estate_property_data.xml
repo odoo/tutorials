@@ -1,0 +1,63 @@
+<odoo>
+    <data noupdate="1">
+        <record id="property_beach_villa" model="estate.property">
+            <field name="name">alkjfad</field>
+            <field name="postcode">8000999</field>
+            <field name="expected_price">500</field>
+            <field name="bedrooms">4</field>
+            <field name="facades">2</field>
+            <field name="state">offer_received</field>
+            <field name="active">True</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('property_furnitured'), ref('property_GST')])]"/>
+            <field name="property_type_id" ref="property_double_bedroom"/>
+        </record>
+
+        <record id="property_city_appartment" model="estate.property">
+            <field name="name">swagat</field>
+            <field name="postcode">78888888</field>
+            <field name="expected_price">2500</field>
+            <field name="bedrooms">2</field>
+            <field name="facades">1</field>
+            <field name="state">offer_received</field>
+            <field name="active">True</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('property_unfurnitured')])]"/>
+            <field name="property_type_id" ref="property_double_bedroom"/>
+        </record>
+
+        <record id="property_house" model="estate.property">
+            <field name="name">swagat</field>
+            <field name="postcode">78888888</field>
+            <field name="expected_price">250000</field>
+            <field name="bedrooms">2</field>
+            <field name="facades">1</field>
+            <field name="state">offer_accepted</field>
+            <field name="active">True</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('property_unfurnitured'), ref('property_income_tax')])]"/>
+            <field name="property_type_id" ref="property_double_bedroom"/>
+        </record>
+
+        <record id="property_sold" model="estate.property">
+            <field name="name">swagat</field>
+            <field name="postcode">78888888</field>
+            <field name="expected_price">250000</field>
+            <field name="bedrooms">2</field>
+            <field name="facades">1</field>
+            <field name="state">sold</field>
+            <field name="active">True</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('property_furnitured'), ref('property_income_tax')])]"/>
+            <field name="property_type_id" ref="property_double_bedroom"/>
+        </record>
+
+        <record id="property_city_room" model="estate.property">
+            <field name="name">swagat</field>
+            <field name="postcode">78888888</field>
+            <field name="expected_price">250000</field>
+            <field name="bedrooms">2</field>
+            <field name="facades">1</field>
+            <field name="state">cancelled</field>
+            <field name="active">True</field>
+            <field name="tag_ids" eval="[(6, 0, [ref('property_furnitured'), ref('property_GST')])]"/>
+            <field name="property_type_id" ref="property_double_bedroom"/>
+        </record>
+    </data>
+</odoo>
