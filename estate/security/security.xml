@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="res.groups.privilege" id="groups_privilege_real_estate">
+            <field name="name">Real Estate</field>
+            <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        </record>
+
+        <record id="estate_group_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="privilege_id" ref="groups_privilege_real_estate"/>
+        </record>
+
+        <record id="estate_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="privilege_id" ref="groups_privilege_real_estate"/>
+            <field name="implied_ids" eval="[Command.link(ref('estate_group_user'))]"/>
+        </record>
+        <record id="base.user_admin" model="res.users">
+           <field name="group_ids" eval="[Command.link(ref('estate_group_manager'))]"/>
+       </record>
+    </data>
+</odoo>

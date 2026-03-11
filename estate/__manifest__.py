@@ -1,7 +1,7 @@
 {
     'name': 'RealEstate',
     'version': '1.0',
-    'category': 'RealEstate',
+    'category': 'Real Estate/Brokerage',
     'summary': 'A module to manage real estate advertisements and property offers',
     'description': """A simple module to manage real estate ads.List your properties, track details like bedrooms and garden,let buyers make offers, and accept or reject them.""",
     'author': 'Pranjali Sangavekar(prsan)',
@@ -10,6 +10,7 @@
     'application': True,
     'installable': True,
     'data': [
-    'security/ir.model.access.csv',
-],
+        'security/security.xml',
+        'security/ir.model.access.csv',
+    ],
 }
