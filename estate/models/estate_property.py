@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
@@ -25,7 +26,7 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation"
     )
-    swimming_pool = fields.Boolean(string="Swimming Pool")  #extra fields
+    swimming_pool = fields.Boolean(string="Swimming Pool")  # extra fields
     property_type = fields.Selection(
         [
             ('house', 'House'),
