@@ -40,7 +40,6 @@ class EstatePropertyOffer(models.Model):
         inverse='_inverse_date_deadline',
     )
 
-    # chaloooooooooo
     property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True)
 
     @api.depends('create_date', 'validity')
@@ -89,25 +88,3 @@ class EstatePropertyOffer(models.Model):
     def offer_accepted(self):
         for rec in self:
             rec.status = 'offer_accepted'
-
-    def reset(self):
-        for rec in self:
-
-            self.search([
-                ('property_id', '=', rec.property_id.id),
-            ]).write({
-                'status': 'new',
-            })
-
-            rec.property_id.write({
-                'selling_price': 0,
-                'buyer_id': False,
-                'status': 'new',
-            })
-
-    # @api.constrains('price')
-    # def check_price(self):
-    #     for rec in self:
-    #         if rec.price <= 0:
-    #             message = "Price needs to positive only"
-    #             raise ValidationError(message)

@@ -97,6 +97,16 @@ class EstateProperty(models.Model):
         comodel_name='estate.property.tag',
     )
 
+    meeting_ids = fields.One2many(
+        string='meeting',
+        comodel_name='estate.property.meeting',
+        inverse_name='property_id',
+    )
+
+    meeting_count = fields.Integer(
+    compute="_compute_meeting_count",
+    )
+
     offer_ids = fields.One2many(
         'estate.property.offer',
         'property_id',
@@ -137,10 +147,9 @@ class EstateProperty(models.Model):
         for rec in self:
             rec.state = 'offer_accepted'
 
-    @api.onchange('offer_ids')
     def offer_recieved(self):
         for rec in self:
-            if rec.offer_ids:
+            if rec.offer_ids and rec.offer_ids.status == 'new':
                 rec.state = 'offer_received'
 
     def sold(self):
@@ -173,20 +182,6 @@ class EstateProperty(models.Model):
                 message = "Already cancelled cannot be cancelled again"
             rec.state = 'cancelled'
 
-    # def reset(self):
-    #     properties = self.mapped('property_id')
-
-    #     offers = self.env['estate.property.offer'].search([
-    #         ('property_id', 'in', properties.ids)
-    #     ])
-    #     offers.write({'status': 'new'})
-
-    #     properties.write({
-    #         'selling_price': 0,
-    #         'buyer_id': False,
-    #         'state': 'new',
-    #     })
-
     def accept_best_offer(self):
         for rec in self:
             offers = rec.offer_ids
@@ -213,11 +208,6 @@ class EstateProperty(models.Model):
                 message = "Price cannot be less than 90%"
                 raise ValidationError(message)
 
-    # def action_assign(self):
-    #     for rec in self:
-    #         if rec.progress_state=='new':
-    #             rec.progress_state = 'assigned'
-
     @api.onchange('salesman_id')
     def _onchange_salesman(self):
         for rec in self:
@@ -225,3 +215,14 @@ class EstateProperty(models.Model):
                 rec.progress_state = 'assigned'
             else:
                 rec.progress_state = 'new'
+
+    @api.ondelete(at_uninstall=False)
+    def delete_new_sold(self):
+        for rec in self:
+            if rec.state not in ['new', 'cancelled']:
+                raise UserError(_("Cannot delete this record it needs to be in either new or cancel to delete"))
+
+    @api.depends('meeting_ids')
+    def _compute_meeting_count(self):
+        for rec in self:
+            rec.meeting_count = len(rec.meeting_ids)

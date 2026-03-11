@@ -7,7 +7,7 @@
             <list>
                 <field name="name" />
                 <field name="sequence" widget="handle" />
-                <field name="offer_count" readonly="1" string="Number of Offers"/>
+                <field name="offer_count" readonly="1" string="Number of Offers" />
             </list>
         </field>
     </record>
@@ -18,12 +18,24 @@
         <field name="arch" type="xml">
             <form string="">
                 <sheet>
+                    
+                   <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                                name="%(estate_property_offer_action)d"
+                                type="action"
+                                icon="fa-tag">
+                            <field name="offer_count" string="Offers" widget="statinfo"/>
+                        </button>
+                    </div>
+
+
                     <group>
                         <field name="name" placeholder="Estate Property Type" />
                     </group>
                     <notebook>
                         <page name="Properties" string="Properties">
-                            <field name="property_ids" options="{'no_create': True, 'no_create_edit': True}">
+                            <field name="property_ids"
+                                options="{'no_create': True, 'no_create_edit': True}">
                                 <list>
                                     <field name="expected_price" string="Expected Price" />
                                     <field name="state" />

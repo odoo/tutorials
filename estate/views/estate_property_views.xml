@@ -1,12 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
 
-
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list 
+            <list
                 decoration-success="state in ['offer_received','offer_accepted']"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'"
@@ -15,7 +14,7 @@
                 <field name="name" string="Title" />
                 <field name="postcode" />
                 <field name="tag_ids" widget="many2many_tags"
-                options="{'color_field': 'color'}" />
+                    options="{'color_field': 'color'}" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
@@ -31,18 +30,26 @@
         <field name="arch" type="xml">
             <form string="properties">
                 <header>
-
                     <field name="state"
                         widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
+                        options="{'clickable': '1'}"
                     />
 
                     <button string="Sold" name="sold" type="object" class="btn-success" />
                     <button string="Cancel" name="cancel" type="object" class="btn-danger" />
-                    <!-- <button string="Reset " name="reset" type="object" class="btn-secondary" /> -->
                     <button string="Accept Best" name="accept_best_offer" type="object" />
                 </header>
+
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                            name="%(estate_property_meeting_action)d"
+                            type="action"
+                            icon="fa-tag">
+                            <field name="meeting_count" string="" widget="statinfo" />
+                        </button>
+                    </div>
                     <group name="name">
                         <field name="state" />
                         <field name="property_type_id" string="Property Type"
@@ -86,14 +93,15 @@
                                         type="object"
                                         icon="fa-check"
                                         class="btn-success"
-                                        invisible="status == 'offer_accepted' " />
+                                        invisible="status in ['offer_accepted', 'offer_rejected']" />
 
                                     <button string="reject"
                                         name="reject"
                                         type="object"
                                         icon="fa-times"
                                         class="btn-danger"
-                                        invisible="status == 'offer_rejected' " />
+                                        invisible="status in ['offer_accepted', 'offer_rejected']" />
+
                                 </list>
                             </field>
                         </page>
@@ -132,15 +140,12 @@
         </field>
     </record>
 
-
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
-                <!-- <filter name="available_properties" string="Available Properties"
-                    domain="[('state', 'in', ['new','offer_received'])]" 
-                    /> -->
+
                 <filter
                     name="available"
                     string="Available"
@@ -156,8 +161,8 @@
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />
                 <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area" 
-                filter_domain="[('living_area', '>=', self)]"
+                <field name="living_area" string="Living Area"
+                    filter_domain="[('living_area', '>=', self)]"
                 />
             </search>
         </field>
