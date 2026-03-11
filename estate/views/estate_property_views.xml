@@ -7,7 +7,7 @@
         <field name="name">View Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
-        <field name="context">{'search_default_available': 1}</field>
+        <field name="context">{'search_default_available': 1, 'group_by': 'garden'}</field>
     </record>
 
     <!-- List View -->
@@ -37,6 +37,7 @@
                     <button name="action_sold" string="Sold" type="object" class="btn-primary"/>
                     <button name="action_cancel" string="Cancel" type="object" class="btn-secondary"/>
                     <button name="best_offer" string="Best Offer" type="object" class="btn-primary" invisible="state != 'offer_received'"/>
+                    <!-- <button name="action_create_visit" string="visit" type="object" class="btn-primary"/> -->
                     <field name="state" widget="statusbar"/>
 
                 </header>
@@ -48,6 +49,10 @@
                     <div class="oe_button_box" name="button_box">
                         <button name="%(estate_property_maintenance_action)d" type="action" class="oe_stat_button">
                             <field name="maintenance_ids" widget="statinfo" string="Maintenance"/>
+                        </button>
+
+                        <button name="%(estate_property_visit_action)d" type="action" class="oe_stat_button">
+                            <field name="visit_count" widget="statinfo" string="Visits"/>
                         </button>
                     </div>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>

@@ -12,11 +12,11 @@ class EstatePropertyMaintenance(models.Model):
     technician_id = fields.Many2one("res.users", string="technician")
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("assigned", "assigned"),
-            ("in_progress", "In progress"),
-            ("done", "done"),
-            ("cancel", "cancel"),
+            ('new', "New"),
+            ('assigned', "assigned"),
+            ('in_progress', "In progress"),
+            ('done', "done"),
+            ('cancel', "cancel"),
         ],
         default="new",
     )
