@@ -52,20 +52,16 @@ class EstatePropertyMaintenance(models.Model):
             self.state = "assign"
 
     def action_start(self):
-        for record in self:
-            record.state = "progress"
+        self.write({"state": "progress"})
 
     def action_stop(self):
-        for record in self:
-            record.state = "done"
+        self.write({"state": "done"})
 
     def action_cancel(self):
-        for record in self:
-            record.state = "cancelled"
+        self.write({"state": "cancelled"})
 
     @api.constrains("state")
     def _check_estimated_price(self):
         for record in self:
-            if record.state == "progress":
-                if record.estimate_cost == 0:
-                    raise ValidationError("Enter Estimate Price !!")
+            if record.state == "progress" and not record.estimate_cost:
+                raise ValidationError("Enter Estimate Price !!")

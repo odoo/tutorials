@@ -47,6 +47,12 @@
                                 icon="fa-tag">
                             <field name="maintenance_count" string="Maintenance" widget="statinfo"/>
                         </button>
+                        <button class="oe_stat_button"
+                                name="%(estate.estate_property_visit_action)d"
+                                type="action"
+                                icon="fa-tag">
+                                <field name="visit_count" string="Visits" widget="statinfo"/>
+                        </button>
                     </div>
                     <group>
                         <group>

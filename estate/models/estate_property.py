@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -66,6 +66,8 @@ class EstateProperty(models.Model):
         "estate.property.maintenance", "property_id", string="Maintenance Request"
     )
     maintenance_count = fields.Integer(compute="_compute_maintenance_count")
+    visit_req = fields.One2many("estate.property.visit", "property_id", string="Visits")
+    visit_count = fields.Integer(compute="_compute_visit_count")
 
     _expected_price_check = models.Constraint(
         "CHECK(expected_price > 0)", "The expected price must be strictly positive."
@@ -112,7 +114,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError(_("A cancelled property cannot be sold."))
+                raise UserError("A cancelled property cannot be sold.")
             record.state = "sold"
             record.action_archive()
         return True
@@ -140,3 +142,8 @@ class EstateProperty(models.Model):
     def _compute_maintenance_count(self):
         for record in self:
             record.maintenance_count = len(record.maintenance_req)
+
+    @api.depends("visit_req")
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_req)
