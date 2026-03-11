@@ -71,6 +71,11 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
+    visit_ids = fields.One2many(
+        "estate.property.visit",
+        "property_id",
+        string="visits",
+    )
     maintenance_ids = fields.One2many(
         "estate.property.maintenance",
         "property_id",
@@ -86,6 +91,9 @@ class EstateProperty(models.Model):
     )
     maintenance_count = fields.Integer(
         compute="_compute_request_count"
+    )
+    visit_count = fields.Integer(
+        compute="_compute_visit_count"
     )
 
     _check_expected_price = models.Constraint(
@@ -153,9 +161,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold")
-            accepted = record.offer_ids.filtered(
-                lambda offer: offer.status == "accepted"
-            )
+            accepted = record.offer_ids.filtered_domain([('status', '=', 'accepted')])
             if not accepted:
                 raise UserError("You must accept an offer before selling.")
             record.state = "sold"
@@ -163,3 +169,7 @@ class EstateProperty(models.Model):
     def _compute_request_count(self):
         for record in self:
             record.maintenance_count = len(record.maintenance_ids)
+    
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
