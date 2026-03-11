@@ -2,6 +2,7 @@
 <odoo>
     <data >
 
+
         <record id="estate_property_tag_1" model="estate.property.tag">
                     <field name="id">1</field>
                     <field name="name">tag1</field>
@@ -15,9 +16,16 @@
         <record id="estate_property_1" model="estate.property">
                     <field name="id">1</field>
                     <field name="name">property</field>
-                    <field name="property_type_id">1</field>
                     <field name="tag_ids" eval="[Command.set([ref('estate_property_tag_1')])]" />
+                    <field name="property_type_id">1</field>
         </record>
+
+        <record id="estate_property_offer1" model="estate.property.offer">
+                    <field name="id">1</field>
+                    <field name="price">100000</field>
+                    <field name="property_id">1</field>
+        </record>
+
 
     </data>
 </odoo>

@@ -91,6 +91,17 @@
                                         <field name="current_stage"/>
                             </list>
 
+</field>
+
+                            </page>
+                            <page string="visits">
+                                <field name="visit_ids">
+                                    <list>
+                                        <field name="date"/>
+                                        <field name="visitor_id"/>
+                                        <field name="comment"/>
+                                        <field name="state"/>
+                                    </list>
                             </field>
                             </page>
                         </notebook>

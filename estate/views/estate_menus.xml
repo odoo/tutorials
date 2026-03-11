@@ -36,5 +36,13 @@
             parent="settings_menu_root"
             action="estate_maintainance_action"
             />
+
+            <menuitem
+            id="visit"
+            name="visit"
+            sequence="10"
+            parent="settings_menu_root"
+            action="estate_property_visit_action"
+            />
     </data>
 </odoo>

@@ -5,15 +5,16 @@
     'author': 'viwar-odoo',
     'category': 'real estate',
     'description': "real estate App.",
-    'data': [
-        'security/ir.model.access.csv',
-        'data/estate_property_demo.xml',
-        'views/estate_property_view.xml',
-        'views/estate_property_tag_view.xml',
-        'views/estate_property_type_view.xml',
-        'views/estate_property_offer_view.xml',
-        'views/estate_maintainance_form.xml',
-        'views/estate_menus.xml'
+    "data": [
+        "security/ir.model.access.csv",
+        "views/estate_maintainance_form.xml",
+        "views/estate_menus.xml",
+        "views/estate_property_offer_view.xml",
+        "views/estate_property_tag_view.xml",
+        "views/estate_property_type_view.xml",
+        "views/estate_property_view.xml",
+        "views/estate_property_visit_action.xml",
+        #"data/estate_property_demo.xml"
     ],
     'application': True,
     'installable': True,
