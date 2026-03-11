@@ -104,8 +104,7 @@ class EstateProperty(models.Model):
         self.state = "sold"
 
         message = "Property is sold"
-        if message:
-            return {
+        return {
                 "effect": {
                     "fadeout": "slow",
                     "message": message,
