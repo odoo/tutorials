@@ -1,0 +1,10 @@
+<templates>
+    <t t-name="awesome_owl.TodoList">
+        <ol>
+            <li t-foreach="props.todos" t-as="todo" t-key="todo.id">
+                <t t-log="'test'" />
+                <TodoItem t-props="todo" />
+            </li>
+        </ol>
+    </t>
+</templates>

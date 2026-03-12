@@ -20,5 +20,8 @@ class EstatePropertyType(models.Model):
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):
-        for rec in self:
-            rec.offer_count = len(rec.offer_ids) if rec.offer_ids else 0
+        offers = self.env["estate.property.offer"]._read_group(
+            domain=[("property_type_id", "=", self.ids)],
+            aggregates=["property_type_id:count"],
+        )
+        self.offer_count = offers[0][0]

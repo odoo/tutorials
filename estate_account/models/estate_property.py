@@ -40,6 +40,6 @@ class EstateProperty(models.Model):
                 "invoice_origin": property_rec.name,
                 "invoice_line_ids": invoice_lines,
             }
-            invoice = self.env["account.move"].sudo.create(invoice_vals)
+            invoice = self.env["account.move"].sudo().create(invoice_vals)
             property_rec.invoice_id = invoice.id
         return res

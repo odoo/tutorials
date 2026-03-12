@@ -1,0 +1,7 @@
+<templates>
+    <t t-name="awesome_owl.TodoItem">
+        <eiv class="card">
+            <h1 t-out="props.description" class="card-title"></h1>
+        </eiv>
+    </t>
+</templates>
