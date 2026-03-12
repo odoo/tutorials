@@ -28,9 +28,9 @@ class EstateRequest(models.Model):
     ], string="Priority", default='medium')
     state = fields.Selection([
         ('new', "New"),
-        ('Assigned', "Assigned"),
-        ('Progress', "Progress"),
-        ('Done', "Done"),
+        ('assigned', "Assigned"),
+        ('progress', "Progress"),
+        ('done', "Done"),
         ('cancelled', "Cancelled"),
     ], default='new', copy=False)
 
