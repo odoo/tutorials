@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _description = "Test Model for real estate"
     _check_positive_expected_price = models.Constraint("CHECK (expected_price >= 0)","expected_price should be positive")
     _check_positive_selling_price = models.Constraint("CHECK (selling_price >= 0)","selling_price should be positive")
+    _order="id desc"
 
     name = fields.Char(default="Unknown")
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
@@ -62,6 +63,8 @@ class EstateProperty(models.Model):
     estate_maintainance_id = fields.One2many(
         'estate.maintainance.request', 'property_id'
     )
+    visit_ids = fields.One2many("estate.property.visit","property_id",string="visits")
+
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):

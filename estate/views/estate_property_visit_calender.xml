@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+        <record id="estate_property_visit_view" model="ir.actions.act_window">
+            <field name="name">Real-estate Property"s</field>
+            <field name="res_model">estate.property.visit</field>
+            <field name="view_mode">calendar,form,list</field>
+        </record>
+        
+        <record id="estate_property_visit_view_calendar" model="ir.ui.view">
+            <field name="name">property</field>
+            <field name="model">estate.property.visit</field>
+            <field name="arch" type="xml">
+                <calendar string="" date_start="date" >
+                    
+                </calendar>
+            </field>
+        </record>
+
+    </odoo>

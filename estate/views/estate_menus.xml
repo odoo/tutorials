@@ -44,5 +44,25 @@
             parent="settings_menu_root"
             action="estate_property_visit_action"
             />
+
+            <menuitem
+            id="visit_calender"
+            name="visit_calender"
+            sequence="10"
+            parent="settings_menu_root"
+            action="estate_property_visit_view"
+            />
+
+            <menuitem
+            id="visit_kanban"
+            name="visit_kanban"
+            sequence="10"
+            parent="settings_menu_root"
+            action="estate_property_visit_kanban_view"
+            />
+
+
+
+
     </data>
 </odoo>

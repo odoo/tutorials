@@ -3,19 +3,22 @@
         <record id="estate_model_action" model="ir.actions.act_window">
             <field name="name">Real-estate Property"s</field>
             <field name="res_model">estate.property</field>
-            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_available': 1}</field>
+            <field name="view_mode">kanban,list,form</field>
         </record>
         <record id="estate_property_list_view" model="ir.ui.view">
             <field name="name">estate.property.list.view</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Tests">
+                <list string="properties" decoration-success="state in ['offer received','offer accepted']" decoration-bf="state=='offer accepted'" decoration-muted="state=='sold'" >
                     <field name="name"/>
                     <field name="last_seen"/>
                     <field name="bedrooms"/>
                     <field name="state"/>
                     <field name="total_area"/>
                     <field name="garden"/>
+                    <field name="tag_ids"/>
+                    <field name="selling_price"/>
                 </list>
             </field>
         </record>
@@ -25,16 +28,17 @@
             <field name="arch" type="xml">
                 <form string="Test">
                 <header>
-                <button name="button_sold" type="object" string="Sold"/>
-                <button name="button_cancel" class="btn btn-primary" type="object" string="Cancel"/>
+                <button name="button_sold" invisible="state == 'cancelled' or state == 'sold'" type="object" string="Sold"/>
+                <button name="button_cancel" invisible="state == 'cancelled' or state == 'sold'" class="btn btn-primary" type="object" string="Cancel"/>
                 <button name="accept_best_offer" class="btn btn-secondary" type="object" string="accept best offer" invisible="state != 'offer received'"/>
+                <button type="action" name="%(estate_property_visit_action)d" string="create visit"  class="btn btn-secondary"/>
                 <field name="state" widget="statusbar"/>
                 </header>
                     <sheet>
                         <group>
                                 <field name="name"/>
                                 <field name="last_seen"/>
-                                <field name="tag_ids" widget="many2many_tags"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <field name="expected_price"/>
                                 <field name="salesperson_id"/>
                                 <field name="buyer_id"/>
@@ -44,7 +48,7 @@
                         <notebook>
                             <page string="Description">
                                 <group>
-                                    <field name="property_type_id"/><!-- experimented -->
+                                    <field name="property_type_id"  options="{'no_quick_create': True,'no_create': true}"/>
                                     <field name="postcode"/>
                                     <field name="date_availability"/>
                                     <field name="selling_price"/>
@@ -54,8 +58,8 @@
                                     <field name="garage"/>
                                     <field name="state"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_area"/>
                                 </group>
                             </page>
@@ -68,10 +72,11 @@
                                 </group>
                             </page>
                             <page string="offers">
-                                <field name="offer_ids">
-                                <list>
+                                <field name="offer_ids"  readonly="state in ['offer accepted','cancelled','sold']">
+                                <list decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                                         <field name="price"/>
-                                        <field name="status"/>
+                                        <field name="validity"/>
+                                        <field name="deadline"/>
                                         <field name="partner_id"/>
                                         <button name='action_accept_offer' type='object' string="accept" invisible="status"/>
                                         <button name='action_reject_offer' type='object' string="reject" invisible="status"/>
@@ -81,7 +86,7 @@
                             <page string="maintainance request">
                             <field name="estate_maintainance_id">
 
-                             <list>
+                             <list default_order="id desc">
                                         
                                         <field name="buyer_id"/>
                                         <field name="technician_id"/>
@@ -91,7 +96,7 @@
                                         <field name="current_stage"/>
                             </list>
 
-</field>
+                            </field>
 
                             </page>
                             <page string="visits">
@@ -102,7 +107,7 @@
                                         <field name="comment"/>
                                         <field name="state"/>
                                     </list>
-                            </field>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -112,19 +117,24 @@
         <record id="estate_property_view_search" model="ir.ui.view">
             <field name="name">estate.property.search.view</field>
             <field name="model">estate.property</field>
+            
             <field name="arch" type="xml">
                 <search string="Search">
                     <field name="name"/>
                     <field name="postcode"/>
+
                     <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
-                    <filter string="available" name="active" domain="[('active','=','True')]"/>
+                    <filter string="available" name="available" domain="[('active','=','True')]"/>
                     <filter string="new property" name="state" domain="[('state','=','new')]"/>
                     <filter string="2bhk" name="bedrooms" domain="[('bedrooms','=','2')]"/>
                     <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
+                    <field name="living_area" filter_domain="['|',('living_area','&gt;',self),('living_area','=',self)]"/>
                     <!-- experimented-->
                     <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('state','=','new'),'|',('bedrooms','=','2'),('active','=',False)]"/>
                     <!--filter string="below 15h" name="below_15h" domain="[('total_area','&lt;','1500')]"/-->
+                    
                 </search>
             </field>
         </record>
+        
 </odoo>
