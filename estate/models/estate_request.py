@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError
 
 
 class EstateRequest(models.Model):
@@ -28,9 +29,9 @@ class EstateRequest(models.Model):
     ], string="Priority", default='medium')
     state = fields.Selection([
         ('new', "New"),
-        ('assigned', "Assigned"),
-        ('progress', "Progress"),
-        ('done', "Done"),
+        ('Assigned', "Assigned"),
+        ('Progress', "Progress"),
+        ('Done', "Done"),
         ('cancelled', "Cancelled"),
     ], default='new', copy=False)
 
@@ -39,13 +40,7 @@ class EstateRequest(models.Model):
         for rec in self:
             if rec.technician_id and rec.state == 'new':
                 rec.state = 'Assigned'
-
-    @api.onchange('technician_id', 'estimated_price')
-    def _onchange_progress(self):
-        for rec in self:
-            if rec.state == 'Assigned' and rec.technician_id and rec.estimated_price:
-                rec.state = 'Progress'
-
+    
     def action_assign(self):
         for record in self:
             record.state = 'Assigned'

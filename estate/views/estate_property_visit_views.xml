@@ -38,19 +38,6 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_done"
-                            string="Mark Done"
-                            type="object"
-                            class="btn-primary"
-                            invisible="state != 'schedule'"/>
-                    <button name="action_cancel"
-                            string="Cancel"
-                            type="object"
-                            invisible="state != 'schedule'"/>
-                    <button name="action_reset"
-                            string="Reset"
-                            type="object"
-                            invisible="state == 'schedule'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>

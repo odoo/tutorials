@@ -22,17 +22,7 @@ class EstatePropertyVisit(models.Model):
         ('cancel', 'Cancelled')
     ], default="schedule")
 
-    def action_done(self):
-        for rec in self:
-            rec.state = 'done'
-
-    def action_cancel(self):
-        for rec in self:
-            rec.state = 'cancel'
-
-    def action_reset(self):
-        for rec in self:
-            rec.state = 'schedule'
+    
 
     @api.constrains('property_id', 'visit_date')
     def _check_visit_time(self):
