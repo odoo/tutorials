@@ -1,6 +1,7 @@
 from odoo import models, api, fields
 from odoo.exceptions import ValidationError
 
+
 class EstatePropertyVisit(models.Model):
     _name = "estate.property.visit"
     _description = "Estate Property Visit"
@@ -8,14 +9,14 @@ class EstatePropertyVisit(models.Model):
     name = fields.Char()
     customer_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-    agent_id = fields.Many2one("res.users", default = lambda self: self.env.user)
+    agent_id = fields.Many2one("res.users", default=lambda self: self.env.user)
     visit_date = fields.Datetime(required=True)
 
     status_visit = fields.Selection([
         ('schedule', "Scheduled"),
         ('done', "Done"),
         ('cancel', "Cancel"),
-    ],string="Status", readonly=True, default="schedule")
+    ], string="Status", readonly=True, default="schedule")
 
     @api.constrains("visit_id", "agent_id")
     def _check_clash(self):

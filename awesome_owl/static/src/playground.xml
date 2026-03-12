@@ -3,7 +3,7 @@
 
     <t t-name="awesome_owl.Playground">
         <Card title="'Asrij'" content="'Sriramoju'"/>
-        this.html = "<div>some content</div>""
+        this.html = "<div>some content</div>"
         <Card title="'HTML Card'" content="'htmlContent'"/>
         <Counter onChange.bind="incrementSum"/>
         <h3> Total: <t t-esc="state.sum"/></h3>
