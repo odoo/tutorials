@@ -4,3 +4,4 @@ access_estate_property_type_user,estate.property.type user,model_estate_property
 access_estate_property_tag_user,estate.property.tag user,model_estate_property_tag,base.group_user,1,1,1,1
 access_estate_property_offer_user,estate.property.offer user,model_estate_property_offer,base.group_user,1,1,1,1
 access_estate_request_user,estate.request user,model_estate_request,base.group_user,1,1,1,1
+access_estate_property_visit,access_estate_property_visit,model_estate_property_visit,,1,1,1,1

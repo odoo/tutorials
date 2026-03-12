@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "date_availability desc"
+    _inherit = ["mail.thread"]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -19,7 +20,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(required=True, default=0.0)
     selling_price = fields.Float(readonly=True, copy=False)
-    best_price = fields.Float(compute="_compute_best_price", store=True)
+    best_price = fields.Float(compute="_compute_best_price")
     bedrooms = fields.Integer(default=2, copy=False)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -43,7 +44,8 @@ class EstateProperty(models.Model):
         ('offer_accepted', "Offer Accepted"),
         ('sold', "Sold"),
         ('cancelled', "Cancelled"),
-    ], default='new')
+    ],
+    tracking=True, default='new')
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
@@ -65,7 +67,6 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
-
     request_ids = fields.One2many(
         "estate.request",
         "request_id",
@@ -85,6 +86,18 @@ class EstateProperty(models.Model):
         'CHECK(selling_price IS NULL OR selling_price >= 0)',
         'The selling price must be positive.'
     )
+    visit_ids = fields.One2many(
+        "estate.property.visit",
+        "property_id",
+        string="Visits"
+    )
+    visit_count = fields.Integer(compute="_compute_visit_count")
+
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = self.env['estate.property.visit'].search_count([
+                ('property_id', '=', record.id)
+            ])
 
     @api.depends("total_area")
     def _compute_squared_area(self):
@@ -165,13 +178,3 @@ class EstateProperty(models.Model):
                     best_record = offer
                     best = offer.price
             best_record.action_accept()
-            # best_record.status = "accepted"
-            # record.write({
-            #     'selling_price': best_record.price,
-            #     'buyer_id': best_record.partner_id.id,
-            #     'state': 'offer_accepted'
-            # })
-            # other_pending_offers = record.offer_ids.filtered(
-            #         lambda o: o.id != best_record.id
-            #     )
-            # other_pending_offers.write({'status': 'refused'})

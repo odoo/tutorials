@@ -29,18 +29,23 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_progress" type="object" string="Start"
-                            class="oe_highlight" 
-                            invisible="state not in ['Assigned']"/>
-                    <button name="action_done" type="object" string="Stop"
+                    <button name="action_progress"
+                            type="object"
+                            string="Start"
                             class="oe_highlight"
-                            invisible="state != 'Progress'"/>
+                            invisible="state != 'Assigned' or not is_assigned_technician"/>
+
+                    <button name="action_done"
+                            type="object"
+                            string="Stop"
+                            class="oe_highlight"
+                            invisible="state != 'Progress' or not is_assigned_technician"/>
                     <button name="action_cancel" type="object" string="Cancel"
                             class="oe_link" 
                             invisible="state in ['Done', 'cancelled']"/>
                     <field name="state"
                         widget="statusbar"
-                        statusbar_visible="new,Assigned,Progress,Done,cancelled"/>
+                        />
                 </header>
                 <sheet>
                     <group>
@@ -54,6 +59,7 @@
                             <field name="estimated_price"/>
                             <field name="actual_price"/>
                             <field name="request_date"/>
+                            <field name="is_assigned_technician" invisible="1"/>
                         </group>
                     </group>
                 </sheet>

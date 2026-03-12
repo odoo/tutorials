@@ -7,6 +7,5 @@
     "license": "LGPL-3",
     "depends": ["estate", "account"],
     "data": [],
-    "application": False,
-    "installable": True,
+    "auto_install":True,
 }
