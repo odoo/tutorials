@@ -6,6 +6,7 @@ from datetime import timedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Estate Property module for Odoo 19 tutorials"
     _order = "id desc"
 
@@ -93,6 +94,12 @@ class EstateProperty(models.Model):
         if self.state == "sold":
             raise UserError(_("Sold properties cannot be canceled."))
         self.state = "canceled"
+
+    def action_accept_best(self):
+        for record in self:
+            for offers in record.offer_ids:
+                if offers.price == record.best_price:
+                    offers.action_accept()
 
     @api.ondelete(at_uninstall=False)
     def _check_if_can_be_deleted(self):

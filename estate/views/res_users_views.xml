@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Listed Properties">
-                    <field name="property_ids" >
+                    <field name="property_ids" invisible="[('state', 'in', ['new', 'offer_received'])]">
                         <list string="Properties" create="False">
                             <field name="name"/>
                             <field name="expected_price"/>

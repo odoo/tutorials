@@ -35,8 +35,9 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold" string="Sold" type="object" invisible="state in ['sold','canceled']"/>
-                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['sold','canceled']"/>
+                    <button name="action_sold" string="Sold" class="btn-primary" type="object" invisible="state in ['sold','canceled','new','offer_received']"/>
+                    <button name="action_cancel" string="Cancel" class="btn-primary" type="object" invisible="state in ['sold','canceled']"/>
+                    <button name="action_accept_best" string="Accept Best" class="btn-primary" type="object" invisible="offer_ids.length &lt; 2 or state in ['new','sold','canceled','offer_accepted']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                <sheet>
@@ -83,6 +84,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
