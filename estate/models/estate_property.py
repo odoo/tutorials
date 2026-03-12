@@ -19,20 +19,20 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         [
-            ('north', 'North'),
-            ('south', 'South'),
-            ('east', 'East'),
-            ('west', 'West'),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ],
         string="Garden Orientation"
     )
     swimming_pool = fields.Boolean(string="Swimming Pool")  # extra fields
     property_type = fields.Selection(
         [
-            ('house', 'House'),
-            ('apartment', 'Apartment'),
-            ('villa', 'Villa'),
-            ('land', 'Land')
+            ('house', "House"),
+            ('apartment', "Apartment"),
+            ('villa', "Villa"),
+            ('land', "Land")
         ],
         string="Property Type"
     )
