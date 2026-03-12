@@ -7,4 +7,8 @@
     'depends': ['base'],
     'summary': "manage properties, track buyers offers and handle property sales efficiently",
     'sequence': "3",
+    'data': [
+        'security/ir.model.access.csv',
+    ],
 }
+    
