@@ -1,0 +1,24 @@
+<odoo>
+
+    <!-- Root Menu -->
+    <menuitem
+        id="menu_real_estate_root"
+        name="Real Estate"
+        sequence="1"/>
+
+    <!-- First Level Menu -->
+    <menuitem
+        id="menu_real_estate_advertisements"
+        name="Advertisements"
+        parent="menu_real_estate_root"
+        sequence="1"/>
+
+    <!-- Second Level Menu -->
+    <menuitem
+        id="menu_real_estate_properties"
+        name="Properties"
+        parent="menu_real_estate_advertisements"
+        action="action_estate_property"
+        sequence="1"/>
+
+</odoo>
