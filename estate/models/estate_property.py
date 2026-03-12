@@ -1,15 +1,17 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _,api, fields, models
 
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char()
     description = fields.Text(required=True)
@@ -47,6 +49,7 @@ class EstateProperty(models.Model):
         default='new',
         required=True,
         copy=False,
+        tracking=True
     )
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -164,7 +167,27 @@ class EstateProperty(models.Model):
             accepted = record.offer_ids.filtered_domain([('status', '=', 'accepted')])
             if not accepted:
                 raise UserError("You must accept an offer before selling.")
-            record.state = "sold"
+
+        template = self.env.ref("estate.email_template_estate")
+
+        ctx = {
+            "default_model": "estate.property",
+            "default_res_ids": self.ids,
+            "default_partner_ids": [self.user_id.partner_id.id, self.buyer_id.id],
+            "default_template_id": template.id,
+        }
+
+        action = {
+            "name": _("Send"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": ctx,
+        }
+        return action
 
     def _compute_request_count(self):
         for record in self:

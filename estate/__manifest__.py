@@ -5,7 +5,7 @@
     "summary": "Manage real estate properties",
     "author": "sasri-odoo",
     "license": "LGPL-3",
-    "depends": ["base"],
+    "depends": ["base", 'mail'],
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
@@ -18,7 +18,7 @@
         "views/estate_menus.xml",
         "views/estate_res_user_views.xml",
         "demo/estate_property_data.xml",
-
+        "data/mail_template_data.xml"
     ],
     "application": True,
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+<record id="email_template_estate" model="mail.template">
+            <field name="name">Mail</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">{{ object.name }}</field>
+            <field name="email_from">{{ object.user_id.email }}</field>
+            <field name="use_default_to" eval="True"/>
+            <field name="body_html" type="html">
+                <p>
+                    Hello <t t-out="object.buyer_id.name or ''"/>
+                </p>
+                <p>
+                    this is the information regarding the property <strong><t t-out="object.name"/></strong>
+                </p>
+                <p>
+                    it is sold to the buyer <strong><t t-out="object.buyer_id.name"/></strong>
+                    from the salesperson <strong><t t-out="object.user_id.name"/></strong>
+                </p>
+            </field>
+        </record>
+
+</odoo>
