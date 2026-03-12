@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
 
-            <xpath expr="//notebook" position="inside">
+            <notebook position="inside">
                 <page string="properties">
                     <field name="property_ids">
                         <list>
@@ -18,7 +18,7 @@
                         </list>
                     </field>
                 </page>
-            </xpath>
+            </notebook>
         </field>
     </record>
 

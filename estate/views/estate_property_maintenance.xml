@@ -50,7 +50,7 @@
                             <field name="property_id"/>
                             <field name="technician_id"/>
                             <field name="estimated_cost"/>
-                            <field name="actual_cost" readonly = "state not in 'done'"/>
+                            <field name="actual_cost" readonly = "state != 'done'"/>
                         </group>
                     </group>
                 </sheet>

@@ -21,11 +21,11 @@ class EstatePropertyMaintenance(models.Model):
     )
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("assigned", "assigned"),
-            ("in_progress", "In progress"),
-            ("done", "done"),
-            ("cancel", "cancel"),
+            ('new', "New"),
+            ('assigned', "assigned"),
+            ('in_progress', "In progress"),
+            ('done', "done"),
+            ('cancel', "cancel"),
         ],
         default="new",
     )
