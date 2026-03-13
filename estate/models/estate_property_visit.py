@@ -22,21 +22,17 @@ class EstatePropertyVisit(models.Model):
         ('cancel', 'Cancelled')
     ], default="schedule")
 
-    
-
     @api.constrains('property_id', 'visit_date')
     def _check_visit_time(self):
         for rec in self:
             if not rec.property_id or not rec.visit_date:
                 continue
-
             existing = self.search([
                 ('id', '!=', rec.id),
                 ('property_id', '=', rec.property_id.id),
                 ('visit_date', '=', rec.visit_date),
                 ('state', '=', 'schedule')
             ])
-
             if existing:
                 raise ValidationError(
                     "Another visit is already scheduled for this property at the same time."

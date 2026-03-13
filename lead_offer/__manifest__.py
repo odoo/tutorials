@@ -7,5 +7,5 @@
     "license": "LGPL-3",
     "depends": ["estate", "crm"],
     "data": [],
-    "auto_install":True,
+    "auto_install": True,
 }

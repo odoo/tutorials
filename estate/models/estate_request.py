@@ -1,6 +1,5 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.exceptions import AccessError
 
 
 class EstateRequest(models.Model):
@@ -40,7 +39,7 @@ class EstateRequest(models.Model):
         for rec in self:
             if rec.technician_id and rec.state == 'new':
                 rec.state = 'Assigned'
-    
+
     def action_assign(self):
         for record in self:
             record.state = 'Assigned'
