@@ -47,7 +47,7 @@
                             name="%(estate_property_meeting_action)d"
                             type="action"
                             icon="fa-tag">
-                            <field name="meeting_count" string="" widget="statinfo" />
+                            <field name="meeting_count" string="meetings" widget="statinfo" />
                         </button>
                     </div>
                     <group name="name">

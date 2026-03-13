@@ -58,7 +58,7 @@
     <record id="estate_property_meeting_action" model="ir.actions.act_window">
         <field name="name">Meetings</field>
         <field name="res_model">estate.property.meeting</field>
-        <field name="view_mode">list,form,calendar,kanban</field>
+        <field name="view_mode">list,form,calendar</field>
 
     </record>
 </odoo>

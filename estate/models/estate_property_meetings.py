@@ -63,7 +63,7 @@ class EstatePropertyMeeting(models.Model):
 
     def cancel(self):
         for rec in self:
-            if rec.state == 'schedule':
+            if rec.state != 'schedule':
                 rec.state = 'cancelled'
             else:
                 raise UserError(_("You must schedule a meeting before cancelling it."))
