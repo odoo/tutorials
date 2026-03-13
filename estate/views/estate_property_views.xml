@@ -89,6 +89,32 @@
         </field>
     </record>
 
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" group_create="False" group_delete="False" group_edit="False" records_draggable="False">
+                <progressbar field="state" colors='{"offer_accepted": "success", "offer_received": "warning", "sold": "danger", "new": "muted"}' sum_field=""/>
+                    <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <strong><field name="name"/></strong>
+                        </div>
+                        <div>Expected Price: <field name="expected_price"/></div>
+                        <div t-if="record.state.raw_value == 'offer_received' || record.state.raw_value == 'offer_accepted' || record.state.raw_value == 'sold'">
+                            Best Offer: <field name="best_price"/>
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_accepted'">
+                            Selling Price: <field name="selling_price"/>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
