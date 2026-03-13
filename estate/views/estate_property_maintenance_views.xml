@@ -11,8 +11,8 @@
                 <field name="property_id"/>
                 <field name="technician_id"/>
                 <field name="state" widget="badge"/>
-                <field name="estimated_cost"/>
-                <field name="actual_cost"/>
+                <field name="estimated_cost" groups="estate.group_real_estate_agent"/>
+                <field name="actual_cost" sum="Total Actual Cost" groups="estate.group_real_estate_agent"/>
             </list>
         </field>
     </record>

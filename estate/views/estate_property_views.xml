@@ -21,7 +21,6 @@
                 <field name="bedrooms"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/>
                 <field name="available_from" optional="hide"/>
             </list>
         </field>
@@ -65,7 +64,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
-                            <field name="selling_price"/>
+                            <field name="selling_price" groups="estate.group_real_estate_agent,estate.group_real_estate_manager"/>
                         </group>
                     </group>
 
@@ -94,7 +93,7 @@
                             </group>
                         </page>
 
-                        <page string="Offers">
+                        <page string="Offers" groups="estate.group_real_estate_agent,estate.group_real_estate_manager">
                             <field name="offer_ids"/>
                         </page>
 
@@ -111,6 +110,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

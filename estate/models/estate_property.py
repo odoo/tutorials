@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "total_area asc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -50,6 +51,7 @@ class EstateProperty(models.Model):
         copy=False,
         readonly=True,
         default="new",
+        tracking=True,
     )
 
     property_type_id = fields.Many2one(

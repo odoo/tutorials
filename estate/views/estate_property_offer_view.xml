@@ -18,10 +18,8 @@
                 <field name="status"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-
-                <button name="accept_offer" type="object" icon="fa-check" class="btn-success" string="Accept" invisible="status"/>
-
-                <button name="reject_offer" type="object" icon="fa-times" class="btn-danger" string="Reject" invisible="status"/>
+                <button name="accept_offer" type="object" icon="fa-check" class="btn-success" string="Accept" groups="estate.group_real_estate_manager"/>
+                <button name="reject_offer" type="object" icon="fa-times" class="btn-danger" string="Reject" groups="estate.group_real_estate_manager"/>
             </list>
         </field>
     </record>
