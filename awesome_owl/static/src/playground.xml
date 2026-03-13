@@ -8,8 +8,8 @@
         <Counter onchange.bind="incrementSum"/>    
     </p>
     <div class="p-3">The Sum is: <t t-esc="state.value"/></div>
-    <Card title="'property1'" content="value1"/>
-    <Card title="'property2'" content="'Two bhk property'"/>
+    <Card title="'property1'"/>
+    <Card title="'property2'"> <Counter /></Card>
     <TodoList/>
 </t>
 </templates>

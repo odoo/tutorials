@@ -5,7 +5,7 @@ import {TodoList} from "./todo/todo_list"
 export class Playground extends Component {
     static template = "awesome_owl.playground";
     static components = { Counter, Card , TodoList};
-    value1=markup('<div class="text-primary">Hello</div>');
+    // value1=markup('<div class="text-primary">Hello</div>');
 
     setup(){
         this.str1 = markup("<div>some content</div>");
@@ -17,4 +17,3 @@ export class Playground extends Component {
         this.state.value++;
     }
 }
-

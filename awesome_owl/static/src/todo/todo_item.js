@@ -12,5 +12,16 @@ export class TodoItem extends Component{
             isCompleted: Boolean,
         },
     },
-}; 
-}
+        toggleState: Function,
+        removeTodo: Function,
+    
+};
+    onChange(todoId){
+        this.props.toggleState(this.props.todo.id);
+    }
+
+    onRemove(todoId){
+        this.props.removeTodo(this.props.todo.id);
+        }
+        
+    }
