@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
     <data>
         <record id="res_users_view_form_inherit" model="ir.ui.view">
             <field name="name">res.users.form.inherit</field>
@@ -23,5 +22,4 @@
             </field>
         </record>
     </data>
-
 </odoo>

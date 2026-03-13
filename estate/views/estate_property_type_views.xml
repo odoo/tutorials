@@ -29,8 +29,7 @@
                 <sheet>
                     <div name="button_box" class="oe_button_box">
                         <button type="action" name="%(estate.action_property_type_offers)d"
-                            string="Offers" class="oe_stat_button"
-                            icon="fa-tags">
+                            string="Offers" class="oe_stat_button" icon="fa-tags">
                             <field name="offer_count" widget="statinfo" />
                         </button>
                     </div>

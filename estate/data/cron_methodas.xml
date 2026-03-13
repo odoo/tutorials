@@ -1,0 +1,10 @@
+<odoo>
+    <record id="ir_cron_auto_refuse_offer" model="ir.cron">
+        <field name='name'>Auto refuse offer</field>
+        <field name='model_id' ref='model_estate_property_offer' />
+        <field name="interval_type">days</field>
+        <field name="interval_number">1</field>
+        <field name="code">model._check_offer_validity()</field>
+        <field name="active" />
+    </record>
+</odoo>

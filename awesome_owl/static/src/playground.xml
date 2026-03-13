@@ -1,10 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <div class="p-3 d-flex flex-row gap-4">
+        <div>
             hello world
-            <Counter/>
-            <Counter/>
+            <Counter callback.bind="sumBoth"/>
+            <Counter callback.bind="sumBoth"/>
+            <Card title="'Dharmil'" content="'Good at Food'" />
+            <Card title="'this is html'" content="html" />
+            <Card title="'Sum'" content="state.sum" />
+            <Card title="'Counter is here'">
+                <Counter callback.bind="sumBoth"/>
+                <Counter callback.bind="sumBoth"/>
+            </Card>
+            <TodoList items="todos"/>
         </div>
     </t>
 </templates>

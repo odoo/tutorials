@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 PROPERTY_STATE = [
@@ -8,7 +8,7 @@ PROPERTY_STATE = [
     ("offer_received", "Offer Received"),
     ("accepted", "Offer Accepted"),
     ("sold", "Sold"),
-    ("canceled", "Cancelled"),
+    ("cancelled", "Cancelled"),
 ]
 GARDEN_ORIENTATION = [
     ("north", "North"),
@@ -34,7 +34,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Monetary(currency_field="currency_id", required=True)
     selling_price = fields.Monetary(
-        currency_field="currency_id", readonly=True, copy=False
+        currency_field="currency_id", readonly=True, copy=False,
     )
     currency_id = fields.Many2one(
         "res.currency",
@@ -61,13 +61,13 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
+        "res.users", string="Salesman", default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
     best_offer = fields.Monetary(
-        compute="_compute_best_offer", currency_field="currency_id", store=True
+        compute="_compute_best_offer", currency_field="currency_id", store=True,
     )
 
     _check_positive_expected_price = models.Constraint(
@@ -99,37 +99,46 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        if self.state != "canceled":
+        if self.state != "cancelled":
             self.state = "sold"
         else:
             raise UserError(
-                _("Property is already cancelled, cannot be marked as sold.")
+                _("Property is already cancelled, cannot be marked as sold."),
             )
         return True
 
     def action_cancel(self):
         if self.state != "sold":
-            self.state = "canceled"
+            self.state = "cancelled"
         else:
             raise UserError(_("Property is already sold, cannot be cancelled."))
         return True
 
     def action_restore(self):
-        if self.state == "canceled":
+        if self.state == "cancelled":
             self.state = "new"
         else:
             raise UserError(_("Property is not cancelled."))
         return True
 
+    def action_open_offer_wizard(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Create Offer Wizard",
+            "res_model": "offer.wizard",
+            "target": "new",
+            "view_mode": "form",
+        }
+
     @api.depends("offer_ids.price")
     def action_accept_best_offer(self):
         max_price_record = self.env["estate.property.offer"].search(
-            domain=[("property_id", "in", self.ids)], order="price desc", limit=1
+            domain=[("property_id", "in", self.ids)], order="price desc", limit=1,
         )
         max_price_record.action_accept_offer()
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_is_new_or_cancelled(self):
         for record in self:
-            if record.state not in ("new", "canceled"):
+            if record.state not in ("new", "cancelled"):
                 raise UserError(_("Only new and cancelled properties can be deleted"))

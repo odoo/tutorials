@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             commission_amount = record.selling_price * 0.06
-            invoice_vals_list = {
+            invoice_vals = {
                 "move_type": "out_invoice",
                 "partner_id": record.buyer_id.id,
                 "invoice_origin": record.name,
@@ -30,5 +30,5 @@ class EstateProperty(models.Model):
             }
             self.env["account.move"].with_context(
                 default_move_type="out_invoice"
-            ).create(invoice_vals_list)
+            ).create(invoice_vals)
         return super().action_sold()

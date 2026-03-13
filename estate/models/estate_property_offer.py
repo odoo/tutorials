@@ -1,4 +1,4 @@
-from odoo import fields, models, api, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
@@ -9,7 +9,7 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Monetary(
-        currency_field="currency_id", required=True, string="Offer Price"
+        currency_field="currency_id", required=True, string="Offer Price",
     )
     currency_id = fields.Many2one(
         "res.currency",
@@ -50,7 +50,7 @@ class EstatePropertyOffer(models.Model):
                     fields.Date.to_date(record.create_date) or fields.Date.today()
                 )
                 record.date_deadline = fields.Date.add(
-                    create_date, days=record.validity
+                    create_date, days=record.validity,
                 )
 
     def _inverse_date_deadline(self):
@@ -79,14 +79,21 @@ class EstatePropertyOffer(models.Model):
                 == -1
             ):
                 raise ValidationError(
-                    _("offer price cannot be lower than 90% of the expected price.")
+                    _("offer price cannot be lower than 90% of the expected price."),
                 )
+
+    def _cron_check_offer_validity(self):
+        expired_offers = self.search(
+            [("date_deadline", "<", fields.Date.today()), ("status", "=", "offer_sent")],
+        )
+        for rec in expired_offers:
+            rec.action_refuse_offer()
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             best_offer = self.env["estate.property.offer"].search(
-                [("property_id", "=", vals["property_id"])], order="price desc", limit=1
+                [("property_id", "=", vals["property_id"])], order="price desc", limit=1,
             )
             if vals["price"] <= best_offer.price:
                 raise ValidationError(_("new offer should be greater than best offer."))
@@ -102,18 +109,17 @@ class EstatePropertyOffer(models.Model):
         )
         if accepted_records:
             raise UserError(_("cannot accept multiple offer"))
-        else:
-            self.status = "accepted"
-            self.property_id.selling_price = self.price
-            self.property_id.buyer_id = self.partner_id
-            self.property_id.state = "accepted"
-            other_offers = self.search(
-                [
-                    ("property_id", "=", self.property_id.id),
-                    ("status", "!=", "accepted"),
-                ]
-            )
-            other_offers.write({"status": "refused"})
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "accepted"
+        other_offers = self.search(
+            [
+                ("property_id", "=", self.property_id.id),
+                ("status", "!=", "accepted"),
+            ],
+        )
+        other_offers.write({"status": "refused"})
         return True
 
     def action_refuse_offer(self):
