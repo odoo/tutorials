@@ -94,9 +94,10 @@ class EstateProperty(models.Model):
     visit_count = fields.Integer(compute="_compute_visit_count")
 
     def _compute_visit_count(self):
+        Visit = self.env['estate.property.visit']
         for record in self:
-            record.visit_count = self.env['estate.property.visit'].search_count([
-                ('property_id', '=', record.id)
+            record.visit_count = Visit.search_count([
+                ('property_id', 'in', record.ids)
             ])
 
     @api.depends("total_area")
