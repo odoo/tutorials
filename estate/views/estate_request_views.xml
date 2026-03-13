@@ -39,7 +39,7 @@
                             type="object"
                             string="Stop"
                             class="oe_highlight"
-                            invisible="state != 'Progress' or not is_assigned_technician"/>
+                            invisible="state != 'Progress'"/>
                     <button name="action_cancel" type="object" string="Cancel"
                             class="oe_link" 
                             invisible="state in ['Done', 'cancelled']"/>
