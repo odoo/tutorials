@@ -11,4 +11,3 @@
         'security/ir.model.access.csv',
     ],
 }
-    
