@@ -33,7 +33,7 @@
                             type="object"
                             string="Start"
                             class="oe_highlight"
-                            invisible="state != 'Assigned' or not is_assigned_technician"/>
+                            invisible="state != 'Assigned'"/>
 
                     <button name="action_done"
                             type="object"
