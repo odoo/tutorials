@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- 1. A "privilege" — the category grouping -->
         <record model="res.groups.privilege" id="groups_privilege_real_estate">
             <field name="name">Real Estate</field>
             <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
         </record>
 
+        <!-- 2. Agent group -->
         <record id="estate_group_user" model="res.groups">
             <field name="name">Agent</field>
             <field name="privilege_id" ref="groups_privilege_real_estate"/>
         </record>
 
+        <!-- 3. Manager group — inherits all Agent permissions -->
         <record id="estate_group_manager" model="res.groups">
             <field name="name">Manager</field>
             <field name="privilege_id" ref="groups_privilege_real_estate"/>
             <field name="implied_ids" eval="[Command.link(ref('estate_group_user'))]"/>
         </record>
+
+        <!-- 4. Give the admin user Manager group -->
         <record id="base.user_admin" model="res.users">
-           <field name="group_ids" eval="[Command.link(ref('estate_group_manager'))]"/>
-       </record>
+            <field name="group_ids" eval="[Command.link(ref('estate_group_manager'))]"/>
+        </record>
     </data>
 </odoo>
