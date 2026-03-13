@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
    
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+    <record id="estate_property_view_tree" model="ir.ui.view" >
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -21,11 +21,8 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form>
                 <sheet>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -52,6 +49,28 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+                <filter
+                    name="available"
+                    string="Available"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"
+                />
+                <group expand="0" string="Group By">
+                    <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
