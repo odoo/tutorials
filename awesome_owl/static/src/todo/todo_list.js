@@ -1,14 +1,16 @@
-import { Component, useState } from "@odoo/owl";
+import { Component,useState} from "@odoo/owl";
 import { TodoItem } from "./todo_item";
-
+import { useAutofocus } from "../utils";
 export class TodoList extends Component {
-
-    static components = { TodoItem };
-
+    
+    static template = "awesome_owl.TodoList";
+    static components = { TodoItem};
+    
     setup() {
         this.todos = useState([]);
         this.nextId = 1;
-    }
+        useAutofocus("input");
+}
 
     addTodo(ev) {
         if (ev.keyCode === 13) {
@@ -20,13 +22,26 @@ export class TodoList extends Component {
 
             this.todos.push({
                 id: this.nextId++,
-                description: description,
+                description: ev.target.value,
                 isCompleted: false,
             });
 
             ev.target.value = "";
         }
     }
-}
 
-TodoList.template = "awesome_owl.TodoList";
+    toggleTodo(todoId) {
+        const todo = this.todos.find((todo) => todo.id === todoId);
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted;
+        }
+    }
+
+    removeTodo(todoId) {
+    
+    const index = this.todos.findIndex((todo) => todo.id === todoId);
+    if (index >= 0) {
+        this.todos.splice(index, 1);
+        }
+    }
+}

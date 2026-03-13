@@ -3,9 +3,12 @@
 
     <t t-name="awesome_owl.TodoItem">
         
-        <div class="fw-bold" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-change="onChange"/>
+            <label t-att-for="props.todo.id" t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' "/>
             <span><t t-esc="props.todo.id"/></span>
             <span><t t-esc="props.todo.description"/></span>
+            <span role="button" class="fa fa-remove ms-3 text-danger" t-on-click="onRemove"/>
         </div>
     </t>
 </templates>
