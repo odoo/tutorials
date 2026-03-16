@@ -145,6 +145,7 @@
                 </sheet>
             </form>
         </field>
+        </record>
         <record id="estate_property_view_search" model="ir.ui.view">
             <field name="name">estate.property.search.view</field>
             <field name="model">estate.property</field>
@@ -163,6 +164,5 @@
                     <!--filter string="below 15h" name="below_15h" domain="[('total_area','&lt;','1500')]"/-->
                 </search>
             </field>
-        </record>
     </record>
 </odoo>

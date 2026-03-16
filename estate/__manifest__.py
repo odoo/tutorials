@@ -17,7 +17,7 @@
         "views/estate_property_visit_action.xml",
         "views/estate_property_view.xml",
         "views/estate_menus.xml",
-        #"data/estate_property_demo.xml"
+        # "data/estate_property_demo.xml"
     ],
     'application': True,
     'installable': True,
