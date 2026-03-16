@@ -8,7 +8,9 @@
     'application': True,
     'installable': True,
     'depends': ['base', 'web'],
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'assets': {},
     'license': 'AGPL-3'
 }
