@@ -1,20 +1,19 @@
 import { Component, useState, markup } from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
+import { Todo } from "./todo/todo";
+import { TodoItem } from "./todo_item/todo_item";
 
 export class Playground extends Component {
     static template = "awesome_owl.Playground";
-    static components = {Counter, Card};
+    static components = {Counter, Card, Todo, TodoItem};
 
     setup() {
         this.state = useState({sum: 0});
         this.htmlContent = markup("<b>This Text is bold</b><br/><i>This Text is Italic</i>");
         this.state = useState({
-            tasks: [
-                {id: 1, name: "Learn OWL"},
-                {id: 2, name: "Complete Chapter"},
-                {id: 3, name: "Start doing Tasks"}
-            ]
+            sum: 0,
+            tasks: []
         });
     }
 
@@ -22,14 +21,10 @@ export class Playground extends Component {
         this.state.sum += 1;
     }
 
-    addTask(){
-        const newId = this.state.tasks.length + 1;
-
-        this.state.tasks.push({
-            id: newId,
-            name: "New Task " + newId,
-        })
+    toggleState(id){
+        const task = this.state.tasks.find(t => t.id === id);
+        if(task){
+            task.isCompleted = !task.isCompleted;
+        }
     }
-
-
 }

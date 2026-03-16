@@ -1,24 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.Playground">
-        <Card title="'Asrij'" content="'Sriramoju'"/>
-        this.html = "<div>some content</div>"
-        <Card title="'HTML Card'" content="'htmlContent'"/>
+
+        <Card title="'Asrij'">
+            <p>This is the first card</p>
+        </Card>
+
+        <Card title="'HTML Card'">
+            <div>
+                <b>HTML content inside card</b>
+            </div>
+        </Card>
+
+        <Card title="'Text Card'">
+            <p>This is some custom content</p>
+        </Card>
+
         <Counter onChange.bind="incrementSum"/>
-        <h3> Total: <t t-esc="state.sum"/></h3>
 
-        <ul>
-            <t t-foreach="state.tasks" t-as="task" t-key="task.id">
-                <li>
-                    <t t-esc="task.name"/>
-                </li>
-            </t>
-        </ul>
+        <h3>Total: <t t-esc="state.sum"/>
+        </h3>
 
-        <button t-on-click="addTask">
-            Add Task
-        </button>
+        <Todo/>
+
     </t>
 
 </templates>

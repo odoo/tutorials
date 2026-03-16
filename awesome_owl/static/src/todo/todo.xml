@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.Todo">
+
+        <h2>Todo App</h2>
+
+        <p>
+    Remaining Tasks:
+            <t t-esc="remainingTasks"/>
+        </p>
+
+        <input t-ref="taskInput" placeholder="Enter a new task" t-on-keyup="addTask" />
+
+        <ul>
+
+            <t t-foreach="state.tasks" t-as="task" t-key="task.id">
+
+                <TodoItem task="task" toggleState.bind="toggleState" deleteTask.bind="deleteTask" />
+
+            </t>
+
+
+        </ul>
+
+    </t>
+
+</templates>
