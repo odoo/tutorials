@@ -67,7 +67,7 @@
                             <field name="buyer_id"/>
                             <field name="max_offer_price" string="best offer" readonly="1"/>
                             <field name="selling_price" string="selling price" groups="estate.property_admin,estate.property_agent,estate.property_manager"/>
-                        </field>
+                        
                         <notebook>
                             <page string="Description">
                                 <group>
