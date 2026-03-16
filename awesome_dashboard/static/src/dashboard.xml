@@ -26,8 +26,8 @@
             </DashboardItem>
 
             <DashboardItem>
-                <h4>Avg T-Shirts / Order</h4>
-                <span t-esc="statistics.avg_tshirts"/>
+                <h5>Avg T-Shirts / Order</h5>
+                <span t-esc="statistics.average_quantity"/>
             </DashboardItem>
 
             <DashboardItem>
@@ -35,9 +35,16 @@
                 <span t-esc="statistics.nb_cancelled_orders"/>
             </DashboardItem>
 
+            <DashboardItem>
+                <h5>Avg Processing Time</h5>
+                <span t-esc="statistics.average_time"/>
+            </DashboardItem>
+
             <DashboardItem size="2">
-                <h4>Avg Processing Time</h4>
-                <span t-esc="statistics.avg_processing_time"/>
+                <h4>T-Shirt Sizes</h4>
+
+                <PieChart data="statistics.orders_by_size"/>
+
             </DashboardItem>
 
         </div>
