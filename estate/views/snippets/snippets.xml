@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="snippets" inherit_id="website.snippets" name="Real Estate Snippets">
+        <xpath expr="//snippets[@id='snippet_groups']/*[1]" position="before">
+           <t snippet-group="real_estate" 
+              t-snippet="website.s_snippet_group" 
+              string="Real Estate" 
+              t-thumbnail="/estate/static/src/img/real_estate.svg"/>
+        </xpath>
+
+        <xpath expr="//snippets[@id='snippet_structure']/*[1]" position="before">
+           <t t-snippet="estate.s_property_cards" string="Property Cards" group="real_estate">
+              <keywords>house, property, real estate, listing</keywords>
+           </t>
+
+           <t t-snippet="estate.s_featured_properties" string="Featured Hero" group="real_estate">
+              <keywords>featured, luxury, banner</keywords>
+           </t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- <template id="s_property_cards" name="Property Cards">
+        <section class="s_property_cards s_dynamic pt32 pb32"
+                 data-name="Property Cards"
+                 data-snippet="s_property_cards"
+                 data-template-key="estate.dynamic_filter_template_property_cards_estate">
+            <div class="container o_not_editable">
+                <div class="css_non_editable_mode_hidden">
+                    <div class="missing_option_warning alert alert-info rounded-0 fade show d-none d-print-none">
+                        Your Property Cards will be displayed here...
+                    </div>
+                </div>
+                <div class="row dynamic_snippet_template"/>
+            </div>
+        </section>
+    </template> -->
+
+    <!-- <template id="s_property_cards" name="Property Cards">
+        <section class="s_property_cards s_dynamic s_dynamic_snippet pt32 pb32" 
+                 data-name="Property Cards" 
+                 data-snippet="s_property_cards">
+            <div class="container o_not_editable">
+                <div class="css_non_editable_mode_hidden">
+                    <div class="missing_option_warning alert alert-info">
+                        Your Properties will appear here.
+                    </div>
+                </div>
+                <div class="dynamic_snippet_template"></div>
+            </div>
+        </section>
+    </template> -->
+
+    <template id="s_property_cards" name="Property Cards">
+    <section class="s_property_cards s_dynamic_snippet pt32 pb32"
+             data-name="Property Cards"
+             data-snippet="s_property_cards"
+             data-number-of-elements="3"
+             data-template="estate.dynamic_filter_template_property_cards_estate">
+
+        <div class="container o_not_editable">
+
+            <div class="css_non_editable_mode_hidden">
+                <div class="missing_option_warning alert alert-info">
+                    Your Properties will appear here.
+                </div>
+            </div>
+
+            <!-- Dynamic Content -->
+            <div class="row dynamic_snippet_template"></div>
+
+        </div>
+
+    </section>
+    </template>
+
+    <template id="dynamic_filter_template_property_cards_estate" name="Property Cards Dynamic Template">
+        <t t-foreach="records" t-as="data">
+            <t t-set="property" t-value="data['_record']"/>
+            <div class="col-lg-4 pb32">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">
+                            <t t-esc="property.expected_price"/>
+                        </h4>
+                        <h5 class="fw-bold"><t t-esc="property.name"/></h5>
+                        <p class="text-muted small">
+                            <i class="fa fa-bed me-1"/><t t-esc="property.bedrooms"/> Beds | 
+                            <i class="fa fa-arrows-alt me-1"/><t t-esc="property.living_area"/> sqft
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="s_featured_properties" name="Featured Properties">
+        <section class="s_featured_properties bg-900 text-white pt64 pb64" data-name="Featured Hero" data-snippet="s_featured_properties">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h2 class="display-4 fw-bold">Premium Listing of the Month</h2>
+                        <p class="lead text-white-50">Experience luxury living in the heart of the city with panoramic views and world-class amenities.</p>
+                        <ul class="list-unstyled mb-4">
+                            <li><i class="fa fa-check-circle text-primary me-2"/> Private Infinity Pool</li>
+                            <li><i class="fa fa-check-circle text-primary me-2"/> Smart Home Automation</li>
+                        </ul>
+                        <a href="#" class="btn btn-lg btn-primary">View Details</a>
+                    </div>
+                    <div class="col-lg-6 pt32 pt-lg-0">
+                        <img src="/estate/static/src/img/villa.avif" class="img-fluid rounded shadow-lg" alt="Featured Property"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

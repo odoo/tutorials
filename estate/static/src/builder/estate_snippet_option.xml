@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+   <t t-name="estate.EstateSnippetOption">
+      <BuilderRow label.translate="Category">
+         <BuilderSelect dataAttributeAction="'category'">
+            <BuilderSelectItem value="all">All Properties</BuilderSelectItem>
+            <BuilderSelectItem value="villa">Villas</BuilderSelectItem>
+            <BuilderSelectItem value="apartment">Apartments</BuilderSelectItem>
+         </BuilderSelect>
+      </BuilderRow>
+
+      <BuilderRow label.translate="Display Price">
+         <BuilderCheckbox
+            dataAttributeAction="'show_price'"
+            label.translate="Show Price"/>
+      </BuilderRow>
+
+      <BuilderRow label.translate="Limit">
+         <BuilderRange
+            dataAttributeAction="'limit'"
+            min="1"
+            max="12" 
+            step="1" 
+            displayRangeValue="true"/>
+      </BuilderRow>
+
+      <BuilderRow label.translate="Sort By">
+         <BuilderButtonGroup dataAttributeAction="'sort'">
+            <BuilderButton value="name" icon="'fa-sort-alpha-asc'"/>
+            <BuilderButton value="price" icon="'fa-sort-amount-desc'"/>
+         </BuilderButtonGroup>
+      </BuilderRow>
+   </t>
+</templates>
