@@ -9,5 +9,8 @@
     """,
     'application': True,
     'category': 'Tutorials',
-    'installable': True
+    'installable': True,
+    'data': [
+        'security/ir.model.access.csv'
+    ]
 }
