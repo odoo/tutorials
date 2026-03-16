@@ -10,59 +10,16 @@
                 </menuitem>
             </menuitem>
         <!-- #experimental added extra direct menu for learning-->
-        <menuitem id="direct_property_menu" name="property" action="estate_model_action"/>
+            <menuitem id="direct_property_menu" name="property" action="estate_model_action"/>
         <!---->
         </menuitem>
-        <menuitem
-            id="settings_menu_root"
-            name="settings"
-            sequence="10"
-            parent="test_menu_root"
-        />
+        <menuitem id="settings_menu_root" name="settings" sequence="10" parent="test_menu_root"/>
         <menuitem id="property_type_menu" parent="settings_menu_root" name="property type" action="estate_property_type_action"/>
         <menuitem id="estate_property_tag_menu" parent="settings_menu_root" name="property tag" action="estate_property_tag_action"/>
-        <menuitem
-            id="property_offer"
-            name="property offer"
-            sequence="10"
-            parent="settings_menu_root"
-            action="estate_property_offer_action"
-            />
-            
-        <menuitem
-            id="maintainance_request"
-            name="maintainance_request"
-            sequence="10"
-            parent="settings_menu_root"
-            action="estate_maintainance_action"
-            />
-
-            <menuitem
-            id="visit"
-            name="visit"
-            sequence="10"
-            parent="settings_menu_root"
-            action="estate_property_visit_action"
-            />
-
-            <menuitem
-            id="visit_calender"
-            name="visit_calender"
-            sequence="10"
-            parent="settings_menu_root"
-            action="estate_property_visit_view"
-            />
-
-            <menuitem
-            id="visit_kanban"
-            name="visit_kanban"
-            sequence="10"
-            parent="settings_menu_root"
-            action="estate_property_visit_kanban_view"
-            />
-
-
-
-
+        <menuitem id="property_offer" name="property offer" sequence="10" parent="settings_menu_root" action="estate_property_offer_action"/>
+        <menuitem id="maintainance_request" name="maintainance_request" sequence="10" parent="settings_menu_root" action="estate_maintainance_action"/>
+        <menuitem id="visit" name="visit" sequence="10" parent="settings_menu_root" action="estate_property_visit_action"/>
+        <menuitem id="visit_calender" name="visit_calender" sequence="10" parent="settings_menu_root" action="estate_property_visit_view"/>
+        <menuitem id="visit_kanban" name="visit_kanban" sequence="10" parent="settings_menu_root" action="estate_property_visit_kanban_view"/>
     </data>
 </odoo>

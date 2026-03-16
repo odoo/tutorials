@@ -65,7 +65,6 @@ class EstateProperty(models.Model):
     )
     visit_ids = fields.One2many("estate.property.visit","property_id",string="visits")
 
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:

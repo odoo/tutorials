@@ -6,6 +6,7 @@
     'category': 'real estate',
     'description': "real estate App.",
     "data": [
+        "security/security_groups.xml",
         "security/ir.model.access.csv",
         "views/estate_maintainance_form.xml",
         "views/estate_property_visit_calender.xml",
