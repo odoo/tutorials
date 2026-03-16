@@ -1,6 +1,6 @@
 from datetime import timedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -67,6 +67,12 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
+            groups_of_user = record.env.user.group_ids
+
+            for group in groups_of_user:
+                if group.name == 'Estate Agent':
+                    raise ValidationError("Agent Can't accept offer !!")
+
             record.property_id.buyer_id = record.partner_id
             record.status = "accepted"
             record.property_id.state = "offer_accepted"

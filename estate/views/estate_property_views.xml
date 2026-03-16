@@ -17,8 +17,8 @@
                 decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
+                <field name="expected_price" sum="Total Expected Price"/>
+                <field name="selling_price" groups="estate.estate_group_manager,estate.estate_group_agent"/>
                 <field name="bedrooms"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="living_area"/>
@@ -34,7 +34,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" invisible="state in ('sold','cancelled')" class="btn-primary"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ('sold','cancelled')" class="btn-primary" groups="estate.estate_group_manager"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')"/>
                     <button name="action_best_offer" type="object" string="Accept Best Offer"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
@@ -66,7 +66,7 @@
                         <group>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="expected_price"/>
-                            <field name="selling_price"/>
+                            <field name="selling_price" groups="estate.estate_group_manager,estate.estate_group_agent"/>
                             <field name="best_price"/>
                         </group>
                     </group>
@@ -99,7 +99,7 @@
                                 <field name="salesperson_id"/>
                             </group>
                         </page>
-                        <page string="Offers">
+                        <page string="Offers" groups="estate.estate_group_manager,estate.estate_group_agent">
                             <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')"/>
                         </page>
                     </notebook>
@@ -166,6 +166,10 @@
                         string="Archive"
                         domain="[('active','=',False)]"
                  />
+                 <filter string="Best Price > 1000"
+                    name="best_price_filter"
+                    domain="[('best_price','>',1000)]"/>
+
                 <filter
                     name="group_postcode"
                     string="Postcode"

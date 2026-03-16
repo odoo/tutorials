@@ -2,8 +2,9 @@
     "name": "Real Estate",
     "author": "Dharmil Goyani",
     "license": "LGPL-3",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "event"],
     "data": [
+        "security/estate_groups.xml",
         "security/ir.model.access.csv",
         "views/estate_property_maintenance.xml",
         "views/estate_property_visit.xml",
@@ -13,6 +14,9 @@
         "views/estate_property_views.xml",
         "views/res_users_views.xml",
         "views/estate_menus.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_report.xml",
+        "data/sold_template.xml",
     ],
     "application": True,
 }

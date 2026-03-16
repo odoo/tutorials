@@ -17,7 +17,7 @@
                 <field name="created_by"/>
                 <field name="request_date"/>
                 <field name="estimate_cost"/>
-                <field name="actual_cost"/>
+                <field name="actual_cost" sum="Total Cost" groups="estate.estate_group_manager,estate.estate_group_maintenance_staff"/>
                 <field name="state"/>
                 <field name="priority"/>
             </list>

@@ -1,0 +1,29 @@
+<odoo>
+
+    <record id="module_category_real_estate" model="ir.module.category">
+        <field name="name">Real Estate</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="res_groups_privilege_real_estate" model="res.groups.privilege">
+        <field name="name">Real Estate</field>
+        <field name="category_id" ref="module_category_real_estate"/>
+    </record>
+
+    <record id="estate_group_agent" model="res.groups">
+        <field name="name">Estate Agent</field>
+        <field name="privilege_id" ref="res_groups_privilege_real_estate"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Estate Manager</field>
+        <field name="privilege_id" ref="res_groups_privilege_real_estate"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_agent'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="estate_group_maintenance_staff" model="res.groups">
+        <field name="name">Estate Maintenance Staff</field>
+        <field name="privilege_id" ref="res_groups_privilege_real_estate"/>
+    </record>
+</odoo>

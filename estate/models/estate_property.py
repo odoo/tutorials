@@ -60,7 +60,10 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", store=True)
     best_price = fields.Float(
-        compute="_compute_best_price", string="Best Offer", store=True
+        compute="_compute_best_price",
+        string="Best Offer",
+        store=False,
+        search="_search_best_price",
     )
     maintenance_req = fields.One2many(
         "estate.property.maintenance", "property_id", string="Maintenance Request"
@@ -117,7 +120,30 @@ class EstateProperty(models.Model):
                 raise UserError("A cancelled property cannot be sold.")
             record.state = "sold"
             record.action_archive()
-        return True
+
+        ctx = {
+            "default_model": "estate.property",
+            "default_res_ids": self.ids,
+            "default_partner_ids": [
+                self.buyer_id.id,
+                self.salesperson_id.partner_id.id,
+            ],
+            "default_template_id": self.env.ref(
+                "estate.mail_template_estate_payment_executed"
+            ).id,
+        }
+
+        action = {
+            "name": "Send",
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": ctx,
+        }
+        return action
 
     def action_cancel(self):
         for record in self:
@@ -147,3 +173,17 @@ class EstateProperty(models.Model):
     def _compute_visit_count(self):
         for record in self:
             record.visit_count = len(record.visit_req)
+
+    def _search_best_price(self, operator, value):
+        properties = self.search([])  # get all properties
+        matched_ids = []
+
+        for property in properties:
+            if (
+                (operator == ">" and property.best_price > value)
+                or (operator == "<" and property.best_price < value)
+                or (operator == "=" and property.best_price == value)
+            ):
+                matched_ids.append(property.id)
+
+        return [("id", "in", matched_ids)]
