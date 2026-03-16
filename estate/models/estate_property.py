@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char()
     date_availability = fields.Date(
-        string="Date Availability",
+        string="Available From",
         copy=False,
         default=datetime.date.today() + relativedelta(months=3),
     )
