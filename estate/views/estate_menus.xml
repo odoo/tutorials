@@ -1,0 +1,19 @@
+<odoo>
+    <menuitem id="test_menu_root" name="Real Estate">
+        <menuitem id="test_first_level_menu" name="First Level">
+            <menuitem id="test_model_menu_action" action="estate_property_action"/>
+        </menuitem>
+    </menuitem>
+
+    <menuitem id="test_menu_root2" name="Apps">
+        <menuitem id="test_first_level_menu2" name="Second Level">
+            <menuitem id="test_model_menu_action2" action="estate_property_action"/>
+        </menuitem>
+    </menuitem>
+
+    <menuitem id="test_menu_root3" name="Settings">
+        <menuitem id="test_first_level_menu3" name="Third Level">
+            <menuitem id="test_model_menu_action3" action="estate_property_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
