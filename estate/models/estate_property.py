@@ -36,5 +36,5 @@ class EstateProperty(models.Model):
         string="Status",
         required=True,
         copy=False,
-        default='new',
+        default="new",
     )
