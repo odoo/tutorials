@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-    <field name="name">Estate Properties</field>
-    <field name="res_model">estate.property</field>
-    <field name="view_mode">list,form</field>
-    <field name="context">{'search_default_available': True}</field>
-    </record>
-    
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -96,7 +89,15 @@
             <kanban default_group_by="property_type_id" group_create="False" group_delete="False" group_edit="False" records_draggable="False">
                 <progressbar field="state" colors='{"offer_accepted": "success", "offer_received": "warning", "sold": "danger", "new": "muted"}' sum_field=""/>
                     <field name="state"/>
+                    <field name="offer_ids"/>
                 <templates>
+                    <t t-name="menu">
+                        <button name="%(estate.estate_property_offer_action_kanban)d"
+                            type="action"
+                            icon="fa-money">
+                            <t t-out="record.offer_ids.raw_value.length"/> Offers
+                        </button>
+                    </t>
                     <t t-name="card">
                         <div>
                             <strong><field name="name"/></strong>
@@ -108,7 +109,12 @@
                         <div t-if="record.state.raw_value == 'offer_accepted'">
                             Selling Price: <field name="selling_price"/>
                         </div>
+
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
+                        <footer>
+                            <field name="salesperson_id" widget="many2one_avatar_user"/>
+                        </footer>
                     </t>
                 </templates>
             </kanban>
@@ -133,6 +139,13 @@
                 <filter name="group_by_postcode" string="Postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
 </odoo>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <record id="action_report_property_offers" model="ir.actions.report">
+        <record id="report_property_offers_action" model="ir.actions.report">
             <field name="name">Property Offer</field>
             <field name="model">estate.property</field>
             <field name="report_type">qweb-pdf</field>
@@ -8,7 +8,8 @@
             <field name="binding_model_id" ref="model_estate_property"/>
             <field name="binding_type">report</field>
         </record>
-        <record id="action_report_users_properties" model="ir.actions.report">
+        
+        <record id="report_users_properties_action" model="ir.actions.report">
             <field name="name">User Properties</field>
             <field name="model">res.users</field>
             <field name="report_type">qweb-pdf</field>
