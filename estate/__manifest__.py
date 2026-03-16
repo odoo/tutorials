@@ -6,5 +6,9 @@
     'name': 'Estate',
     'version': '1.9',
     'application': True,
-    'installable': True
+    'installable': True,
+
+    'data':[
+        'security/ir.model.access.csv'
+    ]
 }
