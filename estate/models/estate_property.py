@@ -4,8 +4,8 @@ from odoo import models, fields
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Real Estate Property"
+    _name = 'estate.property'
+    _description = 'Real Estate Property'
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area (sqm)")
+    living_area = fields.Integer(string="Living Area (sqm)", copy=False)
     facades = fields.Integer(string="Facades")
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
