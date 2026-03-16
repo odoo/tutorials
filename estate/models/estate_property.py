@@ -1,5 +1,6 @@
-from odoo import fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
@@ -26,17 +27,31 @@ class EstateProperty(models.Model):
     active = fields.Boolean(string="Is Active ?", default=True)
     garden_orientation = fields.Selection(
         string="Garden Orientation",
-        selection=[('north', 'North'),
-                   ('south', 'South'),
-                   ('east', 'East'),
-                   ('west', 'West')],
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ],
     )
     state = fields.Selection(
         string="Status",
-        selection=[("New", "New"),
-                   ("Offer Received", "Offer Received"),
-                   ("Offer Accepted", "Offer Accepted"),
-                   ("Sold", "Sold"),
-                   ("Cancelled", "Cancelled")],
-        required=True, default="New", copy=False
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled")
+        ],
+        required=True, default="new", copy=False
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type", ondelete='Cascade', string="Property Type"
+    )
+    salesperson_id = fields.Many2one(
+        "res.users", string="Sales Person", default=lambda self: self.env.user
+    )
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    property_tags_ids = fields.Many2many(
+        "estate.property.tag", string="Property Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
