@@ -8,7 +8,7 @@
     </record>
 
     <record id="estate_property_list_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
@@ -25,7 +25,7 @@
     </record>
 
     <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
@@ -35,9 +35,11 @@
                             <field name="name"/>
                         </h1>
                     </group>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <group>
+                                <field name="property_type_id"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                             </group>
@@ -59,6 +61,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" context="{'list_view_ref':'estate.estate_property_offers_list_view'}"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman"/>
+                                <field name="buyer"/>
                             </group>
                         </page>
                     </notebook>
