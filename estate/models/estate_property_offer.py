@@ -1,7 +1,7 @@
 from odoo import models, fields ,api 
 from odoo.exceptions import UserError
 
-class EstatePropertyType(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
 
@@ -43,15 +43,19 @@ class EstatePropertyType(models.Model):
                 record.validity = 7
 
     def action_accept(self):
-        if "accepted" in self.property_id.offer_ids.mapped("status"):
-                raise UserError("An offer has already been accepted for this property!")
-            
-        self.status = "accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
+        for record in self:
+            if "accepted" in record.property_id.offer_ids.mapped("status"):
+                    raise UserError("An offer has already been accepted for this property!")
+
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+
 
         return True
     
     def action_refuse(self):
-        self.status = "refused"
+        for record in self:
+            record.status = "refused"
         return True
+        
