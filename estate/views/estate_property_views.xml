@@ -1,10 +1,12 @@
 <odoo>
-    <record id="estate_property_view_tree" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Tests">
                 <field name="name" string="Title"/>
+                <field name="property_type_id" string="Property Type"/>
+                <field name="property_tags_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -25,11 +27,20 @@
                         <field name="name" nolabel="1" limit="80"/>
                     </group>
                     <group>
+                        <field name="property_tags_ids" nolabel="1" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="property_type_id" string="Property Type"/>
+                        </group>
                         <group>
                             <field name="postcode" string="Postcode"/>
                         </group>
                         <group>
                             <field name="expected_price" string="Expected Price"/>
+                        </group>
+                        <group>
+                            <field name="best_offer" string="Best Offer"/>
                         </group>
                         <group>
                             <field name="date_availability" string="Available From"/>
@@ -40,17 +51,26 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                        <group>
-
-                            <field name="description" string="Description"/>
-                            <field name="bedrooms" string="Bedrooms"/>
-                            <field name="living_area" string="Living Area (sqm)"/>
-                            <field name="facades" string="Facades"/>
-                            <field name="garage" string="Garage"/>
-                            <field name="garden" string="Garden"/>
-                            <field name="garden_area" string="Garden Area (sqm)"/>
-                            <field name="garden_orientation" string="Garden Orientation"/>
-                        </group>
+                            <group>
+                                <field name="description" string="Description"/>
+                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades" string="Facades"/>
+                                <field name="garage" string="Garage"/>
+                                <field name="garden" string="Garden"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="total_area" string="Total Area (sqm)"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Ohter Info">
+                            <group>
+                                <field name="seller_id" string="Salesman"/>
+                                <field name="buyer_id" string="Buyer"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
