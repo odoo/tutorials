@@ -8,16 +8,16 @@ class EstateProperty(models.Model):
     _description = 'Real Estate Property'
 
     name = fields.Char(string="Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date(string="Available From", copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)", copy=False)
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         [
@@ -47,5 +47,5 @@ class EstateProperty(models.Model):
             ('land', "Land")
         ],
         string="Property Type"
-        )
+    )
     property_age = fields.Integer(string="Property Age")
