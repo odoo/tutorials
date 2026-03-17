@@ -147,5 +147,5 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_user_inactive(self):
         for record in self:
-            if record.state not in ['cancelled','new']:
+            if record.state not in ['cancelled', 'new']:
                 raise UserError('cannot delete - only delete from the state `new` and `cancelled`')
