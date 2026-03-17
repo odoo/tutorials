@@ -9,14 +9,14 @@ class RecurringPlan(models.Model):
     _name = "estate.property"
     _description = "estate property"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, string="Title")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=fields.Date.today() + relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
