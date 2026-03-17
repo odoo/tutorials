@@ -11,4 +11,13 @@
               parent="estate_advertisements_menu"
               action="estate_property_action"/>
 
+    <menuitem id="estate_setting_menu"
+              name="Settings"
+              parent="estate_menu_root"/>
+
+    <menuitem id="estate_property_type_menu_action"
+              name="property type"
+              parent="estate_setting_menu"
+              action="estate_property_type_action"/>
+
 </odoo>
