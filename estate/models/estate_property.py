@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
+from dateutil.relativedelta import relativedelta
 
 
 class RecurringPlan(models.Model):
@@ -11,20 +12,21 @@ class RecurringPlan(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date()
+    date_availability = fields.Date(default=fields.Date.today() + relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    # number_of_months = fields.Integer('# Months', required=True)
-    # active = fields.Boolean('Active', default=True)
-    # sequence = fields.Integer('Sequence', default=10)
-
-    # _sql_constraints = [
-    #     ('check_number_of_months', 'CHECK(number_of_months >= 0)', 'The number of month can\'t be negative.'),
-    # ]
+    active = fields.Boolean('Active', default=False)
+    state = fields.Selection(
+        string="Status",
+        selection=[('new', 'New'), ('offer_received', 'Offer received'), ('offer_accepted', 'Offer accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        required=True,
+        default='new',
+        copy=False
+    )
