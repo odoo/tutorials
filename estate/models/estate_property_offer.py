@@ -1,4 +1,4 @@
-from odoo import fields, models, api, _
+from odoo import fields, models, api
 from odoo.exceptions import UserError
 
 
@@ -82,6 +82,6 @@ class EstatePropertyOffer(models.Model):
             if property_id.offer_ids:
                 max_offer_price = max(property_id.offer_ids.mapped('price'))
                 if vals.get('price', 0) <= max_offer_price:
-                    raise UserError(_("The offer price must be higher than the current highest offer (%s).") % max_offer_price)
+                    raise UserError("The offer price must be higher than the current highest offer (%s)." % max_offer_price)
             property_id.state = "offer received"
         return super().create(vals_list)
