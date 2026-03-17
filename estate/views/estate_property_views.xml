@@ -7,16 +7,16 @@
             <form string="Properties">
                 <sheet>
                     <h1><field name="name"/></h1>
+                    <h4><field name='property_tag_ids' widget='many2many_tags'/></h4>
                     <group>
                         <group>
-                            <group>
-                                <field name="postcode"/>
-                                <field name="date_availability"/>
-                            </group>
-                            <group>
-                                <field name="expected_price"/>
-                                <field name="selling_price"/>
-                            </group>
+                            <field name='property_type_id'/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -31,6 +31,15 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                                <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="sales_person_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
