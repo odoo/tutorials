@@ -24,6 +24,7 @@
                             </group>
                             <group>
                                 <field name="expected_price" />
+                                <field name="best_price" />
                                 <field name="selling_price" />
                             </group>
                         </group>
@@ -38,13 +39,15 @@
                                     <field name="facades" />
                                     <field name="garage" />
                                     <field name="garden" />
+                                    <field name="garden_area" invisible="not garden" />
                                     <field name="garden_orientation" />
+                                    <field name="total_area" />
                                 </group>
                             </page>
 
                             <page string="Offers">
                                 <field name="offer_ids">
-                                    <list editable="bottom">
+                                    <list>
                                         <field name="price" />
                                         <field name="partner_id" />
                                         <field name="status" />
@@ -99,6 +102,14 @@
 
                 </search>
             </field>
+        </record>
+
+
+        <!-- estate property action   -->
+        <record id="estate_property_action" model="ir.actions.act_window">
+            <field name="name">Properties</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form</field>
         </record>
 
 
