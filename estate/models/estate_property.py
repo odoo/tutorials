@@ -1,9 +1,10 @@
 from odoo import models, fields
+
 from datetime import timedelta
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
+    _name = 'estate.property'
     _description = "Real Estate Property"
 
     name = fields.Char(string="Title", required=True)
@@ -21,10 +22,10 @@ class EstateProperty(models.Model):
 
     garden_orientation = fields.Selection(
         [
-            ('north', 'North'),
-            ('south', 'South'),
-            ('east', 'East'),
-            ('west', 'West')
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West")
         ]
     )
     active = fields.Boolean(default=True)
@@ -36,4 +37,4 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        string="Status", required=True, copy=False, default="new")
+        string="Status", required=True, copy=False, default='new')
