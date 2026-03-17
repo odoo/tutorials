@@ -1,5 +1,5 @@
 {
-    'name': "Real Estate",
+    'name': 'Real Estate',
     'category': 'Tutorials',
     'depends': [
         'base'
@@ -12,4 +12,6 @@
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
     ],
+    'author': 'Odoo S.A.',
+    'license': 'AGPL-3'
 }
