@@ -21,6 +21,11 @@ class EstatePropertyTag(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price must be greater than 0',
+    )
+
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
@@ -39,7 +44,7 @@ class EstatePropertyTag(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            if any([offer.status == 'offer_accepted' for offer in record.property_id.offer_ids]):
+            if any(offer.status == 'offer_accepted' for offer in record.property_id.offer_ids):
                 raise UserError("Another offer has already been accepted.")
             else:
                 record.property_id.buyer = record.partner_id
