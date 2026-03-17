@@ -2,6 +2,11 @@
 <odoo>
     <data>
 
+
+        """
+        Estate Property
+        """
+
         <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
@@ -13,6 +18,8 @@
         <menuitem id="estate_first_level_menu" name="Advertisements" parent="estate_menu_root" />
         <menuitem id="estate_property_menu_action" action="estate_property_action"
             parent="estate_first_level_menu" />
+
+        
 
     </data>
 </odoo>

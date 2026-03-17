@@ -18,6 +18,7 @@
                             <group>
                                 <field name="postcode" />
                                 <field name="date_availability" />
+                                <field name="state"/>
                             </group>
                             <group>
                                 <field name="expected_price" />

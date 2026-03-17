@@ -48,3 +48,7 @@ class EstateProperty(models.Model):
         ],
         string="Status",
     )
+
+
+    partner_id = fields.Many2one("res.partner", string="Partner")
+
