@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -83,6 +84,22 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0 
             self.garden_orientation = ''
+    
+    def action_sell(self):
+        if self.state == 'cancelled':
+            raise UserError("A canceled property cannot be sold!")
+        elif self.state == 'sold':
+             raise UserError("The property is already sold!")
+
+        self.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        if self.state == 'sold':
+            raise UserError("A Sold property cannot be canceled!")     
+        self.state = 'cancelled'
+        return True
+
 
 
 
