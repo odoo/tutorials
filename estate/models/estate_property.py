@@ -1,18 +1,19 @@
 from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
+
 class RecurringPlan(models.Model):
     _name = "estate.property"
     _description = "A specific property"
 
-    name = fields.Char(required=True)
+    name = fields.Char('Title', required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date('Date Available', copy=False, default=(fields.Date.today() + relativedelta(months=3)))
+    date_availability = fields.Date('Available From', copy=False, default=(fields.Date.today() + relativedelta(months=3)))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
