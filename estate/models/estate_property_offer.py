@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'An offer placed on some property'
@@ -18,10 +19,10 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_deadline(self):
         for record in self:
-            if record.create_date is not None:
+            if record.create_date:
                 record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
 
     def _compute_validity(self):
         for record in self:
-            if record.create_date is not None:
+            if record.create_date and record.date_deadline:
                 record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days

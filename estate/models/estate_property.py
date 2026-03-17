@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate properties'
@@ -7,7 +8,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Name', required=True)
     description = fields.Char('Description')
     postcode = fields.Char('Post Code')
-    date_availability = fields.Date('Available From', copy=False, default=lambda x:fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date('Available From', copy=False, default=lambda x: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
@@ -17,7 +18,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean('Garden')
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(
-        string='Garden Orientation', 
+        string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
@@ -49,3 +50,4 @@ class EstateProperty(models.Model):
         for record in self:
             record.garden_area = (10 if record.garden else 0)
             record.garden_orientation = ('north' if record.garden else None)
+            
