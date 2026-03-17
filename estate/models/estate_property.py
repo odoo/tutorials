@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -23,7 +23,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
     active = fields.Boolean(default=True) # testing the reserved fields thing
-    state = fields.Selection(selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+    state = fields.Selection(selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
                             default='new',
                             required=True,
                             copy=False
@@ -37,7 +37,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     total_area = fields.Float(compute="_compute_total_area")
-    best_offer = fields.Float(compute="_compute_best_offer")
+    best_offer = fields.Float(default=0, compute="_compute_best_offer")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -57,3 +57,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    def action_mark_as_sold(self):
+        for record in self:
+            if record.state != 'canceled':
+                record.state = 'sold'
+            else:
+                raise exceptions.UserError("Canceled properties cannot be sold!")
+    
+    def action_mark_as_canceled(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = 'canceled'
+            else:
+                raise exceptions.UserError("Sold properties cannot be canceled!")

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -19,7 +19,6 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
-            print("HERE2", record.validity)
             if record.create_date:
                 record.date_deadline = record.create_date+relativedelta(days=record.validity)
             else:
@@ -28,3 +27,17 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline-fields.Date.to_date(record.create_date)).days
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.status == 'accepted':
+                continue
+            for offer in record.property_id.offer_ids:
+                if offer.status == 'accepted':
+                    raise exceptions.UserError("There is an offer already accepted, you can accept another one!")
+            record.status = 'accepted'
+
+    
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = 'refused'
