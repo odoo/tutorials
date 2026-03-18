@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -54,7 +54,7 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + (record.garden_area if record.garden else 0)
-    
+
     @api.depends('offer_ids')
     def _compute_best_price(self):
         for record in self:
@@ -68,3 +68,23 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError('A cancelled listing cannot be sold')
+            elif record.state == 'sold':
+                raise exceptions.UserError('This listing has already been sold')
+            else:
+                record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError('Sold listings cannot be cancelled')
+            elif record.state == 'cancelled':
+                raise exceptions.UserError('This listing is already cancelled')
+            else:
+                record.state = 'cancelled'
+        return True
