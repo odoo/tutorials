@@ -1,6 +1,4 @@
-<odoo>
-  <data>
-
+<odoo noupdate="1">
     <record id="property_1" model="estate.property">
       <field name="name">Modern Downtown Apartment</field>
       <field name="description">Sleek apartment in the heart of the city</field>
@@ -193,6 +191,5 @@
       <field name="garden_area">0</field>
       <field name="garden_orientation">north</field>
     </record>
-
-  </data>
 </odoo>
+
