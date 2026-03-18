@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="action_estate_contract" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="res_model">estate.contract</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <record id="view_estate_contract_form" model="ir.ui.view">
+            <field name="name">estate.contract.form</field>
+            <field name="model">estate.contract</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                        <button name="action_send_for_sign" type="object" string="Sign"/>
+                    </header>
+
+                    <sheet>
+                        <group>
+                            <field name="property_id"/>
+                            <field name="buyer_id"/>
+                            <field name="price"/>
+                            <field name="salesperson_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
