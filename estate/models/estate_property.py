@@ -18,6 +18,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + timedelta(days=90),
         copy=False,
     )
+    event_id = fields.Many2one('event.event', string="Open House Event")
     expected_price = fields.Float(required=True, default=0.0)
     selling_price = fields.Float(readonly=True, copy=False)
     best_price = fields.Float(compute="_compute_best_price")
@@ -93,6 +94,22 @@ class EstateProperty(models.Model):
     )
     visit_count = fields.Integer(compute="_compute_visit_count")
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+
+        for record in records:
+            event = self.env['event.event'].create({
+                'name': f"Open House - {record.name}",
+                'date_begin': fields.Datetime.now(),
+                'date_end': fields.Datetime.now() + timedelta(hours=2),
+                'property_id': record.id,
+            })
+
+            record.event_id = event.id  
+
+        return records
+    
     def _compute_visit_count(self):
         Visit = self.env['estate.property.visit']
         for record in self:
@@ -171,6 +188,19 @@ class EstateProperty(models.Model):
                 raise UserError("You must accept an offer before selling the property.")
             record.state = 'sold'
 
+            contract = self.env['estate.contract'].search([
+                ('property_id', '=', record.id)
+            ], limit=1)
+
+            if not contract:
+                raise UserError("No contract found.")
+
+            if not contract.sign_request_id or contract.sign_request_id.state != 'signed':
+                raise UserError("Contract is not signed yet.")
+
+
+            record.state = 'sold'
+
     def best_accept(self):
         for record in self:
             best = 0
@@ -179,3 +209,16 @@ class EstateProperty(models.Model):
                     best_record = offer
                     best = offer.price
             best_record.action_accept()
+    
+    def action_open_event(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Open House Events',
+            'res_model': 'event.event',
+            'view_mode': 'list,form',  
+            'domain': [('property_id', '=', self.id)],  
+            'context': {
+                'default_property_id': self.id  
+            },
+        }

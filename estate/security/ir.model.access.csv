@@ -5,3 +5,4 @@ access_estate_property_tag_user,estate.property.tag user,model_estate_property_t
 access_estate_property_offer_user,estate.property.offer user,model_estate_property_offer,base.group_user,1,1,1,1
 access_estate_request_user,estate.request user,model_estate_request,base.group_user,1,1,1,1
 access_estate_property_visit,estate.property.visit user,model_estate_property_visit,base.group_user,1,1,1,1
+access_estate_contract,access_estate_contract,model_estate_contract,base.group_user,1,1,1,1

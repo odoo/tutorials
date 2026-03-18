@@ -103,6 +103,20 @@
                             <field name="visit_count" widget="statinfo" string="Visits"/>
 
                     </button>
+                    <button name="action_open_event"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-calendar">
+
+                        <field name="event_id" widget="statinfo" string="Events"/>
+
+                    </button>
+                    <button name="%(action_estate_contract)d"
+                        type="action"
+                        string="Contracts"
+                        class="oe_stat_button"
+                        icon="fa-file"
+                        invisible="state != 'offer_accepted'"/>
                     <header>
                         <button name="action_sold"
                                 type="object"

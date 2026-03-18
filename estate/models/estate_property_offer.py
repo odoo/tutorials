@@ -20,9 +20,13 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one(
-        "res.partner",
+        'res.partner',
         string="Buyer",
-        required=True,
+        domain="[('id', 'in', allowed_partner_ids)]"
+    )
+    allowed_partner_ids = fields.Many2many(
+        'res.partner',
+        compute="_compute_allowed_partners"
     )
     property_id = fields.Many2one(
         "estate.property",
@@ -55,12 +59,37 @@ class EstatePropertyOffer(models.Model):
             create_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - create_date).days
 
+    def _compute_allowed_partners(self):
+        for rec in self:
+            if not rec.property_id or not rec.property_id.event_id:
+                rec.allowed_partner_ids = False
+                continue
+
+            registrations = self.env['event.registration'].search([
+                ('event_id', '=', rec.property_id.event_id.id),
+                ('state', '=', 'done') 
+            ])
+
+        rec.allowed_partner_ids = registrations.mapped('partner_id')
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property_id = vals.get('property_id')
-            if property_id:
+            property_id = vals.get('property_id')   
+            partner_id = vals.get('partner_id')
+            if property_id and partner_id:
                 property_rec = self.env['estate.property'].browse(property_id)
+                event = property_rec.event_id
+                if not event:
+                    raise ValidationError("No open house event found for this property.")
+                registration = self.env['event.registration'].search([
+                    ('event_id', '=', event.id),
+                    ('partner_id', '=', partner_id),
+                    ('state', '=', 'done') 
+                ], limit=1)
+                if not registration:
+                    raise ValidationError(
+                        "Customer must attend the open house event before making an offer."
+                    )
                 existing_offers = property_rec.offer_ids
                 if existing_offers:
                     highest_offer = max(existing_offers.mapped('price'))
@@ -104,6 +133,14 @@ class EstatePropertyOffer(models.Model):
                 lambda o: o.status != 'refused' and o != offer
             )
             other_pending_offers.write({'status': 'refused'})
+
+            self.env['estate.contract'].create({
+                'property_id': property.id,
+                'buyer_id': offer.partner_id.id,
+                'seller_id': property.user_id.id,
+                'offer_id': offer.id,
+                'offer_price': offer.price,
+            })
 
     def action_refuse(self):
         for offer in self:
