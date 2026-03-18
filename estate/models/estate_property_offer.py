@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import pdb
 
 
 class EstatePropertyOffer(models.Model):
@@ -43,6 +44,26 @@ class EstatePropertyOffer(models.Model):
                 record.create_date.date() if record.create_date else fields.Date.today()
             )
             record.date_deadline = fields.Date.add(date_start, days=record.validity)
+
+
+    @api.model_create_multi
+    def create(self, vals_list):
+
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            
+            if property_id:
+                property_record = self.env['estate.property'].browse(property_id)
+                
+                if property_record.offer_ids:
+                    max_offer = max(property_record.mapped('offer_ids.price'))
+                    if vals.get('price', 0) < max_offer:
+                        raise UserError(f"You cannot make an offer lower ({vals.get('price', 0)}) than the current highest offer.")
+        
+        
+        return super().create(vals_list)
+
+
 
     def _inverse_date_deadline(self):
         for record in self:

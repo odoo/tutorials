@@ -15,15 +15,12 @@
                     <field name="date_deadline"></field>
 
                  </list>
-            
             </field>
-        
-        
         </record>
 
 
 
-        <!-- estate property tag action -->
+        <!-- estate property offer action -->
         <record
             id="estate_property_offer_action" model="ir.actions.act_window">
             <field name="name">Property Offers</field>
