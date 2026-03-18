@@ -3,7 +3,7 @@
 from odoo import fields, models
 
 
-class RecurringPlan(models.Model):
+class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "estate property"
 
@@ -21,6 +21,11 @@ class RecurringPlan(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
     active = fields.Boolean('Active', default=False)
+    type_id = fields.Many2one("estate.property.type", string="House Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="")
     state = fields.Selection(
         string="Status",
         selection=[('new', 'New'), ('offer_received', 'Offer received'), ('offer_accepted', 'Offer accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
