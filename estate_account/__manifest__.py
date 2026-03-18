@@ -5,7 +5,7 @@
     'category': 'Tutorials',
     'application': True,
     'installable': True,
-    'depends': ['base','estate','account'],
+    'depends': ['base', 'estate', 'account'],
     'data': [],
     'license': 'AGPL-3'
 }
