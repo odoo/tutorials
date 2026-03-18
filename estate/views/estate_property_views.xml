@@ -57,6 +57,8 @@
 									<field name="garden_area" />
 									<field name="garden_orientation" />
 									<field name="state" />
+									<field name="total_area" />
+									<field name="best_offer" />
 								</group>
 							</group>
 						</page>
@@ -87,7 +89,8 @@
 				<field name="bedrooms" />
 				<field name="living_area" />
 				<field name="facades" />
-				<filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
+				<filter string="Available" name="available"
+					domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
 				<filter name="groupbypostcode" context="{'group_by':'postcode'}" />
 
 
