@@ -19,7 +19,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
-                <field name="property_type"/>
+                <field name="property_type_id"/>
                 
             </list>
         </field>
@@ -38,6 +38,7 @@
                             <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
@@ -66,11 +67,20 @@
                                 <group>
                                     <field name="state"/>
                                     <field name="property_age"/>
-                                    <field name="property_type"/>
                                 </group>
                                 <group>
                                     <field name="swimming_pool"/>
                                     <field name="active"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                   <field name="buyer_id"/> 
+                                </group>
+                                <group>
+                                    <field name="salesperson_id"/>
                                 </group>
                             </group>
                         </page>
@@ -123,6 +133,10 @@
                             <div>
                                 Status:
                                 <field name="state"/>
+                            </div>
+                            <div>
+                                Property Type:
+                                <field name="property_type_id"/>
                             </div>
                         </div>
                     </t>

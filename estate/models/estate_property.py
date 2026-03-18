@@ -39,13 +39,16 @@ class EstateProperty(models.Model):
         ],
         string="Status", required=True, copy=False, default="new")
     swimming_pool = fields.Boolean(string="Swimming Pool")  # extra fields
-    property_type = fields.Selection(
-        [
-            ('house', "House"),
-            ('apartment', "Apartment"),
-            ('villa', "Villa"),
-            ('land', "Land")
-        ],
-        string="Property Type"
-    )
+    # property_type = fields.Selection(
+    #     [
+    #         ('house', "House"),
+    #         ('apartment', "Apartment"),
+    #         ('villa', "Villa"),
+    #         ('land', "Land")
+    #     ],
+    #     string="Property Type"
+    # )
     property_age = fields.Integer(string="Property Age")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
