@@ -4,6 +4,7 @@ from odoo import api, fields, models, exceptions, tools
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate properties'
+    _order = 'id desc'
     _check_name = models.Constraint('UNIQUE(name)', 'Property name must be unique')
     _check_expected_price = models.Constraint('CHECK(expected_price > 0)', 'Expected price must be positive')
     _check_selling_price = models.Constraint('CHECK(selling_price >= 0)', 'Selling price cannot be negative')
@@ -63,7 +64,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.garden_area = (10 if record.garden else 0)
             record.garden_orientation = ('north' if record.garden else None)
-        
+
     def change_state_to_sold(self):
         for record in self:
             if record.state == 'cancelled':

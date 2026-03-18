@@ -4,6 +4,7 @@ from odoo import api, fields, models, exceptions
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'An offer placed on some property'
+    _order = 'price desc'
     _check_price = models.Constraint('CHECK(price > 0)', 'Price must be positive')
 
     price = fields.Float('Price')
@@ -16,6 +17,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date('Deadline', compute='_compute_deadline', inverse='_compute_validity')
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True)
 
     @api.depends('validity')
     def _compute_deadline(self):
@@ -38,7 +40,7 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.UserError('An offer has already been accepted')
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
-            record.property_id.state = 'sold'
+            record.property_id.state = 'offer_accepted'
             record.status = 'accepted'
         return True
 
