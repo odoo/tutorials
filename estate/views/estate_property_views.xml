@@ -26,6 +26,10 @@
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
             <form string='Real Estates'>
+                <header>
+                    <button name='change_state_to_sold' type='object' string="Sold"/>
+                    <button name='change_state_to_cancelled' type='object' string="Cancel"/>
+                </header>
                 <sheet>
                     <group col='1'>
                     <h1>

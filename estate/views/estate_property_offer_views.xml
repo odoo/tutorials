@@ -8,6 +8,8 @@
                 <field name='partner_id'/>
                 <field name='validity'/>
                 <field name='date_deadline'/>
+                <button name='accept_offer' type='object' class='fa fa-check'/>
+                <button name='reject_offer' type='object' class='oi oi-close'/>
                 <field name='status'/>
             </list>
         </field>

@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class EstateProperty(models.Model):
@@ -43,11 +43,24 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
         for record in self:
             record.garden_area = (10 if record.garden else 0)
             record.garden_orientation = ('north' if record.garden else None)
-            
+        
+    def change_state_to_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError("This property was already cancelled")
+            record.state = 'sold'
+        return True
+
+    def change_state_to_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("This property was already sold")
+            record.state = 'cancelled'
+        return True

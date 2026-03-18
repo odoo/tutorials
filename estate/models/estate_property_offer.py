@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class EstatePropertyOffer(models.Model):
@@ -26,3 +26,25 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date and record.date_deadline:
                 record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
+
+
+    def accept_offer(self):
+        for record in self:
+            if record.status == 'refused':
+                raise exceptions.UserError('This offer was already refused')
+            if fields.Date.today() > record.date_deadline:
+                raise exceptions.UserError('This offer has already expired')
+            if record.property_id.buyer_id:
+                raise exceptions.UserError('An offer has already been accepted')
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'sold'
+            record.status = 'accepted'
+        return True
+
+    def reject_offer(self):
+        for record in self:
+            if record.status == 'accepted':
+                raise exceptions.UserError('This offer was already accepted')
+            record.status = 'refused'
+        return True
