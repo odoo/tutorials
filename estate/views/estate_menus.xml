@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
-        <menuitem id="test_menu_root" name="Real Estate">
+        <menuitem id="test_menu_root" name="Real Estate"  web_icon="estate,static/icon/icon.jpeg">
             <menuitem id="first_level_menu" name="menu">
             <!-- __experimented a bit , if we remove the name from the menu item then it will use the id as name -->
                 <menuitem id="decond_level_menu" name="second menu">
