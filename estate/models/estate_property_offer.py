@@ -2,11 +2,15 @@ from odoo import api, exceptions, fields, models
 from dateutil.relativedelta import relativedelta
 
 
-class EstatePropertyType(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "An offer made on a property"
 
     price = fields.Float(string='Price')
+    _price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive.',
+    )
     status = fields.Selection(copy=False, selection=[
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
@@ -30,11 +34,11 @@ class EstatePropertyType(models.Model):
             for offer in record.property_id.offer_ids:
                 if offer.status == 'accepted':
                     raise exceptions.UserError('An offer has already been accepted for this property')
-            else:
-                record.status = 'accepted'
-                record.property_id.state = 'sold'
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.selling_price = record.price
+                else:
+                    record.status = 'accepted'
+                    record.property_id.state = 'offer_accepted'
+                    record.property_id.buyer_id = record.partner_id
+                    record.property_id.selling_price = record.price
         return True
 
     def action_refuse(self):

@@ -1,5 +1,6 @@
 from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -11,7 +12,15 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date('Available From', copy=False, default=lambda _: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
+    _expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.',
+    )
     selling_price = fields.Float(readonly=True, copy=False)
+    _selling_price = models.Constraint(
+        'CHECK(expected_price >= 0)',
+        'The selling price must be positive.',
+    )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer()
@@ -88,3 +97,9 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'cancelled'
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _validate_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1 and not float_is_zero(record.selling_price, 2):
+                raise exceptions.ValidationError('The selling price must be at least 90%% of the expected price')
