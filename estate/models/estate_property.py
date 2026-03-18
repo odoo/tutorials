@@ -2,6 +2,7 @@
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -47,6 +48,12 @@ class EstateProperty(models.Model):
         copy=False,
     )
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)', "The expected price must be stricly positive"
+    )
+
+    _check_selling_price = models.Constraint('CHECK(selling_price > 0)', "The selling price must be stricly positive")
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -61,6 +68,13 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else ''
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_expected_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and (
+                float_compare( record.expected_price * 0.9, record.selling_price, precision_digits=2,) > 0):
+                raise UserError(self.env._("The selling price must be a least 90% of the expected price!"))
 
     def action_cancel(self):
         for record in self:
