@@ -32,6 +32,7 @@
                             <field name="name"
                             placeholder="Property name"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
@@ -62,6 +63,15 @@
                             <field name="salesperson_id"/>
                             <field name="buyer_id"/>
                         </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                            <list>
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="status"/>
+                            </list>
+                            </field>
                         </page>
                         </notebook>
                 </sheet>

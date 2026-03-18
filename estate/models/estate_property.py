@@ -24,20 +24,10 @@ class EstateProperty(models.Model):
             ('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")],
         help="Direction the garden faces"
     )
-    property_type_id = fields.Many2one(
-    'estate.property.type',
-    string='Property Type'
-    )
-    buyer_id = fields.Many2one(
-    'res.partner',
-    string='Buyer',
-    copy=False
-    )
-    salesperson_id = fields.Many2one(
-    'res.users',
-    string='Salesperson',
-    default=lambda self: self.env.user
-    )
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+    salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     state = fields.Selection(
         selection=[
             ('new', "New"),
@@ -51,3 +41,4 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")

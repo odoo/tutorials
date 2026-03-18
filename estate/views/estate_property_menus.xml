@@ -9,4 +9,9 @@
 <menuitem id="estate_property_type_menu_action"
         action="estate_property_type_action"
         parent="estate_second_level_menu"/>
+
+<menuitem id="estate_property_tag_menu_action"
+        action="estate_property_tag_action"
+        parent="estate_second_level_menu"/>
 </odoo>
+
