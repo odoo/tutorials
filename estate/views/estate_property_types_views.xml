@@ -5,6 +5,22 @@
         <field name="arch" type="xml">
             <form>
                 <field name="name" nolable="1"/>
+                <div class="oe_button_box" name="button_box">
+                    <!-- <button name="action_schedule_meeting" type="object"
+                        class="oe_stat_button" icon="fa-calendar"
+                        context="{'partner_id': partner_id}"
+                        attrs="{'invisible': [('type', '=', 'lead')]}">
+                        <div class="o_stat_info">
+                            <field name="meeting_count" class="o_stat_value"/>
+                            <span class="o_stat_text" attrs="{'invisible': [('meeting_count', '&lt;', 2)]}"> Meetings</span>
+                            <span class="o_stat_text" attrs="{'invisible': [('meeting_count', '&gt;', 1)]}"> Meeting</span>
+                        </div>
+                    </button> -->
+                    <button name="%(estate_property_offer_action)d" type="action"
+                     class="oe_stat_button" icon="fa-money" string="Offers">
+                        <field name="offer_count"/>
+                    </button>
+                </div>
                 <notebook>
                     <page string="Properties">
                         <field name="property_ids">
@@ -27,7 +43,8 @@
             <list>
                 <field name="name" string="Type"/>
                 <field name="sequence" widget="handle"/>
-                <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" string="Offers"/>
+                <button name="%(estate_property_offer_action)d" type="action"
+                 class="oe_stat_button" icon="fa-money" string="Offers"/>
             </list>
         </field>
     </record>
