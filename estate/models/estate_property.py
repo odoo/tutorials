@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string='Description')
@@ -54,6 +55,7 @@ class EstateProperty(models.Model):
             ('cancelled', "Cancelled"),
         ],
         string="Status",
+        default='new'
     )
 
 
@@ -73,7 +75,7 @@ class EstateProperty(models.Model):
 
 
 
-    @api.constrains("expected_price", "selling_price")
+    @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
         for record in self:
             if float_is_zero(record.selling_price, precision_digits=2):
@@ -87,6 +89,14 @@ class EstateProperty(models.Model):
                     "Check your offers or adjust the expected price.")
                 )
 
+    @api.constrains('offer_ids')
+    def _check_creating_offer(self):
+        for record in self:
+            if record.state == 'sold' or record.state == 'cancelled' or record.state == 'offer_accepted' :
+                raise ValidationError(
+                    ("the property is already Sold, Cancelled or Offer Accepted! You can not make a new offer.")
+                )
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -98,6 +108,16 @@ class EstateProperty(models.Model):
             prices = record.offer_ids.mapped('price')
             record.best_price = max(prices) if prices else 0.0
 
+    @api.onchange('offer_ids')
+    def _onchange_offer_ids(self):
+        for record in self:
+            if record.state != 'sold':
+                if record.offer_ids:
+                    if 'accepted' not in record.offer_ids.mapped("status"):
+                        record.state = 'offer_received'
+                else:
+                    record.state = 'new'
+    
     @api.onchange('garden')
     def _onchange_garden(self):
         for record in self:
@@ -106,8 +126,7 @@ class EstateProperty(models.Model):
                 record.garden_orientation = 'north'
             else:
                 record.garden_area = 0 
-                record.garden_orientation = ''
-    
+                record.garden_orientation = False  
     def action_sell(self):
         for record in self:
             if record.state == 'cancelled':
@@ -116,6 +135,10 @@ class EstateProperty(models.Model):
                  raise UserError("The property is already sold!")
 
             record.state = 'sold'
+            for offer in record.offer_ids :
+                if offer.status != 'accepted':
+                    offer.status = 'refused'
+
         return True
 
     def action_cancel(self):
