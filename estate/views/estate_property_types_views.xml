@@ -1,4 +1,37 @@
-<odoo>    
+<odoo>  
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="name" nolable="1"/>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name="name" string="Title"/>
+                                <field name="expected_price" string="Expected Price"/>
+                                <field name="state" string="Status"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" string="Type"/>
+                <field name="sequence" widget="handle"/>
+                <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" string="Offers"/>
+            </list>
+        </field>
+    </record>
+
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>

@@ -5,6 +5,8 @@
 {
     'name': 'Estate',
     'version': '1.9',
+    'author': 'Abo Taha',
+    'license': 'AGPL-3',
     'application': True,
     'installable': True,
 

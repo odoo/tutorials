@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -33,7 +34,7 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
 
-    property_tags_ids = fields.Many2many('estate.property.tag', string='Property Tags')
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
@@ -57,6 +58,7 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price, 0.9*record.expected_price, 3) == -1:
                 raise exceptions.ValidationError("The selling price cannot be less than 90% of the expected price")
     
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -69,6 +71,13 @@ class EstateProperty(models.Model):
                 record.best_offer = max(record.offer_ids.mapped('price'))
             else:
                 record.best_offer = 0
+
+    @api.onchange('offer_ids')
+    def _onchange_receive_offer(self):
+        for record in self.filtered(lambda record: record.state == 'new'):
+            if record.offer_ids:
+                record.state = 'offer received'
+                
 
     @api.onchange('garden')
     def _onchange_garden(self):
