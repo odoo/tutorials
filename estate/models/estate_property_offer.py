@@ -4,6 +4,7 @@ from odoo import api, fields, models, exceptions
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'An offer placed on some property'
+    _check_price = models.Constraint('CHECK(price > 0)', 'Price must be positive')
 
     price = fields.Float('Price')
     status = fields.Selection(
@@ -26,7 +27,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date and record.date_deadline:
                 record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
-
 
     def accept_offer(self):
         for record in self:
