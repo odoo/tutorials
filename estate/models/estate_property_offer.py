@@ -35,6 +35,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
+        if not vals_list:
+            return super().create(vals_list)
+
         property_id = vals_list[0].get('property_id')
         offer_price = vals_list[0].get('price')
         property_model = self.env['estate.property'].browse(property_id)
