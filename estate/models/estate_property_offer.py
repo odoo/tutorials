@@ -10,6 +10,10 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate property offer"
 
     price = fields.Float()
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price of must be strictly positive!'
+    )
     status = fields.Selection(copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
@@ -34,8 +38,10 @@ class EstatePropertyOffer(models.Model):
                 continue
             for offer in record.property_id.offer_ids:
                 if offer.status == 'accepted':
-                    raise exceptions.UserError("There is an offer already accepted, you can accept another one!")
+                    offer.status = 'refused'
             record.status = 'accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
 
     
     def action_refuse_offer(self):

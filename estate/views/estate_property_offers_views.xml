@@ -34,6 +34,7 @@
                         <field name="date_deadline" string="Deadline"/>
                     </group>
                     <group>
+                        <field name="property_id" invisible="1"/> <!-- it's invisible because I just need to load it to accept an offer before it's saved/-->
                         <button name="action_accept_offer" string='accept' type="object" icon="fa-check"/>
                         <button name="action_refuse_offer" string='reject' type="object" icon="fa-times"/>
                     </group>

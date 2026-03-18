@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, exceptions
+from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
 
 
@@ -37,8 +38,25 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     total_area = fields.Float(compute="_compute_total_area")
-    best_offer = fields.Float(default=0, compute="_compute_best_offer")
+    best_offer = fields.Float(compute="_compute_best_offer")
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property must be strictly positive!'
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price of a property must be strictly positive!'
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, 3):
+                continue
+            if float_compare(record.selling_price, 0.9*record.expected_price, 3) == -1:
+                raise exceptions.ValidationError("The selling price cannot be less than 90% of the expected price")
+    
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -47,7 +65,10 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids')
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped('price'))
+            if record.offer_ids:
+                record.best_offer = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_offer = 0
 
     @api.onchange('garden')
     def _onchange_garden(self):
