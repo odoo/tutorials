@@ -5,11 +5,13 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
+
     <record id="estate_property_type_list_view" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Property Types">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -24,6 +26,20 @@
                     <h1 class="mb32">
                         <field name="name" class="mb16" placeholder="Property Type"/>
                     </h1>
+                    <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
+                        <field string="Offers" name="offer_count" widget="statinfo"/>
+                    </button>
+                    <notebook>
+                        <page string='Properties'>
+                            <field name='property_ids'>
+                                <list>
+                                    <field name='name'/>
+                                    <field name='expected_price'/>
+                                    <field name='state'/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
