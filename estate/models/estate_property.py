@@ -1,16 +1,10 @@
-# from odoo import models
-# class EstateProperty(models.Model):
-#     _name = "estate_property"
 from odoo import models, fields
 from datetime import timedelta
 
-
 class EstateProperty(models.Model):
-    # _name sẽ là tên bảng trong DB (chuyển thành library_book)
     _name = "estate.property"
     _description = "Bất động Sản"
 
-    # Các cột (fields) trong bảng
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Integer(string="Postcode")
@@ -37,7 +31,7 @@ class EstateProperty(models.Model):
         ],
         help="Type is used to separate North, South, East, West",
     )
-    is_ative = fields.Boolean(string="Active", default=False)
+    is_active = fields.Boolean( string="Active", default=False)
     state = fields.Selection(
         string="State",
         selection=[
@@ -48,3 +42,10 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
     )
+    salesman = fields.Text(string="Salesman")
+    buyer = fields.Text(string="Buyer")
+    property_type_id = fields.Many2one("estate.property.type", string="property type")
+    buyer_id = fields.Many2one("res.partner", string = "Buyer", copy = False)
+    seller_id = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user )
+    tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")

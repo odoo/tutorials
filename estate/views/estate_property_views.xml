@@ -1,17 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name" string="Title" />
+                <field name="description" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="facades" />
+                <field name="garage" />
+                <field name="garden" />
+                <field name="garden_area" />
+                <field name="garden_orientation" />
+                <field name="is_active" string="Active" />
+                <field name="state" />
+                <field name="date_availability" optional="hide" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_types_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.types.tree</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <tree string="Properties Types">
+                <field name="name" string="Type Name" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Delivery Carrier">
+                <field name="name" string="Title" />
+                <field name="description" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <filter string="Archived" name="inactive"
+                    domain="[('is_active', '=', False),('state', '=', 'sold')]" />
+                <group expand="1" string="Group By">
+                    <filter string="Provider" name="provider"
+                        context="{'group_by':'garden_orientation'}" />
+                    <filter string="Providerstate" name="providerstate"
+                        context="{'group_by':'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_view_view" model="ir.ui.view">
+        <field name="name">estate.property.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Properties">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <field name="tag_ids" widget="many2many_tags" />
+                    <group>
+                        <group>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                                <field name="is_active" />
+                                <field name="state" />
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <tree string="Offers" editable="bottom">
+                                    <field name="partner_id" />
+                                    <field name="price" />
+                                    <field name="status" />
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Other info">
+                            <group>
+                                <field name="property_type_id" />
+                                <field name="seller_id" />
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="estate_menu_root" name="Real Estate"/>
+    <record id="estate_property_types_action" model="ir.actions.act_window">
+        <field name="name">Properties Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
 
-    <menuitem id="estate_first_level_menu" name="Advertisements" parent="estate_menu_root"/>
+    <menuitem id="estate_menu_root" name="Real Estate" />
 
-    <menuitem id="estate_property_menu_action" 
-              name="Properties" 
-              parent="estate_first_level_menu" 
-              action="estate_property_action"/>
+    <menuitem id="estate_first_level_menu" name="Advertisements" parent="estate_menu_root" />
+    <menuitem id="estate_property_menu_action"
+        name="Properties"
+        parent="estate_first_level_menu"
+        action="estate_property_action" />
+
+    <menuitem id="estate_second_level_menu" name="Settings" parent="estate_menu_root" />
+    <menuitem id="estate_property_types_menu_action"
+        name="Properties Types"
+        parent="estate_second_level_menu"
+        action="estate_property_types_action" />
 </odoo>
