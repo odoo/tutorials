@@ -1,5 +1,6 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
+from odoo.exceptions import UserError, ValidationError
 from datetime import date, timedelta
 
 
@@ -31,6 +32,19 @@ class EstatePropertyOffer(models.Model):
         "CHECK(price > 0)",
         "Offer price must be greater than 0",
     )
+
+    @api.model
+    def create(self, vals_list):
+        property_id = vals_list[0].get('property_id')
+        offer_price = vals_list[0].get('price')
+        property_model = self.env['estate.property'].browse(property_id)
+
+        if float_compare(offer_price, property_model.best_price, precision_digits=2) < 0:
+            raise ValidationError("New offers cannot have a lower amount than an existing offer")
+
+        property_model.state = 'offer_received'
+
+        return super().create(vals_list)
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS

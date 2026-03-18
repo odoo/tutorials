@@ -65,6 +65,12 @@ class EstateProperty(models.Model):
         "Selling price must be greater or equal to 0",
     )
 
+    @api.ondelete(at_uninstall=False)
+    def unlink_if_property_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("Properties can only be deleted in 'New' or 'Cancelled' state")
+
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
