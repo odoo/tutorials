@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price_within_range(self):
         for record in self:
-            if not tools.float_utils.float_is_zero(self.selling_price, 2) and self.selling_price < 0.9 * self.expected_price:
+            if not tools.float_utils.float_is_zero(record.selling_price, 2) and record.selling_price < 0.9 * record.expected_price:
                 raise exceptions.ValidationError('Selling price cannot be lower than 90% of the expected price')
 
     @api.depends('garden_area', 'living_area')
@@ -64,6 +64,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.garden_area = (10 if record.garden else 0)
             record.garden_orientation = ('north' if record.garden else None)
+
+    @api.ondelete(at_uninstall=False)
+    def _property_delete(self):
+        if self.state != 'new' and self.state != 'cancelled':
+            raise exceptions.UserError('Cannot delete property with a state other than \'New\' or \'Cancelled\'')
+        self.offer_ids.unlink()
 
     def change_state_to_sold(self):
         for record in self:

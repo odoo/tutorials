@@ -1,0 +1,33 @@
+[[config]]
+name = "odoo"
+extends = ""
+odoo_path = "/home/odoo/odoo"
+$default
+abstract = false
+addons_paths = [
+  "/home/odoo/tutorials",
+$workspaceFolder:tutorials
+]
+addons_merge = "merge"
+$default
+python_path = "python3"
+$default
+stdlib = ""
+$default
+additional_stubs = [
+]
+additional_stubs_merge = "merge"
+$default
+file_cache = true
+$default
+diag_missing_imports = "all"
+$default
+ac_filter_model_names = true
+$default
+auto_refresh_delay = 1000
+$default
+diagnostic_settings = {
+}
+diagnostic_filters = [
+]
+no_typeshed_stubs = false
