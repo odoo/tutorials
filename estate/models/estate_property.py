@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, tools
 
 
 class EstateProperty(models.Model):
@@ -67,6 +67,22 @@ class EstateProperty(models.Model):
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)", "Selling price must be at least 0."
     )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_logic(self):
+        for record in self:
+            if not tools.float_is_zero(record.selling_price, precision_digits=2):
+                if (
+                    tools.float_compare(
+                        record.selling_price,
+                        record.expected_price * 0.9,
+                        precision_digits=2,
+                    )
+                    == -1
+                ):
+                    raise exceptions.ValidationError(
+                        "Price must be greater than 90% of expected price."
+                    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
