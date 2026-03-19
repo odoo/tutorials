@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, tools
 
 
 class EstatePropertyOffer(models.Model):
