@@ -1,5 +1,6 @@
 from odoo import api, exceptions, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -20,7 +21,9 @@ class EstatePropertyOffer(models.Model):
         ],
     )
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
-    property_id = fields.Many2one('estate.property', string='Property', required=True)
+    property_id = fields.Many2one(
+        'estate.property', string='Property', required=True, ondelete='cascade'
+    )
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(
         string='Deadline',
@@ -65,3 +68,15 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            property_for_offer = self.env['estate.property'].browse(val['property_id'])
+            if float_compare(val['price'], property_for_offer.best_price, 2) == -1:
+                raise exceptions.UserError(
+                    'New offers cannot be lower than existing offers'
+                )
+            property_for_offer.state = 'offer_received'
+
+        return super().create(vals_list)

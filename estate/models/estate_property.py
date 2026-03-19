@@ -61,7 +61,9 @@ class EstateProperty(models.Model):
     )
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
-    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    offer_ids = fields.One2many(
+        'estate.property.offer', 'property_id', string='Offers'
+    )
     total_area = fields.Integer(
         compute='_compute_total_area', string='Total Area (sqm)'
     )
@@ -120,8 +122,10 @@ class EstateProperty(models.Model):
                     'The selling price must be at least 90%% of the expected price'
                 )
 
-    # @api.ondelete(at_uninstall=False)
-    # def _check_before_delete(self):
-    #     for record in self:
-    #         if record.state not in ('new', 'cancelled'):
-    #             raise exceptions.UserError('A property cannot be deleted unless its state is New or Cancelled')
+    @api.ondelete(at_uninstall=False)
+    def _check_before_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise exceptions.UserError(
+                    'A property cannot be deleted unless its state is New or Cancelled'
+                )
