@@ -9,10 +9,26 @@
               name="Advertisements"
               parent="estate_menu_root"/>
 
-    <!-- Action Menu -->
+    <!-- Action Menu for properties -->
     <menuitem id="estate_menu_properties_action"
               name="Properties"
               parent="estate_menu_properties"
               action="estate_property_action"/>
+
+     <!-- First Level Menu -->
+    <menuitem id="estate_menu_properties_settings"
+              name="Settings"
+              parent="estate_menu_root"/>
+
+    <!-- Action Menu for properties type-->
+    <menuitem id="estate_menu_property_type"
+              name="Property Types"
+              parent="estate_menu_properties_settings"
+              action="estate_property_type_action"/>
+
+    <menuitem id="estate_menu_property_tags"
+              name="Property tags"
+              parent="estate_menu_properties_settings"
+              action="estate_property_tags_action"/>
 
 </odoo>

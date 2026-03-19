@@ -5,7 +5,7 @@ from datetime import timedelta
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = "Real Estate Property"
+    _description = 'Real Estate Property'
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -38,3 +38,8 @@ class EstateProperty(models.Model):
             ('cancelled', "Cancelled")
         ],
         string="Status", required=True, copy=False, default='new')
+    
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+    seller_id = fields.Many2one('res.users', string="Seller", default=lambda self: self.env.user)
+    tag_id = fields.Many2many('estate.property.tags', string="Property tags")
