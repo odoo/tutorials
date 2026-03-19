@@ -1,0 +1,18 @@
+<odoo>
+    <record id="view_event_registration_form_inherit" model="ir.ui.view">
+        <field name="name">event.registration.form.inherit</field>
+        <field name="model">event.registration</field>
+        <field name="inherit_id" ref="event.view_event_registration_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//group" position="inside">
+                <field name="partner_id"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_mark_attended"
+                        type="object"
+                        string="Mark Attended"
+                        class="btn-primary"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

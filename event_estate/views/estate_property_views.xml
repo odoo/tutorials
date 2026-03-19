@@ -1,0 +1,19 @@
+<odoo>
+    <record id="estate_property_form_inherit_event" model="ir.ui.view">
+        <field name="name">estate.property.form.event</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_view_event"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-calendar">
+                    <field name="event_id"
+                           widget="statinfo"
+                           string="Event"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
