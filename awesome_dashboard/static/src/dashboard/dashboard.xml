@@ -1,0 +1,42 @@
+<templates>
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel:{}}" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="openSettings" class="btn btn-primary">
+                    settings
+                </button>
+                <button t-on-click="viewCustomers" class="btn btn-primary">
+                    customers
+                </button>
+                <button t-on-click="viewLeads" class="btn btn-primary">
+                    leads
+                </button>
+            </t>
+            <div class="p-2 d-flex gap-2">
+                <t t-if="this.statState.data">
+                    <DashboardItem size="1">
+                        <NumberCard
+                            value="this.statState.data.average_quantity"
+                            title="'Average amount of t-shirt by order this month'"
+                        />
+                    </DashboardItem>
+                    <div style="width:20rem; height:20rem">
+                        <PieChart t-props="this.statState.data?.orders_by_size" />
+                    </div>
+                </t>
+                <t t-else="">
+                    <div
+                        class="position-fixed top-0 d-flex justify-content-center align-items-center"
+                        style="width: 100vw;height: 100vh;"
+                    >
+                        <div>
+                            <i class="fa fa-spinner fa-spin fa-2x text-primary" />
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

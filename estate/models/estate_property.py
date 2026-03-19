@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char("Title", required=True, size=100)
     description = fields.Text(
-        "Description", help="write the description of this property"
+        "Description", help="write the description of this property",
     )
     postcode = fields.Char("Postcode", size=10, help="address postal code")
     date_availability = fields.Date(
@@ -52,21 +52,21 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_ids = fields.Many2many(
-        "estate.property.tag", "estate_propery_tags_relation", string="Tags"
+        "estate.property.tag", "estate_propery_tags_relation", string="Tags",
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users", string="Salesperson", default=lambda self: self.env.user,
     )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area", compute="_compute_total", readonly=True)
     best_price = fields.Float(
-        "Best Price", readonly=True, compute="_compute_best_price"
+        "Best Price", readonly=True, compute="_compute_best_price", store=True,
     )
 
     _check_selling_and_expected_price = models.Constraint(
         "CHECK(selling_price >= 0 and expected_price > 0)",
-        "expected price must be greator than 0 and selling price must be positive",
+        "expected price must be higher than 0 and selling price must be positive",
     )
     _check_bedrooms_and_facades = models.Constraint(
         "CHECK(bedrooms >= 0 and facades >= 0)",
@@ -106,16 +106,21 @@ class EstateProperty(models.Model):
         for rec in self:
             if rec.state == "cancelled":
                 raise UserError(_("Cancelled Property can't be SOLD"))
-            else:
-                rec.state = "sold"
+            rec.state = "sold"
         return True
 
     def action_mark_as_cancelled(self):
         for rec in self:
             if rec.state == "sold":
                 raise UserError(_("SOLD Property can't be CANCELLED"))
-            else:
-                rec.state = "cancelled"
+            rec.state = "cancelled"
+        return True
+
+    def action_mark_sold_multi(self):
+        for rec in self:
+            if rec.state == "cancelled":
+                raise UserError(_("Cancelled Property can't be SOLD"))
+            rec.state = "sold"
         return True
 
 
@@ -123,5 +128,5 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     property_ids = fields.One2many(
-        "estate.property", "salesperson_id", string="Estate Properties"
+        "estate.property", "salesperson_id", string="Estate Properties",
     )

@@ -43,4 +43,13 @@
         </field>
         <field name="context">{}</field>
     </record>
+
+    <record id="ir_cron_reject_expired_offer" model="ir.cron">
+        <field name="name">reject expired offer</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="code">model._reject_expired_offers()</field>
+        <field name="state">code</field>
+    </record>
 </odoo>

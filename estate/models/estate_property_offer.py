@@ -23,6 +23,7 @@ class EstatePropertyOffer(models.Model):
         "Date Deadline",
         compute="_compute_deadline",
         inverse="_inverse_deadline",
+        store=True,
     )
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -32,7 +33,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     _check_price = models.Constraint(
-        "CHECK(price > 0)", "offer price must be greator than zero"
+        "CHECK(price > 0)", "offer price must be higher than zero",
     )
 
     @api.depends("create_date", "validity")
@@ -61,7 +62,7 @@ class EstatePropertyOffer(models.Model):
             min_price = expected_price * 0.9
             if float_compare(rec.price, min_price, precision_digits=2) < 0:
                 raise ValidationError(
-                    _("The offer price must be at least 90% of the expected price.")
+                    _("The offer price must be at least 90% of the expected price."),
                 )
 
     @api.model
@@ -70,7 +71,7 @@ class EstatePropertyOffer(models.Model):
             property_rec = self.env["estate.property"].browse(vals["property_id"])
             if property_rec.offer_ids:
                 accepted_rec = property_rec.offer_ids.filtered(
-                    lambda o: o.status == "accepted"
+                    lambda o: o.status == "accepted",
                 )
                 if accepted_rec:
                     raise UserError(_("offer can not be created"))
@@ -78,37 +79,49 @@ class EstatePropertyOffer(models.Model):
                 new_offer_price = vals.get("price")
                 if float_compare(new_offer_price, max_offer, precision_digits=2) < 1:
                     raise ValidationError(
-                        _("offer must me greator than existing offers")
+                        _("offer must me higher than existing offers"),
                     )
             if property_rec.state == "new":
                 property_rec.state = "offer_received"
         return super().create(vals_list)
+
+    @api.model
+    def _reject_expired_offers(self):
+        domain = [
+            ("status", "!=", "accepted"),
+            (
+                "date_deadline",
+                "<",
+                fields.Datetime.now(),
+            ),
+        ]
+        records = self.search(domain, limit=50)
+        records.write({"status": "rejected"})
 
     def action_accept(self):
         if self.status == "accepted":
             raise UserError(_("offer already accepted"))
         if self.property_id.state == "cancelled":
             raise UserError(_("cancelled property cant be accepted"))
-        else:
-            self.property_id.offer_ids.filtered(lambda o: o.id != self.id).write(
-                {"status": "rejected"}
-            )
-            self.property_id.write(
-                {
-                    "buyer_id": self.partner_id.id,
-                    "selling_price": self.price,
-                    "state": "offer_accepted",
-                }
-            )
-            self.status = "accepted"
+        self.property_id.offer_ids.filtered(lambda o: o.id != self.id).write(
+            {"status": "rejected"},
+        )
+        self.property_id.write(
+            {
+                "buyer_id": self.partner_id.id,
+                "selling_price": self.price,
+                "state": "offer_accepted",
+            },
+        )
+        self.status = "accepted"
         return True
 
     def action_refuse(self):
         if self.status == "rejected":
-            raise UserError("already refused")
-        elif self.status == "accepted":
+            raise UserError(_("already refused"))
+        if self.status == "accepted":
             self.property_id.selling_price = max(
-                self.property_id.offer_ids.mapped("price")
+                self.property_id.offer_ids.mapped("price"),
             )
             self.status = "rejected"
         return True

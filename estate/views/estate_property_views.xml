@@ -26,7 +26,15 @@
             <list string="estate_property_list"
                 decoration-success="state in ['offer_accepted','offer_received']"
                 decoration-bf="state == 'offer_accepted'"
-                decoration-muted="state in ['sold','cancelled']">
+                decoration-muted="state in ['sold','cancelled']"
+            >
+                <header>
+                    <button
+                        string="send offers" type="action"
+                        name="%(estate.offer_send_wizard_action)d"
+                        class="btn btn-secondry" display="always"
+                    />
+                </header>
                 <field name="state" />
                 <field name="property_type_id" />
                 <field name="name" />
@@ -60,7 +68,8 @@
                         string="Cancel"
                         invisible="state in ['cancelled','sold']"
                     />
-                    <field name="state" widget="statusbar" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet class="o_sheet_custom">
                     <div class="oe_title" colspan="4">
@@ -206,6 +215,17 @@
             <p>
                 Add New Properties
             </p>
+        </field>
+    </record>
+
+    <record id="estate_property_mark_as_sold_new" model="ir.actions.server">
+        <field name="name">mark as sold</field>
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="binding_model_id" ref="estate.model_estate_property" />
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_mark_sold_multi()
         </field>
     </record>
 </odoo>
