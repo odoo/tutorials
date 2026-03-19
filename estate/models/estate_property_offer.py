@@ -49,13 +49,13 @@ class EstatePropertyOffer(models.Model):
 
     def action_set_offer_status_accepted(self):
         for record in self:
-            if record.property_id.state == "sold":
+            if record.property_id.state == "offer_accepted":
                 raise exceptions.UserError("Only one offer can be accepted.")
             else:
                 record.status = "accepted"
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
-                record.property_id.action_set_state_sold()
+                record.property_id.state = "offer_accepted"
 
         return {"type": "ir.actions.client", "tag": "reload"}
 
