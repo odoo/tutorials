@@ -34,9 +34,13 @@
                 <group>
                     <header>
                         <button name="action_set_state_sold" type="object" string="Sold"/>
+
+                        <button name="action_set_state_cancelled" type="object" string="Cancel"/>
                     </header>
                     <header>
-                        <button name="action_set_state_cancelled" type="object" string="Cancel"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="new,offer_received,offer_accepted,sold"
+                               statusbar_size="small"/>
                     </header>
                 </group>
                 <sheet>
@@ -46,9 +50,8 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
