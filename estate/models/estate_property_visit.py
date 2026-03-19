@@ -32,6 +32,6 @@ class EstatePropertyVisit(models.Model):
 
     def action_cancel(self):
         self.status_visit = "cancel"
-    
+
     def action_done(self):
         self.status_visit = "done"

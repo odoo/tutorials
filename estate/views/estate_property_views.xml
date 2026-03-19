@@ -88,8 +88,8 @@
 
                         <page string="Sales">
                             <group>
-                                <field name="buyer_id"/>
                                 <field name="user_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
 
@@ -180,6 +180,6 @@
                 </templates>
             </kanban>
         </field>
-</record>
+    </record>
 
 </odoo>

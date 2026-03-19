@@ -1,5 +1,4 @@
-id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_estate_property_agent,estate.property.agent,model_estate_property,estate.group_real_estate_agent,1,1,1,0
 access_estate_property_offer_agent,estate.property.offer.agent,model_estate_property_offer,estate.group_real_estate_agent,1,1,1,0
 access_estate_property_type_agent,estate.property.type.agent,model_estate_property_type,estate.group_real_estate_agent,1,1,1,1
@@ -20,3 +19,10 @@ access_estate_property_visit_maintenance,estate.property.visit.maintenance.staff
 access_estate_property_maintenance_staff,estate.property.maintenance.staff,model_estate_property_maintenance,estate.group_real_estate_maintenance,1,1,1,0
 access_estate_property_type_maintenance,estate.property.type.maintenance.staff,model_estate_property_type,estate.group_real_estate_maintenance,1,1,1,1
 access_estate_property_tag_maintenance,estate.property.tag.maintenance.staff,model_estate_property_tag,estate.group_real_estate_maintenance,1,1,1,1
+
+access_estate_property_super_user,estate.property.super_user,model_estate_property,base.group_user,1,1,1,1
+access_estate_property_offer_super_user,estate.property.offer.super_user,model_estate_property_offer,base.group_user,1,1,1,1
+access_estate_property_visit_super_user,estate.property.visit.super_user,model_estate_property_visit,base.group_user,1,1,1,1
+access_estate_property_maintenance_super_user,estate.property.maintenance.super_user,model_estate_property_maintenance,base.group_user,1,1,1,1
+access_estate_property_type_super_user,estate.property.type.super_user,model_estate_property_type,base.group_user,1,1,1,1
+access_estate_property_tag_super_user,estate.property.tag.super_user,model_estate_property_tag,base.group_user,1,1,1,1

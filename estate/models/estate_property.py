@@ -62,7 +62,6 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one(
         "res.partner",
         string="Buyer",
-        readonly=True,
         copy=False,
     )
 
