@@ -11,8 +11,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Types">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
             </list>
         </field>
     </record>
@@ -24,18 +24,19 @@
             <form string="Properties">
                 <sheet>
                     <h1 class="mb32">
-                        <field name="name" class="mb16" placeholder="Property Type"/>
+                        <field name="name" class="mb16" placeholder="Property Type" />
                     </h1>
-                    <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-money">
-                        <field string="Offers" name="offer_count" widget="statinfo"/>
+                    <button name="estate.estate_property_offer_action" type="action"
+                        class="oe_stat_button" icon="fa-money">
+                        <field string="Offers" name="offer_count" widget="statinfo" />
                     </button>
                     <notebook>
                         <page string='Properties'>
                             <field name='property_ids'>
                                 <list>
-                                    <field name='name'/>
-                                    <field name='expected_price'/>
-                                    <field name='state'/>
+                                    <field name='name' />
+                                    <field name='expected_price' />
+                                    <field name='state' />
                                 </list>
                             </field>
                         </page>
@@ -50,7 +51,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <search string="Search">
-                <field name="name"/>
+                <field name="name" />
             </search>
         </field>
     </record>

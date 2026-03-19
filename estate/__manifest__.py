@@ -12,5 +12,5 @@
         "views/estate_property_tag_views.xml",
         "views/estate_menus.xml",
     ],
-    'license': 'OEEL-1'
+    "license": "OEEL-1",
 }
