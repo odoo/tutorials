@@ -113,7 +113,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state != 'sold':
                 if record.offer_ids:
-                    if 'accepted' not in record.offer_ids.mapped("status"):
+                    if 'accepted' not in record.offer_ids.mapped('status'):
                         record.state = 'offer_received'
                 else:
                     record.state = 'new'
