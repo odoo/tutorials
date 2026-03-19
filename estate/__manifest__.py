@@ -20,6 +20,8 @@
     ],
     'demo': [
         'demo/demo.xml',
+        'demo/demo_tag.xml',
+        'demo/demo_type.xml',
     ],
     'application': True,
 }

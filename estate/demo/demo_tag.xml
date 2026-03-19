@@ -1,0 +1,43 @@
+<odoo noupdate="1">
+
+    <record id="estate_tag_cozy" model="estate.property.tag">
+        <field name="name">Cozy</field>
+    </record>
+
+    <record id="estate_tag_modern" model="estate.property.tag">
+        <field name="name">Modern</field>
+    </record>
+
+    <record id="estate_tag_luxury" model="estate.property.tag">
+        <field name="name">Luxury</field>
+    </record>
+
+    <record id="estate_tag_renovated" model="estate.property.tag">
+        <field name="name">Renovated</field>
+    </record>
+
+    <record id="estate_tag_new_build" model="estate.property.tag">
+        <field name="name">New Build</field>
+    </record>
+
+    <record id="estate_tag_sea_view" model="estate.property.tag">
+        <field name="name">Sea View</field>
+    </record>
+
+    <record id="estate_tag_city_center" model="estate.property.tag">
+        <field name="name">City Center</field>
+    </record>
+
+    <record id="estate_tag_quiet" model="estate.property.tag">
+        <field name="name">Quiet Neighborhood</field>
+    </record>
+
+    <record id="estate_tag_pet_friendly" model="estate.property.tag">
+        <field name="name">Pet Friendly</field>
+    </record>
+
+    <record id="estate_tag_gated" model="estate.property.tag">
+        <field name="name">Gated Community</field>
+    </record>
+
+</odoo>

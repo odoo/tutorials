@@ -1,0 +1,31 @@
+<odoo noupdate="1">
+
+    <record id="estate_property_type_apartment" model="estate.property.type">
+        <field name="name">Apartment</field>
+    </record>
+
+    <record id="estate_property_type_house" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
+    <record id="estate_property_type_villa" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+
+    <record id="estate_property_type_studio" model="estate.property.type">
+        <field name="name">Studio</field>
+    </record>
+
+    <record id="estate_property_type_land" model="estate.property.type">
+        <field name="name">Land</field>
+    </record>
+
+    <record id="estate_property_type_commercial" model="estate.property.type">
+        <field name="name">Commercial</field>
+    </record>
+
+    <record id="estate_property_type_industrial" model="estate.property.type">
+        <field name="name">Industrial</field>
+    </record>
+
+</odoo>

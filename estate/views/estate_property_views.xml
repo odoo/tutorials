@@ -3,19 +3,20 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="name"/>
-                <field name="property_type_id"/>
-                <field name="postcode"/>
-                <field name="tag_ids" widget="many2many_tags"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>
-                <field name="buyer_id"/>
-                <field name="seller_id"/>
-            </list>
+            <list limit="50" decoration-danger="state == 'canceled'" decoration-success="state == 'sold'">
+                <field name="name" optional="show"/>
+                <field name="property_type_id" optional="show"/>
+                <field name="postcode" optional="show"/>
+                <field name="tag_ids" widget="many2many_tags" optional="show"/>
+                <field name="bedrooms" optional="show"/>
+                <field name="living_area" optional="show"/>
+                <field name="expected_price" optional="show"/>
+                <field name="selling_price" optional="show"/>
+                <field name="date_availability" optional="show"/>
+                <field name="state" optional="show"/>
+                <field name="buyer_id" optional="show"/>
+                <field name="seller_id" optional="show"/>
+             </list>
         </field>
     </record>
     
@@ -24,7 +25,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
-                <sheet >
+                <sheet>
                     <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
@@ -32,6 +33,7 @@
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="state"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -55,12 +57,11 @@
                             <group>
                                 <field name="buyer_id"/>
                                 <field name="seller_id"/>
+                                <field name="active"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"/>
-                               
-                            
                         </page>
                     </notebook>
                 </sheet>
@@ -83,13 +84,35 @@
             <filter 
                 string="Available" 
                 name="available"
-                domain="[('state', 'in', ['new', 'offer_received'])]"/>
-
+                domain="[('state','in',['new','offer_received'])]"/>
+            <filter 
+                string="Archived"
+                name="archived"
+                domain="[('active','=',False)]"/>
             <separator/>
+            <filter 
+                string="Affordable or New Big"
+                name="affordable_or_new_big"
+                domain="['|',('expected_price','&lt;',300000),
+                        '&amp;',('state','=','new'),('living_area','&gt;',100)]"/>
+            <filter
+                string="Quality Properties"
+                name="quality_properties"
+                domain="['|',
+                        '&amp;',
+                            '!',('state','=','canceled'),  
+                            ('bedrooms','&gt;',2),
+                        '&amp;',
+                            ('expected_price','&lt;',500000),
+                            ('living_area','&gt;',100)]"/>
             <filter 
                 string="Postcode" 
                 name="group_by_postcode"
-                context="{'group_by': 'postcode'}"/>
+                context="{'group_by':'postcode'}"/>
+            <searchpanel>
+                 <field name="state" />
+                 <field name="property_type_id" />
+            </searchpanel>
             </search>
         </field>
     </record>
@@ -100,4 +123,5 @@
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
+
 
