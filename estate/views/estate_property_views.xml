@@ -104,7 +104,8 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" decoration-success="state in ['offer_received', 'offer_accepted']"
+                  decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags"/>
