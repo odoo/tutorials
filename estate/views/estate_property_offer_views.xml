@@ -12,7 +12,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="price"/>
-                <field name="partner_id"/>
+                <field name="partner_id" options="{'no_create': True, 'no_create_edit': True}"/>
                 <field name="status"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>

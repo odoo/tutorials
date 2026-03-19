@@ -5,7 +5,7 @@
     "summary": "Real Estate Advertisement Module",
     "author": "Prasad Venkat",
     "license": "LGPL-3",
-    "depends": ["base", "mail", "event", "sign"],
+    "depends": ["base", "mail", "sign"],
     "data": [
         "security/ir.model.access.csv",
         'views/estate_property_visit_views.xml',

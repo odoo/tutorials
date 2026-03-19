@@ -103,14 +103,6 @@
                             <field name="visit_count" widget="statinfo" string="Visits"/>
 
                     </button>
-                    <button name="action_open_event"
-                            type="object"
-                            class="oe_stat_button"
-                            icon="fa-calendar">
-
-                        <field name="event_id" widget="statinfo" string="Events"/>
-
-                    </button>
                     <button name="%(action_estate_contract)d"
                         type="action"
                         string="Contracts"
@@ -188,7 +180,7 @@
                                     decoration-danger="status == 'refused'"
                                     decoration-success="status == 'accepted'">
                                     <field name="price"/>
-                                    <field name="partner_id"/>
+                                    <field name="partner_id" options="{'no_create': True, 'no_create_edit': True}"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>   
                                     <field name="status" 

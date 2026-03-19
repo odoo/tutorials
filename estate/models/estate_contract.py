@@ -1,6 +1,7 @@
 from odoo import models, fields
 from odoo.exceptions import UserError
 
+
 class EstateContract(models.Model):
     _name = 'estate.contract'
     _description = 'Property Contract'
@@ -40,7 +41,7 @@ class EstateContract(models.Model):
             }
         ]
         self.env['sign.send.request.signer'].create(signer_data)
-        sign_request = send_request.create_request()  
+        sign_request = send_request.create_request()
         if sign_request:
             self.sign_request_id = sign_request.id
             self.state = 'sent'

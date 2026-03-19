@@ -5,6 +5,4 @@ from . import estate_property_offer
 from . import res_users
 from . import estate_request
 from . import estate_property_visit
-from . import event_registration
-from . import event_event
 from . import estate_contract
