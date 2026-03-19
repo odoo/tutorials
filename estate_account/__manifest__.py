@@ -6,9 +6,6 @@
         'estate',
         'account',
     ],
-    'data': [
-        
-    ],
     'application': True,
     'installable': True,
     'author': 'Odoo S.A.',
