@@ -29,7 +29,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date and record.date_deadline:
                 record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
-    
+
     @api.model
     def create(self, vals):
         for offer in vals:

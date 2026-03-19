@@ -75,6 +75,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise exceptions.UserError('This property was already cancelled')
+            if record.state != 'offer_accepted':
+                raise exceptions.UserError('Please accept an offer before selling the property')
             record.state = 'sold'
         return True
 
