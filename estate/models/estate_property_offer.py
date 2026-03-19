@@ -47,6 +47,16 @@ class EstatePropertyOffer(models.Model):
                 diff = record.date_deadline - start_date
                 record.validity = diff.days
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+
+        for record in offers:
+            if record.property_id.state == "new":
+                record.property_id.state = "offer_received"
+
+        return offers
+
     def action_set_offer_status_accepted(self):
         for record in self:
             if record.property_id.state == "offer_accepted":
