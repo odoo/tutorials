@@ -1,5 +1,5 @@
 <odoo>
-    <record id='estate_list_view' model='ir.ui.view'>
+    <record id='estate_property_view_list' model='ir.ui.view'>
         <field name='name'>real.estate.list</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
@@ -15,7 +15,7 @@
         </field>
     </record>
 
-    <record id='estate_form_view' model='ir.ui.view'>
+    <record id='estate_property_view_form' model='ir.ui.view'>
         <field name='name'>real.estate.form</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
@@ -75,7 +75,7 @@
         </field>
     </record>
 
-    <record id='estate_kanban_view' model='ir.ui.view'>
+    <record id='estate_property_view_kanban' model='ir.ui.view'>
         <field name='name'>real.estate.kanban</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
@@ -103,7 +103,7 @@
         </field>
     </record>
 
-    <record id='estate_search' model='ir.ui.view'>
+    <record id='estate_property_view_search' model='ir.ui.view'>
         <field name='name'>real.estate.search</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>

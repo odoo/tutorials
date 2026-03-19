@@ -1,5 +1,5 @@
 <odoo>
-    <record id='estate_property_tag_list' model='ir.ui.view'>
+    <record id='estate_property_tag_view_list' model='ir.ui.view'>
         <field name='name'>Real Estate Tags</field>
         <field name='model'>estate.property.tag</field>
         <field name='arch' type='xml'>
