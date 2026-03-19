@@ -52,7 +52,7 @@
                     <group>
                         <field name="tag_ids" widget="many2many_tags"/>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
