@@ -14,5 +14,4 @@
         "views/estate_property_views.xml",
     ],
     "installable": True,
-    "auto_install": True,
 }

@@ -57,7 +57,7 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property_id = vals.get('property_id')   
+            property_id = vals.get('property_id')
             partner_id = vals.get('partner_id')
             if property_id and partner_id:
                 property_rec = self.env['estate.property'].browse(property_id)

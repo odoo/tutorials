@@ -35,7 +35,7 @@ class EstateContract(models.Model):
                 'role_id': template.sign_item_ids[0].responsible_id.id,
             },
             {
-                'partner_id': self.seller_id.id, 
+                'partner_id': self.seller_id.id,
                 'sign_send_request_id': send_request.id,
                 'role_id': template.sign_item_ids[1].responsible_id.id,
             }

@@ -180,8 +180,6 @@ class EstateProperty(models.Model):
 
             if not contract.sign_request_id or contract.sign_request_id.state != 'signed':
                 raise UserError("Contract is not signed yet.")
-
-
             record.state = 'sold'
 
     def best_accept(self):
