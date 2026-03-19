@@ -1,51 +1,91 @@
-from odoo import models, fields
+from odoo import api,models, fields
 from datetime import timedelta
+from odoo.exceptions import UserError
 
-class EstateProperty(models.Model):
-    _name = "estate.property"
+class EstateProperty(models.Model): 
+    _name        = "estate.property"
     _description = "Bất động Sản"
 
-    name = fields.Char(string="Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Integer(string="Postcode")
+    name              = fields.Char(string="Title", required=True)
+    description       = fields.Text(string="Description")
+    postcode          = fields.Integer(string="Postcode")
     date_availability = fields.Datetime(
-        string="Available From",
-        copy=False,
-        default=lambda self: fields.Datetime.now() + timedelta(days=90),
+        string  = "Available From",
+        copy    = False,
+        default = lambda self: fields.Datetime.now() + timedelta(days=90),
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly="1", copy=False)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Char(string="Living Area (sqm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage", default=True)
-    garden = fields.Boolean(string="Garden", default=True)
-    garden_area = fields.Integer(string="Garden Area (sqm)")
+    expected_price     = fields.Float(string="Expected Price", required=True)
+    selling_price      = fields.Float(string="Selling Price", readonly="1", copy=False)
+    bedrooms           = fields.Integer(string="Bedrooms", default=2)
+    living_area        = fields.Integer(string="Living Area (sqm)")
+    facades            = fields.Integer(string="Facades")
+    garage             = fields.Boolean(string="Garage", default=True)
+    garden             = fields.Boolean(string="Garden", default=True)
+    garden_area        = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        string="Garden Orientation",
-        selection=[
+        string    = "Garden Orientation",
+        selection = [
             ("north", "North"),
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
         ],
-        help="Type is used to separate North, South, East, West",
+        help = "Type is used to separate North, South, East, West",
     )
     is_active = fields.Boolean( string="Active", default=False)
-    state = fields.Selection(
-        string="State",
-        selection=[
+    state     = fields.Selection(
+        string    = "State",
+        selection = [
             ("new", "New"),
             ("offerReceived", "Offer Received"),
             ("offerAccepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        default="new"
     )
-    salesman = fields.Text(string="Salesman")
-    buyer = fields.Text(string="Buyer")
+    salesman         = fields.Text(string="Salesman")
+    buyer            = fields.Text(string="Buyer")
     property_type_id = fields.Many2one("estate.property.type", string="property type")
-    buyer_id = fields.Many2one("res.partner", string = "Buyer", copy = False)
-    seller_id = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user )
-    tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    buyer_id         = fields.Many2one("res.partner", string = "Buyer", copy = False)
+    seller_id        = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user )
+    tag_ids          = fields.Many2many("estate.property.tag")
+    offer_ids        = fields.One2many("estate.property.offer", "property_id")
+    
+    total_area = fields.Float(compute="_compute_area", digits=(16, 0))
+    best_price = fields.Float(string="Best price", compute="_compute_best_price", digits=(16,0))
+    
+    @api.depends("living_area" , "garden_area")
+    def _compute_area(self): 
+     for record in self     : 
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+         price = record.offer_ids.mapped("price")
+         record.best_price = max(price) if price else 0.0 
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+          self.garden_area = 10 if self.garden else 0
+          self.garden_orientation = "north" if self.garden else False
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError('Không thể bán trạng thái cancel')
+            record.state = "sold"
+        return True
+        
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+               raise UserError('Không thể cancel trạng thái sold')
+            record.state = "cancelled"
+        return True
+
+
+
+
+       
