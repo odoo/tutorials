@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <div class="p-4">
+                <h1>Awesome Dashboard</h1>
+            </div>
+        </Layout>
     </t>
-
 </templates>

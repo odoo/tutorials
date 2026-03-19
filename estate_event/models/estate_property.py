@@ -1,11 +1,9 @@
 from odoo import api, models, fields
-from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
     event_id = fields.Many2one("event.event", string="Event")
-    contract_ids = fields.One2many("estate.contract", "property_id")
 
     @api.model
     def create(self, vals):
@@ -52,18 +50,3 @@ class EstateProperty(models.Model):
             )
 
         return res
-
-    def action_open_contract(self):
-        for record in self:
-            return {
-                "type": "ir.actions.act_window",
-                "res_model": "estate.contract",
-                "view_mode": "form",
-                "target": "current",
-                "context": {
-                    "default_property_id": self.id,
-                    "default_buyer_id": self.buyer_id.id,
-                    "default_price": self.selling_price,
-                    "default_salesperson_id": self.user_id,
-                },
-            }

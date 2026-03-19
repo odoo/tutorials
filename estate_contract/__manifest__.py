@@ -1,10 +1,12 @@
 {
-    "name": "estate event",
+    "name": "estate contract",
     "version": "1.0",
     "category": "Estate",
-    "summary": "Estate Event",
-    "depends": ["estate", "event"],
+    "summary": "Estate Contract",
+    "depends": ["estate", "sign"],
     "data": [
+        "security/ir.model.access.csv",
+        "views/estate_contract_views.xml",
         "views/estate_property_views.xml",
     ],
     "author": "assri",

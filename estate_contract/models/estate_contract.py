@@ -1,5 +1,5 @@
-from odoo import api, models, fields
-from odoo.exceptions import UserError
+from odoo import models, fields
+
 
 class EstateContract(models.Model):
     _name = 'estate.contract'
@@ -81,4 +81,4 @@ class SignRequest(models.Model):
                 if contract.property_id:
                     contract.property_id.state = 'sold'
 
-        return res  
+        return res
