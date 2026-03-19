@@ -82,7 +82,8 @@
                         </page>
                         <page string="Offers">
                             <div>
-                                <field name="offer_ids" string=""/>
+                                <field name="offer_ids" string=""
+                                       readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                             </div>
                         </page>
                         <page string="Other info">
