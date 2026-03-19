@@ -8,6 +8,7 @@ from odoo import models, fields, api, exceptions, tools
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     active = fields.Boolean(default=True)
