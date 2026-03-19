@@ -18,7 +18,7 @@ export class TodoItems extends Component {
   }
 
   onRemove() {
-    if (this.props.onClick) {
+    if (this.props.onRemove) {
       this.props.onRemove();
     }
   }

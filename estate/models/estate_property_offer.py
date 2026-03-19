@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float(string="Offer Price", required=True)
     status = fields.Selection(
-        [("accepted", "Accepted"), ("rejected", "Rejected")], copy=False
+        [("accepted", "Accepted"), ("rejected", "Rejected")], copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
@@ -21,6 +21,7 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+        store=True,
     )
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -30,7 +31,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     _check_price_positive = models.Constraint(
-        "CHECK(price > 0)", "The property offer should be strictly positive"
+        "CHECK(price > 0)", "The property offer should be strictly positive",
     )
 
     def _get_create_date(self):
@@ -53,28 +54,28 @@ class EstatePropertyOffer(models.Model):
             min_price = record.property_id.expected_price * 0.9
             if float_compare(record.price, min_price, precision_digits=2) == -1:
                 raise ValidationError(
-                    _("The offer price can not be less than 90% of expected price")
+                    _("The offer price can not be less than 90% of expected price"),
                 )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             property_rec = self.env["estate.property"].browse(vals["property_id"])
             price = vals.get("price", 0)
             if float_compare(price, property_rec.best_price, precision_digits=2) < 0:
                 raise UserError(
-                    _("The offer price can not be less than best offer price")
+                    _("The offer price can not be less than best offer price"),
                 )
         offers = super().create(vals_list)
         offers.filtered(
-            lambda offer: offer.property_id.state == "new"
+            lambda offer: offer.property_id.state == "new",
         ).property_id.write({"state": "offer_received"})
         return offers
 
     def action_accept(self):
         self.ensure_one()
         if self.property_id.offer_ids.filtered(
-            lambda offer: offer.status == "accepted"
+            lambda offer: offer.status == "accepted",
         ):
             raise UserError(_("An offer has already been accepted for this property"))
         self.status = "accepted"
@@ -89,3 +90,6 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         self.status = "rejected"
         return True
+
+    def _cron_refuse_expired_offers(self):
+        self.search([("date_deadline", "<", fields.Date.today())]).write({"status": "rejected"})

@@ -8,8 +8,12 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties Table"
     _order = "id desc"
+    _inherit = ['mail.thread.cc',
+                'mail.activity.mixin',
+               ]
 
     name = fields.Char(string="Property Name", required=True)
+    email = fields.Char(index='trigram')
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -17,7 +21,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
-    expected_price = fields.Monetary(required=True)
+    expected_price = fields.Monetary(required=True, tracking=True)
     selling_price = fields.Monetary(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
@@ -59,7 +63,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_price = fields.Monetary(compute="_compute_best_price", store=True)
     currency_id = fields.Many2one(
-        "res.currency", default=lambda self: self.env.company.currency_id
+        "res.currency", default=lambda self: self.env.company.currency_id,
     )
 
     _check_expected_price_positive = models.Constraint(
@@ -94,7 +98,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ("new", "cancelled"):
                 raise UserError(
-                    _("properties can not be deleted if they are not new or cancelled")
+                    _("properties can not be deleted if they are not new or cancelled"),
                 )
 
     def action_sold(self):
@@ -105,13 +109,13 @@ class EstateProperty(models.Model):
 
         message = "Property is sold"
         return {
-                "effect": {
-                    "fadeout": "slow",
-                    "message": message,
-                    "img_url": "/web/static/img/smile.svg",
-                    "type": "rainbow_man",
-                }
-            }
+            "effect": {
+                "fadeout": "slow",
+                "message": message,
+                "img_url": "/web/static/img/smile.svg",
+                "type": "rainbow_man",
+            },
+        }
 
         return True
 

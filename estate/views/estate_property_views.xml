@@ -9,6 +9,10 @@
                 decoration-success="state in ('offer_received','offer_accepted')"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(estate.action_estate_property_wizard)d"
+                        type="action" string="Find Offers" class="btn-secondary" />
+                </header>
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="expected_price" />
@@ -87,6 +91,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

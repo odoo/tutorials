@@ -7,7 +7,6 @@
                    <t t-slot="title" />
                    <button t-on-click="toggleOpen">toggle</button>
                 </h5>
-                   
                 <t t-if="state.isOpen == true">
                     <p class="card-text">
                     <t t-slot="text" />

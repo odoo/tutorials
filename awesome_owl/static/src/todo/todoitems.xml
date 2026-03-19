@@ -5,10 +5,11 @@
         <div class="py-1"
             t-att-class="{'text-decoration-line-through text-muted': props.todo.isComplete}">
             <input class="m-3" type="checkbox" t-att-checked="props.todo.isComplete"
-                t-on-click="props.onClick" />
+                t-on-click="onClick" />
             <t t-out="props.todo.description" />
-            <span t-on-click="props.onRemove" class="fa fa-remove" />
+            <span t-on-click="onRemove" class="fa fa-remove mx-3" />
         </div>
     </t>
+
 
 </templates>
