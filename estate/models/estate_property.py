@@ -88,6 +88,12 @@ class EstateProperty(models.Model):
             self.garden_area = False
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlike_property(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'canceled':
+                raise exceptions.UserError("You cannot delete this property: only new and canceled properities can be deleted.")
+
     def action_mark_as_sold(self):
         for record in self:
             if record.state != 'canceled':

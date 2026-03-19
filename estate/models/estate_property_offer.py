@@ -34,6 +34,16 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline-fields.Date.to_date(record.create_date)).days
 
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            related_property = self.env['estate.property'].browse(vals['property_id'])
+            for offer in related_property.offer_ids:
+                if offer.price > vals['price']:
+                    raise exceptions.UserError("This offer price is lower than the current ones")
+
+        return super().create(vals_list)
+
     def action_accept_offer(self):
         for record in self:
             if record.status == 'accepted':
