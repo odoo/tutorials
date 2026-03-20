@@ -3,6 +3,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
 import datetime
+import ipdb
 
 
 class EstateProperty(models.Model):
@@ -82,6 +83,7 @@ class EstateProperty(models.Model):
 
     @api.depends()
     def _compute_best_price(self):
+        ipdb.set_trace()
         for record in self:
             record.best_price = (
                 max(record.offer_ids.mapped("price")) if record.offer_ids else 0
