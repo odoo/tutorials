@@ -1,17 +1,9 @@
 <templates xml:space="preserve">
-
 <t t-name="awesome_dashboard.DashboardItem">
-
     <div class="card m-2" t-att-style="'width:' + width">
-
         <div class="card-body">
-
             <t t-slot="default"/>
-
         </div>
-
     </div>
-
 </t>
-
 </templates>

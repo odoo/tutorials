@@ -1,0 +1,23 @@
+<templates xml:space="preserve">
+
+<t t-name="awesome_dashboard.DashboardSettings">
+    <div class="modal-body">
+        <t t-foreach="props.items" t-as="item" t-key="item.id">
+            <div class="form-check">
+                <input type="checkbox"
+                       class="form-check-input"
+                       t-att-checked="state.selected[item.id]"
+                       t-on-change="() => toggleItem(item.id)"/>
+                <label class="form-check-label">
+                    <t t-esc="item.description"/>
+                </label>
+            </div>
+        </t>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" t-on-click="apply">
+            Apply
+        </button>
+    </div>
+</t>
+</templates>
