@@ -14,8 +14,8 @@ class EstateProperty(models.Model):
         copy    = False,
         default = lambda self: fields.Datetime.now() + timedelta(days=90),
     )
-    expected_price     = fields.Float(string="Expected Price", required=True)
-    selling_price      = fields.Float(string="Selling Price", readonly="1", copy=False)
+    expected_price     = fields.Float(string="Expected Price", required=True, default=0)
+    selling_price      = fields.Float(string="Selling Price", copy=False)
     bedrooms           = fields.Integer(string="Bedrooms", default=2)
     living_area        = fields.Integer(string="Living Area (sqm)")
     facades            = fields.Integer(string="Facades")
@@ -44,8 +44,6 @@ class EstateProperty(models.Model):
         ],
         default="new"
     )
-    salesman         = fields.Text(string="Salesman")
-    buyer            = fields.Text(string="Buyer")
     property_type_id = fields.Many2one("estate.property.type", string="property type")
     buyer_id         = fields.Many2one("res.partner", string = "Buyer", copy = False)
     seller_id        = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user )
@@ -84,6 +82,18 @@ class EstateProperty(models.Model):
                raise UserError('Không thể cancel trạng thái sold')
             record.state = "cancelled"
         return True
+
+    _sql_constraints = [
+    ('check_expected_price', 'CHECK(expected_price > 0)', 'Giá kỳ vọng phải là số dương!'),
+    ('check_selling_price', 'CHECK(selling_price > 0)', 'Giá bán phải là số dương!'),
+    ('unique_name', 'UNIQUE(name,description)', 'Tên không được trùng')
+    ]
+    @api.constrains('selling_price','expected_price')
+    def _check_price(self):
+        for record in self:
+            if record.selling_price > 0 and record.selling_price < (record.expected_price * 0.9): raise UserError('Giá bán không được thấp hơn 90% giá kỳ vọng!')
+            
+
 
 
 
