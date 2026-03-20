@@ -24,7 +24,7 @@
     <!-- First Level Menu Settings -->
     <menuitem
         id="menu_real_estate_settings"
-        name="Setttings"
+        name="Settings"
         parent="menu_real_estate_root"
         sequence="2"/>
 
@@ -41,5 +41,11 @@
         parent="menu_real_estate_settings"
         action="action_estate_property_tag"
         sequence="2"/>
+
+    <!-- <menuitem
+        id="menu_real_estate_property_offer"
+        name="Property Offfer"
+        parent="menu_real_estate_settings"
+        action="action_estate_property_offer"/> -->
         
 </odoo>
