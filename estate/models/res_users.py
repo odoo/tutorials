@@ -1,5 +1,4 @@
-from odoo import api, fields, models, exceptions
-from dateutil.relativedelta import relativedelta
+from odoo import fields, models
 
 
 class ResUsers(models.Model):

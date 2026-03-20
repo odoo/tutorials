@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from odoo import api, fields, models, exceptions, Command
+from odoo import models, exceptions, Command
 
 
 class EstateProperty(models.Model):
@@ -10,10 +7,12 @@ class EstateProperty(models.Model):
     def action_mark_as_sold(self):
         res = super().action_mark_as_sold()
         journal = self.env['account.journal'].search(
-            [('type', '=', 'sale')], limit=1)
+            [('type', '=', 'sale')], limit=1
+        )
         if not journal:
-            raise UserError(
-                "Please define a 'Sale' journal in Accounting settings.")
+            raise exceptions.UserError(
+                "Please define a 'Sale' journal in Accounting settings."
+            )
 
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
@@ -28,7 +27,7 @@ class EstateProperty(models.Model):
                 Command.create({
                     'name': "Stella",
                     'quantity': 1,
-                    'price_unit': 0.06*self.selling_price
+                    'price_unit': 0.06 * self.selling_price
                 }),
                 Command.create({
                     'name': "Additional Fees",
@@ -36,6 +35,5 @@ class EstateProperty(models.Model):
                     'price_unit': 100.00
                 })
             ]
-        }
-        )
+        })
         return res
