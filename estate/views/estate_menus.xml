@@ -1,34 +1,34 @@
 <odoo>
     <menuitem
-        id='estate_property_menu_root'
-        name='Real Estate'
+        id="estate_property_menu_root"
+        name="Real Estate"
     />
     <menuitem
-        id='estate_property_menu_advertisements'
-        name='Advertisements'
-        parent='estate_property_menu_root'
+        id="estate_property_menu_advertisements"
+        name="Advertisements"
+        parent="estate_property_menu_root"
     />
     <menuitem
-        id='estate_property_menu_properties'
-        name='Properties'
-        parent='estate_property_menu_advertisements'
-        action='estate_property_action'
+        id="estate_property_menu_properties"
+        name="Properties"
+        parent="estate_property_menu_advertisements"
+        action="estate_property_action"
     />
     <menuitem
-        id='estate_property_menu_settings'
-        name='Settings'
-        parent='estate_property_menu_root'
+        id="estate_property_menu_settings"
+        name="Settings"
+        parent="estate_property_menu_root"
     />
     <menuitem
-        id='estate_property_menu_types'
-        name='Property Types'
-        parent='estate_property_menu_settings'
-        action='estate_property_types_action'
+        id="estate_property_menu_types"
+        name="Property Types"
+        parent="estate_property_menu_settings"
+        action="estate_property_types_action"
     />
     <menuitem
-        id='estate_property_menu_tags'
-        name='Property Tags'
-        parent='estate_property_menu_settings'
-        action='estate_property_tag_action'
+        id="estate_property_menu_tags"
+        name="Property Tags"
+        parent="estate_property_menu_settings"
+        action="estate_property_tag_action"
     />
 </odoo>

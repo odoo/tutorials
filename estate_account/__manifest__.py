@@ -2,7 +2,6 @@
     'name': 'Real Estate Account',
     'category': 'Tutorials',
     'depends': [
-        'base',
         'estate',
         'account',
     ],
