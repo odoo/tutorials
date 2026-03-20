@@ -5,27 +5,27 @@ from datetime import date, timedelta
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
+    _name = 'estate.property.offer'
     _description = "Property Offer"
-    _order = "price desc"
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(
         string="Offer Status",
         selection=[
-            ("offer_accepted", "Accepted"),
-            ("offer_refused", "Refused"),
+            ('offer_accepted', "Accepted"),
+            ('offer_refused', "Refused"),
         ],
         copy=False,
     )
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    partner_id = fields.Many2one(comodel_name='res.partner', required=True)
+    property_id = fields.Many2one(comodel_name='estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
-        compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+        compute='_compute_date_deadline', inverse='_inverse_date_deadline'
     )
     property_type_id = fields.Many2one(
-        "estate.property.type", related="property_id.property_type_id", store=True
+        comodel_name='estate.property.type', related='property_id.property_type_id', store=True
     )
 
     _check_offer_price = models.Constraint(
@@ -33,7 +33,7 @@ class EstatePropertyOffer(models.Model):
         "Offer price must be greater than 0",
     )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         if not vals_list:
             return super().create(vals_list)
@@ -53,7 +53,7 @@ class EstatePropertyOffer(models.Model):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
-    @api.depends("validity")
+    @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
             start_date = (
@@ -63,26 +63,25 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            start_date = (
-                record.create_date.date() if record.create_date else date.today()
-            )
+            start_date = (record.create_date or fields.Datetime.now()).date()
             date_diff = record.date_deadline - start_date
             record.validity = date_diff.days
 
     def action_accept_offer(self):
         for record in self:
             if any(
-                offer.status == "offer_accepted"
+                offer.status == 'offer_accepted'
                 for offer in record.property_id.offer_ids
             ):
                 raise UserError("Another offer has already been accepted.")
             else:
                 record.property_id.buyer = record.partner_id
                 record.property_id.selling_price = record.price
-                record.status = "offer_accepted"
-                record.property_id.state = "offer_accepted"
+                record.status = 'offer_accepted'
+                record.property_id.state = 'offer_accepted'
+        return True
 
     def action_refuse_offer(self):
         for record in self:
-            record.status = "offer_refused"
+            record.status = 'offer_refused'
         return True

@@ -3,7 +3,6 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
 import datetime
-import ipdb
 
 
 class EstateProperty(models.Model):
@@ -12,12 +11,12 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     name = fields.Char(required=True)
-    description = fields.Text(string="Description")
+    description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default=datetime.date.today() + relativedelta(months=3),
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -51,9 +50,13 @@ class EstateProperty(models.Model):
         index=True,
         default=lambda self: self.env.user,
     )
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    buyer = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+        string="Offers",
+    )
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Price")
 
@@ -69,8 +72,10 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def unlink_if_property_not_new_or_cancelled(self):
         for record in self:
-            if record.state not in ('new', 'cancelled'):
-                raise UserError("Properties can only be deleted in 'New' or 'Cancelled' state")
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    "Properties can only be deleted in 'New' or 'Cancelled' state"
+                )
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
@@ -83,7 +88,6 @@ class EstateProperty(models.Model):
 
     @api.depends()
     def _compute_best_price(self):
-        ipdb.set_trace()
         for record in self:
             record.best_price = (
                 max(record.offer_ids.mapped("price")) if record.offer_ids else 0
@@ -115,10 +119,13 @@ class EstateProperty(models.Model):
         return True
 
     @api.constrains("selling_price", "expected_price")
-    def check_selling_price(self):
+    def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
-                if float_compare(record.selling_price, record.expected_price * 0.9, 2) < 0:
+                if (
+                    float_compare(record.selling_price, record.expected_price * 0.9, 2)
+                    < 0
+                ):
                     raise ValidationError(
                         "The selling price cannot be lower than 90% of the expected price."
                     )

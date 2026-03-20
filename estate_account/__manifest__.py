@@ -5,6 +5,7 @@
     'category': 'Tutorials',
     'application': True,
     'installable': True,
+    'auto_install': True,
     'depends': ['base', 'estate', 'account'],
     'data': [],
     'license': 'AGPL-3'
