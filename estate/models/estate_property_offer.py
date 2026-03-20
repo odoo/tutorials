@@ -85,3 +85,21 @@ class EstatePropertyOffer(models.Model):
                     raise UserError("The offer price must be higher than the current highest offer (%s)." % max_offer_price)
             property_id.state = "offer received"
         return super().create(vals_list)
+
+    @api.model      
+    def _cron_expired_offer(self):
+        """
+        Cron job to set expired property offers to 'refused' status.
+        """
+        print("cronran")
+        today = fields.Date.today()
+        offers_expired = self.search([
+            ('deadline', '<', today),
+            ('status', '!=', 'refused') 
+        ])
+        if offers_expired:
+            offers_expired.write({'status': 'refused'})
+            self.env.cr.commit() 
+            print("offers set to refused by cron job")
+        else:
+            print("cron job ran : no offers exceeding the deadline")
