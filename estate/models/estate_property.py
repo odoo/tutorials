@@ -14,7 +14,8 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=fields.Date.today()+relativedelta(months=3), copy=False)
+    date_availability = fields.Date(
+        default=fields.Date.today()+relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -23,20 +24,24 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    active = fields.Boolean(default=True) # testing the reserved fields thing
+    garden_orientation = fields.Selection(selection=[(
+        'north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
+    active = fields.Boolean(default=True)  # testing the reserved fields thing
     state = fields.Selection(selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
-                            default='new',
-                            required=True,
-                            copy=False
-                        )
-    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-    seller_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+                             default='new',
+                             required=True,
+                             copy=False
+                             )
+    property_type_id = fields.Many2one(
+        'estate.property.type', string='Property Type')
+    seller_id = fields.Many2one(
+        'res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
 
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
 
-    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    offer_ids = fields.One2many(
+        'estate.property.offer', 'property_id', string="Offers")
 
     total_area = fields.Float(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
@@ -49,15 +54,6 @@ class EstateProperty(models.Model):
         'CHECK(selling_price >= 0)',
         'The selling price of a property must be strictly positive!'
     )
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, 3):
-                continue
-            if float_compare(record.selling_price, 0.9*record.expected_price, 3) == -1:
-                raise exceptions.ValidationError("The selling price cannot be less than 90% of the expected price")
-    
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -72,12 +68,21 @@ class EstateProperty(models.Model):
             else:
                 record.best_offer = 0
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, 3):
+                continue
+            if float_compare(record.selling_price, 0.9*record.expected_price, 3) == -1:
+                raise exceptions.ValidationError(
+                    "The selling price cannot be less than 90% of the expected price")
+
+
     @api.onchange('offer_ids')
     def _onchange_receive_offer(self):
         for record in self.filtered(lambda record: record.state == 'new'):
             if record.offer_ids:
                 record.state = 'offer received'
-                
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -92,18 +97,21 @@ class EstateProperty(models.Model):
     def _unlike_property(self):
         for record in self:
             if record.state != 'new' and record.state != 'canceled':
-                raise exceptions.UserError("You cannot delete this property: only new and canceled properities can be deleted.")
+                raise exceptions.UserError(
+                    "You cannot delete this property: only new and canceled properities can be deleted.")
 
     def action_mark_as_sold(self):
         for record in self:
             if record.state != 'canceled':
                 record.state = 'sold'
             else:
-                raise exceptions.UserError("Canceled properties cannot be sold!")
-    
+                raise exceptions.UserError(
+                    "Canceled properties cannot be sold!")
+
     def action_mark_as_canceled(self):
         for record in self:
             if record.state != 'sold':
                 record.state = 'canceled'
             else:
-                raise exceptions.UserError("Sold properties cannot be canceled!")
+                raise exceptions.UserError(
+                    "Sold properties cannot be canceled!")
