@@ -1,18 +1,19 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
-    _description = "Estate property offer"
-    _order = "price desc"
+    _name = 'estate.property.offer'
+    _description = 'Estate property offer'
+    _order = 'price desc'
 
     price = fields.Float(string="Price")
     status = fields.Selection(
         copy=False,
         selection=[
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused'),
+            ('accepted', "Accepted"),
+            ('refused', "Refused"),
         ],
         string="Status",
     )
@@ -24,17 +25,17 @@ class EstatePropertyOffer(models.Model):
     )
     validity = fields.Integer(default=7, string="Validity (Days)")
     date_deadline = fields.Date(
-        compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline",
-        string="Deadline",
+        compute='_compute_date_deadline',
+        inverse='_inverse_date_deadline',
+        string='Deadline',
     )
     property_type_id = fields.Many2one(
-        related="property_id.property_type_id", store=True
+        related='property_id.property_type_id', store=True
     )
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',
-        'The offer price of must be strictly positive!'
+        "The offer price of must be strictly positive!"
     )
 
     @api.depends('validity')
@@ -58,8 +59,7 @@ class EstatePropertyOffer(models.Model):
                 vals['property_id'])
             for offer in related_property.offer_ids:
                 if offer.price > vals['price']:
-                    raise exceptions.UserError(
-                        "This offer price is lower than the current ones")
+                    raise UserError(self.env._("This offer price is lower than the current ones"))
 
         return super().create(vals_list)
 

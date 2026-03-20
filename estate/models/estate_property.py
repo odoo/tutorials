@@ -1,12 +1,13 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Estate property"
-    _order = "id desc"
+    _name = 'estate.property'
+    _description = 'Estate property'
+    _order = 'id desc'
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text(string="Description")
@@ -49,28 +50,28 @@ class EstateProperty(models.Model):
         string="Status",
     )
     property_type_id = fields.Many2one(
-        'estate.property.type', string='Property Type')
+        'estate.property.type', string="Property Type")
     seller_id = fields.Many2one(
-        'res.users', string='Salesman', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+        'res.users', string="Salesman", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
 
-    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
 
     offer_ids = fields.One2many(
         'estate.property.offer', 'property_id', string="Offers")
 
     total_area = fields.Float(
-        compute="_compute_total_area", string="Total Area (sqm)")
+        compute='_compute_total_area', string="Total Area (sqm)")
     best_offer = fields.Float(
-        compute="_compute_best_offer", string="Best Offer")
+        compute='_compute_best_offer', string="Best Offer")
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
-        'The expected price of a property must be strictly positive!'
+        "The expected price of a property must be strictly positive!"
     )
     _check_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)',
-        'The selling price of a property must be strictly positive!'
+        "The selling price of a property must be strictly positive!"
     )
 
     @api.depends('living_area', 'garden_area')
@@ -92,8 +93,9 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, 3):
                 continue
             if float_compare(record.selling_price, 0.9 * record.expected_price, 3) == -1:
-                raise exceptions.ValidationError(
-                    "The selling price cannot be less than 90% of the expected price")
+                raise ValidationError(self.env._
+                    ("The selling price cannot be less than 90% of the expected price")
+                )
 
     @api.onchange('offer_ids')
     def _onchange_receive_offer(self):
@@ -114,21 +116,24 @@ class EstateProperty(models.Model):
     def _unlike_property(self):
         for record in self:
             if record.state != 'new' and record.state != 'canceled':
-                raise exceptions.UserError(
-                    "You cannot delete this property: only new and canceled properities can be deleted.")
+                raise UserError(self.env._
+                    ("You cannot delete this property: only new and canceled properities can be deleted.")
+                )
 
     def action_mark_as_sold(self):
         for record in self:
             if record.state != 'canceled':
                 record.state = 'sold'
             else:
-                raise exceptions.UserError(
+                raise UserError(self.env._(
                     "Canceled properties cannot be sold!")
+                )
 
     def action_mark_as_canceled(self):
         for record in self:
             if record.state != 'sold':
                 record.state = 'canceled'
             else:
-                raise exceptions.UserError(
+                raise UserError(self.env._(
                     "Sold properties cannot be canceled!")
+                )

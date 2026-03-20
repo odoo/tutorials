@@ -1,4 +1,4 @@
-from odoo import models, exceptions, Command
+from odoo import models, Command
 
 
 class EstateProperty(models.Model):
@@ -6,18 +6,18 @@ class EstateProperty(models.Model):
 
     def action_mark_as_sold(self):
         res = super().action_mark_as_sold()
-        journal = self.env['account.journal'].search(
-            [('type', '=', 'sale')], limit=1
-        )
-        if not journal:
-            raise exceptions.UserError(
-                "Please define a 'Sale' journal in Accounting settings."
-            )
+        # journal = self.env['account.journal'].search(
+        #     [('type', '=', 'sale')], limit=1
+        # )
+        # if not journal:
+        #     raise exceptions.UserError(
+        #         "Please define a 'Sale' journal in Accounting settings."
+        #     )
 
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
-            'journal_id': journal.id,
+            # 'journal_id': journal.id,
             'invoice_line_ids': [
                 Command.create({
                     'name': self.name,
