@@ -15,9 +15,9 @@ class EstatePropertyOffer(models.Model):
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False
     )
-    partner_id = fields.Many2one(comodel='res.partner', required=True)
-    property_id = fields.Many2one(comodel='estate.property', required=True)
-    property_type_id = fields.Many2one(comodel='estate.property.type', related='property_id.property_type_id', store=True)
+    partner_id = fields.Many2one('res.partner', required=True)
+    property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one(comodel_name='estate.property.type', related='property_id.property_type_id', store=True)
 
     _check_price = models.Constraint('CHECK(price > 0)', 'Price must be positive')
 

@@ -32,11 +32,11 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new')
-    property_type_id = fields.Many2one(comodel='estate.property.type', string='Type')
-    buyer_id = fields.Many2one(comodel='res.partner', string='Buyer')
-    salesman_id = fields.Many2one(comodel='res.users', string='Salesman', default=lambda self: self.env.user)
-    tag_ids = fields.Many2many(comodel='estate.property.tag', string='Tags')
-    offer_ids = fields.One2many(comodel='estate.property.offer', inverse_name='property_id', string='Offers')
+    property_type_id = fields.Many2one(comodel_name='estate.property.type', string='Type')
+    buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer')
+    salesman_id = fields.Many2one(comodel_name='res.users', string='Salesman', default=lambda self: self.env.user)
+    tag_ids = fields.Many2many(comodel_name='estate.property.tag', string='Tags')
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string='Offers')
 
     _check_name = models.Constraint('UNIQUE(name)', 'Property name must be unique')
     _check_expected_price = models.Constraint('CHECK(expected_price > 0)', 'Expected price must be positive')
