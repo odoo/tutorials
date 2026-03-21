@@ -56,9 +56,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-
         for vals in vals_list:
-            print("vals", vals)
             property_record = self.env["estate.property"].browse(vals["property_id"])
             if vals.get("price") <= property_record.best_price:
                 raise exceptions.UserError(
@@ -72,24 +70,6 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.state = "offer_received"
 
         return offers
-
-        # offers = super().create(vals_list)
-
-        # for record in offers:
-        #     # print("self.env", self.env)
-        #     # print("self.env[model]", self.env["estate.property.offer"])
-        #     # print("vals_list", vals_list)
-        #     # print("record:", record.price)
-        #     new_price = self.env["estate.property.offer"].browse(vals_list["price"])
-        #     if new_price <= record.property_id.best_price:
-        #         raise exceptions.UserError(
-        #             "New offer must be higher than current offer."
-        #         )
-        #     else:
-        #         if record.property_id.state == "new":
-        #             record.property_id.state = "offer_received"
-        #
-        # return offers
 
     def action_set_offer_status_accepted(self):
         for record in self:
