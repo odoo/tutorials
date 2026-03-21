@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_estate_property_deal,access_estate_property_deal,model_estate_property_deal,base.group_user,1,1,1,1

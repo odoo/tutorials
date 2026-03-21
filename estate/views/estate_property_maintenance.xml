@@ -13,7 +13,7 @@
             <list string="Maintenance">
                 <field name="title"/>
                 <field name="description"/>
-                <field name="technision"/>
+                <field name="technision_id"/>
                 <field name="created_by"/>
                 <field name="request_date"/>
                 <field name="estimate_cost"/>
@@ -39,7 +39,7 @@
                         <group>
                             <field name="title"/>
                             <field name="description"/>
-                            <field name="technision"/>
+                            <field name="technision_id"/>
                             <field name="created_by"/>
                             <field name="request_date"/>
                         </group>

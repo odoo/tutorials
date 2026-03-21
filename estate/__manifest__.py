@@ -2,7 +2,7 @@
     "name": "Real Estate",
     "author": "Dharmil Goyani",
     "license": "LGPL-3",
-    "depends": ["base", "mail", "event"],
+    "depends": ["base", "mail"],
     "data": [
         "security/estate_groups.xml",
         "security/ir.model.access.csv",
@@ -17,6 +17,7 @@
         "report/estate_property_templates.xml",
         "report/estate_property_report.xml",
         "data/sold_template.xml",
+        "data/offer_cron.xml",
     ],
     "application": True,
 }

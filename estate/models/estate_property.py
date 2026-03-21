@@ -1,7 +1,8 @@
-from datetime import timedelta
-from odoo import api, fields, models
+from datetime import datetime, timedelta
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.fields import Datetime as FieldsDatetime
 
 
 class EstateProperty(models.Model):
@@ -10,16 +11,24 @@ class EstateProperty(models.Model):
     _order = "id desc"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
+    active = fields.Boolean(default=True)
+    bedrooms = fields.Integer(default=2)
+    best_price = fields.Float(
+        compute="_compute_best_price",
+        string="Best Offer",
+        store=False,
+        search="_search_best_price",
+    )
+    buyer_id = fields.Many2one(
+        "res.partner",
+        string="Buyer",
+        copy=False,
+    )
     date_availability = fields.Date(
         copy=False, default=lambda self: fields.Date.today() + timedelta(days=90)
     )
+    description = fields.Text()
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -32,7 +41,21 @@ class EstateProperty(models.Model):
             ('west', "West"),
         ]
     )
-    active = fields.Boolean(default=True)
+    living_area = fields.Integer()
+    maintenance_count = fields.Integer(compute="_compute_maintenance_count")
+    maintenance_ids = fields.One2many(
+        "estate.property.maintenance", "property_id", string="Maintenance Request"
+    )
+    name = fields.Char(required=True)
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    postcode = fields.Char()
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesperson_id = fields.Many2one(
+        "res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
+    )
+    selling_price = fields.Float(readonly=True, copy=False)
     state = fields.Selection(
         [
             ('new', "New"),
@@ -44,33 +67,13 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
-    )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one(
-        "res.partner",
-        string="Buyer",
-        copy=False,
-    )
-    salesperson_id = fields.Many2one(
-        "res.users",
-        string="Salesperson",
-        default=lambda self: self.env.user,
+        tracking=1
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", store=True)
-    best_price = fields.Float(
-        compute="_compute_best_price",
-        string="Best Offer",
-        store=False,
-        search="_search_best_price",
-    )
-    maintenance_req = fields.One2many(
-        "estate.property.maintenance", "property_id", string="Maintenance Request"
-    )
-    maintenance_count = fields.Integer(compute="_compute_maintenance_count")
-    visit_req = fields.One2many("estate.property.visit", "property_id", string="Visits")
+    visit_ids = fields.One2many("estate.property.visit", "property_id", string="Visits")
     visit_count = fields.Integer(compute="_compute_visit_count")
+
 
     _expected_price_check = models.Constraint(
         "CHECK(expected_price > 0)", "The expected price must be strictly positive."
@@ -87,10 +90,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = 0
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -115,11 +115,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("A cancelled property cannot be sold.")
-            record.state = "sold"
-            record.action_archive()
+        self.ensure_one()
+        if self.state == "cancelled":
+            raise UserError(_("A cancelled property cannot be sold."))
+        if not self.buyer_id.id:
+            raise UserError(_("Buyer is Not selected !!"))
+        self.state = "sold"
+        self.action_archive()
 
         ctx = {
             "default_model": "estate.property",
@@ -155,7 +157,7 @@ class EstateProperty(models.Model):
     def action_best_offer(self):
         for record in self:
             if len(record.offer_ids) == 0:
-                raise UserError("There is no offer to accept !!")
+                raise UserError(_("There are no offers to accept for this property."))
             maxi = -1
             for offer in record.offer_ids:
                 if offer.price > maxi:
@@ -164,18 +166,18 @@ class EstateProperty(models.Model):
 
             max_record.action_accept()
 
-    @api.depends("maintenance_req")
+    @api.depends("maintenance_ids")
     def _compute_maintenance_count(self):
         for record in self:
-            record.maintenance_count = len(record.maintenance_req)
+            record.maintenance_count = len(record.maintenance_ids)
 
-    @api.depends("visit_req")
+    @api.depends("visit_ids")
     def _compute_visit_count(self):
         for record in self:
-            record.visit_count = len(record.visit_req)
+            record.visit_count = len(record.visit_ids)
 
     def _search_best_price(self, operator, value):
-        properties = self.search([])  # get all properties
+        properties = self.search([()])  # get all properties
         matched_ids = []
 
         for property in properties:

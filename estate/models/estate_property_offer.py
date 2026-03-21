@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -15,7 +15,11 @@ class EstatePropertyOffer(models.Model):
             ('refused', "Refused"),
         ]
     )
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    partner_id = fields.Many2one(
+        "res.partner",
+        string="Partner",
+        required=True,
+    )
     property_id = fields.Many2one(
         "estate.property", string="Property", ondelete="restrict"
     )
@@ -70,8 +74,8 @@ class EstatePropertyOffer(models.Model):
             groups_of_user = record.env.user.group_ids
 
             for group in groups_of_user:
-                if group.name == 'Estate Agent':
-                    raise ValidationError("Agent Can't accept offer !!")
+                if self.env.user.has_group("estate.estate_group_agent") and not self.env.user.has_group("estate.estate_group_manager"):
+                    raise ValidationError(_("Agents cannot accept offers."))
 
             record.property_id.buyer_id = record.partner_id
             record.status = "accepted"
@@ -83,6 +87,7 @@ class EstatePropertyOffer(models.Model):
             )
 
             other_offers.write({"status": "refused"})
+
         return True
 
     def action_refuse(self):
@@ -91,3 +96,12 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You cannot refuse an accepted offer.")
             record.status = "refused"
         return True
+
+    def _cron_offer_validity_actions(self):
+        today = fields.Date.today()
+
+        expired_offers = self.search([
+            ('date_deadline', '<', today),
+            ('status', '!=', 'accepted')
+        ])
+        expired_offers.write({'status': 'refused'})

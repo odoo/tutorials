@@ -26,7 +26,7 @@ class EstatePropertyVisit(models.Model):
     @api.constrains("date_availability")
     def _check_selling_price(self):
         for record in self:
-            all_mettings = record.property_id.visit_req.filtered(
+            all_mettings = record.property_id.visit_ids.filtered(
                 lambda o: o.id != record.id
             )
             for req in all_mettings:

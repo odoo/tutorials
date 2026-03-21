@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -13,8 +13,7 @@ class EstatePropertyMaintenance(models.Model):
         string="Created By",
         default=lambda self: self.env.user,
     )
-
-    technision = fields.Many2one(
+    technision_id = fields.Many2one(
         "res.partner",
         string="Technision",
     )
@@ -46,9 +45,9 @@ class EstatePropertyMaintenance(models.Model):
 
     property_id = fields.Many2one("estate.property", string="Property")
 
-    @api.onchange("technision")
-    def _do_assign(self):
-        if self.technision:
+    @api.onchange("technision_id")
+    def _onchange_technician_id(self):
+        if self.technision_id:
             self.state = "assign"
 
     def action_start(self):
@@ -64,4 +63,4 @@ class EstatePropertyMaintenance(models.Model):
     def _check_estimated_price(self):
         for record in self:
             if record.state == "progress" and not record.estimate_cost:
-                raise ValidationError("Enter Estimate Price !!")
+                raise ValidationError(_("Please enter an estimated price."))

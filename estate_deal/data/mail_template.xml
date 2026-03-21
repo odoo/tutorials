@@ -1,0 +1,22 @@
+<odoo>
+    <record id="estate_deal_email_template" model="mail.template">
+        <field name="name">Deal Email</field>
+        <field name="model_id" ref="model_estate_property_deal"/>
+
+        <field name="subject">Deal: {{object.name}}</field>
+        <field name="email_to">{{ object.buyer_id.email }}</field>
+
+        <field name="report_template_ids"
+           eval="[(4, ref('estate_deal.action_report_estate_deal'))]"/>
+
+        <field name="body_html" type="html">
+            <p>Hello <t t-out="object.buyer_id.name"/>,</p>
+
+            <p>
+                The deal <strong><t t-out="object.name"/></strong> has been generated.
+            </p>
+
+            <p>Thank you.</p>
+        </field>
+    </record>
+</odoo>

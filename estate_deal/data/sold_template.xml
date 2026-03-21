@@ -1,0 +1,19 @@
+<odoo>
+    <record id="mail_template_estate_deal_payment_executed" model="mail.template">
+        <field name="name">Sold</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="subject">{{ object.name }}</field>
+        <field name="email_from">{{ object.salesperson_id.email }}</field>
+        <field name="partner_to" eval="False"/>
+        <field name="use_default_to" eval="True"/>
+        <field name="body_html" type="html">
+            <div>
+                Hello,
+                The property <strong><t t-out="object.name"/></strong> 
+                is sold by <strong><t t-out="object.salesperson_id.name"/></strong> 
+                and purchased by <strong><t t-out="object.buyer_id.name"/></strong>.
+                The final selling price is <strong><t t-out="object.selling_price"/></strong>.
+            </div>
+        </field>
+    </record>
+</odoo>
