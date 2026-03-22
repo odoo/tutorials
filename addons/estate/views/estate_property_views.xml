@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.view.search</field>
@@ -31,19 +31,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="New property">
-                <group>
-                    <header>
-                        <button name="action_set_state_sold" type="object" string="SOLD"
-                                invisible="state in ['sold', 'cancelled']" />
-                        <button name="action_set_state_cancelled" type="object" string="CANCEL"
-                                invisible="state in ['sold', 'cancelled']" />
-                    </header>
-                    <header>
-                        <field name="state" widget="statusbar"
-                               statusbar_visible="new,offer_received,offer_accepted,sold"
-                               statusbar_size="small" />
-                    </header>
-                </group>
+                <header>
+                    <button name="action_set_state_sold" type="object" string="SOLD"
+                            invisible="state in ['sold', 'cancelled']" />
+                    <button name="action_set_state_cancelled" type="object" string="CANCEL"
+                            invisible="state in ['sold', 'cancelled']" />
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,offer_received,offer_accepted,sold"
+                           statusbar_size="small" />
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -75,7 +71,7 @@
                                     <field name="garden" />
                                     <field name="garden_area" invisible="not garden" />
                                     <field name="garden_orientation" invisible="not garden" />
-                                    <field name="total_area" invisible="not garden" />
+                                    <field name="total_area" />
                                 </group>
                             </group>
                         </page>
@@ -156,7 +152,6 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="search_view_id" ref="estate.estate_property_view_search" />
-        <field name="context">{"search_default_available_properties": True}
-        </field>
+        <field name="context">{"search_default_available_properties": 1}</field>
     </record>
 </odoo>

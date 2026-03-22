@@ -5,12 +5,10 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="New Offer">
-                <group>
-                    <header>
-                        <button name="action_set_offer_status_accepted" type="object" string="Accept" icon="fa-check" />
-                        <button name="action_set_offer_status_refused" type="object" string="Refuse" icon="fa-times" />
-                    </header>
-                </group>
+                <header>
+                    <button name="action_set_offer_status_accepted" type="object" string="Accept" icon="fa-check" />
+                    <button name="action_set_offer_status_refused" type="object" string="Refuse" icon="fa-times" />
+                </header>
                 <sheet>
                     <group>
                         <field name="price" />
