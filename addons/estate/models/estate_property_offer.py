@@ -50,7 +50,6 @@ class EstatePropertyOffer(models.Model):
                 days=record.validity
             )
 
-    @api.onchange('date_deadline')
     def _inverse_date_deadline(self):
         for record in self:
             start_date = record.create_date or fields.Date.today()
