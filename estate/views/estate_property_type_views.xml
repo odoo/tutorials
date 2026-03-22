@@ -1,17 +1,48 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-	<record id="estate_property_type_list" model="ir.ui.view">
+	<record id="estate_property_type_action_view" model="ir.actions.act_window">
+		<field name="name">Property Types</field>
+		<field name="res_model">estate.property.type</field>
+		<field name="view_mode">list,form</field>
+	</record>
+	<record id="estate_property_type_list_view" model="ir.ui.view">
 		<field name="name">estate.property.type.list</field>
 		<field name="model">estate.property.type</field>
 		<field name="arch" type="xml">
 			<list string="Channel">
-				<field name="name" />
+				<field name="sequence" widget="handle"/>
+				<field name="name"/>
+				<field name="offer_count"/>
 			</list>
+		</field>
+	</record>
+	<record id="estate_property_type_form_view" model="ir.ui.view">
+		<field name="name">estate.property.type.form</field>
+		<field name="model">estate.property.type</field>
+		<field name="arch" type="xml">
+			<form string="Property type">
+				<sheet>
+					<h1>
+						<field name="name"/>
+					</h1>
+					<div class="oe_button_box" name="button_box" invisible="not offer_count">
+						<button class="oe_stat_button" type="action" name="estate.estate_property_offers_action" icon="fa-money">
+							<field name="offer_count" string="Offers" widget="statinfo"/>
+						</button>
+					</div>
+					<notebook>
+						<page string="Properties">
+							<field name="property_ids">
+								<list>
+									<field name="name"/>
+									<field name="expected_price"/>
+									<field name="state"/>
+								</list>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
 		</field>
 	</record>
 </odoo>
