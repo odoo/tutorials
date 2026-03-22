@@ -1,0 +1,15 @@
+[tool.ruff]
+# Ustawiamy długość linii na standard Odoo
+line-length = 79
+
+# Wybieramy reguły (E i F to standardowe flake8)
+select = ["E", "F", "B"]
+
+# Ignorujemy błędy w plikach __init__.py (imported but unused)
+[tool.ruff.extend-per-file-ignores]
+"__init__.py" = ["F401"]
+"__manifest__.py" = ["B018"]
+
+[tool.black]
+line-length = 79
+target-version = ['py312'] # Lub wersja, której używasz
