@@ -1,7 +1,7 @@
 [tool.ruff]
 # Ustawiamy długość linii na standard Odoo
 line-length = 79
-
+exclude = ["**/*.xml"]
 # Wybieramy reguły (E i F to standardowe flake8)
 select = ["E", "F", "B"]
 

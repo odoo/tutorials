@@ -6,7 +6,7 @@
             <form string="New property tag">
                 <sheet>
                     <group>
-                        <field name="name" string="Name"/>
+                        <field name="name" string="Name" />
                     </group>
                 </sheet>
             </form>
@@ -18,7 +18,7 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list string="Property Tags" editable="bottom">
-                <field name="name"/>
+                <field name="name" />
             </list>
         </field>
     </record>
