@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-manifest = {
+{
     "name": "Awesome Dashboard",
     "summary": (
         "Starting module for Discover "

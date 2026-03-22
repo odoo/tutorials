@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-manifest = {
+{
     "name": "Gallery View",
     "summary": (
         "Starting module for Master the Odoo web "

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-manifest = {
+{
     "name": "Awesome Clicker",
     "summary": (
         "Starting module for Master the Odoo "
