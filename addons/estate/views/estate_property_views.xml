@@ -63,7 +63,6 @@
                             <field name="selling_price" />
                         </group>
                     </group>
-
                     <notebook>
                         <page string="Description">
                             <group>
@@ -160,5 +159,4 @@
         <field name="context">{"search_default_available_properties": True}
         </field>
     </record>
-
 </odoo>
