@@ -1,0 +1,46 @@
+<odoo>
+    <record id="estate_property_contract_action" model="ir.actions.act_window">
+        <field name="name">Contracts</field>
+        <field name="res_model">estate.property.contract</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[('property_id', '=', active_id)]</field>
+        <field name="context">{'default_property_id': active_id}</field>
+    </record>
+
+    <record id="estate_property_contract_view_form" model="ir.ui.view">
+        <field name="name">estate.property.contract.form</field>
+        <field name="model">estate.property.contract</field>
+        <field name="arch" type="xml">
+            <form string="Contract">
+
+                <header>
+                    <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="new,sent,signed,done"/>
+                    <button name="action_send"
+                            type="object"
+                            string="Send"
+                            class="btn-primary"
+                            invisible="state != 'new'"/>
+                    <button name="update_signed_status"
+                            type="object"
+                            string="Status"
+                            class="btn-secondary"
+                            invisible="state != 'sent'"/>
+                    <button name="action_done"
+                            type="object"
+                            string="Deal Done"
+                            class="btn-primary"
+                            invisible="state != 'signed'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="property_id"/>
+                        <field name="buyer_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

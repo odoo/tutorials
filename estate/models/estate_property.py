@@ -83,6 +83,14 @@ class EstateProperty(models.Model):
         "property_id",
         string="maintenance requests"
     )
+    event_id = fields.Many2one(
+            'event.event',
+            string = 'event'
+        )
+    sign_request_id = fields.Many2one(
+        'sign.request',
+        string="Contract"
+    )
     total_area = fields.Float(
         string="Total Area",
         compute="_compute_total_area"
@@ -103,7 +111,7 @@ class EstateProperty(models.Model):
         "The expected price must be strictly positive.",
     )
 
-    _check_selling_price = models.Constraint(
+    _sql_check_selling_price = models.Constraint(
         "CHECK(selling_price > 0)",
         "The selling price must be strictly positive",
     )
@@ -137,6 +145,17 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+    @api.model
+    def create(self, vals_list):
+            records = super().create(vals_list)
+
+            for record in records:
+                event = self.env['event.event'].create({
+                    'name': f"Open House - {record.name}",
+                    'property_id': record.id
+                })
+                record.event_id = event.id  
+            return records
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -186,6 +205,7 @@ class EstateProperty(models.Model):
             "target": "new",
             "context": ctx,
         }
+        record.state = "sold"
         return action
 
     def _compute_request_count(self):
@@ -195,3 +215,12 @@ class EstateProperty(models.Model):
     def _compute_visit_count(self):
         for record in self:
             record.visit_count = len(record.visit_ids)
+
+    def action_event_open(self):
+            self.ensure_one()
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'event.event',
+                'view_mode': 'form',
+                'res_id': self.event_id.id,
+            }

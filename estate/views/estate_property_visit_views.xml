@@ -26,6 +26,7 @@
                         <field name="visit_date"/>
                         <field name="state"
                                widget="statusbar"
+                               options = "{'clickable': '1'}"
                                 />
                     </group>
                 </sheet>

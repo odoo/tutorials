@@ -27,7 +27,6 @@ class EstatePropertyMaintenance(models.Model):
             ('done', "done"),
             ('cancel', "cancel"),
         ],
-        default="new",
     )
     estimated_cost = fields.Float(required=True)
     actual_cost = fields.Float(readonly=True)

@@ -57,6 +57,19 @@
                                         widget="statinfo"
                                     string="Visit"/>
                             </button>
+                            <button name="action_event_open"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    string="Event"
+                                >
+                            </button>
+                            <button name="%(estate_property_contract_action)d"
+                                    type="action"
+                                    class="oe_stat_button"
+                                    string="contract"
+                                    invisible = "state != 'offer_accepted'"
+                                >
+                            </button>
                         </div>
                         <button name="action_sold"
                                 type="object"
@@ -117,7 +130,9 @@
                                       decoration-success="status == 'accepted'" 
                                 >
                                     <field name="price"/>
-                                    <field name="partner_id"/>
+                                    <field name="partner_id"
+                                           domain="[('id', 'in', allowed_partner_ids)]"
+                                           options="{'no_create': True}"/>
                                     <field name="status" readonly="1"/>
                                     <button name="action_accept"
                                             type="object"

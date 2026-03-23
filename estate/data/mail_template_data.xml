@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-<record id="email_template_estate" model="mail.template">
+        <record id="email_template_estate" model="mail.template">
             <field name="name">Mail</field>
             <field name="model_id" ref="estate.model_estate_property"/>
             <field name="subject">{{ object.name }}</field>

@@ -43,6 +43,28 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id",
         store=True,
     )
+    allowed_partner_ids = fields.Many2many(
+        "res.partner",
+        compute="_compute_allowed_partners",
+        store=False
+    )
+
+    @api.depends('property_id')
+    def _compute_allowed_partners(self):
+        for record in self:
+            partners = self.env['res.partner']
+            if record.property_id:
+                if record.property_id.event_id:
+                    registrations = record.property_id.event_id.registration_ids.filtered(
+                        lambda record: record.state == 'done'
+                    )
+                    partners |= registrations.mapped('partner_id')
+
+                visits = record.property_id.visit_ids.filtered(
+                    lambda record: record.state == 'done')
+                partners |= visits.mapped('partner_id')
+
+            record.allowed_partner_ids = partners
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -54,7 +76,17 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_record = self.env['estate.property'].browse(vals.get('property_id'))
+            partner_id = vals.get('partner_id')
+            event = property_record.event_id
 
+            registration = self.env['event.registration'].search([
+                ('event_id', '=', event.id),
+                ('partner_id', '=', partner_id),
+                ('state', '=', 'done')
+            ])
+
+            if not registration:
+                raise UserError("only attendees can create offers.")
             if property_record.state in ('offer_accepted', 'sold'):
                 raise UserError("Cannot create new offer. An offer is already accepted.")
             if property_record.offer_ids:
@@ -64,7 +96,8 @@ class EstatePropertyOffer(models.Model):
 
         offers = super().create(vals_list)
         for offer in offers:
-            property_record.state = 'offer_received'
+            offer.property_id.state = 'offer_received'
+
         return offers
 
     def _inverse_date_deadline(self):

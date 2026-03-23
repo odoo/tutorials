@@ -5,3 +5,6 @@ from . import estate_property_type
 from . import estate_property_maintenance
 from . import estate_res_users
 from . import estate_property_visit
+from . import event_event
+from . import estate_property_contract
+from . import event_registration
