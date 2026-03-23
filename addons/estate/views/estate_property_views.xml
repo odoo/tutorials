@@ -32,9 +32,9 @@
         <field name="arch" type="xml">
             <form string="New property">
                 <header>
-                    <button name="action_set_state_sold" type="object" string="SOLD"
+                    <button name="action_set_state_sold" type="object" string="Sold"
                             invisible="state in ['sold', 'cancelled']" />
-                    <button name="action_set_state_cancelled" type="object" string="CANCEL"
+                    <button name="action_set_state_cancelled" type="object" string="Cancel"
                             invisible="state in ['sold', 'cancelled']" />
                     <field name="state" widget="statusbar"
                            statusbar_visible="new,offer_received,offer_accepted,sold"
