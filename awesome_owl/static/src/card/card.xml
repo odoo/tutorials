@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="p-3">
+            <h3>
+                <t t-esc="props.title"/> 
+                <button class="btn btn-outline-primary" t-on-click="() => { state.isOpen = !state.isOpen }">Toggle</button>
+            </h3>
+            <t t-if="state.isOpen">
+                <t t-slot="default"/>
+            </t>
+        </div>
+    </t>
+
+</templates>
