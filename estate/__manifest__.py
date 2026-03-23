@@ -1,6 +1,6 @@
 {
     'name': 'estate',
-    'author': 'qugeo',
+    'author': 'Odoo S.A.',
     'depends': ['base'],
     'application': True,
     'license': 'LGPL-3',
