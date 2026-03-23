@@ -2,7 +2,6 @@
 <odoo>
     <data>
 
-
         <record id="estate_property_tag_view_form" model="ir.ui.view">
             <field name="name">estate.property.tag.form</field>
             <field name="model">estate.property.tag</field>
@@ -17,8 +16,6 @@
                 </form>
             </field>
         </record>
-
-
         <!-- estate property tag action -->
         <record
             id="estate_property_tag_action" model="ir.actions.act_window">

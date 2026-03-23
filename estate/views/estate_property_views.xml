@@ -2,7 +2,6 @@
 <odoo>
     <data>
 
-
         <record id="estate_property_view_form" model="ir.ui.view">
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
@@ -57,7 +56,6 @@
                                 </group>
                             </page>
 
-
                             <page string="Offers">
                                 <field name="offer_ids"
                                     readonly="state in ('offer_accepted', 'sold', 'canceled')">
@@ -103,8 +101,8 @@
                 <list string="Properties" editable="top" open_form_view="True"
                     decoration-success="state in ('offer_received', 'offer_accepted')"
                     decoration-bf="state == 'offer_accepted'"
-                    decoration-muted="state == 'sold'"
-                >
+                    decoration-muted="state == 'sold'">
+
                     <field name="name" string="Title" />
                     <field name="property_type_id" />
                     <field name="postcode" />
@@ -122,6 +120,7 @@
             <field name="name">estate.property.search</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
+
                 <search string="Properties">
                     <field name="name" string="Title" />
                     <field name="expected_price" filter_domain="[('bedrooms', '>=', self)]" />
@@ -134,23 +133,16 @@
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}" />
                     <filter string="Property Type" name="property_type_id"
                         context="{'group_by': 'property_type_id'}" />
-
                 </search>
+
             </field>
         </record>
-
 
         <record id="estate_property_view_kanban" model="ir.ui.view">
             <field name="name">estate.property.kanban</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <kanban default_group_by="property_type_id" records_draggable="false" >
-                    <field name="name" />
-                    <field name="expected_price" />
-                    <field name="best_price" />
-                    <field name="selling_price" />
-                    <field name="tag_ids" />
-                    <field name="state" />
                     <templates>
                         <t t-name="card">
                             <div class="oe_kanban_global_click">
@@ -180,8 +172,6 @@
                 </kanban>
             </field>
         </record>
-
-
         <!-- estate property action   -->
         <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
@@ -194,7 +184,6 @@
                 </p>
             </field>
         </record>
-
 
     </data>
 </odoo>

@@ -1,5 +1,5 @@
-from odoo import models , Command
-import pdb
+from odoo import models, Command
+
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
@@ -7,9 +7,9 @@ class EstateProperty(models.Model):
     def action_sell(self):
 
         for property_record in self:
-            
+  
             invoice_vals = {
-                'name': property_record.name + ' Invoice' , 
+                'name': property_record.name + ' ' +'Invoice', 
                 'partner_id': property_record.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
                     })
                 ]
             }
-            
+
             self.env['account.move'].create(invoice_vals)
 
-        return super().action_sell()  
+        return super().action_sell()

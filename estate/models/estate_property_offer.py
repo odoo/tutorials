@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-import pdb
 
 
 class EstatePropertyOffer(models.Model):
@@ -40,36 +39,30 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
-            date_start = (
-                record.create_date.date() if record.create_date else fields.Date.today()
-            )
+            date_start = record.create_date.date() if record.create_date else fields.Date.today()
             record.date_deadline = fields.Date.add(date_start, days=record.validity)
-
 
     @api.model_create_multi
     def create(self, vals_list):
+        property_ids = [v.get('property_id') for v in vals_list if v.get('property_id')]
+        properties = self.env['estate.property'].browse(property_ids)
+        property_map = {p.id: p for p in properties}
 
         for vals in vals_list:
-            property_id = vals.get('property_id')
+            prop_id = vals.get('property_id')
+            property_rec = property_map.get(prop_id)
             
-            if property_id:
-                property_record = self.env['estate.property'].browse(property_id)
-                
-                if property_record.offer_ids:
-                    max_offer = max(property_record.mapped('offer_ids.price'))
-                    if vals.get('price', 0) < max_offer:
-                        raise UserError(f"You cannot make an offer lower ({vals.get('price', 0)}) than the current highest offer.")
-        
-        
+            if property_rec and property_rec.offer_ids:
+                max_offer = max(property_rec.offer_ids.mapped('price'))
+                if vals.get('price', 0) < max_offer:
+                    raise UserError(f"You cannot make an offer lower ({vals.get('price', 0)}) than the current highest offer ({max_offer}).")
+
         return super().create(vals_list)
-
-
 
     def _inverse_date_deadline(self):
         for record in self:
-            date_start = (
-                record.create_date.date() if record.create_date else fields.Date.today()
-            )
+            date_start = record.create_date.date() if record.create_date else fields.Date.today()
+            
             if record.date_deadline:
                 record.validity = (record.date_deadline - date_start).days
             else:
@@ -77,7 +70,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if 'accepted' in record.property_id.offer_ids.mapped('status'):
+            if 'offer_accepted' == record.property_id.state:
                 raise UserError("An offer has already been accepted for this property!")
 
             record.status = 'accepted'
@@ -90,7 +83,8 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             if record.property_id.state == 'sold':
-                return False
+                raise UserError("The property has been already sold !")
+
             record.status = 'refused'
 
         return True
