@@ -2,4 +2,36 @@
     <record id="group_estate_manager" model="res.groups">
         <field name="name">Estate Manager</field>
     </record>
+
+    <record model="ir.module.category" id="module_category_estate">
+        <field name="name">Estate</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record model="res.groups.privilege" id="res_groups_privilege_estate">
+        <field name="name">Estate</field>
+        <field name="category_id" ref="estate.module_category_estate"/>
+    </record>
+
+    <record id="group_estate_admin" model="res.groups">
+        <field name="name">Estate Administrator</field>
+        <field name="sequence">20</field>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="privilege_id" ref="res_groups_privilege_estate"/>
+    </record>
+
+    <record id="group_estate_agent" model="res.groups">
+        <field name="name">Estate Agent</field>
+        <field name="sequence">30</field>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="privilege_id" ref="res_groups_privilege_estate"/>
+    </record>
+
+    <record id="group_estate_manager" model="res.groups">
+        <field name="name">Estatee Manager</field>
+        <field name="sequence">40</field>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="privilege_id" ref="res_groups_privilege_estate"/>
+    </record>
+
 </odoo>
