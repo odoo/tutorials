@@ -3,8 +3,8 @@
     <template id="snippets" inherit_id="website.snippets" name="Real Estate Snippets">
         <xpath expr="//snippets[@id='snippet_groups']/*[1]" position="before">
            <t snippet-group="real_estate" 
-              t-snippet="website.s_snippet_group" 
-              string="Real Estate" 
+              t-snippet="website.s_snippet_group"
+              string="Real Estate"
               t-thumbnail="/estate/static/src/img/real_estate.svg"/>
         </xpath>
 

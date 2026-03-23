@@ -33,6 +33,6 @@
         ],
     },
     'demo': [
-        "data/estate_property_default.xml",
+        'data/estate_property_default.xml',
     ],
 }

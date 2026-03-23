@@ -4,8 +4,8 @@
       <BuilderRow label.translate="Category">
          <BuilderSelect dataAttributeAction="'category'">
             <BuilderSelectItem value="all">All Properties</BuilderSelectItem>
-            <BuilderSelectItem value="villa">Villas</BuilderSelectItem>
-            <BuilderSelectItem value="apartment">Apartments</BuilderSelectItem>
+            <BuilderSelectItem value="house">Houses</BuilderSelectItem>
+            <BuilderSelectItem value="flat">Flats</BuilderSelectItem>
          </BuilderSelect>
       </BuilderRow>
 
@@ -19,8 +19,8 @@
          <BuilderRange
             dataAttributeAction="'limit'"
             min="1"
-            max="12" 
-            step="1" 
+            max="12"
+            step="1"
             displayRangeValue="true"/>
       </BuilderRow>
 
