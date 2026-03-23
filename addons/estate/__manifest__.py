@@ -3,6 +3,8 @@
     'name': 'Estate',
     'author': 'Codoeh',
     'license': 'LGPL-3',
+    'version': '1.0',
+    'category': 'Tutorials',
     'depends': [
         'base',
     ],
