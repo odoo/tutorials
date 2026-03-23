@@ -9,16 +9,16 @@
                 </header>
                 <sheet>
                     <h1>
-                        <field name='name' string="Title"/>
+                        <field name='name'/>
                     </h1>
-                    <field name='property_tag_ids' widget='many2many_tags' placeholder="property tags"/>
+                    <field name='property_tag_ids' widget='many2many_tags' placeholder="Property Tags"/>
                     <separator/>
                     <group>
                         <group>
                             <field name='property_type_id'/>
 
                             <field name='postcode'/>
-                            <field name='date_availability' string="Available From"/>
+                            <field name='date_availability'/>
                         </group>
                         <group>
                             <field name='expected_price'/>
@@ -30,11 +30,11 @@
                             <group>
                                 <field name='description'/>
                                 <field name='bedrooms'/>
-                                <field name='living_area' string="Living Area (sqm)"/>
+                                <field name='living_area'/>
                                 <field name='facades'/>
                                 <field name='garage'/>
                                 <field name='garden'/>
-                                <field name='garden_area' string="Garden Area (sqm)"/>
+                                <field name='garden_area'/>
                                 <field name='garden_orientation'/>
 
                             </group>
