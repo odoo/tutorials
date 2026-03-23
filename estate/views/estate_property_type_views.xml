@@ -32,7 +32,7 @@
                 <field name="name"/>
             </search>
         </field>
-    </record> so users can
+    </record>
 
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>

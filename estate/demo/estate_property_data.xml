@@ -75,4 +75,79 @@
         <field name="garden_orientation">south</field>
         <field name="state">new</field>
     </record>
+    <record id="estate_property_6" model="estate.property">
+        <field name="name">Seaside Bungalow</field>
+        <field name="description">Relaxing bungalow with sea view</field>
+        <field name="postcode">600001</field>
+        <field name="date_availability">2026-10-01</field>
+        <field name="expected_price">420000.00</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">800</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">1500</field>
+        <field name="garden_orientation">east</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_7" model="estate.property">
+        <field name="name">Mountain Cabin</field>
+        <field name="description">Cozy cabin in the mountains</field>
+        <field name="postcode">700002</field>
+        <field name="date_availability">2026-11-15</field>
+        <field name="expected_price">210000.00</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">600</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">1200</field>
+        <field name="garden_orientation">west</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_8" model="estate.property">
+        <field name="name">City Studio</field>
+        <field name="description">Compact studio apartment for singles</field>
+        <field name="postcode">800003</field>
+        <field name="date_availability">2026-12-01</field>
+        <field name="expected_price">95000.00</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">350</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_9" model="estate.property">
+        <field name="name">Family Home</field>
+        <field name="description">Spacious home perfect for families</field>
+        <field name="postcode">900004</field>
+        <field name="date_availability">2027-01-10</field>
+        <field name="expected_price">300000.00</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">1100</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">2000</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_10" model="estate.property">
+        <field name="name">Downtown Office Space</field>
+        <field name="description">Modern office space in business district</field>
+        <field name="postcode">100005</field>
+        <field name="date_availability">2027-02-01</field>
+        <field name="expected_price">800000.00</field>
+        <field name="bedrooms">0</field>
+        <field name="living_area">2000</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">east</field>
+        <field name="state">new</field>
+    </record>
 </odoo>

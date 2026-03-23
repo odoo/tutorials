@@ -18,16 +18,11 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price" readonly="1"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Seller &amp; Buyer">
-                            <group>
-                                <field name="seller_id"/>
-                                <field name="buyer_id"/>
-                            </group>
-                        </page>
                         <page string="Description">
                             <group>
                                 <field name="description"/>
@@ -38,10 +33,18 @@
                                 <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
+                                <field name="active"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"/>
+                        </page>
+                        <page string="Seller &amp; Buyer">
+                            <group>
+                                <field name="seller_id"/>
+                                <field name="buyer_id"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -87,9 +90,19 @@
                         string="Available"
                         domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <separator/>
-                <filter string="Postcode"
+                <filter name="archived"
+                        string="Archived"
+                        domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter string="50K - 90K"
+                        name="price_betweeen_50k_90K"
+                        domain="[('expected_price', '&gt;=',50000),('expected_price', '&lt;=',90000)]"/>
+                <filter string="By Postcode"
                         name="groupby_postcode"
                         context="{'group_by': 'postcode'}"/>
+                <filter string="By Type"
+                        name="groupby_type"
+                        context="{'group_by': 'property_type_id'}"/>
             </search>
         </field>
     </record>
