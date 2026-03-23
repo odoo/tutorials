@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
         for property_record in self:
 
             invoice_vals = {
-                'name': property_record.name + ' ' +'Invoice',
+                'name': property_record.name + ' ' + 'Invoice',
                 'partner_id': property_record.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [

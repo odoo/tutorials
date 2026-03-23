@@ -1,9 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-import logging
 
-_logger = logging.getLogger(__name__)
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
