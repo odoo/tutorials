@@ -8,33 +8,49 @@
                     <field name="state" widget="statusbar" options="{'clickable': 1}"/>
                 </header>
                 <sheet>
-                <h1>
-                    <field name="name" string="Title"/>
-                </h1>
-                <group>
+                    <h1>
+                        <field name="name" string="Title"/>
+                    </h1>
+                    <field name="property_tag_ids" widget="many2many_tags" placeholder="property tags"/>
+                    <separator/>
                     <group>
-                        <field name="postcode"/>
-                        <field name="date_availability" string="Available From"/>
-                    </group>
-                    <group>
-                        <field name="expected_price"/>
-                        <field name="selling_price"/>
-                    </group>
-                </group>
-                <notebook>
-                    <page string="Details">
                         <group>
-                            <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area" string="Living Area (sqm)"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area" string="Garden Area (sqm)"/>
-                            <field name="garden_orientation"/>
+                            <field name="property_type_id"/>
+
+                            <field name="postcode"/>
+                            <field name="date_availability" string="Available From"/>
                         </group>
-                    </page>
-                </notebook>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Details">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                                <field name="garden_orientation"/>
+
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="property_offer_ids"/>
+                            <group>
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesman_id"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
