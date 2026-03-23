@@ -127,10 +127,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-pyproject.toml
-.idea
-awesome_clicker
-awesome_dashboard
-awesome_gallery
-awesome_kanban
-awesome_owl
