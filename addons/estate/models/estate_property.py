@@ -4,22 +4,22 @@ from odoo import api, exceptions, fields, models, tools
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = 'Estate Property'
+    _description = "Estate Property"
     _order = 'id desc'
 
-    name = fields.Char(required=True, string='Title')
+    name = fields.Char(required=True, string="Title")
     active = fields.Boolean(default=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
         default=lambda self: fields.Date.today() + relativedelta(months=3),
-        string='Available From',
+        string="Available From",
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string='Living Area (sqm)')
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
     )
 
     property_type_id = fields.Many2one(
-        'estate.property.type', string='Property Type'
+        'estate.property.type', string="Property Type"
     )
     salesperson_id = fields.Many2one(
         'res.users',
@@ -54,15 +54,15 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
         index=True,
     )
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many(
-        'estate.property.offer', 'property_id', string='Offers'
+        'estate.property.offer', 'property_id', string="Offers"
     )
 
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(
-        compute='_compute_best_price', string='Best Offer'
+        compute='_compute_best_price', string="Best Offer"
     )
 
     _check_expected_price = models.Constraint(
@@ -117,15 +117,15 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise exceptions.UserError(
-                    'Cannot unlink property while '
-                    'state is different than new or cancelled.'
+                    "Cannot unlink property while "
+                    "state is different than new or cancelled."
                 )
 
     def action_set_state_cancelled(self):
         for record in self:
             if record.state == 'sold':
                 raise exceptions.UserError(
-                    'Sold properties cannot be canceled.'
+                    "Sold properties cannot be canceled."
                 )
             else:
                 record.state = 'cancelled'
@@ -135,7 +135,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise exceptions.UserError(
-                    'Cancelled properties cannot be sold.'
+                    "Cancelled properties cannot be sold."
                 )
             else:
                 record.state = 'sold'
