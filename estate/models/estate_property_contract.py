@@ -8,7 +8,7 @@ class EstatePropertyContract(models.Model):
 
     name = fields.Char(
         required=True,
-        compute= "_compute_contract_name"
+        compute="_compute_contract_name"
     )
 
     property_id = fields.Many2one("estate.property", string="Property", required=True)

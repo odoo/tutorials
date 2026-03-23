@@ -85,7 +85,7 @@ class EstateProperty(models.Model):
     )
     event_id = fields.Many2one(
             'event.event',
-            string = 'event'
+            string='event'
         )
     sign_request_id = fields.Many2one(
         'sign.request',
@@ -145,17 +145,18 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+
     @api.model
     def create(self, vals_list):
-            records = super().create(vals_list)
+        records = super().create(vals_list)
 
-            for record in records:
-                event = self.env['event.event'].create({
-                    'name': f"Open House - {record.name}",
-                    'property_id': record.id
-                })
-                record.event_id = event.id  
-            return records
+        for record in records:
+            event = self.env['event.event'].create({
+                'name': f"Open House - {record.name}",
+                'property_id': record.id
+            })
+            record.event_id = event.id
+        return records
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -217,10 +218,10 @@ class EstateProperty(models.Model):
             record.visit_count = len(record.visit_ids)
 
     def action_event_open(self):
-            self.ensure_one()
-            return {
-                'type': 'ir.actions.act_window',
-                'res_model': 'event.event',
-                'view_mode': 'form',
-                'res_id': self.event_id.id,
-            }
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'event.event',
+            'view_mode': 'form',
+            'res_id': self.event_id.id,
+        }
