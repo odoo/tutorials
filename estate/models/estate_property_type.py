@@ -1,4 +1,4 @@
-from odoo import models, fields ,api 
+from odoo import models, fields, api 
 
 
 class EstatePropertyType(models.Model):
@@ -6,7 +6,7 @@ class EstatePropertyType(models.Model):
     _description = 'Estate Property Type'
     _order = 'sequence, name'
 
-    name = fields.Char(required = True)
+    name = fields.Char(required=True)
     sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
     property_ids = fields.One2many(comodel_name='estate.property', inverse_name='property_type_id', string="Properties")
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_type_id', string="Offers")

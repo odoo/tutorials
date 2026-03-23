@@ -31,7 +31,7 @@ class EstatePropertyOffer(models.Model):
         string="Property Type",
         store=True
     )
-    
+
     _check_price = models.Constraint(
         'CHECK(price > 0', "The offer price must be strictly positive."
     )
@@ -51,7 +51,7 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             prop_id = vals.get('property_id')
             property_rec = property_map.get(prop_id)
-            
+
             if property_rec and property_rec.offer_ids:
                 max_offer = max(property_rec.offer_ids.mapped('price'))
                 if vals.get('price', 0) < max_offer:
@@ -62,7 +62,7 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             date_start = record.create_date.date() if record.create_date else fields.Date.today()
-            
+
             if record.date_deadline:
                 record.validity = (record.date_deadline - date_start).days
             else:
@@ -70,7 +70,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if 'offer_accepted' == record.property_id.state:
+            if record.property_id.state == 'offer_accepted':
                 raise UserError("An offer has already been accepted for this property!")
 
             record.status = 'accepted'
