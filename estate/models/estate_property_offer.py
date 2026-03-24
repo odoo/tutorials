@@ -33,7 +33,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     _check_price = models.Constraint(
-        'CHECK(price > 0', "The offer price must be strictly positive."
+        'CHECK(price > 0)', "The offer price must be strictly positive."
     )
 
     @api.depends('create_date', 'validity')
