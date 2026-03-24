@@ -13,7 +13,7 @@
                     <h1>
                         <field name='name'/>
                     </h1>
-                    <field name='property_tag_ids' widget='many2many_tags' placeholder="Property Tags"/>
+                    <field name='property_tag_ids' widget='many2many_tags' placeholder="Property Tags" options="{'create':False,'color_field':'color'}"/>
                     <separator/>
                     <group>
                         <group>
