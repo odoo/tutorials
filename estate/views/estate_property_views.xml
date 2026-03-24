@@ -73,6 +73,10 @@
                             </group>    
                         </page>
 
+                       <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+
                          <page string="Other Info">
                             <group>
                                 <field name="buyer_id" />
@@ -80,9 +84,6 @@
                             </group>
                         </page>
                     </notebook>
-
-                       
-
                 </sheet>
             </form>
         </field>
