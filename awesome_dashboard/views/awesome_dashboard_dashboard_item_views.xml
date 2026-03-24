@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="dashboard_item_view_list" model="ir.ui.view">
+        <field name="name">dashboard.item.view.list</field>
+        <field name="model">awesome_dashboard.dashboard.item</field>
+        <field name="arch" type="xml">
+            <list string="Dashboard Items">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="size"/>
+                <field name="component_type"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="dashboard_item_view_form" model="ir.ui.view">
+        <field name="name">dashboard.item.view.form</field>
+        <field name="model">awesome_dashboard.dashboard.item</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <div class="oe_title mw-100">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="flex-grow-1">
+                                <field class="text-break" options="{'line_breaks': False}" widget="text" name="name" placeholder="e.g. Friendly name"/>
+                            </h1>
+                        </div>
+                    </div>
+                    <group>
+                        <field name="size"/>
+                        <field name="code"/>
+                        <field name="property"/>
+                        <field name="description"/>
+                        <field name="component_type" widget="selection_badge"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dashboard_item_view_search" model="ir.ui.view">
+        <field name="name">dashboard.item.view.search</field>
+        <field name="model">awesome_dashboard.dashboard.item</field>
+        <field name="arch" type="xml">
+            <search string="Dashboard Items">
+                <filter string="My Items" name="my_items" domain="[('user_id', '=', uid)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="dashboard_item_action" model="ir.actions.act_window">
+        <field name="name">Dashboard Items</field>
+        <field name="res_model">awesome_dashboard.dashboard.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_my_items': True}</field>
+    </record>
+</odoo>

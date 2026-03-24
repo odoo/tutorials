@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button"
+                        name="action_view_invoices"
+                        type="object"
+                        icon="fa-pencil-square-o"
+                        invisible="invoice_count == 0">
+                    <field string="Invoices" name="invoice_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='kanban-menu-estate-property-separator']" position="before">
+                <field name="invoice_count" invisible="1"/>
+                <t t-if="record.invoice_count.raw_value"><a role="menuitem" type="object" name="action_view_invoices" class="dropdown-item">Invoices</a></t>
+            </xpath>
+        </field>
+    </record>
+</odoo>

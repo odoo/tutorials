@@ -1,0 +1,40 @@
+.o_dashboard {
+  background-color: #cfcfcf;
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+  gap: 1rem;
+  padding: 0.5rem;
+  justify-content: flex-start;
+
+  .text-unicorn {
+    background: linear-gradient(90deg,
+            red,
+            orange,
+            yellow,
+            green,
+            blue,
+            indigo,
+            violet
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow 3s ease-in-out infinite;
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    @keyframes rainbow {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  }
+}

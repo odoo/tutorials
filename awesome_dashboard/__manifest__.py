@@ -17,13 +17,19 @@
     'application': True,
     'installable': True,
     'depends': ['base', 'web', 'mail', 'crm'],
-
     'data': [
-        'views/views.xml',
+        'security/ir.model.access.csv',
+        'views/awesome_dashboard_dashboard_views.xml',
+        'views/awesome_dashboard_dashboard_item_views.xml',
+        'views/awesome_dashboard_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',
+            ('remove', 'awesome_dashboard/static/src/dashboard/**/*'),
+        ],
+        'awesome_dashboard.assets_dashboard': [
+            'awesome_dashboard/static/src/dashboard/**/*',
         ],
     },
     'license': 'AGPL-3'

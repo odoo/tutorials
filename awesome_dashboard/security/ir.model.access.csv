@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_awesome_dashboard_dashboard_item,access_awesome_dashboard_dashboard_item_user,model_awesome_dashboard_dashboard_item,base.group_user,1,1,1,1

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="o_dashboard-item" t-attf-style="width: {{this.size}}">
+            <t t-if="this.props.slots.title">
+                <div class="o_dashboard-item-title">
+                    <t t-slot="title"></t>
+                </div>
+            </t>
+
+            <t t-if="this.props.slots.count">
+                <div class="o_dashboard-item-count">
+                    <t t-slot="count"></t>
+                </div>
+            </t>
+
+            <t t-slot="default"></t>
+        </div>
+    </t>
+</templates>

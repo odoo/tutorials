@@ -7,8 +7,8 @@
     """,
 
     'description': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
-    """,
+                           Starting module for "Discover the JS framework, chapter 1: Owl components"
+                       """,
 
     'author': "Odoo",
     'website': "https://www.odoo.com",

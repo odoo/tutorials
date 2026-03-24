@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_filter" model="ir.ui.view">
+        <field name="name">estate.property.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Property Types">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_show_offers" type="object"
+                                class="oe_stat_button" icon="fa-money"
+                                invisible="not id or not offer_count">
+                            <field
+                                    name="offer_count"
+                                    widget="statinfo"
+                                    string="Offers"
+                                    invisible="not offer_count"/>
+                        </button>
+                    </div>
+
+                    <div class="oe_title mw-100">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h1 class="flex-grow-1">
+                                <field class="text-break" options="{'line_breaks': False}" widget="text" name="name" placeholder="e.g. Property Type name"/>
+                            </h1>
+                        </div>
+                    </div>
+
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids" readonly="True">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Estate Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

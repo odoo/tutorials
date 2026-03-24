@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'" size="'md'">
+            <fieldset>
+                <legend>Which cards do you wish to see ?</legend>
+
+                <t t-foreach="this.state.values" t-as="value" t-key="value.id">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" t-att-checked="value.visible" t-att-id="value.id" t-on-change="onCheckboxChange.bind(this, value.id)"/>
+                        <label class="form-check-label" t-att-for="value.id" t-esc="value.description">
+                        </label>
+                    </div>
+                </t>
+            </fieldset>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onConfirm">Confirm</button>
+                <button class="btn btn-secondary" t-on-click="onDiscard">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

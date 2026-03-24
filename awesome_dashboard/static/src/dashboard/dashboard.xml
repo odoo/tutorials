@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerKanban">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="d-print-none btn" data-hotkey="u" data-tooltip="Configuration" aria-label="Configuration menu" t-on-click="openConfiguration">
+                    <i class="fa fa-fw fa-cog"/>
+                </button>
+            </t>
+
+            <t t-if="!this.statistics.loaded">
+                <div class="d-flex flex-column align-items-center justify-content-center h-100 w-100">
+                    <i class="fa fa-10x fa-rocket fa-spin text-primary mb-3"/>
+                    <div class="text-unicorn">Loading dashboard...</div>
+                </div>
+            </t>
+            <t t-elif="!this.state.items?.length">
+                <div class="d-flex flex-column align-items-center justify-content-center h-100 w-100">
+                    <i class="fa fa-10x fa-meh-o fa-spin text-primary mb-3"/>
+                    <div class="text-unicorn">Looks like you are all alone. Try changing the display with the configuration menu</div>
+                </div>
+            </t>
+            <t t-else="">
+                <t t-foreach="this.state.items" t-as="item" t-key="item.id">
+                   <DashboardItem size="item.size || 1">
+                      <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                       <t t-component="item.component" t-props="itemProp"/>
+                   </DashboardItem>
+                </t>
+            </t>
+        </Layout>
+    </t>
+</templates>

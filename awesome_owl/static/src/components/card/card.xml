@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card mb-2">
+            <div t-if="state.title" class="card-header d-flex justify-content-between">
+                <div>
+                    <t t-if="props.collapsable">
+                        <button class="btn btn-link p-0 me-1" t-on-click="toggleCollapse">
+                            <i class="fa" t-att-class="{
+                                'fa-chevron-down': !state.collapsed,
+                                'fa-chevron-up': state.collapsed,
+                            }"></i>
+                        </button>
+                    </t>
+
+                    <span t-esc="state.title"></span>
+                </div>
+
+                <t t-if="state.help">
+                    <div>
+                        <i class="fa fa-question text-2xl text-primary"></i>
+
+                        <span t-out="state.help"></span>
+                    </div>
+                </t>
+            </div>
+
+            <div t-if="!state.collapsed" class="card-body">
+                <t t-if="props.slots.default">
+                    <t t-slot="default"></t>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
