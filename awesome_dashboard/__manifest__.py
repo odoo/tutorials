@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "Awesome Dashboard",
     "summary": """
@@ -15,6 +14,7 @@
     "installable": True,
     "depends": ["base", "web", "mail", "crm"],
     "data": [
+        "security/ir.model.access.csv",
         "views/views.xml",
     ],
     "assets": {
@@ -24,7 +24,8 @@
         ],
         "awesome_dashboard.dashboard_assets": [
             "awesome_dashboard/static/src/dashboard/**/*",
-            "awesome_dashboard/static/src/stats_service.js",
+            "awesome_dashboard/static/src/services/stats_service.js",
+            "awesome_dashboard/static/src/services/dashboard_item_service.js",
         ],
     },
     "license": "AGPL-3",

@@ -7,19 +7,20 @@ const StatService = {
         const state = reactive({
             data: null,
         });
+        
         function sleep(ms) {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
 
         async function loadStats() {
-            await sleep(5000)
+            await sleep(1* 100);
             const result = await rpc("/awesome_dashboard/statistics");
             state.data = result;
         }
 
         loadStats();
 
-        setInterval(loadStats, 5000);
+        setInterval(loadStats, 100 * 5000);
 
         return {
             state,
