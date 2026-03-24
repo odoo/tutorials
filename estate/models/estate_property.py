@@ -1,4 +1,4 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, tools#.float_utils
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -19,7 +19,23 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3), string="Available From" )
     expected_price = fields.Float(required=True)
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property must be strictly positive.',
+    )
+
     selling_price = fields.Float(readonly=True, copy=False)
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price of a property must be positive.',
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_date_end(self):
+        for record in self:
+            if (len(record.property_offer_ids) != 0) and tools.float_utils.float_compare(record.expected_price * 0.9 , record.selling_price, precision_digits=2) == 1:
+                    raise exceptions.ValidationError("The selling price cannot be inferior to 90% of the expected price")
+
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
