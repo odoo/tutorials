@@ -8,6 +8,13 @@
                     <h1>
                         <field name='name'/>
                     </h1>
+                    <field name='property_ids'>
+                        <list name="Properties">
+                            <field name='name'/>
+                            <field name='expected_price'/>
+                            <field name='state' string="status"/>
+                        </list>
+                    </field>
                 </sheet>
             </form>
         </field>

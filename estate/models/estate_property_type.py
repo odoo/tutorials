@@ -9,5 +9,7 @@ class EstatePropertyType(models.Model):
         'UNIQUE(name)',
         "The name of property type must be unique.",
     )
+
+    property_ids = fields.One2many('estate.property','property_type_id')
     
 
