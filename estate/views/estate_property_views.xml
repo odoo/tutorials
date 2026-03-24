@@ -44,6 +44,7 @@
                             <button name="%(estate_property_maintenance_action)d"
                                     type="action"
                                     class="oe_stat_button"
+                                    groups="estate.group_estate_manager,estate.group_estate_admin"
                                 >
                                 <field name="maintenance_count"
                                         widget="statinfo"
@@ -125,9 +126,10 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ['sold','cancelled']">
-                                <list editable="top"
-                                      decoration-danger="status == 'refused'"
-                                      decoration-success="status == 'accepted'" 
+                                <list 
+                                    editable="top"
+                                    decoration-danger="status == 'refused'"
+                                    decoration-success="status == 'accepted'" 
                                 >
                                     <field name="price"/>
                                     <field name="partner_id"
@@ -139,13 +141,15 @@
                                             string="Accept"
                                             icon="fa-check"
                                             class="btn-primary"
-                                            invisible="status"/>
+                                            invisible="status"
+                                            groups="estate.group_estate_manager,estate.group_estate_admin"/>
                                     <button name="action_refuse"
                                             type="object"
                                             string="Refuse"
                                             icon="fa-times"
                                             class="btn-secondary"
-                                            invisible="status"/>
+                                            invisible="status"
+                                            groups="estate.group_estate_manager,estate.group_estate_admin"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                 </list>
