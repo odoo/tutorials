@@ -13,11 +13,11 @@ class EstateProperty(models.Model):
 
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(required=True, string="Title")
-    description = fields.Text(string="Description")
-    postcode = fields.Char(required=True, string="Postcode")
+    name = fields.Char(required=True, string="Title", tracking=True)
+    description = fields.Text(string="Description", tracking=True)
+    postcode = fields.Char(required=True, string="Postcode", tracking=True)
     date_availability = fields.Date(required=True, default=lambda self: fields.Date.today() + relativedelta(months=+3), copy=False, string="Available From")
-    expected_price = fields.Float(required=True, string="Expected Price")
+    expected_price = fields.Float(required=True, string="Expected Price", tracking=True)
     selling_price = fields.Float(readonly=True, copy=False, string="Selling Price")
     bedrooms = fields.Integer(required=True, default=2, string="Bedrooms")
     living_area = fields.Integer(required=True, string="Living Area (sqm)", help="Living area with a ceiling height of minimum 4 feet")
@@ -31,7 +31,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(store=True, compute='_compute_total_area', string="Total Area (sqm)")
     state = fields.Selection([
         ('new', "New"), ('offer_received', "Offer Received"), ('offer_accepted', "Offer Accepted"), ('sold', "Sold"), ('canceled', "Canceled")
-    ], string="State", default='new', required=True, readonly=True)
+    ], string="State", default='new', required=True, readonly=True, tracking=True)
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
