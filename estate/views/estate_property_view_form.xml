@@ -7,7 +7,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold"/>
                     <button name="action_cancelled" type="object" string="Cancelled"/>
-                    <field name='state' widget='statusbar' options="{'clickable': 1}"/>
+                    <field name='state' widget='statusbar' options="{'clickable': 1}" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
