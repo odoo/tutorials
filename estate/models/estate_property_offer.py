@@ -3,6 +3,7 @@ from odoo import fields, models, api
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate property offers"
+    _order = 'price desc'
 
     price = fields.Float()
     _check_price = models.Constraint(

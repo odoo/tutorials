@@ -3,6 +3,7 @@ from odoo import fields, models, api, exceptions, tools#.float_utils
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate properties"
+    _order = 'id desc'
 
     active = fields.Boolean(default=True)
     state = fields.Selection([

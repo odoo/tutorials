@@ -3,6 +3,7 @@ from odoo import fields, models
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = "Estate property types"
+    _order = "name"
 
     name = fields.Char(required=True)
     _check_name = models.Constraint(
