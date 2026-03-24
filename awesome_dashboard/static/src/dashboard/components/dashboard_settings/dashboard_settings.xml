@@ -1,0 +1,36 @@
+<t t-name="awesome_dashboard.DashboardSettings">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Settings</h5>
+                <button type="button" class="btn-close" t-on-click="close"/>
+            </div>
+
+            <div class="modal-body">
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <div class="form-check">
+                        <input type="checkbox"
+                               class="form-check-input"
+                               t-att-checked="isChecked(item.id)"
+                               t-on-change="(ev) => toggleItem(item.id, ev)"/>
+
+                        <label class="form-check-label">
+                            <t t-esc="item.description"/>
+                        </label>
+                    </div>
+                </t>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" t-on-click="close">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" t-on-click="apply">
+                    Apply
+                </button>
+            </div>
+
+        </div>
+    </div>
+</t>
