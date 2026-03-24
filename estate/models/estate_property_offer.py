@@ -13,7 +13,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float(string="Price")
     status = fields.Selection([('accepted', "Accepted"), ('refused', "Refused")], copy=False)
     partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property', required=True)
+    property_id = fields.Many2one('estate.property', required=True, ondelete='cascade')
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     property_type_id = fields.Many2one(related='property_id.property_type_id')
@@ -33,9 +33,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            for offer in record.property_id.offer_ids:
-                if offer.status == 'accepted':
-                    raise UserError(self.env_("Another offer has already been accepted."))
+            if record.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted'):
+                raise UserError(record.env_("Another offer has already been accepted."))
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
@@ -50,10 +49,10 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            PropertyModel = self.env['estate.property'].browse(vals['property_id'])
-            if float_compare(vals['price'], PropertyModel.best_offer, precision_digits=2) < 0:
-                raise UserError(self.env._("The price must be higher than %s", PropertyModel.best_offer))
+            estate_property = self.env['estate.property'].browse(vals['property_id'])
+            if float_compare(vals['price'], estate_property.best_offer, precision_digits=2) < 0:
+                raise UserError(self.env._("The price must be higher than %s", estate_property.best_offer))
 
-            PropertyModel.state = 'offer_received'
+            estate_property.state = 'offer_received'
 
-        return super(EstatePropertyOffer, self).create(vals_list)
+        return super().create(vals_list)

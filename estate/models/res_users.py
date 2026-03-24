@@ -11,5 +11,5 @@ class ResUsers(models.Model):
         'estate.property',
         'seller_id',
         string="Available Properties",
-        domain=[('state', 'in', {'new', 'offer_received'})],
+        domain=[('state', 'in', ['new', 'offer_received'])],
     )
