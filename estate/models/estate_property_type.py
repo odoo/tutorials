@@ -3,7 +3,7 @@ from odoo import fields, models
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = "Estate property types"
-    _order = "name"
+    _order = "sequence, name"
     
     sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
 
