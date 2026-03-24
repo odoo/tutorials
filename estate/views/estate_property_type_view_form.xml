@@ -5,6 +5,11 @@
         <field name='arch' type='xml'>
             <form string="Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(estate_property_offer_action)d" string="My Action" class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" string="Offer Count" widget="statinfo"/>
+                        </button>
+                    </div>
                     <h1>
                         <field name='name'/>
                     </h1>
