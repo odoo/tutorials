@@ -30,6 +30,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                                 <field name="state"/>
                             </group>
                         </page>
@@ -52,7 +53,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" limit="20">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
