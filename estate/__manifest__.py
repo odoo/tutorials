@@ -3,7 +3,7 @@
     'description': 'Real Estate - Management',
     'category': 'Sales/CRM',
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'author': 'Odoo S.A.',
     'license': 'LGPL-3',
     'data': [

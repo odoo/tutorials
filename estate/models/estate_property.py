@@ -11,6 +11,8 @@ class EstateProperty(models.Model):
 
     _order = 'id desc'
 
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
     name = fields.Char(required=True, string="Title")
     description = fields.Text(string="Description")
     postcode = fields.Char(required=True, string="Postcode")
