@@ -2,8 +2,7 @@ from odoo import models, Command, fields
 
 
 class EstateProperty(models.Model):
-    _inherit = ['estate.property']
-    _name = 'estate.property'
+    _inherit = 'estate.property'
 
     invoice_count = fields.Integer(compute='_compute_invoice_count', string="Invoice Count")
 
