@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Awesome Owl",
 
@@ -39,5 +38,5 @@
             'awesome_owl/static/src/**/*',
         ],
     },
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
 }
