@@ -3,7 +3,7 @@
         <field name='name'>estate.property.list</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
-            <list string="Property">
+            <list string="Property" decoration-success="state in ['offer_received','offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name='name'/>
                 <field name='postcode'/>
                 <field name='bedrooms'/>
