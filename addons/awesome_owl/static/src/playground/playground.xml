@@ -5,8 +5,9 @@
         <div class="p-3">
             hello world
             <div class="card d-inline-block m-2" style="width: 37rem;">
-                <span class="card-body"><Counter/></span>
-                <span class="card-body"><Counter/></span>
+                Total: <t t-esc="state.sum"/>
+                <span class="card-body"><Counter onChange.bind="incrementSum"/></span>
+                <span class="card-body"><Counter onChange.bind="incrementSum"/></span>
             </div>
             <div>
                 <Card title="'Card 1'" content="value1"/>
