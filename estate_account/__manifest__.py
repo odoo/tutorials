@@ -4,6 +4,7 @@
     'depends': ['estate', 'account'],
     'author': "kiro",
     'category': 'Category',
+    'license': 'LGPL-3',
     'description': """
     Description text
     """,
