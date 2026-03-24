@@ -14,6 +14,7 @@ class EstatePropertyOffer (models.Model):
             ("refused", "Refused")], string="Status" , default=False)
     partner_id  = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    _order = "price desc"
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -49,6 +50,8 @@ class EstatePropertyOffer (models.Model):
             if record.state in ['accepted', 'refused']:
                 raise UserError("Không thể xóa lời đề nghị đã được chấp nhận hoặc bị từ chối!")
         return super(EstatePropertyOffer, self).unlink()
-    
+    _sql_constraints=[
+       ('check_price', 'CHECK(price > 0)','Giá đề nghị phải > 0')
+    ]
  
 

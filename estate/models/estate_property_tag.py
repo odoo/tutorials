@@ -5,6 +5,8 @@ class EstatePropertyTag (models.Model):
     _description = "def tag"
     
     name = fields.Char( string = "name")
+    color = fields.Integer()
+    _order = "name"
 
     _sql_constraints = [
     ('unique_tag_name', 'UNIQUE(name)', 'Tên thẻ không được trùng')]

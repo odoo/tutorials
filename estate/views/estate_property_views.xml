@@ -5,7 +5,11 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree
+                decoration-danger="state == 'cancelled'"
+                decoration-success="state == 'offer_received'"
+                decoration-muted="state == 'sold'"
+                decoration-bf="state == 'offer_accepted'" string="Properties">
                 <field name="name" string="Title" />
                 <field name="description" />
                 <field name="postcode" />
@@ -32,7 +36,34 @@
         <field name="arch" type="xml">
             <tree string="Properties Types">
                 <field name="name" string="Type Name" />
+
             </tree>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <field name="property_ids">
+                        <tree string="Properties" create="0"
+                            delete="0"
+                            edit="0">
+                            <field name="name" string="Title" />
+                            <field name="expected_price" />
+                            <field
+                                name="state" />
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
         </field>
     </record>
 
@@ -41,7 +72,7 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Delivery Carrier">
+            <search string="Properties">
                 <field name="name" string="Title" />
                 <field name="description" />
                 <field name="postcode" />
@@ -62,14 +93,19 @@
     </record>
 
     <record
-        id="estate_property_view_view" model="ir.ui.view">
+        id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                    <button name="action_sold" type="object" string="SOLD" />
-                    <button name="action_cancel" type="object" string="CANCEL" />
+                    <button name="action_sold" type="object" string="SOLD"
+                        attrs="{'invisible': [('state', 'in', ['sold','cancelled'])]}" />
+                    <button name="action_cancel" type="object" string="CANCEL"
+                        attrs="{'invisible': [('state', 'in', ['sold','cancelled'])]}" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled" />
+
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -77,11 +113,7 @@
                             <field name="name" />
                         </h1>
                     </div>
-                    <group>
-                        <field name="state" />
-                    </group>
-
-                    <field name="tag_ids" widget="many2many_tags" />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <group>
                         <group>
                             <field name="postcode" />
@@ -112,19 +144,20 @@
 
                         <page string="Offers">
                             <field name="offer_ids">
-                                <tree string="Offers">
+                                <tree decoration-danger="state == 'cancelled'"
+                                    decoration-success="state == 'offer_received'"
+                                    decoration-muted="state == 'sold'"
+                                    decoration-bf="state == 'offer_accepted'" string="Offers">
                                     <field name="partner_id" />
                                     <field name="price" />
 
                                     <button name="action_confirm"
-                                        attrs="{'invisible': [('state','!=',False)]}"
                                         string="Accept"
                                         type="object"
                                         icon="fa-check"
                                     />
 
                                     <button name="action_refuse"
-                                        attrs="{'invisible': [('state','!=',False)]}"
                                         string="Refuse"
                                         type="object"
                                         icon="fa-times"
@@ -138,12 +171,13 @@
 
                         <page string="Other info">
                             <group>
-                                <field name="property_type_id" />
+                                <field name="property_type_id"
+                                    options="{'no_create': True, 'no_edit': True}" />
                                 <field name="seller_id" />
                                 <field name="buyer_id" />
                             </group>
-                        </page>
 
+                        </page>
                     </notebook>
                 </sheet>
             </form>

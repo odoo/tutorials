@@ -1,6 +1,8 @@
 from odoo import api,models, fields
 from datetime import timedelta
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 class EstateProperty(models.Model): 
     _name        = "estate.property"
@@ -37,8 +39,8 @@ class EstateProperty(models.Model):
         string    = "State",
         selection = [
             ("new", "New"),
-            ("offerReceived", "Offer Received"),
-            ("offerAccepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -47,11 +49,14 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="property type")
     buyer_id         = fields.Many2one("res.partner", string = "Buyer", copy = False)
     seller_id        = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user )
-    tag_ids          = fields.Many2many("estate.property.tag")
+    tag_ids          = fields.Many2many("estate.property.tag",)
     offer_ids        = fields.One2many("estate.property.offer", "property_id")
+    _order = "id desc"
     
     total_area = fields.Float(compute="_compute_area", digits=(16, 0))
     best_price = fields.Float(string="Best price", compute="_compute_best_price", digits=(16,0))
+
+    property_ids = fields.Many2one("estate.property.type")
     
     @api.depends("living_area" , "garden_area")
     def _compute_area(self): 
@@ -62,7 +67,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
          price = record.offer_ids.mapped("price")
-         record.best_price = max(price) if price else 0.0 
+         record.best_price = max(price) if price else 0.0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -85,13 +90,15 @@ class EstateProperty(models.Model):
 
     _sql_constraints = [
     ('check_expected_price', 'CHECK(expected_price > 0)', 'Giá kỳ vọng phải là số dương!'),
-    ('check_selling_price', 'CHECK(selling_price > 0)', 'Giá bán phải là số dương!'),
+    ('check_selling_price', 'CHECK(selling_price >= 0)', 'Giá bán phải là số dương!'),
     ('unique_name', 'UNIQUE(name,description)', 'Tên không được trùng')
     ]
     @api.constrains('selling_price','expected_price')
     def _check_price(self):
         for record in self:
-            if record.selling_price > 0 and record.selling_price < (record.expected_price * 0.9): raise UserError('Giá bán không được thấp hơn 90% giá kỳ vọng!')
+            if not float_is_zero(record.selling_price, precision_digits = 2):
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits = 2) == -1:
+                    raise ValidationError('Giá bán không được thấp hơn 90% giá kỳ vọng')
             
 
 
