@@ -110,6 +110,7 @@ class EstateProperty(models.Model):
             if record.state == 'new':
                 record.state = 'offer_received'
 
+    @api.depends('state')
     def _compute_available_for_offers(self):
         for record in self:
             record.available_for_offers = record.state in {'new', 'offer_received'}
