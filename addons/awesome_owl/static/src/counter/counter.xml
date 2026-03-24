@@ -3,9 +3,7 @@
 
     <t t-name="awesome_owl.counter">
         <div>
-            <div>
-                Counter component
-                <t t-esc="state.value"/>
+            <div class="card d-inline-block m-2" style="width: 18rem;">
                 <p>Counter: <t t-esc="state.value"/></p>
                 <button class="btn btn-primary" t-on-click="increment">Increment</button>
             </div>

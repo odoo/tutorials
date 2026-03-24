@@ -1,3 +1,4 @@
+//addons/awesome_owl/static/src/counter/counter.js
 import {Component, useState} from "@odoo/owl";
 
 export class Counter extends Component {
