@@ -32,7 +32,6 @@ class AwesomeDashboard extends Component {
     }
 
     doAction() {
-        console.log("test")
         this.action.doAction({
             type: 'ir.actions.act_window',
             name: _t('Leads'),
@@ -43,7 +42,6 @@ class AwesomeDashboard extends Component {
     }
 
     openConfigurationSettings() {
-        console.log('open settings');
         this.dialog.add(ConfigurationDialog, {
             items: this.items,
             initialIncludedIds: this.state.includedItemIds,

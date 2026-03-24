@@ -17,11 +17,6 @@ export class ConfigurationDialog extends Component {
     };
 
     setup() {
-        console.log('here');
-        console.log(this.props.items);
-
-        console.log(new Set(this.props.items.map((item) => item.id)));
-
         this.state = useState({
             includedIds: new Set(this.props.initialIncludedIds),
         });
