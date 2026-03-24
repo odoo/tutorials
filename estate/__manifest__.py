@@ -3,6 +3,7 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "kiro",
+    'license': 'LGPL-3',
     'category': 'Category',
     'description': """
     Description text
