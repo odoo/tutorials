@@ -9,7 +9,9 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Monetary(
-        currency_field="currency_id", required=True, string="Offer Price",
+        currency_field="currency_id",
+        required=True,
+        string="Offer Price",
     )
     currency_id = fields.Many2one(
         "res.currency",
@@ -50,7 +52,8 @@ class EstatePropertyOffer(models.Model):
                     fields.Date.to_date(record.create_date) or fields.Date.today()
                 )
                 record.date_deadline = fields.Date.add(
-                    create_date, days=record.validity,
+                    create_date,
+                    days=record.validity,
                 )
 
     def _inverse_date_deadline(self):
@@ -84,7 +87,10 @@ class EstatePropertyOffer(models.Model):
 
     def _cron_check_offer_validity(self):
         expired_offers = self.search(
-            [("date_deadline", "<", fields.Date.today()), ("status", "=", "offer_sent")],
+            [
+                ("date_deadline", "<", fields.Date.today()),
+                ("status", "=", "offer_sent"),
+            ],
         )
         for rec in expired_offers:
             rec.action_refuse_offer()
@@ -93,11 +99,16 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             best_offer = self.env["estate.property.offer"].search(
-                [("property_id", "=", vals["property_id"])], order="price desc", limit=1,
+                [("property_id", "=", vals["property_id"])],
+                order="price desc",
+                limit=1,
             )
             if vals["price"] <= best_offer.price:
                 raise ValidationError(_("new offer should be greater than best offer."))
         offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == "new":
+                offer.property_id.state = "offer_received"
         return offers
 
     def action_accept_offer(self):

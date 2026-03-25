@@ -118,6 +118,7 @@
                     <notebook>
                         <page string="Description">
                             <group>
+                                <field name="image" widget="image" class="oe_avatar" />
                                 <field name="description" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
