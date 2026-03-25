@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu item in website navbar -->
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">60</field>
+    </record>
+
+    <template id="properties_listing" name="Properties Listing">
+        <t t-call="website.layout">
+            <div id="wrap" class="container py-4">
+                <h1>Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="prop">
+                        <div class="col-12 col-md-2 mb-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <t t-if="prop.image">
+                                    <div t-field="prop.image" class="card-img-top"
+                                         t-options='{"widget": "image", "class": "img-fluid", "style": "height:200px; object-fit:cover;"}'/>
+                                </t>
+                                <t t-else="">
+                                    <div class="bg-dark d-flex align-items-center justify-content-center" style="height:200px;">
+                                        <i class="fa fa-home text-white fa-3x"/>
+                                    </div>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="fw-bold" t-out="prop.name"/>
+                                    <p class="text-muted small" t-if="prop.description" t-out="prop.description"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="text-center">
+                    <t t-call="website.pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

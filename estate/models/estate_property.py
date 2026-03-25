@@ -13,6 +13,7 @@ class EstateProperty(models.Model):
                ]
 
     name = fields.Char(string="Property Name", required=True)
+    image = fields.Binary(string="Image")
     email = fields.Char(index='trigram')
     description = fields.Text()
     postcode = fields.Char()

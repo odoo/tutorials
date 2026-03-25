@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AboutPage">
+        <Layout>
+            <div class="p-4">
+                <h1>About This Dashboard</h1>
+                <p>This dashboard shows t-shirt sales analytics.</p>
+                <p>Built using Odoo OWL framework.</p>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

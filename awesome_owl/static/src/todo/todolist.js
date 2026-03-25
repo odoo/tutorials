@@ -15,7 +15,7 @@ export class TodoList extends Component {
   }
 
   addTodo(ev) {
-    if (ev.keyCode === 13) {
+    if (ev.key === "Enter") {
       const text = ev.target.value.trim();
       if (text) {
         this.todos.push({
@@ -30,7 +30,7 @@ export class TodoList extends Component {
   }
 
   toggleState(id) {
-    console.log(id)
+
     const todo = this.todos.find((t) => t.id === id);
     if (todo) todo.isComplete = !todo.isComplete;
   }

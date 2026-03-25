@@ -1,5 +1,5 @@
 import { Component, markup, useState } from "@odoo/owl";
-import { Counter } from "../counter/counter"
+import { Counter } from "../counter/counter";
 import { Card } from "../card/card";
 import { TodoList } from "../todo/todolist";
 

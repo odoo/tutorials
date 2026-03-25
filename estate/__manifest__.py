@@ -3,7 +3,7 @@
     "version": "0.1",
     "summary": "Manage Real Estate Properties",
     "category": "Real Estate/Brokerage",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "data": [
         "security/ir.model.access.csv",
         "wizard/estatet_property_wizard.xml",
@@ -12,6 +12,7 @@
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_menus.xml",
+        "views/website_templates.xml",
         "views/res_users_views.xml",
         "report/estate_property_templates.xml",
         "report/estate_property_reports.xml",
