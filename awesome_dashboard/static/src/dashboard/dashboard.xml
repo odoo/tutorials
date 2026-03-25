@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">
+                    Customers
+                </button>
+                <button class="btn btn-primary" t-on-click="openLeads">
+                    Leads
+                </button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn btn-primary" t-on-click="openConfig">
+                    Configuration <i class="fa fa-cog" />
+                </button>
+            </t>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <AwesomeDashboardItem size="item.size || 1">
+                    <t
+                        t-set="itemProp"
+                        t-value="item.props ? item.props(this.stats) : undefined"
+                    />
+                    <t t-component="item.Component" t-props="itemProp" />
+                </AwesomeDashboardItem>
+            </t>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.config">
+        <Dialog title="'Dashboard items configuration'">
+            <p>Which cards do you want to see?</p>
+            <t t-foreach="this.items" t-as="item" t-key="item.id">
+                <CheckBox value="item.isEnabled" onChange="(val) => this.onCheck(item, val)">
+                    <t t-esc="item.description" />
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

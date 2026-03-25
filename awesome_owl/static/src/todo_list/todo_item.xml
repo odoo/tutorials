@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <span t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
+            <input type="checkbox" name="todo_checkbox" id="props.todo.id" t-on-change="onChange"/>
+            <t t-esc="props.todo.id" />. 
+            <t t-esc="props.todo.description" />
+        </span>
+        <span class="fa fa-remove" t-on-click="onDelete" role="button"/>
+    </t>
+</templates>
