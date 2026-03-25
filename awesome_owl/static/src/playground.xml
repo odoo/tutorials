@@ -2,12 +2,34 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3 bg-warning text-white text-lg-start fw-semibold ">
-            hello world
+            <div class="h3 w-100 d-flex justify-content-between  p-2 bg-dark text-white shadow position-fixed text-white fixed position-top  "><div class="h3 my-auto px-3  py-1 text-white">Viraj Warhade</div><div class="h3 my-auto px-3  py-1 text-white">VIWAR-ODOO</div></div>
+        <div class="p-3   text-center center  text-lg-start fw-semibold ">
         
         </div>
-            <div class="p-3 bg-white m-2 shadow"><Counter/>
+            <div class="  mt-5  flex flex-row gap-4 row   mx-auto justify-content-center w-fit">
+
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+            <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+            <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+            <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+            <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+            <Counter/>
+            </div>
+
+
         </div>
+        <div class=" p-3">
+            <Card title="'title'" text="'this is text'" obj="this.obj" handledone="this.taskDone" />
+        </div>
+        
         
     </t>
 

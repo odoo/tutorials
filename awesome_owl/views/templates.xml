@@ -4,12 +4,26 @@
             <html>
                 <head>
                 <style>
+    .myhover{
+    background-color:rgba(255, 7, 7, 0);
+    }
    .myhover:hover{
     background-color:rgba(255, 171, 171, 0);
+    }
+    button{
+        background-color: #ffffff0;
+    }
+    button:hover{
+        background-color: #ffbdbd00;
+        outline: 2px;
+    }
+    .fit-content{
+        width: fit-content;
     }
    </style>
                     <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
                     <t t-call-assets="awesome_owl.assets_playground"/>
+                    
                 </head>
 
                 <body>
