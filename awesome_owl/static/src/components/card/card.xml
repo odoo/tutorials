@@ -1,0 +1,26 @@
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.Card">
+        <div
+            class="card d-inline-block m-2"
+            style="width: 18rem;"
+        >
+            <div
+                t-on-click="this.toggleAction" class="position-absolute"
+                style="right: 1rem;top: 1rem; cursor: pointer;"
+            >
+                <span class="fa fa-chevron-up" t-if="this.toggleState.isOpen"></span>
+                <span class="fa fa-chevron-down" t-if="!this.toggleState.isOpen"></span>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-out="props.title" />
+                </h5>
+                <t t-slot="default" t-if="this.toggleState.isOpen">
+                    <h3 t-out="props.content" />
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

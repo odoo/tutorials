@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_list_page" name="Property Shop">
+        <t t-call="website.layout">
+            <t t-log="properties"></t>
+            <div id="wrap" class="container mt-4">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <form method="get" action="/shop2" class="input-group">
+                            <input type="text" name="search"
+                                class="form-control"
+                                placeholder="Search properties..."
+                                t-att-value="search" />
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search" /> Search </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+
+                            <div
+                                class="border p-3 border-dark-subtle rounded-3 position-relative shadow-sm h-100">
+                                <div class="mb-3 overflow-hidden rounded" style="height: 200px;">
+                                    <t t-if="property.image_1920">
+                                        <img t-att-src="image_data_uri(property.image_1920)"
+                                            class="img-fluid w-100 h-100"
+                                            style="object-fit: cover;"
+                                            alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/web/static/img/placeholder.png"
+                                            class="img-fluid w-100 h-100"
+                                            style="object-fit: cover; opacity: 0.3;"
+                                            alt="No Image" />
+                                    </t>
+                                </div>
+
+
+                                <div
+                                    class="badge border border-dark-subtle rounded-pill position-absolute bg-light text-dark"
+                                    style="right: 10px; top: 10px;">
+                                    <span t-field="property.state" />
+                                </div>
+                                <h3 class="fw-bold mt-2">
+                                    <span t-field="property.name" />
+                                </h3>
+                                <div class="text-muted">
+                                    <span>Expected Price: </span>
+                                    <span t-field="property.expected_price"
+                                        t-options='{"widget": "monetary", "display_currency": res_company.currency_id}' />
+                                </div>
+                                <div t-if="property.state == 'offer_accepted'"
+                                    class="text-success fw-bold">
+                                    <span>Selling Price: </span>
+                                    <span t-field="property.selling_price" />
+                                </div>
+                                <div t-if="property.state == 'offer_received'" class="text-primary">
+                                    <span>Best Price: </span>
+                                    <span t-field="property.best_price" />
+                                </div>
+                                <div class="mt-3">
+                                    <t t-foreach="property.property_tag_ids" t-as="tag">
+                                        <span class="badge rounded-pill bg-secondary me-1">
+                                            <t t-esc="tag.name" />
+                                        </span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="products_pager d-flex justify-content-center py-4">
+                    <t t-call="website.pager">
+                        <t t-set="_pager" t-value="pager" />
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

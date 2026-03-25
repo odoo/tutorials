@@ -1,0 +1,10 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <ol>
+            <li t-foreach="props.todos" t-as="todo" t-key="todo.id">
+                <t t-log="'test'" />
+                <TodoItem todo="todo" onDelete="props.onDelete" onCompleted="props.onComplete" />
+            </li>
+        </ol>
+    </t>
+</templates>

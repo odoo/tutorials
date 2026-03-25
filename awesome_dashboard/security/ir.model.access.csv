@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dashboard_user_setting,access_dashboard_user_setting,model_dashboard_user_setting,base.group_user,1,1,1,1

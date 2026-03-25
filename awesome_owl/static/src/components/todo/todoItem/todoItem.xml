@@ -1,0 +1,21 @@
+<templates>
+    <t t-name="awesome_owl.TodoItem">
+        <div class="d-flex px-3 py-2 gap-2 align-items-center">
+            <input
+                type="checkbox" t-model="props.todo.isCompleted"
+            />
+            <h1
+                t-out="props.todo.description" class="card-title"
+                t-att-class="{'text-muted text-decoration-line-through' : props.todo.isCompleted}"
+            />
+            <button
+                t-on-click="()=>props.onCompleted(props.todo)"
+                class="btn btn-primary bg-success text-light"
+                t-if="!props.todo.isCompleted"
+            >
+                Completed?
+            </button>
+            <span t-on-click="()=>props.onDelete(props.todo.id)" class="fa fa-remove" />
+        </div>
+    </t>
+</templates>

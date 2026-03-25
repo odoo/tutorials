@@ -1,0 +1,26 @@
+<templates>
+    <t t-name="awesome_dashboard.MyDialog">
+        <Dialog title="'Dashboard Items Configurations'">
+            <t t-set-slot="default">
+                <t t-foreach="this.props.items" t-as="item" t-key="item.id">
+                    <div
+                        class="d-flex justify-content-start align-items-center gap-2"
+                    >
+                        <input
+                            type="checkbox"
+                            t-att-checked="this.selectedState[item.id]"
+                            t-on-change="(ev) => this.onChange(ev, item.id)"
+                        />
+                        <span>
+                            <t t-out="item.description" />
+                        </span>
+                    </div>
+                </t>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Close</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

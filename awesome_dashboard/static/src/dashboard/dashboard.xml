@@ -1,0 +1,48 @@
+<templates>
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel:{}}" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="openSettings" display="a"
+                    class="btn btn-secondary ">
+                    settings
+                </button>
+                <button t-on-click="viewCustomers" class="btn btn-secondary">
+                    customers
+                </button>
+                <button t-on-click="viewLeads" class="btn btn-secondary">
+                    leads
+                </button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn o_control_panel_main_buttons" t-on-click="openDialog">
+                    <i class="fa fa-gear" />
+                </button>
+            </t>
+            <div class="p-2 d-flex gap-2 flex-wrap">
+                <t t-if="this.statState.data">
+                    <t t-foreach="this.state.items" t-as="item" t-key="item.id">
+                        <DashboardItem size="item.size">
+                            <t
+                                t-set="statProps"
+                                t-value="item.props ? item.props(this.statState.data) : {'data':this.statState.data}"
+                            />
+                            <t t-component="item.Component" t-props="statProps" />
+                        </DashboardItem>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div
+                        class="position-fixed top-0 d-flex justify-content-center align-items-center"
+                        style="width: 100vw;height: 100vh;"
+                    >
+                        <div>
+                            <i class="fa fa-spinner fa-spin fa-2x text-primary" />
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

@@ -1,10 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
+<?xml version="1.0" encoding="UTF-8"?>
 
+<templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="h-100 overflow-auto bg-view px-5">
+            <div class="p-3">hello world</div>
+            <h1 class="text-center"> sum: <t
+                    t-out="this.sum.value" />
+            </h1>
+            <div
+                class="d-flex border-2 border-black gap-4 justify-content-center align-items-center p-2"
+                style="border: 2px solid black">
+                <Counter onChange.bind="increaseCount" />
+                <Counter onChange.bind="increaseCount" />
+            </div>
+            <Card
+                title="'Card 1'"
+                content="this.html"
+            />
+            <Card
+                title="'Card 2'"
+            >
+                <p>This is <b>custom HTML</b> inside the card!</p>
+                <Counter />
+            </Card>
+            <div
+                class="w-100 p-2 d-flex justify-content-center align-items-center"
+            >
+                <input
+                    t-ref="inputTodo" type="text" t-model="state.text" t-on-keyup="addTodo"
+                    placeholder="Add todos" class="w-75"
+                />
+            </div>
+            <div>
+                <TodoList
+                    todos="this.todos" onDelete.bind="deleteTodo"
+                    onComplete.bind="markAsCompleted"
+                />
+            </div>
         </div>
     </t>
-
 </templates>

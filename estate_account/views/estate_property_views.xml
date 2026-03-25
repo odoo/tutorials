@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="estate_property_form_inherit_invoice" model="ir.ui.view">
+        <field name="name">estate_property.inherit.estate</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expected_price']" position="after">
+                <field name="invoice_id" readonly="1" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

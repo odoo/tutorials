@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <menuitem
+        id="estate_menu_root" name="Real Estate"
+        web_icon="estate,static/description/icon.png"
+    >
+        <menuitem
+            id="estate_advertisement_menu"
+            name="Advertisements"
+            sequence="1"
+        >
+            <menuitem
+                id="estate_property_menu_action" name="Properties"
+                action="estate_property_action"
+            />
+        </menuitem>
+
+        <menuitem
+            id="estate_property_offer_menu_action"
+            name="Property Offers"
+            action="estate_property_offer_action"
+            sequence="2"
+        />
+
+        <menuitem
+            id="estate_setting_menu"
+            name="Settings"
+            sequence="3"
+        >
+            <menuitem
+                id="estate_property_type_menu_action" name="Property Types"
+                action="estate_property_type_action"
+            />
+
+            <menuitem
+                id="estate_property_tag_menu_action" name="Property Tags"
+                action="estate_property_tag_action"
+            />
+        </menuitem>
+    </menuitem>
+
+    <record
+        id="menu_estate" model="website.menu"
+    >
+        <field name="name">Estate Properties</field>
+        <field name="url">/shop2</field>
+        <field name="parent_id" ref="website.main_menu" />
+        <field name="sequence" type="int">30</field>
+    </record>
+</odoo>

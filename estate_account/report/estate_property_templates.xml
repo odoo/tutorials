@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_property_invoice_info"
+        inherit_id="estate.report_property_offers">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-if="property.state == 'sold' and property.invoice_id">
+                <div class="mt16">
+                    <h4>Invoice Information</h4>
+                    <p> Invoice: <span t-field="property.invoice_id.name" />
+                    </p>
+                    <p> Total: <span t-field="property.invoice_id.amount_total" />
+                    </p>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
