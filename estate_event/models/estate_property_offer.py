@@ -11,6 +11,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     partner_id = fields.Many2one(
+        "res.partner",
         domain="[('id', 'in', allowed_partner_ids)]"
     )
 
@@ -22,12 +23,8 @@ class EstatePropertyOffer(models.Model):
             if not property_record.event_id:
                 raise UserError("No event linked to this property.")
 
-            if not property_record.buyer_id:
-                raise UserError("No buyer set on the property.")
-
             attendee = self.env['event.registration'].search([
                 ('event_id', '=', property_record.event_id.id),
-                ('partner_id', '=', property_record.buyer_id.id),
                 ('state', '=', 'done')
             ], limit=1)
 

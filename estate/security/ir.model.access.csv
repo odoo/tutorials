@@ -26,3 +26,4 @@ access_estate_property_visit_super_user,estate.property.visit.super_user,model_e
 access_estate_property_maintenance_super_user,estate.property.maintenance.super_user,model_estate_property_maintenance,base.group_user,1,1,1,1
 access_estate_property_type_super_user,estate.property.type.super_user,model_estate_property_type,base.group_user,1,1,1,1
 access_estate_property_tag_super_user,estate.property.tag.super_user,model_estate_property_tag,base.group_user,1,1,1,1
+access_estate_add_offer_wizard_super_user,estate.add.offer.wizard.super_user,model_estate_add_offer_wizard,base.group_user,1,1,1,1

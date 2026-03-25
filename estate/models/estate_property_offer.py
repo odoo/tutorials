@@ -40,7 +40,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     validity = fields.Integer(
-        default=7,
+        default=-2,
         string="Validity",
     )
 
@@ -59,11 +59,22 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             create_date = (
-                record.create_date.date()
-                if record.create_date
-                else fields.Date.today()
+                record.create_date.date() if record.create_date else fields.Date.today()
             )
             record.validity = (record.date_deadline - create_date).days
+
+    @api.model
+    def reject_expired_offers(self):
+        today = fields.Date.today()
+        expired_offers = self.search(
+            [
+                ("status", "!=", "refused"),
+                ("date_deadline", "<=", today),
+            ]
+        )
+
+        for offer in expired_offers:
+            offer.reject_offer()
 
     @api.model
     def create(self, vals_list):
@@ -74,9 +85,7 @@ class EstatePropertyOffer(models.Model):
                 property_record = self.env["estate.property"].browse(property_id)
 
                 if property_record.state in ["offer_accepted", "sold", "cancelled"]:
-                    raise UserError(
-                        "An offer cannot be created for this property."
-                    )
+                    raise UserError("An offer cannot be created for this property.")
 
                 existing_offers = property_record.offer_ids
 

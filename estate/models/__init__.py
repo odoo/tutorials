@@ -5,3 +5,4 @@ from . import estate_property_offer
 from . import estate_property_maintenance
 from . import res_users
 from . import estate_property_visit
+from . import estate_add_offer_wizard

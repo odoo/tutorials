@@ -1,0 +1,41 @@
+<odoo>
+    <data>
+        <record id="view_estate_add_offer_wizard_form" model="ir.ui.view">
+            <field name="name">estate.add.offer.wizard.form</field>
+            <field name="model">estate.add.offer.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Offer">
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="price"/>
+                        <field name="validity"/>
+                    </group>
+                    <footer>
+                        <button name="action_add_offer"
+                                type="object"
+                                string="Add Offers"
+                                class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_add_offer_wizard_server" model="ir.actions.server">
+            <field name="name">Add Offers</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="binding_model_id" ref="model_estate_property"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+    action = {
+        "type": "ir.actions.act_window",
+        "res_model": "estate.add.offer.wizard",
+        "view_mode": "form",
+        "target": "new",
+        "context": {"active_ids": records.ids}
+    }
+            </field>
+        </record>
+
+    </data>
+</odoo>
