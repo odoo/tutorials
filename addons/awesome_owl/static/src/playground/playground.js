@@ -10,9 +10,6 @@ export class Playground extends Component {
     static components = {Counter, Card, TodoList};
     static props = {};
 
-    value1 = "<div class='text-primary'>some content</div>"
-    value2 = markup("<div>some text 2</div>")
-
     setup() {
         this.state = useState({sum: 2})
     }
