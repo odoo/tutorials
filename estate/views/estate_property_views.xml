@@ -89,6 +89,12 @@
                     </group>
                     <group>
                         <group>
+                            <field
+                                name="image_1920"
+                                widget="image"
+                                class="oe_avatar"
+                                options="{'convert_to_webp': True, 'preview_image': 'image_1920'}"
+                            />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>

@@ -2,10 +2,11 @@
     "name": "Real Estate",
     "version": "1.1",
     "author": "Yatiw",
-    "depends": ["base"],
+    "depends": ["base", "website"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
+        "views/estate_product_views.xml",
         "wizards/send_offer.xml",
         "report/estate_property_reports.xml",
         "report/estate_property_templates.xml",

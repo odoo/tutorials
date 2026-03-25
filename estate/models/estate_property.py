@@ -11,7 +11,8 @@ class EstateProperty(models.Model):
 
     name = fields.Char("Title", required=True, size=100)
     description = fields.Text(
-        "Description", help="write the description of this property",
+        "Description",
+        help="write the description of this property",
     )
     postcode = fields.Char("Postcode", size=10, help="address postal code")
     date_availability = fields.Date(
@@ -52,17 +53,25 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_ids = fields.Many2many(
-        "estate.property.tag", "estate_propery_tags_relation", string="Tags",
+        "estate.property.tag",
+        "estate_propery_tags_relation",
+        string="Tags",
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user,
+        "res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
     )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area", compute="_compute_total", readonly=True)
     best_price = fields.Float(
-        "Best Price", readonly=True, compute="_compute_best_price", store=True,
+        "Best Price",
+        readonly=True,
+        compute="_compute_best_price",
+        store=True,
     )
+    image_1920 = fields.Image("Image")
 
     _check_selling_and_expected_price = models.Constraint(
         "CHECK(selling_price >= 0 and expected_price > 0)",
@@ -128,5 +137,7 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     property_ids = fields.One2many(
-        "estate.property", "salesperson_id", string="Estate Properties",
+        "estate.property",
+        "salesperson_id",
+        string="Estate Properties",
     )
