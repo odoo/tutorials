@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.Configuration">
+        <Dialog title="'Configuration'">
+            Enabled cards:
+            <div class="p-3">
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <input type="checkbox" class="form-check-input m-0" t-att-checked="!props.disabledItems.includes(item.id)" t-on-change="() => this.onChange(item.id)"/>
+                        <p class="m-0" t-esc="item.description"/>
+                    </div>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="props.close">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
