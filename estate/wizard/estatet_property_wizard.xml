@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="estate_property_wizard_view_form" model="ir.ui.view">
+        <field name="name">estate.property.wizard.form</field>
+        <field name="model">estate.property.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Find Offers">
+                <group>
+                    <field name="property_type_id" />
+                    <field name="expected_price" />
+                    <field name="buyer_id" />
+                </group>
+                <footer>
+                    <button name="action_find_offers" type="object"
+                        string="Find Offers" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_estate_property_wizard" model="ir.actions.act_window">
+        <field name="name">Find Offers</field>
+        <field name="res_model">estate.property.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="estate_property_wizard_view_form" />
+        <field name="target">new</field>
+    </record>
+
+</odoo>

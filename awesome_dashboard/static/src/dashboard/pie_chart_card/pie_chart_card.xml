@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div>
+            <div t-out="props.title" />
+            <PieChart clothSize="{labels: Object.keys(props.values), values: Object.values(props.values)}" />
+        </div>
+    </t>
+</templates>

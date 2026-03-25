@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="report_property_offers_table">
+        <t t-set="offers" t-value="property.mapped('offer_ids')" />
+        <t t-if="offers">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price" />
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id" />
+                        </td>
+                        <td>
+                            <span t-field="offer.status" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p>
+                <em>No offers have been received for this property yet.</em>
+            </p>
+        </t>
+    </template>
+
+    <template id="report_property_offers">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <strong>Expected Price: </strong>
+                                <span t-field="property.expected_price" />
+                            </div>
+                            <div class="col-6">
+                                <strong>Selling Price: </strong>
+                                <span t-field="property.selling_price" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <strong>Status: </strong>
+                                <span t-field="property.state" />
+                            </div>
+                            <div class="col-6">
+                                <strong>Best Offer: </strong>
+                                <span t-field="property.best_price" />
+                            </div>
+                        </div>
+                        <h4 class="mt-4">Offers</h4>
+                        <t t-call="estate.report_property_offers_table" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_salesperson_properties">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="salesperson">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Properties for <span t-field="salesperson.name" /></h2>
+                        <t t-set="properties" t-value="salesperson.property_ids" />
+                        <t t-if="properties">
+                            <t t-foreach="properties" t-as="property">
+                                <h4 class="mt-4">
+                                    <span t-field="property.name" />
+                                </h4>
+                                <t t-call="estate.report_property_offers_table" />
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p>
+                                <em>This salesperson has no properties.</em>
+                            </p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

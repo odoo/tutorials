@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <button class="btn bg-success mx-5" t-on-click="increment">
+            click me [<t t-out="state.value" />]
+        </button>
+    </t>
+
+</templates>

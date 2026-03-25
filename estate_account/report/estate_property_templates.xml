@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_property_offers_inherit_account"
+        inherit_id="estate.report_property_offers">
+        <xpath expr="//div[hasclass('page')]/h2" position="after">
+            <t t-if="property.state == 'sold'">
+                <t t-set="invoice"
+                    t-value="env['account.move'].search([
+                    ('partner_id', '=', property.buyer_id.id),
+                    ('move_type', '=', 'out_invoice')
+                ], limit=1)" />
+                <t t-if="invoice">
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <strong>Invoice Reference: </strong>
+                            <span t-field="invoice.name_placeholder" />
+                        </div>
+                        <div class="col-6">
+                            <strong>Invoice Amount: </strong>
+                            <span t-field="invoice.amount_total" />
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

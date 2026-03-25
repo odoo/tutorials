@@ -1,11 +1,32 @@
 <odoo>
-  <data>
-    <record model="ir.actions.client" id="dashboard">
-      <field name="name">Dashboard</field>
-      <field name="tag">awesome_dashboard.dashboard</field>
+    <record id="awesome_dashboard_action" model="ir.actions.client">
+        <field name="name">Dashboard</field>
+        <field name="tag">awesome_dashboard.dashboard</field>
     </record>
 
-    <menuitem name="Awesome Dashboard" id="awesome_dashboard.menu_root" groups="base.group_user" web_icon="awesome_dashboard,static/description/icon.png"/>
-    <menuitem name="Dashboard" id="awesome_dashboard.dashboard_menu" parent="awesome_dashboard.menu_root" action="awesome_dashboard.dashboard" sequence="1"/>
-  </data>
+    <record id="awesome_dashboard_about_action" model="ir.actions.client">
+        <field name="name">About</field>
+        <field name="tag">awesome_dashboard.about</field>
+    </record>
+
+    <menuitem
+        id="awesome_dashboard_menu_root"
+        name="Awesome Dashboard"
+        groups="base.group_user"
+        web_icon="awesome_dashboard,static/description/icon.png"
+    />
+    <menuitem
+        id="awesome_dashboard_menu_dashboard"
+        name="Dashboard"
+        parent="awesome_dashboard.awesome_dashboard_menu_root"
+        action="awesome_dashboard.awesome_dashboard_action"
+        sequence="1"
+    />
+    <menuitem
+        id="awesome_dashboard_menu_about"
+        name="About"
+        parent="awesome_dashboard.awesome_dashboard_menu_root"
+        action="awesome_dashboard.awesome_dashboard_about_action"
+        sequence="2"
+    />
 </odoo>

@@ -1,0 +1,9 @@
+.o_dashboard {
+    background-color: rgb(0, 0, 0);
+
+    @media (max-width: 576px) {
+        .card {
+            width: 100% !important;
+        }
+    }
+}
