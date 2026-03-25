@@ -1,7 +1,7 @@
 from odoo import fields, models, api, exceptions, tools
 
 
-class EstateProperty(models.Model): 
+class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate properties"
     _order = 'id desc'
