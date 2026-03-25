@@ -33,10 +33,11 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id",
         store=True
     )
-    validity = fields.Integer(default=7)
+    validity = fields.Integer(default=0)
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+        store=True
     )
     _price_check = models.Constraint(
         'CHECK(price > 0)',
@@ -79,6 +80,8 @@ class EstatePropertyOffer(models.Model):
         return offers
 
     def action_accept(self):
+        # if not self.env.user.has_group('estate.group_real_estate_manager'):
+        #     raise UserError("Only managers can accept offers.")
         for offer in self:
             property = offer.property_id
             minimum_price = property.expected_price * 0.9
@@ -114,10 +117,13 @@ class EstatePropertyOffer(models.Model):
             })
 
     def action_refuse(self):
+        if not self.env.user.has_group('estate.group_real_estate_manager'):
+            raise UserError("Only managers can refuse offers.")
         for offer in self:
             property_rec = offer.property_id
             if property_rec.state in ['sold', 'cancelled']:
                 raise UserError("You cannot refuse an offer on a sold or cancelled property.")
+            
             if offer.status == "accepted":
                 offer.status = "refused"
                 property_rec.write({
@@ -131,5 +137,16 @@ class EstatePropertyOffer(models.Model):
                     property_rec.state = 'offer_received'
                 else:
                     property_rec.state = 'new'
+            
             else:
                 offer.status = "refused"
+
+    @api.model
+    def _cron_refuse_after_deadline(self):
+        today = fields.Date.today()
+        offers = self.search([
+            ('date_deadline', '<=', today),
+            ('status', '!=', 'refused'),
+        ])
+        for offer in offers:
+            offer.action_refuse()
