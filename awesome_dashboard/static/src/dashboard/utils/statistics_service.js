@@ -1,0 +1,28 @@
+import { reactive } from "@odoo/owl";
+import { registry } from "@web/core/registry";
+import { rpc } from "@web/core/network/rpc";
+
+
+const statisticsService = {
+
+    start() {
+
+        const statistics = reactive({});
+        
+        async function loadStatistics() {
+            const data = await rpc("/awesome_dashboard/statistics");
+            Object.assign(statistics, data);
+        };
+
+        setInterval(loadStatistics, 600000);
+
+        loadStatistics();
+
+        return {
+            statistics
+        };
+    },
+
+};
+
+registry.category("services").add("awesome_dashboard.statistics", statisticsService);
