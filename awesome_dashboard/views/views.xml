@@ -2,7 +2,7 @@
   <data>
     <record model="ir.actions.client" id="dashboard">
       <field name="name">Dashboard</field>
-      <field name="tag">awesome_dashboard.dashboard</field>
+      <field name="tag">awesome_dashboard.dashboard_action</field>
     </record>
 
     <menuitem name="Awesome Dashboard" id="awesome_dashboard.menu_root" groups="base.group_user" web_icon="awesome_dashboard,static/description/icon.png"/>

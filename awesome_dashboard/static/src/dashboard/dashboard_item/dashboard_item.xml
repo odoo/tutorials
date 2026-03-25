@@ -5,9 +5,6 @@
             class="card m-2 p-2" 
             t-attf-style="width: {{18*props.size}}rem;"
         >
-            <h4>
-                <t t-esc="props.title"/>
-            </h4>
             <div class="card-body">
                 <t t-slot="default"/>
             </div>
