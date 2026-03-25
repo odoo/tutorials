@@ -1,5 +1,6 @@
 from odoo import fields, models, api, exceptions
 
+
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate property offers"
@@ -11,7 +12,7 @@ class EstatePropertyOffer(models.Model):
         "The price of an offer must be positive.",
     )
     status = fields.Selection(
-        selection=[("accepted","Accepted"),("refused","Refused")],
+        selection=[("accepted", "Accepted"), ("refused", "Refused")],
         copy=False
     )
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
@@ -24,10 +25,10 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _compute_deadline(self):
         for record in self:
-            if(record.create_date):
-                record.date_deadline = fields.Date.add(record.create_date, days=record.validity )
+            if (record.create_date):
+                record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
             else:
-                record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity )
+                record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity)
 
     def _inverse_deadline(self):
         for record in self:
@@ -46,7 +47,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
-    
+
     @api.model
     def create(self, vals_list):
         for vals in vals_list:

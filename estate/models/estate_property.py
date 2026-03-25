@@ -1,24 +1,25 @@
-from odoo import fields, models, api, exceptions, tools#.float_utils
+from odoo import fields, models, api, exceptions, tools
 
-class EstateProperty(models.Model):
+
+class EstateProperty(models.Model): 
     _name = 'estate.property'
     _description = "Estate properties"
     _order = 'id desc'
 
     active = fields.Boolean(default=True)
     state = fields.Selection([
-        ("new","New"),
-        ("offer_received","Offer Received"),
-        ("offer_accepted","Offer Accepted"),
-        ("sold","Sold"),
-        ("cancelled","Cancelled"),
+        ("new", "New"),
+        ("offer_received", "Offer Received"),
+        ("offer_accepted", "Offer Accepted"),
+        ("sold", "Sold"),
+        ("cancelled", "Cancelled"),
     ], default="new"
     )
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3), string="Available From" )
+    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3), string="Available From")
     expected_price = fields.Float(required=True)
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -34,7 +35,7 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_date_end(self):
         for record in self:
-            if (len(record.property_offer_ids) != 0) and tools.float_utils.float_compare(record.expected_price * 0.9 , record.selling_price, precision_digits=2) == 1:
+            if (len(record.property_offer_ids) != 0) and tools.float_utils.float_compare(record.expected_price * 0.9, record.selling_price, precision_digits=2) == 1:
                 raise exceptions.ValidationError("The selling price cannot be inferior to 90% of the expected price")
 
     bedrooms = fields.Integer(default=2)
@@ -44,7 +45,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        selection=[("north","North"), ("south","South"), ("east","East"), ("west","West")],
+        selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
     )
 
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
@@ -56,12 +57,14 @@ class EstateProperty(models.Model):
     property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     total_area = fields.Float(compute='_compute_total_area')
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
     best_price = fields.Float(compute='_compute_best_price', string="Best Offer")
+
     @api.depends('property_offer_ids.price')
     def _compute_best_price(self):
         for record in self:
@@ -72,7 +75,7 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if(self.garden == True):
+        if (self.garden):
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -81,7 +84,7 @@ class EstateProperty(models.Model):
 
     def estate_property_action_sold(self):
         for record in self:
-            if(record.state == "cancelled"):
+            if (record.state == "cancelled"):
                 raise exceptions.UserError("Cancelled properties cannot be sold.")
             else:
                 record.state = "sold"
@@ -89,15 +92,14 @@ class EstateProperty(models.Model):
 
     def estate_property_action_cancelled(self):
         for record in self:
-            if(record.state == "sold"):
+            if (record.state == "sold"):
                 raise exceptions.UserError("Sold properties cannot be cancelled.")
             else:
                 record.state = "cancelled"
         return True
-    
-    
-    @api.ondelete( at_uninstall=False )
+
+    @api.ondelete(at_uninstall=False)
     def _check_state_before_unlink(self):
         for record in self:
-            if not record.state in ['new', 'cancelled']:
+            if record.state not in ['new', 'cancelled']:
                 raise exceptions.UserError("Only new or cancelled properties can be deleted...")
