@@ -10,48 +10,34 @@
                     Leads
                 </button>
             </t>
-            <AwesomeDashboardItem t-if="stats.isReady">
-                <div>Average amount of t-shirt by order this month</div>
-                <div
-                    class="text-success text-center"
-                    t-out="stats.average_quantity"
-                />
-            </AwesomeDashboardItem>
-            <AwesomeDashboardItem size="2" t-if="stats.isReady">
-                <div>
-                    Average time for an order to go from 'new' to 'sent' or
-                    'cancelled'
-                </div>
-                <div
-                    class="text-success text-center"
-                    t-out="stats.average_time"
-                />
-            </AwesomeDashboardItem>
-            <AwesomeDashboardItem t-if="stats.isReady">
-                <div>Number of new orders this month</div>
-                <div
-                    class="text-success text-center"
-                    t-out="stats.nb_new_orders"
-                />
-            </AwesomeDashboardItem>
-            <AwesomeDashboardItem t-if="stats.isReady">
-                <div>Number of cancelled orders this month</div>
-                <div
-                    class="text-success text-center"
-                    t-out="stats.nb_cancelled_orders"
-                />
-            </AwesomeDashboardItem>
-            <AwesomeDashboardItem t-if="stats.isReady">
-                <div>Total amount of new orders this month</div>
-                <div
-                    class="text-success text-center"
-                    t-out="stats.total_amount"
-                />
-            </AwesomeDashboardItem>
-            <AwesomeDashboardItem t-if="stats.isReady">
-                <div>Shirt orders by size</div>
-                <PieChart data="stats.orders_by_size" />
-            </AwesomeDashboardItem>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn btn-primary" t-on-click="openConfig">
+                    Configuration <i class="fa fa-cog" />
+                </button>
+            </t>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <AwesomeDashboardItem size="item.size || 1">
+                    <t
+                        t-set="itemProp"
+                        t-value="item.props ? item.props(this.stats) : undefined"
+                    />
+                    <t t-component="item.Component" t-props="itemProp" />
+                </AwesomeDashboardItem>
+            </t>
         </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.config">
+        <Dialog title="'Dashboard items configuration'">
+            <p>Which cards do you want to see?</p>
+            <t t-foreach="this.items" t-as="item" t-key="item.id">
+                <CheckBox value="item.isEnabled" onChange="(val) => this.onCheck(item, val)">
+                    <t t-esc="item.description" />
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
     </t>
 </templates>
