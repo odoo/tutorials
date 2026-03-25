@@ -3,7 +3,7 @@ from odoo import models, Command
 class EstateProperty(models.Model):
     _inherit = ['estate.property']
 
-    def action_sold(self):
+    def estate_property_action_sold(self):
         self.env['account.move'].create({
             'name': self.name,
             'move_type':'out_invoice',
@@ -21,4 +21,4 @@ class EstateProperty(models.Model):
                 }),
             ],
         })
-        return super().action_sold()
+        return super().estate_property_action_sold()
