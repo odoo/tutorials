@@ -13,20 +13,22 @@ class EstateProperty(models.Model):
         records = super().create(vals_list)
 
         for rec in records:
-            event = self.env["event.event"].create({
-                "name": "Open House - " + rec.name,
-                "date_begin": FieldsDatetime.to_string(
-                    datetime.today() + timedelta(days=1)
-                ),
-                "date_end": FieldsDatetime.to_string(
-                    datetime.today() + timedelta(days=15)
-                ),
-                "property_id": rec.id,
-            })
+            event = self.env["event.event"].create(
+                {
+                    "name": "Open House - " + rec.name,
+                    "date_begin": FieldsDatetime.to_string(
+                        datetime.today() + timedelta(days=1)
+                    ),
+                    "date_end": FieldsDatetime.to_string(
+                        datetime.today() + timedelta(days=15)
+                    ),
+                    "property_id": rec.id,
+                }
+            )
 
             rec.event_id = event.id
         return records
-    
+
     def action_open_event(self):
         self.ensure_one()
 

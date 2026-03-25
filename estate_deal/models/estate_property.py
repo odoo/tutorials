@@ -1,8 +1,5 @@
-from odoo import models, api, fields
-from odoo.fields import Datetime as FieldsDatetime
-from datetime import datetime, timedelta
-from odoo.exceptions import UserError, ValidationError
-
+from odoo import models, fields
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):

@@ -1,6 +1,4 @@
-from datetime import timedelta
-from odoo import _, api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo import models
 
 
 class EstatePropertyOffer(models.Model):
@@ -26,4 +24,3 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.deal_id = deal.id
 
         return res
-

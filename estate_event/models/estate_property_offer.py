@@ -1,6 +1,4 @@
-from datetime import timedelta
-from odoo import _, api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models
 
 
 class EstatePropertyOffer(models.Model):

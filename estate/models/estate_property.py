@@ -1,8 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from odoo.fields import Datetime as FieldsDatetime
 
 
 class EstateProperty(models.Model):
@@ -16,8 +15,8 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         compute="_compute_best_price",
         string="Best Offer",
-        store=False,
-        search="_search_best_price",
+        store=True,
+        # search="_search_best_price",
     )
     buyer_id = fields.Many2one(
         "res.partner",
@@ -73,7 +72,6 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", store=True)
     visit_ids = fields.One2many("estate.property.visit", "property_id", string="Visits")
     visit_count = fields.Integer(compute="_compute_visit_count")
-
 
     _expected_price_check = models.Constraint(
         "CHECK(expected_price > 0)", "The expected price must be strictly positive."
