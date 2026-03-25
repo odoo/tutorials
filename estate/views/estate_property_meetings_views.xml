@@ -18,6 +18,16 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="cancel"
+                        type="object"
+                        string="Cancel"
+                        class="btn-danger"
+                        invisible="state not in ('schedule','new')" />
+<button name="cancel"
+    type="object"
+    string="Cancel"
+    class="btn-danger"
+    invisible="state not in ('schedule','new')" />
                     <button name="done"
                         type="object"
                         string="Done"

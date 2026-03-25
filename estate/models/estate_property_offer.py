@@ -1,13 +1,17 @@
 from datetime import timedelta
-
+import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+
+
+_logger = logging.getLogger(__name__)
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Real Estate Property Offer"
     _order = "price desc"
+    _inherit='estate.property'
 
     _offer_price = models.Constraint('CHECK(price>0)', 'Offer Price must be positive')
 
@@ -22,6 +26,7 @@ class EstatePropertyOffer(models.Model):
         default='new',
         readonly=True,
     )
+    validity = fields.Integer(default=7)
     partner_id = fields.Many2one(
         "res.partner",
         string="Partner",
@@ -38,6 +43,7 @@ class EstatePropertyOffer(models.Model):
         default=fields.Date.context_today,
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
+        store=True,
     )
 
     property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True)
@@ -88,3 +94,22 @@ class EstatePropertyOffer(models.Model):
     def offer_accepted(self):
         for rec in self:
             rec.status = 'offer_accepted'
+    
+
+    @api.model
+    def _cron_expire_offers(self):
+   
+        today = fields.Date.context_today(self)
+
+        expired_offers = self.search([
+            ('date_deadline', '<', today),
+            ('status', '=', 'new'),
+        ])
+
+        if expired_offers:
+            expired_offers.write({'status': 'offer_rejected'})
+
+        _logger.info("Deleted  expired property offers.")
+
+        return True
+   

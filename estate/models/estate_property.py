@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property used to buy and sell houses"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     _positive_price = models.Constraint('CHECK (expected_price>=0)',
                     'Expected price must be positive',
@@ -35,14 +36,14 @@ class EstateProperty(models.Model):
         default='new',
     )
 
-    name = fields.Char(required=True)
+    name = fields.Char()
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
         default=lambda self: fields.Date.context_today(self) + relativedelta(months=3),
         copy=False,
     )
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float()
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(
         default=2,
@@ -50,8 +51,8 @@ class EstateProperty(models.Model):
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer(required=True)
+    garden = fields.Boolean(defaut=True)
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[
             ('north', "North"),
@@ -72,6 +73,8 @@ class EstateProperty(models.Model):
         string="Status",
         default='new',
         readonly=True,
+        tracking=True,
+        store=True,
     )
     active = fields.Boolean(default=True)
 
@@ -147,9 +150,10 @@ class EstateProperty(models.Model):
         for rec in self:
             rec.state = 'offer_accepted'
 
+  
     def offer_recieved(self):
         for rec in self:
-            if rec.offer_ids and rec.offer_ids.status == 'new':
+            if any(rec.offer_ids and rec.offer_ids.status == 'new'):
                 rec.state = 'offer_received'
 
     def sold(self):
@@ -226,3 +230,5 @@ class EstateProperty(models.Model):
     def _compute_meeting_count(self):
         for rec in self:
             rec.meeting_count = len(rec.meeting_ids)
+            
+            

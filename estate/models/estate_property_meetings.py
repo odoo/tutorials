@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyMeeting(models.Model):
-    _name = "estate.property.meeting"
+    _name = 'estate.property.meeting'
     _description = "Property Meeting"
 
     name = fields.Char(
@@ -51,11 +51,12 @@ class EstatePropertyMeeting(models.Model):
     def done(self):
         for rec in self:
             rec.state = 'done'
+            message = "Meeting completed"
 
         return {
             "effect": {
                 "fadeout": "fast",
-                "message": _("Meeting completed"),
+                "message": message,
                 "img_url": "/web/static/img/smile.svg",
                 "type": "rainbow_man",
             },
@@ -63,7 +64,12 @@ class EstatePropertyMeeting(models.Model):
 
     def cancel(self):
         for rec in self:
-            if rec.state != 'schedule':
+            if rec.state in ['schedule']:
+                breakpoint()
                 rec.state = 'cancelled'
+            elif rec.state in ['done']:
+                breakpoint()
+                raise (_(" Cannot cancel a completed meeting "))
             else:
+                breakpoint()
                 raise UserError(_("You must schedule a meeting before cancelling it."))
