@@ -73,7 +73,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ("new", "cancelled"):
                 raise UserError(
-                    "Properties can only be deleted in 'New' or 'Cancelled' state"
+                    self.env._("Properties can only be deleted in 'New' or 'Cancelled' state")
                 )
 
     # -------------------------------------------------------------------------
@@ -104,7 +104,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold.")
+                raise UserError(self.env._("Cancelled properties cannot be sold."))
             else:
                 record.state = "sold"
         return True
@@ -112,7 +112,7 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("Sold properties cannot be cancelled.")
+                raise UserError(self.env._("Sold properties cannot be cancelled."))
             else:
                 record.state = "cancelled"
         return True
@@ -126,5 +126,7 @@ class EstateProperty(models.Model):
                     < 0
                 ):
                     raise ValidationError(
-                        "The selling price cannot be lower than 90% of the expected price."
+                        self.env._(
+                            "The selling price cannot be lower than 90% of the expected price."
+                        )
                     )

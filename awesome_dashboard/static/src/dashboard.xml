@@ -6,6 +6,8 @@
             <t t-set-slot="layout-buttons">
                 <button type="button" class="btn btn-primary" t-on-click="openCustomersForm">Customers</button>
                 <button type="button" class="btn btn-primary" t-on-click="doAction">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
                 <button type="button" t-on-click="openConfigurationSettings">
                     <i class="fa fa-gear"></i>
                 </button>

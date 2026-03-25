@@ -43,7 +43,7 @@ class EstatePropertyOffer(models.Model):
         property_model = self.env['estate.property'].browse(property_id)
 
         if float_compare(offer_price, property_model.best_price, precision_digits=2) < 0:
-            raise ValidationError("New offers cannot have a lower amount than an existing offer")
+            raise ValidationError(self.env._("New offers cannot have a lower amount than an existing offer"))
 
         property_model.state = 'offer_received'
 
@@ -73,7 +73,7 @@ class EstatePropertyOffer(models.Model):
                 offer.status == 'offer_accepted'
                 for offer in record.property_id.offer_ids
             ):
-                raise UserError("Another offer has already been accepted.")
+                raise UserError(self.env._("Another offer has already been accepted."))
             else:
                 record.property_id.buyer = record.partner_id
                 record.property_id.selling_price = record.price
