@@ -1,35 +1,36 @@
-<t t-name="awesome_dashboard.SettingsDialog">
-    <Dialog title="props.title or 'Settings'">
-
-        <div class="modal-body">
-            <t t-if="state.items.length">
-                <t t-foreach="state.items" t-as="item" t-key="item.id">
-                    <div class="form-check mb-2">
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            t-att-checked="isChecked(item) ? true : undefined"
-                            t-on-change="() => this.toggle(item)"
-                        />
-                        <label class="form-check-label">
-                            <t t-esc="item.description" />
-                        </label>
-                    </div>
+<template>
+    
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <Dialog title="props.title or 'Settings'">
+            <div class="modal-body">
+                <t t-if="state.items.length">
+                    <t t-foreach="state.items" t-as="item" t-key="item.id">
+                        <div class="form-check mb-2">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                t-att-checked="isChecked(item)"
+                                t-on-change="() => this.toggle(item)"
+                            />
+                            <label class="form-check-label">
+                                <t t-esc="item.description" />
+                            </label>
+                        </div>
+                    </t>
                 </t>
-            </t>
-            <t t-else="">
-                <h5>No items available</h5>
-            </t>
-        </div>
+                <t t-else="">
+                    <h5>No items available</h5>
+                </t>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" t-on-click="props.close">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" t-on-click="apply">
+                    Apply
+                </button>
+            </div>
+        </Dialog>
+    </t>
 
-        <div class="modal-footer">
-            <button class="btn btn-secondary" t-on-click="props.close">
-                Cancel
-            </button>
-            <button class="btn btn-primary" t-on-click="apply">
-                Apply
-            </button>
-        </div>
-
-    </Dialog>
-</t>
+</template>

@@ -21,7 +21,7 @@ const statisticsService = {
 
         setInterval(() => {
             load();
-        }, 10000);
+        }, 2000);
 
         return {
             state,

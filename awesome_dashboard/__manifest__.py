@@ -10,7 +10,7 @@
     "author": "Odoo",
     "website": "https://www.odoo.com/",
     "category": "Tutorials",
-    "version": "0.1",
+    "version": "0.2",
     "application": True,
     "installable": True,
     "depends": ["base", "web", "mail", "crm"],

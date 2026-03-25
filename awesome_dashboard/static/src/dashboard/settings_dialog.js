@@ -1,4 +1,5 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillStart } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { Dialog } from "@web/core/dialog/dialog";
 
@@ -15,32 +16,50 @@ export class DashboardSettingsDialog extends Component {
     static components = { Dialog };
 
     setup() {
+        this.orm = useService("orm");
+
         const allItems =
             this.props.items ||
             registry.category("awesome_dashboard.items").getAll();
 
-        const stored = JSON.parse(
-            localStorage.getItem("awesome_dashboard.removed_items") || "[]",
-        );
-
-        const removedMap = {};
-        for (const id of stored) {
-            removedMap[String(id)] = true;
-        }
+        this.toHide = new Set();
+        this.toShow = new Set();
 
         this.state = useState({
             items: allItems,
-            removedItems: removedMap,
+            removedItems: {},
+        });
+
+        onWillStart(async () => {
+            const config = await this.orm.call(
+                "res.users",
+                "get_dashboard_config",
+                [],
+            );
+            const hidden = config?.hidden_items || [];
+
+            const removedMap = {};
+            for (const id of hidden) {
+                removedMap[String(id)] = true;
+            }
+            this.state.removedItems = removedMap;
         });
     }
 
     toggle = (item) => {
         const key = String(item.id);
+        const isHidden = this.state.removedItems[key];
 
-        if (this.state.removedItems[key]) {
+        if (isHidden) {
             delete this.state.removedItems[key];
+
+            this.toShow.add(key);
+            this.toHide.delete(key);
         } else {
             this.state.removedItems[key] = true;
+
+            this.toHide.add(key);
+            this.toShow.delete(key);
         }
     };
 
@@ -48,13 +67,16 @@ export class DashboardSettingsDialog extends Component {
         return !this.state.removedItems[String(item.id)];
     }
 
-    apply() {
-        const removedIds = Object.keys(this.state.removedItems);
+    async apply() {
+        const toHide = Array.from(this.toHide);
+        const toShow = Array.from(this.toShow);
 
-        localStorage.setItem(
-            "awesome_dashboard.removed_items",
-            JSON.stringify(removedIds),
-        );
+        if (toHide.length || toShow.length) {
+            await this.orm.call("res.users", "update_dashboard_config", [
+                toHide,
+                toShow,
+            ]);
+        }
 
         if (this.props.onApply) {
             this.props.onApply();
