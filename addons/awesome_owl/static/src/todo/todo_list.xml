@@ -6,7 +6,8 @@
            required="false"
            size="20"
            placeholder="Enter a new task."
-           t-on-keyup="addTodo"/>
+           t-on-keyup="addTodo"
+           t-ref="input"/>
         <t t-foreach="todos" t-as="todo" t-key="todo.id">
             <TodoItem todo="todo"/>
         </t>
