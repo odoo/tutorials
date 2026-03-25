@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+<t t-name="awesome_owl.card">
+
+<div class="card m-2">
+    <div class="card-header d-flex justify-content-between">
+
+        <span>
+             <t t-esc="props.title"/>
+        </span>
+
+        <button class="btn btn-sm btn-secondary"
+                t-on-click="toggleCard">
+
+            <t t-if="state.isOpen">Hide</t>
+            <t t-else="">Show</t>
+
+        </button>
+
+    </div>
+
+    <div class="card-body" t-if="state.isOpen">
+        <t t-slot="default"/>
+    </div>
+
+</div>
+
+</t>
+
+</templates>

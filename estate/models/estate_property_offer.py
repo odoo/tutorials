@@ -1,0 +1,152 @@
+from datetime import timedelta
+
+from odoo import api, models, fields
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
+
+
+class EstatePropertyOffer(models.Model):
+    _name = "estate.property.offer"
+    _description = "Estate Property Offer"
+    _order = "price desc"
+
+    price = fields.Float(string="Offer Price")
+    status = fields.Selection(
+        [
+            ("accepted", "Accepted"),
+            ("refused", "Refused"),
+        ],
+        copy=False,
+    )
+    partner_id = fields.Many2one(
+        'res.partner',
+        string="Buyer",
+    )
+    property_id = fields.Many2one(
+        "estate.property",
+        string="Property",
+        required=True,
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        store=True
+    )
+    validity = fields.Integer(default=0)
+    date_deadline = fields.Date(
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+        store=True
+    )
+    _price_check = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive.'
+    )
+
+    @api.depends("create_date", "validity")
+    def _compute_date_deadline(self):
+        for record in self:
+            create_date = record.create_date.date() if record.create_date else fields.Date.today()
+            record.date_deadline = create_date + timedelta(days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            create_date = record.create_date.date() if record.create_date else fields.Date.today()
+            record.validity = (record.date_deadline - create_date).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            partner_id = vals.get('partner_id')
+            if property_id and partner_id:
+                property_rec = self.env['estate.property'].browse(property_id)
+                existing_offers = property_rec.offer_ids
+                if existing_offers:
+                    highest_offer = max(existing_offers.mapped('price'))
+                    if vals.get('price', 0) < highest_offer:
+                        raise ValidationError(
+                            f"The offer price cannot be lower than the highest existing offer "
+                            f"of {highest_offer}."
+                        )
+        offers = super().create(vals_list)
+        for offer in offers:
+            property_rec = offer.property_id
+            if property_rec.state in ['offer_accepted', 'sold', 'cancelled']:
+                raise UserError("Cannot create offer for this property.")
+            if property_rec.state == 'new':
+                property_rec.state = 'offer_received'
+        return offers
+
+    def action_accept(self):
+        # if not self.env.user.has_group('estate.group_real_estate_manager'):
+        #     raise UserError("Only managers can accept offers.")
+        for offer in self:
+            property = offer.property_id
+            minimum_price = property.expected_price * 0.9
+            if float_compare(offer.price, minimum_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! "
+                    "You must reduce the expected price if you want to accept this offer."
+                )
+            if offer.property_id.state in ['sold', 'cancelled']:
+                raise UserError("You cannot accept an offer on a sold or cancelled property.")
+            accepted_offer = offer.property_id.offer_ids.filtered(
+                lambda o: o.status == "accepted" and o != offer
+            )
+            if accepted_offer:
+                raise UserError("Only one offer can be accepted for a property.")
+            offer.status = "accepted"
+            offer.property_id.write({
+                'selling_price': offer.price,
+                'buyer_id': offer.partner_id.id,
+                'state': 'offer_accepted'
+            })
+            other_pending_offers = offer.property_id.offer_ids.filtered(
+                lambda o: o.status != 'refused' and o != offer
+            )
+            other_pending_offers.write({'status': 'refused'})
+
+            self.env['estate.contract'].create({
+                'property_id': property.id,
+                'buyer_id': offer.partner_id.id,
+                'seller_id': property.user_id.id,
+                'offer_id': offer.id,
+                'offer_price': offer.price,
+            })
+
+    def action_refuse(self):
+        if not self.env.user.has_group('estate.group_real_estate_manager'):
+            raise UserError("Only managers can refuse offers.")
+        for offer in self:
+            property_rec = offer.property_id
+            if property_rec.state in ['sold', 'cancelled']:
+                raise UserError("You cannot refuse an offer on a sold or cancelled property.")
+            
+            if offer.status == "accepted":
+                offer.status = "refused"
+                property_rec.write({
+                    'selling_price': 0.0,
+                    'buyer_id': False,
+                })
+                other_pending = property_rec.offer_ids.filtered(
+                    lambda offer: offer.status == 'refused'
+                )
+                if other_pending:
+                    property_rec.state = 'offer_received'
+                else:
+                    property_rec.state = 'new'
+            
+            else:
+                offer.status = "refused"
+
+    @api.model
+    def _cron_refuse_after_deadline(self):
+        today = fields.Date.today()
+        offers = self.search([
+            ('date_deadline', '<=', today),
+            ('status', '!=', 'refused'),
+        ])
+        for offer in offers:
+            offer.action_refuse()
