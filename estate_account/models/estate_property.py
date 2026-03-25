@@ -1,10 +1,9 @@
-from odoo import fields, models, Command
+from odoo import models, Command
 
 class EstateProperty(models.Model):
     _inherit = ['estate.property']
 
     def action_sold(self):
-        print("test ----------------------- \n")
         self.env['account.move'].create({
             'name': self.name,
             'move_type':'out_invoice',
