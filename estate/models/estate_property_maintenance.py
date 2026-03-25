@@ -1,7 +1,5 @@
 from odoo import api, fields, models
 
-from odoo.exceptions import ValidationError
-
 
 class EstatePropertyMaintenance(models.Model):
     _name = "estate.property.maintenance"
@@ -45,8 +43,6 @@ class EstatePropertyMaintenance(models.Model):
         for record in self:
             if record.state == "assigned":
                 record.state = "in_progress"
-                if record.estimated_cost == 0:
-                    raise ValidationError("Estimate price is a required field")
 
     def action_cancel(self):
         for record in self:

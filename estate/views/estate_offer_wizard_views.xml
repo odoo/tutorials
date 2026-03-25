@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_estate_offer_wizard_form" model="ir.ui.view">
+        <field name="name">estate.offer.wizard.form</field>
+        <field name="model">estate.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="create Offer">
+                <group>
+                    <field name="allowed_partner_ids" invisible="1"/>
+                    <field name="buyer_id" domain="[('id','in',allowed_partner_ids)]"/>
+                    <field name="price"/>
+                </group>
+                <footer>
+                    <button name="action_create_offer"
+                            type="object"
+                            string="create"
+                            class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

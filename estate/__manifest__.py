@@ -9,7 +9,8 @@
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
-        "data/estate_offer_deadline.xml",
+        "data/estate_data.xml",
+        "views/estate_offer_wizard_views.xml",
         "views/estate_property_contracts.xml",
         "views/estate_property_visit_views.xml",
         "views/estate_property_maintenance.xml",

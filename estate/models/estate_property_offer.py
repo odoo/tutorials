@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from odoo import api, fields, models
 
 from odoo.exceptions import UserError
@@ -35,7 +34,8 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline"
+        inverse="_inverse_date_deadline",
+        store=True
     )
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -74,19 +74,27 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
+        if self.env.user.has_group('estate.group_estate_manager'):
+            raise UserError("Managers cannot create offers")
+
         for vals in vals_list:
             property_record = self.env['estate.property'].browse(vals.get('property_id'))
             partner_id = vals.get('partner_id')
-            event = property_record.event_id
+            allowed_partners = self.env['res.partner']
 
-            registration = self.env['event.registration'].search([
-                ('event_id', '=', event.id),
-                ('partner_id', '=', partner_id),
-                ('state', '=', 'done')
-            ])
+            if property_record.event_id:
+                registrations = property_record.event_id.registration_ids.filtered(
+                    lambda r: r.state == 'done'
+                )
+                allowed_partners |= registrations.mapped('partner_id')
 
-            if not registration:
-                raise UserError("only attendees can create offers.")
+            visits = property_record.visit_ids.filtered(
+                lambda v: v.state == 'done'
+            )
+            allowed_partners |= visits.mapped('partner_id')
+
+            if partner_id not in allowed_partners.ids:
+                raise UserError("Only attendees and visitors can create offers.")
             if property_record.state in ('offer_accepted', 'sold'):
                 raise UserError("Cannot create new offer. An offer is already accepted.")
             if property_record.offer_ids:
@@ -129,7 +137,6 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.state in ["cancelled", "sold"]:
                 raise UserError("Cannot modify offers for a sold or cancelled property")
             if record.status == "accepted":
-                record.property_id.selling_price = 0.0
                 record.property_id.buyer_id = False
                 record.property_id.state = "new"
             record.status = "refused"
@@ -138,3 +145,15 @@ class EstatePropertyOffer(models.Model):
         "CHECK(price > 0)",
         "The offer price must be strictly positive."
     )
+    
+    @api.model
+    def _cron_refuse_after_deadline(self):
+        today = fields.Date.today()
+
+        offers = self.search([
+            ('date_deadline', '<', today),
+            ('status', '!=', 'refused'),
+        ])
+
+        for offer in offers:
+            offer.action_refuse()

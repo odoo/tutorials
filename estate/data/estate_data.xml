@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+    <record id="estate_offer_reject_cron" model="ir.cron">
+        <field name="name">reject offer after 7 days</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_refuse_after_deadline()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+    </record>
+
+    <record id="action_estate_create_offer_server" model="ir.actions.server">
+        <field name="name">Create Offer</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_create_offer()</field>
+    </record>
+</odoo>

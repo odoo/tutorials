@@ -15,3 +15,4 @@ access_estate_agent_maintenance,estate manager maintenance,model_estate_property
 access_estate_manager_property,estate manager property,model_estate_property,group_estate_manager,1,0,0,0
 access_estate_manager_offer,estate manager offer,model_estate_property_offer,group_estate_manager,1,1,0,0
 access_estate_manager_maintenance,estate manager maintenance,model_estate_property_maintenance,group_estate_manager,1,0,0,0
+access_estate_offer_wizard,access_estate_offer_wizard,model_estate_offer_wizard,base.group_user,1,1,1,1
