@@ -65,11 +65,8 @@ class EstatePropertyMeeting(models.Model):
     def cancel(self):
         for rec in self:
             if rec.state in ['schedule']:
-                breakpoint()
                 rec.state = 'cancelled'
             elif rec.state in ['done']:
-                breakpoint()
-                raise (_(" Cannot cancel a completed meeting "))
+                raise UserError(_(" Cannot cancel a completed meeting "))
             else:
-                breakpoint()
                 raise UserError(_("You must schedule a meeting before cancelling it."))

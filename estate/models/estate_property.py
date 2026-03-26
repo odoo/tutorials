@@ -83,6 +83,13 @@ class EstateProperty(models.Model):
         string="Property Type",
     )
 
+    company_id = fields.Many2one(
+    'res.company',
+    string='Company',
+    required=True,
+    default=lambda self: self.env.company,
+)
+
     salesman_id = fields.Many2one(
         'res.users',
         string="Salesman",
@@ -150,7 +157,6 @@ class EstateProperty(models.Model):
         for rec in self:
             rec.state = 'offer_accepted'
 
-  
     def offer_recieved(self):
         for rec in self:
             if any(rec.offer_ids and rec.offer_ids.status == 'new'):
@@ -159,23 +165,42 @@ class EstateProperty(models.Model):
     def sold(self):
         for rec in self:
             if rec.state == 'cancelled':
-                message = "Property already cancelled"
-                raise UserError(message)
+                raise UserError(_("Property already cancelled"))
             if rec.offer_ids and rec.state == 'offer_accepted':
                 rec.state = 'sold'
             else:
-                raise UserError(_("No accepted offer in prop"))
+                raise UserError(_("You must accept an offer before marking the property as sold."))
 
-            message = "Wohoo!! Property Sold!!"
+        template = self._find_mail_template()
+
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_use_template': bool(template),
+            'default_template_id': template.id if template else False,
+            'default_composition_mode': 'comment',
+            'mark_so_as_sent': True,
+            'force_email': True,
+        }
+
+        if len(self) > 1:
+            ctx.update({
+                'default_composition_mode': 'mass_mail',
+            })
 
         return {
-            "effect": {
-                "fadeout": "fast",
-                "message": message,
-                "img_url": "/web/static/img/smile.svg",
-                "type": "rainbow_man",
-            },
+            'name': _('Send Confirmation'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
         }
+
+    def _find_mail_template(self):
+        return self.env.ref('estate.email_template_property_sold', raise_if_not_found=False)
 
     def cancel(self):
         for rec in self:
@@ -230,5 +255,3 @@ class EstateProperty(models.Model):
     def _compute_meeting_count(self):
         for rec in self:
             rec.meeting_count = len(rec.meeting_ids)
-            
-            

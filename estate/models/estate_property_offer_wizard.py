@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -12,16 +12,16 @@ class PropertyOfferWizard(models.TransientModel):
     def action_apply_offer(self):
         active_ids = self.env.context.get('active_ids', [])
         if not active_ids:
-            raise UserError("Please select at least one property")
+            raise UserError(_("Please select at least one property"))
 
         properties = self.env['estate.property'].browse(active_ids)
 
         valid_properties = properties.filtered(
-            lambda p: p.state in ['new', 'offer_received']
+            lambda p: p.state in ['new', 'offer_received'],
         )
 
         if not valid_properties:
-            raise UserError("No valid properties (New / Offer Received) selected")
+            raise UserError(_("No valid properties (New / Offer Received) selected"))
 
         for prop in valid_properties:
             self.env['estate.property.offer'].create({

@@ -1,8 +1,8 @@
-from datetime import timedelta
 import logging
+from datetime import timedelta
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-
 
 _logger = logging.getLogger(__name__)
 
@@ -11,7 +11,7 @@ class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Real Estate Property Offer"
     _order = "price desc"
-    _inherit='estate.property'
+    _inherit = 'estate.property'
 
     _offer_price = models.Constraint('CHECK(price>0)', 'Offer Price must be positive')
 
@@ -37,7 +37,7 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         required=True,
     )
-    validity = fields.Integer(string="Validity")
+
     date_deadline = fields.Date(
         string='Date Deadline',
         default=fields.Date.context_today,
@@ -94,11 +94,10 @@ class EstatePropertyOffer(models.Model):
     def offer_accepted(self):
         for rec in self:
             rec.status = 'offer_accepted'
-    
 
     @api.model
     def _cron_expire_offers(self):
-   
+
         today = fields.Date.context_today(self)
 
         expired_offers = self.search([
@@ -112,4 +111,3 @@ class EstatePropertyOffer(models.Model):
         _logger.info("Deleted  expired property offers.")
 
         return True
-   
