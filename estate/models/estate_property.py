@@ -80,25 +80,25 @@ class EstateProperty(models.Model):
     def _check_date_end(self):
         for record in self:
             if (len(record.property_offer_ids) != 0) and tools.float_utils.float_compare(record.expected_price * 0.9, record.selling_price, precision_digits=2) == 1:
-                raise ValidationError("The selling price cannot be inferior to 90% of the expected price")
+                raise ValidationError(self.env._("The selling price cannot be inferior to 90% of the expected price"))
 
     @api.ondelete(at_uninstall=False)
     def _check_state_before_unlink(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise UserError("Only new or cancelled properties can be deleted...")
+                raise UserError(self.env._("Only new or cancelled properties can be deleted..."))
             
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
+                raise UserError(self.env._("Cancelled properties cannot be sold."))
             record.state = 'sold'
         return True
 
     def action_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
+                raise UserError(self.env._("Sold properties cannot be cancelled."))
             record.state = 'cancelled'
         return True
 
