@@ -40,6 +40,8 @@ class EstatePropertyOffer(models.Model):
 
             if offer.get('price') <= max(property.mapped('best_price')):
                 raise UserError("The offer price must be higher than the previous offers")
+            if property.state == 'sold':
+                raise UserError("This property was already sold")
 
             if property.state == 'new':
                 property.state = 'offer_received'
