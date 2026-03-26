@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Test action</field>
+        <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- List View -->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -25,7 +24,6 @@
         </field>
     </record>
 
-    <!-- Search View-->
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -38,13 +36,12 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
-                <filter name="state" string="Status" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
+                <filter name="state" string="Status" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <filter name="groupby_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
     </record>
 
-    <!-- Form View -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>

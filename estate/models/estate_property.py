@@ -10,14 +10,13 @@ class EstateProperty(models.Model):
     name = fields.Char(string='Title', required=True, default='Unknown')
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postal Code')
-    last_seen = fields.Datetime(
-        string="Last Seen", default=fields.Datetime.now)
     date_availability = fields.Date(
         string='Available From', copy=False, default=fields.Date.today() + relativedelta(months=+3)
     )
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(
-        string='Selling Price', readonly=True, copy=False)
+        string='Selling Price', readonly=True, copy=False
+    )
     living_area = fields.Float(string='Living Area (sq m)')
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     facades = fields.Integer(string='Facades')
@@ -53,22 +52,31 @@ class EstateProperty(models.Model):
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     property_tags_ids = fields.Many2many(
-        "estate.property.tag", string="Property Tags")
+        "estate.property.tag", string="Property Tags"
+    )
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-    total_area = fields.Float(compute="_compute_area")
+    total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_price"
     )
 
     @api.depends("living_area", "garden_area")
-    def _compute_area(self):
-        for rec in self:
-            rec.total_area = rec.living_area + rec.garden_area
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        for rec in self:
-            if rec.offer_ids:
-                rec.best_price = max(rec.offer_ids.mapped("price"))
-            else:
-                rec.best_price = 0.0
+        if self.offer_ids:
+            self.best_price = max(self.offer_ids.mapped("price"))
+        else:
+            self.best_price = 0.0
+
+    @api.onchange('has_garden')
+    def _onchange_garden(self):
+        if self.has_garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
