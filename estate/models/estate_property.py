@@ -1,4 +1,4 @@
-from odoo import api,models, fields
+from odoo import api,models, fields,modules
 from datetime import timedelta
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
@@ -46,9 +46,9 @@ class EstateProperty(models.Model):
         ],
         default="new"
     )
-    property_type_id = fields.Many2one("estate.property.type", string="property type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id         = fields.Many2one("res.partner", string = "Buyer", copy = False)
-    seller_id        = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user )
+    seller_id        = fields.Many2one("res.users", string = "Vendor", default = lambda self: self.env.user )
     tag_ids          = fields.Many2many("estate.property.tag",)
     offer_ids        = fields.One2many("estate.property.offer", "property_id")
     _order = "id desc"
@@ -57,6 +57,8 @@ class EstateProperty(models.Model):
     best_price = fields.Float(string="Best price", compute="_compute_best_price", digits=(16,0))
 
     property_ids = fields.Many2one("estate.property.type")
+
+    salesperson_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     
     @api.depends("living_area" , "garden_area")
     def _compute_area(self): 
@@ -100,9 +102,11 @@ class EstateProperty(models.Model):
                 if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits = 2) == -1:
                     raise ValidationError('Giá bán không được thấp hơn 90% giá kỳ vọng')
             
-
-
-
+    @api.ondelete(at_uninstall=False)
+    def onDelete(self):
+     for record in self:
+        if record.state not in ('new', 'cancelled'):
+            raise UserError("Chỉ có thể xóa ở trạng thái Mới hoặc Đã hủy!")
 
 
        
