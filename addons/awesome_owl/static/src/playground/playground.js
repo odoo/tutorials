@@ -8,7 +8,9 @@ import {TodoList} from "../todo/todo_list";
 export class Playground extends Component {
     static template = "awesome_owl.playground";
     static components = {Counter, Card, TodoList};
-    static props = {};
+    static props = {
+        description: {type: String, optional: true},
+    };
 
     setup() {
         this.state = useState({sum: 2})
