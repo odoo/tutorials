@@ -85,7 +85,7 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _check_state_before_unlink(self):
         for record in self:
-            if record.state not in ['new', 'cancelled']:
+            if record.state not in {'new', 'cancelled'}:
                 raise UserError(self.env._("Only new or cancelled properties can be deleted..."))
             
     def action_sold(self):
