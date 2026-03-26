@@ -10,16 +10,17 @@
                         <field name="name"/>
                     </h1>
                     <group>
-                        <group>
+                        <group string="General Info">
                             <field name="property_type_id"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="date_availability" string="Available From"/>
                         </group>
-                        <group>
+                        <group string="Pricing">
                             <field name="expected_price"/>
                             <field name="best_price" readonly="1"/>
                             <field name="selling_price"/>
+                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -31,8 +32,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                                 <field name="active"/>
                             </group>
@@ -56,18 +57,19 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list default_order="expected_price desc,name">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="property_type_id"/>
-                <field name="tag_ids" widget="many2many_tags"/>
-                <field name="seller_id"/>
-                <field name="buyer_id"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="tag_ids" widget="many2many_tags" optional="hide"/>
+                <field name="seller_id" optional="hide"/>
+                <field name="buyer_id" optional="hide"/>
+                <field name="living_area" string="Living Area (sqm)" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" string="Available From"/>
+                <field name="state" optional="hide"/>
             </list>
         </field>
     </record>
@@ -103,6 +105,9 @@
                 <filter string="By Type"
                         name="groupby_type"
                         context="{'group_by': 'property_type_id'}"/>
+                <filter string="Properties with Offers"
+                        name="properties_with_offers"
+                        domain="[('offer_ids', '!=', False)]"/>
             </search>
         </field>
     </record>
@@ -111,5 +116,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_properties_with_offers': 1}</field>
     </record>
 </odoo>
