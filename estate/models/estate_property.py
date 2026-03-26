@@ -68,7 +68,7 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if (self.garden):
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
@@ -89,7 +89,7 @@ class EstateProperty(models.Model):
             
     def action_sold(self):
         for record in self:
-            if (record.state == 'cancelled'):
+            if record.state == 'cancelled':
                 raise exceptions.UserError("Cancelled properties cannot be sold.")
             else:
                 record.state = 'sold'
@@ -97,7 +97,7 @@ class EstateProperty(models.Model):
 
     def action_cancelled(self):
         for record in self:
-            if (record.state == 'sold'):
+            if record.state == 'sold':
                 raise exceptions.UserError("Sold properties cannot be cancelled.")
             else:
                 record.state = 'cancelled'
