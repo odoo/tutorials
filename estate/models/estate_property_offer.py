@@ -1,4 +1,5 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -41,7 +42,7 @@ class EstatePropertyOffer(models.Model):
             propertyId = self.env['estate.property'].browse(vals['property_id'])
             curPrice = vals['price']
             if propertyId.best_price > curPrice:
-                raise exceptions.UserError(f"Cannot create an offer with a lower price than the best offer:{propertyId.best_price}")
+                raise UserError(f"Cannot create an offer with a lower price than the best offer:{propertyId.best_price}")
             propertyId.state = 'offer_received'
         return super().create(vals_list)
 
