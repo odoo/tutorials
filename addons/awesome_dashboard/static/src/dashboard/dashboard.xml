@@ -9,15 +9,35 @@
                 </t>
                 <div class="d-flex gap-3 p-3">
                     <DashboardItem>
-                        Some content
-                    </DashboardItem>
-                    <DashboardItem size="2">
-                        Some content 2
+                            <span>Average amount of t-shirt by order this month</span>
+                            <p class="text-success fw-bold fs-1">
+                                <t t-esc="statistics.average_quantity"/>
+                            </p>
                     </DashboardItem>
                     <DashboardItem>
-                        Some content 3
+                            <span>Average time for an order to go from 'new' to 'sent' or 'cancelled'</span>
+                            <p class="text-success fw-bold fs-1">
+                                <t t-esc="statistics.average_time"/>
+                            </p>
                     </DashboardItem>
-
+                    <DashboardItem>
+                            <span>Number of new orders this month</span>
+                            <p class="text-success fw-bold fs-1">
+                                <t t-esc="statistics.nb_new_orders"/>
+                            </p>
+                    </DashboardItem>
+                    <DashboardItem>
+                            <span>Number of cancelled orders this month</span>
+                            <p class="text-success fw-bold fs-1">
+                                <t t-esc="statistics.nb_cancelled_orders"/>
+                            </p>
+                    </DashboardItem>
+                    <DashboardItem>
+                            <span>Total amount of new orders this month</span>
+                            <p class="text-success fw-bold fs-1">
+                                <t t-esc="statistics.total_amount"/>
+                            </p>
+                    </DashboardItem>
                 </div>
             </Layout>
         </t>
