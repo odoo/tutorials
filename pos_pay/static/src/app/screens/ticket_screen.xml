@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+    <t
+        t-name="pos_pay.TicketScreen"
+        t-inherit="point_of_sale.TicketScreen"
+        t-inherit-mode="extension"
+    >
+        <xpath expr="//div[@t-else and hasclass('pads')]" position="inside">
+            <button class="button validation load-order-button w-100 btn btn-lg btn-primary py-3"
+                t-att-disabled="!_selectedSyncedOrder"
+                t-on-click="() => this.payFromTicketScreen()">
+                <div class="text-">Instant Pay</div>
+            </button>
+        </xpath>
+
+        <xpath expr="//div[hasclass('switchpane')]" position="inside">
+            <button
+                class="btn-switchpane load-order-button primary btn btn-primary btn-lg lh-lg w-50 py-3"
+                t-att-disabled="!_selectedSyncedOrder"
+                t-if="!isOrderSynced"
+                t-on-click="() => this.payFromTicketScreen()">
+                <div>Pay</div>
+            </button>
+        </xpath>
+    </t>
+</templates>
