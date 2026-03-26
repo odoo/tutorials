@@ -52,6 +52,9 @@ class EstatePropertyOffer(models.Model):
             prop_id = vals.get('property_id')
             property_rec = property_map.get(prop_id)
 
+            if property_rec.state in ('sold', 'offer_accepted', 'cancelled'):
+                raise UserError("You cannot make an offer for sold property.")
+
             if property_rec and property_rec.offer_ids:
                 max_offer = max(property_rec.offer_ids.mapped('price'))
                 if vals.get('price', 0) < max_offer:

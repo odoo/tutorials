@@ -74,14 +74,6 @@ class EstateProperty(models.Model):
                     self.env._("The selling price cannot be lower than 90% of the expected price! Check your offers or adjust the expected price.")
                 )
 
-    @api.constrains('offer_ids')
-    def _check_creating_offer(self):
-        properties = self.filtered(lambda r: r.state in ('sold', 'cancelled', 'offer_accepted'))
-
-        if properties:
-            raise ValidationError(
-                self.env._("The property is already Sold, Cancelled, or Offer Accepted! You cannot make a new offer.")
-            )
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -126,6 +118,10 @@ class EstateProperty(models.Model):
                 raise UserError("A canceled property cannot be sold!")
             elif record.state == 'sold':
                 raise UserError("The property is already sold!")
+
+            accepted_offers = record.offer_ids.filtered(lambda offer: offer.status == 'accepted')
+            if not accepted_offers:
+                raise UserError("You cannot sell a property that has no accepted offers.")
 
             record.state = 'sold'
 
