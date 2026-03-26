@@ -14,6 +14,13 @@
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
         'views/estate_menu_views.xml',
+        'data/estate_property_type_data.xml',
+    ],
+    'demo': [
+        'demo/estate_property_type_demo.xml',
+        'demo/estate_property_demo.xml',
+        'demo/estate_property_offer_demo.xml',
+        'demo/estate_workflow_demo.xml',
     ],
     'assets': {},
     'application': True,

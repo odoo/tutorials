@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <function model="estate.property.offer" name="action_mark_as_refused">
+        <value eval="[ref('estate_property_offer_demo_1')]"></value>
+    </function>
+    <function model="estate.property.offer" name="action_mark_as_refused">
+        <value eval="[ref('estate_property_offer_demo_2')]"></value>
+    </function>
+    <function model="estate.property.offer" name="action_mark_as_accepted">
+        <value eval="[ref('estate_property_offer_demo_3')]"></value>
+    </function>
+
+    <function model="estate.property" name="action_mark_as_sold">
+        <value eval="[ref('estate_property_demo_1')]"></value>
+    </function>
+</odoo>

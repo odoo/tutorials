@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="estate_property_type_demo_1" model="estate.property.type">
+        <field name="sequence">10</field>
+        <field name="name">House</field>
+    </record>
+    <record id="estate_property_type_demo_2" model="estate.property.type">
+        <field name="sequence">11</field>
+        <field name="name">Apartment</field>
+    </record>
+</odoo>
