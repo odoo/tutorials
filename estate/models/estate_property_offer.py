@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
         "The price of an offer must be positive.",
     )
     status = fields.Selection(
-        selection=[("accepted", "Accepted"), ("refused", "Refused")],
+        selection=[('accepted', "Accepted"), ('refused', "Refused")],
         copy=False
     )
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
@@ -37,15 +37,15 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             for offer in record.property_id.property_offer_ids:
-                offer.status = "refused"
-            record.status = "accepted"
+                offer.status = 'refused'
+            record.status = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
         return True
 
     def action_refuse(self):
         for record in self:
-            record.status = "refused"
+            record.status = 'refused'
         return True
 
     @api.model
