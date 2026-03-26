@@ -27,10 +27,8 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _compute_deadline(self):
         for record in self:
-            if record.create_date:
-                record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
-            else:
-                record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity)
+            createDate = record.create_date or fields.Date.today()
+            record.date_deadline = fields.Date.add(createDate, days=record.validity)
 
     def _inverse_deadline(self):
         for record in self:
@@ -40,8 +38,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             propertyId = self.env['estate.property'].browse(vals['property_id'])
-            curPrice = vals['price']
-            if propertyId.best_price > curPrice:
+            if propertyId.best_price > vals['price']:
                 raise UserError(f"Cannot create an offer with a lower price than the best offer:{propertyId.best_price}")
             propertyId.state = 'offer_received'
         return super().create(vals_list)
