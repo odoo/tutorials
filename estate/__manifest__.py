@@ -1,0 +1,22 @@
+{
+    "name": "Real Estate Advertisement ",
+    "version": "1.0",
+    "depends": ["base"],
+    "website": "https://www.odoo.com/app/estate",
+    "summary": "This module is for Real estate advertisement.",
+    "category": "estate",
+    "data": [
+        "security/ir.model.access.csv",
+        "views/estate_property_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/estate_property_tag_views.xml",
+        "views/estate_property_offers_views.xml",
+        "views/estate_menus.xml",
+        "views/res_users_view.xml",
+        "data/estate_demo_data.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "author": "odoo-pupat",
+    "license": "LGPL-3",
+}

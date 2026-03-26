@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<odoo>
+
+<record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+</record>
+
+<menuitem id="estate_menu_root" name="Real Estate"/>
+
+<menuitem id="estate_menu_advertisements"
+        name="Advertisements"
+        parent="estate_menu_root"/>
+<menuitem id="estate_menu_settings"
+        name="Settings"
+        parent="estate_menu_root"/>
+
+<menuitem id="estate_menu_advertisements_properties"
+        name="Properties"
+        parent="estate_menu_advertisements"
+        action="estate_property_action"/>
+
+<menuitem id="estate_menu_settings_propertytype"
+        name="Property Type"
+        parent="estate_menu_settings"
+        action="estate_property_type_action"/>
+
+<menuitem id="estate_menu_settings_propertytag"
+        name="Property Tags"
+        parent="estate_menu_settings"
+        action="estate_property_tag_action"/>
+</odoo>
