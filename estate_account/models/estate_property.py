@@ -1,4 +1,5 @@
 from odoo import models, Command
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -7,6 +8,9 @@ class EstateProperty(models.Model):
     def action_sell(self):
 
         for property_record in self:
+
+            if not self.env.user.has_group('estate.estate_group_agent'):
+                raise UserError("You do not have permssion to sell !")
 
             invoice_vals = {
                 'name': property_record.name + ' ' + 'Invoice',
@@ -31,6 +35,6 @@ class EstateProperty(models.Model):
                 ]
             }
 
-            self.env['account.move'].create(invoice_vals)
+            self.env['account.move'].sudo().create(invoice_vals)
 
         return super().action_sell()

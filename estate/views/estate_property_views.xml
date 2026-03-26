@@ -26,6 +26,7 @@
 
                         <group>
                             <group>
+                                <field name="company_id" />
                                 <field name="property_type_id"
                                     options="{'no_create': True, 'no_edit': True}" />
                                 <field name="date_availability" optional="hide" />
@@ -104,6 +105,7 @@
                     decoration-muted="state == 'sold'">
 
                     <field name="name" string="Title" />
+                    <field name="company_id" />
                     <field name="property_type_id" />
                     <field name="postcode" />
                     <field name="tag_ids" widget="many2many_tags"

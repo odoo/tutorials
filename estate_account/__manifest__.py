@@ -3,7 +3,7 @@
     'version': '1.0',
     'depends': ['estate', 'account'],
     'author': "kiro",
-    'category': 'Category',
+    'category': 'Real Estate/Brokerage',
     'license': 'LGPL-3',
     'description': """
     Description text

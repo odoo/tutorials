@@ -47,7 +47,6 @@
                 <list string="Property Types">
                     <field name="sequence" widget="handle" />
                     <field name="name" />
-
                 </list>
             </field>
         </record>
