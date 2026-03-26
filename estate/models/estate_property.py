@@ -8,18 +8,18 @@ class EstateProperty(models.Model):
     _description = 'Real Estate Property'
 
     name = fields.Char(string="Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date(string="Available From", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", copy=False)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (spm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (spm)")
-    total_area = fields.Float(string="Total Area (sqm)", compute="_computed_total_area", store=True)
+    total_area = fields.Float(string="Total Area (sqm)", compute="_computed_total_area")
     garden_orientation = fields.Selection([
         ('north', "North"),
         ('east', "East"),
@@ -33,13 +33,13 @@ class EstateProperty(models.Model):
         ('offer_accepted', "Offer Accepted"),
         ('sold', "Sold"),
         ('cancelled', "Cancelled")
-    ], string="State", copy=False, default='new')
+    ], copy=False, default='new')
     property_type_id = fields.Many2one('estate.property.type', string="Property Type", ondelete="cascade")
     sales_person_id = fields.Many2one('res.users', string='Salesman', ondelete='cascade')
     buyer_id = fields.Many2one('res.partner', string='Buyer', ondelete='cascade')
     property_tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-    best_price = fields.Float(string="Best Offer", compute="_computed_best_offer", store=True)
+    best_price = fields.Float(string="Best Offer", compute="_computed_best_offer", search="_search_best_offer", store=False)
 
     @api.depends("living_area", "garden_area")
     def _computed_total_area(self):
@@ -51,3 +51,10 @@ class EstateProperty(models.Model):
         for rec in self:
             prices = rec.offer_ids.mapped("price")
             rec.best_price = max(prices) if prices else 0.0
+
+    def _search_best_offer(self, operator, value):
+        return [
+            '&',
+            ('offer_ids.price', '>', 10000),
+            ('offer_ids.price', operator, value)
+        ]
