@@ -1,3 +1,4 @@
+from odoo import Command
 from odoo.addons.estate.tests.common import EstateTestCommon
 from odoo.exceptions import UserError
 from odoo.tests import tagged, Form
@@ -37,3 +38,16 @@ class EstatePropertyTestCase(EstateTestCommon):
             form_estate_property.save()
             self.assertEqual(estate_property.garden_area, 100)
             self.assertEqual(estate_property.garden_orientation, 'south')
+
+    def test_create_property_with_offers(self):
+        vals = self.get_create_property_kwargs()
+
+        vals['offer_ids'] = [
+            Command.create({
+                'price': vals['expected_price'] + 5000,
+                'partner_id': self.partner.id,
+                'validity': 7,
+            }),
+        ]
+
+        self.env['estate.property'].create(vals)

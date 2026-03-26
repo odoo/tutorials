@@ -19,8 +19,8 @@ class EstateTestCommon(BaseCommon):
             'name': 'Apartment',
         })
 
-    def create_property(self, state, **kwargs):
-        estate_property = self.env['estate.property'].create({
+    def get_create_property_kwargs(self, **kwargs):
+        return {
             'name': 'Property ' + str(datetime.datetime.now()),
             'postcode': '12345',
             'date_availability': datetime.datetime.now() + datetime.timedelta(days=7),
@@ -31,7 +31,10 @@ class EstateTestCommon(BaseCommon):
             'property_type_id': self.property_type_house.id,
             'state': 'new',
             **kwargs,
-        })
+        }
+
+    def create_property(self, state, **kwargs):
+        estate_property = self.env['estate.property'].create(self.get_create_property_kwargs(**kwargs))
 
         if state in {'offer_received', 'offer_accepted', 'sold', 'canceled'}:
             offer_a = self.create_offer(estate_property, 5000, partner_id=self.partner.id, validity=7)

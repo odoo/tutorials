@@ -118,7 +118,7 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_prices(self):
         for record in self:
-            if len(record.offer_ids) > 0 and float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
+            if len(record.offer_ids.filtered(lambda x: x.status == 'accepted')) > 0 and float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
                 raise UserError(self.env._("The selling price must be at least 90% of the expected price"))
 
     @api.ondelete(at_uninstall=False)
