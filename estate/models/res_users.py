@@ -6,4 +6,4 @@ class ResUsers(models.Model):
     _name = 'res.users'
 
     property_ids = fields.One2many('estate.property', 'seller_id',
-                                   domain=['|', ('state', '=', 'new'), ('state', '=', 'offer received')])
+                                   domain=['|', ('state', '=', 'new'), ('state', '=', 'offer_received')])

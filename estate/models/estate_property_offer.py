@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
 
 
@@ -57,6 +57,10 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             related_property = self.env['estate.property'].browse(
                 vals['property_id'])
+            if related_property.state in ['sold', 'canceled', 'offer_accepted']:
+                raise ValidationError(self.env._(
+                    "You cannot make an offer on a sold or canceled property!")
+                )
             for offer in related_property.offer_ids:
                 if offer.price > vals['price']:
                     raise UserError(self.env._("This offer price is lower than the current ones"))
@@ -73,7 +77,7 @@ class EstatePropertyOffer(models.Model):
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
-            record.property_id.state = 'offer accepted'
+            record.property_id.state = 'offer_accepted'
 
     def action_refuse_offer(self):
         for record in self:

@@ -39,8 +39,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ('new', "New"),
-            ('offer received', "Offer Received"),
-            ('offer accepted', "Offer Accepted"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('canceled', "Canceled")
         ],
@@ -101,7 +101,7 @@ class EstateProperty(models.Model):
     def _onchange_receive_offer(self):
         for record in self.filtered(lambda record: record.state == 'new'):
             if record.offer_ids:
-                record.state = 'offer received'
+                record.state = 'offer_received'
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -122,12 +122,11 @@ class EstateProperty(models.Model):
 
     def action_mark_as_sold(self):
         for record in self:
-            if record.state != 'canceled':
-                record.state = 'sold'
-            else:
-                raise UserError(self.env._(
-                    "Canceled properties cannot be sold!")
+            if record.state != 'offer_accepted':
+                raise ValidationError(self.env._(
+                    "Only properties with an accepted offer can be sold!")
                 )
+            record.state = 'sold'
 
     def action_mark_as_canceled(self):
         for record in self:

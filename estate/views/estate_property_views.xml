@@ -3,7 +3,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-success="state == 'offer received' or state == 'offer accepted'" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+            <list decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" options="{'color_field': 'color'}" widget="many2many_tags"/>
@@ -23,9 +23,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_mark_as_sold" type="object" string="SOLD" invisible="state == 'sold' or state == 'canceled'"/>
+                    <button name="action_mark_as_sold" type="object" string="SOLD" invisible="state != 'offer_accepted'"/>
                     <button name="action_mark_as_canceled" type="object" string="CANCEL" invisible="state == 'sold' or state == 'canceled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new, offer received, offer accepted, sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
@@ -61,7 +61,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state == 'offer accepted' 
+                            <field name="offer_ids" readonly="state == 'offer_accepted' 
                             or state == 'sold' or state == 'canceled'"/>
                         </page>
                         <page string="Ohter Info">
@@ -95,7 +95,7 @@
                                 <span style="margin-right: 3px;">Best Price:</span>
                                 <field name="best_offer"/>
                             </div>
-                            <div t-if="record.state.raw_value == 'offer accepted'
+                            <div t-if="record.state.raw_value == 'offer_accepted'
                             or record.state.raw_value == 'sold'">
                                 <span style="margin-right: 3px;">Selling Price:</span>
                                 <field name="selling_price"/>
@@ -123,7 +123,7 @@
                 <field name="expected_price"/>
                 <field name="facades"/>
 
-                <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
