@@ -7,7 +7,18 @@
                     <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                     <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
                 </t>
-                    hello dashboard
+                <div class="d-flex gap-3 p-3">
+                    <DashboardItem>
+                        Some content
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        Some content 2
+                    </DashboardItem>
+                    <DashboardItem>
+                        Some content 3
+                    </DashboardItem>
+
+                </div>
             </Layout>
         </t>
 
