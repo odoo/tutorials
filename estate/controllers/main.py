@@ -1,9 +1,20 @@
 from odoo import http
 from odoo.http import request
 from odoo.exceptions import ValidationError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class PropertyController(http.Controller):
+    def _validate_inquiry_data(self, name, email):
+        """Validate inquiry data and raise ValidationError if invalid."""
+        if not all([name, email]):
+            raise ValidationError("Name and email are required fields")
+
+        if '@' not in email or '.' not in email:
+            raise ValidationError("Please enter a valid email address")
+    
     @http.route(['/properties'], type='http', auth="public", website=True)
     def property_list(self, **post):
         properties = request.env['estate.property'].sudo().search([])
@@ -20,7 +31,7 @@ class PropertyController(http.Controller):
     @http.route(['/property/inquiry'], type='http', auth="public", website=True, methods=['GET', 'POST'], csrf=True)
     def property_inquiry(self, **post):
         if request.httprequest.method == 'GET':
-            return request.render('estate.inquiry_form_template', {
+            return request.render('estate.property_inquiry_form', {
                 'properties': request.env['estate.property'].sudo().search([('state', 'in', ['new', 'offer_received'])]),
             })
 
@@ -31,11 +42,7 @@ class PropertyController(http.Controller):
             property_id = post.get('property_id')
             message = post.get('message')
 
-            if not all([name, email]):
-                raise ValidationError("Name and email are required fields")
-
-            if '@' not in email or '.' not in email:
-                raise ValidationError("Please enter a valid email address")
+            self._validate_inquiry_data(name, email)
 
             property_record = None
             if property_id:
@@ -54,7 +61,6 @@ class PropertyController(http.Controller):
 
             if property_record:
                 lead_data.update({
-                    'property_id': property_record.id,
                     'description': f"Inquiry for property: {property_record.name}\n\nPrice: ${property_record.expected_price}\n\n{message or ''}",
                 })
 
@@ -70,14 +76,15 @@ class PropertyController(http.Controller):
             return request.render('estate.inquiry_error_template', {
                 'error_message': str(e),
             })
-        except Exception as e:
+        except Exception:
+            _logger.exception("Exception during property inquiry submission")
             return request.render('estate.inquiry_error_template', {
-                'error_message': 'An error occurred while processing your inquiry. Please try again.',
+                'error_message': 'An unexpected error occurred',
             })
 
 
 class EstateController(http.Controller):
-    @http.route('/estate/get_property_data', type='json', auth='public', website=True)
+    @http.route('/estate/get_property_data', type='json2', auth='public', website=True)
     def get_property_data(self, **kwargs):
         limit = int(kwargs.get('limit') or 3)
         sort = kwargs.get('sort') or 'name'
@@ -113,131 +120,4 @@ class EstateController(http.Controller):
         return request.env['ir.ui.view']._render_template("estate.dynamic_filter_template_property_cards_estate", {
             'records': [{'_record': p} for p in properties],
             'show_price': show_price,
-        })
-
-    @http.route('/estate/get_price', type='json', auth='public')
-    def get_property_price(self, **kwargs):
-        try:
-            property_id = kwargs.get('property_id')
-
-            if not property_id:
-                return {
-                    'success': False,
-                    'error': 'Property ID is required',
-                    'price': None,
-                }
-
-            property_record = request.env['estate.property'].sudo().browse(int(property_id))
-            if not property_record.exists():
-                return {
-                    'success': False,
-                    'error': 'Property not found',
-                    'price': None,
-                }
-
-            return {
-                'success': True,
-                'property_id': property_record.id,
-                'property_name': property_record.name,
-                'expected_price': property_record.expected_price,
-                'selling_price': property_record.selling_price if property_record.selling_price > 0 else None,
-                'best_offer': property_record.best_price if property_record.best_price > 0 else None,
-                'currency': 'USD',
-                'state': property_record.state,
-            }
-
-        except ValueError:
-            return {
-                'success': False,
-                'error': 'Invalid property ID format',
-                'price': None,
-            }
-        except Exception as e:
-            return {
-                'success': False,
-                'error': 'An error occurred while fetching property price',
-                'price': None,
-            }
-
-    @http.route('/estate/check_availability', type='json', auth='public')
-    def check_property_availability(self, **kwargs):
-        try:
-            property_id = kwargs.get('property_id')
- 
-            if not property_id:
-                return {
-                    'success': False,
-                    'error': 'Property ID is required',
-                    'available': False,
-                }
-
-            property_record = request.env['estate.property'].sudo().browse(int(property_id))
-            if not property_record.exists():
-                return {
-                    'success': False,
-                    'error': 'Property not found',
-                    'available': False,
-                }
-
-            availability_status = {
-                'success': True,
-                'property_id': property_record.id,
-                'property_name': property_record.name,
-                'state': property_record.state,
-                'available': False,
-                'message': '',
-            }
-
-            if property_record.state == 'new':
-                availability_status.update({
-                    'available': True,
-                    'message': 'Property is available for purchase',
-                })
-            elif property_record.state == 'offer_received':
-                availability_status.update({
-                    'available': True,
-                    'message': 'Property has offers received but still available',
-                })
-            elif property_record.state == 'offer_accepted':
-                availability_status.update({
-                    'available': False,
-                    'message': 'Offer has been accepted, property under contract',
-                })
-            elif property_record.state == 'sold':
-                availability_status.update({
-                    'available': False,
-                    'message': 'Property has been sold',
-                })
-            elif property_record.state == 'cancelled':
-                availability_status.update({
-                    'available': False,
-                    'message': 'Property listing has been cancelled',
-                })
-  
-            availability_status.update({
-                'expected_price': property_record.expected_price,
-                'best_price': property_record.best_price if property_record.best_price > 0 else None,
-                'date_availability': property_record.date_availability.strftime('%Y-%m-%d') if property_record.date_availability else None,
-            })
-
-            return availability_status
-
-        except ValueError:
-            return {
-                'success': False,
-                'error': 'Invalid property ID format',
-                'available': False,
-            }
-        except Exception as e:
-            return {
-                'success': False,
-                'error': 'An error occurred while checking property availability',
-                'available': False,
-            }
-
-    @http.route('/test/api', type='http', auth="public", website=True)
-    def test_api_page(self, **post):
-        properties = request.env['estate.property'].sudo().search([('state', 'in', ['new', 'offer_received'])], limit=5)
-        return request.render('estate.test_api_template', {
-            'properties': properties,
         })

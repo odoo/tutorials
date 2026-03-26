@@ -55,4 +55,42 @@
             </div>
         </t>
     </template>
+
+    <template id="dynamic_filter_template_property_cards_estate" name="Dynamic Property Cards">
+        <div class="row">
+            <t t-foreach="records" t-as="record">
+                <div class="col-md-4 mb-3">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="position-relative">
+                            <img src="/estate/static/src/img/villa.avif" class="card-img-top" alt="Property"/>
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-3">For Sale</span>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title text-primary" t-if="show_price">
+                                $<t t-esc="record._record.expected_price"/>
+                            </h4>
+                            <h5 class="fw-bold">
+                                <t t-esc="record._record.name"/>
+                            </h5>
+                            <p class="text-muted small">
+                                <i class="fa fa-map-marker me-1"/>
+                                <t t-esc="record._record.description or 'No description available'"/>
+                            </p>
+                            <hr/>
+                            <div class="d-flex justify-content-between text-muted">
+                                <span t-if="record._record.bedrooms">
+                                    <i class="fa fa-bed me-1"/>
+                                    <t t-esc="record._record.bedrooms"/> Beds
+                                </span>
+                                <span t-if="record._record.living_area">
+                                    <i class="fa fa-arrows-alt me-1"/>
+                                    <t t-esc="record._record.living_area"/> sqft
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </template>
 </odoo>

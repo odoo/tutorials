@@ -72,11 +72,11 @@ class EstatePropertyOffer(models.Model):
         for offer in offers:
             # Only create CRM lead if CRM module is installed
             if self.env['ir.module.module'].sudo().search([('name', '=', 'crm'), ('state', '=', 'installed')]):
-                lead = self.env['crm.lead'].create({
+                self.env['crm.lead'].create({
                     'name': offer.property_id.name,
                     'partner_id': offer.partner_id.id,
                     'expected_revenue': offer.price,
-                    'type': 'lead', 
+                    'type': 'lead',
                 })
         return offers
 

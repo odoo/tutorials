@@ -67,32 +67,3 @@ export class EstateDynamicSnippet extends DynamicSnippet {
 }
 
 registry.category("public.interactions").add("EstateDynamicSnippet", EstateDynamicSnippet);
-
-// import { DynamicSnippet } from "@website/snippets/s_dynamic_snippet/dynamic_snippet";
-// import { registry } from "@web/core/registry";
-// import { rpc } from "@web/core/network/rpc";
-// import { markup } from "@odoo/owl";
-
-// export class EstateDynamicSnippet extends DynamicSnippet {
-//     static selector = ".s_property_cards"; // Matches your XML class
-
-//     async fetchData() {
-//         const nodeData = this.el.dataset;
-//         // We override fetchData to call your specific Real Estate controller
-//         const htmlContent = await rpc("/estate/get_property_data", {
-//             limit: nodeData.limit || 3,
-//             sort: nodeData.sort || 'name',
-//             category: nodeData.category || 'all',
-//         });
-//         // Odoo expects an array of marked-up strings
-//         this.data = [markup(htmlContent)]; 
-//     }
-
-//     renderContent() {
-//         // This puts the HTML into your .dynamic_snippet_template div
-//         const templateAreaEl = this.el.querySelector(".dynamic_snippet_template");
-//         templateAreaEl.innerHTML = this.data[0];
-//     }
-// }
-
-// registry.category("public.interactions").add("EstateDynamicSnippet", EstateDynamicSnippet);
