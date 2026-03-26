@@ -7,10 +7,6 @@ class EstatePropertyOffer(models.Model):
     _order = 'price desc'
 
     price = fields.Float()
-    _check_price = models.Constraint(
-        'CHECK(price > 0)',
-        "The price of an offer must be positive.",
-    )
     status = fields.Selection(
         selection=[('accepted', "Accepted"), ('refused', "Refused")],
         copy=False
@@ -21,6 +17,11 @@ class EstatePropertyOffer(models.Model):
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_deadline', inverse='_inverse_deadline', string="Deadline")
+
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        "The price of an offer must be positive.",
+    )
 
     @api.depends('create_date', 'validity')
     def _compute_deadline(self):
@@ -34,20 +35,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
 
-    def action_accept(self):
-        for record in self:
-            for offer in record.property_id.property_offer_ids:
-                offer.status = 'refused'
-            record.status = 'accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-        return True
-
-    def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
-        return True
-
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
@@ -57,3 +44,17 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.UserError(f"Cannot create an offer with a lower price than the best offer:{propertyId.best_price}")
             propertyId.state = 'offer_received'
         return super().create(vals_list)
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+        return True
+
+    def action_accept(self):
+        for record in self:
+            for offer in record.property_id.property_offer_ids:
+                offer.status = 'refused'
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+        return True
