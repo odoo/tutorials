@@ -15,7 +15,7 @@
 
         'views/estate_menus.xml',
 
-        'views/res_users_view_form.xml'
+        'views/res_users_view_form.xml',
 
     ],
 }
