@@ -1,6 +1,7 @@
 from odoo import models, fields
 import json
 
+
 class ResUsers(models.Model):
     _inherit = "res.users"
 

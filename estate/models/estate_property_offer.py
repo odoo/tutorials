@@ -145,7 +145,7 @@ class EstatePropertyOffer(models.Model):
         "CHECK(price > 0)",
         "The offer price must be strictly positive."
     )
-    
+
     @api.model
     def _cron_refuse_after_deadline(self):
         today = fields.Date.today()

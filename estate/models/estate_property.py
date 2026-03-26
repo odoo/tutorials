@@ -225,7 +225,7 @@ class EstateProperty(models.Model):
             'view_mode': 'form',
             'res_id': self.event_id.id,
         }
-    
+
     def action_create_offer(self):
         return {
             "type": "ir.actions.act_window",
