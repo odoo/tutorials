@@ -74,7 +74,6 @@ class EstateProperty(models.Model):
                     self.env._("The selling price cannot be lower than 90% of the expected price! Check your offers or adjust the expected price.")
                 )
 
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
