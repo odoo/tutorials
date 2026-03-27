@@ -106,6 +106,7 @@
 
                     <field name="name" string="Title" />
                     <field name="company_id" />
+                    <field name="state" />
                     <field name="property_type_id" />
                     <field name="postcode" />
                     <field name="tag_ids" widget="many2many_tags"
@@ -157,11 +158,11 @@
                                 <div> Expected Price: <field name="expected_price" />
                                 </div>
 
-                                <div t-if="record.state.raw_value == 'offer_received'"> Best Price: <field
+                                <div t-if="record.state == 'offer_received'"> Best Price: <field
                                         name="best_price" />
                                 </div>
 
-                                <div t-if="record.state.raw_value == 'offer_accepted'"> Selling
+                                <div t-if="record.state == 'offer_accepted'"> Selling
                                     Price: <field name="selling_price" />
                                 </div>
 

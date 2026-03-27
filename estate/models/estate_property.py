@@ -56,10 +56,8 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     company_id = fields.Many2one(comodel_name='res.company', string="Company", required=True, default=lambda self: self.env.company)
 
-    _check_expected_prices = models.Constraint(
-        'CHECK(expected_price > 0)', "The expected price must be strictly positive.")
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price > 0)', "The selling price must be strictly positive.")
+    _check_expected_prices_postive = models.Constraint(definition='CHECK(expected_price > 0)', message="The expected price must be strictly positive.")
+    _check_selling_price_postive = models.Constraint(definition='CHECK(selling_price > 0)', message="The selling price must be strictly positive.")
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
