@@ -1,6 +1,6 @@
 <odoo>
-  <data>
-    <menuitem name="Awesome Dashboard" id="awesome_dashboard.menu_root" groups="base.group_user" web_icon="awesome_dashboard,static/description/icon.png"/>
-    <menuitem name="Dashboard" id="awesome_dashboard.dashboard_menu" parent="awesome_dashboard.menu_root" action="awesome_dashboard.dashboard" sequence="1"/>
-  </data>
+    <data>
+        <menuitem name="Awesome Dashboard" id="awesome_dashboard.menu_root" groups="base.group_user" web_icon="awesome_dashboard,static/description/icon.png"/>
+        <menuitem name="Dashboard" id="awesome_dashboard.dashboard_menu" parent="awesome_dashboard.menu_root" action="awesome_dashboard.dashboard" sequence="1"/>
+    </data>
 </odoo>

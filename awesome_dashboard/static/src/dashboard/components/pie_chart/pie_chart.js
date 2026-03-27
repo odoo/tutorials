@@ -66,16 +66,16 @@ export class PieChart extends Component {
                 events: ['click'],
             },
             plugins: [{
-               id: 'customEventCatcher',
-               beforeEvent: (chart, args) => {
-                   if (args?.event.type === 'click') {
-                       const [activeElement] = chart.getElementsAtEventForMode(args.event, 'nearest', {intersect: true}, true);
-                       const index = activeElement.index;
+                id: 'customEventCatcher',
+                beforeEvent: (chart, args) => {
+                    if (args?.event.type === 'click') {
+                        const [activeElement] = chart.getElementsAtEventForMode(args.event, 'nearest', {intersect: true}, true);
+                        const index = activeElement.index;
 
-                       if (this.props.onClick) {
-                           this.props.onClick(this.action, Object.keys(this.props.data)[index]);
-                       }
-                   }
+                        if (this.props.onClick) {
+                            this.props.onClick(this.action, Object.keys(this.props.data)[index]);
+                        }
+                    }
                 }
             }],
         }
