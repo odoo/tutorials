@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
+    _name = 'estate.property'
     _description = "Estate Property"
     _order = "id desc"
 
@@ -26,38 +26,39 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        [("north", "North"), ("east", "East"), ("south", "South"), ("west", "West")]
+        [('north', "North"), ('east', "East"), ('south', "South"), ('west', "West")]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string="Status",
         selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         required=True,
         copy=False,
-        default="new",
+        default='new',
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     salesman = fields.Many2one(
-        "res.users",
+        'res.users',
         string="Salesperson",
         index=True,
         default=lambda self: self.env.user,
     )
-    buyer = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
+    buyer = fields.Many2one(comodel_name='res.partner', string="Buyer", copy=False)
+    tag_ids = fields.Many2many(comodel_name='estate.property.tag', string="Tags")
     offer_ids = fields.One2many(
-        comodel_name="estate.property.offer",
-        inverse_name="property_id",
+        comodel_name='estate.property.offer',
+        inverse_name='property_id',
         string="Offers",
     )
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Price")
+    company_id = fields.Many2one(comodel_name='res.company', string="Company")
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
@@ -71,7 +72,7 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def unlink_if_property_not_new_or_cancelled(self):
         for record in self:
-            if record.state not in ("new", "cancelled"):
+            if record.state not in ('new', 'cancelled'):
                 raise UserError(
                     self.env._("Properties can only be deleted in 'New' or 'Cancelled' state")
                 )
@@ -80,7 +81,7 @@ class EstateProperty(models.Model):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
-    @api.depends("living_area", "garden_area")
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -89,35 +90,35 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = (
-                max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+                max(record.offer_ids.mapped('price')) if record.offer_ids else 0
             )
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_partner_id(self):
         if self.garden:
             self.garden_area = self.garden_area or 10
-            self.garden_orientation = self.garden_orientation or "north"
+            self.garden_orientation = self.garden_orientation or 'north'
         else:
             self.garden_area = 0
             self.garden_orientation = None
 
     def action_sold(self):
         for record in self:
-            if record.state == "cancelled":
+            if record.state == 'cancelled':
                 raise UserError(self.env._("Cancelled properties cannot be sold."))
             else:
-                record.state = "sold"
+                record.state = 'sold'
         return True
 
     def action_cancel(self):
         for record in self:
-            if record.state == "sold":
+            if record.state == 'sold':
                 raise UserError(self.env._("Sold properties cannot be cancelled."))
             else:
-                record.state = "cancelled"
+                record.state = 'cancelled'
         return True
 
-    @api.constrains("selling_price", "expected_price")
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
