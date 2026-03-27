@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="residential" model="estate.property.type">
+            <field name="name">Residential</field>
+        </record>
+        <record id="id2" model="estate.property.type">
+            <field name="name">Commercial</field>
+        </record>
+        <record id="id3" model="estate.property.type">
+            <field name="name">Industrial</field>
+        </record>
+        <record id="id4" model="estate.property.type">
+            <field name="name">Land</field>
+        </record>
+    </data>
+</odoo>

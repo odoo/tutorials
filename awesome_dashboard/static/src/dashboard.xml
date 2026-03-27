@@ -2,7 +2,42 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button type="button" class="btn btn-primary" t-on-click="openCustomersForm">Customers</button>
+                <button type="button" class="btn btn-primary" t-on-click="doAction">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button type="button" t-on-click="openConfigurationSettings">
+                    <i class="fa fa-gear"></i>
+                </button>
+            </t>
+            
+            <DashboardItem>
+                <t t-set-slot="header">
+                    DashboardItem default size
+                </t>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <t t-set-slot="header">
+                    DashboardItem size=2
+                </t>
+            </DashboardItem>
+            <div class="d-flex gap-3">
+                <t t-log="state.includedItemIds"/>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <t t-log="state.includedItemIds.includes(item.id)"/>
+                    <DashboardItem t-if="state.includedItemIds.includes(item.id)" size="item.size || 1">
+                        <t t-set-slot="header">
+                            <t t-esc="item.description"/>
+                        </t>
+                        <t t-set="itemProp" t-value="item.props ? item.props(this.state.statistics) : {'data': this.state.statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+        
     </t>
 
 </templates>
