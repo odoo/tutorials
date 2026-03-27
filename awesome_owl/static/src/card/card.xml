@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body" t-on-click="increment">
+
+                <h5 class="card-title">
+                    <t t-out="props.title"/>
+                </h5>
+                
+                <button
+                    class="btn btn-sm btn-secondary"
+                    t-on-click="toggle">
+                    Toggle
+                </button>
+
+                <p class="card-text" t-if="state.open">
+                    <t t-slot="default"/>
+                </p>
+
+                <p>
+                    Clicks: <t t-out="clicks.value"/>
+                </p>
+
+                <button t-on-click.stop="reset">Reset</button>
+                <t t-out="text"/>
+            </div>
+        </div>
+    </t>
+
+</templates>
