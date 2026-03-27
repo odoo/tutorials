@@ -7,14 +7,14 @@
                     <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                     <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
                 </t>
-                <div class="d-flex gap-3 p-3">
-                    <DashboardItem>
+                <div class="d-flex flex-wrap gap-3 p-3">
+                    <DashboardItem size="1.5">
                             <span>Average amount of t-shirt by order this month</span>
                             <p class="text-success fw-bold fs-1">
                                 <t t-esc="statistics.average_quantity"/>
                             </p>
                     </DashboardItem>
-                    <DashboardItem>
+                    <DashboardItem size="2">
                             <span>Average time for an order to go from 'new' to 'sent' or 'cancelled'</span>
                             <p class="text-success fw-bold fs-1">
                                 <t t-esc="statistics.average_time"/>
