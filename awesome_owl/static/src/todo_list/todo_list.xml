@@ -3,6 +3,7 @@
 
     <t t-name="awesome_owl.todo_list">
         <div class="p-3">
+            <input t-att-value="test" t-on-keyup="addTask" t-ref="taskInput" placeholder="Enter a new task"/>
             <TodoItem t-foreach="todos" t-as="todo" t-key="todo.id" todo="todo"/>
         </div>
     </t>
