@@ -26,4 +26,9 @@ export class TodoList extends Component {
         }
     }
 
+    toggleState(id){
+        let todo = this.todos.find((todo) => todo.id === id);
+        todo.isCompleted = !todo.isCompleted;
+    }
+
 }
