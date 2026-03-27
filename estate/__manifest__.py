@@ -1,12 +1,13 @@
 {
     'name': 'Real Estate',
-    'category': 'Tutorials',
+    'category': 'Real Estate/Brokerage',
     'depends': [
         'base'
     ],
     'application': True,
     'installable': True,
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
 
         'data/estate.property.type.csv',

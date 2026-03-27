@@ -35,6 +35,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(comodel_name='estate.property.type', string='Type')
     buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer')
     salesman_id = fields.Many2one(comodel_name='res.users', string='Salesman', default=lambda self: self.env.user)
+    company_id = fields.Many2one(comodel_name='res.company', string='Company', required=True, default=lambda self: self.env.company)
     tag_ids = fields.Many2many(comodel_name='estate.property.tag', string='Tags')
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string='Offers')
 

@@ -17,6 +17,7 @@
     <menuitem
         id="estate_property_menu_settings"
         name="Settings"
+        groups="estate.estate_group_manager"
         parent="estate_property_menu_root"
     />
     <menuitem

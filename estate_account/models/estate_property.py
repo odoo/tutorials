@@ -5,8 +5,12 @@ class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def action_change_state_to_sold(self):
+        try:
+            self.check_access('write')
+        except AccessError:
+            print("You aren't allowed to edit this!")
         res = super().action_change_state_to_sold()
-        self.env['account.move'].create({
+        self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
             'line_ids': [
