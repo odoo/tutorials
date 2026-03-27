@@ -15,10 +15,17 @@ export class TodoItem extends Component {
             type: Function,
             optional: false,
         },
+        removeTodo: {
+            type: Function,
+            optional: false,
+        },
     };
 
     change(){
         this.props.toggleState(this.props.todo.id);
     }
-    
+    remove(){
+        this.props.removeTodo(this.props.todo.id);
+    }
+
 }

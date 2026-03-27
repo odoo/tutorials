@@ -4,7 +4,7 @@
     <t t-name="awesome_owl.todo_list">
         <div class="p-3">
             <input t-att-value="test" t-on-keyup="addTask" t-ref="taskInput" placeholder="Enter a new task"/>
-            <TodoItem t-foreach="todos" t-as="todo" t-key="todo.id" todo="todo" toggleState.bind="toggleState"/>
+            <TodoItem t-foreach="todos" t-as="todo" t-key="todo.id" todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
         </div>
     </t>
 
