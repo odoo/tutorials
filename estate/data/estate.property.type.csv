@@ -1,0 +1,5 @@
+id,name,sequence,offer_count,property_ids,offer_ids
+property_type_0,Residential,,,,
+property_type_1,Commercial,,,,
+property_type_2,Industrial,,,,
+property_type_3,Land,,,,

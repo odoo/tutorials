@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="groups_privilege_real_estate" model="res.groups.privilege">
+        <field name="name">Real Estate</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="privilege_id" ref="groups_privilege_real_estate"/>
+    </record>
+    
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="groups_privilege_real_estate"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+    <record id="limit_agent_access" model="ir.rule">
+        <field name="name">Limit agents to only see or modify properties with no salesperson assigned</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="domain_force">[
+            '|', ('salesman_id', '=', user.id), 
+                 ('salesman_id', '=', False)
+        ]</field>
+    </record>
+    <record id="bypass_manager_access" model="ir.rule">
+        <field name="name">Bypass for the managers to see all properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+    <record id="multi_company_access" model="ir.rule">
+        <field name="name">Limit agents to only see or modify properties with a company that they work for</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>
