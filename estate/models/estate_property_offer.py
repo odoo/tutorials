@@ -44,7 +44,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        property_ids = [ v.get('property_id') for v in vals_list if v.get('property_id') ]
+        property_ids = [v.get('property_id') for v in vals_list if v.get('property_id')]
         properties = self.env['estate.property'].browse(property_ids)
         property_map = {p.id: p for p in properties}
 
