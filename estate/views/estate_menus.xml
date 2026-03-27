@@ -1,33 +1,25 @@
 <odoo>
-
     <menuitem id="estate_menu_root" name="Real Estate"/>
-
     <menuitem id="estate_advertisements_menu"
               name="Advertisements"
               parent="estate_menu_root"/>
-
     <menuitem id="estate_property_menu_action"
               name="Properties"
               parent="estate_advertisements_menu"
               action="estate_property_action"/>
-
     <menuitem id="estate_setting_menu"
               name="Settings"
               parent="estate_menu_root"/>
-
     <menuitem id="estate_property_type_menu_action"
               name="property type"
               parent="estate_setting_menu"
               action="estate_property_type_action"/>
-
     <menuitem id="estate_property_tag_menu_action"
               name="property tag"
               parent="estate_setting_menu"
               action="estate_property_tag_action"/>
-
    <menuitem id="estate_property_tag_menu_action"
               name="Property Tag"
               parent="estate_setting_menu"
               action="estate_property_tag_action"/>
-
 </odoo>

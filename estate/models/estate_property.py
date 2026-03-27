@@ -1,16 +1,24 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models
+
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = " Real estate Property"
 
+    def _default_validity(self):
+        return fields.Date.today() + relativedelta(months=+3)
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
     name = fields.Char(required=True, default="UNKNOWN")
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(
-        default=lambda self: fields.Date.today() + relativedelta(months=+3), copy=False)
+    date_availability = fields.Date(default=_default_validity, copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -62,3 +70,4 @@ class EstateProperty(models.Model):
         "estate.property.offer",
         "property_id",
     )
+    total_area = fields.Float(compute="_compute_total_area")
