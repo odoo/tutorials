@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_property_sold" model="mail.template">
+            <field name="name">Estate: Property Sold</field>
+            <field name="model_id" ref="estate.model_estate_property" />
+
+            <field name="subject">Real Estate - Property Sold: {{ object.name }}</field>
+
+            <field name="email_from">{{ object.salesman_id.email_formatted or user.email_formatted or '' }}</field>
+            
+            <field name="email_to">{{ object.buyer_id.email_formatted or object.buyer_id.email or '' }}</field>
+
+            <field name="body_html" type="html">
+                <div >
+                    <p>Hello,</p>
+
+                    <p>We are pleased to inform you that the property <strong><t t-out="object.name" /></strong> has been successfully marked as <span style="color:green; font-weight:bold;">Sold</span> at  Selling Price: <t t-out="object.selling_price" /><br/>.</p>
+
+                    <p>If you have any questions or need further assistance, feel free to contact us.</p>
+                    
+                    <br/>
+                    <t t-if="object.salesman_id.signature">
+                        <t t-out="object.salesman_id.signature" />
+                    </t>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True" />
+        </record>
+    </data>
+</odoo>

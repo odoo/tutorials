@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_type_apartment" model="estate.property.type">
+        <field name="name">Apartment</field>
+    </record>
+    <record id="estate_type_villa" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+    <record id="estate_type_cottage" model="estate.property.type">
+        <field name="name">Cottage</field>
+    </record>
+    <record id="estate_type_bunglow" model="estate.property.type">
+        <field name="name">Bunglow</field>
+    </record>
+    <record id="estate_type_house" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+    <record id="buyer_hemeh" model="res.partner">
+        <field name="name">hemeh</field>
+    </record>
+    <record id="buyer_het_mehta" model="res.partner">
+        <field name="name">Het Mehta</field>
+    </record>
+
+
+    <record id="estate_tag_cozy" model="estate.property.tag">
+        <field name="name">Cozy</field>
+    </record>
+    <record id="estate_type_decent" model="estate.property.tag">
+        <field name="name">Decent</field>
+    </record>
+
+    <record id="estate_property_1" model="estate.property">
+        <field name="name">Capital PG</field>
+        <field name="description">Random PG in Gandhinagar.</field>
+        <field name="postcode">12345</field>
+        <field name="expected_price">12000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">75</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+
+        <field name="property_type_id" ref="estate_type_apartment"/>
+
+        <field name="tag_ids" eval="[Command.set([ref('estate_tag_cozy')])]" />
+    </record>
+
+    <record id="estate_property_2" model="estate.property">
+        <field name="name">Swagat Afford</field>
+        <field name="description">Decent.</field>
+        <field name="postcode">12345</field>
+        <field name="expected_price">12000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">75</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <!-- <field name="tag_ids" widget="many2many_tags"
+                options="{'color_field': 'color'}" /> -->
+        <field name="property_type_id" ref="estate_type_cottage"/>
+        <field name="tag_ids" eval="[Command.set([ref('estate_tag_cozy')])]" />
+    </record>
+    <record id="estate_property_3" model="estate.property">
+        <field name="name">Swagat Afford</field>
+        <field name="description">Decent.</field>
+        <field name="postcode">12345</field>
+        <field name="expected_price">12000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">75</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="property_type_id" ref="estate_type_apartment"/>
+        <field name="tag_ids" eval="[Command.set([ref('estate_tag_cozy')])]" />
+    </record>
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">Swagat Afford</field>
+        <field name="description">Decent.</field>
+        <field name="postcode">12345</field>
+        <field name="expected_price">12000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">75</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="property_type_id" ref="estate_type_villa"/>
+        <field name="tag_ids" eval="[Command.set([ref('estate_type_decent')])]" />
+
+    </record>
+
+    <record id="offer_1_property_1" model="estate.property.offer">
+        <field name="price">12345</field>
+        <field name="status">new</field>
+        <field name="property_id" ref="estate_property_1" />
+        <field name="partner_id" ref="buyer_hemeh" />
+    </record>
+
+    <record id="offer_2_property_1" model="estate.property.offer">
+        <field name="price">12356</field>
+        <field name="status">new</field>
+        <field name="property_id" ref="estate_property_1" />
+        <field name="partner_id" ref="buyer_het_mehta" />
+    </record>
+
+    <record id="offer_1_property_2" model="estate.property.offer">
+        <field name="price">123456</field>
+        <field name="status">offer_accepted</field>
+        <field name="property_id" ref="estate_property_2" />
+        <field name="partner_id" ref="buyer_het_mehta" />
+    </record>
+
+    <record id="offer_2_property_2" model="estate.property.offer">
+        <field name="price">123456</field>
+        <field name="status">new</field>
+        <field name="property_id" ref="estate_property_2" />
+        <field name="partner_id" ref="buyer_hemeh" />
+    </record>
+    <record id="offer_1_property_1" model="estate.property.offer">
+        <field name="price">12345</field>
+        <field name="status">new</field>
+        <field name="property_id" ref="estate_property_3" />
+        <field name="partner_id" ref="buyer_hemeh" />
+    </record>
+
+    <record id="offer_2_property_1" model="estate.property.offer">
+        <field name="price">12356</field>
+        <field name="status">new</field>
+        <field name="property_id" ref="estate_property_3" />
+        <field name="partner_id" ref="buyer_het_mehta" />
+    </record>
+
+    <record id="offer_1_property_2" model="estate.property.offer">
+        <field name="price">123456</field>
+        <field name="status">offer_accepted</field>
+        <field name="property_id" ref="estate_property_4" />
+        <field name="partner_id" ref="buyer_het_mehta" />
+    </record>
+
+    <record id="offer_2_property_2" model="estate.property.offer">
+        <field name="price">120000</field>
+        <field name="status">new</field>
+        <field name="property_id" ref="estate_property_4" />
+        <field name="partner_id" ref="buyer_hemeh" />
+    </record>
+
+    <!-- <record id="request_1_property_2" model="estate.property.request">
+        <field name="name">hemeh</field>
+        <field name="technician_id">offer_accepted</field>
+        <field name="estimated_cost" ref="estate_property_2"/>
+        <field name="state" default="assigned"/>
+    </record>
+     -->
+
+</odoo>

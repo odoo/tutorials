@@ -1,0 +1,113 @@
+import logging
+from datetime import timedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
+
+_logger = logging.getLogger(__name__)
+
+
+class EstatePropertyOffer(models.Model):
+    _name = 'estate.property.offer'
+    _description = "Real Estate Property Offer"
+    _order = "price desc"
+    _inherit = 'estate.property'
+
+    _offer_price = models.Constraint('CHECK(price>0)', 'Offer Price must be positive')
+
+    price = fields.Float(string="Price", default=1.0)
+    status = fields.Selection(
+        selection=[
+            ('new', "New"),
+            ('offer_accepted', "Offer Accepted"),
+            ('offer_rejected', "Offer Rejected"),
+        ],
+        string="Status",
+        default='new',
+        readonly=True,
+    )
+    validity = fields.Integer(default=7)
+    partner_id = fields.Many2one(
+        "res.partner",
+        string="Partner",
+        required=True,
+    )
+    property_id = fields.Many2one(
+        "estate.property",
+        string="Property",
+        required=True,
+    )
+
+    date_deadline = fields.Date(
+        string='Date Deadline',
+        default=fields.Date.context_today,
+        compute='_compute_date_deadline',
+        inverse='_inverse_date_deadline',
+        store=True,
+    )
+
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True)
+
+    @api.depends('create_date', 'validity')
+    def _compute_date_deadline(self):
+        for rec in self:
+            if rec.create_date:
+                rec.date_deadline = rec.create_date.date() + timedelta(days=rec.validity)
+            else:
+                rec.date_deadline = fields.Date.today() + timedelta(days=rec.validity)
+
+    def _inverse_date_deadline(self):
+        for rec in self:
+            if rec.create_date:
+                rec.validity = (rec.date_deadline - rec.create_date.date()).days
+            else:
+                rec.validity = (rec.date_deadline - fields.Date.today()).days
+
+    def accept(self):
+        for rec in self:
+            if rec.property_id.state == 'offer_accepted':
+                raise UserError(_("Property already has an accepted offer"))
+
+            other_offers = self.search([
+                ('property_id', '=', rec.property_id.id),
+                ('status', '=', 'new'),
+                ('id', '!=', rec.id),
+            ])
+            other_offers.write({'status': 'offer_rejected'})
+
+            rec.status = 'offer_accepted'
+
+            rec.property_id.write({
+                'selling_price': rec.price,
+                'buyer_id': rec.partner_id.id,
+                'state': 'offer_accepted',
+            })
+
+    def reject(self):
+        for rec in self:
+            rec.status = 'offer_rejected'
+
+            rec.property_id.write({
+                'selling_price': 0,
+            })
+
+    def offer_accepted(self):
+        for rec in self:
+            rec.status = 'offer_accepted'
+
+    @api.model
+    def _cron_expire_offers(self):
+
+        today = fields.Date.context_today(self)
+
+        expired_offers = self.search([
+            ('date_deadline', '<', today),
+            ('status', '=', 'new'),
+        ])
+
+        if expired_offers:
+            expired_offers.write({'status': 'offer_rejected'})
+
+        _logger.info("Deleted  expired property offers.")
+
+        return True
