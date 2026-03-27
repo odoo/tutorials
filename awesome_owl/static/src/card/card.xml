@@ -6,11 +6,9 @@
             <div class="card d-inline-block m-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title" t-esc="props.title"/>
-                    <p class="card-text" t-esc="props.content"/>
-                    <p t-out="state.htmlLink"/>
+                    <p class="card-text" t-slot="default"/>
                 </div>
             </div>
         </div>
     </t>
-
 </templates>
