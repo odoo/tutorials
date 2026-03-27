@@ -1,0 +1,58 @@
+<odoo>
+    <record id="estate_property_maintenance_action" model="ir.actions.act_window">
+        <field name="name">Maintenance</field>
+        <field name="res_model">estate.property.maintenance</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_id', '=', active_id)]</field>
+        <field name="context">{'default_property_id': active_id}</field>
+    </record>
+    <record id="estate_property_maintenance_view_list" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.list</field>   
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <list string="Maintenance">
+                <field name="title"/>
+                <field name="description"/>
+                <field name="technision_id"/>
+                <field name="created_by"/>
+                <field name="request_date"/>
+                <field name="estimate_cost"/>
+                <field name="actual_cost" sum="Total Cost" groups="estate.estate_group_manager,estate.estate_group_maintenance_staff"/>
+                <field name="state"/>
+                <field name="priority"/>
+            </list>
+        </field>
+    </record>
+    <record id="estate_property_maintenance_view_form" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.form</field>   
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance">
+                <header>
+                    <button name="action_start" type="object" string="Start" invisible="state != 'assign'"/>
+                    <button name="action_stop" type="object" string="Stop" invisible="state != 'progress'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ('done')"/>
+                    <field name="state" widget="statusbar"/> 
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="description"/>
+                            <field name="technision_id"/>
+                            <field name="created_by"/>
+                            <field name="request_date"/>
+                        </group>
+                        <group>
+                            <field name="estimate_cost" readonly="state in ('new','progress','done','cancelled')"/>
+                            <field name="actual_cost" readonly="state in ('new','progress','assign','cancelled')"/>
+                            <field name="state"/>
+                            <field name="priority"/>
+                            <field name="property_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

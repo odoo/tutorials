@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_estate_deal_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Property Deal Report</h2>
+
+                        <p><strong>Name:</strong> <t t-esc="doc.name"/></p>
+                        <p><strong>Buyer:</strong> <t t-esc="doc.buyer_id.name"/></p>
+                        <p><strong>Expected Price:</strong> <t t-esc="doc.expected_price"/></p>
+                        <p><strong>Selling Price:</strong> <t t-esc="doc.selling_price"/></p>
+                        <p><strong>Status:</strong> <t t-esc="doc.state"/></p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -3,7 +3,29 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
+            <TodoList/>
             hello world
+            <div>
+                <span>
+                    <Counter start="5" onChange="onChange" totalSum="addToTotal"/>
+                </span>
+                <span>
+                    <Counter start="10" onChange="onChange" totalSum="addToTotal"/>
+                </span>
+            </div>
+
+            <h1>Total Counter Sum: <t t-out="total_counter_sum.value"/></h1>
+
+            <Card title="'card 1'" onCardClick="increasetotal">
+                <p>This is simple text inside the card</p>
+                <Counter start="15" onChange="onChange" totalSum="addToTotal"/>
+            </Card>
+
+            <Card title="'card 2'" onCardClick="increasetotal"/>
+
+            <Card title="'card 3'" onCardClick="increasetotal"/>
+
+            <h1>Total Clicks: <t t-esc="total_card_sum.value"/></h1>
         </div>
     </t>
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="d-flex align-items-center justify-content-between mb-2 p-2 border rounded bg-white">
+            
+            <t t-if="!isEditable.value">
+                <div class="d-flex align-items-center"
+                    t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+                    <input
+                        type="checkbox"
+                        t-att-checked="props.todo.isCompleted"
+                        t-on-change="toggle"
+                    />
+                    <t t-esc="props.todo.id"/>. 
+                    <t t-esc="props.todo.description"/>
+                    
+                </div>
+                <button
+                    class="fa fa-remove text-danger"
+                    style="cursor:pointer"
+                    t-on-click="deleteTodo">
+                        Delete
+                </button>
+                <button
+                    class="fa fa-remove text-danger"
+                    style="cursor:pointer"
+                    t-on-click="toggleEdit">
+                        Edit
+                </button>
+            </t>
+
+            <t t-if="isEditable.value">
+            <input type="text" t-ref="input" t-att-value="props.todo.description"/>
+            <button class="p-2 border" t-on-click="addEditTodo">Add</button>
+            </t>
+
+        </div>
+    </t>
+
+</templates>
