@@ -14,11 +14,11 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string="Living Area (spm)")
+    living_area = fields.Float(string="Living Area (spm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer(string="Garden Area (spm)")
+    garden_area = fields.Float(string="Garden Area (spm)")
     total_area = fields.Float(string="Total Area (sqm)", compute="_computed_total_area")
     garden_orientation = fields.Selection([
         ('north', "North"),
@@ -48,9 +48,8 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _computed_best_offer(self):
-        for rec in self:
-            prices = rec.offer_ids.mapped("price")
-            rec.best_price = max(prices) if prices else 0.0
+        prices = self.offer_ids.mapped("price")
+        self.best_price = max(prices) if prices else 0.0
 
     def _search_best_offer(self, operator, value):
         return [
@@ -58,3 +57,20 @@ class EstateProperty(models.Model):
             ('offer_ids.price', '>', 10000),
             ('offer_ids.price', operator, value)
         ]
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+
+            return {
+                'warning': {
+                    'title': "Garden Enabled",
+                    'message': "Default area set to 10 and orientation north",
+                    'type': "notification"
+                }
+            }
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
