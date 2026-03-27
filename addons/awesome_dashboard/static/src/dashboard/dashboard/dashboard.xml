@@ -8,40 +8,12 @@
                     <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
                 </t>
                 <div class="d-flex flex-wrap gap-3 p-3">
-                    <DashboardItem size="1.5">
-                            <span>Average amount of t-shirt by order this month</span>
-                            <p class="text-success fw-bold fs-1">
-                                <t t-esc="statistics.average_quantity"/>
-                            </p>
-                    </DashboardItem>
-                    <DashboardItem size="2">
-                            <span>Average time for an order to go from 'new' to 'sent' or 'cancelled'</span>
-                            <p class="text-success fw-bold fs-1">
-                                <t t-esc="statistics.average_time"/>
-                            </p>
-                    </DashboardItem>
-                    <DashboardItem>
-                            <span>Number of new orders this month</span>
-                            <p class="text-success fw-bold fs-1">
-                                <t t-esc="statistics.nb_new_orders"/>
-                            </p>
-                    </DashboardItem>
-                    <DashboardItem>
-                            <span>Number of cancelled orders this month</span>
-                            <p class="text-success fw-bold fs-1">
-                                <t t-esc="statistics.nb_cancelled_orders"/>
-                            </p>
-                    </DashboardItem>
-                    <DashboardItem>
-                            <span>Total amount of new orders this month</span>
-                            <p class="text-success fw-bold fs-1">
-                                <t t-esc="statistics.total_amount"/>
-                            </p>
-                    </DashboardItem>
-                    <DashboardItem>
-                        <span>Shirt orders by size</span>
-                        <PieChart data="statistics.orders_by_size"/>
-                    </DashboardItem>
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                            <t t-component="item.Component" t-props="itemProp" />
+                        </DashboardItem>
+                    </t>
                 </div>
             </Layout>
         </t>
