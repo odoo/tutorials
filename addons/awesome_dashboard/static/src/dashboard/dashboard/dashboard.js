@@ -4,7 +4,7 @@ import {Layout} from "@web/search/layout";
 import {useService} from "@web/core/utils/hooks";
 import {DashboardItem} from "../dashboard_item/dashboard_item";
 import {PieChart} from "../charts/pie_chart/pie_chart";
-import {items} from "../../dashboard_items";
+import "../../dashboard_items";
 import {PieChartCard} from "../charts/pie_chart_card/pie_chart_card";
 import {NumberCard} from "../number_card/number_card";
 
@@ -18,7 +18,7 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         const {statistics} = useService("awesome_dashboard.statistics");
         this.statistics = useState(statistics);
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomerView() {
