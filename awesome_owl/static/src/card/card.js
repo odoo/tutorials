@@ -15,5 +15,10 @@ export class Card extends Component {
 
     setup() {
         this.state = useState({htmlLink: markup('<a href="/odoo" target="_blank">test</a>')})
+        this.isMinimized = useState({value: false});
+    }
+
+    toggle() {
+        this.isMinimized.value = !this.isMinimized.value;
     }
 }
