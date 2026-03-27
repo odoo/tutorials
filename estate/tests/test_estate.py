@@ -7,10 +7,10 @@ from odoo.tests import tagged
 class EstateTestCase(TransactionCase):
 
     @classmethod
-    def setUpClass(cls):
-        super(EstateTestCase, cls).setUpClass()
+    def setUpClass(self):
+        super().setUpClass()
 
-        cls.properties = cls.env['estate.property'].create([
+        self.properties = self.env['estate.property'].create([
             {
                 'name': 'Test Villa',
                 'expected_price': 15,
@@ -19,10 +19,10 @@ class EstateTestCase(TransactionCase):
             }
         ])
 
-        cls.offers = cls.env['estate.property.offer'].create([
+        self.offers = self.env['estate.property.offer'].create([
             {
-                'partner_id': cls.env.ref('base.main_partner').id,
-                'property_id': cls.properties.id,
+                'partner_id': self.env.ref('base.main_partner').id,
+                'property_id': self.properties.id,
                 'price': 14,
             }
         ])
@@ -31,18 +31,18 @@ class EstateTestCase(TransactionCase):
         self.offers.action_accept_offer()
 
         self.properties.action_change_state_to_sold()
-        
+
         with self.assertRaises(UserError):
             self.env['estate.property.offer'].create({
                 'partner_id': self.env.ref('base.main_partner').id,
                 'property_id': self.properties.id,
                 'price': 15,
             })
-    
+
     def test_sell_with_no_accept(self):
         with self.assertRaises(UserError):
             self.properties.action_change_state_to_sold()
-    
+
     def test_property_state(self):
         self.offers.action_accept_offer()
 
