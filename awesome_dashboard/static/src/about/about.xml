@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeAbout">
+        <Layout className="'h-100'" display="{ controlPanel: {} }">
+            <div>
+                <h1>This is About section</h1>
+                <p>Some content</p>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

@@ -34,3 +34,11 @@ class AwesomeDashboard(http.Controller):
             'total_amount': random.randint(100, 1000)
         }
 
+    @http.route('/dashboard/save_config', type='jsonrpc', auth='user')
+    def save_config(self, config):
+        request.env.user.dashboard_config = config
+        return True
+
+    @http.route('/dashboard/get_config', type='jsonrpc', auth='user')
+    def get_config(self):
+        return request.env.user.dashboard_config or []
