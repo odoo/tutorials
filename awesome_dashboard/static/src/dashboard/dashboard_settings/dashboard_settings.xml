@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve" owl="1">
+
+<t t-name="awesome_dashboard.DashboardSettings">
+    <div class="p-3">
+        <h4>Dashboard Settings</h4>
+
+        <t t-foreach="props.items" t-as="item" t-key="item.id">
+            <div class="form-check">
+                
+                <input type="checkbox"
+                    class="form-check-input"
+                    t-att-checked="!state.hidden.has(item.id)"
+                    t-on-click="() => toggle(item.id)"/>
+
+                <label>
+                    <t t-esc="item.description || item.id"/>
+                </label>
+
+            </div>
+        </t>
+
+        <div class="mt-3">
+            <button class="btn btn-primary" t-on-click="apply">
+                Apply
+            </button>
+        </div>
+    </div>
+</t>
+</templates>

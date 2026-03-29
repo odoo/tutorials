@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="demo_type" model="estate.property.type">
+        <field name="name">Home</field>
+    </record>
+        
+    <record id="demo_tag" model="estate.property.tag">
+        <field name="name">Luxurious</field>
+    </record>
+
+    <record id="demo_data_estate" model="estate.property">
+        <field name="name">Chitrakut Residency</field>
+        <field name="expected_price">900000</field>
+        <field name="postcode">191980</field>
+        <field name="description">Best residency in this city</field>
+        <field name="property_type_id" ref="demo_type"></field>
+        <field name="property_tag_ids" eval="[(4,ref('demo_tag'))]"></field>
+    </record>
+
+    <record id="demo_type2" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+
+    <record id="demo_tag2" model="estate.property.tag">
+        <field name="name">Cozy</field>
+    </record>
+
+    <record id="demo_data_estate2" model="estate.property">
+        <field name="name">Rooftop House</field>
+        <field name="expected_price">950000</field>
+        <field name="postcode">191989</field>
+        <field name="description">It feels like heaven</field>
+        <field name="property_type_id" ref="demo_type2"></field>
+        <field name="property_tag_ids" eval="[(4,ref('demo_tag2'))]"></field>
+    </record>
+
+    <record id="demo_type3" model="estate.property.type">
+        <field name="name">Penthouse</field>
+    </record>
+
+    <record id="demo_tag3" model="estate.property.tag">
+        <field name="name">Furnished</field>
+    </record>
+        
+    <record id="demo_data_estate3" model="estate.property">
+        <field name="name">Swadesh PG</field>
+        <field name="expected_price">70000</field>
+        <field name="postcode">191980</field>
+        <field name="description">Best PG in this city</field>
+        <field name="property_type_id" ref="demo_type3"></field>
+        <field name="property_tag_ids" eval="[(4,ref('demo_tag3'))]"></field>
+    </record>
+
+    <record id="demo_type4" model="estate.property.type">
+        <field name="name">Palace</field>
+    </record>
+
+    <record id="demo_tag4" model="estate.property.tag">
+        <field name="name">Precious</field>
+     </record>
+
+    <record id="demo_data_estate4" model="estate.property">
+        <field name="name">De glance Palace</field>
+        <field name="expected_price">1000000</field>
+        <field name="postcode">191970</field>
+        <field name="description">Great Indian Palace</field>
+        <field name="property_type_id" ref="demo_type4"></field>
+        <field name="property_tag_ids" eval="[(4,ref('demo_tag4'))]"></field>
+    </record>
+</odoo>

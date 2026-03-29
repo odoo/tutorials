@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="whatsapp_template_property" model="whatsapp.template">
+        <field name="name">Property Sold</field>
+        <field name="model">estate.property</field>
+        <field name="status">approved</field>
+        <field name="phone_field">phone</field>
+        <field name="body">
+            Property {{object.name}} has been sold at {{object.selling_price}}.
+        </field>
+    </record>
+</odoo>
