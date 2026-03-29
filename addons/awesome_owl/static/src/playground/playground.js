@@ -18,5 +18,3 @@ export class Playground extends Component {
 
     }
 }
-
-
