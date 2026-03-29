@@ -4,8 +4,7 @@ import {LazyComponent} from "@web/core/assets";
 
 class DashboardAction extends Component {
     static components = {LazyComponent};
-    static template = xml`<LazyComponent bundle="'awesome_dashboard.dashboard'" Component="'AwesomeDashboard'"/>`;
-
+    static template = xml`<LazyComponent bundle="'awesome_dashboard.assets_dashboard'" Component="'AwesomeDashboard'"/>`;
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", DashboardAction);

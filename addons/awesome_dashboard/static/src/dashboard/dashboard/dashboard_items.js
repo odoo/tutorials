@@ -1,5 +1,5 @@
-import {NumberCard} from "./dashboard/number_card/number_card";
-import {PieChartCard} from "../src/dashboard/charts/pie_chart_card/pie_chart_card";
+import {NumberCard} from "../number_card/number_card";
+import {PieChartCard} from "../charts/pie_chart_card/pie_chart_card";
 import {registry} from "@web/core/registry";
 
 
