@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property definition"
     _order = "id desc"
+    _inherit = ["mail.thread"]
 
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Description", required=True)
@@ -49,6 +50,7 @@ class EstateProperty(models.Model):
         required=True,
         default="new",
         copy=False,
+        tracking=True,
     )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -57,10 +59,16 @@ class EstateProperty(models.Model):
         "res.users",
         string="Salesman",
         default=lambda self: self.env.user,
+        tracking=True,
     )
-    buyer_id = fields.Many2one("res.partner", string=" Buyer")
+    buyer_id = fields.Many2one("res.partner", string=" Buyer", tracking=True)
 
-    property_offer_ids = fields.One2many("estate.property.offer", "property_id")
+    property_offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+        tracking=True,
+    )
+    phone = fields.Char(related="buyer_id.phone", store=True)
     property_tag_ids = fields.Many2many("estate.property.tag", string="tag")
     total_area = fields.Float(compute="_compute_total_area", string="Total Area")
     best_price = fields.Float(
@@ -124,8 +132,29 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            accepted_offer = record.property_offer_ids.filtered(
+                lambda o: o.status == "accepted",
+            )
+            if not accepted_offer:
+                raise UserError(
+                    _("You cannot sell the property without an accepted offer."),
+                )
             if record.state == "cancelled":
                 raise UserError(_("property can't be cancelled"))
+
+            template = self.env.ref("estate.whatsapp_template_property")
+
+            whatsapp_composer = (
+                self.env["whatsapp.composer"]
+                .with_context({"active_id": self.id})
+                .create(
+                    {
+                        "wa_template_id": template.id,
+                        "res_model": "estate.property",
+                    },
+                )
+            )
+            whatsapp_composer.sudo()._send_whatsapp_template(force_send_by_cron=True)
             record.state = "sold"
         return True
 
@@ -135,3 +164,9 @@ class EstateProperty(models.Model):
                 raise UserError(_("Cancelled property can't be sold"))
             record.state = "cancelled"
         return True
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if "state" in init_values and self.state == "sold":
+            return self.env.ref("estate.mt_state_change")
+        return super()._track_subtype(init_values)

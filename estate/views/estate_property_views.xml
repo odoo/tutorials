@@ -7,6 +7,13 @@
         <field name="context">{'search_default_availability' : True}</field>
     </record>
 
+    <record id="mt_state_change" model="mail.message.subtype">
+        <field name="name"> Property sold</field>
+        <field name="res_model">estate.property</field>
+        <field name="default" eval="True"/>
+        <field name="description">Property is successfully sold!</field>
+    </record>
+
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -147,6 +154,7 @@
                                     
                     </notebook>
                 </sheet>
+                    <chatter open_attachments="True"/>
             </form>
         </field>
     </record>
