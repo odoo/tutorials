@@ -1,4 +1,4 @@
-import {Component, useState} from "@odoo/owl";
+import {Component, useState, onWillStart} from "@odoo/owl";
 import {registry} from "@web/core/registry";
 import {Layout} from "@web/search/layout";
 import {useService} from "@web/core/utils/hooks";
@@ -8,6 +8,7 @@ import "./dashboard_items";
 import {PieChartCard} from "../charts/pie_chart_card/pie_chart_card";
 import {NumberCard} from "../number_card/number_card";
 import {ConfigDialog} from "../config_dialog/config_dialog";
+import {rpc} from "@web/core/network/rpc";
 
 
 class AwesomeDashboard extends Component {
@@ -21,9 +22,12 @@ class AwesomeDashboard extends Component {
         this.statistics = useState(statistics);
         this.items = registry.category("awesome_dashboard").getAll();
         this.dialog = useService("dialog")
-        this.state = useState({
-            disabledItems: JSON.parse(localStorage.getItem("dashboard")) || [],
-        })
+        this.state = useState({disabledItems: []})
+
+        onWillStart(async () => {
+            const config = await rpc("/awesome_dashboard/load_config");
+            this.state.disabledItems = JSON.parse(config || "[]");
+        });
 
     }
 
@@ -47,6 +51,7 @@ class AwesomeDashboard extends Component {
     openSettings() {
         this.dialog.add(ConfigDialog, {
             items: this.items,
+            disabledItems: this.state.disabledItems,
             onApply: (disabledItems) => {
                 this.state.disabledItems = disabledItems;
             }

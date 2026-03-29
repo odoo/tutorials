@@ -8,6 +8,7 @@ from odoo.http import request
 
 logger = logging.getLogger(__name__)
 
+
 class AwesomeDashboard(http.Controller):
     @http.route('/awesome_dashboard/statistics', type='jsonrpc', auth='user')
     def get_statistics(self):
@@ -34,3 +35,10 @@ class AwesomeDashboard(http.Controller):
             'total_amount': random.randint(100, 1000)
         }
 
+    @http.route('/awesome_dashboard/save_config', type='jsonrpc', auth='user')
+    def save_config(self, config):
+        request.env.user.dashboard_config = config
+
+    @http.route('/awesome_dashboard/load_config', type='jsonrpc', auth='user')
+    def load_config(self):
+        return request.env.user.dashboard_config
