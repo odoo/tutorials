@@ -1,8 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+		<Layout display="display" className="'o_dashboard h-100'">
+			hello dashboard
+			<t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomersView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+			<DashboardItem size="1">
+				<div class="text-muted text-uppercase fw-bold small">New Orders</div>
+				<div class="h3"><t t-esc="statistics.nb_new_orders"/></div>
+			</DashboardItem>
+
+			<DashboardItem size="1">
+				<div class="text-muted text-uppercase fw-bold small">Total Amount</div>
+				<div class="h3 text-success">
+					<t t-esc="statistics.total_amount"/> €
+				</div>
+			</DashboardItem>
+
+			<DashboardItem size="1">
+				<div class="text-muted text-uppercase fw-bold small">Avg T-Shirts/Order</div>
+				<div class="h3"><t t-esc="statistics.average_quantity"/></div>
+			</DashboardItem>
+
+			<DashboardItem size="1">
+				<div class="text-muted text-uppercase fw-bold small">Cancelled Orders</div>
+				<div class="h3 text-danger"><t t-esc="statistics.nb_cancelled_orders"/></div>
+			</DashboardItem>
+
+			<DashboardItem size="2">
+				<div class="text-muted text-uppercase fw-bold small">Avg. Processing Time</div>
+				<div class="h3">
+					<t t-esc="statistics.average_time"/> Days
+				</div>
+				<div class="text-muted small">From 'New' to 'Sent/Cancelled'</div>
+			</DashboardItem>
+		</Layout>
     </t>
 
 </templates>
