@@ -8,7 +8,6 @@ import "./dashboard_items";
 import {PieChartCard} from "../charts/pie_chart_card/pie_chart_card";
 import {NumberCard} from "../number_card/number_card";
 import {ConfigDialog} from "../config_dialog/config_dialog";
-import {Dialog} from "@web/core/dialog/dialog";
 
 
 class AwesomeDashboard extends Component {
