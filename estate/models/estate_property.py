@@ -15,6 +15,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            prices = record.offer_ids.mapped("price")
+            record.best_price = max(prices) if prices else 0
+
     name = fields.Char(required=True, default="UNKNOWN")
     description = fields.Text()
     postcode = fields.Char()
@@ -71,3 +77,13 @@ class EstateProperty(models.Model):
         "property_id",
     )
     total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
