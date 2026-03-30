@@ -17,6 +17,12 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <button
+                name="unlink"
+                string="Delete"
+                type="object"
+                icon="fa-trash"
+                confirm="Are you sure you want to delete this property?"/>
             </list>
         </field>
     </record>
@@ -26,10 +32,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+        <header>
+        <field name="state"
+                widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
+        </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name"/>
+                            <field name="name" placeholder="Property Name"/>
                         </h1>
                     </div>
                     <field name="tag_ids" widget="many2many_tags"/>
@@ -41,6 +51,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -51,10 +62,13 @@
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
+                                <field name="active"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="state"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -68,6 +82,9 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                    <field name="create_date" readonly="True"/>
                                     <field name="status"/>
                                 </list>
                             </field>
