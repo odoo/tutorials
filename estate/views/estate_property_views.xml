@@ -5,11 +5,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <header>
+                    <button name="set_property_sold" type="object">Sold</button>
+                    <button name="set_property_cancelled" type="object">Cancel</button>
+                </header>
                 <sheet>
                     <h1><field name="name"/></h1>
                     <h4><field name='property_tag_ids' widget='many2many_tags'/></h4>
                     <group>
                         <group>
+                            <field name="state" string="Status"/>
                             <field name='property_type_id'/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -81,7 +86,7 @@
                 <field name='date_availability'/>
                 <field name='total_area'/>
                 <field name='best_price'/>
-                <filter string="Available" name="avilable" domain="[('state','in',['new','offer_received'])]"/>
+                <filter string="Available" name="available" domain="[('state','in',['new','offer_received'])]"/>
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
