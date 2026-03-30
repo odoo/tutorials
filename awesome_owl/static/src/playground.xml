@@ -8,12 +8,10 @@
                 <Card title="'House'">
                     <Counter onchange.bind="incrementsum"/>
                 </Card>
-
                 <Card title="'Counter Card'">
                     <Counter onchange.bind="incrementsum"/>
                 </Card>
                 <TodoList/>
         </div>
     </t>
-
 </templates>

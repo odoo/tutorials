@@ -2,23 +2,22 @@ import { Component, useState, useRef, onMounted } from "@odoo/owl";
 import { TodoItem } from "./todo_item";
 
 export class TodoList extends Component {
-    static template="awesome_owl.todolist";
+    static template = "awesome_owl.todolist";
 
-    static components = {TodoItem};
+    static components = { TodoItem };
 
     setup() {
-    this.todos = useState([]);  
-    this.nextId = 0;
+        this.todos = useState([]);
+        this.nextId = 0;
 
-    this.inputRef = useRef("input");
-    onMounted(() => {
-        this.inputRef.el.focus();
-            }     
-        )
+        this.inputRef = useRef("input");
+        onMounted(() => {
+            this.inputRef.el?.focus();
+        });
     }
 
     addTodo(ev) {
-        if (ev.keyCode === 13) {
+        if (ev.key === "Enter") {
             const text = ev.target.value;
 
             if (!text) {
@@ -30,6 +29,7 @@ export class TodoList extends Component {
                 description: text,
                 isCompleted: false
             });
+
             ev.target.value = "";
         }
     }
@@ -43,9 +43,9 @@ export class TodoList extends Component {
     }
 
     removeTodo(id) {
-        const index = this.todos.findIndex(t => t.id === id)
+        const index = this.todos.findIndex(t => t.id === id);
 
-        if(index >= 0) {
+        if (index >= 0) {
             this.todos.splice(index, 1);
         }
     }
