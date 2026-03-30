@@ -3,33 +3,27 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
-import { rpc } from "@web/core/network/rpc";
+
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem };
 
-
     setup(){
+        this.statisticsService = useService("awesome_dashboard.statistics");
         this.action = useService("action");
         this.display = useState({
             controlPanel: {}
         });
         this.stats = useState({});
         onWillStart(async () => {
-            const result = await rpc("/awesome_dashboard/statistics");
-            console.log(result);
+            const result = await this.statisticsService.loadStatistics();
             this.stats = result;
-            console.log(this.stats.average_quantity);
         })
     }
-
     
     openCustomers() {
-        /* this.action.doAction("base_setup.action_general_configuration"); */
-
         /* this.action.doAction("base.action_partner_form"); */
-
         this.action.doAction({
             type: 'ir.actions.act_window',
             name: 'Customers',
@@ -38,8 +32,8 @@ class AwesomeDashboard extends Component {
             views: [[false, 'kanban']],
         })
     }
+    
     openLeads() {
-        /* this.action.doAction("base.action_partner_form"); */
         this.action.doAction({
             type: 'ir.actions.act_window',
             name: 'Leads',
