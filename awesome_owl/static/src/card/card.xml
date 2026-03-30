@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="p-3">
+            <div class="card d-inline-block m-2" style="width: 18rem;">
+                <div class="card-body" style="position:relative;">
+                    <h5 class="card-title" t-esc="props.title"/>
+                    <span style="position:absolute;top:10px;right:10px;border:1px solid lightgrey;padding:3px 10px;" t-on-click="toggle">+</span>
+                    <p class="card-text" t-if="!isMinimized.value" t-slot="default"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -3,6 +3,34 @@
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         hello dashboard
+
+        <Layout display="display" className="'o_dashboard h-100'">
+            <button t-on-click="openCustomers">Customers</button>
+            <button t-on-click="openLeads">Leads</button>
+
+            <DashboardItem t-if="stats">
+                Average amount of ... is 
+                <span t-esc="stats.average_quantity"/>
+            </DashboardItem>
+            <DashboardItem t-if="stats">
+                Average time of ... is 
+                <span t-esc="stats.average_time"/>
+            </DashboardItem>
+            <DashboardItem t-if="stats">
+                Number of cancelled orders is 
+                <span t-esc="stats.nb_cancelled_orders"/>
+            </DashboardItem>
+            <DashboardItem t-if="stats">
+                Number of new orders is 
+                <span t-esc="stats.nb_new_orders"/>
+            </DashboardItem>
+            <DashboardItem t-if="stats">
+                The total amount of new orders is 
+                <span t-esc="stats.total_amount"/>
+            </DashboardItem>
+        </Layout>
+
+
     </t>
 
 </templates>
