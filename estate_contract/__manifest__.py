@@ -3,7 +3,7 @@
     "version": "1.0",
     "category": "Estate",
     "summary": "Estate Contract",
-    "depends": ["estate", "sign"],
+    "depends": ["estate", "sign", "mail"],
     "data": [
         "security/ir.model.access.csv",
         "views/estate_contract_views.xml",

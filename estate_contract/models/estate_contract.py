@@ -4,6 +4,7 @@ from odoo import models, fields
 class EstateContract(models.Model):
     _name = 'estate.contract'
     _description = 'Estate Contract'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(default="New Contract", tracking=True)
 
@@ -65,6 +66,7 @@ class EstateContract(models.Model):
                 'res_id': sign_request.id,
                 'target': 'current',
             }
+
 
 class SignRequest(models.Model):
     _inherit = 'sign.request'

@@ -13,9 +13,9 @@ class EstateProperty(models.Model):
                 "view_mode": "form",
                 "target": "current",
                 "context": {
-                    "default_property_id": self.id,
-                    "default_buyer_id": self.buyer_id.id,
-                    "default_price": self.selling_price,
-                    "default_salesperson_id": self.user_id,
+                    "default_property_id": record.id,
+                    "default_buyer_id": record.buyer_id.id,
+                    "default_price": record.selling_price,
+                    "default_salesperson_id": record.user_id,
                 },
             }
