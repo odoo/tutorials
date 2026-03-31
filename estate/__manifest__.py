@@ -6,8 +6,8 @@
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
-        "views/website_properties.xml",
-        "data/website_menu.xml",
+        "views/estate_mail_template.xml",
+        "views/res_config_settings_views.xml",
         "views/portal_menu.xml",
         "views/portal_template.xml",
         "wizard/portal_wizard_views.xml",

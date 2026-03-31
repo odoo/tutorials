@@ -59,6 +59,7 @@ class EstateProperty(models.Model):
         copy=False,
         required=True,
         selection=PROPERTY_STATE,
+        tracking=True,
     )
     active = fields.Boolean(default=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
@@ -106,13 +107,28 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        if self.state != "cancelled":
-            self.state = "sold"
-        else:
-            raise UserError(
-                _("Property is already cancelled, cannot be marked as sold."),
-            )
+        for record in self:
+            if record.state != "cancelled":
+                record.state = "sold"
+                record._send_email()
+            else:
+                raise UserError(
+                    _("Property is already cancelled, cannot be marked as sold."),
+                )
         return True
+
+    def _send_email(self):
+        template = self.env.ref("estate.email_template_property_sold")
+        template.send_mail(
+            self.id,
+            email_layout_xmlid="mail.mail_notification_light",
+            email_values={
+                "auto_delete": True,
+                "email_from": self.env.company.email_formatted,
+                "email_to": self._origin.buyer_id.email,
+            },
+            force_send=True,
+        )
 
     def action_cancel(self):
         if self.state != "sold":
