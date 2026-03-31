@@ -5,6 +5,22 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+            <header>
+                             <button 
+                                    name="action_sold" 
+                                    string="Sold" 
+                                    type="object"
+                                    class="btn-primary"
+                                    invisible="state in ('sold','cancelled')"
+                            />
+                            <button
+                                    name="action_cancel" 
+                                    string="Cancel" 
+                                    type="object"
+                                    class="btn-secondary"
+                                    invisible="state in ('sold','cancelled')"
+                            />
+                    </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -19,14 +35,14 @@
                         <group string="Pricing">
                             <field name="expected_price"/>
                             <field name="best_price" readonly="1"/>
-                            <field name="selling_price"/>
-                            <field name="state"/>
+                            <field name="selling_price" groups="estate.estate_group_manager"/>
+                            <field name="state" string="Status"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
+                                <field name="description"/>                               
                                 <field name="bedrooms"/>
                                 <field name="living_area" string="Living Area (sqm)"/>
                                 <field name="facades"/>
@@ -57,7 +73,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list default_order="expected_price desc,name">
+            <list default_order="expected_price desc,name" decoration-success="state == 'sold'" decoration-danger="state == 'cancelled'" decoration-muted="active == 'False'" decoration-it="state=='new'">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>

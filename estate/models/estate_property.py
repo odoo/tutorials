@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -29,7 +30,6 @@ class EstateProperty(models.Model):
         ('west', 'West')
     ])
     active = fields.Boolean(default=True, help="Uncheck to archive this property")
-
     state = fields.Selection([
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
@@ -37,16 +37,27 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
     ], required=True, copy=False, default='new')
-
     property_type_id = fields.Many2one('estate.property.type', string="Property Type", ondelete='cascade')
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Seller", default=lambda self: self.env.user)
-
-    tag_ids = fields.Many2many('estate.property.tag', 'pranjali', 'property_id', 'tag_id', string="Tags")
+    tag_ids = fields.Many2many('estate.property.tag', 'estate_property_tag_rel', 'property_id', 'tag_id', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-
     total_area = fields.Float(compute='_compute_total_area', store=True)
     best_price = fields.Float(compute='_compute_best_price', readonly=True, store=True)
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties cannot be sold.")
+            record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot be cancelled.")
+            record.state = 'cancelled'
+        return True
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
