@@ -1,0 +1,12 @@
+import { Component } from "@odoo/owl";
+
+
+export class DashboardItem extends Component {
+    static template = "awesome_dashboard.DashboardItem";
+    static components = { Component };
+    static props = ['*'];
+
+    static defaultProps = {
+        size: 1
+    };
+}
