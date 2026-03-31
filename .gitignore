@@ -1,6 +1,8 @@
 # custom ignore
 custom_module/
 estate/demo/
+website_estate/
+whatsapp_estate/
 
 # Odoo translations (managed by translate.odoo.com)
 *.po

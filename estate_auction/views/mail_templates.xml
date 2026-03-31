@@ -1,0 +1,26 @@
+<odoo>
+    <record id="mail_template_offer_rejected" model="mail.template">
+        <field name="name">Offer Rejected</field>
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="subject">
+            Update on Your Offer for {{ object.property_id.name }}
+        </field>
+        <field name="body_html" type="html">
+            <table style="width:100%;">
+                <tr>
+                    <td style="text-align:center; font-size:16px;">
+                        <t t-if="object.partner_id.name"> Hello <strong
+                                t-out="object.partner_id.name" /> ,<br /><br />
+                        </t>
+                        Thank you for your interest in <strong t-out="object.property_id.name" />.<br /><br />
+                        Unfortunately, your offer was not accepted. <br /><br /> We encourage you to
+                        explore other properties. <br /><br /> Regards,<br />
+                        <t
+                            t-out="object.env.company.name" />
+                    </td>
+                </tr>
+            </table>
+        </field>
+
+    </record>
+</odoo>

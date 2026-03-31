@@ -2,7 +2,7 @@
     "name": "Estat Accounting",
     "application": True,
     "description": "Specific Real Estate Accounting Module",
-    "depends": ["base", "account", "estate", "stock"],
+    "depends": ["base", "account", "estate"],
     "data": [
         "security/ir.model.access.csv",
     ],
