@@ -3,14 +3,14 @@
     <t t-name="awesome_owl.playground">
         <div>
             hello world
-            <Counter callback.bind="sumBoth"/>
-            <Counter callback.bind="sumBoth"/>
+            <Counter onChange.bind="sum" />
+            <Counter onChange.bind="sum" />
             <Card title="'Dharmil'" content="'Good at Food'" />
             <Card title="'this is html'" content="html" />
             <Card title="'Sum'" content="state.sum" />
             <Card title="'Counter is here'">
-                <Counter callback.bind="sumBoth"/>
-                <Counter callback.bind="sumBoth"/>
+                <Counter onChange.bind="sum" />
+                <Counter onChange.bind="sum" />
             </Card>
             <TodoList items="todos"/>
         </div>

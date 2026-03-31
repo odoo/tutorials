@@ -1,10 +1,10 @@
 <templates>
     <t t-name="awesome_owl.counter">
         <div class="d-flex flex-row gap-4 border 2 p-2">
-            <h2>Counter:
-                <t t-esc="state.value"/>
+            <h2>Counter: <t t-esc="state.value" />
             </h2>
-            <button class="btn btn-primary border 2" t-on-click="increment">Increment</button>
+            <button class="btn btn-primary border 2" t-on-click="()=>this.update(1)">Increment</button>
+            <button class="btn btn-primary border 2" t-on-click="()=>this.update(-1)">Decrement</button>
         </div>
     </t>
 </templates>

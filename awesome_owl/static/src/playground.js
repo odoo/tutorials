@@ -3,8 +3,6 @@ import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
 import { TodoList } from "./todo_list/todo_list";
 
-import { TodoItem } from "./todo_list/todo_item";
-
 export class Playground extends Component {
     static template = "awesome_owl.playground";
     static props = {};
@@ -20,7 +18,11 @@ export class Playground extends Component {
         });
     }
 
-    sumBoth() {
-        this.state.sum++;
+    sum({ value, operator }) {
+        if (operator === -1) {
+            this.state.sum--;
+        } else {
+            this.state.sum++;
+        }
     }
 }
