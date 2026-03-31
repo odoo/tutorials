@@ -1,0 +1,32 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <div> 
+            <Layout display="{ controlPanel: {} }">
+                <t t-set-slot="control-panel-create-button">
+                    <button t-on-click="openCustomers" class="btn btn-primary">
+                        <t t-esc="labels.customers"/>
+                    </button>
+                    <button t-on-click="openLeads" class="btn btn-primary">
+                        <t t-esc="labels.leads"/>
+                    </button>
+                </t>
+                <t t-set-slot="control-panel-additional-actions">
+                    <button class="btn btn-secondary" t-on-click="openSettings">
+                        <i class="fa fa-cog"/>
+                    </button>
+                </t>
+                <div class="d-flex flex-wrap gap-3 m-2">
+                    <t t-if="state.stats.data">
+                        <t t-foreach="state.items" t-as="item" t-key="item.id">
+                            <DashboardItem size="item.size || 1">
+                                <t t-set="itemProp"
+                                    t-value="item.props ? item.props(state.stats.data) : {'data': state.stats.data}"/>
+                                <t t-component="item.Component" t-props="itemProp"/>
+                            </DashboardItem>
+                        </t>
+                    </t>
+                </div>
+            </Layout>
+        </div>
+    </t>
+</templates>

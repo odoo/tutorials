@@ -1,0 +1,8 @@
+<odoo>
+    <record id="menu_estate_auction" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu" />
+        <field name="sequence">20</field>
+    </record>
+</odoo>

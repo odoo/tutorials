@@ -1,0 +1,28 @@
+<templates>
+    <t t-name="awesome_owl.card">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="card-title">
+                        <t t-esc="props.title" />
+                    </h2>
+                    <button class="btn btn-sm btn-outline-primary"
+                        t-on-click="toggle">
+                        <t t-if="state.isOpen">Hide</t>
+                        <t t-else="">Show</t>
+                    </button>
+                </div>
+                <t t-if="state.isOpen">
+                    <div>
+                    <p class="card-text">
+                        <t t-out="props.content" />
+                    </p>
+                    <div>
+                        <t t-slot="default" />
+                    </div>
+                </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
