@@ -33,70 +33,62 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <filter name="available" string="Available"
-                        domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                        domain="[('state','in',('new','offer_received'))]"/>
                 <filter name="group_postcode" string="Postcode"
-                        context="{'group_by':'postcode'}"/>
+                        context="{'group_by': 'postcode'}"/>
             </search>
         </field>
     </record>
 
     <record id="estate_property_form" model="ir.ui.view">
-    <field name="name">estate.property.form</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-
-                <h1>
-                    <field name="name" placeholder="Enter title..."/>
-                </h1>
-
-                <group>
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Enter title..."/>
+                    </h1>
                     <group>
-                        <field name="tag_id" widget="many2many_tags"/>
-                        <field name="postcode"/>
-                        <field name="date_availability"/>
-
-                    </group>
-
-                    <group>
-                        <field name="expected_price"/>
-                        <field name="selling_price"/>
-                    </group>
-                </group>
-
-                <notebook>
-
-                    <page string="Description">
                         <group>
-                            <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
-                            <field name="property_type_id"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
-                    </page>
-
-                    <page string="Other info">
                         <group>
-                            <field name="buyer_id"/>
-                            <field name="seller_id"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
-                    </page>
-
-                    <page string="Offers">
-                        <field name="offer_ids"/>
-                    </page>
-
-                </notebook>
-
-            </sheet>
-        </form>
-    </field>
-</record>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="state"/>
+                                <field name="property_type_id"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="seller_id"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
 </odoo>
