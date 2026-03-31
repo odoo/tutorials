@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="mrp.BomOverviewLine" t-inherit-mode="extension">
+        <xpath expr="//td[@t-if='forecastMode' and .//span[@t-out='data.status']]" position="replace">
+
+            <td t-if="forecastMode" class="text-center">
+                <t t-set="display_value" t-value="
+                        data.level === 0
+                        ? (data.producible_qty > 0
+                            ? data.status
+                            : data.availability_display)
+                        : (data.status || data.availability_display)
+                   "/>
+
+                <div t-if="display_value" class="o_field_badge">
+                    <t t-if="data.type !== 'operation'">
+                        <a href="#" t-on-click.prevent="goToForecast">
+                            <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundClass}}" t-out="display_value"/>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundClass}}" t-out="display_value"/>
+                    </t>
+                </div>
+
+            </td>
+        </xpath>
+
+        <xpath expr="//td[@t-if='forecastMode' and .//span[@t-esc='data.availability_display']]" position="replace">
+        </xpath>
+    </t>
+
+</templates>
