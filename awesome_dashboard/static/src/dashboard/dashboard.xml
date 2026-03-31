@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+     <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
+
+             <t t-set-slot="control-panel-always-buttons">
+                <button class="btn btn-primary"
+                        t-on-click="openCustomers">
+                    Customers
+                </button>
+
+                <button class="btn btn-secondary"
+                        t-on-click="openLeads">
+                    Leads
+                </button>
+                <button class="btn btn-secondary"
+                        t-on-click="openSettings">
+                     Settings
+                </button>
+            </t>
+            
+            <div class="p-3">
+                <h1>Awesome Dashboard</h1>
+            </div>
+
+            <div class="d-flex flex-wrap p-3 align-items-start">
+            <t t-foreach="state.items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProps"
+                        t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                    
+                    <t t-component="item.Component" t-props="itemProps"/>
+                
+                </DashboardItem>
+                
+            </t>
+            </div>
+
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="card m-2 p-3 o_awesome_dashboard_card"
+             t-att-style="'width:' + width + 'rem;'">
+             <t t-slot="default"/>
+        </div>
+    </t>
+
+    <t t-name="awesome_dashboard.DashboardCard">
+        <div>
+            <h3><t t-esc="props.title"/></h3>
+            <p><t t-esc="props.value"/></p>
+        </div>
+    </t>
+    <t t-name="awesome_dashboard.PieChart">
+       <canvas t-ref="canvas" width="200" height="200"></canvas>
+    </t>
+
+    <t t-name="awesome_dashboard.DashboardSettings">
+        <div class="p-3">
+            <h3>Select Items</h3>
+
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
+                <div>
+                    <input type="checkbox"
+                        t-att-checked="state.selected.includes(item.id)"
+                        t-on-click="() => this.toggle(item.id)"/>
+                    <t t-esc="item.description"/>
+                </div>
+            </t>
+
+            <button class="btn btn-primary mt-2"
+                    t-on-click="() => this.save()">
+                Save
+            </button>
+        </div>
+    </t>
+
+</templates>

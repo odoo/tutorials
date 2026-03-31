@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="estate_property_maintenance_list" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.list</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="technician_id"/>
+                <field name="state"/>
+                <field name="estimated_cost"/>
+                <field name="actual_cost"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_maintenance_form" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.form</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <button name="action_start"
+                            type="object"
+                            string="start"
+                            class="btn-secondary"
+                            invisible = "state not in ['assigned']"/>
+                    <button name="action_stop"
+                            type="object"
+                            string="stop"
+                            class="btn-secondary"
+                            invisible = "state not in ['in_progress']" />
+                    <button name="action_cancel"
+                            type="object"
+                            string="cancel"
+                            class="btn-secondary"
+                            invisible = "state in ['cancel']"/>
+                    <group>
+                        <group>
+                            <field name="state"
+                                widget="statusbar"
+                                statusbar_visible="new,assigned,in_progress,done,cancel"
+                                />
+                            <field name="name"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="property_id"/>
+                            <field name="technician_id"/>
+                            <field name="estimated_cost"/>
+                            <field name="actual_cost" readonly = "state != 'done'"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_maintenance_action" model="ir.actions.act_window">
+        <field name="name">Maintenance Requests</field>
+        <field name="res_model">estate.property.maintenance</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_id', '=', active_id)]</field>
+        <field name="context">{'default_property_id': active_id}</field>
+    </record>
+
+</odoo>
