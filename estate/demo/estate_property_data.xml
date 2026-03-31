@@ -67,7 +67,4 @@
         <field name="partner_id" ref="estate_property_buyer_2"/>
     </record>
 
-    
-
-
 </odoo>
