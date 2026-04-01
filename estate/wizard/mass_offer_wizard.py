@@ -22,9 +22,9 @@ class MassOfferWizard(models.TransientModel):
             if record.best_price and record.best_price >= self.offer_price:
                 continue
             offers.append({
-                'property_id': record.id,              
-                'partner_id': self.customer_id.id,    
-                'price': self.offer_price,           
+                'property_id': record.id,
+                'partner_id': self.customer_id.id,
+                'price': self.offer_price,
             })
-    
+
         self.env['estate.property.offer'].create(offers)

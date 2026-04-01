@@ -43,7 +43,6 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", string="Total Area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer Price", store=True)
-    wa_estate_template_id = fields.Many2one("whatsapp.template", string="WhatsApp Estate Template")
 
     _check_expected_price_positive = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -89,28 +88,16 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if self.state == "canceled":
             raise UserError(_("Canceled properties cannot be sold."))
-        
+
         self.state = "sold"
-        
         if self.buyer_id and self.buyer_id.email:
             template = self.env.ref('estate.estate_property_sold_email_template')
             if template:
                 template.send_mail(self.id)
-        
-        whatsapp_channel = self.env.ref('whatsapp.whatsapp_template_discuss_channel_reviver')
-        if whatsapp_channel:
-            whatsapp_message = _(
-                "Property '%s' has been sold successfully. WhatsApp",
-                self.name,
-            )
-            whatsapp_channel.message_post(
-                body = whatsapp_message,
-                message_type = 'whatsapp_message',
-            )
-        
+
         self.message_post(
-            body = _("Property has been marked as sold. Confirmation email and WhatsApp message sent to the buyer."),
-            message_type = 'notification',
+            body=_("Property has been marked as sold. Confirmation email sent to the buyer."),
+            message_type='notification',
         )
 
     def action_cancel(self):

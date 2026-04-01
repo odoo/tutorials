@@ -7,7 +7,6 @@
         'base',
         'mail',
         'website',
-        'whatsapp',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -21,7 +20,7 @@
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
         'data/ir_cron_data.xml',
-        'data/data.xml'
+        'data/data.xml',
     ],
     'demo': [
         'data/estate_demo.xml',
