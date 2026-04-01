@@ -6,7 +6,6 @@ export class Counter extends Component {
     setup() {
         this.state = useState({ value: 0 , sum: 0});
         this.newstate = useState({ newval: 1 });
-        
     }
 
     increment() {

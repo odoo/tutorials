@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve" name="counter">
-   <t t-name="awesome_owl.card">
-    <div class="p-3 mt-4 w-auto ">
-    <div class="bg-white p-3 col border shadow rounded">
-
-    <div class="fw-lg text-lg mb-2 w-fit"><t t-out="props.title"/></div>
-    <div class="text-sm w-fit"><t t-out="props.text"/></div>
-    
-    </div>
-
-<div class="w-full d-flex  col flex-column justify-content-center align-content-center">
-    <input type="text" name="newtask" class="mx-auto w-7 mt-4 "/>
-    <button class=" w-fit mx-auto mt-2 fit-content">Add</button>
-</div>
-
-
-    <t t-if="props.obj.tasks">
-    <div class="p-2 w-50  mx-auto mt-4">
-    <t t-foreach="props.obj.tasks" t-as="tasks" t-key="tasks.task">
-        <div class="bg-white shadow-sm p-3 w-fit m-2 border flex col d-flex gap-2 justify-content-between">
-           <div class="d-flex flex-row my-auto">
-                <label class=" d-flex flex-row">
-                <input t-att-name="tasks.task" t-att-id="tasks.task" type="checkbox" class="my-auto mr-4 h-md mx-2"/>
-                <div  t-att-id="tasks.task" t-att-name="tasks.task" t-att-class="tasks.status ? ('text-muted text-decoration-line-through') : ('') " class="h3  my-auto"><t t-out="tasks.task" /></div>
-                </label>
-                
+    <t t-name="awesome_owl.card">
+        <div class="p-3 mt-4 w-auto ">
+            <div class="bg-white p-3 col border shadow rounded">
+                <div class="fw-lg text-lg mb-2 w-fit">
+                    <t t-out="props.title"/>
+                </div>
+                <div class="text-sm w-fit">
+                    <t t-out="props.text"/>
+                </div>
             </div>
-            <button class="" t-on-click="handle_the_done(tasks.task)">done</button>
+            <div class="w-full d-flex  col flex-column justify-content-center align-content-center">
+                <input t-model="this.state.inputnewadd"  type="text" name="newtask" class="mx-auto w-7 mt-4 "/>
+                <button class=" w-fit mx-auto mt-2 fit-content" t-on-click="()=>{this.newadd_1()}">Add</button>
+            </div>
+            <t t-if="props.obj.tasks">
+                <div class="p-2 w-50  mx-auto mt-4">
+                    <t t-foreach="props.obj.tasks" t-as="tasks" t-key="tasks.task">
+                        <div class="bg-white shadow-sm p-3 w-fit m-2 border flex col d-flex gap-2 justify-content-between">
+                            <div class="d-flex flex-row my-auto">
+                                <label class=" d-flex flex-row">
+                                    <input t-att-name="tasks.task" t-att-checked="tasks.status" t-on-change="()=>props.toggle(tasks.task)" t-att-id="tasks.task" type="checkbox" class="my-auto mr-4 h-md mx-2"/>
+                                    <div  t-att-id="tasks.task" t-att-name="tasks.task" t-att-class="tasks.status ? ('text-muted text-decoration-line-through') : ('') " class="h3  my-auto">
+                                        <t t-out="tasks.task" />
+                                    </div>
+                                </label>
+                            </div>
+                            <button class="" t-on-click="() => this.handle_the_done(tasks.task)">done</button>
+                            <button class="" t-on-click="() => props.handledelete(tasks.task)">delete</button>
+                        </div>
+                    </t>
+                </div>
+            </t>
         </div>
     </t>
-    </div>
-    </t>
-
-    
-    </div>
-   </t>
 </templates>
