@@ -1,0 +1,11 @@
+<odoo>
+    <template id="estateproperties" name="PropertyList">
+        <t t-call="website.layout">
+            <t t-foreach="properties" t-as="property">
+                <div>
+                    <span t-field="property.name"/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

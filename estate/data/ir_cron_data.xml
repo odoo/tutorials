@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="auto_refuse_validity" model="ir.cron">
+        <field name="name">Auto Refuse Cron</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_validity_reject()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+
+    </record>
+</odoo>

@@ -15,7 +15,7 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string="Validity (in days)", default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline", store=True)
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True, string="Property Type")
 
     _check_offer_price_positive = models.Constraint(
@@ -44,6 +44,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.date_deadline and record.create_date:
                 record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def _cron_validity_reject(self):
+        self.search([('status', '=', False), ('date_deadline', '<', fields.Date.today())]).action_refuse()
 
     def action_accept(self):
         self.ensure_one()

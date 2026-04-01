@@ -15,16 +15,16 @@ class EstateProperty(models.Model):
                             "name": "selling price addons (6%)",
                             "quantity": 1,
                             "price_unit": self.selling_price * 0.06,
-                        }
+                        },
                     ),
                     Command.create(
                         {
                             "name": "Administrative fees",
                             "quantity": 1,
                             "price_unit": 100,
-                        }
+                        },
                     ),
                 ],
-            }
+            },
         )
         return super().action_sold()

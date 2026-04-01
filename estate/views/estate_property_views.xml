@@ -8,6 +8,9 @@
             decoration-success="state in ['offer_received', 'offer_accepted']" 
             decoration-bf="state == 'offer_accepted'"
             decoration-muted="state == 'sold'">
+            <header>
+                <button name="%(action_mass_add_offer)d" type="action" string="Mass Add Offer" class="btn-primary"/>
+            </header>
                 <field name="name" string="Title"/>
                 <field name="property_type_id" string="Property Type" options="{'no_create': True}"/>
                 <field name="tag_ids" widget="many2many_tags"/>
