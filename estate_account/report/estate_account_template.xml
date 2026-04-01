@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_estate_account" inherit_id="estate.report_property_offers">
+        
+        <xpath expr="//div[hasclass('status_container')]" position="after">
+            
+            <t t-if="property.state == 'sold'">
+                <div>
+                    <strong>Invoice Status: </strong>
+                    <span>An invoice has been successfully generated for this property.</span>
+                    </div>
+            </t>
+            <t t-else="">
+                <div>
+                    <strong>Invoice Status: </strong>
+                    <span>Invoice yet to be generated.</span>
+                </div>
+            </t>
+            
+        </xpath>
+
+    </template>
+</odoo>

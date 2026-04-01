@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="demo_estate_property_type" model="estate.property.type">
+    <field name="name">Type House</field>
+  </record>
+
+  <record id="demo_estate_property_tag" model="estate.property.tag">
+    <field name="name">Tag 1</field>
+  </record>
+
+  <record id="demo_estate_property" model="estate.property">
+    <field name="name">My New Houseuds</field>
+    <field name="description">Some very long description</field>
+    <field name="postcode">75000</field>
+    <field name="date_availability">2026-12-31</field>
+    <field name="expected_price">150000</field>
+    <field name="selling_price">0</field>
+    <field name="bedrooms">4</field>
+    <field name="living_area">100</field>
+    <field name="facades">2</field>
+    <field name="garage">True</field>
+    <field name="garden">True</field>
+    <field name="garden_area">50</field>
+    <field name="garden_orientation">north</field>
+    <field name="active">True</field>
+    <field name="state">new</field>
+    <field name="property_type_id" ref="demo_estate_property_type"/>
+    <field name="tag_ids" eval="[(4, ref('demo_estate_property_tag'))]"/>
+  </record>
+    
+  <record id="demo_estate_property_offer" model="estate.property.offer">
+    <field name="price">100000</field>
+    <field name="partner_id" ref="base.user_admin"/>
+    <field name="property_id" ref="demo_estate_property"/>
+    <field name="validity">15</field>
+  </record>
+
+  <record id="demo_estate_property_offer_2" model="estate.property.offer">
+    <field name="price">120000</field>
+    <field name="partner_id" ref="base.partner_demo"/>
+    <field name="property_id" ref="demo_estate_property"/>
+    <field name="validity">19</field>
+  </record>
+
+</odoo>
