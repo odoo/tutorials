@@ -1,0 +1,13 @@
+{
+    'name': 'Estate',
+    'version': '1.1',
+    'category': 'Tutorials',
+    'summary': 'The Real Estate Advertisement module',
+    'description': 'Try installing the App',
+    'depends': ['base'],
+    'application': True,
+    'installable': True,
+    'author': 'times',
+    'website': 'https://www.odoo.com/app/estate',
+    'license': 'LGPL-3',
+}
