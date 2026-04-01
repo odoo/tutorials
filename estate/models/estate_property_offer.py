@@ -10,19 +10,18 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float(string="Offer Price")
     status = fields.Selection([
+        ('pending', 'Pending'),
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
-    ], copy=False)
-
+    ], copy=False, default='pending')
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True, ondelete='cascade')
-
     validity = fields.Integer(default=7)
-
     date_deadline = fields.Date(
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline'
     )
+    is_button_hidden = fields.Boolean(compute='_compute_button_visibility', store=False)
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -63,3 +62,11 @@ class EstatePropertyOffer(models.Model):
             if offer.status == 'accepted':
                 offer.property_id.selling_price = 0
                 offer.property_id.state = 'offer_received'
+
+    @api.depends('status', 'property_id.state')
+    def _compute_button_visibility(self):
+        for offer in self:
+            offer.is_button_hidden = (
+                offer.status in ('accepted', 'refused') or
+                offer.property_id.state in ('sold', 'cancelled')
+            )

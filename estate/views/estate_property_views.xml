@@ -36,7 +36,7 @@
                             <field name="expected_price"/>
                             <field name="best_price" readonly="1"/>
                             <field name="selling_price" groups="estate.estate_group_manager"/>
-                            <field name="state" string="Status"/>
+                            <field name="state" string="State"/>
                         </group>
                     </group>
                     <notebook>
@@ -44,11 +44,11 @@
                             <group>
                                 <field name="description"/>                               
                                 <field name="bedrooms"/>
-                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                                 <field name="active"/>
@@ -84,7 +84,7 @@
                 <field name="living_area" string="Living Area (sqm)" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="date_availability"/>
                 <field name="state" optional="hide"/>
             </list>
         </field>

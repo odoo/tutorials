@@ -14,15 +14,15 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text()
     postcode = fields.Char(string="Postal Code")
-    date_availability = fields.Date(copy=False, default=_get_default_date_calculation)
+    date_availability = fields.Date(string="Available From", copy=False, default=_get_default_date_calculation)
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string="Living Area", help="Living area in square meters")
+    living_area = fields.Integer(string="Living Area (sqm)", help="Living area in square meters")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean(string="Garden", help="Has garden")
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string="Garden Area (sqm)", help="Garden area in square meters")
     garden_orientation = fields.Selection([
         ('north', 'North'),
         ('south', 'South'),
