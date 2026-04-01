@@ -10,6 +10,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="state" records_draggable="0">
+                <header>
+                    <button
+                    name="%(estate_property_offer_wizard)d"
+                    string="send offer wizard"
+                    display="always"
+                    type="action"
+                    class="oe_highlight"
+                    />
+                </header>
                 <field name="state"/>
                 <templates>
                     <t t-name="card">
@@ -23,23 +32,21 @@
                             </div>
                         </div>
                         <div>
-                        <t t-if="record.state.raw_value=='offer accepted'">
+                            <t t-if="record.state.raw_value=='offer accepted'">
+                                <div>
+                                    <strong>selling price: </strong>
+                                    <field name="selling_price"/>
+                                </div>
+                            </t>
+                            <t t-if="record.state.raw_value=='offer received'">
+                                <div>
+                                    <strong>expected: </strong>
+                                    <field name="expected_price"/>
+                                </div>
+                            </t>
                             <div>
-                                <strong>selling price: </strong>
-                                <field name="selling_price"/>
-                            </div>
-                        </t>
-                            
-                        <t t-if="record.state.raw_value=='offer received'">
-                            <div>
-                            <strong>expected: </strong>
-                            <field name="expected_price"/>
-                            </div>
-                        </t>
-
-                            <div>
-                            <strong>max offer: </strong>
-                            <field name="max_offer_price"/>
+                                <strong>max offer: </strong>
+                                <field name="max_offer_price"/>
                             </div>
                         </div>
                         <div>

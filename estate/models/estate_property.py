@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -13,8 +13,9 @@ class EstateProperty(models.Model):
         'CHECK (selling_price >= 0)', 'selling_price should be positive'
     )
     _order = 'id desc'
+    _inherit = ['mail.thread']
 
-    name = fields.Char(default='Unknown')
+    name = fields.Char(default='Unknown', tracking=True)
     last_seen = fields.Datetime('Last Seen', default=fields.Datetime.now)
     description = fields.Text()
     postcode = fields.Char()
@@ -40,6 +41,7 @@ class EstateProperty(models.Model):
         default='new',
         compute='_compute_statusbar',
         store=True,
+        tracking=True,
     )
     active = fields.Boolean(default=True)
     garden_area = fields.Integer()
@@ -101,12 +103,69 @@ class EstateProperty(models.Model):
         else:
             self.state = 'sold'
 
+        subject = _('Property Sold: %s') % self.name
+        body = _('''
+        <p>Hello,</p>
+        <p>The property <b>%s</b> has been successfully sold for <b>%s</b>.</p>
+        
+        <table border='2'>
+            <tr>
+                <td><b>Role</b></td>
+                <td><b>Name</b></td>
+            </tr>
+            <tr>
+                <td>Seller</td>
+                <td>%s</td>
+            </tr>
+            <tr>
+                <td>Buyer</td>
+                <td>%s</td>
+            </tr>
+        </table>
+        
+        <p>This is an automated message.</p>
+        ''') % (
+            self.name,
+            self.selling_price,
+            self.salesperson_id.name,
+            self.buyer_id.name or 'N/A',
+        )
+        mail_adrs = []
+        if self.salesperson_id:
+            mail_adrs.append(self.salesperson_id.partner_id.id)
+        if self.buyer_id:
+            mail_adrs.append(self.buyer_id.id)
+
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_composition_mode': 'comment',
+            'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+            'default_subject': subject,
+            'default_body': body,
+            'default_partner_ids': mail_adrs,
+            'email_notification_allow_footer': True,
+            'hide_mail_template_management_options': False,
+        }
+
+        return {
+            'name': _('Send Confirmation Email'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'mail.compose.message',
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
+
     @api.depends('offer_ids.price')
     def _compute_max_offer_price(self):
-        if self.offer_ids:
-            new_max_offer_price = max(self.offer_ids.mapped('price'))
-            if self.max_offer_price != new_max_offer_price:
-                self.max_offer_price = new_max_offer_price
+        for rec in self:
+            if rec.offer_ids:
+                new_max_offer_price = max(rec.offer_ids.mapped('price'))
+                if rec.max_offer_price != new_max_offer_price:
+                    rec.max_offer_price = new_max_offer_price
 
     def accept_best_offer(self):
         for offers in self.offer_ids:
@@ -148,4 +207,6 @@ class EstateProperty(models.Model):
     def _unlink_if_user_inactive(self):
         for record in self:
             if record.state not in ['cancelled', 'new']:
-                raise UserError('cannot delete - only delete from the state `new` and `cancelled`')
+                raise UserError(
+                    'cannot delete - only delete from the state `new` and `cancelled`'
+                )

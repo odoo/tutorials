@@ -10,6 +10,7 @@
     ],
     'application': True,
     'installable': True,
+    'auto_install': True,
     'license': 'LGPL-3',
     'website': 'https://odoo.com',
 }

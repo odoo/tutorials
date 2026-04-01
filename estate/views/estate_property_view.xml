@@ -11,6 +11,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="properties" decoration-success="state in ['offer received','offer accepted']" decoration-bf="state=='offer accepted'" decoration-muted="state=='sold'">
+                <header>
+                    <button
+                    name="%(estate_property_offer_wizard)d"
+                    string="send offer wizard"
+                    display="always"
+                    type="action"
+                    class="oe_highlight"
+                    />
+                </header>
                 <field name="name"/>
                 <field name="last_seen"/>
                 <field name="bedrooms"/>
@@ -60,14 +69,13 @@
                     <group>
                         <field name="name" groups="!estate.property_maintainance_staff"/>
                         <field name="name" readonly="1" groups="estate.property_maintainance_staff"/>
-                            <field name="last_seen"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="expected_price"/>
-                            <field name="salesperson_id"/>
-                            <field name="buyer_id"/>
-                            <field name="max_offer_price" string="best offer" readonly="1"/>
-                            <field name="selling_price" string="selling price" groups="estate.property_admin,estate.property_agent,estate.property_manager"/>
-                        
+                        <field name="last_seen"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="expected_price"/>
+                        <field name="salesperson_id"/>
+                        <field name="buyer_id"/>
+                        <field name="max_offer_price" string="best offer" readonly="1"/>
+                        <field name="selling_price" string="selling price" groups="estate.property_admin,estate.property_agent,estate.property_manager"/>
                         <notebook>
                             <page string="Description">
                                 <group>
@@ -143,26 +151,27 @@
                         </notebook>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
-        </record>
-        <record id="estate_property_view_search" model="ir.ui.view">
-            <field name="name">estate.property.search.view</field>
-            <field name="model">estate.property</field>
-            <field name="arch" type="xml">
-                <search string="Search">
-                    <field name="name"/>
-                    <field name="postcode"/>
-                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
-                    <filter string="available" name="available" domain="[('active','=','True')]"/>
-                    <filter string="new property" name="state" domain="[('state','=','new')]"/>
-                    <filter string="2bhk" name="bedrooms" domain="[('bedrooms','=','2')]"/>
-                    <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
-                    <field name="living_area" filter_domain="['|',('living_area','&gt;',self),('living_area','=',self)]"/>
+    </record>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name"/>
+                <field name="postcode"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter string="available" name="available" domain="[('active','=','True')]"/>
+                <filter string="new property" name="state" domain="[('state','=','new')]"/>
+                <filter string="2bhk" name="bedrooms" domain="[('bedrooms','=','2')]"/>
+                <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
+                <field name="living_area" filter_domain="['|',('living_area','&gt;',self),('living_area','=',self)]"/>
                     <!-- experimented-->
-                    <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('state','=','new'),'|',('bedrooms','=','2'),('active','=',False)]"/>
+                <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('state','=','new'),'|',('bedrooms','=','2'),('active','=',False)]"/>
                     <!--filter string="below 15h" name="below_15h" domain="[('total_area','&lt;','1500')]"/-->
-                </search>
-            </field>
+            </search>
+        </field>
     </record>
 </odoo>

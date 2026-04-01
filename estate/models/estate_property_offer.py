@@ -54,9 +54,43 @@ class EstatePropertyOffer(models.Model):
                     offer.property_id.state = 'offer accepted'
                     offer.property_id.buyer_id = offer.partner_id
                     offer.property_id.selling_price = offer.price
+
+                    won_stage_id = self.env['crm.stage'].search(
+                        [('name', 'in', ['Won'])]
+                    )
+                    self.env['crm.lead'].create(
+                        {
+                            'create_date': fields.Date,
+                            'display_name': 'test',
+                            'expected_revenue': self.price,
+                            'name': 'test',
+                            'type': 'opportunity',
+                            'won_status': 'won',
+                            'probability': 100,
+                            'stage_id': won_stage_id.id,
+                        }
+                    )
+                    self.env.cr.commit()
+
         for offers in self.property_id.offer_ids:
             if offers != self:
                 offers.status = 'refused'
+
+                lead = self.env['crm.lead'].create(
+                    {
+                        'name': 'test123',
+                        'expected_revenue': self.price,
+                        'won_status': 'lost',
+                        'create_date': fields.Date,
+                        'display_name': 'test',
+                        'name': 'test',
+                        'type': 'opportunity',
+                        'won_status': 'lost',
+                        'probability': 0,
+                    }
+                )
+                lead.action_set_lost()
+        self.env.cr.commit()
 
     def action_reject_offer(self):
         for offer in self:
@@ -70,10 +104,27 @@ class EstatePropertyOffer(models.Model):
                     offer.property_id.state = 'offer received'
                     offer.property_id.buyer_id = False
                     offer.property_id.selling_price = 0
+
             elif offer.status == 'refused':
                 raise UserError('This offer has already been refused.')
             else:
                 offer.status = 'refused'
+
+        lead = self.env['crm.lead'].create(
+            {
+                'name': 'test123',
+                'won_status': 'lost',
+                'expected_revenue': self.price,
+                'create_date': fields.Date,
+                'display_name': 'test',
+                'name': 'test',
+                'type': 'opportunity',
+                'won_status': 'won',
+                'probability': 0,
+            }
+        )
+        lead.action_set_lost()
+        self.env.cr.commit()
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -82,24 +133,26 @@ class EstatePropertyOffer(models.Model):
             if property_id.offer_ids:
                 max_offer_price = max(property_id.offer_ids.mapped('price'))
                 if vals.get('price', 0) <= max_offer_price:
-                    raise UserError("The offer price must be higher than the current highest offer (%s)." % max_offer_price)
-            property_id.state = "offer received"
+                    raise UserError(
+                        'The offer price must be higher than the current highest offer (%s).'
+                        % max_offer_price
+                    )
+            property_id.state = 'offer received'
         return super().create(vals_list)
 
-    @api.model      
+    @api.model
     def _cron_expired_offer(self):
-        """
+        '''
         Cron job to set expired property offers to 'refused' status.
-        """
-        print("cronran")
+        '''
+        print('cronran')
         today = fields.Date.today()
-        offers_expired = self.search([
-            ('deadline', '<', today),
-            ('status', '!=', 'refused') 
-        ])
+        offers_expired = self.search(
+            [('deadline', '<', today), ('status', '!=', 'refused')]
+        )
         if offers_expired:
             offers_expired.write({'status': 'refused'})
-            self.env.cr.commit() 
-            print("offers set to refused by cron job")
+            self.env.cr.commit()
+            print('offers set to refused by cron job')
         else:
-            print("cron job ran : no offers exceeding the deadline")
+            print('cron job ran : no offers exceeding the deadline')

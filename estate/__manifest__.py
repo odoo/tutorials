@@ -1,7 +1,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'author': 'viwar-odoo',
     'category': 'real estate',
     'description': "real estate App.",
@@ -11,6 +11,7 @@
         "views/estate_maintainance_form.xml",
         "views/estate_property_inherited.xml",
         "views/estate_property_visit_calender.xml",
+        "views/estate_propert_offer_wizard.xml",
         "views/estate_property_visit_kanban_view.xml",
         "views/estate_property_offer_view.xml",
         "views/estate_property_tag_view.xml",
