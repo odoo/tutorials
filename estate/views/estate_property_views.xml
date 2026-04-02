@@ -5,6 +5,7 @@
         <field name="view_mode">list,form</field>
     </record>
 
+
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -26,6 +27,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancle" type="object" string="Cancle"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -34,8 +39,10 @@
                         </h4>
                     </h1>
                     <group>
-                        <group>                           
+                        <group>
                             <field name="property_type_id" />
+                                    <field name="garden"/>
+                                    <field name="active" />
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -52,7 +59,7 @@
                             </group>
                             <group >
                                 <group>
-                                    <field name="bedrooms"/>                                   
+                                    <field name="bedrooms"/>
                                     <field name="facades"/>
                                     <field name="garage"/> 
                                     <field name="garden"/>

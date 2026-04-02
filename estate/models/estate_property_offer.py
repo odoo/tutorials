@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -44,3 +45,21 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline"
     )
+
+    def action_confirm(self):
+        for record in self:
+            for offer in record.property_id.offer_ids:
+                if offer.status == "accepted":
+                    raise UserError("Only one offer can be acceped....")
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+
+    def action_cancel(self):
+        for record in self:
+            if record.status == 'accepted':
+                record.status = "refused"
+                record.property_id.selling_price = False
+                record.property_id.buyer_id = False
+            else:
+                record.status = 'refused'
