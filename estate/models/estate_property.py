@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import _
 
 
 class EstateProperty(models.Model):
@@ -9,7 +10,7 @@ class EstateProperty(models.Model):
     _description = 'Real Estate Property'
 
     name = fields.Char(string="Title", required=True)
-    description = fields.Text()
+    description = fields.Text(translate=True)
     postcode = fields.Char()
     date_availability = fields.Date(string="Available From", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -40,7 +41,17 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string='Buyer', ondelete='cascade')
     property_tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-    best_price = fields.Float(string="Best Offer", compute="_computed_best_offer", search="_search_best_offer", store=False)
+    best_price = fields.Float(string="Best Offer", compute="_computed_best_offer")
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price >= 1)',
+        'The expected price must be strictly positive.'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The selling price must be positive.'
+    )
 
     @api.depends("living_area", "garden_area")
     def _computed_total_area(self):
@@ -49,15 +60,12 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _computed_best_offer(self):
-        prices = self.offer_ids.mapped("price")
-        self.best_price = max(prices) if prices else 0.0
-
-    def _search_best_offer(self, operator, value):
-        return [
-            '&',
-            ('offer_ids.price', '>', 10000),
-            ('offer_ids.price', operator, value)
-        ]
+        for rec in self:
+            prices = rec.offer_ids.mapped('price')
+            if prices:
+                rec.best_price = max(prices)
+            else:
+                rec.best_price = 0.0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -76,16 +84,16 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def set_property_cancelled(self):
+    def action_property_cancelled(self):
         for rec in self:
-            if rec.state == 'cancelled':
-                raise UserError("Sold property can not be cancelled.")
+            if rec.state == 'sold':
+                raise UserError(_("%s property of %s can not be cancelled.", rec.state, rec.name))
             rec.state = 'cancelled'
         return True
 
-    def set_property_sold(self):
+    def action_property_sold(self):
         for rec in self:
             if rec.state == 'cancelled':
-                raise UserError("Cancelled properties can not be sold.")
+                raise UserError(_("%s property of %s can not be sold.", rec.state, rec.name))
             rec.state = 'sold'
         return True

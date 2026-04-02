@@ -6,8 +6,8 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                    <button name="set_property_sold" type="object">Sold</button>
-                    <button name="set_property_cancelled" type="object">Cancel</button>
+                    <button name="action_property_sold" type="object">Sold</button>
+                    <button name="action_property_cancelled" type="object">Cancel</button>
                 </header>
                 <sheet>
                     <h1><field name="name"/></h1>
@@ -85,7 +85,6 @@
                 <field name='expected_price'/>
                 <field name='date_availability'/>
                 <field name='total_area'/>
-                <field name='best_price'/>
                 <filter string="Available" name="available" domain="[('state','in',['new','offer_received'])]"/>
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
             </search>
