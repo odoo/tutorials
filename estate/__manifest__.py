@@ -10,4 +10,7 @@
     'author': 'times',
     'website': 'https://www.odoo.com/app/estate',
     'license': 'LGPL-3',
+    'data': [
+        'security/ir.model.access.csv'
+    ],
 }
