@@ -14,7 +14,7 @@ class PropertyController(http.Controller):
 
         if '@' not in email or '.' not in email:
             raise ValidationError("Please enter a valid email address")
-    
+
     @http.route(['/properties'], type='http', auth="public", website=True)
     def property_list(self, **post):
         properties = request.env['estate.property'].sudo().search([])
@@ -50,19 +50,32 @@ class PropertyController(http.Controller):
                 if not property_record.exists():
                     property_record = None
 
+            # Get the current user's partner if logged in, otherwise use the provided name
+            partner_id = None
+            if request.env.user != request.env.ref('base.public_user'):
+                partner_id = request.env.user.partner_id.id
+                # Use partner's name and email if not provided
+                name = name or request.env.user.partner_id.name
+                email = email or request.env.user.partner_id.email
+
             lead_data = {
                 'name': f'Property Inquiry - {property_record.name if property_record else "General"}',
                 'partner_name': name,
                 'email_from': email,
                 'phone': phone,
-                'description': message or 'Property inquiry submitted',
-                'type': 'lead',
+                'type': 'opportunity',  # Create opportunity instead of lead
+                'partner_id': partner_id,
             }
 
+            # Create description with Property Inquiry identifier for portal filtering
+            description_parts = ['Property Inquiry']
             if property_record:
-                lead_data.update({
-                    'description': f"Inquiry for property: {property_record.name}\n\nPrice: ${property_record.expected_price}\n\n{message or ''}",
-                })
+                description_parts.append(f"Inquiry for property: {property_record.name}")
+                description_parts.append(f"Price: ${property_record.expected_price}")
+            if message:
+                description_parts.append(message)
+
+            lead_data['description'] = '\n\n'.join(description_parts)
 
             lead = request.env['crm.lead'].sudo().create(lead_data)
 

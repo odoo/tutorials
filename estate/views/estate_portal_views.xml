@@ -9,35 +9,35 @@
                         <p>Track all your property inquiries and their status.</p>
                     </div>
                 </div>
-                
+
                 <div class="row mb-3">
                     <div class="col-8">
-                        <form action="/my/properties" method="get" class="form-inline">
-                            <select name="sortby" class="form-control mr-2">
+                        <form action="/my/properties" method="get" class="d-flex flex-wrap align-items-center gap-2">
+                            <select name="sortby" class="form-control me-2">
                                 <t t-foreach="searchbar_sortings" t-as="sort_option">
                                     <option t-att-value="sort_option" t-att-selected="sortby == sort_option">
                                         <t t-esc="searchbar_sortings[sort_option]['label']"/>
                                     </option>
                                 </t>
                             </select>
-                            <select name="search_in" class="form-control mr-2">
+                            <select name="search_in" class="form-control me-2">
                                 <t t-foreach="searchbar_inputs" t-as="search_input">
                                     <option t-att-value="search_input" t-att-selected="search_in == search_input">
                                         <t t-esc="searchbar_inputs[search_input]['label']"/>
                                     </option>
                                 </t>
                             </select>
-                            <input type="text" name="search" class="form-control mr-2" t-att-value="search" placeholder="Search..."/>
+                            <input type="text" name="search" class="form-control me-2" t-att-value="search" placeholder="Search..."/>
                             <button type="submit" class="btn btn-primary">Search</button>
                         </form>
                     </div>
-                    <div class="col-4 text-right">
+                    <div class="col-4 text-end">
                         <a href="/property/inquiry" class="btn btn-primary">
                             <i class="fa fa-plus"/> New Inquiry
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-12">
                         <t t-if="inquiries">
@@ -48,7 +48,7 @@
                                             <th>Property</th>
                                             <th>Date</th>
                                             <th>Stage</th>
-                                            <th class="text-right">Actions</th>
+                                            <th class="text-end">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,9 +64,9 @@
                                                     <span t-field="inquiry.create_date" t-options="{'widget': 'date'}"/>
                                                 </td>
                                                 <td>
-                                                    <span class="badge badge-info" t-field="inquiry.stage_id.name"/>
+                                                    <span class="badge bg-info text-white" t-field="inquiry.stage_id.name"/>
                                                 </td>
-                                                <td class="text-right">
+                                                <td class="text-end">
                                                     <a t-attf-href="/my/property/#{inquiry.id}" class="btn btn-sm btn-primary">
                                                         <i class="fa fa-eye"/> View
                                                     </a>
@@ -103,7 +103,7 @@
                                 <i class="fa fa-arrow-left"/> Back to My Inquiries
                             </a>
                         </div>
-                        
+
                         <div class="card">
                             <div class="card-body">
                                 <form action="/property/inquiry" method="post" class="needs-validation">
@@ -111,13 +111,13 @@
                                     
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="mb-3">
                                                 <label for="name" class="form-label">Your Name *</label>
                                                 <input type="text" class="form-control" id="name" name="name" required="required"/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="mb-3">
                                                 <label for="email" class="form-label">Email Address *</label>
                                                 <input type="email" class="form-control" id="email" name="email" required="required"/>
                                             </div>
@@ -126,13 +126,13 @@
                                     
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="mb-3">
                                                 <label for="phone" class="form-label">Phone Number</label>
                                                 <input type="tel" class="form-control" id="phone" name="phone"/>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
+                                            <div class="mb-3">
                                                 <label for="property_id" class="form-label">Select Property</label>
                                                 <select class="form-control" id="property_id" name="property_id">
                                                     <option value="">-- Select a Property --</option>
@@ -148,7 +148,7 @@
                                     
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="form-group">
+                                            <div class="mb-3">
                                                 <label for="message" class="form-label">Message</label>
                                                 <textarea class="form-control" id="message" name="message" rows="4" 
                                                           placeholder="Tell us about your interest in this property..."></textarea>
@@ -161,7 +161,7 @@
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-paper-plane"/> Submit Inquiry
                                             </button>
-                                            <a href="/my/properties" class="btn btn-secondary ml-2">
+                                            <a href="/my/properties" class="btn btn-secondary ms-2">
                                                 Cancel
                                             </a>
                                         </div>
@@ -211,7 +211,7 @@
                                     <a href="/my/properties" class="btn btn-primary">
                                         <i class="fa fa-list"/> View My Inquiries
                                     </a>
-                                    <a href="/properties" class="btn btn-secondary ml-2">
+                                    <a href="/properties" class="btn btn-secondary ms-2">
                                         <i class="fa fa-search"/> Browse More Properties
                                     </a>
                                 </div>
@@ -241,7 +241,7 @@
                                     <a href="/property/inquiry" class="btn btn-primary">
                                         <i class="fa fa-arrow-left"/> Try Again
                                     </a>
-                                    <a href="/my/properties" class="btn btn-secondary ml-2">
+                                    <a href="/my/properties" class="btn btn-secondary ms-2">
                                         <i class="fa fa-list"/> View My Inquiries
                                     </a>
                                 </div>

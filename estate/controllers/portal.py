@@ -9,7 +9,7 @@ class EstatePortal(CustomerPortal):
         values = super()._prepare_home_portal_values(counters)
         if 'property_inquiry_count' in counters:
             inquiry_count = request.env['crm.lead'].search_count([
-                ('type', '=', 'lead'),
+                ('type', '=', 'opportunity'),
                 ('description', 'ilike', 'Property Inquiry'),
                 ('partner_id', '=', request.env.user.partner_id.id)
             ])
@@ -56,7 +56,7 @@ class EstatePortal(CustomerPortal):
             search_domain = []
 
         domain = [
-            ('type', '=', 'lead'),
+            ('type', '=', 'opportunity'),
             ('description', 'ilike', 'Property Inquiry'),
             ('partner_id', '=', request.env.user.partner_id.id)
         ] + search_domain
@@ -94,7 +94,7 @@ class EstatePortal(CustomerPortal):
         if not inquiry.exists() or inquiry.partner_id.id != request.env.user.partner_id.id:
             return request.redirect('/my')
 
-        if inquiry.type != 'lead' or 'Property Inquiry' not in inquiry.description:
+        if inquiry.type != 'opportunity' or 'Property Inquiry' not in inquiry.description:
             return request.redirect('/my')
 
         values = self._prepare_portal_layout_values()
@@ -130,7 +130,7 @@ class EstatePortal(CustomerPortal):
 
         if property_record.buyer_id.id != request.env.user.partner_id.id and property_record.state != 'sold':
             inquiry_exists = request.env['crm.lead'].search_count([
-                ('type', '=', 'lead'),
+                ('type', '=', 'opportunity'),
                 ('description', 'ilike', f'Inquiry for property: {property_record.name}'),
                 ('partner_id', '=', request.env.user.partner_id.id)
             ]) > 0
