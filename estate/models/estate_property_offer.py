@@ -8,7 +8,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real estate system - Property Offer"
 
-    price = fields.Float(string="Offer Price")
+    price = fields.Float(string="Offer Price", required=True, copy=False)
     status = fields.Selection([
         ('pending', 'Pending'),
         ('accepted', 'Accepted'),
@@ -45,7 +45,7 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id.id
-        self.property_id.state = 'offer_accepted'
+        self.property_id.state = 'sold'
         return True
 
     def action_refuse_offer(self):
@@ -56,12 +56,27 @@ class EstatePropertyOffer(models.Model):
         self.status = 'refused'
         return True
 
+    def create(self, vals_list):
+        """Hook: Called when offer is created"""
+        offers = super().create(vals_list)
+        # When offer added, change property state to offer_received
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer_received'
+        return offers
+
     @api.ondelete(at_uninstall=False)
     def _on_offer_unlink(self):
         for offer in self:
             if offer.status == 'accepted':
                 offer.property_id.selling_price = 0
-                offer.property_id.state = 'offer_received'
+                # Check if ANY OTHER offers remain (excluding current)
+                remainaing_offers = offer.property_id.offer_ids.filtered(
+                    lambda o: o.id != offer.id)
+                if not remainaing_offers:
+                    offer.property_id.state = 'new'
+                else:
+                    offer.property_id.state = 'offer_received'
 
     @api.depends('status', 'property_id.state')
     def _compute_button_visibility(self):
