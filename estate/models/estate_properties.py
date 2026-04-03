@@ -1,9 +1,9 @@
 from odoo import models, fields
 
+
 class EstateProperties(models.Model):
     _name = "estate.properties"
     _description = "Real Estate Properties"
-    # _log_access = False
     
     name = fields.Char('Property Name', required=True, help="Name of the property shown")
     description = fields.Text('Description', help="Description of the property shown")
@@ -18,4 +18,3 @@ class EstateProperties(models.Model):
     garden = fields.Boolean('Has Garden?', help="Does the property have a garden?")
     garden_area = fields.Integer('Garden Area', help="Area of the garden of the property shown")
     garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')], help="Directional orientation of the garden of the property shown")
-

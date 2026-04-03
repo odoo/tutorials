@@ -15,4 +15,3 @@
     'author': 'Rini Pillai',
     'license': 'LGPL-3',
 }
-
