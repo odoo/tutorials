@@ -7,8 +7,12 @@
     'depends': [
         'base',
     ],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'installable': True,
     'application': True,
     'author': 'Rini Pillai',
+    'license': 'LGPL-3',
 }
 
