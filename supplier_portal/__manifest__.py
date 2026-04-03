@@ -9,6 +9,9 @@
         'views/portal_view.xml',
         'views/portal_templates.xml',
     ],
+    'author': 'VIWAR',
+    'website': 'https://www.odoo.com',
+    'license': 'LGPL-3',
     'installable': True,
     'application': False,
 }
