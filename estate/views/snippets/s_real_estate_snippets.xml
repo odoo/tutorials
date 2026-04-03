@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_property_cards" name="Property Cards">
+        <section class="s_property_cards pt32 pb32"
+                 data-name="Property Cards" 
+                 data-snippet="s_property_cards"
+                 data-oe-model="estate.property"
+                 data-oe-field="name"
+                 data-oe-type="text"
+                 data-oe-expression="property.state == 'new'">
+            <div class="container">
+                <!-- Non-editable title -->
+                <h2 class="text-center mb-4 o_not_editable" data-oe-translate="true">Featured Properties</h2>
+
+                <!-- Editable content area -->
+                <div class="row o_editable" data-oe-contact="true">
+                    <div class="col-lg-4 pb32">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="position-relative">
+                                <!-- Non-editable image placeholder -->
+                                <img src="/estate/static/src/img/villa.avif" class="card-img-top o_not_editable" alt="Property"/>
+                                <span class="badge bg-primary position-absolute top-0 end-0 m-3" data-oe-translate="true">For Sale</span>
+                            </div>
+                            <div class="card-body">
+                                <!-- Editable price field -->
+                                <h4 class="card-title text-primary" data-oe-field="expected_price" data-oe-model="estate.property" data-oe-type="monetary">$450,000</h4>
+                                <!-- Editable property name -->
+                                <h5 class="fw-bold" data-oe-field="name" data-oe-model="estate.property" data-oe-type="text">Modern Family Villa</h5>
+                                <!-- Editable description -->
+                                <p class="text-muted small" data-oe-field="description" data-oe-model="estate.property" data-oe-type="text">
+                                    <i class="fa fa-map-marker me-1"/> 123 Blue Avenue, Gandhinagar
+                                </p>
+                                <hr/>
+                                <!-- Editable specifications -->
+                                <div class="d-flex justify-content-between text-muted">
+                                    <span data-oe-field="bedrooms" data-oe-model="estate.property" data-oe-type="integer"><i class="fa fa-bed me-1"/> 3 Beds</span>
+                                    <span><i class="fa fa-bath me-1"/> 2 Baths</span>
+                                    <span data-oe-field="living_area" data-oe-model="estate.property" data-oe-type="integer"><i class="fa fa-arrows-alt me-1"/> 1,200 sqft</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="s_featured_properties" name="Featured Properties">
+        <section class="s_featured_properties bg-900 text-white pt64 pb64" data-name="Featured Hero" data-snippet="s_featured_properties">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h2 class="display-4 fw-bold">Premium Listing of the Month</h2>
+                        <p class="lead text-white-50">Experience luxury living in the heart of the city with panoramic views and world-class amenities.</p>
+                        <ul class="list-unstyled mb-4">
+                            <li><i class="fa fa-check-circle text-primary me-2"/> Private Infinity Pool</li>
+                            <li><i class="fa fa-check-circle text-primary me-2"/> Smart Home Automation</li>
+                        </ul>
+                        <a href="#" class="btn btn-lg btn-primary">View Details</a>
+                    </div>
+                    <div class="col-lg-6 pt32 pt-lg-0">
+                        <img src="/estate/static/src/img/villa.avif" class="img-fluid rounded shadow-lg" alt="Featured Property"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

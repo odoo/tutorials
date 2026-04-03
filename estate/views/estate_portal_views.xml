@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_my_properties" name="My Property Inquiries">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h3>My Property Inquiries</h3>
+                        <p>Track all your property inquiries and their status.</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-8">
+                        <form action="/my/properties" method="get" class="d-flex flex-wrap align-items-center gap-2">
+                            <select name="sortby" class="form-control me-2">
+                                <t t-foreach="searchbar_sortings" t-as="sort_option">
+                                    <option t-att-value="sort_option" t-att-selected="sortby == sort_option">
+                                        <t t-esc="searchbar_sortings[sort_option]['label']"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <select name="search_in" class="form-control me-2">
+                                <t t-foreach="searchbar_inputs" t-as="search_input">
+                                    <option t-att-value="search_input" t-att-selected="search_in == search_input">
+                                        <t t-esc="searchbar_inputs[search_input]['label']"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <input type="text" name="search" class="form-control me-2" t-att-value="search" placeholder="Search..."/>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                    </div>
+                    <div class="col-4 text-end">
+                        <a href="/property/inquiry" class="btn btn-primary">
+                            <i class="fa fa-plus"/> New Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <t t-if="inquiries">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Property</th>
+                                            <th>Date</th>
+                                            <th>Stage</th>
+                                            <th class="text-end">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="inquiries" t-as="inquiry">
+                                            <tr>
+                                                <td>
+                                                    <strong t-field="inquiry.name"/>
+                                                    <div class="small text-muted" t-if="inquiry.description">
+                                                        <t t-esc="inquiry.description[:50]"/>...
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span t-field="inquiry.create_date" t-options="{'widget': 'date'}"/>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-info text-white" t-field="inquiry.stage_id.name"/>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a t-attf-href="/my/property/#{inquiry.id}" class="btn btn-sm btn-primary">
+                                                        <i class="fa fa-eye"/> View
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info">
+                                <strong>No property inquiries found.</strong>
+                                <p>You haven't made any property inquiries yet.</p>
+                                <a href="/property/inquiry" class="btn btn-primary">
+                                    Make Your First Inquiry
+                                </a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_inquiry_form" name="Property Inquiry Form">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3>Submit Property Inquiry</h3>
+                            <a href="/my/properties" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"/> Back to My Inquiries
+                            </a>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="/property/inquiry" method="post" class="needs-validation">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Your Name *</label>
+                                                <input type="text" class="form-control" id="name" name="name" required="required"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email Address *</label>
+                                                <input type="email" class="form-control" id="email" name="email" required="required"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="phone" class="form-label">Phone Number</label>
+                                                <input type="tel" class="form-control" id="phone" name="phone"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="property_id" class="form-label">Select Property</label>
+                                                <select class="form-control" id="property_id" name="property_id">
+                                                    <option value="">-- Select a Property --</option>
+                                                    <t t-foreach="properties" t-as="property">
+                                                        <option t-att-value="property.id">
+                                                            <t t-esc="property.name"/> - $<t t-esc="property.expected_price"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label for="message" class="form-label">Message</label>
+                                                <textarea class="form-control" id="message" name="message" rows="4" 
+                                                          placeholder="Tell us about your interest in this property..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-paper-plane"/> Submit Inquiry
+                                            </button>
+                                            <a href="/my/properties" class="btn btn-secondary ms-2">
+                                                Cancel
+                                            </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="inquiry_success_template" name="Inquiry Success">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="alert alert-success">
+                            <h3><i class="fa fa-check-circle"/> Inquiry Submitted Successfully!</h3>
+                            <p t-esc="success_message"/>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Your Inquiry Details:</h5>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Lead ID:</strong></td>
+                                        <td>#<span t-field="lead.id"/></td>
+                                    </tr>
+                                    <tr t-if="property">
+                                        <td><strong>Property:</strong></td>
+                                        <td><span t-field="property.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Contact Email:</strong></td>
+                                        <td><span t-field="lead.email_from"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Submitted Date:</strong></td>
+                                        <td><span t-field="lead.create_date" t-options="{'widget': 'date'}"/></td>
+                                    </tr>
+                                </table>
+                                
+                                <div class="mt-3">
+                                    <a href="/my/properties" class="btn btn-primary">
+                                        <i class="fa fa-list"/> View My Inquiries
+                                    </a>
+                                    <a href="/properties" class="btn btn-secondary ms-2">
+                                        <i class="fa fa-search"/> Browse More Properties
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="inquiry_error_template" name="Inquiry Error">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="alert alert-danger">
+                            <h3><i class="fa fa-exclamation-triangle"/> Inquiry Submission Failed</h3>
+                            <p t-esc="error_message"/>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-body">
+                                <p>We apologize for the inconvenience. Please try again or contact our support team if the problem persists.</p>
+                                
+                                <div class="mt-3">
+                                    <a href="/property/inquiry" class="btn btn-primary">
+                                        <i class="fa fa-arrow-left"/> Try Again
+                                    </a>
+                                    <a href="/my/properties" class="btn btn-secondary ms-2">
+                                        <i class="fa fa-list"/> View My Inquiries
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_property_inquiry" name="Property Inquiry Details">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3>Property Inquiry Details</h3>
+                            <a href="/my/properties" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"/> Back to My Inquiries
+                            </a>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Inquiry Information</h5>
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <td><strong>Inquiry ID:</strong></td>
+                                                <td>#<span t-field="inquiry.id"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Subject:</strong></td>
+                                                <td><span t-field="inquiry.name"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Date Submitted:</strong></td>
+                                                <td><span t-field="inquiry.create_date" t-options="{'widget': 'date'}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Contact Email:</strong></td>
+                                                <td><span t-field="inquiry.email_from"/></td>
+                                            </tr>
+                                            <tr t-if="inquiry.phone">
+                                                <td><strong>Phone:</strong></td>
+                                                <td><span t-field="inquiry.phone"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Status:</strong></td>
+                                                <td><span class="badge bg-info text-white" t-field="inquiry.stage_id.name"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Property Details</h5>
+                                        <t t-set="property_info" t-value="inquiry.description.split('Inquiry for property:')"/>
+                                        <t t-if="len(property_info) > 1">
+                                            <t t-set="property_details" t-value="property_info[1].split('Price:')"/>
+                                            <table class="table table-borderless">
+                                                <tr>
+                                                    <td><strong>Property Name:</strong></td>
+                                                    <td t-esc="property_details[0].strip()"/>
+                                                </tr>
+                                                <tr t-if="len(property_details) > 1">
+                                                    <td><strong>Expected Price:</strong></td>
+                                                    <td t-esc="property_details[1].split('\n')[0].strip()"/>
+                                                </tr>
+                                            </table>
+                                        </t>
+                                        <t t-else="">
+                                            <p class="text-muted">General inquiry - no specific property selected</p>
+                                        </t>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <h5>Message</h5>
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <p t-field="inquiry.description"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

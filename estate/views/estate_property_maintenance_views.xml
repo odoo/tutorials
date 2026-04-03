@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_maintenance_action" model="ir.actions.act_window">
+        <field name="name">Property maintenance</field>
+        <field name="res_model">estate.property.maintenance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_maintenance_view_list" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.view.list</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="title"/>
+                <field name="cost"/>
+                <button name="action_accept_maintenance" type="object" string="Confirm" icon="fa-check"/>
+                <button name="action_refuse_maintenance" type="object" string="Refused" icon="fa-close"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_maintenance_view_form" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.view.form</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="title"/>
+                        <field name="cost"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
