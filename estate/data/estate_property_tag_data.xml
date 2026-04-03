@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="property_furnitured" model="estate.property.tag">
+            <field name="name">furnitured</field>
+        </record>
+
+        <record id="property_GST" model="estate.property.tag">
+            <field name="name">GST</field>
+        </record>
+
+        <record id="property_income_tax" model="estate.property.tag">
+            <field name="name">income tax</field>
+        </record>
+
+        <record id="property_unfurnitured" model="estate.property.tag">
+            <field name="name">unfurnitured</field>
+        </record>
+    </data>
+</odoo>
