@@ -252,4 +252,88 @@
             </div>
         </t>
     </template>
+
+    <template id="portal_property_inquiry" name="Property Inquiry Details">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3>Property Inquiry Details</h3>
+                            <a href="/my/properties" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"/> Back to My Inquiries
+                            </a>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Inquiry Information</h5>
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <td><strong>Inquiry ID:</strong></td>
+                                                <td>#<span t-field="inquiry.id"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Subject:</strong></td>
+                                                <td><span t-field="inquiry.name"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Date Submitted:</strong></td>
+                                                <td><span t-field="inquiry.create_date" t-options="{'widget': 'date'}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Contact Email:</strong></td>
+                                                <td><span t-field="inquiry.email_from"/></td>
+                                            </tr>
+                                            <tr t-if="inquiry.phone">
+                                                <td><strong>Phone:</strong></td>
+                                                <td><span t-field="inquiry.phone"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Status:</strong></td>
+                                                <td><span class="badge bg-info text-white" t-field="inquiry.stage_id.name"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Property Details</h5>
+                                        <t t-set="property_info" t-value="inquiry.description.split('Inquiry for property:')"/>
+                                        <t t-if="len(property_info) > 1">
+                                            <t t-set="property_details" t-value="property_info[1].split('Price:')"/>
+                                            <table class="table table-borderless">
+                                                <tr>
+                                                    <td><strong>Property Name:</strong></td>
+                                                    <td t-esc="property_details[0].strip()"/>
+                                                </tr>
+                                                <tr t-if="len(property_details) > 1">
+                                                    <td><strong>Expected Price:</strong></td>
+                                                    <td t-esc="property_details[1].split('\n')[0].strip()"/>
+                                                </tr>
+                                            </table>
+                                        </t>
+                                        <t t-else="">
+                                            <p class="text-muted">General inquiry - no specific property selected</p>
+                                        </t>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <h5>Message</h5>
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <p t-field="inquiry.description"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 </odoo>
