@@ -2,7 +2,7 @@
     <template id="portal_invoice_upload" name="Supplier Invoice Upload">
         <t t-call="portal.portal_layout">
             <div class="container mx-auto bg-white gap-2 d-flex flex-column p-5 my-4 border w-50 shadow-lg">
-                <h2 class="mx-auto mb-5">Bill Detais</h2>
+                <h2 class="mx-auto mb-5">Bill Details</h2>
                 <form action="/my/invoice/upload/submit" class="d-flex gap-2 flex-column w-auto  " method="post" enctype="multipart/form-data">
                     <div class="row w-auto">
                         <div class="col w-auto">
