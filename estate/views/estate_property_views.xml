@@ -3,6 +3,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': 1, 'search_default_Bedroomss': 2}</field>
     </record>
 
     <record id="estate_property_list_view" model="ir.ui.view">
@@ -32,7 +33,7 @@
                             <field name="name"
                             placeholder="Property Name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <group>
                         <group>
@@ -70,11 +71,6 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
-                            <list>
-                                <field name="price"/>
-                                <field name="partner_id"/>
-                                <field name="status"/>
-                            </list>
                             </field>
                         </page>
                         </notebook>
@@ -96,6 +92,8 @@
                 <field name="facades"/>
                 <separator/>
                 <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <separator/>
+                <filter string="Bedrooms" name="Bedroomss" domain="[('bedrooms', '=','2')]"/>
                 <group>
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
