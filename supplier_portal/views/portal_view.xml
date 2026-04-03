@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="portal_view_action" model="ir.actions.act_window">
+        <field name="name">res_partner</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+    <record id="view_partner_form_inherit_supplier_portal" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.supplier.portal</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Allowed Companies">
+                    <group>
+                        <field name="allowed_company_ids" widget="many2many_tags"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <t t-inherit="web.ControlPanel" t-inherit-mode="extension">
+            <xpath expr="//div[hasclass('o_control_panel_navigation')]" position="inside">
+                <button class="btn btn-primary ml-1" t-on-click="() => this.openCustomers()">
+                        Customers
+                    </button>
+                <button class="btn btn-primary ml-1" t-on-click="() => this.openLeads()">
+                        Leads
+                    </button>
+                <button class="btn btn-secondary ml-1" t-on-click="() => this.showCounterValue()">
+                        counter
+                    </button>
+                <button class="btn ml-1" t-on-click="openSettings">
+                    <i class="fa fa-cog"/>
+                </button>
+            </xpath>
+        </t>
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: props.layout.ControlPanel }">
+            <div t-ref="content" class="div"/>
+            <div class="p-2 d-flex w-full flex-row gap-2 flex-wrap">
+                <div class="p-2 d-flex w-full flex-row gap-2 flex-wrap">
+                    <t t-foreach="this.items" t-as="item" t-key="item.id">
+                        <t t-set="val" t-value="item.props(this.state.data)"/>
+                        <AwesomeCard size="item.type === 'chart' ? 5 : 4">
+                            <t t-set-slot="title">
+                                <t t-esc="item.title"/>
+                            </t>
+                            <t t-set-slot="value">
+                                <t t-if="item.type === 'chart'">
+                                    <PieChart data="val"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-esc="val"/>
+                                </t>
+                            </t>
+                        </AwesomeCard>
+                    </t>
+                </div>
+            </div>
+        </Layout>
+    </t>
+</templates>

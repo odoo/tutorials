@@ -1,0 +1,28 @@
+{
+    'name': 'Real Estate',
+    'version': '1.0',
+    'depends': ['base','mail'],
+    'author': 'viwar-odoo',
+    'category': 'real estate',
+    'description': "real estate App.",
+    "data": [
+        "security/security_groups.xml",
+        "security/ir.model.access.csv",
+        "views/estate_maintainance_form.xml",
+        "views/estate_property_inherited.xml",
+        "views/estate_property_visit_calender.xml",
+        "views/estate_propert_offer_wizard.xml",
+        "views/estate_property_visit_kanban_view.xml",
+        "views/estate_property_offer_view.xml",
+        "views/estate_property_tag_view.xml",
+        "views/estate_property_type_view.xml",
+        "views/estate_property_visit_action.xml",
+        "views/estate_property_view.xml",
+        "views/estate_menus.xml",
+        # "data/estate_property_demo.xml"
+    ],
+    'application': True,
+    'installable': True,
+    'license': 'LGPL-3',
+    'website': 'https://odoo.com',
+}

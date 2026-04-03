@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<odoo>
+    <data >
+
+
+        <record id="estate_property_tag_1" model="estate.property.tag">
+                    <field name="id">1</field>
+                    <field name="name">tag1</field>
+        </record>
+
+        <record id="estate_property_type_1" model="estate.property.type">
+                    <field name="id">1</field>
+                    <field name="name">type1</field>
+        </record>
+
+        <record id="estate_property_1" model="estate.property">
+                    <field name="id">1</field>
+                    <field name="name">property</field>
+                    <field name="tag_ids" eval="[Command.set([ref('estate_property_tag_1')])]" />
+                    <field name="property_type_id">1</field>
+        </record>
+
+        <record id="estate_property_offer1" model="estate.property.offer">
+                    <field name="id">1</field>
+                    <field name="price">100000</field>
+                    <field name="property_id">1</field>
+        </record>
+
+
+
+    <data noupdate="1">
+
+        <record id="Admin" model="res.users">
+            <field name="name">Marc Demo</field>
+            <field name="company_id" ref="main_company"/>
+            <field name="company_name">YourCompany</field>
+            <field name="street">3575  Buena Vista Avenue</field>
+            <field name="city">Eugene</field>
+            <field name="state_id"  model="res.country.state" search="[('code','=','OR')]"/>
+            <field name="zip">97401</field>
+            <field name="country_id" ref="us"/>
+            <field name="tz">Europe/Brussels</field>
+            <field name="email">mark.brown23@example.com</field>
+            <field name="phone">(441)-695-2334</field>
+        </record>
+
+
+    </data>
+</odoo>

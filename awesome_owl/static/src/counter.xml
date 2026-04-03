@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve" name="counter">
+   <t t-name="awesome_owl.counter">
+   <p>SUM: <div class=" p-2 border fw-medium text-md bg-success-subtle w-auto"><t t-esc="state.sum"/></div></p>
+      <p>Counter: <div class="bg-secondary p-2 border w-auto"><t t-esc="state.value"/></div></p><br/>
+      <p>Multiplex2: <div class="bg-secondary p-2 border w-auto"><t t-esc="newstate.newval"/></div></p>
+      <button class="btn border" t-on-click="increment" >Increment</button>
+      <button class="btn border" t-on-click="multiple">multiple</button>
+      <button class="btn border bg-primary-subtle " t-on-click="sum">sum</button>
+   </t>
+</templates>
