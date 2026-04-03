@@ -1,0 +1,53 @@
+<odoo>
+    <template id="portal_invoice_upload" name="Supplier Invoice Upload">
+        <t t-call="portal.portal_layout">
+            <div class="container mx-auto bg-white gap-2 d-flex flex-column p-5 my-4 border w-50 shadow-lg">
+                <h2 class="mx-auto mb-5">Bill Detais</h2>
+                <form action="/my/invoice/upload/submit" class="d-flex gap-2 flex-column w-auto  " method="post" enctype="multipart/form-data">
+                    <div class="row w-auto">
+                        <div class="col w-auto">
+                            <label for="select my-auto ">Select Organization: </label>
+                        </div>
+                        <div class="col w-auto">
+                            <select name="company_id" id="select" required="required" class="w-100 p-1">
+                                <t t-foreach="companies" t-as="company">
+                                    <option t-att-value="company.id">
+                                        <t t-esc="company.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="row w-auto   mt-4">
+                        <div class="col w-auto">
+                            <label for="pdf">Upload Pdf: </label>
+                        </div>
+                        <div class="col w-auto p-1 border">
+                            <input type="file" name="file2" id="pdf" accept=".pdf" required="required"/>
+                        </div>
+                    </div>
+                    <div class="row   mt-4">
+                        <div class="col">
+                            <label for="xml">Upload Xml file: </label>
+                        </div>
+                        <div class="col border p-1">
+                            <input type="file" id="xml" name="file1" accept=".xml" required="required"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-5 w-50 mx-auto shadow">Submit</button>
+                </form>
+            </div>
+        </t>
+    </template>
+    <odoo>
+        <template id="portal_my_home_menu_inherit" inherit_id="portal.portal_my_home" name="Add Upload Invoice Menu">
+            <xpath expr="//div[contains(@class, 'o_portal_docs')]" position="inside">
+                <a href="/my/invoice/upload" class="list-group-item list-group-item-action bg-white p-4 m-2 mt-4 mx-auto border shadow-sm w-auto">
+                    <i class="fa fa-upload me-2"/>
+                Upload Invoice
+                </a>
+            </xpath>
+        </template>
+    </odoo>
+</odoo>
