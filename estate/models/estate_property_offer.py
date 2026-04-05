@@ -70,3 +70,8 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
             return True
+
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price must be strictly positive!',
+    )
