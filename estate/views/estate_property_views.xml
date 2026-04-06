@@ -20,6 +20,11 @@
                                     class="btn-secondary"
                                     invisible="state in ('sold','cancelled')"
                             />
+                            <field name="state"
+                                   widget="statusbar"
+                                   statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
+                                   options="{'clickable': 'True'}"
+                            />
                     </header>
                 <sheet>
                     <h1>
@@ -27,8 +32,8 @@
                     </h1>
                     <group>
                         <group string="General Info">
-                            <field name="property_type_id"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -36,7 +41,6 @@
                             <field name="expected_price"/>
                             <field name="best_price" readonly="1"/>
                             <field name="selling_price" groups="estate.estate_group_manager"/>
-                            <field name="state" string="State"/>
                         </group>
                     </group>
                     <notebook>
@@ -55,7 +59,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')"/>
                         </page>
                         <page string="Seller &amp; Buyer">
                             <group>
@@ -73,18 +77,18 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list default_order="expected_price desc,name" decoration-success="state == 'sold'" decoration-danger="state == 'cancelled'" decoration-muted="active == 'False'" decoration-it="state=='new'">
+            <list decoration-muted="state == 'sold'" decoration-success="state in ('offer_accepted', 'offer_received')" decoration-bf="state == 'offer_accepted'">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="property_type_id"/>
+                <field name="property_type_id" options="{'no_create': True , 'no_open': True}"/>
                 <field name="tag_ids" widget="many2many_tags" optional="hide"/>
                 <field name="seller_id" optional="hide"/>
                 <field name="buyer_id" optional="hide"/>
                 <field name="living_area" string="Living Area (sqm)" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="state" optional="hide"/>
             </list>
         </field>

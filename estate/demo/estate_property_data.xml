@@ -150,4 +150,79 @@
         <field name="garden_orientation">east</field>
         <field name="state">new</field>
     </record>
+    <record id="estate_property_11" model="estate.property">
+        <field name="name">Suburban Ranch</field>
+        <field name="description">Classic ranch house in quiet suburb</field>
+        <field name="postcode">200006</field>
+        <field name="date_availability">2027-03-15</field>
+        <field name="expected_price">280000.00</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">950</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">2500</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_12" model="estate.property">
+        <field name="name">Historic Listed Building</field>
+        <field name="description">Charming historic property with character</field>
+        <field name="postcode">300007</field>
+        <field name="date_availability">2027-04-20</field>
+        <field name="expected_price">350000.00</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">1000</field>
+        <field name="facades">3</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">1800</field>
+        <field name="garden_orientation">west</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_13" model="estate.property">
+        <field name="name">Twin Home Units</field>
+        <field name="description">Duplex with rental income potential</field>
+        <field name="postcode">400008</field>
+        <field name="date_availability">2027-05-10</field>
+        <field name="expected_price">380000.00</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">1400</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">1600</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_14" model="estate.property">
+        <field name="name">Contemporary Townhouse</field>
+        <field name="description">Modern townhouse in trendy neighborhood</field>
+        <field name="postcode">500009</field>
+        <field name="date_availability">2027-06-05</field>
+        <field name="expected_price">320000.00</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">850</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">east</field>
+        <field name="state">new</field>
+    </record>
+    <record id="estate_property_15" model="estate.property">
+        <field name="name">Lakeside Retreat</field>
+        <field name="description">Peaceful waterfront property</field>
+        <field name="postcode">600010</field>
+        <field name="date_availability">2027-07-20</field>
+        <field name="expected_price">450000.00</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">900</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">3000</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    </record>
 </odoo>

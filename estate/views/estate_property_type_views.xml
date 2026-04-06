@@ -6,9 +6,43 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                            <button
+                                class="oe_stat_button"
+                                type="action"
+                                name="%(estate.estate_property_offers_action)d"
+                                icon="fa-money"
+                            >
+                                <field
+                                    name="offer_count"
+                                    widget="statinfo"
+                                    string="Offers"
+                                />
+                            </button>
+                    </div>
                     <group>
                         <field name="name"/>
                     </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="partner_id"/>
+                                    <field name="price"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -19,7 +53,9 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="offer_count"/>
             </list>
         </field>
     </record>

@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real estate system - Property Offer"
+    _order = "price desc"
 
     _check_offer_price_positive = models.Constraint(
         'CHECK(price > 0)',
@@ -27,6 +28,7 @@ class EstatePropertyOffer(models.Model):
         inverse='_inverse_date_deadline'
     )
     is_button_hidden = fields.Boolean(compute='_compute_button_visibility', store=False)
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
