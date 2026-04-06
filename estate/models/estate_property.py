@@ -27,4 +27,3 @@ class EstateProperty(models.Model):
         string='Garden Orientation',
         help="Direction the garden faces"
     )
-    
