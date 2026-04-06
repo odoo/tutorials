@@ -34,7 +34,6 @@ class EstateProperty(models.Model):
 # Odoo's ORM calls `_auto_init()` on your model, which introspects all fields and runs `CREATE TABLE` / `ALTER TABLE`. Here's roughly what happens:
 # ```
 # _name = "estate.property" => estate is a module name and property is a model name this tells that "property" belongs to estate module. giving name like using dot (estate.property) is a odoo convention
-#        ↓
 # table name = "estate_property"
 # The _ prefix tells Odoo "this is configuration about the model itself", not "this is a field to store in the database".
 
