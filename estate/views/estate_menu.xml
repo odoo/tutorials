@@ -1,0 +1,9 @@
+<odoo>
+    <!-- Here id = unique id in DB, name = "what will be shown on screen" -->
+        <menuitem id="estate_property_menu_root" name="root_menu">
+            <menuitem id="estate_property_first_level_menu" name="first_level_menu">
+                <!-- Name of this menu is taken from action name. Also action name must be name of model decalred-->
+                <menuitem id="estate_property_menu_action" action="estate_property_action"/>
+            </menuitem>
+        </menuitem>
+</odoo>
