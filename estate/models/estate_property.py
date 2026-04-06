@@ -1,8 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.tools import _
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import _, float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     _description = 'Real Estate Property'
 
     name = fields.Char(string="Title", required=True)
-    description = fields.Text(translate=True)
+    description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(string="Available From", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -97,3 +97,12 @@ class EstateProperty(models.Model):
                 raise UserError(_("%s property of %s can not be sold.", rec.state, rec.name))
             rec.state = 'sold'
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for rec in self:
+            if float_is_zero(rec.selling_price, precision_digits=2):
+                continue
+            limit_price = rec.expected_price * 0.9
+            if float_compare(rec.selling_price, limit_price, precision_digits=2) < 0:
+                raise ValidationError(_("selling price cannot be lower than 90% of the expected price"))
