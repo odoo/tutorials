@@ -15,6 +15,9 @@ export class Playground extends Component {
     incrimentSum() {
         this.sum.value++;
     }
+    decrimentSum() {
+        this.sum.value--;
+    }
 
     static components = { Counter, Card, TodoList }
 }

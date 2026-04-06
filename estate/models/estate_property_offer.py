@@ -73,4 +73,15 @@ class EstatePropertyOffer(models.Model):
             self.env['estate.property'].browse(
                 val['property_id']
             ).state = 'offer_received'
-        return super().create(vals)
+        offers = super().create(vals)
+
+        # Inside your offer creation or confirmation method
+        for offer in self:
+            if self.env['ir.module.module'].sudo().search([('name', '=', 'crm'), ('state', '=', 'installed')]):
+                self.env['crm.lead'].sudo().create({
+                    'name': offer.property_id.name,
+                    'partner_id': offer.partner_id.id,
+                    'expected_revenue': offer.price,
+                    'type': 'lead', # Offers created as 'leads'
+        })
+        return offers

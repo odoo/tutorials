@@ -5,6 +5,7 @@
             <span>Counter: <t t-esc="state.value"/>
             </span>
             <button class="btn btn-primary" t-on-click="increment">Increment</button>
+             <button class="btn btn-primary" t-on-click="decrement">decrement</button>
         </div>
     </t>
 </templates>

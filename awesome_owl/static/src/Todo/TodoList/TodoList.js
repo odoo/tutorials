@@ -24,6 +24,12 @@ export class TodoList extends Component {
         if (index >= 0) {
             // remove the element at index from list
             this.todos.splice(index, 1);
+            console.log(index);
+            if(this.nextId > 1){
+                this.nextId = 1
+                this.todos.forEach(todo => {
+                    todo.id = this.nextId++
+            });}
         }
     }
 

@@ -4,8 +4,8 @@
         <div class="p-3">
             hello world
             <div>
-                <Counter onChange.bind="incrimentSum"/>
-                <Counter onChange.bind="incrimentSum"/>
+                <Counter onChange.bind="incrimentSum" onChanges.bind="decrimentSum"/>
+                <Counter onChange.bind="incrimentSum" onChanges.bind="decrimentSum"/>
                 <div>The sum is: <t t-esc="sum.value"/>
                 </div>
             </div>
@@ -14,7 +14,7 @@
              content of card 1
                 </Card>
                 <Card title="'card-2'">
-                    <Counter onChange.bind="incrimentSum"/>
+                    <Counter />
                 </Card>
             </div>
             <div>

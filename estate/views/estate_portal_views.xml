@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_inquiry_form" name="Property Inquiry Form">
+        <t t-call="website.layout">
+            <div class="container mt-4 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        
+                        <t t-if="submitted">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>Success!</strong> Your inquiry has been submitted successfully.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </t>
+
+                        <t t-if="error_msg">
+                            <div class="alert alert-danger" role="alert">
+                                <t t-esc="error_msg"/>
+                            </div>
+                        </t>
+
+                        <div class="mb-4">
+                            <h3>Submit Property Inquiry</h3>
+                        </div>
+
+                        <div class="card shadow-sm p-4">
+                            <form action="/property/inquiry" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Your Name *</label>
+                                        <input type="text" name="name" class="form-control" required="1" value=""/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email Address *</label>
+                                        <input type="email" name="email" class="form-control" required="1" value=""/>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Select Property</label>
+                                    <select name="property_id" class="form-control">
+                                        <option value="">-- General Inquiry --</option>
+                                        <t t-foreach="properties" t-as="property">
+                                            <option t-att-value="property.id"><t t-esc="property.name"/></option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Message</label>
+                                    <textarea name="message" class="form-control" rows="4" placeholder="How can we help you?"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Send Inquiry</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
