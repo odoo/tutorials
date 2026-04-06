@@ -1,29 +1,21 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = " Real estate Property"
 
-    def _default_validity(self):
-        return fields.Date.today() + relativedelta(months=+3)
-
-    @api.depends("living_area", "garden_area")
-    def _compute_total_area(self):
-        self.total_area = self.garden_area + self.living_area
-
-    @api.depends("offer_ids.price")
-    def _compute_best_price(self):
-        prices = self.offer_ids.mapped("price")
-        self.best_price = max(prices) if prices else 0
-
     name = fields.Char(required=True, default="UNKNOWN")
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=_default_validity, copy=False)
+    date_availability = fields.Date(
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
+        copy=False
+    )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -78,6 +70,27 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'A property expected price must be strictly positive'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'A property selling price must be positive'
+    )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            prices = record.offer_ids.mapped("price")
+            record.best_price = max(prices) if prices else 0
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -87,16 +100,32 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for record in self:
+
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            min_price = record.expected_price * 0.9
+
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    "Selling price cannot be lower than 90% of expected price.")
+
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled property can not be sold")
+                raise UserError(_("Cancelled property can not be sold"))
+
+            if not any(o.status == 'accepted' for o in record.offer_ids):
+                raise UserError(_("Accept an offer first"))
             else:
                 record.state = 'sold'
 
     def action_cancle(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold property can not be Cancelled")
-            else:
-                record.state = 'cancelled'
+                raise UserError(_("Sold property can not be Cancelled"))
+
+            record.state = 'cancelled'

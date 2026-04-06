@@ -18,8 +18,4 @@
               name="property tag"
               parent="estate_setting_menu"
               action="estate_property_tag_action"/>
-   <menuitem id="estate_property_tag_menu_action"
-              name="Property Tag"
-              parent="estate_setting_menu"
-              action="estate_property_tag_action"/>
 </odoo>
