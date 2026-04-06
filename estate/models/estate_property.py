@@ -1,11 +1,21 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
+    _order = "id desc"
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The property expected price must be strictly positive',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The property selling price must be positive',
+    )
 
     name = fields.Char(string="Property Name", required=True, help='Enter the name of the property')
     image = fields.Image(string="Property Image", max_width=1024, max_height=1024)
@@ -38,7 +48,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(string="Active", default=True, help='Set to False to archive the property')
     state = fields.Selection(
         selection=[
-            ('new', "New Offer"),
+            ('new', "New"),
             ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
@@ -48,17 +58,21 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new',
-        help='Current status of the property'
+        compute="_compute_state",
+        store=True,
+        readonly=False,
+        help='Current state of the property'
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
 
     tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area", help="Total area of the property including living area and garden area", store=True)
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", help="Best offer received for the property", store=True)
+    offer = fields.Float(string="Total Offer", compute="_compute_total_offer", help="This shows the total offers this property has", store=True)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -69,6 +83,17 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
+
+    @api.depends("offer_ids")
+    def _compute_total_offer(self):
+        for record in self:
+            record.offer = len(record.offer_ids)
+
+    @api.depends("offer_ids.status")
+    def _compute_state(self):
+        for record in self:
+            if record.offer_ids.filtered(lambda o: o.status == 'pending'):
+                record.state = 'offer_received'
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -83,8 +108,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'canceled':
                 raise UserError(_("Canceled properties cannot be sold"))
-            else:
-                record.state = 'sold'
+            record.state = 'sold'
 
     def action_cancel(self):
         for record in self:
@@ -92,3 +116,14 @@ class EstateProperty(models.Model):
                 raise UserError(_("Sold properties cannot be canceled"))
             else:
                 record.state = 'canceled'
+
+    def action_reset(self):
+        for record in self:
+            record.state = 'new'
+            record.offer_ids.unlink()
+
+    @api.constrains("selling_price", "expected_price")
+    def set_price(self):
+        for record in self:
+            if record.selling_price > 0 and record.selling_price < record.expected_price * 0.9:
+                raise ValidationError("The selling price cannot be lower than 90 percent of the expected price")

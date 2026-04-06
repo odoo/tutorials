@@ -7,9 +7,13 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate Property Offer"
-
+    _order = "price desc"
+    _check_offer = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive',
+    )
     price = fields.Float(string="Price")
-
+    margin = fields.Float(string="Margin", compute="_compute_margin", store=True)
     status = fields.Selection(
         selection=[
             ('accepted', "Accepted"),
@@ -18,6 +22,7 @@ class EstatePropertyOffer(models.Model):
         ],
         string="Status",
         copy=False,
+        readonly=True,
         default='pending',
     )
 
@@ -43,6 +48,9 @@ class EstatePropertyOffer(models.Model):
         if self.property_id.state == 'sold':
             raise UserError(_("you cant accept a sold property"))
         self.status = 'accepted'
+        other = self.property_id.offer_ids - self
+        other.write({'status': 'refused'})
+        self.property_id.state = 'offer_accepted'
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
 
@@ -50,3 +58,8 @@ class EstatePropertyOffer(models.Model):
         if self.property_id.state == 'sold':
             raise UserError(_("You cant reject a sold property"))
         self.status = 'refused'
+
+    @api.depends("price", "property_id.expected_price")
+    def _compute_margin(self):
+        for record in self:
+            record.margin = record.price - record.property_id.expected_price

@@ -3,7 +3,14 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list limit="50" decoration-danger="state == 'canceled'" decoration-success="state == 'sold'">
+            <list limit="50" decoration-muted="state == 'sold'" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'">
+                <header>
+                   <button name="action_reset"
+                        type="object"
+                        string="Reset"
+                        confirm="Do you want to reset ?"/>
+                </header>
+
                 <field name="name" optional="show"/>
                 <field name="property_type_id" optional="show"/>
                 <field name="postcode" optional="show"/>
@@ -12,10 +19,11 @@
                 <field name="living_area" optional="show"/>
                 <field name="expected_price" optional="show"/>
                 <field name="selling_price" optional="show"/>
-                <field name="date_availability" optional="show"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="state" optional="show"/>
                 <field name="buyer_id" optional="show"/>
                 <field name="seller_id" optional="show"/>
+                <field name="offer" optional="show"/>
              </list>
         </field>
     </record>
@@ -36,16 +44,17 @@
                             type = "object"
                             confirm = "Are you sure you want to cancel this property ?"
                             invisible = "state == 'canceled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
+                      
                     <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
-                            <field name="state"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -62,8 +71,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="garden == False"/>
+                                <field name="garden_orientation" invisible="garden == False"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
@@ -75,7 +84,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'canceled')"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -93,7 +102,7 @@
             <field name="postcode"/>
             <field name="expected_price"/>
             <field name="bedrooms"/>
-            <field name="living_area"/>
+            <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
             <field name="facades"/>
             <filter 
                 string="Available" 
@@ -135,7 +144,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_affordable_or_new_big': 1}</field>
+        <field name="context">{'search_default_available': 1}</field>
     </record>
 </odoo>
 
