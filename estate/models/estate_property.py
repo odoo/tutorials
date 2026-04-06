@@ -43,10 +43,26 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tags', string="Property tags")
-    offer_ids = fields.One2many('estate.property.offer', 'property_id')
-    total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', copy=True)
+    total_area = fields.Integer(string="Total Area", compute="_compute_total_area", store=True)
+    best_price = fields.Integer(string="Best Offer", compute="_compute_best_price", store=True)
 
-    @api.depends("living_area","garden_area")
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+    
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0.0
+    
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area, self.garden_orientation = 10, 'north'
+        else:
+            self.garden_area, self.garden_orientation = 0, False
