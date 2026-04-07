@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="estate_property_view_form_auction" model="ir.ui.view">
+            <field name="name">estate.property.form.auction</field>
+            <field name="model">estate.property</field>
+            <field name="inherit_id" ref="estate.estate_property_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//sheet" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_invoice"
+                                type="object"
+                                class="oe_stat_button"
+                                invisible="invoice_count == 0">
+                            <field name="invoice_count" widget="statinfo" string="Invoice"/>
+                        </button>
+                    </div>
+                </xpath>
+                
+                <xpath expr="//sheet/group" position="inside">
+                    <group>
+                        <field name="sale_type" widget="radio" readonly="sale_type == 'auction' and state in ['auction', 'sold']"/>
+                        <field name="state"
+                           widget="badge"
+                           readonly="1"
+                           invisible="sale_type != 'auction'"
+                           decoration-muted="state == 'template'"
+                           decoration-warning="state == 'auction'"
+                           decoration-success="state == 'sold'"/>
+                    </group>
+                </xpath>
+                
+                <xpath expr="//header" position="inside">
+                    <button name="action_start_auction" type="object" string="Start Auction"
+                            invisible="sale_type != 'auction' or state in ['auction', 'sold'] or state in ['sold', 'canceled']" />
+                </xpath>
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Auction Details" invisible="sale_type != 'auction'">
+                        <group>
+                            <field name="auction_end_time" required="sale_type == 'auction'"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='offer_ids']" position="attributes">
+                    <attribute name="readonly">sale_type == 'auction' or state in ['sold', 'canceled', 'offer_accepted']</attribute>
+                </xpath>
+                
+            </field>
+        </record>
+        
+        <record id="estate_property_view_kanban_auction" model="ir.ui.view">
+            <field name="name">estate.property.kanban.auction.inherit</field>
+            <field name="model">estate.property</field>
+            <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+            <field name="arch" type="xml">
+                
+                <xpath expr="//t[@t-name='card']/footer" position="inside">
+                    <field name="state"
+                           widget="badge"
+                           readonly="1"
+                           invisible="sale_type != 'auction'"
+                           decoration-muted="state == 'template'"
+                           decoration-warning="state == 'auction'"
+                           decoration-success="state == 'sold'"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="estate_property_view_action_auction" model="ir.actions.act_window">
+            <field name="name">Auction Properties</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="domain">[('sale_type', '=', 'auction')]</field>
+        </record>
+        
+    </data>
+</odoo>

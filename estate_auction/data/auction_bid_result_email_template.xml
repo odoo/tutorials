@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_auction_winner_email_template" model="mail.template">
+            <field name="name">Estate Auction Winner Notification</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/>
+            <field name="email_from">{{ object.property_id.salesperson_id.email }}</field>
+            <field name="subject">You Won the Auction</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Congratulations! Your bid for <strong><t t-out="object.property_id.name"/></strong> has won the auction.</p>
+                    <p><strong>Winning Bid:</strong> <t t-out="object.price"/></p>
+                </div>
+            </field>
+        </record>
+
+        <record id="estate_auction_refused_email_template" model="mail.template">
+            <field name="name">Estate Auction Refused Bid Notification</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/>
+            <field name="email_from">{{ object.property_id.salesperson_id.email }}</field>
+            <field name="subject">Auction Update</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Thank you for your bid on <strong><t t-out="object.property_id.name"/></strong>.</p>
+                    <p>This bid was not selected as the winning auction bid.</p>
+                    <p><strong>Your Bid:</strong> <t t-out="object.price"/></p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

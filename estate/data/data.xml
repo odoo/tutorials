@@ -31,10 +31,36 @@
                                         <p class="card-text" t-field="property.expected_price"/>
                                         <p class="card-text" t-field="property.selling_price"/>
                                         <p class="card-text" t-field="property.state"/>
+                                        <a t-attf-href="/properties/{{ property.id }}" class="btn btn-primary btn-sm">View Details</a>
                                     </div>
                                 </div>
                             </div>
                         </t>
+                        <div class="d-flex justify-content-center mt-4">
+                            <t t-call="website.pager" />
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="estatepropertydetail" name="PropertyDetail">
+            <t t-call="website.layout">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1 t-field="property.name"/>
+                            <hr/>
+                            <div class="list">
+                                <p><strong>Description:</strong> <span t-field="property.description"/></p>
+                                <p><strong>Expected Price:</strong> <span t-field="property.expected_price"/></p>
+                                <p><strong>Selling Price:</strong> <span t-field="property.selling_price"/></p>
+                                <p><strong>Living Area:</strong> <span t-field="property.living_area"/> sq.m</p>
+                                <p><strong>Bedrooms:</strong> <span t-field="property.bedrooms"/></p>
+                                <p><strong>Postcode:</strong> <span t-field="property.postcode"/></p>
+                                <p><strong>State:</strong> <span t-field="property.state"/></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </t>
