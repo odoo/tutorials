@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     expected_price = fields.Float(required=True)
@@ -15,6 +16,7 @@ class EstateProperty(models.Model):
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
+    sold_date = fields.Date(string="Sold Date", readonly=True, copy=False)
     active = fields.Boolean(default=True)
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -106,6 +108,7 @@ class EstateProperty(models.Model):
                 "Cancelled property cannot be sold!"
             )
             record.state = 'sold'
+            record.sold_date = fields.Datetime.now()
             return True
 
     def action_cancel(self):

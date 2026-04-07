@@ -53,6 +53,7 @@
                             <field name="expected_price"/>
                             <field name="best_price"/>
                             <field name="selling_price"/>
+                            <field name="sold_date"/>
                         </group>
                     </group>
                     <notebook>

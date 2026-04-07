@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -57,14 +58,13 @@ class EstatePropertyOffer(models.Model):
                 ).days
 
     def action_accept(self):
-        for record in self:
-            if any(offer.status == 'accepted' for offer in record.property_id.offer_ids):
-                raise UserError("An offer has already been accepted for this property.")
-            record.status = 'accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.state = 'offer_accepted'
-            return True
+        if any(offer.status == 'accepted' for offer in self.property_id.offer_ids):
+            raise UserError("An offer has already been accepted for this property.")
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = 'offer_accepted'
+        return True
 
     def action_refuse(self):
         for record in self:
