@@ -8,5 +8,6 @@
     'category': 'Tutorials',
     'license': 'AGPL-3',
     'data': [
-        'security/ir.model.access.csv',]
+        'security/ir.model.access.csv'
+     ]
 }
