@@ -33,7 +33,9 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="property_tag_ids" widget="many2many_tags"/>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_available" string="Available from"/>
                         </group>
@@ -55,6 +57,15 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesman_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -72,6 +83,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 <separator/>
                 <filter name="available_properties" string="Available properties"
                         domain="[('state','in', ('offerRecieved','new'))]"/>
