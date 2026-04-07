@@ -1,7 +1,29 @@
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
+        <!-- Connects directly with python model -->
         <field name="res_model">estate.property</field>
+        <!-- Tells how to display it. -->
         <field name="view_mode">list,form</field>
-    </record>   
+    </record>  
+
+    <!-- Here id is for unique identifier only to refer to this view and model is to provide model for view -->
+    <record id="estate_property_list_view" model="ir.ui.view">
+        <!-- for log purpose view -->
+        <field name="name">estate.property.list.view</field>
+        <!-- whenever in this model list view is used then this gets opended -->
+        <field name="model">estate.property</field>
+        <!-- arch means Architectural view. Below given block represents list view-->
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+            </list>
+        </field>
+    </record>
 </odoo>

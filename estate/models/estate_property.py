@@ -23,4 +23,4 @@ class EstateProperty(models.Model):
     # If it is false then newly created record won't be appear. but record is created when active is set true record will appear.
     active = fields.Boolean("Active", default=True)
     # State can get selected and as copy is set False in duplicate it cannot get copied
-    state = fields.Selection(string="state", selection=[("new", "New"), ("offer recieved", "Offer Recieved"), ("accepted", "Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], default="new", copy=False)
+    state = fields.Selection(string="state", selection=[("new", "New"), ("offer received", "Offer Received"), ("accepted", "Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], default="new", copy=False)
