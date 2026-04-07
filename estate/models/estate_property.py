@@ -19,7 +19,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden_area")
     garden_orientation = fields.Selection(string="Garden Orientation", selection=[("north", "North"), ("east", "East"), ("west", "West"), ("south", "South")])
-    
+
     # If it is false then newly created record won't be appear. but record is created when active is set true record will appear.
     active = fields.Boolean("Active", default=True)
     # State can get selected and as copy is set False in duplicate it cannot get copied
