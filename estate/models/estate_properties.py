@@ -1,23 +1,25 @@
-from logging import INFO
 from odoo import models, fields
-import logging
-from datetime import date, timedelta
+# import logging
+# from datetime import date, timedelta
 from dateutil import relativedelta as rd
 
-_logger = logging.getLogger(__name__)
 
-def get_availability_date(self):
+# _logger = logging.getLogger(__name__)
+
+
+def _get_availability_date(self):
     # _logger.info("!!! %s", self)
     return fields.Date.today() + rd.relativedelta(months=3)
+
 
 class EstateProperties(models.Model):
     _name = "estate.properties"
     _description = "Real Estate Properties"
-    
+
     name = fields.Char('Property Name', required=True, help="Name of the property shown")
     description = fields.Text('Description', help="Description of the property shown")
     postcode = fields.Char('Postcode', help="Postal Code of the property shown")
-    date_availability = fields.Date('Availability Date', help="Date of availability of the property shown", copy=False, default=get_availability_date)
+    date_availability = fields.Date('Availability Date', help="Date of availability of the property shown", copy=False, default=_get_availability_date)
     expected_price = fields.Float('Expected Price', required=True, help="Expected price of the property shown")
     selling_price = fields.Float('Selling Price', help="Selling Price of the property shown", readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', help="Number of bedrooms in the property shown", default=2)
