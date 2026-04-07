@@ -38,5 +38,5 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        default="new"
+        default="new",
     )

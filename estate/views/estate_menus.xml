@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <odoo>
     <menuitem id="menu_root" name="E-state">
         <menuitem id="first_level_menu" name="Advertisements">
