@@ -6,6 +6,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -85,11 +86,11 @@ class EstateProperty(models.Model):
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
-        'The expected price must be strictly positive.',
+        "The expected price must be strictly positive.",
     )
     _check_selling_price_positive = models.Constraint(
         'CHECK(selling_price >= 0)',
-        'The selling price must be positive.'
+        "The selling price must be positive."
     )
 
     @api.constrains('selling_price', 'expected_price')
@@ -103,6 +104,5 @@ class EstateProperty(models.Model):
                 precision_digits=2,
             ) < 0:
                 raise ValidationError(
-                    "The selling price cannot be lower than 90%"
-                    "of the expected price."
+                    "The selling price cannot be lower than 90% of the expected price."
                 )
