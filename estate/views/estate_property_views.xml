@@ -34,6 +34,7 @@
                     <separator />
                     <group>
                         <group id="grp1">
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -44,9 +45,11 @@
                     </group>
                     <notebook>
                         <page name="description" string="Description">
+                            <group>
+                                <field name="description" />
+                            </group>
                             <group name="description_group">
                                 <group name="properties_group">
-                                    <field name="description" />
                                     <field name="bedrooms" />
                                     <field name="living_area" />
                                     <field name="facades" />
@@ -59,6 +62,12 @@
                                     <field name="active" />
                                     <field name="state" />
                                 </group>
+                            </group>
+                        </page>
+                        <page name="other_info" string="Other Info">
+                            <group name="other_info">
+                                <field name="sales_man" />
+                                <field name="buyer" />
                             </group>
                         </page>
                     </notebook>
