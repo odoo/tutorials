@@ -8,6 +8,7 @@ from odoo.tools import _, float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -84,6 +85,15 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for rec in self:
+            if float_is_zero(rec.selling_price, precision_digits=2):
+                continue
+            limit_price = rec.expected_price * 0.9
+            if float_compare(rec.selling_price, limit_price, precision_digits=2) < 0:
+                raise ValidationError(_("selling price cannot be lower than 90% of the expected price"))
+
     def action_property_cancelled(self):
         for rec in self:
             if rec.state == 'sold':
@@ -97,12 +107,3 @@ class EstateProperty(models.Model):
                 raise UserError(_("%s property of %s can not be sold.", rec.state, rec.name))
             rec.state = 'sold'
         return True
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for rec in self:
-            if float_is_zero(rec.selling_price, precision_digits=2):
-                continue
-            limit_price = rec.expected_price * 0.9
-            if float_compare(rec.selling_price, limit_price, precision_digits=2) < 0:
-                raise ValidationError(_("selling price cannot be lower than 90% of the expected price"))

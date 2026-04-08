@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Offer"
+    _order = "price desc"
 
     price = fields.Float(string='Price')
     status = fields.Selection([
@@ -17,6 +18,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_deadline_method", inverse="_inverse_deadline_method")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _check_offer_price = models.Constraint(
         'CHECK(price >= 1)',
@@ -33,6 +35,14 @@ class EstatePropertyOffer(models.Model):
         for rec in self:
             create_date = rec.create_date.date() if rec.create_date else fields.Date.today()
             rec.validity = relativedelta(rec.date_deadline, create_date).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super().create(vals_list)
+        for record in records:
+            if record.property_id.state == 'new':
+                record.property_id.state = 'offer_received'
+        return records
 
     def action_accept_offer(self):
         for rec in self:

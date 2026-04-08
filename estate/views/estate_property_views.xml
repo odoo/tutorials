@@ -1,27 +1,34 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': 1}</field>
+    </record>
+
     <record id="estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                    <button name="action_property_sold" type="object">Sold</button>
-                    <button name="action_property_cancelled" type="object">Cancel</button>
+                    <button name="action_property_sold" type="object" invisible="state in ['sold', 'cancelled']">Sold</button>
+                    <button name="action_property_cancelled" type="object" invisible="state in ['cancelled', 'sold']">Cancel</button>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1><field name="name"/></h1>
-                    <h4><field name='property_tag_ids' widget='many2many_tags'/></h4>
+                    <h4><field name='property_tag_ids' widget='many2many_tags' options="{'color_field':'color'}"/></h4>
                     <group>
                         <group>
-                            <field name="state" string="Status"/>
                             <field name='property_type_id'/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
-                            <field name="best_price"/>
+                            <field name="best_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -34,14 +41,13 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
-                                <field name="state"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['sold','offer_accepted','cancelled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -59,14 +65,16 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" limit="20">
+            <list string="Properties" limit="20" decoration-muted="state == 'sold'" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
+                <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name='best_price'/>
                 <field name='total_area'/>
             </list>
@@ -82,6 +90,7 @@
                 <field name='bedrooms'/>
                 <field name='facades'/>
                 <field name='postcode'/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name='expected_price'/>
                 <field name='date_availability'/>
                 <field name='total_area'/>
@@ -89,11 +98,5 @@
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
-    </record>
-
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
     </record>
 </odoo>
