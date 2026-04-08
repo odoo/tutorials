@@ -30,6 +30,7 @@
                         <h1>
                             <field name="name" />
                         </h1>
+                        <field name="tag" widget="many2many_tags" />
                     </div>
                     <separator />
                     <group>
@@ -63,6 +64,9 @@
                                     <field name="state" />
                                 </group>
                             </group>
+                        </page>
+                        <page name="offers">
+                            <field name="offer" widget="many2many_tag" />
                         </page>
                         <page name="other_info" string="Other Info">
                             <group name="other_info">
