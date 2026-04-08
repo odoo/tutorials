@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
     _description = "estate property used to buy and sell houses"
     _log_access = False
 
-    name = fields.Char(required=True, string="Property Name")
+    name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
