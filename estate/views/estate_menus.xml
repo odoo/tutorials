@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<odoo>  <!--<odoo> tells odoo this is a data file.everything inside is odoo records.without this odoo will not load the data and give the error-->
-    <menuitem id="estate_root_menu" name="Real Estate" >  <!--this is root  menu-->
-        <menuitem id="estate_first_level_menu" name="Advertisements">  <!--this is first level menu.this create another record in ir_model_data table and it's nestead so odoo automatically set parent as estate_root_menu's db id-->
-            <menuitem id="estate_property_menu_action" name="Properties" action="estate_property_action"/>  <!--this is action menu item-->
+<odoo>  
+    <menuitem id="estate_root_menu" name="Real Estate" >  
+        <menuitem id="estate_first_level_menu" name="Advertisements">  
+            <menuitem id="estate_property_menu_action" name="Properties" action="estate_property_action"/> 
         </menuitem>
     </menuitem>
 </odoo>
-  
-  <!-- estate_menus.xml file creates a navigation menu that user sees in the top bar -->
-  <!-- Whenever you write id="estate_root_menu" in XML, Odoo saves it in ir_model_data as a name → number mapping. Whenever you use that name anywhere later, Odoo looks it up and fetches the real number behind the scenes.  -->
-  <!-- name="Real Estate" this name will shown in ui -->
