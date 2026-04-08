@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class Estate(models.Model):
@@ -29,7 +29,7 @@ class Estate(models.Model):
             ("west", "West"),
         ],
     )
-    active = fields.Boolean(string="State", default=True)
+    active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         string="State",
         selection=[
@@ -58,3 +58,24 @@ class Estate(models.Model):
         inverse_name="property_id",
         string="Offers",
     )
+    total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_orientation = "north"
+            self.garden_area = 10
+        else:
+            self.garden_orientation = False
+            self.garden_area = False

@@ -2,6 +2,8 @@
     "name": "estate",
     "depends": ["base"],
     "application": True,
+    "author": "shrey patel",
+    "license": "LGPL-3",
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_type_views.xml",
