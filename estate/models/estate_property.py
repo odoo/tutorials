@@ -8,18 +8,19 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
+    _order = "id desc"
 
     name = fields.Char(string='Title', required=True, default='Unknown')
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postal Code')
     date_availability = fields.Date(
-        string='Available From', copy=False, default=fields.Date.today() + relativedelta(months=+3)
+        string='Available From', copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(
         string='Selling Price', readonly=True, copy=False
     )
-    living_area = fields.Float(string='Living Area (sq m)')
+    living_area = fields.Integer(string='Living Area (sq m)')
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     facades = fields.Integer(string='Facades')
     has_garage = fields.Boolean(string="Has Garage ?")
@@ -47,7 +48,7 @@ class EstateProperty(models.Model):
         required=True, default="new", copy=False
     )
     property_type_id = fields.Many2one(
-        "estate.property.type", ondelete='Cascade', string="Property Type"
+        "estate.property.type", ondelete='cascade', string="Property Type"
     )
     salesperson_id = fields.Many2one(
         "res.users", string="Sales Person", default=lambda self: self.env.user
@@ -76,10 +77,11 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        if self.offer_ids:
-            self.best_price = max(self.offer_ids.mapped("price"))
-        else:
-            self.best_price = 0.0
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0.0
 
     @api.onchange('has_garden')
     def _onchange_garden(self):
@@ -89,6 +91,21 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_price = record.expected_price * 0.9
+            if float_compare(
+                record.selling_price,
+                min_price,
+                precision_digits=2
+            ) < 0:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
 
     def action_property_sold(self):
         for record in self:
@@ -105,18 +122,3 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue
-            min_price = record.expected_price * 0.9
-            if float_compare(
-                record.selling_price,
-                min_price,
-                precision_digits=2
-            ) < 0:
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
-                )
