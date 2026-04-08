@@ -4,4 +4,5 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>  
+    </record>
 </odoo>
