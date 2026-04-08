@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="menu_property" model="website.menu">
+            <field name="name">EstatePropeties</field>
+            <field name="url">/properties</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">20</field>
+        </record>
+        <record id="action_open_website_properties" model="ir.actions.act_url">
+            <field name="name">Website Estate</field>
+            <field name="target">self</field>
+            <field name="url">/properties</field>
+        </record>
+        <record id="base.open_menu" model="ir.actions.todo">
+            <field name="action_id" ref="action_open_website_properties"/>
+            <field name="state">open</field>
+        </record>
+
+        <template id="estateproperties" name="PropertyList">
+            <t t-call="website.layout">
+                <div>
+                    <h1>Properties</h1>
+                    <div class="row">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title" t-field="property.name"/>
+                                        <p class="card-text" t-field="property.description"/>
+                                        <p class="card-text" t-field="property.expected_price"/>
+                                        <p class="card-text" t-field="property.selling_price"/>
+                                        <p class="card-text" t-field="property.state"/>
+                                        <a t-attf-href="/properties/{{ property.id }}" class="btn btn-primary btn-sm">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                        <div class="d-flex justify-content-center mt-4">
+                            <t t-call="website.pager" />
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="estatepropertydetail" name="PropertyDetail">
+            <t t-call="website.layout">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1 t-field="property.name"/>
+                            <hr/>
+                            <div class="list">
+                                <p><strong>Description:</strong> <span t-field="property.description"/></p>
+                                <p><strong>Expected Price:</strong> <span t-field="property.expected_price"/></p>
+                                <p><strong>Selling Price:</strong> <span t-field="property.selling_price"/></p>
+                                <p><strong>Living Area:</strong> <span t-field="property.living_area"/> sq.m</p>
+                                <p><strong>Bedrooms:</strong> <span t-field="property.bedrooms"/></p>
+                                <p><strong>Postcode:</strong> <span t-field="property.postcode"/></p>
+                                <p><strong>State:</strong> <span t-field="property.state"/></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <record id="estate_property_sold_email_template" model="mail.template">
+            <field name="name">Estate Property Sold Confirmation</field>
+            <field name="email_from">{{ object.salesperson_id.email or user.email }}</field>
+            <field name="subject">Property Sold: {{ object.name }}</field>
+            <field name="partner_to">{{ object.buyer_id.id }}</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Congratulations! The property <strong><t t-out="object.name"/></strong> has been successfully sold.</p>
+                    <div>
+                        <p><strong>Property Details:</strong></p>
+                        <ul>
+                            <li>Property Name: <t t-out="object.name"/></li>
+                            <li>Postcode: <t t-out="object.postcode"/></li>
+                            <li>Selling Price: <t t-out="object.selling_price"/></li>
+                            <li>Living Area: <t t-out="object.living_area"/> sq.m</li>
+                            <li>Bedrooms: <t t-out="object.bedrooms"/></li>
+                            <li>Salesperson: <t t-out="object.salesperson_id.name"/></li>
+                        </ul>
+                    </div>
+                </div>
+            </field>
+        </record>
+
+        
+    </data>
+</odoo>

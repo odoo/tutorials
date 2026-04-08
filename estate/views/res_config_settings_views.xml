@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_res_config_settings_inherit_auction" model="ir.ui.view">
+        <field name="name">res.config.settings.auction</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//form" position="inside">
+                <app string="Estate" name="estate">
+                    <div class="app_settings_block" data-string="Auction">
+                        <h2>Auction</h2>
+
+                        <div class="row o_settings_container">
+                            <div class="col o_setting_box">
+
+                                
+                                    <field name="module_estate_auction" />
+                                
+
+                                
+                                    <label for="module_estate_auction" />
+                                    <div class="text-muted">
+                                        Enable automated auction functionality.
+                                    </div>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                </app>
+            </xpath>
+
+        </field>
+    </record>
+
+    
+
+    <record id="estate_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="context">{'module': 'estate'}</field>
+    </record>
+
+</odoo>

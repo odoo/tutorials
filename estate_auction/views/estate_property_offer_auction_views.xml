@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="estate_property_offer_view_list_auction" model="ir.ui.view">
+            <field name="name">estate.property.offer.list.auction</field>
+            <field name="model">estate.property.offer</field>
+            <field name="inherit_id" ref="estate.estate_property_offer_view_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="is_auction_bid" />
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

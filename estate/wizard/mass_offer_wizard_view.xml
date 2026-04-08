@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mass_add_offer_view_form" model="ir.ui.view">
+        <field name="name">mass.offer.wizard.form</field>
+        <field name="model">mass.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Wizard Open">
+                <field name="type_id"/>
+                <field name="customer_id"/>
+                <field name="offer_price"/>
+                <footer>
+                    <button name="action_add_offers"
+                            type="object"
+                            string="Add"
+                            class="btn-primary">
+                    </button>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mass_add_offer" model="ir.actions.act_window">
+        <field name="name">Add Mass Offers</field>
+        <field name="res_model">mass.offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_view_types">list,kanban</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estatepropertydetail_auction_bid" inherit_id="estate.estatepropertydetail">
+        <xpath expr="//div[hasclass('list')]" position="after">
+            <t t-if="property.sale_type == 'auction'">
+                <div>
+                    <p>
+                        <strong>Auction End:</strong>
+                        <span t-field="property.auction_end_time"/>
+                    </p>
+                </div>
+                <t t-if="property.state == 'auction'">
+                    <div class="alert alert-warning">Auction started</div>
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#estateAuctionBidModal">
+                            Create Offer
+                        </button>
+                    </div>
+
+                    <div class="modal fade" id="estateAuctionBidModal">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <form t-attf-action="/properties/{{ property.id }}/bid" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add Offer for <t t-out="property.name"/></h5>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <label class="form-label">Buyer Name</label>
+                                        <input type="text" t-att-value="request.env.user.partner_id.name" readonly="readonly"/>
+
+                                        <label class="form-label">Bidding Amount</label>
+                                        <input type="number" name="amount" min="0.01" step="0.01" required="required"/>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <a t-attf-href="/properties/{{ property.id }}" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="website_auction_bid_success" name="Estate Auction Bid Success">
+        <t t-call="website.layout">
+            <div class="container text-center">
+                <h1>Congratulations!</h1>
+                <p>Your offer has been successfully placed. We will notify you of the results as soon as the auction concludes.</p>
+                <a t-attf-href="/properties/{{ property.id }}" class="btn btn-primary">Back to Property</a>
+            </div>
+        </t>
+    </template>
+</odoo>
