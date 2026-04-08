@@ -4,7 +4,7 @@
         <!-- Connects directly with python model -->
         <field name="res_model">estate.property</field>
         <!-- Tells how to display it. -->
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree, form</field>
     </record>  
 
     <!-- Here id is for unique identifier only to refer to this view and model is to provide model for view -->
@@ -25,18 +25,22 @@
                 <field name="date_availability"/>
             </list>
         </field>
-    </record>
+    </record> 
 
     <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form.view</field>
+        <!-- when model open form view than this should get open -->
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form view property">
+            <!-- To make one whole page -->
                 <sheet>
                     <div>
+                    <!-- title name -->
                         <h1>
-                            My new house
+                            <field name="name"/>
                         </h1>
+                        <!-- Make group side by side -->
                         <group>
                             <group>
                                 <field name="postcode"/>
@@ -47,8 +51,11 @@
                                 <field name="selling_price"/>
                             </group>
                         </group>
+                        <!-- create bottom part tabs -->
                         <notebook>
+                        <!-- create tabs in bottom page-->
                             <page string="Description" name="description">
+                            <!-- fields to show in that group -->
                                 <group string="description_group">
                                     <field name="description" />
                                     <field name="bedrooms"/>
@@ -58,12 +65,36 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="state"/>
                                 </group>
                             </page>
                         </notebook>
                     </div>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+        <!-- used for filtering and search view -->
+            <search string="estate_search">
+            <!-- Searchable fields -->
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <!-- custom filter -->
+                <!-- name=unique id for DB, string="What will get represented on field screen, domain="filtering condition" like for given it will filter only new and offer_receivable  -->
+                <filter name="state_wise_custom_filter" string="State" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <!-- Custom Group by filter -->
+                <!-- name, string same as above, context=group_by record name -->
+                <filter name="postcode_wise_group_by" string="Postcode" context="{'group_by':'postcode'}"/>
+            </search>
         </field>
     </record>
 </odoo>
