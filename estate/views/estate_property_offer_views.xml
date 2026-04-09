@@ -21,11 +21,8 @@
                 <sheet>
                     <group>
                         <field name="price" />
-                        <field name="status" />
-                    </group>
-                    <group>
                         <field name="partner_id" />
-                        <field name="property_id" />
+                        <field name="status" />
                     </group>
                 </sheet>
             </form>
