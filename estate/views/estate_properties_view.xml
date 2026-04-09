@@ -35,16 +35,6 @@
                             <field name="selling_price"/>                        
                         </group>
                     </group>
-                    <group>
-                        <field name="date_availability"/>
-                    </group>
-                    <group>
-                        <field name="selling_price"/>
-                    </group>
-                    <field name="postcode"/>
-                    <field name="date_availability"/>
-                    <field name="postcode"/>
-                    <field name="date_availability"/>
                     <notebook>
                         <page string="Description">
                             <group>

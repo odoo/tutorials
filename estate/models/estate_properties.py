@@ -27,7 +27,7 @@ class EstateProperties(models.Model):
     garage = fields.Boolean(string="Has Garage?", help="Does the proeprty have a garage?")
     garden = fields.Boolean(string="Has Garden?", help="Does the property have a garden?")
     garden_area = fields.Integer(string="Garden Area")
-    garden_orientation = fields.Selection(selection=
+    garden_orientation = fields.Selection(
         [
             ('north', "North"),
             ('south', "South"),
@@ -37,13 +37,13 @@ class EstateProperties(models.Model):
         help="Directional orientation of the garden of the property shown"
     )
     active = fields.Boolean(help="Should the property be listed?")
-    state = fields.Selection(string="Status", selection=
-        [   
+    state = fields.Selection(
+        [
             ('new', "New"),
             ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        required=True, default='new', copy=False
+        required=True, default='new', copy=False, string="Status"
     )
