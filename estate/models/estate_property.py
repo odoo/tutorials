@@ -1,5 +1,3 @@
-from typing import DefaultDict
-from typing_extensions import ReadOnly
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 
