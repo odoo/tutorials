@@ -9,7 +9,8 @@
     """,
     'data': [
         'security/ir.model.access.csv',
-        'security/estate_security.xml',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml'
     ],
     'license': 'LGPL-3',  # Default License
     'application': True,
