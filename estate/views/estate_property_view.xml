@@ -4,7 +4,7 @@
         <!-- Connects directly with python model -->
         <field name="res_model">estate.property</field>
         <!-- Tells how to display it. -->
-        <field name="view_mode">tree, form</field>
+        <field name="view_mode">list,form</field>
     </record>  
 
     <!-- Here id is for unique identifier only to refer to this view and model is to provide model for view -->
@@ -43,6 +43,7 @@
                         <!-- Make group side by side -->
                         <group>
                             <group>
+                                <field name="property_type_id"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                             </group>
@@ -56,7 +57,7 @@
                         <!-- create tabs in bottom page-->
                             <page string="Description" name="description">
                             <!-- fields to show in that group -->
-                                <group string="description_group">
+                                <group name="description_group">
                                     <field name="description" />
                                     <field name="bedrooms"/>
                                     <field name="living_area"/>
@@ -68,7 +69,13 @@
                                     <field name="state"/>
                                 </group>
                             </page>
-                        </notebook>
+                            <page string="Other Info" name="other_info">
+                                <group name="Other Info">
+                                    <field name="buyer_id"/>
+                                    <field name="sales_person"/>
+                                </group>
+                            </page>
+                        </notebook>               
                     </div>
                 </sheet>
             </form>

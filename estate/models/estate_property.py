@@ -24,3 +24,6 @@ class EstateProperty(models.Model):
     active = fields.Boolean("Active", default=True)
     # State can get selected and as copy is set False in duplicate it cannot get copied
     state = fields.Selection(string="state", selection=[("new", "New"), ("offer_received", "Offer Received"), ("accepted", "Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], default="new", copy=False)
+    property_type_id = fields.Many2one("estate.property.type", string="Property type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, default=lambda self: self.env.user.partner_id)
+    sales_person = fields.Many2one("res.users", string="Sales person", index=True, tracking=True, default=lambda self: self.env.user)
