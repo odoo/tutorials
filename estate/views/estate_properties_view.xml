@@ -1,6 +1,6 @@
 <odoo>
-    <record id="estate_view_list" model="ir.ui.view">
-        <field name="name">estate.properties.list</field>
+    <record id="estate_properties_view_list" model="ir.ui.view">
+        <field name="name">estate.properties.view.list</field>
         <field name="model">estate.properties</field>
         <field name="arch" type="xml">
             <list>
@@ -14,38 +14,48 @@
             </list>
         </field>
     </record>
-    <record id="estate_view_form" model="ir.ui.view">
-        <field name="name">estate.properties.form</field>
+    <record id="estate_properties_view_form" model="ir.ui.view">
+        <field name="name">estate.properties.view.form</field>
         <field name="model">estate.properties</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
                     <group>
-                        <field name="name"/>
                         <group>
                             <field name="postcode"/>
-                            <!-- <field name="date_availability"/> -->
-                        </group>
-                        <group>
-                            <field name="expected_price"/>
-                            <!-- <field name="selling_price"/> -->
-                        </group>
-                        <group>
                             <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="selling_price"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>                        
                         </group>
                     </group>
+                    <group>
+                        <field name="date_availability"/>
+                    </group>
+                    <group>
+                        <field name="selling_price"/>
+                    </group>
+                    <field name="postcode"/>
+                    <field name="date_availability"/>
+                    <field name="postcode"/>
+                    <field name="date_availability"/>
                     <notebook>
                         <page string="Description">
                             <group>
                                 <field name="description"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
-                                <field name="expected_price"/>
-                                <field name="selling_price"/>
-                                <field name="date_availability"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
                             </group>
                         </page>
                     </notebook>
@@ -53,7 +63,21 @@
             </form>
         </field>
     </record>
-    <record id="estate_action" model="ir.actions.act_window">
+    <record id="estate_properties_view_search" model="ir.ui.view">
+        <field name="name">estate.properties.view.search</field>
+        <field name="model">estate.properties</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+            </search>
+        </field>
+    </record>
+    <record id="estate_properties_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.properties</field>
         <field name="view_mode">list,form</field>
