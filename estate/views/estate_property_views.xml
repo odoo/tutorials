@@ -7,11 +7,11 @@
             <list>
                 <field name='name' string="Title"/>
                 <field name='postcode'/>
-                <field name='bedrooms'/>
-                <field name='living_area' string="Living Area (sqm)"/>
-                <field name='expected_price'/>
-                <field name='selling_price'/>
-                <field name='date_availability' string="Available From"/>
+                <field name='bedrooms'  width="200px"/>
+                <field name='living_area' string="Living Area (sqm)" width="200px"/>
+                <field name='expected_price' width="200px"/>
+                <field name='selling_price' width="200px"/>
+                <field name='date_availability' string="Available From" width="200px"/>
             </list>
         </field>
     </record>
@@ -43,17 +43,36 @@
                             <group>
                                 <field name='description'/>
                                 <field name='bedrooms'/>
-                                <field name='living_area'/>
+                                <field name='living_area' string="Living Area (sqm)"/>
                                 <field name='facades'/>
                                 <field name='garage'/>
                                 <field name='garden'/>
-                                <field name='garden_area'/>
+                                <field name='garden_area' string="Garden Area (sqm)"/>
                                 <field name='garden_orientation'/>
                             </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id='estate_property_search' model='ir.ui.view'>
+        <field name='name'>estate.property.search</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>  
+            <search>
+                <field name='name' string="Title"/>
+                <field name='postcode'/>
+                <field name='expected_price'/>
+                <field name='bedrooms'/>
+                <field name='living_area' string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
+                <field name='facades'/>
+                <filter name='active' string='Archived' domain='[("active", "=", False)]'/>
+                <separator/>
+                <filter name='state' string='Available' domain='["|", ("state", "=", "new"), ("state", "=", "offer_received")]'/>
+                <filter name='postcode' string="Postcode" context="{'group_by':'postcode'}"/>
+            </search>
         </field>
     </record>
 
