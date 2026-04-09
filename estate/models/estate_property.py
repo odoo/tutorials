@@ -1,28 +1,45 @@
+from typing import DefaultDict
+from typing_extensions import ReadOnly
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 
 
-class estate_property(models.Model):
+class EstateProperty(models.Model):
 
-    _name = "estate.property"
+    _name = 'estate.property'
     _description = "A real estate model with many fields"
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Integer()
-    date_availability = fields.Datetime()
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    active = fields.Boolean(string="Active", default="Active")
+    bedrooms = fields.Integer(string="Bedrooms", default="2")
+    date_availability = fields.Datetime(
+        string="Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3))
+    description = fields.Text(string="Description")
+    expected_price = fields.Float(string="Expected Price", required=True)
+    facades = fields.Integer(string="Facades")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        string='Type',
-        selection=[('north', 'North'), ('south', 'South'),
-                   ('east', 'East'), ('west', 'West')],
-        help="Type is used to specify the garden orientation")
+        string="Direction",
+        selection=[
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West")
+        ],
+        help="Type is used to specify the garden orientation"
+    )
+    garage = fields.Boolean(string="Garage")
+    living_area = fields.Integer(string="Living Area (sqm)")
+    name = fields.Char(string="Title", required=True, default="Unknown")
+    postcode = fields.Integer(string="Postcode")
+    selling_price = fields.Float(
+        string="Selling Price", readonly=True, copy=False)
+    state = fields.Selection([('new', "New"),
+                              ('offer_received', "Offer Received"),
+                              ('offer_accepted', "Offer Accepted"),
+                              ('sold', "Sold"),
+                              ('cancelled', "Cancelled")
+                              ],
+                             default='new')
 
     @api.constrains('expected_price')
     def _check_price(self):
