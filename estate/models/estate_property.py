@@ -80,6 +80,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         compute="_compute_best_price",
         string="Best Offer",
+        store=True,
 )
 
     @api.depends("offer_ids.price")
