@@ -28,6 +28,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one('res.partner', required=True, string="Partner")
     property_id = fields.Many2one('estate.property', required=True, string="Property")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True, string="Property Type")
 
     validity = fields.Integer(string="Validity (days)", default=7, help='Number of days the offer is valid for')
 
@@ -63,3 +64,6 @@ class EstatePropertyOffer(models.Model):
     def _compute_margin(self):
         for record in self:
             record.margin = record.price - record.property_id.expected_price
+
+   
+

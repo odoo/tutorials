@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api,fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -14,3 +14,13 @@ class EstatePropertyType(models.Model):
     sequence = fields.Integer(string="Sequence", default=1)
 
     property_ids = fields.One2many("estate.property", "property_type_id", string="property type")
+    
+    offer_count = fields.Integer(string="offer count" , compute = "_compute_total_offer")
+
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offers")
+
+    @api.depends("offer_ids")
+    def _compute_total_offer(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
+

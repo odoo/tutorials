@@ -44,13 +44,19 @@
                             type = "object"
                             confirm = "Are you sure you want to cancel this property ?"
                             invisible = "state == 'canceled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
+                    <button name ="action_best"
+                            string ="auto accept"
+                            type ="object"
+                            confirm ="Are you sure you want auto accept ?"/>
+                           
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
                 </header>
                 <sheet>
                       
                     <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
+                            <field name="name" />
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"/>
@@ -84,7 +90,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'canceled')"/>
+                            <field name="offer_ids"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -102,7 +108,7 @@
             <field name="postcode"/>
             <field name="expected_price"/>
             <field name="bedrooms"/>
-            <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
+            <field name="living_area" />
             <field name="facades"/>
             <filter 
                 string="Available" 

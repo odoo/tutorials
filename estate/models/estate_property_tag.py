@@ -12,3 +12,6 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char(string="Name", required=True)
     color = fields.Integer(string="Color")
+    
+    tag_new = fields.One2many("estate.property","tag_ids",string="taglines")
+    

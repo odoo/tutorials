@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
+from datetime import timedelta
 
 
 class EstateProperty(models.Model):
@@ -66,9 +67,9 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
-
-    tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
-    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    tag_ids = fields.Many2many('estate.property.tag', string="Property Tags", compute="_compute_tags", readonly=False ,store = True)
+    
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers" )
 
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area", help="Total area of the property including living area and garden area", store=True)
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", help="Best offer received for the property", store=True)
@@ -87,7 +88,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids")
     def _compute_total_offer(self):
         for record in self:
-            record.offer = len(record.offer_ids)
+            record.offer = len(record.mapped('offer_ids'))
 
     @api.depends("offer_ids.status")
     def _compute_state(self):
@@ -109,6 +110,7 @@ class EstateProperty(models.Model):
             if record.state == 'canceled':
                 raise UserError(_("Canceled properties cannot be sold"))
             record.state = 'sold'
+            record.active = False
 
     def action_cancel(self):
         for record in self:
@@ -127,3 +129,72 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price > 0 and record.selling_price < record.expected_price * 0.9:
                 raise ValidationError("The selling price cannot be lower than 90 percent of the expected price")
+
+    def action_best(self):
+        for record in self:
+            for offer in record.offer_ids:
+                if offer.price == record.best_price:
+                    offer.status = 'accepted'
+                    other = record.offer_ids - offer
+                    other.status = 'refused'
+                    record.state = 'offer_accepted'
+                
+    @api.depends("expected_price","state","offer_ids","create_date")
+    def _compute_tags(self):
+        tag_value = self.env['estate.property.tag'].search([])
+        high_value = tag_value.filtered(lambda r : r.name == 'High Value')
+        if not high_value:
+            high_value = self.env['estate.property.tag'].create({'name': 'High Value'})
+        low_value = tag_value.filtered(lambda r : r.name == 'Low Interest')
+        if not low_value:
+            low_value = self.env['estate.property.tag'].create({'name': 'Low Interest'})
+        quick_sale = tag_value.filtered(lambda r : r.name == 'Quick sale')
+        if not quick_sale:
+            quick_sale = self.env['estate.property.tag'].create({'name': 'Quick sale'})
+        for record in self:
+            if record.expected_price > 50000:
+                record.tag_ids |= high_value
+            if 0 < len(record.mapped('offer_ids')) < 2 :
+                record.tag_ids |= low_value
+            if record.state == 'sold' and record.create_date:
+                deadline = record.create_date.date() + timedelta(days=10)
+                if fields.Date.today() <= deadline:
+                    record.tag_ids |= quick_sale
+                else:
+                    record.tag_ids = record.tag_ids
+           
+           
+                
+                
+    # @api.depends("offer_ids")
+    # def _compute_tags(self):
+    #     name = self.env['estate.property.tag'].search([('name', '=', 'Low Interest')])
+    #     for record in self:
+    #         total_offer = len(record.mapped('offer_ids'))
+    #         if total_offer < 2:
+    #             record.tag_ids = name
+    #         else:
+    #             record.tag_ids = False
+                
+    # @api.depends("state", "create_date")
+    # def _compute_tags(self):
+    #     low_interest_tag = self.env['estate.property.tag'].search([('name', '=', 'Quick sale')])
+    #     for record in self:
+    #         if record.state == 'sold' and record.create_date:
+    #             deadline = record.create_date.date() + timedelta(days=10)
+    #             if fields.Date.today() <= deadline:
+    #                 record.tag_ids = low_interest_tag
+    #             else:
+    #                 record.tag_ids = False
+    #         else:
+    #             record.tag_ids = False
+
+
+
+
+
+          
+            
+                
+
+    
