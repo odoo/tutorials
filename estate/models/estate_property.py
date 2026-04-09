@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from odoo import models, fields, api
 
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
-    tags_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    tags_ids = fields.Many2many("estate.property.tag", string="Property Tags", compute="_compute_tags", readonly=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
 
@@ -84,3 +84,48 @@ class EstateProperty(models.Model):
                 raise UserError("Sold property cannot be cancelled.")
             record.state = 'cancelled'
         return True
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be strictly positive.'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'Selling price must be positive.'
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def set_price(self):
+        for record in self:
+            if record.selling_price > 0 and record.selling_price < record.expected_price * 0.9:
+                raise ValidationError("Selling price cannot be lower than 90 percent of expected price.")
+
+    @api.depends("expected_price", "offer_ids", "state", "create_date")
+    def _compute_tags(self):
+        high = self.env['estate.property.tag'].search([('name', '=', 'high value')])
+        if not high:
+            high = self.env['estate.property.tag'].create({'name': 'high value'})
+        low = self.env['estate.property.tag'].search([('name', '=', 'low interest')])
+        if not low:
+            low = self.env['estate.property.tag'].create({'name': 'low interest'})
+        quick = self.env['estate.property.tag'].search([('name', '=', 'quick sale')])
+        if not quick:
+            quick = self.env['estate.property.tag'].create({'name': 'quick sale'})
+        today = fields.Date.today()
+        for record in self:
+            new_tags = self.env['estate.property.tag']
+            if record.expected_price > 200:
+                # record.tags_ids = high
+                new_tags |= high
+            if len(record.offer_ids) <= 2:
+                # record.tags_ids = low
+                new_tags |= low
+            if record.state == 'sold':
+                calc = (today - record.create_date.date()).days
+                if calc <= 10:
+                    # record.tags_ids = quick
+                    new_tags |= quick
+            record.tags_ids = new_tags
+            # else:
+            #     record.tags_ids
