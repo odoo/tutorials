@@ -5,21 +5,19 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
+    active = fields.Boolean(string="Active", default=True)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
     date_availability = fields.Date(
+        string="Available From",
         default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
         copy=False
     )
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    description = fields.Text(string="Description")
+    expected_price = fields.Float(string="Expected Price", required=True)
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(
         selection=[
             ('north', "North"),
@@ -30,7 +28,10 @@ class EstateProperty(models.Model):
         string="Garden Orientation",
         help="Direction the garden faces"
     )
-    active = fields.Boolean(default=True)
+    living_area = fields.Integer(string="Living Area")
+    name = fields.Char(string="Name", required=True)
+    postcode = fields.Char(string="Postcode")
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     state = fields.Selection(
         [
             ('new', "New"),
@@ -39,6 +40,7 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
+        string="State",
         required=True,
         default='new',
         copy=False
