@@ -52,7 +52,7 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id.id
-        self.property_id.state = 'sold'
+        self.property_id.state = 'offer_accepted'
         return True
 
     def action_refuse_offer(self):
@@ -63,27 +63,14 @@ class EstatePropertyOffer(models.Model):
         self.status = 'refused'
         return True
 
+    @api.model
     def create(self, vals_list):
-        """Hook: Called when offer is created"""
-        offers = super().create(vals_list)
-        # When offer added, change property state to offer_received
-        for offer in offers:
-            if offer.property_id.state == 'new':
-                offer.property_id.state = 'offer_received'
-        return offers
-
-    @api.ondelete(at_uninstall=False)
-    def _on_offer_unlink(self):
-        for offer in self:
-            if offer.status == 'accepted':
-                offer.property_id.selling_price = 0
-                # Check if ANY OTHER offers remain (excluding current)
-                remainaing_offers = offer.property_id.offer_ids.filtered(
-                    lambda o: o.id != offer.id)
-                if not remainaing_offers:
-                    offer.property_id.state = 'new'
-                else:
-                    offer.property_id.state = 'offer_received'
+        for val in vals_list:
+            prop = self.env['estate.property'].browse(val.get('property_id'))
+            if val.get('price') < prop.best_price:
+                raise UserError("The new offer price is less than the esisiting offered prices")
+            prop.write({'state': 'offer_received'})
+        return super().create(vals_list)
 
     @api.depends('status', 'property_id.state')
     def _compute_button_visibility(self):

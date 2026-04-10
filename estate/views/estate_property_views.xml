@@ -108,6 +108,7 @@
                 <field name="expected_price" filter_domain="[('expected_price', '&lt;=', self)]"/>
                 <field name="bedrooms" filter_domain="[('bedrooms', '=', self)]"/>
                 <field name="facades" filter_domain="[('facades', '=', self)]"/>
+                <field name="state" filter_domain="[('state', '=', self)]"/>
                 <filter name="available"
                         string="Available"
                         domain="[('state', 'in', ['new', 'offer_received'])]"/>

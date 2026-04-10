@@ -100,3 +100,9 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 10
             self.garden_orientation = 'north'
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_check_state(self):
+        for records in self:
+            if records.state not in ('new', 'cancelled'):
+                raise UserError(f"The property state is in {records.state}, you can't delete this property")
