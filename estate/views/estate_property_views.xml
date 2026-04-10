@@ -15,7 +15,7 @@
                 <field name="name" width="200"/>
                 <field name="postcode" width="80"/>
                 <field name="property_type_id"/>
-                <field name="property_tags_ids" widget="many2many_tags" width="300"/>
+                <field name="property_tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" width="300"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>

@@ -47,7 +47,15 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            current_price = vals.get('price')
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            for offer in property_id.offer_ids:
+                if current_price < offer.price:
+                    raise UserError("Offer Price cannot be less than previous offer prices")
+
         offers = super().create(vals_list)
+
         for offer in offers:
             if offer.property_id.state == 'new':
                 offer.property_id.state = 'offer_received'
