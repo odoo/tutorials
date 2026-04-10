@@ -30,7 +30,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" default_order="name"> 
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -50,6 +50,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold"/>
                     <button name="action_cancle" type="object" string="Cancle"/>
+                    <field name="state" widget="statusbar" statusbar_visible = "new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
