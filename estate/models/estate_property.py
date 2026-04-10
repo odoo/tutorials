@@ -26,9 +26,9 @@ class EstateProperty(models.Model):
         help="Type is used to specify the garden orientation"
     )
     garage = fields.Boolean(string="Garage")
-    living_area = fields.Integer(string="Living Area (sqm)")
+    living_area = fields.Float(string="Living Area (sqm)")
     name = fields.Char(string="Title", required=True, default="Unknown")
-    postcode = fields.Integer(string="Postcode")
+    postcode = fields.Char(string="Postcode")
     selling_price = fields.Float(
         string="Selling Price", readonly=True, copy=False)
     state = fields.Selection([('new', "New"),
