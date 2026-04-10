@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
 
         ],
     )
-    status = fields.Selection(
+    state = fields.Selection(
         selection=[
             ('new', 'New'),
             ('offer received', 'Offer received'),
