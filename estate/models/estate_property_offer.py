@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+# from datetime import timedelta
 
 
 class EstatepropertyOffer(models.Model):
@@ -17,6 +18,10 @@ class EstatepropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True)
     validity = fields.Integer(
         string="Validity (days)",
         default=7

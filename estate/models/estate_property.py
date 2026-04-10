@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
             ('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")],
         help="Direction the garden faces"
     )
-    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    tag_ids = fields.Many2many('estate.property.tag', compute='_dynamic_tags', string="Tags")
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
@@ -75,6 +75,7 @@ class EstateProperty(models.Model):
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold!")
             record.state = 'sold'
+            record.sold_date = fields.Date.today()
         return True
 
     def action_cancel(self):
@@ -106,3 +107,41 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+
+    sold_date = fields.Date()
+    sold_within = fields.Integer(string='Sold Within (Days)', compute='_compute_sold_within', store=True)
+
+    @api.depends('sold_date', 'create_date')
+    def _compute_sold_within(self):
+        for record in self:
+            if record.sold_date and record.create_date:
+                record.sold_within = (record.sold_date - record.create_date.date()).days
+            else:
+                record.sold_within = 0
+
+    @api.depends('expected_price', 'offer_ids', 'sold_within')
+    def _dynamic_tags(self):
+        all_tags = self.env['estate.property.tag'].search([('name', 'in', ('High Value', 'Quick Sale', 'Low Interest'))])
+
+        if 'High Value' not in all_tags.mapped('name'):
+            all_tags |= self.env['estate.property.tag'].create({'name': 'High Value'})
+
+        if 'Low Interest' not in all_tags.mapped('name'):
+            all_tags |= self.env['estate.property.tag'].create({'name': 'Low Interest'})
+
+        if 'Quick Sale' not in all_tags.mapped('name'):
+            all_tags |= self.env['estate.property.tag'].create({'name': 'Quick Sale'})
+
+        high_value_tag = all_tags.filtered(lambda t: t.name == 'High Value')
+        low_interest_tag = all_tags.filtered(lambda t: t.name == 'Low Interest')
+        quick_sale_tag = all_tags.filtered(lambda t: t.name == 'Quick Sale')
+
+        for record in self:
+            tags_to_add = self.env['estate.property.tag']
+            if record.expected_price > 1000:
+                tags_to_add |= high_value_tag
+            if len(record.offer_ids) < 2:
+                tags_to_add |= low_interest_tag
+            if record.sold_within and record.sold_within <= 10:
+                tags_to_add |= quick_sale_tag
+            record.tag_ids = [(6, 0, tags_to_add.ids)]
