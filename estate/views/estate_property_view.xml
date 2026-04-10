@@ -46,6 +46,7 @@
                                 <field name="property_type_id"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
+                                <field name="property_tag" widget="many2many_tags"/>
                             </group>
                             <group>
                                 <field name="expected_price" />
