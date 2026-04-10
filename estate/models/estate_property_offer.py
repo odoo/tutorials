@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -46,3 +47,19 @@ class EstatePropertyOffer(models.Model):
                         else fields.Date.context_today(record)
                     )
                 ).days
+
+    def accept_offer(self):
+        for record in self:
+            for offer in record.property_id.offer_ids:
+                if offer.status == "accepted":
+                    raise UserError("offer is already accepted for the property")
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+
+    def refuse_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.buyer_id = False
+                record.property_id.selling_price = False
+            record.status = "refused"
