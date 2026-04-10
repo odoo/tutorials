@@ -11,6 +11,14 @@
                 <field name="expected_price" width="130px"/>
                 <field name="selling_price" width="130px"/>
                 <field name="date_availability" string="Available From" width="130px"/>
+                <field name="description" string="Description" width="130px" optional="hide"/>
+                <field name="facades" width="130px" optional="hide"/>
+                <field name="garage" width="130px" optional="hide"/>
+                <field name="garden" width="130px" optional="hide"/>
+                <field name="garden_area" string="Garden Area" width="130px" optional="hide"/>
+                <field name="garden_orientation" string="Garden Orientation" width="130px" optional="hide"/>
+                <field name="active" string="Unarchived" width="130px" optional="hide"/>
+                <field name="state" string="Status" width="130px" optional="hide"/>
             </list>
         </field>
     </record>
@@ -33,6 +41,10 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>                        
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -60,10 +72,41 @@
             <search>
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="expected_price"/>
+                <field name="description"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="garage"/>
+                <field name="garden"/>
+                <field name="garden_area"/>
+                <field name="garden_orientation"/>
+                <field name="active"/>
+                <field name="state"/>
+                <filter string="Demo" name="helloo" domain="[('active', '=', False)]"/>
+                <filter string="Unvailable" name="archived" domain="[('active', '=', False)]"/>
+                <filter string="Search Domain" name="search_domain" domain="['|', ('bedrooms', '&gt;', '1'), ('garage', '=', True)]"/>
+                <!-- <separator/> -->
+                <filter string="Postcode" name="postcode" domain="[('postcode', 'ilike', '1')]"/>
+                <separator/>
+                <filter string="Budget Finder" name="budget" domain="[('expected_price', '&lt;=', 500000)]"/>
+                <filter string="PC 1000" name="pc_1000" domain="[('postcode', '=', 1000)]"/>
+                <filter string="Big House" name="big_house" domain="[('bedrooms', '&gt;', 3)]"/>
+                <filter string="Outdoorsy" name="outdoor" domain="[('garden', '=', True), ('garage', '=', True)]"/>
+                <separator/>
+                <filter string="Location" name="location" domain="['|', ('postcode', '=', 1000), ('postcode', '=', 2000)]"/>
+                <filter string="Flexible" name="flexible" domain="['|', ('bedrooms', '&gt;', 3), ('living_area', '&gt;', 200)]"/>
+                <filter string="Available" name="available" domain="['|', ('state', 'ilike', 'new'), ('state', 'ilike', 'offer received')]"/>
+                <separator/>
+                <filter string="Not Sold" name="not_sold" domain="[('state', '!=', 'sold')]"/>
+                <group>
+                    <filter string="Number of bedrooms" name="bedrooms" context="{'group_by': 'bedrooms'}"/>
+                    <separator/>
+                    <filter string="Garage" name="garage" context="{'group_by': 'garage'}"/>
+                    <separator/>
+                    <filter string="Date Available" name="date_available" context="{'group_by': 'date_availability:month'}"/>
+                    <separator/>
+                    <filter string="Garage" name="garage" context="{'group_by': 'garage'}"/>
+                </group>
             </search>
         </field>
     </record>
