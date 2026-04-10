@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     facades = fields.Integer(string="Facades")
     garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area (sqm)")
+    garden_area = fields.Float(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         string="Direction",
         selection=[
