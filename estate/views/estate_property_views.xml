@@ -67,6 +67,9 @@
                             <field name="selling_price"/>
                             <field name="best_price"/>
                         </group>
+                        <div invisible="not spam">
+                            This property is suspicious
+                        </div>
                     </group>
                     <notebook>
                         <page string="Description">
@@ -90,7 +93,28 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids">
+                                <list  editable = "bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
+                                    <field name="price"/>
+                                    <field name="margin" optional="hide"/>
+                                    <field name="partner_id"/>
+                                    <button name="action_accept"
+                                        type="object"
+                                        icon="fa-check"
+                                        title="Accept"
+                                        invisible="status == 'accepted' or status == 'refused'"
+                                    />
+                                    <button
+                                        name="action_reject"
+                                        type="object"
+                                        icon="fa-times"
+                                        title="Reject"
+                                        confirm="Are you sure you want to reject the offer"
+                                        invisible="status == 'refused' or status == 'accepted'"
+                                    />
+                                    <field name="status"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
