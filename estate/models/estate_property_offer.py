@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-# from datetime import timedelta
+from datetime import timedelta
 
 
 class EstatepropertyOffer(models.Model):
@@ -62,7 +62,11 @@ class EstatepropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
-        return True
+
+            for offer in record.property_id.offer_ids:
+                if offer.id != record.id:
+                    offer.status = "refused"
+            return True
 
     def action_refuse(self):
         for record in self:
@@ -71,5 +75,42 @@ class EstatepropertyOffer(models.Model):
 
     _check_offer_price = models.Constraint(
         'CHECK(price > 0)',
-        'The offer price must be strictly positive.',
+        'The offer price must be strictly positive.'
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            if not property_id:
+                continue
+            estate_property = self.env['estate.property'].browse(property_id)
+            if estate_property.offer_ids:
+                max_existing_offer = max(estate_property.offer_ids.mapped('price'))
+                if vals.get('price', 0) < max_existing_offer:
+                    raise UserError(
+                    f"Your offer ({vals.get('price')}) is lower than "
+                    f"an existing offer ({max_existing_offer}). Please raise your offer."
+                    )
+            estate_property.state = 'offer_received'
+        return super().create(vals_list)
+
+    suspicious_offer = fields.Boolean(string="Suspicious Offer", compute="_compute_is_suspicious_offer", store=False)
+
+    @api.depends('partner_id', 'create_date')
+    def _compute_is_suspicious_offer(self):
+        all_offers = self.env['estate.property.offer'].search([])
+
+        for record in self:
+            if record.create_date:
+                same_partner = all_offers.filtered(lambda offer: offer.partner_id == record.partner_id)
+
+                def within_5_mins(offer):
+                    if offer.create_date:
+                        diff = abs(offer.create_date - record.create_date)
+                        return diff <= timedelta(minutes=5)
+
+                suspicious_window = same_partner.filtered(within_5_mins)
+                record.suspicious_offer = len(suspicious_window) >= 3
+            else:
+                record.suspicious_offer = False

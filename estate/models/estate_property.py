@@ -145,3 +145,18 @@ class EstateProperty(models.Model):
             if record.sold_within and record.sold_within <= 10:
                 tags_to_add |= quick_sale_tag
             record.tag_ids = [(6, 0, tags_to_add.ids)]
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for property in self:
+            if property.state not in ('new', 'cancelled'):
+                raise UserError(
+                    "You cannot delete a property that is not 'New' or 'Cancelled'."
+                )
+
+    has_suspicious_offers = fields.Boolean(string="Has Suspicious Offers", compute="_compute_has_suspicious_offers", store=False)
+
+    @api.depends('offer_ids.suspicious_offer')
+    def _compute_has_suspicious_offers(self):
+        for record in self:
+            record.has_suspicious_offers = any(offer.suspicious_offer for offer in record.offer_ids)

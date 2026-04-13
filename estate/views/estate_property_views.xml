@@ -54,12 +54,16 @@
                             <field name="property_type_id" options="{'no_create': True, 'no_edit': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <div invisible="not has_suspicious_offers">
+                                <field name="has_suspicious_offers" invisible="not has_suspicious_offers"/>
+                                <span class="text-danger fw-bold">This property has some suspicious offers</span>
+                            </div>
                         </group>
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="best_price"/>
-                            <field name="sold_date"/>
+                            <!-- <field name="sold_date"/> -->
                             <!-- <field name="sold_within"/> -->
                         </group>
                     </group>
@@ -97,6 +101,7 @@
                                     <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status"/>
                                     <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status"/>
                                     <field name="status"/>
+                                    <field name="suspicious_offer" string="Suspicious"/>
                                 </list>
                             </field> </page>
                         </notebook>

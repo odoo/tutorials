@@ -27,6 +27,11 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form>
+            <sheet>
+            <div invisible="not suspicious_offer">
+                <field name="suspicious_offer" invisible="not suspicious_offer"/>
+                <span class="text-danger fw-bold">This offer is suspicious</span>
+            </div>
                 <group>
                     <field name="property_id"/>
                     <field name="price"/>
@@ -36,6 +41,7 @@
                     <field name="date_deadline"/>
                     <field name="status"/>
                 </group>
+            </sheet>
             </form>
         </field>
     </record>
