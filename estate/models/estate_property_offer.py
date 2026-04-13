@@ -6,7 +6,8 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
-    _description = 'Estate Property offer'
+    _description = "Estate Property offer"
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(
@@ -18,6 +19,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
     validity = fields.Integer(string="Validity (Days)", default=7)
     date_deadline = fields.Date(string="Date Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
@@ -37,12 +39,25 @@ class EstatePropertyOffer(models.Model):
             starting_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - starting_date).days
 
+    @api.constrains('partner_id', 'property_id')
+    def _check(self):
+        time = fields.Datetime.now() - timedelta(minutes=5)
+        for record in self:
+            offers = self.env['estate.property.offer'].search([
+                ('partner_id', '=', record.partner_id.id),
+                ('property_id', '=', record.property_id.id),
+                ('create_date', '>=', time)
+            ])
+            if len(offers) >= 3:
+                record.property_id.is_suspicious = True
+
     def action_accept(self):
         for record in self:
             already_accepted = False
             for offer in record.property_id.offer_ids:
                 if offer.status == 'accepted':
                     already_accepted = True
+                (record.property_id.offer_ids - offer).status = 'refused'
             if already_accepted:
                 raise UserError("Only one offer can be accepted")
             record.status = 'accepted'

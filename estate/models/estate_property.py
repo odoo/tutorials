@@ -1,12 +1,13 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = 'Real Estate Property'
+    _description = "Real Estate Property"
+    _order = 'id desc'
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -43,19 +44,20 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Seller", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many('estate.property.tags', string="Property tags", compute="_compute_tags", store=True)
+    tag_ids = fields.Many2many('estate.property.tags', string="Property tags", compute="_compute_tags", store=True, readonly=False)
     offer_ids = fields.One2many('estate.property.offer', 'property_id', copy=True)
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area", store=True)
     best_price = fields.Integer(string="Best Offer", compute="_compute_best_price", store=True)
+    is_suspicious = fields.Boolean(string="Suspicious", default=False, readonly=True, store=False)
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
-        'Expected price must be positive.'
+        "Expected price must be positive."
     )
 
     _check_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)',
-        'Selling price must be positive.'
+        "Selling price must be positive."
     )
 
     @api.depends('offer_ids', 'expected_price', 'offer_ids.status', 'create_date', 'state')
@@ -123,7 +125,7 @@ class EstateProperty(models.Model):
             record.state = 'cancelled'
 
     @api.constrains("selling_price", "expected_price")
-    def check_price(self):
+    def _check_price(self):
         for record in self:
             if record.selling_price > 0 and (record.selling_price < record.expected_price * 0.9):
                 raise ValidationError("You cannot set a selling price below 90 percent of the expected price")
