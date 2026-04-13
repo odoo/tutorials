@@ -43,9 +43,11 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
+        compute="_compute_state",
         default='new',
         copy=False,
         required=True,
+        store=True
     )
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -80,6 +82,14 @@ class EstateProperty(models.Model):
         'CHECK(selling_price > 0)',
         'A property selling price must be positive'
     )
+
+    @api.depends("offer_ids")
+    def _compute_state(self):
+        for record in self:
+            if record.offer_ids:
+                record.state = "offer_received"
+            else:
+                record.state = "new"
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
