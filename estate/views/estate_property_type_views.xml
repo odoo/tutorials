@@ -23,7 +23,7 @@
             <form>
             <div class="oe_button_box" name="button_box">
                 <button type="action"
-                        name="%(estate_property_offer_action)d"
+                        name="%(estate.estate_property_offer_action_stat)d"
                         class="oe_stat_button"
                         icon="fa-money">
                     <field name="offer_count"

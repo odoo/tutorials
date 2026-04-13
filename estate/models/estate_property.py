@@ -58,6 +58,8 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many(
         "estate.property.tag",
         string="Tags",
+        compute="_compute_tags",
+        store=True,
 )
     offer_ids = fields.One2many(
         "estate.property.offer",
@@ -68,6 +70,10 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(
         compute="_compute_total_area",
         string="Total Area (sqm)",
+)
+    has_suspicious_offers = fields.Boolean(
+    string="Has Suspicious Offers",
+    compute="_compute_has_suspicious_offers"
 )
 
     @api.depends("living_area", "garden_area")
@@ -145,3 +151,50 @@ class EstateProperty(models.Model):
             ) < 0:
                 raise ValidationError("Selling price cannot be lower than 90%"
                                     "of expected price!")
+
+    def _search_tag(self, tag_name):
+        return self.env['estate.property.tag'].search(
+            [('name', '=', tag_name)], limit=1
+        )
+
+    def _create_tag(self, tag_name):
+        return self.env['estate.property.tag'].create(
+            {'name': tag_name}
+        )
+
+    def _get_or_create_tag(self, tag_name):
+        return self._search_tag(tag_name) or self._create_tag(tag_name)
+
+    @api.depends('expected_price', 'offer_ids', 'sold_date', 'date_availability', 'state')
+    def _compute_tags(self):
+        for record in self:
+            tag_records = self.env['estate.property.tag']
+
+            if record.expected_price > 200000:
+                tag_records |= self._get_or_create_tag('High Value')
+
+            if (record.state == 'sold'
+                and record.sold_date
+                and record.date_availability
+                and (record.sold_date - record.date_availability).days <= 10):
+                tag_records |= self._get_or_create_tag('Quick Sale')
+
+            if len(record.offer_ids) < 2:
+                tag_records |= self._get_or_create_tag('Low Interest')
+
+            record.tag_ids = tag_records
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        for record in self:
+            if record.state not in ('new', 'canceled'):
+                raise UserError(
+                "Only new and cancelled properties can be deleted!"
+            )
+
+    @api.depends("offer_ids.is_suspicious")
+    def _compute_has_suspicious_offers(self):
+        for record in self:
+            record.has_suspicious_offers = any(
+            offer.is_suspicious for offer in record.offer_ids
+        )

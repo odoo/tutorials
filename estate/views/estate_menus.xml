@@ -14,4 +14,7 @@
 
         <menuitem id="estate_property_tag_menu" action="estate_property_tag_action"
         parent="estate_menu_settings"/>
+
+        <menuitem id="estate_property_offer_menu" action="estate_property_offer_action"
+        parent="estate_menu_settings"/>
 </odoo>

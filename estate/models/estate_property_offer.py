@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
@@ -40,6 +41,14 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_set_date_deadline",
     )
+    is_suspicious = fields.Boolean(
+    string="Suspicious",
+    default=False,
+    readonly=True,
+    copy=False,
+    compute="_compute_is_suspicious",
+    store=True,
+)
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -70,6 +79,10 @@ class EstatePropertyOffer(models.Model):
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
         self.property_id.state = 'offer_accepted'
+
+        for offer in self.property_id.offer_ids:
+            if offer.id != self.id:
+                offer.status = 'refused'
         return True
 
     def action_refuse(self):
@@ -81,3 +94,38 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'Offer price must be strictly positive!',
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(
+                vals.get('property_id', False)
+        )
+            if property_id.offer_ids:
+                max_offer = max(property_id.offer_ids.mapped('price'))
+                if vals.get('price', 0) < max_offer:
+                    raise UserError(
+                    "You cannot create an offer lower "
+                    "than an existing offer of %.2f" % max_offer
+                )
+
+            property_id.state = 'offer_received'
+
+        return super().create(vals_list)
+
+    @api.depends("partner_id", "create_date")
+    def _compute_is_suspicious(self):
+        for record in self:
+            if not record.create_date:
+                record.is_suspicious = False
+                continue
+
+            start = (record.create_date - timedelta(minutes=5))
+            end = (record.create_date + timedelta(minutes=5))
+            recent_offers = self.search([
+            ('partner_id', '=', record.partner_id.id),
+            ('create_date', '>=', start),
+            ('create_date', '<=', end),
+        ])
+
+            record.is_suspicious = len(recent_offers) >= 3
