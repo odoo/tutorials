@@ -1,5 +1,6 @@
 import logging
 from dateutil import relativedelta as rd
+
 from odoo import fields, models
 
 
@@ -15,14 +16,11 @@ class EstateProperties(models.Model):
     _name = 'estate.properties'
     _description = 'Real Estate Properties'
 
-    name = fields.Char(string="Property Name", required=True)
-    description = fields.Text()
-    postcode = fields.Char()
-    date_availability = fields.Date(string="Availability Date", copy=False, default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3))
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    active = fields.Boolean(help="Should the property be listed?")
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string="Living Area")
+    date_availability = fields.Date(string="Availability Date", copy=False, default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3))
+    description = fields.Text()
+    expected_price = fields.Float(string="Expected Price", required=True)
     facades = fields.Integer()
     garage = fields.Boolean(string="Has Garage?", help="Does the proeprty have a garage?")
     garden = fields.Boolean(string="Has Garden?", help="Does the property have a garden?")
@@ -36,7 +34,10 @@ class EstateProperties(models.Model):
         ],
         help="Directional orientation of the garden of the property shown"
     )
-    active = fields.Boolean(help="Should the property be listed?")
+    living_area = fields.Integer(string="Living Area")
+    name = fields.Char(string="Property Name", required=True)
+    postcode = fields.Char()
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     state = fields.Selection(
         [
             ('new', "New"),
