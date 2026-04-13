@@ -41,14 +41,16 @@ class EstatePropertyOffer(models.Model):
                 records.validity = (records.date_deadline - base_date).days
 
     def accept_button(self):
-        self.status = "accepted"
-        self.property_id.buyer = self.partner_id
-        self.property_id.selling_price = self.pricex
-        return True
+        for records in self:
+            records.status = "accepted"
+            records.property_id.buyer = records.partner_id
+            records.property_id.selling_price = records.price
+            records.property_id.state = "offer_accepted"
 
     def reject_button(self):
-        self.status = "refused"
-        if self.property_id.buyer == self.partner_id:
-            self.property_id.buyer = False
-            self.property_id.selling_price = False
-        return True
+        for records in self:
+            records.status = "refused"
+            if records.property_id.buyer == records.partner_id:
+                records.property_id.buyer = False
+                records.property_id.selling_price = False
+                records.property_id.state = "offer_received"
