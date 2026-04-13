@@ -31,6 +31,7 @@ class EstateProperty(models.Model):
     offer_id = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Property offer")
 
     total_area = fields.Integer(string="total_area", name="Total area", compute="_compute_total")
+    best_price = fields.Integer(string="best_price", name="Best Price", compute="_compute_best_price")
 
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
