@@ -68,6 +68,7 @@
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                     <field name="state"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page  string="Offer" name="property_offer">
