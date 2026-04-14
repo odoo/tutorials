@@ -11,6 +11,7 @@ def _get_availability_date(self):
     # _logger.info("!!! %s", self)
     return fields.Date.today() + rd.relativedelta(months=3)
 
+
 def _get_salesperson(self):
     # _logger.info(self.env.user.name)
     # _logger.info(self.env.user.id)
