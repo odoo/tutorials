@@ -45,4 +45,5 @@ class EstateProperty(models.Model):
         copy=False,
         required=True,
     )
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
     tag_ids = fields.Many2many('estate.property.tag')
