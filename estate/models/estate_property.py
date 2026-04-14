@@ -36,3 +36,18 @@ class EstateProperty(models.Model):
     def _compute_total(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_id.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.mapped("offer_id.price"))
+
+# to add when garden is clicked then its area and orientation is set to default values. works on decorators concepts
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
