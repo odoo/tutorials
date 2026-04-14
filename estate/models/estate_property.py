@@ -5,6 +5,15 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "A property expected price must be strictly positive",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "A property selling price must be positive",
+    )
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -77,6 +86,7 @@ class EstateProperty(models.Model):
             if records.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold.")
             records.state = "sold"
+            records.selling_price = records.selling_price
         return True
 
     def cancel_button(self):
@@ -84,4 +94,5 @@ class EstateProperty(models.Model):
             if records.state == "sold":
                 raise UserError("Sold property cannoy be cancelled.")
             records.state = "cancelled"
+            records.state = False
         return True

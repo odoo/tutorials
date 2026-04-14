@@ -4,6 +4,10 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real E-state offer"
+    _check_offer_price = models.Constraint(
+        "CHECK(price > 0)",
+        "An offer price must be strictly positive",
+    )
 
     price = fields.Float()
     status = fields.Selection(
