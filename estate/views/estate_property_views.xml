@@ -1,10 +1,4 @@
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
     <!-- LIST VIEW -->
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list.view</field>
@@ -19,9 +13,108 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="selling_price" optional="hide"/>
+                <field name="date_availability" optional="show"/>
             </list>
+        </field>
+    </record>
+
+    <!-- ============ FORM VIEW ============ -->
+    <record id="estate_property_view_form"
+            model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <!-- Title at top -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Name"/>
+                        </h1>
+                    </div>
+                    <!-- Two-column main group -->
+                    <group>
+                        <group string="Property Details">
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="facades"/>
+                            <field name="garage"/>
+                            <field name="garden"/>
+                            <field name="garden_area"/>
+                            <field name="garden_orientation"/>
+                        </group>
+                        <group string="Pricing">
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
+                    <!-- Notebook tabs -->
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description"/>
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <field name="active"/>
+
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--     SEARCH VIEW-->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <!-- Searchable fields -->
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="garden_orientation"/>
+                <field name="active"/>
+                <field name="state"/>
+                <!-- Preset filter: Available properties -->
+                <filter string="1 Bedroom &amp; 1 Garage" name="1BG"
+                        domain="[('bedrooms', '=',1),('garage', '=', True)]"/>
+
+                <filter string="Postcode" name="postcode" domain="[('postcode', 'ilike', '1')]"/>
+                <separator/>
+                <filter string="Under Budget" name="budget" domain="[('expected_price', '&lt;=', 500000)]"/>
+                <separator/>
+                <filter string="Available" name="available"
+                        domain="['|', ('state', 'ilike', 'new'), ('state', 'ilike', 'offer received')]"/>
+                <separator/>
+                <filter string="Expensive" name="highest_price"
+                        domain="[('expected_price', '&gt;',10000009 )]"/>
+                <separator/>
+                <!-- Group by shortcuts -->
+                <group>
+                    <filter string="Number of bedrooms" name="bedrooms" context="{'group_by': 'bedrooms'}"/>
+                    <separator/>
+                    <filter string="Garage" name="garage" context="{'group_by': 'garage'}"/>
+                    <separator/>
+                    <filter string="Date Available" name="date_available"
+                            context="{'group_by': 'date_availability:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">
+            {'search_default_available': 1}
         </field>
     </record>
 </odoo>
