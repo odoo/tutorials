@@ -32,7 +32,7 @@ class EstateProperty(models.Model):
 
     total_area = fields.Integer(string="total_area", name="Total area", compute="_compute_total")
     best_price = fields.Integer(string="best_price", name="Best Price", compute="_compute_best_price")
-
+    
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
         for record in self:
@@ -41,7 +41,8 @@ class EstateProperty(models.Model):
     @api.depends("offer_id.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.mapped("offer_id.price"))
+            prices = record.mapped("offer_id.price")
+            record.best_price = max(prices) if prices else 0
 
 # to add when garden is clicked then its area and orientation is set to default values. works on decorators concepts
     @api.onchange("garden")
