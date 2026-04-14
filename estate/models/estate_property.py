@@ -42,7 +42,7 @@ class EstateProperty(models.Model):
         string="Status",
         required=True,
         copy=False,
-        default="new",
+        default="new"
     )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers", copy=True)
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
@@ -87,7 +87,7 @@ class EstateProperty(models.Model):
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
-        "The expected price must be strictly positive.",
+        "The expected price must be strictly positive."
     )
     _check_selling_price_positive = models.Constraint(
         'CHECK(selling_price >= 0)',
@@ -102,7 +102,7 @@ class EstateProperty(models.Model):
             if float_compare(
                 record.selling_price,
                 record.expected_price * 0.90,
-                precision_digits=2,
+                precision_digits=2
             ) < 0:
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
@@ -160,3 +160,11 @@ class EstateProperty(models.Model):
     def _compute_has_suspicious_offers(self):
         for record in self:
             record.has_suspicious_offers = any(offer.suspicious_offer for offer in record.offer_ids)
+
+    visit_ids = fields.One2many('estate.property.visit', 'property_id', string="Visits")
+    visit_count = fields.Integer(string="Visit Count", compute='_compute_visit_count')
+
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)

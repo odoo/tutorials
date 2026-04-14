@@ -19,5 +19,5 @@ class EstatePropertyType(models.Model):
 
     _unique_name = models.Constraint(
         'UNIQUE(name)',
-        'A property type with this name already exists.',
+        'A property type with this name already exists.'
     )
