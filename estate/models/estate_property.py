@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -19,6 +19,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden_area")
     garden_orientation = fields.Selection(string="Garden Orientation", selection=[("north", "North"), ("east", "East"), ("west", "West"), ("south", "South")])
+    status = fields.Selection(string="Status", selection=[('saved', "Save"), ('cancelled', "Cancel")], readonly=True)
 
     # If it is false then newly created record won't be appear. but record is created when active is set true record will appear.
     active = fields.Boolean("Active", default=True)
@@ -53,3 +54,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_cancel_offer(self):
+        for record in self:
+            if record.status == 'saved':
+                raise UserError("Saved properties can't be cancelled")
+            else:
+                record.status = 'cancelled'
+
+    def action_save_offer(self):
+        for record in self:
+            if record.status == 'cancelled':
+                raise UserError("Cancelled properties can't be saved")
+            else:
+                record.status = 'saved'

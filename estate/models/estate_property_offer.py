@@ -21,7 +21,7 @@ class EstatePropertyOffer(models.Model):
             default_date = records.create_date.date() if records.create_date else fields.Date.today()
             records.date_deadline = fields.Date.add(default_date, days=records.validity)
 
-    #Inverse is triggered when the computed field is written (usually during save),not during live editing.
+    # Inverse is triggered when the computed field is written (usually during save),not during live editing.
     def _inverse_deadline(self):
         for records in self:
             default_date = records.create_date.date() if records.create_date else fields.Date.today()
@@ -42,4 +42,4 @@ class EstatePropertyOffer(models.Model):
                 record.status = 'refused'
                 if record.property_id.buyer_id == record.partner_id:
                     record.property_id.selling_price = False
-                    record.property_id.state = False                       
+                    record.property_id.state = False               

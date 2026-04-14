@@ -33,6 +33,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form view property">
+            <header>
+                <button name="action_save_offer" type="object" string="Save"/>
+                <button name="action_cancel_offer" type="object" string="Cancel"/>
+            </header>
             <!-- To make one whole page -->
                 <sheet>
                     <div>
@@ -44,6 +48,7 @@
                         <!-- Make group side by side -->
                         <group>
                             <group>
+                                <field name="status"/>
                                 <field name="property_type_id"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
