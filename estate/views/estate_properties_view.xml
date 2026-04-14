@@ -22,6 +22,7 @@
             </list>
         </field>
     </record>
+
     <record id="estate_properties_view_form" model="ir.ui.view">
         <field name="name">estate.properties.view.form</field>
         <field name="model">estate.properties</field>
@@ -32,8 +33,15 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
                     </div>
                     <group>
+                        <group>
+                            <field name="property_type_id"/>
+                            <field name="property_type_colour"/>
+                        </group>
                         <group>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -60,11 +68,18 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
+
     <record id="estate_properties_view_search" model="ir.ui.view">
         <field name="name">estate.properties.view.search</field>
         <field name="model">estate.properties</field>
@@ -110,6 +125,7 @@
             </search>
         </field>
     </record>
+    
     <record id="estate_properties_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.properties</field>
