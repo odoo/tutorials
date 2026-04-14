@@ -75,6 +75,22 @@ class EstateProperty(models.Model):
     string="Has Suspicious Offers",
     compute="_compute_has_suspicious_offers"
 )
+    visit_ids = fields.One2many(
+    "estate.property.visit",
+    "property_id",
+    string="Visits",
+)
+
+    visit_count = fields.Integer(
+    string="Visits Count",
+    compute="_compute_visit_count",
+    store=True,
+)
+
+    @api.depends("visit_ids")
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
