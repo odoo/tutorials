@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -96,3 +97,10 @@ class EstateProperty(models.Model):
             records.state = "cancelled"
             records.state = False
         return True
+
+    @api.constrains("state")
+    def on_state_change(self):
+        for record in self:
+            if record.state == "offer_accepted" or record.state == "sold":
+                if float_compare(record.selling_price, record.expected_price * 0.9, 3):
+                    raise ValidationError("Selling price error")
