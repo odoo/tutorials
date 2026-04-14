@@ -29,7 +29,9 @@ class EstateProperty(models.Model):
     )
     living_area = fields.Integer()
     postcode = fields.Char()
-    property_type_id = fields.Many2one("estate.property.type")
+    property_type_id = fields.Many2one('estate.property.type')
+    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', copy=False)
     selling_price = fields.Float(readonly=True, copy=False)
     state = fields.Selection(
         selection=[
