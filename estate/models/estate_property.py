@@ -60,7 +60,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(
-        string="Best Offer", compute="_compute_best_price"
+        string="Best Offer", compute="_compute_best_price", store=True
     )
 
     _check_expected_price = models.Constraint(
