@@ -4,10 +4,6 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real E-state offer"
-    _check_offer_price = models.Constraint(
-        "CHECK(price > 0)",
-        "An offer price must be strictly positive",
-    )
 
     price = fields.Float()
     status = fields.Selection(
@@ -33,6 +29,11 @@ class EstatePropertyOffer(models.Model):
                 else fields.Date.today()
             )
             records.date_deadline = fields.Date.add(base_date, days=records.validity)
+
+    _check_offer_price = models.Constraint(
+        "CHECK(price > 0)",
+        "An offer price must be strictly positive",
+    )
 
     def _inverse_date_deadline(self):
         for records in self:

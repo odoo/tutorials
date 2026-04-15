@@ -6,15 +6,6 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "A property expected price must be strictly positive",
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "A property selling price must be positive",
-    )
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -72,6 +63,23 @@ class EstateProperty(models.Model):
             prices = records.mapped("offer.price")
             records.best_price = max(prices) if prices else 0
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "A property expected price must be strictly positive",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "A property selling price must be positive",
+    )
+
+    @api.constrains("state")
+    def on_state_change(self):
+        for record in self:
+            if record.state == "offer_accepted" or record.state == "sold":
+                if float_compare(record.selling_price, record.expected_price * 0.9, 3):
+                    raise ValidationError("Selling price error")
+
     @api.onchange("garden")
     def _on_change_garden(self):
         for records in self:
@@ -97,10 +105,3 @@ class EstateProperty(models.Model):
             records.state = "cancelled"
             records.state = False
         return True
-
-    @api.constrains("state")
-    def on_state_change(self):
-        for record in self:
-            if record.state == "offer_accepted" or record.state == "sold":
-                if float_compare(record.selling_price, record.expected_price * 0.9, 3):
-                    raise ValidationError("Selling price error")
