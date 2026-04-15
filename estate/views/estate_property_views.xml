@@ -21,7 +21,7 @@
                 <field name="selling_price"/>
                 <field name="date_availability"/>
                 <field name="property_type_id"/>
-                
+
             </list>
         </field>
     </record>
@@ -54,6 +54,7 @@
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="best_price"/>
+                            <field name="spam"/>
                         </group>
                     </group>
                     <notebook>
@@ -93,6 +94,9 @@
                         <page string="Offers">
                             <field name="offer_ids"/>
                         </page>
+                        <page string="visits">
+                            <field name="visit_ids"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -113,7 +117,7 @@
                 <field name="facades"/>
 
                 <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
-                <filter name="inactive" string="is not Active" domain="[('active', '=', 'False' )]"/>
+                <filter name="inactive" string="Archived" domain="[('active', '=', 'False' )]"/>
                 <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
 
             </search>

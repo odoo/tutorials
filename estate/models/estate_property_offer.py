@@ -21,6 +21,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price must be strictly positive.'
+    )
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         today = fields.Date.today()
@@ -33,43 +38,20 @@ class EstatePropertyOffer(models.Model):
             if record.create_date and record.date_deadline:
                 record.validity = (record.date_deadline - record.create_date.date()).days
 
-    # def action_accept(self):
-    #     for record in self:
-    #         already_accepted = False
-    #         for offer in record.property_id.offer_ids:
-    #             if offer.status == 'accepted':
-    #                 already_accepted = True
-    #                 break
-    #         if already_accepted:
-    #             raise UserError("Only one offer can be accepted for a property.")
-    #         record.status = 'accepted'
-    #         record.property_id.selling_price = record.price
-    #         record.property_id.buyer_id = record.partner_id
-    #         record.property_id.state = 'offer_accepted'
-
-    #         for remaining_offer in record.property_id.offer_ids:
-    #             if remaining_offer.status != 'refused' and remaining_offer.status != 'accepted':
-    #                 remaining_offer.status = 'refused'
-    #     return True
-
-    # def action_refuse(self):
-    #     for record in self:
-    #         record.status = 'refused'
-    #     return True
-
     def action_accept(self):
         for record in self:
-            for offer in record.property_id.offer_ids:
-                if offer.status == 'accepted':
-                    raise UserError("Only one offer can be accepted for a property.")
+            # for offer in record.property_id.offer_ids:
+            #     if offer.status == 'accepted':
+            #         raise UserError("Only one offer can be accepted for a property.")
             record.status = 'accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.state = 'offer_accepted'
-
-            for remaining_offer in record.property_id.offer_ids:
-                if remaining_offer.status != 'refused' and remaining_offer.status != 'accepted':
-                    remaining_offer.status = 'refused'
+            # record.property_id.selling_price = record.price
+            # record.property_id.buyer_id = record.partner_id
+            # record.property_id.state = 'offer_accepted'
+            record.property_id.write({
+            'selling_price': record.price,
+            'buyer_id': record.partner_id.id,
+            'state': 'offer_accepted' })
+            (record.property_id.offer_ids - record).filtered(lambda offer: offer.status != 'refused').write({'status': 'refused'})
         return True
 
     def action_refuse(self):
@@ -77,8 +59,3 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
             record.property_id.selling_price = False
         return True
-
-    _check_price = models.Constraint(
-        'CHECK(price > 0)',
-        'Offer price must be strictly positive.'
-    )

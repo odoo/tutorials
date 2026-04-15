@@ -48,7 +48,19 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tags_ids = fields.Many2many("estate.property.tag", string="Property Tags", compute="_compute_tags", readonly=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    visit_ids = fields.One2many("estate.property.visit", "propert_id", string="visit")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+    spam = fields.Boolean(string="is suspicious",  compute="_compute_offers")
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be strictly positive.'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'Selling price must be positive.'
+    )
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -66,15 +78,86 @@ class EstateProperty(models.Model):
         for record in self:
             if record.garden:
                 record.garden_area = 10
-                record.garden_orientation = "north"
+                record.garden_orientation = 'north'
             else:
-                record.garden = 0
+                record.garden_area = 0
                 record.garden_orientation = False
 
+    @api.depends("expected_price", "offer_ids", "state", "create_date")
+    def _compute_tags(self):
+        # high = self.env['estate.property.tag'].search([('name', '=', 'high value')])
+        # if not high:
+        #     high = self.env['estate.property.tag'].create({'name': 'high value'})
+        # low = self.env['estate.property.tag'].search([('name', '=', 'low interest')])
+        # if not low:
+        #     low = self.env['estate.property.tag'].create({'name': 'low interest'})
+        # quick = self.env['estate.property.tag'].search([('name', '=', 'quick sale')])
+        # if not quick:
+        #     quick = self.env['estate.property.tag'].create({'name': 'quick sale'})
+        Tag = self.env['estate.property.tag']
+        tag_names = ['high value', 'low interest', 'quick sale']
+        tags = Tag.search([('name', 'in', tag_names)])
+        tag_map = {}
+        for tag in tags:
+            tag_map[tag.name] = tag
+        for name in tag_names:
+            if name not in tag_map:
+                tag_map[name] = Tag.create({'name': name})
+        high = tag_map['high value']
+        low = tag_map['low interest']
+        quick = tag_map['quick sale']
+
+        today = fields.Date.today()
+        for record in self:
+            new_tags = self.env['estate.property.tag']
+            if record.expected_price > 200:
+                new_tags |= high
+            if len(record.offer_ids) <= 2:
+                new_tags |= low
+            if record.state == 'sold':
+                calc = (today - record.create_date.date()).days
+                if calc <= 10:
+                    new_tags |= quick
+            record.tags_ids = new_tags
+
+    @api.depends("offer_ids.partner_id", "offer_ids.create_date")
+    def _compute_offers(self):
+        for record in self:
+            record.spam = False
+            for offers in record.offer_ids:
+                count = 0
+                for other_offer in record.offer_ids:
+                    if other_offer.partner_id == offers.partner_id and other_offer.create_date:
+                        if abs(other_offer.create_date - offers.create_date) <= timedelta(minutes=5):
+                            count += 1
+                if count >= 3:
+                    record.spam = True
+                    break
+
+    @api.constrains("selling_price", "expected_price")
+    def _set_price(self):
+        for record in self:
+            if record.selling_price > 0 and record.selling_price < 0.9 * record.expected_price:
+                raise ValidationError("Selling price cannot be lower than 90 percent of expected price.")
+
+    @api.constrains("visit_ids")
+    def _single_partner(self):
+        for record in self:
+            for other_date in record.visit_ids:
+                for current_date in record.visit_ids:
+                    # print("hello", current_date.id)
+                    # print("whello", other_date.id)
+                    if current_date.id != other_date.id:
+                        # if current_date.visit_date == other_date.visit_date:
+                        if other_date.visit_date < current_date.end_date and current_date.visit_date < other_date.end_date:
+                            raise ValidationError("only 1 partner in 1 day")
+                        
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Cancelled property cannot be sold.")
+            if record.state != 'offer_accepted':
+                raise UserError("Property cannot be sold without an accepted offer.")
             record.state = 'sold'
         return True
 
@@ -84,48 +167,3 @@ class EstateProperty(models.Model):
                 raise UserError("Sold property cannot be cancelled.")
             record.state = 'cancelled'
         return True
-
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'Expected price must be strictly positive.'
-    )
-
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'Selling price must be positive.'
-    )
-
-    @api.constrains("selling_price", "expected_price")
-    def set_price(self):
-        for record in self:
-            if record.selling_price > 0 and record.selling_price < record.expected_price * 0.9:
-                raise ValidationError("Selling price cannot be lower than 90 percent of expected price.")
-
-    @api.depends("expected_price", "offer_ids", "state", "create_date")
-    def _compute_tags(self):
-        high = self.env['estate.property.tag'].search([('name', '=', 'high value')])
-        if not high:
-            high = self.env['estate.property.tag'].create({'name': 'high value'})
-        low = self.env['estate.property.tag'].search([('name', '=', 'low interest')])
-        if not low:
-            low = self.env['estate.property.tag'].create({'name': 'low interest'})
-        quick = self.env['estate.property.tag'].search([('name', '=', 'quick sale')])
-        if not quick:
-            quick = self.env['estate.property.tag'].create({'name': 'quick sale'})
-        today = fields.Date.today()
-        for record in self:
-            new_tags = self.env['estate.property.tag']
-            if record.expected_price > 200:
-                # record.tags_ids = high
-                new_tags |= high
-            if len(record.offer_ids) <= 2:
-                # record.tags_ids = low
-                new_tags |= low
-            if record.state == 'sold':
-                calc = (today - record.create_date.date()).days
-                if calc <= 10:
-                    # record.tags_ids = quick
-                    new_tags |= quick
-            record.tags_ids = new_tags
-            # else:
-            #     record.tags_ids

@@ -1,10 +1,10 @@
 <odoo>
 
-    <!-- <record id="action_estate_property_offer" model="ir.actions.act_window">
+    <record id="action_estate_property_offer" model="ir.actions.act_window">
         <field name="name">Property Offer</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
-    </record> -->
+    </record>
 
     <record id="list_estate_property_offer" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
