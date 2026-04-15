@@ -1,0 +1,30 @@
+.o_snippet_preview_wrap {
+    &:is(:hover, :focus-visible) {
+        .o_image_comparison_container {
+            animation: 5s linear infinite left-to-right;
+
+            & .o_image_comparison_slider {
+                left: calc(-100% + var(--handle-left) * 2);
+            }
+        }
+    }
+}
+
+// Make the custom property animable.
+@property --slider-position {
+    syntax: "<percentage>";
+    inherits: true;
+    initial-value: 50%;
+}
+
+@keyframes left-to-right {
+    20% {
+        --slider-position: 25%;
+    }
+    60% {
+        --slider-position: 75%;
+    }
+    80% {
+        --slider-position: 50%;
+    }
+}

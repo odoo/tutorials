@@ -35,6 +35,9 @@
         'website.assets_inside_builder_iframe': [
             'awesome_website/static/src/snippets/**/*.edit.*'
         ],
+        'html_builder.iframe_add_dialog': [
+            'awesome_website/static/src/snippets/**/*.preview.scss',
+        ],
     },
     'license': 'AGPL-3'
 }
