@@ -70,6 +70,13 @@ class EstateProperty(models.Model):
         "estate.property.offer",
         "property_id",
     )
+    visit_ids = fields.One2many("estate.property.visit", "property_id")
+    visit_count = fields.Integer(compute="_compute_visit_count")
+
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
+
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
