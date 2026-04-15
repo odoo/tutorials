@@ -1,3 +1,5 @@
+from random import randint
+
 from odoo import fields, models
 
 
@@ -5,4 +7,8 @@ class EstatePropertyTag(models.Model):
     _name = 'estate.property.tag'
     _description = 'estate property tags'
 
+    def _get_default_color(self):
+        return randint(1, 11)
+
     name = fields.Char(required=True)
+    color = fields.Integer('Color', default=_get_default_color)
