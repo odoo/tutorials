@@ -2,8 +2,6 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 
-from odoo.exceptions import UserError
-
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -50,7 +48,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.write({
             'selling_price': record.price,
             'buyer_id': record.partner_id.id,
-            'state': 'offer_accepted' })
+            'state': 'offer_accepted'})
             (record.property_id.offer_ids - record).filtered(lambda offer: offer.status != 'refused').write({'status': 'refused'})
         return True
 

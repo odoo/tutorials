@@ -50,7 +50,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     visit_ids = fields.One2many("estate.property.visit", "propert_id", string="visit")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-    spam = fields.Boolean(string="is suspicious",  compute="_compute_offers")
+    spam = fields.Boolean(string="is suspicious", compute="_compute_offers")
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -151,7 +151,7 @@ class EstateProperty(models.Model):
                         # if current_date.visit_date == other_date.visit_date:
                         if other_date.visit_date < current_date.end_date and current_date.visit_date < other_date.end_date:
                             raise ValidationError("only 1 partner in 1 day")
-                        
+
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
