@@ -30,12 +30,11 @@
                             <label for="name" string="Property Name"/>
                             <field name='name' placeholder="Flat no 1"/>
                         </h1>
-                        <label for='name' string="Tags"/>
-                        <field name='tag_ids' widget='many2many_tags' options="{'color_field': 'color'}" placeholder="add tags here...."/>
                     </div>
                     <group col='2'>
                         <group>
-                            <field name='property_type_id' String="Property Type"/>
+                            <field name='tag_ids' widget='many2many_tags' options="{'color_field': 'color'}" placeholder="add tags here...." />
+                            <field name='property_type_id' String="Property Type" />
                             <field name='postcode'/>
                             <field name='date_availability' string='Available From'/>
                         </group>
