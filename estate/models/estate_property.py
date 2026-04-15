@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     living_area = fields.Integer()
     garden_area = fields.Integer()
-    total_area = fields.Integer(compute="_compute_total_area", readonly=True)
+    total_area = fields.Integer(compute="_compute_total_area")
     garden_orientation = fields.Selection(
         selection=[
             ('north', "North"),
@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-    best_price = fields.Float(compute='_compute_best_price', readonly=True)
+    best_price = fields.Float(compute='_compute_best_price')
     date_availability = fields.Date(
         default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
         copy=False

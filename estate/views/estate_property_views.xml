@@ -67,6 +67,8 @@
                                     </control>
                                     <field name='status' width='200px' widget="radio" options="{'horizontal': 1}"/>
                                     <field name='partner_id' width='200px'/>
+                                    <field name='validity'/>
+                                    <field name='date_deadline' string="Deadline"/>
                                     <field name='price' width='200px'/>
                                 </list>
                             </field>
