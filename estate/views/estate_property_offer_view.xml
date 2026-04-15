@@ -6,13 +6,37 @@
             <list>
                 <field name="price" width="50px"/>
                 <field name="partner_id" string="Partner" width="50px"/>
+                <field name="property_id" string="Partner" width="50px"/>
                 <field name="status" width="50px"/>
+                <field name="validity" width="50px"/>
+                <field name="deadline" width="50px"/>
             </list>
         </field>
     </record>
 
-    <!-- <record id="estate_property_offer_action" model="ir.actions.act_window">
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                </group>
+                <group>
+                    <field name="status"/>
+                    <!-- <field name="property_id"/> -->
+                </group>
+                <group>
+                    <field name="deadline"/>
+                    <field name="validity"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offer</field>
         <field name="res_model">estate.property.offer</field>
-    </record> -->
+    </record>
 </odoo>
