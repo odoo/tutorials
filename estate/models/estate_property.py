@@ -43,4 +43,4 @@ class EstateProperty(models.Model):
     def _check_price(self):
         for rec in self:
             if rec.expected_price <= 0:
-                raise ValidationError("Price must be positive")
+                raise ValidationError("Price must be positive")  # Shown in UI
