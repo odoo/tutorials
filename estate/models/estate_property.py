@@ -21,6 +21,8 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
+    visit = fields.One2many('estate.property.visit', 'property_id')
+    visit_count = fields.Integer(string="Total Visit", compute="_compute_visit_count")
 
     garden_orientation = fields.Selection(
         [
@@ -129,3 +131,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price > 0 and (record.selling_price < record.expected_price * 0.9):
                 raise ValidationError("You cannot set a selling price below 90 percent of the expected price")
+
+    @api.depends('visit')
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit)

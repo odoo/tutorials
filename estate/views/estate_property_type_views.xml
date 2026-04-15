@@ -28,7 +28,7 @@
                                 type="action"
                                 class="oe_stat_button"
                                 icon="fa-money">
-                            <field name="offer_count" string="Offers" widget="statinfo"/>
+                            <field name="offer_count" string="Total offers" widget="statinfo"/>
                         </button>
                     </div>
                     <group>
