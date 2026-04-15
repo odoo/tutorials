@@ -44,6 +44,7 @@ class EstateProperties(models.Model):
     )
     living_area = fields.Integer(string="Living Area")
     name = fields.Char(string="Property Name", required=True)
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     postcode = fields.Char()
     property_type_colour = fields.Selection(string="Type Colour", related="property_type_id.colour", readonly=False)
     property_type_id = fields.Many2one(string="Property Type", comodel_name="estate.property.type")
