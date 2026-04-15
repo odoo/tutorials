@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_component" name="Component snippet">
+    <section>
+        <owl-component name="very_basic_comp" props='{"name": "from &lt;owl-component&gt;"}'/>
+    </section>
+</template>
+
+</odoo>

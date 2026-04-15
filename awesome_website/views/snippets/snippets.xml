@@ -7,6 +7,11 @@
            <keywords>image comparison, before, after, compare, side-by-side, photo, picture, contrast, split, match, slider</keywords>
        </t>
    </xpath>
+   <xpath expr="//t[@t-snippet='website.s_picture']" position="before">
+       <t t-snippet="awesome_website.s_component" string="Component Snippet" group="text">
+           <keywords>component</keywords>
+       </t>
+   </xpath>
 </template>
 
 </odoo>

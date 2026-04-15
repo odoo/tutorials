@@ -26,9 +26,11 @@
         'data/images.xml',
         'views/snippets/snippets.xml',
         'views/snippets/s_image_comparison.xml',
+        'views/snippets/s_component.xml',
     ],
     'assets': {
         'web.assets_frontend': [
+            'awesome_website/static/src/components/**/*',
             'awesome_website/static/src/interactions/**/*',
             'awesome_website/static/src/snippets/**/*.js',
         ],
