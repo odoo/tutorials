@@ -2,6 +2,7 @@ import logging
 from dateutil import relativedelta as rd
 
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
 
 
 _logger = logging.getLogger(__name__)
@@ -67,7 +68,7 @@ class EstateProperties(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        _logger.error(self)
+        # _logger.error(self)
         for property in self:
             # _logger.error(property._fields)
             # _logger.error(property)
@@ -79,3 +80,25 @@ class EstateProperties(models.Model):
             # _logger.error(self.mapped('offer_ids.price'))
             offer_prices = self.mapped('offer_ids.price')
             property.best_price = max(offer_prices) if offer_prices else 0
+    
+    @api.constrains('expected_price')
+    def _check_expected_price(self):
+        for property in self:
+            if property.expected_price < 0:
+                raise ValidationError("Value cannot be less than zero.")
+    
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        # _logger.error(self.garden)
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+
+    @api.constrains('date_availability')
+    def _check_date_availability(self):
+        for property in self:
+            if property.date_availability < fields.Date.context_today(property):
+                raise ValidationError("Past dates not allowed")

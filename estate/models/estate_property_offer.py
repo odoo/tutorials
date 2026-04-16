@@ -2,6 +2,7 @@ import datetime
 import logging
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 _logger = logging.getLogger(__name__)
@@ -36,3 +37,15 @@ class EstatePropertyOffer(models.Model):
             # _logger.error(offer._fields)
             start_date = offer.create_date.date() if offer.create_date else fields.Date.context_today(offer)
             offer.deadline = start_date + datetime.timedelta(days=offer.validity)
+
+    @api.constrains('price')
+    def _check_price(self):
+        for property in self:
+            if property.price < 0:
+                raise ValidationError("Value cannot be less than zero.")
+    
+    @api.constrains('deadline')
+    def _check_deadline(self):
+        for property in self:
+            if property.deadline < fields.Date.context_today(property):
+                raise ValidationError("Past dates not allowed")
