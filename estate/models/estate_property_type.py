@@ -7,7 +7,4 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(string="name", required=True)
 
-    _name_check = models.UniqueIndex(
-        ('name'),
-        'Please provide unique type as it is already taken'
-    )
+    _name_check = models.Constraint("UNIQUE (name)", "Please add unique type")
