@@ -67,6 +67,11 @@ class EstateProperty(models.Model):
         string="Offers",
         copy=True
 )
+    issue_ids = fields.One2many(
+        'estate.property.issue',
+        'property_id',
+)
+
     total_area = fields.Integer(
         compute="_compute_total_area",
         string="Total Area (sqm)",
@@ -126,10 +131,11 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.state == 'canceled':
-                raise UserError(
-                "Cancelled property cannot be sold!"
-            )
+            for rec in record.issue_ids:
+                if rec.staty != 'resolved' and rec.priority == 'high':
+                    raise UserError("Cannot sell the property pls solve the issues")
+                if record.state == 'canceled':
+                    raise UserError("Cancelled property cannot be sold!")
             record.state = 'sold'
             record.sold_date = fields.Datetime.now()
             return True

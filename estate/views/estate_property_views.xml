@@ -45,11 +45,17 @@
                 <div class="oe_button_box" name="button_box">
                 <button type="action"
                         name="%(action_property_visit)d"
-                    class="oe_stat_button"
-                    icon="fa-money">
+                        class="oe_stat_button"
+                        icon="fa-money">
                     <field name="visit_count" widget="statinfo" string="Visits"/>
                     </button>
-        </div>
+                <button type="action"
+                        name="%(estate_property_issue_stat_action)d"
+                        class="oe_stat_button"
+                        icon="fa-money">
+                    <field name="issue_ids" widget="statinfo" string="Issues"/>
+                    </button>
+                </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Property Name"/>
@@ -101,28 +107,27 @@
                             <list decoration-danger="status=='refused'"
                                     decoration-success="status=='accepted'"
                                     editable="bottom">
-                <field name="price"/>
-                <field name="partner_id"/>
-                <field name="validity"/>
-                <field name="date_deadline"/>
-                <field name="create_date" readonly="True"/>
-                <field name="status" optional="hide"/>
-                <field name="is_suspicious" string="Suspicious Offer" readonly="True"/>
-                <button
-                name="action_accept"
-                string="Accept"
-                type="object"
-                icon="fa-check"
-                invisible="status in ('accepted', 'refused')"/>
-                <button
-                name="action_refuse"
-                string="Refuse"
-                type="object"
-                icon="fa-times"
-                invisible="status in ('accepted', 'refused')"/>
-            </list>
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="validity"/>
+                                <field name="date_deadline"/>
+                                <field name="create_date" readonly="True"/>
+                                <field name="status" optional="hide"/>
+                                <field name="is_suspicious" string="Suspicious Offer" readonly="True"/>
+                                <button
+                                    name="action_accept"
+                                    string="Accept"
+                                    type="object"
+                                    icon="fa-check"
+                                    invisible="status in ('accepted', 'refused')"/>
+                                <button
+                                    name="action_refuse"
+                                    string="Refuse"
+                                    type="object"
+                                    icon="fa-times"
+                                    invisible="status in ('accepted', 'refused')"/>
+                            </list>
                             </field>
-
                         </page>
                     </notebook>
                 </sheet>
