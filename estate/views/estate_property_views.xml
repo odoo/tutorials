@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- LIST VIEW -->
     <record id="estate_property_list_view" model="ir.ui.view">
@@ -9,11 +10,14 @@
             <!-- string = title shown in UI -->
             <list string="Properties">
                 <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
+                <field name="property_type_id" width="130rem"/>
+                <field name="postcode" width="100rem"/>
+                <field name="bedrooms" width="150rem"/>
+                <field name="living_area" width="150rem"/>
+                <field name="expected_price" width="150rem"/>
                 <field name="selling_price" optional="hide"/>
+                <field name="salesperson_id"/>
+                <field name="buyer_id"/>
                 <field name="date_availability" optional="show"/>
             </list>
         </field>
@@ -36,32 +40,45 @@
                     <!-- Two-column main group -->
                     <group>
                         <group string="Property Details">
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
+                            <!--  added the color for tags -->
+                            <field name="tag_ids"
+                                   widget="many2many_tags"
+                                   options="{'color_field': 'color'}"/>
                         </group>
                         <group string="Pricing">
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="state"/>
+                            <field name="active"/>
                         </group>
                     </group>
                     <!-- Notebook tabs -->
                     <notebook>
                         <page string="Description" name="description">
-                            <field name="description"/>
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>>
+                            </group>
                         </page>
                         <page string="Other Info" name="other_info">
                             <group>
-                                <field name="active"/>
-
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
                             </group>
+                        </page>
+                        <page string="Offers" name="offers">
+                            <field name="offer_ids"/>
+                            <field name="salesperson_id"/>
+                            <field name="buyer_id"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -78,11 +95,15 @@
                 <!-- Searchable fields -->
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
                 <field name="expected_price"/>
+                <field name="facades"/>
                 <field name="garden_orientation"/>
                 <field name="active"/>
                 <field name="state"/>
-                <!-- Preset filter: Available properties -->
+                <field name="buyer_id"/>
+                <!-- filter -->
                 <filter string="1 Bedroom &amp; 1 Garage" name="1BG"
                         domain="[('bedrooms', '=',1),('garage', '=', True)]"/>
 
@@ -91,13 +112,15 @@
                 <filter string="Under Budget" name="budget" domain="[('expected_price', '&lt;=', 500000)]"/>
                 <separator/>
                 <filter string="Available" name="available"
-                        domain="['|', ('state', 'ilike', 'new'), ('state', 'ilike', 'offer received')]"/>
+                        domain="['|', ('state', 'ilike', 'new'), ('state', 'ilike', 'offer_received')]"/>
                 <separator/>
                 <filter string="Expensive" name="highest_price"
-                        domain="[('expected_price', '&gt;',10000009 )]"/>
+                        domain="[('expected_price', '&gt;',1000000 )]"/>
                 <separator/>
                 <!-- Group by shortcuts -->
                 <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <separator/>
                     <filter string="Number of bedrooms" name="bedrooms" context="{'group_by': 'bedrooms'}"/>
                     <separator/>
                     <filter string="Garage" name="garage" context="{'group_by': 'garage'}"/>

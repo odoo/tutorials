@@ -9,5 +9,8 @@
               name="Property List"
               parent="estate_menu_properties"
               action="estate_property_action"/>
-
+    
+    <menuitem id="estate_property_setting_menu"
+              parent="estate_menu_root"
+              name="Setting"/>
 </odoo>

@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer(string="Facades")
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[
             ('north', "North"),
@@ -28,8 +28,8 @@ class EstateProperty(models.Model):
         string="Garden Orientation",
         help="Direction the garden faces"
     )
-    living_area = fields.Integer(string="Living Area")
-    name = fields.Char(string="Name", required=True)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    name = fields.Char(string="Title", required=True)
     postcode = fields.Char(string="Postcode")
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     state = fields.Selection(
@@ -44,4 +44,34 @@ class EstateProperty(models.Model):
         required=True,
         default='new',
         copy=False
+    )
+    # Many2one: property type (House, Apartment, etc.)
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        string='Property Type'
+    )
+
+    # Many2one: buyer (from res.partner — contacts)
+    buyer_id = fields.Many2one(
+        'res.partner',
+        string='Buyer',
+        copy=False
+    )
+
+    # Many2one: salesperson (from res.users — Odoo users)
+    salesperson_id = fields.Many2one(
+        'res.users',
+        string='Salesperson',
+        default=lambda self: self.env.user
+    )
+
+    offer_ids = fields.One2many(
+        'estate.property.offer',
+        'property_id',
+        string='Offers'
+    )
+
+    tag_ids = fields.Many2many(
+        'estate.property.tag',
+        string='Tags'
     )
