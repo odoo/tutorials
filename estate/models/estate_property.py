@@ -131,14 +131,16 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if record.state != 'offer_accepted':
+                raise UserError("Accept the property first")
+            if record.state == 'canceled':
+                raise UserError("Cancelled property cannot be sold!")
             for rec in record.issue_ids:
                 if rec.staty != 'resolved' and rec.priority == 'high':
                     raise UserError("Cannot sell the property pls solve the issues")
-                if record.state == 'canceled':
-                    raise UserError("Cancelled property cannot be sold!")
-            record.state = 'sold'
-            record.sold_date = fields.Datetime.now()
-            return True
+                record.state = 'sold'
+                record.sold_date = fields.Datetime.now()
+                return True
 
     def action_cancel(self):
         for record in self:
