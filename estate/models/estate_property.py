@@ -43,7 +43,6 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
-        compute="_compute_state",
         default='new',
         copy=False,
         required=True,
@@ -89,14 +88,6 @@ class EstateProperty(models.Model):
         'A property selling price must be positive'
     )
 
-    @api.depends("offer_ids")
-    def _compute_state(self):
-        for record in self:
-            if record.offer_ids:
-                record.state = "offer_received"
-            else:
-                record.state = "new"
-
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -133,6 +124,12 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
                 raise ValidationError(
                     "Selling price cannot be lower than 90% of expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_poperty_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError('you are not in new or cancel')
 
     def action_sold(self):
         for record in self:

@@ -56,6 +56,23 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline -
                                    record.create_date.date()).days
 
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            current_price = vals.get('price')
+            property = self.env['estate.property'].browse(vals['property_id'])
+            for offer in property.offer_ids:
+                if current_price < offer.price:
+                    raise UserError(
+                        "Offer price must greater than minimum price")
+
+        offers = super().create(vals_list)
+        for record in offers:
+            if record.property_id.state == 'new':
+                record.property_id.state = 'offer_received'
+
+        return offers
+
     def action_confirm(self):
         for record in self:
             for offer in record.property_id.offer_ids:
