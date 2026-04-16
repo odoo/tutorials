@@ -73,9 +73,10 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            for i in record.issue_ids:
-                if i.priority == 'high' and i.issue_state != 'resolved':
-                    raise UserError("Cannot sell! Property has unresolved high-priority issues.")
+            if any(i.issue_state != 'resolved' and i.priority == 'high' for i in record.issue_ids):
+                raise UserError("Cannot sell! Property has unresolved high-priority issues.")
+            if not any(offer.status == 'accepted' for offer in record.offer_ids):
+                raise UserError("You cannot sell a property without an accepted offer!")
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold!")
             record.state = 'sold'
