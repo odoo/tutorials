@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(string="state", selection=[("new", "New"), ("offer_received", "Offer Received"), ("accepted", "Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], default="new", copy=False)
     property_type_id = fields.Many2one("estate.property.type", string="Property type")
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False, default=lambda self: self.env.user.partner_id)
-    sales_person = fields.Many2one(comodel_name="res.users", string="Sales person", index=True, tracking=True, default=lambda self: self.env.user)
+    sales_person = fields.Many2one(comodel_name="res.users", string="Sales person", index=True, default=lambda self: self.env.user)
     property_tag = fields.Many2many(comodel_name="estate.property.tag", string="Property Tags")
     offer_id = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Property offer")
 
@@ -68,3 +68,13 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled properties can't be saved")
             else:
                 record.status = 'saved'
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be positive'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'Selling Price must be positive'
+    )
