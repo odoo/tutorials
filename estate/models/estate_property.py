@@ -51,6 +51,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area", store=True)
     best_price = fields.Integer(string="Best Offer", compute="_compute_best_price", store=True)
     is_suspicious = fields.Boolean(string="Suspicious", default=False, readonly=True, store=False)
+    issue_ids = fields.One2many('estate.property.issue', 'property_id', string="Issues")
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -113,13 +114,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area, self.garden_orientation = 0, False
 
-    def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError("Cancelled property cannot be sold.")
-            record.state = 'sold'
-        return True
-
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
@@ -132,7 +126,23 @@ class EstateProperty(models.Model):
             if record.selling_price > 0 and (record.selling_price < record.expected_price * 0.9):
                 raise ValidationError("You cannot set a selling price below 90 percent of the expected price")
 
+    @api.ondelete(at_uninstall=False)
+    def _check_delete(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You can only delete New or Cancelled properties")
+
     @api.depends('visit')
     def _compute_visit_count(self):
         for record in self:
             record.visit_count = len(record.visit)
+
+    def action_sold(self):
+        for record in self:
+            for issue in record.issue_ids:
+                if issue.priority == 'high' and issue.state != 'resolved':
+                    raise UserError("Property can not be sold as it is due and high priority")
+            if record.state == 'cancelled':
+                raise UserError("Cancelled property cannot be sold.")
+            record.state = 'sold'
+        return True

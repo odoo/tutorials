@@ -1,0 +1,66 @@
+<odoo>
+
+    <record id="estate_property_issue_action" model="ir.actions.act_window">
+        <field name="name">Property Issue</field>
+        <field name="res_model">estate.property.issue</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    
+    <record id="estate_property_issue_list" model="ir.ui.view">
+        <field name="name">estate.property.issue.list</field>
+        <field name="model">estate.property.issue</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="reported_by"/>
+                <button name="action_resolve"
+                        type="object"
+                        string="Resolve"
+                        invisible="state in ['resolved', 'cancelled']"/>
+
+                <button name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            invisible="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+     <record id="estate_property_issue_form" model="ir.ui.view">
+        <field name="name">estate.property.issue.form</field>
+        <field name="model">estate.property.issue</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_resolve"
+                        type="object"
+                        string="Resolve"
+                        invisible="state in ['resolved', 'cancelled']"/>
+
+                    <button name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            invisible="state == 'cancelled'"/>
+                    <field name="state" widget='statusbar' statusbar_visible="new,in_progress,resolved,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="property_id"/>
+                        <field name="reported_by"/>
+                        <field name="assigned_to"/>
+                        <field name="issue_type"/>
+                        <field name="priority"/>
+                        <field name="reported_date"/>
+                        <field name="resolved_date"/>
+                        <field name="description"/>
+                        <field name="sla_deadline"/>
+                        <field name="is_due"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

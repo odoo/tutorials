@@ -9,7 +9,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate Property offer"
     _order = 'price desc'
 
-    price = fields.Float()
+    price = fields.Float(required=True)
     status = fields.Selection(
         [
             ('accepted', "Accepted"),
@@ -50,6 +50,23 @@ class EstatePropertyOffer(models.Model):
             ])
             if len(offers) >= 3:
                 record.property_id.is_suspicious = True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            current_price = vals.get('price', 0.0)
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            for offer in property_id.offer_ids:
+                if current_price < offer.price:
+                    raise UserError("Offer Price cannot be less than previous offer prices")
+
+        offers = super().create(vals_list)
+
+        for i in offers:
+            if i.property_id.state == 'new':
+                i.property_id.state = 'offer_received'
+
+        return offers
 
     def action_accept(self):
         for record in self:

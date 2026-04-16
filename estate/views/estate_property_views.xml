@@ -105,6 +105,9 @@
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
                         </page>
+                        <page string="Issues">
+                            <field name="issue_ids"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
