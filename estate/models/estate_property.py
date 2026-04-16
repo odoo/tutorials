@@ -8,6 +8,9 @@ class EstateProperty(models.Model):
     _description = "A real estate model with many fields"
     active = fields.Boolean(string="Active", default="Active")
     bedrooms = fields.Integer(string="Bedrooms", default="2")
+    buyer = fields.Many2one(
+        'res.partner', string="Buyer",  ondelete='restrict',
+    )
     date_availability = fields.Datetime(
         string="Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3))
     description = fields.Text(string="Description")
@@ -27,8 +30,13 @@ class EstateProperty(models.Model):
     )
     garage = fields.Boolean(string="Garage")
     living_area = fields.Float(string="Living Area (sqm)")
-    name = fields.Char(string="Title", required=True, default="Unknown")
+    name = fields.Char(string="Title", required=True,)
     postcode = fields.Char(string="Postcode")
+    property_type_id = fields.Many2one(
+        'estate.property.type', string="Property Type")
+    salesman = fields.Many2one(
+        'res.users', string="Salesman",   ondelete='restrict',
+    )
     selling_price = fields.Float(
         string="Selling Price", readonly=True, copy=False)
     state = fields.Selection([('new', "New"),
@@ -38,6 +46,11 @@ class EstateProperty(models.Model):
                               ('cancelled', "Cancelled")
                               ],
                              default='new')
+    tag_ids = fields.Many2many(
+        'estate.property.tag',
+
+        string="Tags"
+    )
 
     @api.constrains('expected_price')
     def _check_price(self):

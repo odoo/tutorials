@@ -3,7 +3,10 @@
 
     <menuitem id="real_estate_root" name="Real Estate" web_icon="estate,static/description/Real_Estate_Logo.jpg" />
 
-    <menuitem id="real_estate_properties_menu" name="Properties" parent="real_estate_root"/>
+    <menuitem id="real_estate_properties_menu" name="Advertisements" parent="real_estate_root"/>
+    <menuitem id="real_estate_properties_settings_menu" name="Settings" parent="real_estate_root" />
 
     <menuitem id="real_estate_menu_action" name="All Properties " parent="real_estate_properties_menu" action="test_property_action"/>
+    <menuitem id="real_estate_property_type_action" name="Property Types" parent="real_estate_properties_settings_menu" action="test_property_type_action"/>
+
 </odoo>

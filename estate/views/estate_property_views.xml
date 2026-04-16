@@ -5,8 +5,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Tags" decoration-danger="state and state == 'cancelled'" limit="20"
-                  decoration-success="state and state == 'offer_accepted'">
+            <list string="Tags" decoration-danger="state and state == 'cancelled'" limit="20" decoration-success="state and state == 'offer_accepted'">
                 <field name="name" string="Property Title"/>
                 <field name="postcode" width="96px"/>
                 <field name="bedrooms"/>
@@ -27,18 +26,20 @@
         <field name="arch" type="xml">
             <form string="Real Estate">
                 <header>
-                    <field name="state" widget="statusbar" class="oe_inline_end"
-                           statusbar_visible="new,offer_accepted,offer_received,sold,cancelled"
-                           options="{'clickable': True}"/>
+                    <field name="state" widget="statusbar" class="oe_inline_end" statusbar_visible="new,offer_accepted,offer_received,sold,cancelled" options="{'clickable': True}"/>
                 </header>
                 <sheet>
                     <h1>
-                        <field name="name" string="Property Title"/>
+                        <field name="name" placeholder="Property Title"/>
                     </h1>
+                    <label for="tag_ids"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                    <separator/>
                     <group>
                         <group>
-                            <field name="date_availability"/>
+                            <field name="property_type_id"/>
                             <field name="selling_price"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="postcode" width="96px" class="oe_inline oe_left"/>
@@ -58,7 +59,17 @@
                                 <field name="garden_orientation" widget="radio"/>
                             </group>
                         </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman" widget="many2one_avatar_user" />
+                                <field name="buyer" widget="many2one_avatar_user"/>
+
+                            </group>
+                        </page>
                     </notebook>
+
+
+
                 </sheet>
             </form>
         </field>
@@ -76,8 +87,7 @@
                 <field name="postcode"/>
                 <separator/>
                 <filter string="Date Availability" name="Date Availability" date="date_availability"/>
-                <filter name="available_properties" string="Available"
-                        domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
+                <filter name="available_properties" string="Available" domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
                 <group>
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
