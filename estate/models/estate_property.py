@@ -70,13 +70,12 @@ class EstateProperty(models.Model):
         "estate.property.offer",
         "property_id",
     )
+    issue_ids = fields.One2many(
+        "estate.property.issue",
+        "property_id"
+    )
     visit_ids = fields.One2many("estate.property.visit", "property_id")
     visit_count = fields.Integer(compute="_compute_visit_count")
-
-    def _compute_visit_count(self):
-        for record in self:
-            record.visit_count = len(record.visit_ids)
-
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
@@ -109,6 +108,10 @@ class EstateProperty(models.Model):
             prices = record.offer_ids.mapped("price")
             record.best_price = max(prices) if prices else 0
 
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -135,6 +138,9 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(_("Cancelled property can not be sold"))
+
+            if record.issue_ids.priority == 'high' and record.issue_ids.state != 'resolved':
+                raise UserError(_("you can not sold overdue property"))
 
             if not any(o.status == 'accepted' for o in record.offer_ids):
                 raise UserError(_("Accept an offer first"))
