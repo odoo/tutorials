@@ -43,6 +43,15 @@
                 </header>
                 <sheet>
                 <div class="oe_button_box" name="button_box">
+                    <button name="%(estate.estate_property_issues_action_stat)d"
+                        type="action"
+                        class="oe_stat_button"
+                        icon="fa-money">
+                        <field
+                            name='issue_ids'
+                            widget="statinfo"
+                            string="Property Issues"/>
+                    </button>
                     <button name="%(estate.estate_property_visit_action_stat)d"
                         type="action"
                         class="oe_stat_button"
@@ -115,8 +124,9 @@
                                     <field name="status"/>
                                     <field name="suspicious_offer" string="Suspicious"/>
                                 </list>
-                            </field> </page>
-                        </notebook>
+                            </field> 
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

@@ -47,6 +47,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers", copy=True)
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+    issue_ids = fields.One2many('estate.property.issues', 'property_id')
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -72,6 +73,9 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            for i in record.issue_ids:
+                if i.priority == 'high' and i.issue_state != 'resolved':
+                    raise UserError("Cannot sell! Property has unresolved high-priority issues.")
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold!")
             record.state = 'sold'
