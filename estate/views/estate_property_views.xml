@@ -22,7 +22,7 @@
         <field name='arch' type='xml'>
             <form>
                 <header>
-                    <field name='state' widget='statusbar' options="{'clickable': 1, 'fold_field': 'folded'}"/>
+                    <field name='state' widget='statusbar' options="{'clickable': 1}"/>
                 </header>
                 <sheet>
                     <div class="oe_title mb16">
@@ -60,7 +60,7 @@
                         </page>
                         <page string='Offers'>
                             <field name='offer_ids'>
-                                <list editable='bottom'>
+                                <list editable='bottom' decoration-danger="status and status == 'refused'" decoration-success="status and status == 'accepted'">
                                     <control>
                                         <create name="add_product_control" string="Add an Offer "/>
                                     </control>
