@@ -21,4 +21,4 @@ class EstatePropertyVisit(models.Model):
                 'start': record.visit_date,
                 'stop': record.end_date,
             })
-        return True
+        return records
