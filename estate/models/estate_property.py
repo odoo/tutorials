@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate system"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -59,7 +60,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
-    ], required=True, copy=False, default='new')
+    ], required=True, copy=False, default='new', tracking=True)
     property_type_id = fields.Many2one('estate.property.type', string="Property Type", ondelete='cascade')
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     seller_id = fields.Many2one('res.users', string="Seller", default=lambda self: self.env.user)
@@ -69,11 +70,29 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute='_compute_best_price', readonly=True, store=True)
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
-            record.state = 'sold'
-        return True
+        self.ensure_one()
+        if self.state == 'cancelled':
+            raise UserError("Cancelled properties cannot be sold.")
+        self.state = 'sold'
+
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_partner_ids': self.buyer_id.ids,
+            'default_composition_mode': 'comment',
+            'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+            'default_subject': f"Property Confirmed: {self.name}",
+            'default_body': f"<p>Hello,<br/>The property <b>{self.name}</b> has been sold for <b>${self.selling_price}</b>.</p>",
+        }
+
+        return {
+            'name': 'Send Email',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'target': 'new',
+            'context': ctx,
+        }
 
     def action_cancel(self):
         for record in self:
