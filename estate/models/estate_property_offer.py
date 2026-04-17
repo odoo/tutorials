@@ -36,6 +36,14 @@ class EstatePropertyOffer(models.Model):
             else:
                 rec.validity = (rec.date_deadline - fields.Date.context_today(rec)).days
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer_received'
+        return offers
+
     def action_accept(self):
         if self.property_id == 'sold' or self.property_id == 'cancelled':
             raise UserError('You cannot accept an offer in a sold or cancelled property')
@@ -61,11 +69,3 @@ class EstatePropertyOffer(models.Model):
                 self.property_id.state = 'offer_received'
             self.status = 'refused'
         return True
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            if offer.property_id.state == 'new':
-                offer.property_id.state = 'offer_received'
-        return offers

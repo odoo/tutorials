@@ -26,7 +26,6 @@
                     <button name='action_set_sold' type='object' string='Sold' class="btn-primary"/>
                     <button name='action_set_cancelled' type='object' string='Cancel'/>
                     <button name='action_reset' type='object' string='Reset'/>
-                    <button name='%(estate.estate_property_action)d' type='action' string="All Properties"/>.
                 </header>
                 <sheet>
                     <div class="oe_title mb16">
