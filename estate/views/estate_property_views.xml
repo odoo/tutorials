@@ -22,7 +22,11 @@
         <field name='arch' type='xml'>
             <form>
                 <header>
-                    <field name='state' widget='statusbar' options="{'clickable': 1}"/>
+                    <field name='state' widget='statusbar'/>
+                    <button name='action_set_sold' type='object' string='Sold' class="btn-primary"/>
+                    <button name='action_set_cancelled' type='object' string='Cancel'/>
+                    <button name='action_reset' type='object' string='Reset'/>
+                    <button name='%(estate.estate_property_action)d' type='action' string="All Properties"/>.
                 </header>
                 <sheet>
                     <div class="oe_title mb16">
@@ -64,11 +68,13 @@
                                     <control>
                                         <create name="add_product_control" string="Add an Offer "/>
                                     </control>
-                                    <field name='status' width='200px' widget="radio" options="{'horizontal': 1}"/>
                                     <field name='partner_id' width='200px'/>
-                                    <field name='validity'/>
-                                    <field name='date_deadline' string="Deadline"/>
                                     <field name='price' width='200px'/>
+                                    <field name='validity' string="Validity (Days)" width='200px'/>
+                                    <field name='date_deadline' string="Deadline"/>
+                                    <button name='action_accept' string='Accept' type='object' icon='fa-check'/>
+                                    <button name='action_refuse' string='Refuse' type='object' icon='fa-times'/>
+                                    <field name='status' width='200px'/>
                                 </list>
                             </field>
                         </page>
@@ -97,7 +103,7 @@
                 <field name='facades'/>
                 <filter name='active' string='Archived' domain='[("active", "=", False)]'/>
                 <separator/>
-                <filter name='state' string='Available' domain='["|", ("state", "=", "new"), ("state", "=", "offer_received")]'/>
+                <filter name='state' string='Available' domain='["|", ("state", "!=", "sold"), ("state", "!=", "cancelled")]'/>
                 <filter name='group_by_postcode' string="Postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>

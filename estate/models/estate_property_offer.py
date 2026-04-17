@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -11,7 +12,8 @@ class EstatePropertyOffer(models.Model):
             ('accepted', "Accepted"),
             ('refused', "Refused"),
         ],
-        copy=False
+        copy=False,
+        readonly=True
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
@@ -33,3 +35,37 @@ class EstatePropertyOffer(models.Model):
                 rec.validity = (rec.date_deadline - fields.Date.to_date(rec.create_date)).days
             else:
                 rec.validity = (rec.date_deadline - fields.Date.context_today(rec)).days
+
+    def action_accept(self):
+        if self.property_id == 'sold' or self.property_id == 'cancelled':
+            raise UserError('You cannot accept an offer in a sold or cancelled property')
+        else:
+            self.status = 'accepted'
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
+            self.property_id.state = 'offer_accepted'
+            other_offers = self.search([
+                ('property_id', '=', self.property_id.id),
+                ('id', '!=', self.id)
+            ])
+            other_offers.write({'status': 'refused'})
+        return True
+
+    def action_refuse(self):
+        if self.property_id == 'sold' or self.property_id == 'cancelled':
+            raise UserError('You cannot reject an offer in a sold or cancelled property')
+        else:
+            if self.status == 'accepted':
+                self.property_id.selling_price = 0
+                self.property_id.buyer_id = False
+                self.property_id.state = 'offer_received'
+            self.status = 'refused'
+        return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer_received'
+        return offers
