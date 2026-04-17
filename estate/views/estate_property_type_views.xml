@@ -12,7 +12,7 @@
         <field name="model">estate.property.type</field>
 
         <field name="arch" type="xml">
-            <form >
+            <form>
                 <sheet>
                     <div class="oe_title oe_inline text-center">
                         <label for="name"/>

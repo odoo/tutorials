@@ -1,11 +1,23 @@
 <?xml version="1.0"?>
 <odoo>
+    <!--_________________________________________   WINDOW ACTION _________________________________________-->
+
+    <record id="test_property_action" model="ir.actions.act_window">
+        <field name="name">Property Action</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+
+        <field name="context">{'search_default_available_properties':1}</field>
+    </record>
+
+
     <!--_________________________________________ LIST VIEW _________________________________________-->
     <record id="real_estate_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Tags" decoration-danger="state and state == 'cancelled'" limit="20" decoration-success="state and state == 'offer_accepted'">
+            <list string="Tags" decoration-danger="state and state == 'cancelled'" limit="20"
+                  decoration-success="state and state == 'offer_accepted'">
                 <field name="name" string="Property Title"/>
                 <field name="postcode" width="96px"/>
                 <field name="bedrooms"/>
@@ -26,7 +38,9 @@
         <field name="arch" type="xml">
             <form string="Real Estate">
                 <header>
-                    <field name="state" widget="statusbar" class="oe_inline_end" statusbar_visible="new,offer_accepted,offer_received,sold,cancelled" options="{'clickable': True}"/>
+                    <field name="state" widget="statusbar" class="oe_inline_end"
+                           statusbar_visible="new,offer_accepted,offer_received,sold,cancelled"
+                           options="{'clickable': True}"/>
                 </header>
                 <sheet>
                     <h1>
@@ -59,17 +73,17 @@
                                 <field name="garden_orientation" widget="radio"/>
                             </group>
                         </page>
+                        <page name="offers" string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesman" widget="many2one_avatar_user" />
+                                <field name="salesman" widget="many2one_avatar_user"/>
                                 <field name="buyer" widget="many2one_avatar_user"/>
 
                             </group>
                         </page>
                     </notebook>
-
-
-
                 </sheet>
             </form>
         </field>
@@ -87,18 +101,13 @@
                 <field name="postcode"/>
                 <separator/>
                 <filter string="Date Availability" name="Date Availability" date="date_availability"/>
-                <filter name="available_properties" string="Available" domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
+                <filter name="available_properties" string="Available"
+                        domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
                 <group>
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
     </record>
-    <record id="test_property_action" model="ir.actions.act_window">
-        <field name="name">Property Action</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
 
-        <field name="context">{'search_default_available_properties':1}</field>
-    </record>
 </odoo>
