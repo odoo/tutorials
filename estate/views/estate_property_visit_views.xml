@@ -1,24 +1,22 @@
 <odoo>
-    <record id="estate_property_visits_list_view" model="ir.ui.view">
-        <field name="name">estate.property.visit</field>
+    <record id="estate_property_visits_view_list" model="ir.ui.view">
+        <field name="name">estate.property.visits.view.list</field>
         <field name="model">estate.property.visit</field>
         <field name="arch" type="xml">
-        <list>
-            <field name="buyer_id"/>
-            <field name="visit_date"/>
-        </list>
+            <list>
+                <field name="buyer_id"/>
+                <field name="visit_date"/>
+            </list>
         </field>
     </record>
 
     <record id="estate_property_visits_view_form" model="ir.ui.view">
-        <field name="name">estate.property.visit.form</field>
+        <field name="name">estate.property.visits.view.form</field>
         <field name="model">estate.property.visit</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state"
-                        widget="statusbar"
-                        statusbar_visible="Scheduled,Done"/>
+                    <field name="state" widget="statusbar" statusbar_visible="Scheduled,Done"/>
                 </header>
                 <sheet>
                     <group>
@@ -33,7 +31,7 @@
     </record>
 
     <record id="estate_property_visit_action_stat" model="ir.actions.act_window">
-        <field name="name">Visits</field>
+        <field name="name">Estate Property Stat Button</field>
         <field name="res_model">estate.property.visit</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[('property_id', '=', active_id)]</field>

@@ -44,10 +44,24 @@ class EstateProperty(models.Model):
         copy=False,
         default="new"
     )
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers", copy=True)
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers", copy=True)
     issue_ids = fields.One2many('estate.property.issues', 'property_id')
+    sold_date = fields.Date()
+    sold_within = fields.Integer(string='Sold Within (Days)', compute='_compute_sold_within', store=True)
+    has_suspicious_offers = fields.Boolean(string="Has Suspicious Offers", compute="_compute_has_suspicious_offers", store=False)
+    visit_ids = fields.One2many('estate.property.visit', 'property_id', string="Visits")
+    visit_count = fields.Integer(string="Visit Count", compute='_compute_visit_count')
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        "The expected price must be strictly positive."
+    )
+    _check_selling_price_positive = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        "The selling price must be positive."
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -62,6 +76,63 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+    @api.depends('expected_price', 'offer_ids', 'sold_within')
+    def _dynamic_tags(self):
+        all_tags = self.env['estate.property.tag'].search([('name', 'in', ('High Value', 'Quick Sale', 'Low Interest'))])
+
+        if 'High Value' not in all_tags.mapped('name'):
+            all_tags |= self.env['estate.property.tag'].create({'name': 'High Value'})
+        if 'Low Interest' not in all_tags.mapped('name'):
+            all_tags |= self.env['estate.property.tag'].create({'name': 'Low Interest'})
+        if 'Quick Sale' not in all_tags.mapped('name'):
+            all_tags |= self.env['estate.property.tag'].create({'name': 'Quick Sale'})
+
+        high_value_tag = all_tags.filtered(lambda t: t.name == 'High Value')
+        low_interest_tag = all_tags.filtered(lambda t: t.name == 'Low Interest')
+        quick_sale_tag = all_tags.filtered(lambda t: t.name == 'Quick Sale')
+
+        for record in self:
+            tags_to_add = self.env['estate.property.tag']
+            if record.expected_price > 1000:
+                tags_to_add |= high_value_tag
+            if len(record.offer_ids) < 2:
+                tags_to_add |= low_interest_tag
+            if record.sold_within and record.sold_within <= 10:
+                tags_to_add |= quick_sale_tag
+            record.tag_ids = [(6, 0, tags_to_add.ids)]
+
+    @api.depends('sold_date', 'create_date')
+    def _compute_sold_within(self):
+        for record in self:
+            if record.sold_date and record.create_date:
+                record.sold_within = (record.sold_date - record.create_date.date()).days
+            else:
+                record.sold_within = 0
+
+    @api.depends('offer_ids.suspicious_offer')
+    def _compute_has_suspicious_offers(self):
+        for record in self:
+            record.has_suspicious_offers = any(offer.suspicious_offer for offer in record.offer_ids)
+
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            if float_compare(
+                record.selling_price,
+                record.expected_price * 0.90,
+                precision_digits=2
+            ) < 0:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -70,6 +141,14 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for property in self:
+            if property.state not in ('new', 'cancelled'):
+                raise UserError(
+                    "You cannot delete a property that is not 'New' or 'Cancelled'."
+                )
 
     def action_sold(self):
         for record in self:
@@ -89,87 +168,3 @@ class EstateProperty(models.Model):
                 raise UserError("Sold properties cannot be cancelled!")
             record.state = 'cancelled'
         return True
-
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        "The expected price must be strictly positive."
-    )
-    _check_selling_price_positive = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        "The selling price must be positive."
-    )
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue
-            if float_compare(
-                record.selling_price,
-                record.expected_price * 0.90,
-                precision_digits=2
-            ) < 0:
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
-                )
-
-    sold_date = fields.Date()
-    sold_within = fields.Integer(string='Sold Within (Days)', compute='_compute_sold_within', store=True)
-
-    @api.depends('sold_date', 'create_date')
-    def _compute_sold_within(self):
-        for record in self:
-            if record.sold_date and record.create_date:
-                record.sold_within = (record.sold_date - record.create_date.date()).days
-            else:
-                record.sold_within = 0
-
-    @api.depends('expected_price', 'offer_ids', 'sold_within')
-    def _dynamic_tags(self):
-        all_tags = self.env['estate.property.tag'].search([('name', 'in', ('High Value', 'Quick Sale', 'Low Interest'))])
-
-        if 'High Value' not in all_tags.mapped('name'):
-            all_tags |= self.env['estate.property.tag'].create({'name': 'High Value'})
-
-        if 'Low Interest' not in all_tags.mapped('name'):
-            all_tags |= self.env['estate.property.tag'].create({'name': 'Low Interest'})
-
-        if 'Quick Sale' not in all_tags.mapped('name'):
-            all_tags |= self.env['estate.property.tag'].create({'name': 'Quick Sale'})
-
-        high_value_tag = all_tags.filtered(lambda t: t.name == 'High Value')
-        low_interest_tag = all_tags.filtered(lambda t: t.name == 'Low Interest')
-        quick_sale_tag = all_tags.filtered(lambda t: t.name == 'Quick Sale')
-
-        for record in self:
-            tags_to_add = self.env['estate.property.tag']
-            if record.expected_price > 1000:
-                tags_to_add |= high_value_tag
-            if len(record.offer_ids) < 2:
-                tags_to_add |= low_interest_tag
-            if record.sold_within and record.sold_within <= 10:
-                tags_to_add |= quick_sale_tag
-            record.tag_ids = [(6, 0, tags_to_add.ids)]
-
-    @api.ondelete(at_uninstall=False)
-    def _check_state_before_delete(self):
-        for property in self:
-            if property.state not in ('new', 'cancelled'):
-                raise UserError(
-                    "You cannot delete a property that is not 'New' or 'Cancelled'."
-                )
-
-    has_suspicious_offers = fields.Boolean(string="Has Suspicious Offers", compute="_compute_has_suspicious_offers", store=False)
-
-    @api.depends('offer_ids.suspicious_offer')
-    def _compute_has_suspicious_offers(self):
-        for record in self:
-            record.has_suspicious_offers = any(offer.suspicious_offer for offer in record.offer_ids)
-
-    visit_ids = fields.One2many('estate.property.visit', 'property_id', string="Visits")
-    visit_count = fields.Integer(string="Visit Count", compute='_compute_visit_count')
-
-    @api.depends('visit_ids')
-    def _compute_visit_count(self):
-        for record in self:
-            record.visit_count = len(record.visit_ids)

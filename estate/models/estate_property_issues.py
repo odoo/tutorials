@@ -1,5 +1,5 @@
-from odoo import api, fields, models
 from datetime import timedelta
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -13,19 +13,14 @@ class EstatepropertyIssues(models.Model):
     assigned_to = fields.Many2one('res.users', string="Assigned To")
     issue_type = fields.Selection(
         selection=[
-        ('plumbing', "Plumbing"),
-        ('electrical', "Electrical"),
-        ('structural', "Structural"),
-        ('other', "Other")],
+        ('plumbing', "Plumbing"), ('electrical', "Electrical"),
+        ('structural', "Structural"), ('other', "Other")],
         required=True
     )
     issue_state = fields.Selection(
         selection=[
-        ('new', "New"),
-        ('in progress', "In Progress"),
-        ('resolved', "Resolved"),
-        ('cancelled', "Cancelled"),
-        ('overdue', "Overdue")],
+        ('new', "New"), ('in progress', "In Progress"),
+        ('resolved', "Resolved"), ('cancelled', "Cancelled")],
         default='new',
         string="Status"
     )
@@ -52,6 +47,16 @@ class EstatepropertyIssues(models.Model):
         if self.issue_type in ('plumbing', 'electrical'):
             self.priority = 'medium'
 
+    @api.depends('reported_date', 'priority', 'issue_state')
+    def _compute_is_overdue(self):
+        for record in self:
+            if record.issue_state in ('resolved', 'cancelled'):
+                record.is_overdue = False
+                continue
+            days = {'high': 2, 'medium': 5, 'low': 10}.get(record.priority, 0)
+            deadline = record.reported_date + timedelta(days=days)
+            record.is_overdue = fields.Date.today() > deadline
+
     @api.onchange('assigned_to')
     def _onchange_assigned_to(self):
         if self.assigned_to:
@@ -69,13 +74,3 @@ class EstatepropertyIssues(models.Model):
         for record in self:
             record.issue_state = 'cancelled'
         return True
-
-    @api.depends('reported_date', 'priority', 'issue_state')
-    def _compute_is_overdue(self):
-        for record in self:
-            if record.issue_state in ('resolved', 'cancelled'):
-                record.is_overdue = False
-                continue
-            days = {'high': 2, 'medium': 5, 'low': 10}.get(record.priority, 0)
-            deadline = record.reported_date + timedelta(days=days)
-            record.is_overdue = fields.Date.today() > deadline
