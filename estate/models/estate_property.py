@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(string="Active", default="Active")
     bedrooms = fields.Integer(string="Bedrooms", default="2")
     buyer = fields.Many2one(
-        'res.partner', string="Buyer",  ondelete='restrict',
+        'res.partner', string="Buyer", ondelete='restrict',
     )
     date_availability = fields.Datetime(
         string="Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3))
@@ -37,7 +37,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
     salesman = fields.Many2one(
-        'res.users', string="Salesman",   ondelete='restrict',
+        'res.users', string="Salesman", ondelete='restrict',
     )
     selling_price = fields.Float(
         string="Selling Price", readonly=True, copy=False)
