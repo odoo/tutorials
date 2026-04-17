@@ -48,7 +48,7 @@ class EstateProperties(models.Model):
     name = fields.Char(string="Property Name", required=True)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     postcode = fields.Char()
-    price_gap= fields.Float(compute="_compute_price_gap")
+    price_gap = fields.Float(compute="_compute_price_gap")
     property_type_colour = fields.Selection(related="property_type_id.colour", readonly=False)
     property_type_id = fields.Many2one(comodel_name="estate.property.type")
     salesperson_id = fields.Many2one(comodel_name='res.partner', default=lambda self: self.env.user.partner_id)
@@ -108,9 +108,9 @@ class EstateProperties(models.Model):
     def _compute_price_gap(self):
         for property in self:
             if (property.best_price and property.expected_price) != 0:
-                property.price_gap= property.best_price - property.expected_price
+                property.price_gap = property.best_price - property.expected_price
             else:
-                property.price_gap= 0
+                property.price_gap = 0
 
     @api.onchange('state')
     def _onchnage_state(self):

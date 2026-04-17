@@ -3,7 +3,7 @@
         <field name="name">estate.properties.view.list</field>
         <field name="model">estate.properties</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state == 'sold'" decoration-danger="state == 'cancelled'">
                 <field name="name" string="Title" width="130px"/>
                 <field name="postcode" width="130px"/>
                 <field name="bedrooms" width="130px"/>
@@ -41,7 +41,7 @@
                             <field name="name"/>
                         </h1>
                     </div>
-                    <field name="tag_ids" placeholder="Add tags here" widget="many2many_tags"/>
+                    <field name="tag_ids" placeholder="Add tags here" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <separator/>
                     <div>
                         <group>
