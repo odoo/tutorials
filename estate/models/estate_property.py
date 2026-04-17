@@ -77,15 +77,18 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         if self.state == 'cancelled':
             raise UserError('You cannot sell an offer that is already Cancelled')
-        else:
-            self.state = 'sold'
-        return True
+        self.state = 'sold'
+        return {
+            'effect': {
+                'type': 'rainbow_man',
+                'message': "Huge congrats on selling your property! Here's to new beginnings!"
+            }
+        }
 
     def action_set_cancelled(self):
         if self.state == 'sold':
             raise UserError('You cannot cancel an offer that is already Sold')
-        else:
-            self.state = 'cancelled'
+        self.state = 'cancelled'
         return True
 
     def action_reset(self):

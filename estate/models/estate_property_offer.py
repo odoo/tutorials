@@ -45,27 +45,25 @@ class EstatePropertyOffer(models.Model):
         return offers
 
     def action_accept(self):
-        if self.property_id == 'sold' or self.property_id == 'cancelled':
+        if self.property_id.state in ('sold', 'cancelled'):
             raise UserError('You cannot accept an offer in a sold or cancelled property')
-        else:
-            self.status = 'accepted'
-            self.property_id.selling_price = self.price
-            self.property_id.buyer_id = self.partner_id
-            self.property_id.state = 'offer_accepted'
-            other_offers = self.search([
-                ('property_id', '=', self.property_id.id),
-                ('id', '!=', self.id)
-            ])
-            other_offers.write({'status': 'refused'})
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = 'offer_accepted'
+        other_offers = self.search([
+            ('property_id', '=', self.property_id.id),
+            ('id', '!=', self.id)
+        ])
+        other_offers.write({'status': 'refused'})
         return True
 
     def action_refuse(self):
-        if self.property_id == 'sold' or self.property_id == 'cancelled':
+        if self.property_id.state in ('sold', 'cancelled'):
             raise UserError('You cannot reject an offer in a sold or cancelled property')
-        else:
-            if self.status == 'accepted':
-                self.property_id.selling_price = 0
-                self.property_id.buyer_id = False
-                self.property_id.state = 'offer_received'
-            self.status = 'refused'
+        if self.status == 'accepted':
+            self.property_id.selling_price = 0
+            self.property_id.buyer_id = False
+            self.property_id.state = 'offer_received'
+        self.status = 'refused'
         return True
