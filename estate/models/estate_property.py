@@ -9,6 +9,8 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
 
+    _order = "id desc"
+
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -17,7 +19,6 @@ class EstateProperty(models.Model):
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)", copy=False)
-    garden_area = fields.Integer(string="Garden Area (sqm)")
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area", store=True)
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -31,6 +32,7 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation"
     )
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     active = fields.Boolean(string="is Active", default=True)
     state = fields.Selection(
         [
@@ -48,9 +50,11 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tags_ids = fields.Many2many("estate.property.tag", string="Property Tags", compute="_compute_tags", readonly=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    issue_ids = fields.One2many("estate.property.issue", "property_id", string="Issue")
     visit_ids = fields.One2many("estate.property.visit", "propert_id", string="visit")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     spam = fields.Boolean(string="is suspicious", compute="_compute_offers")
+    overdue = fields.Boolean(string="Issue Overdue")
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -82,6 +86,8 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
+        
+    @api.depends("issue_ids")
 
     @api.depends("expected_price", "offer_ids", "state", "create_date")
     def _compute_tags(self):
@@ -152,12 +158,22 @@ class EstateProperty(models.Model):
                         if other_date.visit_date < current_date.end_date and current_date.visit_date < other_date.end_date:
                             raise ValidationError("only 1 partner in 1 day")
 
+    @api.ondelete(at_uninstall=False)
+    def _property_deletion(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("You can only delete properties in New or Cancelled state.")
+
     def action_sold(self):
         for record in self:
+            for issue in record.issue_ids:
+                    if issue.priority == 'high' and issue.state == 'overdue':
+                        raise UserError("property cannot sold due to overdue")
             if record.state == 'cancelled':
                 raise UserError("Cancelled property cannot be sold.")
             if record.state != 'offer_accepted':
                 raise UserError("Property cannot be sold without an accepted offer.")
+
             record.state = 'sold'
         return True
 
