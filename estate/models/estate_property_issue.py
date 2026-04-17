@@ -1,5 +1,5 @@
-from odoo import fields, models, api
 from datetime import timedelta
+from odoo import api, fields, models
 
 
 class EstatePropertyIssue(models.Model):
@@ -72,20 +72,6 @@ class EstatePropertyIssue(models.Model):
             else:
                 rec.priority = False
 
-    @api.onchange("salesman_id")
-    def _onchange_salesman_id(self):
-        if self.salesman_id:
-            self.staty = 'in_progress'
-
-    def action_resolve(self):
-        for rec in self:
-            rec.staty = 'resolved'
-            rec.resolved_date = fields.Datetime.now()
-
-    def action_cancel(self):
-        for rec in self:
-            rec.staty = 'canceled'
-
     @api.depends('create_date', 'priority', 'resolved_date')
     def _compute_is_overdue(self):
         for rec in self:
@@ -102,5 +88,18 @@ class EstatePropertyIssue(models.Model):
 
             deadline = rec.create_date + timedelta(days=days)
             end_time = rec.resolved_date or fields.Datetime.now()
-
             rec.is_overdue = end_time > deadline
+
+    @api.onchange("salesman_id")
+    def _onchange_salesman_id(self):
+        if self.salesman_id:
+            self.staty = 'in_progress'
+
+    def action_resolve(self):
+        for rec in self:
+            rec.staty = 'resolved'
+            rec.resolved_date = fields.Datetime.now()
+
+    def action_cancel(self):
+        for rec in self:
+            rec.staty = 'canceled'

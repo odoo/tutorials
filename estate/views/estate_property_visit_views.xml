@@ -6,8 +6,9 @@
     <field name="domain">[('property_id', '=', active_id)]</field>
     <field name="context">{'default_property_id': active_id}</field>
 </record>
-    <record id="estate_property_visit_list_view" model="ir.ui.view">
-        <field name="name">estate.property.visit.list</field>
+
+    <record id="estate_property_visit_view_list" model="ir.ui.view">
+        <field name="name">estate.property.visit.view.list</field>
         <field name="model">estate.property.visit</field>
         <field name="arch" type="xml">
             <list>
@@ -16,8 +17,9 @@
             </list>
         </field>
     </record>
-<record id="estate_property_visit_form_view" model="ir.ui.view">
-        <field name="name">estate.property.visit.form</field>
+
+<record id="estate_property_visit_view_form" model="ir.ui.view">
+        <field name="name">estate.property.visit.view.form</field>
         <field name="model">estate.property.visit</field>
         <field name="arch" type="xml">
             <form>

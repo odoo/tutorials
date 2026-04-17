@@ -43,54 +43,66 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
-)
+    )
 
     buyer_id = fields.Many2one(
         "res.partner",
         string="Buyer",
         copy=False,
-)
+    )
     salesman_id = fields.Many2one(
         "res.users",
         string="Salesman",
         default=lambda self: self.env.user,
-)
+    )
     tag_ids = fields.Many2many(
         "estate.property.tag",
         string="Tags",
         compute="_compute_tags",
         store=True,
-)
+    )
     offer_ids = fields.One2many(
         "estate.property.offer",
         "property_id",
         string="Offers",
         copy=True
-)
+    )
     issue_ids = fields.One2many(
         'estate.property.issue',
         'property_id',
-)
-
+    )
+    visit_ids = fields.One2many(
+        "estate.property.visit",
+        "property_id",
+        string="Visits",
+    )
     total_area = fields.Integer(
         compute="_compute_total_area",
         string="Total Area (sqm)",
-)
+    )
+    best_price = fields.Float(
+        compute="_compute_best_price",
+        string="Best Offer",
+        store=True,
+    )
     has_suspicious_offers = fields.Boolean(
-    string="Has Suspicious Offers",
-    compute="_compute_has_suspicious_offers"
-)
-    visit_ids = fields.One2many(
-    "estate.property.visit",
-    "property_id",
-    string="Visits",
-)
-
+        string="Has Suspicious Offers",
+        compute="_compute_has_suspicious_offers"
+    )
     visit_count = fields.Integer(
-    string="Visits Count",
-    compute="_compute_visit_count",
-    store=True,
-)
+        string="Visits Count",
+        compute="_compute_visit_count",
+        store=True,
+    )
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be strictly positive!',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'Selling price must be positive!',
+    )
 
     @api.depends("visit_ids")
     def _compute_visit_count(self):
@@ -103,12 +115,7 @@ class EstateProperty(models.Model):
             record.total_area = (
                 record.living_area +
                 record.garden_area
-)
-    best_price = fields.Float(
-        compute="_compute_best_price",
-        string="Best Offer",
-        store=True,
-)
+            )
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -120,74 +127,12 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
-
-    def action_sold(self):
+    @api.depends("offer_ids.is_suspicious")
+    def _compute_has_suspicious_offers(self):
         for record in self:
-            if record.state != 'offer_accepted':
-                raise UserError("Accept the property first")
-            if record.state == 'canceled':
-                raise UserError("Cancelled property cannot be sold!")
-            for rec in record.issue_ids:
-                if rec.staty != 'resolved' and rec.priority == 'high':
-                    raise UserError("Cannot sell the property pls solve the issues")
-                record.state = 'sold'
-                record.sold_date = fields.Datetime.now()
-                return True
-
-    def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError(
-                "Sold property cannot be cancelled!"
+            record.has_suspicious_offers = any(
+                offer.is_suspicious for offer in record.offer_ids
             )
-            record.state = 'canceled'
-        return True
-
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'Expected price must be strictly positive!',
-    )
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'Selling price must be positive!',
-    )
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_seling_price(self):
-        for record in self:
-            if float_is_zero(
-                record.selling_price,
-                precision_digits=2
-            ):
-                continue
-            if float_compare(
-                record.selling_price,
-                record.expected_price * 0.9,
-                precision_digits=2
-            ) < 0:
-                raise ValidationError("Selling price cannot be lower than 90%"
-                                    "of expected price!")
-
-    def _search_tag(self, tag_name):
-        return self.env['estate.property.tag'].search(
-            [('name', '=', tag_name)], limit=1
-        )
-
-    def _create_tag(self, tag_name):
-        return self.env['estate.property.tag'].create(
-            {'name': tag_name}
-        )
-
-    def _get_or_create_tag(self, tag_name):
-        return self._search_tag(tag_name) or self._create_tag(tag_name)
 
     @api.depends('expected_price', 'offer_ids', 'sold_date', 'date_availability', 'state')
     def _compute_tags(self):
@@ -208,17 +153,70 @@ class EstateProperty(models.Model):
 
             record.tag_ids = tag_records
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_seling_price(self):
+        for record in self:
+            if float_is_zero(
+                record.selling_price,
+                precision_digits=2
+            ):
+                continue
+            if float_compare(
+                record.selling_price,
+                record.expected_price * 0.9,
+                precision_digits=2
+            ) < 0:
+                raise ValidationError("Selling price cannot be lower than 90%"
+                                    "of expected price!")
+
+    def action_sold(self):
+        for record in self:
+            if record.state != 'offer_accepted':
+                raise UserError("Accept the property first")
+            if record.state == 'canceled':
+                raise UserError("Cancelled property cannot be sold!")
+            for rec in record.issue_ids:
+                if rec.staty != 'resolved' and rec.priority == 'high':
+                    raise UserError("Cannot sell the property pls solve the issues")
+            record.state = 'sold'
+            record.sold_date = fields.Datetime.now()
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(
+                    "Sold property cannot be cancelled!"
+                )
+            record.state = 'canceled'
+        return True
+
+    def _search_tag(self, tag_name):
+        return self.env['estate.property.tag'].search(
+            [('name', '=', tag_name)], limit=1
+        )
+
+    def _create_tag(self, tag_name):
+        return self.env['estate.property.tag'].create(
+            {'name': tag_name}
+        )
+
+    def _get_or_create_tag(self, tag_name):
+        return self._search_tag(tag_name) or self._create_tag(tag_name)
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_canceled(self):
         for record in self:
             if record.state not in ('new', 'canceled'):
                 raise UserError(
-                "Only new and cancelled properties can be deleted!"
-            )
-
-    @api.depends("offer_ids.is_suspicious")
-    def _compute_has_suspicious_offers(self):
-        for record in self:
-            record.has_suspicious_offers = any(
-            offer.is_suspicious for offer in record.offer_ids
-        )
+                    "Only new and cancelled properties can be deleted!"
+                )
