@@ -6,5 +6,5 @@ class EstatePropertyType(models.Model):
     _description = 'Real Estate Property Type'
     _order = 'name'
     _rec_name = 'name'
-    
+
     name = fields.Char(required=True)
