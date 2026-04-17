@@ -7,7 +7,7 @@
     'category': 'Estate',
     'version': '1.0',
     'license': 'LGPL-3',
-    'depends': ['base'],
+    'depends': ['base', 'calendar'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_offer_views.xml',
