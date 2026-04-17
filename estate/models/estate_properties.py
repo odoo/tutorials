@@ -2,7 +2,7 @@ import logging
 from dateutil import relativedelta as rd
 
 from odoo import fields, models, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 
 
 _logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class EstateProperties(models.Model):
     _name = 'estate.properties'
     _description = 'Real Estate Properties'
 
-    active = fields.Boolean(help="Should the property be listed?")
+    active = fields.Boolean(help="Should the property be listed?", default=True)
     bedrooms = fields.Integer(default=2)
     best_price = fields.Integer(compute="_compute_best_price")
     buyer_id = fields.Many2one(comodel_name='res.partner', copy=False)
@@ -48,6 +48,7 @@ class EstateProperties(models.Model):
     name = fields.Char(string="Property Name", required=True)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     postcode = fields.Char()
+    price_gap= fields.Float(compute="_compute_price_gap")
     property_type_colour = fields.Selection(related="property_type_id.colour", readonly=False)
     property_type_id = fields.Many2one(comodel_name="estate.property.type")
     salesperson_id = fields.Many2one(comodel_name='res.partner', default=lambda self: self.env.user.partner_id)
@@ -78,15 +79,15 @@ class EstateProperties(models.Model):
     def _compute_best_price(self):
         for property in self:
             # _logger.error(self.mapped('offer_ids.price'))
-            offer_prices = self.mapped('offer_ids.price')
+            offer_prices = property.mapped('offer_ids.price')
             property.best_price = max(offer_prices) if offer_prices else 0
-    
+
     @api.constrains('expected_price')
     def _check_expected_price(self):
         for property in self:
             if property.expected_price < 0:
-                raise ValidationError("Value cannot be less than zero.")
-    
+                raise UserError("Value cannot be less than zero.")
+
     @api.onchange('garden')
     def _onchange_garden(self):
         # _logger.error(self.garden)
@@ -97,8 +98,44 @@ class EstateProperties(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    @api.constrains('date_availability')
-    def _check_date_availability(self):
+    # @api.constrains('date_availability')
+    # def _check_date_availability(self):
+    #     for property in self:
+    #         if property.date_availability < fields.Date.context_today(property):
+    #             raise ValidationError("Past dates not allowed")
+
+    @api.depends('best_price', 'expected_price')
+    def _compute_price_gap(self):
         for property in self:
-            if property.date_availability < fields.Date.context_today(property):
-                raise ValidationError("Past dates not allowed")
+            if (property.best_price and property.expected_price) != 0:
+                property.price_gap= property.best_price - property.expected_price
+            else:
+                property.price_gap= 0
+
+    @api.onchange('state')
+    def _onchnage_state(self):
+        if self.state == 'cancelled':
+            self.active = False
+        else:
+            self.active = True
+
+    def property_cancelled(self):
+        for property in self:
+            if property.state == 'cancelled':
+                raise UserError("Property already cancelled")
+            elif property.state != 'sold':
+                property.state = 'cancelled'
+                property.active = False
+            else:
+                raise UserError("A sold property cannot be cancelled")
+        return True
+
+    def property_sold(self):
+        for property in self:
+            if property.state == 'sold':
+                raise UserError("Property already sold")
+            elif property.state != 'cancelled':
+                property.state = 'sold'
+            else:
+                raise UserError("A cancelled property cannot be sold")
+        return True

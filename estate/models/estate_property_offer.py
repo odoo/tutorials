@@ -2,7 +2,7 @@ import datetime
 import logging
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 _logger = logging.getLogger(__name__)
@@ -43,9 +43,36 @@ class EstatePropertyOffer(models.Model):
         for property in self:
             if property.price < 0:
                 raise ValidationError("Value cannot be less than zero.")
-    
-    @api.constrains('deadline')
-    def _check_deadline(self):
-        for property in self:
-            if property.deadline < fields.Date.context_today(property):
-                raise ValidationError("Past dates not allowed")
+
+    # @api.constrains('deadline')
+    # def _check_deadline(self):
+    #     for property in self:
+    #         if property.deadline < fields.Date.context_today(property):
+    #             raise ValidationError("Past dates not allowed")
+
+    def _refuse_remaining_offers(self, offer_id, all_offers):
+        # _logger.error(all_offers)
+        for offer in all_offers:
+            if offer.id != offer_id:
+                offer.status = 'refused'
+
+    def offer_accepted(self):
+        offer_id = 0
+        for offer in self:
+            if offer.status == 'accepted':
+                raise UserError("Property already accepted!")
+            offer.status = 'accepted'
+            all_offers = offer.property_id.offer_ids
+            # _logger.error(all_offers)
+            offer_id = offer.id
+            offer._refuse_remaining_offers(offer_id, all_offers)
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+        return True
+
+    def offer_refused(self):
+        for offer in self:
+            if offer.status == 'refused':
+                raise UserError("Property already refused!")
+            offer.status = 'refused'
+        return True

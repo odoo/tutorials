@@ -6,7 +6,6 @@ class EstatePropertyType(models.Model):
     _description = 'Estate Property Types'
     _rec_name = 'type'
 
-    type = fields.Char(required=True)
     colour = fields.Selection(
         [
             ('red', 'Red'),
@@ -14,3 +13,4 @@ class EstatePropertyType(models.Model):
             ('yellow', 'Yellow')
         ]
     )
+    type = fields.Char(required=True)
