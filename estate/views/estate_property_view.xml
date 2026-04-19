@@ -36,6 +36,8 @@
             <header>
                 <button name="action_save_offer" type="object" string="Save"/>
                 <button name="action_cancel_offer" type="object" string="Cancel"/>
+                <!-- For status bar widget of state -->
+                <field name="state" widget="statusbar" statusbar_visible="new,offer_received,accepted,sold"/> 
             </header>
             <!-- To make one whole page -->
                 <sheet>
@@ -78,7 +80,7 @@
                                 </group>
                             </page>
                             <page  string="Offer" name="property_offer">
-                                <field name="offer_id"/>
+                                <field name="offer_ids"/>
                             </page>
                             <page string="Other Info" name="other_info">
                                 <group name="Other Info">

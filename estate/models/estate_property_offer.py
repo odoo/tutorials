@@ -4,6 +4,7 @@ from odoo import fields, models, api
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     name = fields.Char(string="Property Offer", required=True)
     price = fields.Integer(string="Price", required=True)
@@ -13,8 +14,8 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    # Connected with estate_Property
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-    # create_date = fields.Date(string="Date for creation")
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(
         string="Deadline",

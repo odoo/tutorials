@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"  # to order how it is presented on list view in which order
 
     name = fields.Char(string="Name", required=True, default="Unknown")
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
@@ -60,16 +61,20 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: self.env.user.partner_id,
     )
+    # Here in estate_property table sales_person forign key is added.This key is id of res_partner table record id. with this key both tables are connected
     sales_person = fields.Many2one(
         comodel_name="res.users",
         string="Sales person",
         index=True,
         default=lambda self: self.env.user,
     )
+    # There will be a junction table created between these 2 tables named default like estate_property_estate_property_tag_rel
     property_tag = fields.Many2many(
-        comodel_name="estate.property.tag", string="Property Tags"
+        comodel_name="estate.property.tag",
+        string="Property Tags",
     )
-    offer_id = fields.One2many(
+    # this connects estate_property with estate_property_offer with col property_id and by this we can access property_type attributes like price, name etc
+    offer_ids = fields.One2many(
         comodel_name="estate.property.offer",
         inverse_name="property_id",
         string="Property offer",
@@ -87,10 +92,10 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends("offer_id.price")
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            prices = record.mapped("offer_id.price")
+            prices = record.mapped("offer_ids.price")
             record.best_price = max(prices) if prices else 0
 
     # to add when garden is clicked then its area and orientation is set to default values. works on decorators concepts
