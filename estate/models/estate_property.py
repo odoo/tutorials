@@ -43,6 +43,13 @@ class EstateProperty(models.Model):
     property_tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
     best_price = fields.Float(string="Best Offer", compute="_computed_best_offer")
+    visit_ids = fields.One2many('estate.property.visit', 'property_id', string="Visits")
+    visit_count = fields.Integer(compute="_compute_visit_count")
+
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        for rec in self:
+            rec.visit_count = len(rec.visit_ids)
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price >= 1)',

@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': 1}</field>
     </record>
 
@@ -18,6 +18,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                <div class="oe_button_box" name="button_box">
+                        <button type="action"
+                            name="%(estate.estate_property_visit_action)d"
+                            class="oe_stat_button"
+                            icon="fa-money">
+                            <field name="visit_count" widget="statinfo" string="Properties"/>
+                        </button>
+                    </div>
                     <h1><field name="name"/></h1>
                     <h4><field name='property_tag_ids' widget='many2many_tags' options="{'color_field':'color'}"/></h4>
                     <group>
@@ -28,7 +36,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
-                            <field name="best_price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -53,6 +61,7 @@
                             <group>
                                 <field name="sales_person_id"/>
                                 <field name="buyer_id"/>
+                                <field name="visit_count"/>
                             </group>
                         </page>
                     </notebook>
@@ -78,6 +87,33 @@
                 <field name='best_price'/>
                 <field name='total_area'/>
             </list>
+        </field>
+    </record>
+
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <field name="name"/>
+                            <div>
+                                Expected Price <field name="expected_price"/>
+                            </div>
+                            <div t-if="'offer_ids'">
+                                Best Price <field name="best_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                Selling Price <field name="selling_price"/>
+                            </div>
+                            <field name="property_tag_ids"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
