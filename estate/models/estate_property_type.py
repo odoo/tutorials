@@ -12,5 +12,6 @@ class EstatePropertyType(models.Model):
         inverse_name="property_type_id",
         string="Property Type",
     )
+    sequence = fields.Integer("Sequence", default=1)
 
     _name_check = models.Constraint("UNIQUE (name)", "Please add unique type")

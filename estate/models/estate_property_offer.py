@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -14,7 +15,6 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    # Connected with estate_Property
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(
@@ -48,11 +48,12 @@ class EstatePropertyOffer(models.Model):
 
     def save_offer(self):
         for record in self:
-            if record.status != "accepted" or record.status != "refused":
-                record.status = "accepted"
-                record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.state = "accepted"
+            if record.status == "accepted":
+                raise UserError("Property is already accepted")
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.state = "accepted"
 
     def cancel_offer(self):
         for record in self:
@@ -62,7 +63,6 @@ class EstatePropertyOffer(models.Model):
                     record.property_id.selling_price = False
                     record.property_id.state = False
 
-    # Inserted price must be positive - SQL constraint
     _check_price = models.Constraint(
         "CHECK(price >= 0)", "Price filled must be positive"
     )

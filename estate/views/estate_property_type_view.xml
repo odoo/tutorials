@@ -11,6 +11,7 @@
         <field name="arch" type="xml">
             <list string="Property Type">
                 <field name="name"/>
+                <field name="sequence" string="sequence" widget="handle"/>
             </list>
         </field>
     </record>
@@ -27,7 +28,6 @@
                         </h1>
                         <notebook>
                             <page name="Properties">
-                                <!-- This is inline view so one@many creates virtual link thats why inside this tag we can access all fields of estate.property -->
                                 <field name="property_ids">
                                     <list>
                                         <field name="name"/>

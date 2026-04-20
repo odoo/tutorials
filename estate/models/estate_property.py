@@ -17,13 +17,13 @@ class EstateProperty(models.Model):
     )
     postcode = fields.Char(string="Postcode", required=True)
     expected_price = fields.Float(string="Expected Price")
-    selling_price = fields.Float(string="Selling Price", readonly=False)
+    selling_price = fields.Float(string="Selling Price", readonly=True)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden_area")
+    garden_area = fields.Integer(string="Garden area")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
@@ -35,7 +35,7 @@ class EstateProperty(models.Model):
     )
     status = fields.Selection(
         string="Status",
-        selection=[("saved", "Save"), ("cancelled", "Cancel")],
+        selection=[("sold", "Sold"), ("cancelled", "Cancel")],
         readonly=True,
     )
 
@@ -110,17 +110,19 @@ class EstateProperty(models.Model):
 
     def action_cancel_offer(self):
         for record in self:
-            if record.status == "saved":
+            if record.state == "sold":
                 raise UserError("Saved properties can't be cancelled")
             else:
+                record.state = "cancelled"
                 record.status = "cancelled"
 
     def action_save_offer(self):
         for record in self:
-            if record.status == "cancelled":
+            if record.state == "cancelled":
                 raise UserError("Cancelled properties can't be saved")
             else:
-                record.status = "saved"
+                record.state = "sold"
+                record.status = "sold"
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)", "Expected price must be positive"
@@ -134,7 +136,8 @@ class EstateProperty(models.Model):
     def _check_selling_expected_price(self):
         for record in self:
             base = record.expected_price * 0.9
-            if record.selling_price < base:
+            # here record.selling_price check is must as if it is not here than when we want to confirm the offer selling price is by default 0 so will generate error of 90% and till save we can't confirm the offer
+            if record.selling_price and record.selling_price < base:
                 raise ValidationError(
                     "Selling Price must be greater than 90 percent of expected price"
                 )
