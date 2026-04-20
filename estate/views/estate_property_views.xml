@@ -35,7 +35,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" invisible="state in ('sold', 'cancel')"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ('sold', 'cancel')" class="btn-primary" />
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold', 'cancel')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
@@ -69,6 +69,7 @@
                             <group>
                                 <group>
                                     <field name="bedrooms"/>
+                                    <field name="state"/>
                                     <field name="living_area"/>
                                     <field name="facades"/>
                                     <field name="garage"/>
@@ -134,7 +135,10 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" group_create="false" group_delete="false" records_draggable="false" >
+                <field name="state"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
                 <templates>
                     <t t-name="card">
                         <div class="card_details">
@@ -142,21 +146,25 @@
                                 <field name="name"/>
                             </strong>
                             <div>
-                                Expected Price:
-                                <field name="expected_price"/>
-                            </div>
-                            <div>
                                 Bedrooms:
                                 <field name="bedrooms"/>
                             </div>
                             <div>
-                                Status:
-                                <field name="state"/>
+                                Expected Price:
+                                <field name="expected_price"/>
                             </div>
-                            <div>
-                                Property Type:
-                                <field name="property_type_id"/>
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                Best Price: 
+                                <field name="best_price"/>
                             </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
+                                Selling Price:
+                                <field name="selling_price"/>
+                            </div>
+                             <div>
+                                <field name="tags_ids"  widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                            
                         </div>
                     </t>
                 </templates>

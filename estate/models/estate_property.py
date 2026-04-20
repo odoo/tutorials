@@ -42,7 +42,7 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        string="Status", required=True, copy=False, default='new')
+        string="Status", required=True, copy=False, default='new', readonly=False)
     swimming_pool = fields.Boolean(string="Swimming Pool")
     property_age = fields.Integer(string="Property Age")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -133,7 +133,7 @@ class EstateProperty(models.Model):
             for offers in record.offer_ids:
                 count = 0
                 for other_offer in record.offer_ids:
-                    if other_offer.partner_id == offers.partner_id and other_offer.create_date:
+                    if other_offer.partner_id == offers.partner_id and other_offer.create_date and offers.create_date:
                         if abs(other_offer.create_date - offers.create_date) <= timedelta(minutes=5):
                             count += 1
                 if count >= 3:
