@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EstateProperty(models.Model):
@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean(string="Active", default=True)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
+    best_price = fields.Float(string="Best Offer", compute='_compute_best_price')
     date_availability = fields.Date(
         string="Available From",
         default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
@@ -45,6 +46,18 @@ class EstateProperty(models.Model):
         default='new',
         copy=False
     )
+    total_area = fields.Integer(string="Total Area", compute='_compute_total_area')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for rec in self:
+            rec.total_area = rec.living_area + rec.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for rec in self:
+            rec.best_price = max(rec.offer_ids.mapped('price'), default=0.0)
+
     # Many2one: property type (House, Apartment, etc.)
     property_type_id = fields.Many2one(
         'estate.property.type',

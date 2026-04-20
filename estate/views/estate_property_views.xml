@@ -36,6 +36,10 @@
                         <h1>
                             <field name="name" placeholder="Property Name"/>
                         </h1>
+                        <field name="tag_ids"
+                               placeholder="Property tags"
+                               widget="many2many_tags"
+                               options="{'color_field': 'color'}"/>
                     </div>
                     <!-- Two-column main group -->
                     <group>
@@ -43,14 +47,11 @@
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
-                            <!--  added the color for tags -->
-                            <field name="tag_ids"
-                                   widget="many2many_tags"
-                                   options="{'color_field': 'color'}"/>
                         </group>
                         <group string="Pricing">
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                             <field name="state"/>
                             <field name="active"/>
                         </group>
@@ -66,7 +67,8 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
-                                <field name="garden_orientation"/>>
+                                <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Other Info" name="other_info">
