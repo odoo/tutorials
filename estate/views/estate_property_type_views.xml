@@ -6,31 +6,55 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-
-    <record id="estate_property_type_list_view" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list>
-                <field name="name" />
-            </list>
-        </field>
-    </record>
-
     <record id="estate_property_type_form_view" model="ir.ui.view">
         <field name="name">etate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <div class="oe_title">
-                    <h1>
-                        <group>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action" icon="fa-money" name="%(estate_property_type_offer_action)d">
+                            <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="offer_count"/>
+                                    </span>
+                                    <span class="o_stat_text">
+                                        Offer
+                                    </span>
+                                </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
                             <field name="name" />
-                        </group>
-                    </h1>
-                </div>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page name="properties" string="Properties">
+                            <field name="property_ids">
+                                <list create="false" edit="false" delete="false" no_open="false">
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" string="Expected Price" />
+                                    <field name="state" string="Status" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>
+    
+    <record id="estate.property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="sequence" widget="handle"/>
+            </list>
+        </field>
+    </record>
+
 
 </odoo>

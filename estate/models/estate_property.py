@@ -6,10 +6,11 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, size=50)
     description = fields.Text()
-    postcode = fields.Char()
+    postcode = fields.Char(size=25)
     date_availability = fields.Date(
         copy=False, default=fields.Date.add(fields.Date.today(), months=3)
     )
@@ -77,8 +78,8 @@ class EstateProperty(models.Model):
     def on_state_change(self):
         for record in self:
             if record.state == "offer_accepted" or record.state == "sold":
-                if float_compare(record.selling_price, record.expected_price * 0.9, 3):
-                    raise ValidationError("Selling price error")
+                if float_compare(record.selling_price, record.expected_price * 0.9, 3) < 0:
+                    raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
 
     @api.onchange("garden")
     def _on_change_garden(self):
@@ -92,6 +93,7 @@ class EstateProperty(models.Model):
 
     def sold_button(self):
         for records in self:
+            # breakpoint()
             if records.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold.")
             records.state = "sold"
