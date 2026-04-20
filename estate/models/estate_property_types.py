@@ -1,4 +1,4 @@
-from odoo import api,fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyTypes(models.Model):
@@ -9,7 +9,7 @@ class EstatePropertyTypes(models.Model):
     name = fields.Char()
     property_ids = fields.One2many("estate.property", "property_type_id")
     sequence = fields.Integer("Sequence", default=1)
-    offer_ids = fields.One2many("estate.property.offer","property_type_id")
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id")
     offer_count = fields.Integer(compute="_compute_offer_count")
 
     _check_unique_property_name = models.Constraint(

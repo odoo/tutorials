@@ -55,14 +55,14 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for records in self:
-            records.total_area = records.living_area + records.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer.price")
     def _compute_best_price(self):
-        for records in self:
-            prices = records.mapped("offer.price")
-            records.best_price = max(prices) if prices else 0
+        for record in self:
+            prices = record.mapped("offer.price")
+            record.best_price = max(prices) if prices else 0
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
@@ -78,32 +78,37 @@ class EstateProperty(models.Model):
     def on_state_change(self):
         for record in self:
             if record.state == "offer_accepted" or record.state == "sold":
-                if float_compare(record.selling_price, record.expected_price * 0.9, 3) < 0:
-                    raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+                if (
+                    float_compare(record.selling_price, record.expected_price * 0.9, 3)
+                    < 0
+                ):
+                    raise ValidationError(
+                        "Selling price cannot be lower than 90% of the expected price."
+                    )
 
     @api.onchange("garden")
     def _on_change_garden(self):
-        for records in self:
-            if records.garden:
-                records.garden_area = 10
-                records.garden_orientation = "north"
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
             else:
-                records.garden_area = False
-                records.garden_orientation = False
+                record.garden_area = False
+                record.garden_orientation = False
 
     def sold_button(self):
-        for records in self:
+        for record in self:
             # breakpoint()
-            if records.state == "cancelled":
+            if record.state == "cancelled":
                 raise UserError("Cancelled property cannot be sold.")
-            records.state = "sold"
-            records.selling_price = records.selling_price
+            record.state = "sold"
+            record.selling_price = record.selling_price
         return True
 
     def cancel_button(self):
-        for records in self:
-            if records.state == "sold":
+        for record in self:
+            if record.state == "sold":
                 raise UserError("Sold property cannoy be cancelled.")
-            records.state = "cancelled"
-            records.state = False
+            record.state = "cancelled"
+            record.state = False
         return True

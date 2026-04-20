@@ -20,17 +20,15 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
-    property_type_id = fields.Many2one(related='property_id.property_type_id')
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
-        for records in self:
+        for record in self:
             base_date = (
-                records.create_date.date()
-                if records.create_date
-                else fields.Date.today()
+                record.create_date.date() if record.create_date else fields.Date.today()
             )
-            records.date_deadline = fields.Date.add(base_date, days=records.validity)
+            record.date_deadline = fields.Date.add(base_date, days=record.validity)
 
     _check_offer_price = models.Constraint(
         "CHECK(price > 0)",
@@ -38,26 +36,24 @@ class EstatePropertyOffer(models.Model):
     )
 
     def _inverse_date_deadline(self):
-        for records in self:
+        for record in self:
             base_date = (
-                records.create_date.date()
-                if records.create_date
-                else fields.Date.today()
+                record.create_date.date() if record.create_date else fields.Date.today()
             )
-            if records.date_deadline:
-                records.validity = (records.date_deadline - base_date).days
+            if record.date_deadline:
+                record.validity = (record.date_deadline - base_date).days
 
     def accept_button(self):
-        for records in self:
-            records.status = "accepted"
-            records.property_id.buyer = records.partner_id
-            records.property_id.selling_price = records.price
-            records.property_id.state = "offer_accepted"
+        for record in self:
+            record.status = "accepted"
+            record.property_id.buyer = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
 
     def reject_button(self):
-        for records in self:
-            records.status = "refused"
-            if records.property_id.buyer == records.partner_id:
-                records.property_id.buyer = False
-                records.property_id.selling_price = False
-                records.property_id.state = "offer_received"
+        for record in self:
+            record.status = "refused"
+            if record.property_id.buyer == record.partner_id:
+                record.property_id.buyer = False
+                record.property_id.selling_price = False
+                record.property_id.state = "offer_received"
