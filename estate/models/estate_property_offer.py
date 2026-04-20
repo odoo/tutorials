@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -52,7 +52,7 @@ class EstatePropertyOffer(models.Model):
             property_id = self.env['estate.property'].browse(vals['property_id'])
             for offer in property_id.offer_ids:
                 if current_price < offer.price:
-                    raise UserError("Offer Price cannot be less than previous offer prices")
+                    raise UserError(_("Offer Price cannot be less than previous offer prices"))
 
         offers = super().create(vals_list)
 
@@ -62,19 +62,18 @@ class EstatePropertyOffer(models.Model):
 
         return offers
 
-    def action_accepted(self):
-        for record in self:
-            for offer in record.property_id.offer_ids:
-                if offer.status == "accepted":
-                    raise UserError(
-                        "Only 1 offer can be accepted for each property")
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.state = "offer_accepted"
+    def action_offer_accepted(self):
+        if self.price < self.property_id.best_price:
+            raise UserError(_("Another higher price offer exists"))
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
+
+        offers = self.property_id.offer_ids.filtered(lambda x: x.status != "accepted")
+        offers.write({'status': 'refused'})
         return True
 
-    def action_refused(self):
-        for record in self:
-            record.status = "refused"
+    def action_offer_refused(self):
+        self.status = "refused"
         return True

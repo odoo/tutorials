@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Title', required=True, default='Unknown')
     description = fields.Text(string='Description')
@@ -85,8 +86,15 @@ class EstateProperty(models.Model):
 
     @api.depends('visit_ids')
     def _compute_issue_count(self):
+        data = dict(self.env['estate.property.issue']._read_group(
+            [('property_id', 'in', self.ids)],
+            groupby=['property_id'],
+            aggregates=['__count']
+        ))
+
         for record in self:
-            record.issue_count = len(record.issue_ids)
+            record.issue_count = data.get(record, 0)
+            # record.issue_count = len(record.issue_ids)
 
     @api.onchange('has_garden')
     def _onchange_garden(self):
@@ -108,32 +116,47 @@ class EstateProperty(models.Model):
                 min_price,
                 precision_digits=2
             ) < 0:
-                raise ValidationError(
+                raise ValidationError(_(
                     "The selling price cannot be lower than 90% of the expected price."
-                )
+                ))
 
     def action_property_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled property cannot be set as sold.")
-            elif record.issue_ids.priority == '3' and record.issue_ids.state != "resolved":
-                raise UserError("High priority issue is still not resolved")
-            else:
-                record.state = "sold"
+        if self.state == "cancelled":
+            raise UserError(_("Cancelled property cannot be set as sold."))
+        elif self.issue_ids.priority == '3' and self.issue_ids.state != "resolved":
+            raise UserError(_("High priority issue is still not resolved"))
+        else:
+            self.state = "sold"
         return True
 
+    def action_set_sold_rainbow_man(self):
+        self.action_property_sold()
+
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'img_url': '/web/static/img/smile.svg',
+                'type': 'rainbow_man',
+            }
+        }
+
     def action_property_cancelled(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold property cannot be set as cancelled")
-            else:
-                record.state = "cancelled"
+        if self.state == "sold":
+            raise UserError(_("Sold property cannot be set as cancelled"))
+        else:
+            self.state = "cancelled"
+        return True
+
+    def action_accept_best_offer(self):
+        best_offer = self.offer_ids.filtered_domain(
+            [('price', '=', self.best_price)])
+        best_offer.action_offer_accepted()
         return True
 
     @api.ondelete(at_uninstall=False)
     def delete_state_check(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise UserError("Only New or Cancelled properties can be deleted")
-
+                raise UserError(
+                    _("Only New or Cancelled properties can be deleted"))
         return True

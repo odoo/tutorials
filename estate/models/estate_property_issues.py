@@ -78,11 +78,11 @@ class EstatePropertyIssues(models.Model):
                 record.state = "in_progress"
 
     def action_set_resolved(self):
-        for record in self:
-            record.state = 'resolved'
-            if not record.resolved_date:
-                record.resolved_date = fields.Date.today()
+        self.state = 'resolved'
+        if not self.resolved_date:
+            self.resolved_date = fields.Date.today()
+        return True
 
     def action_set_cancelled(self):
-        for record in self:
-            record.state = 'cancelled'
+        self.state = 'cancelled'
+        return True

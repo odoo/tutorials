@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -35,4 +35,4 @@ class EstatePropertyVisit(models.Model):
                 if record.id == visit.id or record.visit_date.date() != visit.visit_date.date():
                     continue
                 if record.visit_date - visit.visit_date < timedelta(hours=1):
-                    raise UserError("2 visits cannot have same time")
+                    raise UserError(_("2 visits cannot have same time"))

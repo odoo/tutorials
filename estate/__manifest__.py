@@ -11,7 +11,7 @@
     'website': "https://www.odoo.com/app/estate",
     'category': 'Tutorials',
     'application': True,
-    'depends': ['base', 'calendar'],
+    'depends': ['base', 'calendar', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_issue_views.xml',

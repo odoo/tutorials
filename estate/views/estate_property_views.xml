@@ -14,10 +14,10 @@
             <list decoration-muted="state == 'sold'" decoration-success="state != 'sold' and (offer_ids or state == 'offer_accepted')" decoration-bf="state == 'offer_accepted'">
                 <field name="name" width="200"/>
                 <field name="postcode" width="80"/>
-                <field name="property_type_id"/>
+                <field name="property_type_id" optional="hide"/>
                 <field name="property_tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" width="300"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="bedrooms" optional="hide"/>
+                <field name="living_area" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
@@ -50,8 +50,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_property_sold" string="Sold" type="object" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_set_sold_rainbow_man" string="Sold" class="btn-primary" type="object" invisible="state != 'offer_accepted'"/>
                     <button name="action_property_cancelled" string="Cancel" type="object" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_accept_best_offer" string="Accept Best Offer" type="object" class="btn-primary" invisible="offer_ids.length &lt; 1"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -63,6 +64,7 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <widget name="web_ribbon" title="Sold" invisible="state != 'sold'"/>
                     <group>
                         <group>
                             <field name="property_tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -106,6 +108,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -114,11 +117,12 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id">
+            <kanban default_group_by="state" records_draggable="false">
                 <field name="state"/>
                 <templates>
                     <t t-name="card">
                         <main>
+                        <widget name="web_ribbon" title="Sold" invisible="state != 'sold'"/>
                             <div>
                                 <field name="name"/>
                                 <div>
