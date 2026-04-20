@@ -16,7 +16,7 @@ class Estatepropertyvisits(models.Model):
     @api.constrains('date', 'property_id')
     def _check_visit_time(self):
         for rec in self:
-            for visit in rec.property_id.visit:
+            for visit in rec.property_id.visit_ids:
                 if visit.id == rec.id:
                     continue
                 if rec.date < visit.date + timedelta(hours=1) and rec.date > visit.date - timedelta(hours=1):

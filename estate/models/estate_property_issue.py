@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.orm.models import UserError
+from odoo.exceptions import UserError
 
 
 class Estatepropertyissue(models.Model):

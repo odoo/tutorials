@@ -21,7 +21,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
-    visit = fields.One2many('estate.property.visit', 'property_id')
+    visit_ids = fields.One2many('estate.property.visit', 'property_id')
     visit_count = fields.Integer(string="Total Visit", compute="_compute_visit_count")
 
     garden_orientation = fields.Selection(
@@ -107,18 +107,25 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+    # def _compute_best_price(self):
+    #     for record in self:
+    #         best_price=0
+    #         for offer in record.offer_ids:
+    #             if offer.price>best_price:
+    #                 best_price=offer.price
+    #         record.best_price=best_price
+
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_area, self.garden_orientation = 10, 'north'
         else:
             self.garden_area, self.garden_orientation = 0, False
-
-    def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold property cannot be cancelled.")
-            record.state = 'cancelled'
 
     @api.constrains("selling_price", "expected_price")
     def _check_price(self):
@@ -132,10 +139,11 @@ class EstateProperty(models.Model):
             if record.state not in ['new', 'cancelled']:
                 raise UserError("You can only delete New or Cancelled properties")
 
-    @api.depends('visit')
-    def _compute_visit_count(self):
+    def action_cancel(self):
         for record in self:
-            record.visit_count = len(record.visit)
+            if record.state == 'sold':
+                raise UserError("Sold property cannot be cancelled.")
+            record.state = 'cancelled'
 
     def action_sold(self):
         for record in self:
