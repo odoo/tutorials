@@ -5,6 +5,11 @@ class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = 'estate property types'
 
+    _name_uniq = models.Constraint(
+        'unique (name)',
+        'Name already Exists',
+    )
+
     name = fields.Char(required=True)
     price = fields.Integer()
 
