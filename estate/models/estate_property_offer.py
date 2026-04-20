@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 from datetime import date, timedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -34,8 +34,6 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - create_date).days
 
     def action_accept_offer(self):
-        for record in self.property_id.offer_ids:
-            record.status = 'refused'
 
         for record in self.property_id.offer_ids:
             if record.status == 'accepted':
@@ -48,8 +46,15 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_reject_offer(self):
-
-        self.status = 'refused'
-        self.property_id.selling_price = 0
-        self.property_id.buyer = ""
+        if self.status == 'accepted':
+            self.status = 'refused'
+            self.property_id.selling_price = 0
+            self.property_id.buyer = ""
+        else:
+            raise UserError('The offer you are refusing is not the accepted one')
         return True
+
+    _check_positive_offer = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price must be positive'
+    )

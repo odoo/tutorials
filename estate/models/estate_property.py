@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from odoo.tools import date_utils
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -56,6 +57,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             prices = record.offer_ids.mapped('price')
+
             if prices:
                 record.best_price = max(prices)
             else:
@@ -84,3 +86,16 @@ class EstateProperty(models.Model):
 
         self.state = 'cancelled'
         return True
+
+    _check_positive = models.Constraint(
+        'check(expected_price > 0 )',
+        'Expected price  must be positive'
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_90(self):
+        if float_is_zero(self.selling_price, precision_digits=2):
+            return
+
+        if float_compare(self.selling_price, 0.9 * self.expected_price, precision_digits=2) == -1:
+            raise ValidationError('Offer price should not be lower then 90% of expected price')
