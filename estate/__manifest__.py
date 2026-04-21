@@ -1,0 +1,28 @@
+{
+    'name': 'Real Estate',
+    'depends': [
+        'base',
+    ],
+    'application': True,
+    'installable': True,
+    'author': 'Odoo S.A.',
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_property_view_kanban.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_view_list.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_tag_view_list.xml',
+        'views/estate_menus.xml',
+        'views/estate_property_view_form.xml',
+        'views/estate_property_view_search.xml',
+        'views/estate_property_type_view_form.xml',
+        'views/estate_property_type_view_list.xml',
+        'views/estate_property_tag_view_form.xml',
+        'views/estate_property_offer_view_list.xml',
+        'views/estate_property_offer_view_form.xml',
+        'views/estate_res_users_view_form.xml',
+    ],
+    'license': 'LGPL-3',
+}
