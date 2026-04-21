@@ -1,0 +1,8 @@
+{
+    "python.analysis.extraPaths": [
+        "/home/odoo/src/venv",
+        "/home/odoo/src/odoo",
+        "/home/odoo/src/enterprise"
+    ],
+    "python.defaultInterpreterPath": "/home/odoo/src/venv/bin/python3"
+}
