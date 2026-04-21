@@ -57,6 +57,15 @@ class EstatePropertyOffer(models.Model):
                     )
                 ).days
 
+    @api.model
+    def create(self, val_lists):
+        for vals in val_lists:
+            property = self.env["estate_property"].browse(vals["property_id"])
+            if property.best_price > vals.get("price", 0):
+                raise UserError("offer with price greater than current offer exists")
+            property.state = "offerRecieved"
+        return super().create(val_lists)
+
     def accept_offer(self):
         for record in self:
             for offer in record.property_id.offer_ids:
