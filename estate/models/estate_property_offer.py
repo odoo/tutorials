@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -6,6 +6,11 @@ class EstatePropertyOffer(models.Model):
     _description = 'Real Estate Property Offer'
     _order = 'price desc'
 
+    date_deadline = fields.Date(
+        string="Deadline",
+        compute='_compute_date_deadline',
+        inverse='_inverse_date_deadline'
+    )
     price = fields.Float(
         string='Price',
         required=True
@@ -19,6 +24,29 @@ class EstatePropertyOffer(models.Model):
         string='Status',
         copy=False
     )
+
+    validity = fields.Integer(string="Validity (days)", default=7)
+
+    @api.depends('create_date', 'validity')
+    def _compute_date_deadline(self):
+        for record in self:
+            date = (
+                record.create_date.date()
+                if record.create_date
+                else fields.Date.today()
+            )
+        record.date_deadline = fields.Date.add(date, days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            date = (
+                record.create_date.date()
+                if record.create_date
+                else fields.Date.today()
+            )
+            record.validity = (
+                    record.date_deadline - date
+            ).days
 
     # Many2one → res.partner (the buyer making the offer)
     partner_id = fields.Many2one(
