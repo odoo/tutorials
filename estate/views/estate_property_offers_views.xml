@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_offer_list_view" model="ir.ui.view">
+            <field name="name">estate.property_offer.list</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <list string="Offers" editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
+                    <field name="price"/>
+                    <field name="partner_id" string="Partner"/>
+                    <field name="validity_days" string="Validity (days)"/>
+                    <field name="deadline"/>
+                    <button name="accept_offer" string="" type="object" title="accepted" icon="fa-check" invisible="status in ('accepted', 'refused')"/>
+                    <button name="action_refuse_offer" string="" type="object" title="refused" icon="fa-close" invisible="status in ('accepted', 'refused')"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

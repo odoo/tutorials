@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_tag_action" model="ir.actions.act_window">
+            <field name="name">Property Tags</field>
+            <field name="res_model">estate.property.tag</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    If you need help, ask yourself
+                </p>
+                <p>
+                    You need to be strong, go working out
+                </p>
+                <p>
+                    don't skip working out
+                </p>
+            </field>
+        </record>
+        <record id="estate_property_tag_list" model="ir.ui.view">
+            <field name="name">estate.properties_tag.list</field>
+            <field name="model">estate.property.tag</field>
+            <field name="arch" type="xml">
+                <list string="Property Tags" editable="bottom">
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>
