@@ -1,0 +1,15 @@
+<odoo>
+    <!-- Update User form !-->
+    <record id="res_users_form_view" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <page name="preferences" position="after">
+                <page name="Properties">
+                    <field name="property_ids"/>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>
