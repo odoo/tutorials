@@ -46,7 +46,9 @@ class EstateProperty(models.Model):
         default='new',
         copy=False
     )
-    total_area = fields.Integer(string="Total Area", compute='_compute_total_area')
+    total_area = fields.Integer(string="Total Area",
+                                compute='_compute_total_area',
+                                store=True)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -57,6 +59,15 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for rec in self:
             rec.best_price = max(rec.offer_ids.mapped('price'), default=0.0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     # Many2one: property type (House, Apartment, etc.)
     property_type_id = fields.Many2one(
