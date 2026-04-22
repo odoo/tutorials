@@ -21,4 +21,3 @@ class EstatePropertytModel(models.Model):
         string='Type',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
         )
-    
