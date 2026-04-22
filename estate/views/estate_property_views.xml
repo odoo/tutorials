@@ -1,12 +1,12 @@
 <?xml version='1.0'?>
 <odoo>
     <record id='estate_property_action' model='ir.actions.act_window'>
-        <field name='name'>Properties</field>
+        <field name='name'>All Properties</field>
         <field name='res_model'>estate.property</field>
         <field name='view_mode'>list,form</field>
     </record>
 
-    <record id='estate_property_list' model='ir.ui.view'>
+    <record id='estate_property_view_list' model='ir.ui.view'>
         <field name='name'>estate.property.list</field>
         <field name='model'>estate.property</field>
 
@@ -23,22 +23,25 @@
         </field>
     </record>
 
-    <record id='estate_property_form' model='ir.ui.view'>
+    <record id='estate_property_view_form' model='ir.ui.view'>
         <field name='name'>estate.property.form</field>
         <field name='model'>estate.property</field>
 
         <field name='arch' type='xml'>
             <form>
                 <sheet>
+
                     <div class="oe_title">
                         <h1>
-                            <field name="name"/>
+                            <field name="name" placeholder="Estate Property Name"/>
                         </h1>
                     </div>
+                    <field name="tag_ids" widget="many2many_tags" placeholder="Select a tag."/>
 
                     <group>
                         <group>
-                            <field name='postcode'/>
+                            <field name="type_id" placeholder="eg. House"/>
+                            <field name='postcode' placeholder="eg. 1234"/>
                             <field name='date_availability'/>
                         </group>
 
@@ -51,13 +54,24 @@
                     <notebook>
                         <page string='Description'>
                             <group>
-                                <field name="description"/>
+                                <field name="description"  placeholder="Write a short description of the property."/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_orientation" placeholder="Select an orientation."/>
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id" placeholder="Select the buyer."/>
                             </group>
                         </page>
                     </notebook>
@@ -66,7 +80,7 @@
         </field>
     </record>
 
-    <record id="estate_property_search" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
