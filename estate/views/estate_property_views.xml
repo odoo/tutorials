@@ -8,10 +8,11 @@
                 <field name='name' string="Title"/>
                 <field name='postcode'/>
                 <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name='bedrooms'  width="200px"/>
+                <field name='bedrooms' width="200px"/>
                 <field name='living_area' string="Living Area (sqm)" width="200px"/>
                 <field name='expected_price' width="200px"/>
                 <field name='selling_price' width="200px"/>
+                <field name="best_price"/>
                 <field name='date_availability' string="Available From" width="200px" optional='True'/>
                 <field name='state' widget='badge'
                     decoration-success="state == 'sold'"
@@ -33,7 +34,7 @@
                     <button name='action_set_sold' type='object' string='Sold' class="btn-primary" invisible="state in ['sold','cancelled']"/>
                     <button name='action_set_cancelled' type='object' string='Cancel' invisible="state in ['sold','cancelled']"/>
                     <button name='action_reset' type='object' string='Reset'/>
-                   
+                    <button name="action_accept_best" string="Accept Best Offer" type="object"/>
                 </header>
                 <sheet>
                     <widget name='web_ribbon' title='cancelled' bg_color="text-bg-warning" invisible="state != 'cancelled'"/>
@@ -102,13 +103,14 @@
     <record id='estate_property_search' model='ir.ui.view'>
         <field name='name'>estate.property.search</field>
         <field name='model'>estate.property</field>
-        <field name='arch' type='xml'>  
+        <field name='arch' type='xml'>
             <search>
                 <field name='name' string="Title"/>
                 <field name='postcode'/>
                 <field name='expected_price'/>
                 <field name='bedrooms'/>
                 <field name='living_area' string="Living Area (sqm)" operator='>='/>
+                <field name="best_price" operator=">="/>
                 <field name='facades'/>
                 <filter name='active' string='Archived' domain='[("active", "=", False)]'/>
                 <separator/>

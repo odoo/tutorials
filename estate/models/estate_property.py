@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -40,7 +40,7 @@ class EstateProperty(models.Model):
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-    best_price = fields.Float(compute='_compute_best_price')
+    best_price = fields.Float(compute='_compute_best_price', store=True)
     date_availability = fields.Date(
         default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
         copy=False
@@ -82,7 +82,7 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, 2):
                 continue
             if float_compare(record.selling_price, record.expected_price * 0.9, 2) < 0:
-                raise ValidationError(r"The Selling price cannot be lower than 90% of the expected price")
+                raise ValidationError(_("The Selling price cannot be lower than 90% of the expected price"))
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -95,18 +95,18 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         if self.state == 'cancelled':
-            raise UserError('You cannot sell an offer that is already Cancelled')
+            raise UserError(_("You cannot sell an offer that is already Cancelled"))
         self.state = 'sold'
         return {
             'effect': {
                 'type': 'rainbow_man',
-                'message': "Huge congrats on selling your property! Here's to new beginnings!"
+                'message': _("Huge congrats on selling your property! Here's to new beginnings!")
             }
         }
 
     def action_set_cancelled(self):
         if self.state == 'sold':
-            raise UserError('You cannot cancel an offer that is already Sold')
+            raise UserError(_("You cannot cancel an offer that is already Sold"))
         self.state = 'cancelled'
         return True
 
@@ -121,4 +121,10 @@ class EstateProperty(models.Model):
                 self.state = 'offer_received'
             else:
                 self.state = 'new'
+        return True
+
+    def action_accept_best(self):
+        for rec in self:
+            best_offer = rec.offer_ids.sorted('price', reverse=True)[:1]
+            best_offer.action_accept()
         return True

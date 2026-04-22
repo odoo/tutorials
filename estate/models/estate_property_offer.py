@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -51,7 +51,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         if self.property_id.state in ('sold', 'cancelled'):
-            raise UserError('You cannot accept an offer in a sold or cancelled property')
+            raise UserError(_("You cannot accept an offer in a sold or cancelled property"))
         self.status = 'accepted'
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         if self.property_id.state in ('sold', 'cancelled'):
-            raise UserError('You cannot reject an offer in a sold or cancelled property')
+            raise UserError(_("You cannot reject an offer in a sold or cancelled property"))
         if self.status == 'accepted':
             self.property_id.selling_price = 0
             self.property_id.buyer_id = False
