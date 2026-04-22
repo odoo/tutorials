@@ -4,5 +4,5 @@
         "/home/odoo/src/odoo",
         "/home/odoo/src/enterprise"
     ],
-    "python.defaultInterpreterPath": "/home/odoo/src/venv/bin/python3"
+    "python.defaultInterpreterPath": "/home/odoo/src/venv/bin/python3.12"
 }
