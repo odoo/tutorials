@@ -1,27 +1,48 @@
-import datetime
-
 from odoo import models, fields
 import odoo.tools.date_utils as date_utils
 
+
 class Property(models.Model):
     _name = 'estate.property'
-    _description = 'Test Model for the Estate App'
+    _description = 'Estate Property'
 
-    name = fields.Char("Name", required=True)
-    description = fields.Text("Description")
-    postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Date Availability", copy=False, default=date_utils.add(fields.Date.today() + date_utils.relativedelta(months=3)))
-    expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+    name = fields.Char(string='Title', required=True)
+    description = fields.Text()
+    postcode = fields.Char()
 
-    bedrooms = fields.Integer("Bedrooms", default=2)
-    living_area = fields.Integer("Living Area")
-    facades = fields.Integer("Facades")
-    garage = fields.Boolean("Garage")
+    date_availability = fields.Date(
+        copy=False,
+        default=lambda x: date_utils.add(
+            fields.Date.today() + date_utils.relativedelta(months=3)
+        ),
+    )
 
-    garden = fields.Boolean("Garden")
-    garden_area = fields.Integer("Garden Area")
-    garden_orientation = fields.Selection(string="Orientation", selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
 
-    active = fields.Boolean("Active", default=True)
-    state = fields.Selection(string="State", selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")])
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ]
+    )
+
+    active = fields.Boolean(default=True)
+    state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ]
+    )

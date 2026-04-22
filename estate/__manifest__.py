@@ -1,15 +1,18 @@
 {
-    'name': "Estate",
-    'version': '69.0',
-    'depends': ['base'],
-    'author': "Stef Ossé",
+    'name': 'Estate',
+    'version': '19.0.1.0.0',
+    'depends': [
+        'base',
+    ],
+    'author': 'Stef Ossé',
+    'license': 'LGPL-3',
     'category': 'Category',
-    'description': """
+    'description': '''
     A specialized application for **estate management**.
-    """,
+    ''',
     # data files always loaded at installation
     'data': [
-        'data/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
     ],
