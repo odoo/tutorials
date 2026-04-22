@@ -1,5 +1,5 @@
-from odoo import models, fields
 from dateutil.relativedelta import relativedelta
+from odoo import models, fields
 
 
 class EstateProperty(models.Model):
@@ -22,10 +22,10 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Orientation",
         selection=[
-            ('north', 'North'),
-            ('south', 'South'),
-            ('west', 'West'),
-            ('east', 'East')
+            ("north", "North"),
+            ("south", "South"),
+            ("west", "West"),
+            ("east", "East")
         ],
         help="Orientation of the garden"
     )
@@ -33,11 +33,11 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string="State",
         selection=[
-            ('new', 'New'),
-            ('offer received', 'Offer Received'),
-            ('offer accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled")
         ],
         help="State of the property",
         required=True,
