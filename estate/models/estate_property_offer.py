@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -46,14 +47,26 @@ class EstatePropertyOffer(models.Model):
     def accept_button(self):
         for record in self:
             record.status = "accepted"
-            record.property_id.buyer = record.partner_id
+            record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.state = "offer_accepted"
 
     def reject_button(self):
         for record in self:
             record.status = "refused"
-            if record.property_id.buyer == record.partner_id:
-                record.property_id.buyer = False
+            if record.property_id.buyer_id == record.partner_id:
+                record.property_id.buyer_id = False
                 record.property_id.selling_price = False
                 record.property_id.state = "offer_received"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            property_record = self.env["estate.property"].browse(val.get("property_id"))
+            property_record.state = "offer_received"
+            if val.get("price", 0) < property_record.best_price:
+                raise UserError(
+                    f"The offer price must be higger than {property_record.best_price}."
+                )
+
+        return super().create(vals_list)

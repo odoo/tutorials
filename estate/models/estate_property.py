@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -8,11 +8,11 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
-    name = fields.Char(required=True, size=50)
+    name = fields.Char(required=True)
     description = fields.Text()
-    postcode = fields.Char(size=25)
+    postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Date.add(fields.Date.today(), months=3)
+        copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -44,25 +44,14 @@ class EstateProperty(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    sales_man = fields.Many2one(
+    salesman_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag = fields.Many2many("estate.property.tag", string="Tags")
-    offer = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
-
-    @api.depends("living_area", "garden_area")
-    def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
-
-    @api.depends("offer.price")
-    def _compute_best_price(self):
-        for record in self:
-            prices = record.mapped("offer.price")
-            record.best_price = max(prices) if prices else 0
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
@@ -74,8 +63,19 @@ class EstateProperty(models.Model):
         "A property selling price must be positive",
     )
 
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            prices = record.mapped("offer_ids.price")
+            record.best_price = max(prices) if prices else 0
+
     @api.constrains("state")
-    def on_state_change(self):
+    def _on_state_change(self):
         for record in self:
             if record.state == "offer_accepted" or record.state == "sold":
                 if (
@@ -83,7 +83,9 @@ class EstateProperty(models.Model):
                     < 0
                 ):
                     raise ValidationError(
-                        "Selling price cannot be lower than 90% of the expected price."
+                        _(
+                            "Selling price cannot be lower than 90% of the expected price."
+                        )
                     )
 
     @api.onchange("garden")
@@ -96,19 +98,26 @@ class EstateProperty(models.Model):
                 record.garden_area = False
                 record.garden_orientation = False
 
-    def sold_button(self):
+    def action_sold(self):
         for record in self:
-            # breakpoint()
             if record.state == "cancelled":
-                raise UserError("Cancelled property cannot be sold.")
+                raise UserError(_("Cancelled property cannot be sold."))
             record.state = "sold"
             record.selling_price = record.selling_price
         return True
 
-    def cancel_button(self):
+    def action_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("Sold property cannoy be cancelled.")
+                raise UserError(_("Sold property cannot be cancelled."))
             record.state = "cancelled"
             record.state = False
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    _("You cannot delete property that are in %s state!", record.state)
+                )
