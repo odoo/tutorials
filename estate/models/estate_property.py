@@ -51,9 +51,6 @@ class Property(models.Model):
     )
     state = fields.Selection(
         selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ]
@@ -67,7 +64,7 @@ class Property(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
-        best = 0 if not self.offer_ids else max(self.offer_ids.mapped("price"))
+        best = max([0, *self.offer_ids.mapped("price")])
         for record in self:
             record.best_offer = best
 
