@@ -14,6 +14,8 @@
     'application': True,
     'installable': True,
     'depends': ['base'],
-    'data': [],
+    'data': [
+        'data/ir.model.access.csv',
+    ],
     'license': 'AGPL-3'
 }
