@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class Property(models.Model):
 
     # Model definition
@@ -21,6 +22,10 @@ class Property(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ],
     )
-
