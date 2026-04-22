@@ -10,6 +10,7 @@
 
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'views/estate_property_type_views.xml',
     ],
     'author': "Sevan Corp.",
 }
