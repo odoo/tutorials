@@ -6,7 +6,11 @@
     "installable": True,
     "application": True,
     "author": "belam",
-    "depends": {"base"},
+    "depends": ["base"],
     "license": "LGPL-3",
-    "data": {"security/ir.model.access.csv"},
+    "data": [
+        "views/estate_property_views.xml",
+        "views/estate_menus.xml",
+        "security/ir.model.access.csv",
+    ],
 }
