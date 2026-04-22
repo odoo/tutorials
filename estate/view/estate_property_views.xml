@@ -5,4 +5,86 @@
         <field name="res_model">estate_property</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <record id="estate_list" model="ir.ui.view">
+        <field name="name">estate.properties.list</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living area (sqm)"/>
+                <field name="expected_price" string="Expected price"/>
+                <field name="selling_price" string="Selling price"/>
+                <field name="date_availability" string="Available From"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_form" model="ir.ui.view">
+        <field name="name">estate.properties.form</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <form string="Channel">
+                <sheet>
+                    <h1>
+                        <field name="name" string="Name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="postcode" string="Postcode"/>
+                            <field name="date_availability" string="Available From"/>
+                        </group>
+                        <group>
+                            <field name="expected_price" string="Expected price"/>
+                            <field name="selling_price" string="Selling price"/>                 
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" string="Description"/>
+                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="living_area" string="Living area (sqm)"/>                                 
+                                <field name="facades" string="Facades"/>
+                                <field name="garage" string="Garage"/>
+                                <field name="garden" string="Garden"/>
+                                <field name="garden_area" string="Garden area (sqm)"/>
+                                <field name="garden_orientation" string="Garden orientation"/>
+                                
+                            </group>
+                        </page>
+                        <page string="Others">
+                            <group>
+                                <field name="active" string="Active"/>
+                                <field name="state" string="Status"/>
+                            </group>
+                        </page>
+                    </notebook> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.properties.search</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living area (sqm)"/>
+                <field name="expected_price" string="Expected price"/>
+                <field name="selling_price" string="Selling price"/>
+                <field name="facades" string="Facades"/>
+                <separator/>
+                <filter string="Available" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer Received')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Provider" name="provider" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
