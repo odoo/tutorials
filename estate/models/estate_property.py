@@ -19,5 +19,6 @@ class EstatePropertytModel(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Type',
-        selection=[('north', 'North'), ('south', 'South'), ('east','East'), ('west','West')])
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        )
     
