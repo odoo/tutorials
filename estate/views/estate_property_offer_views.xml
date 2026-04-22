@@ -9,6 +9,8 @@
                 <group>
                     <field name="partner_id"/>
                     <field name="status" placeholder="status currently unknown"/>
+                    <field name="validity"/>
+                    <field name="deadline"/>
                     <field name="price"/>
                 </group>
             </form>
@@ -22,6 +24,8 @@
             <list>
                 <field name="partner_id"/>
                 <field name="status" placeholder="status currently unknown"/>
+                <field name="validity"/>
+                <field name="deadline"/>
                 <field name="price"/>
             </list>
         </field>
