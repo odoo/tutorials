@@ -4,12 +4,12 @@ from odoo import fields, models
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Date.add(fields.Date.today(), months=3)
+        copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
     expected_price = fields.Integer(required=True)
     selling_price = fields.Integer(readonly=True, copy=False)
@@ -38,4 +38,6 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        required=True,
+        default="new",
     )

@@ -1,9 +1,12 @@
 {
     "name": "estate",
-    "depends": ["base"],
+    "depends": [
+        "base",
+    ],
     "application": True,
     "author": "Yoelf",
     "license": "LGPL-3",
+    "version": "19.0.0.1.0",
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
