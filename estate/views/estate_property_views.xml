@@ -55,6 +55,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate_property_issue_action)d" type="action" class="oe_stat_button" icon="fa-edit" string="Issues">
+                            <field name="issue_count" widget="statinfo" string="Issues"/>
+                        </button>
+                    </div>
                     <h1>
                         <field name="name"/>
                     </h1>
@@ -95,6 +100,9 @@
                                 <field name="salesperson_id"/>
                                 <field name="buyer_id"/>
                             </group>
+                        </page>
+                        <page string="Visits">
+                            <field name="visit_ids"/>
                         </page>
                     </notebook>
                 </sheet>

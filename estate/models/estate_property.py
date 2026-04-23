@@ -62,6 +62,9 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_price", store=True
     )
+    visit_ids = fields.One2many('estate.property.visit', 'property_id')
+    issue_ids = fields.One2many('estate.property.issue', 'property_id')
+    issue_count = fields.Integer(compute='_compute_issue_count')
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)', 'Price must be strictly positive'
@@ -79,6 +82,11 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped("price"))
             else:
                 record.best_price = 0.0
+
+    @api.depends('visit_ids')
+    def _compute_issue_count(self):
+        for record in self:
+            record.issue_count = len(record.issue_ids)
 
     @api.onchange('has_garden')
     def _onchange_garden(self):
@@ -108,6 +116,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled property cannot be set as sold.")
+            elif record.issue_ids.priority == '3' and record.issue_ids.state != "resolved":
+                raise UserError("High priority issue is still not resolved")
             else:
                 record.state = "sold"
         return True

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_visit_action" model="ir.actions.act_window">
+        <field name="name">Estate Property Visit</field>
+        <field name="res_model">estate.property.visit</field>
+        <field name="view_mode">list,form,calendar</field>
+        <field name="domain">[('property_id', '=', active_id)]</field>
+    </record>
+
+    <record id="estate_property_visit_view_list" model="ir.ui.view">
+        <field name="name">estate.property.visit.list</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="customer_name"/>
+                <field name="visit_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_view_form" model="ir.ui.view">
+        <field name="name">estate.property.visit.form</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="customer_name"/>
+                <field name="visit_date"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_view_calendar" model="ir.ui.view">
+        <field name="name">estate.property.visit.calendar</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <calendar string="Visit Views" mode="month" date_start="visit_date">
+                <field name="customer_name"/>
+                <field name="visit_date"/>
+            </calendar>
+        </field>
+    </record>
+
+</odoo>
