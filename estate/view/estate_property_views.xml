@@ -37,10 +37,12 @@
                         <group>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
+                            <field name="property_type_id" string="Property Type"/>
                         </group>
                         <group>
                             <field name="expected_price" string="Expected price"/>
-                            <field name="selling_price" string="Selling price"/>                 
+                            <field name="selling_price" string="Selling price"/>       
+                            <field name="best_price" string="Best offer"/>          
                         </group>
                     </group>
                     <notebook>
@@ -56,6 +58,7 @@
                                 <field name="garden_orientation" string="Garden orientation"/>
                                 <field name="salesperson_id" string="Salesperson"/>
                                 <field name="buyer_id" string="Buyer"/>
+                                <field name="total_area" string="Total area (sqm)"/>
                                 
                             </group>
                         </page>
@@ -66,8 +69,6 @@
                             <group>
                                 <field name="active" string="Active"/>
                                 <field name="state" string="Status"/>
-                                <field name="property_type_id" string="Property Type"/>
-
                             </group>
                         </page>
                     </notebook> 
