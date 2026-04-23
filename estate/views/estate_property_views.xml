@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -27,6 +28,8 @@
                             <field name="name"/>
                         </h1>
                     </group>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <p></p>
                     <group>
                         <group>
                             <field name="postcode"/>
