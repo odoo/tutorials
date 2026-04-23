@@ -38,6 +38,9 @@ class Property(models.Model):
             ('west', 'West'),
         ],
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer = fields.Many2one("res.partner", copy=False)
+    salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
