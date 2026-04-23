@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -38,6 +38,7 @@ class Property(models.Model):
             ('west', 'West'),
         ],
     )
+    total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer = fields.Many2one("res.partner", copy=False)
     salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
@@ -56,3 +57,8 @@ class Property(models.Model):
         copy=False,
         default='new',
     )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
