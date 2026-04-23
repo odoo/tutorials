@@ -4,7 +4,7 @@
         <field name='name'>estate.property.list</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
-            <list>
+            <list default_order="name" decoration-success="state in ['offer_received','offer_accepted']" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
                 <field name='name' string="Title"/>
                 <field name='postcode'/>
                 <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -14,12 +14,7 @@
                 <field name='selling_price' width="200px"/>
                 <field name="best_price"/>
                 <field name='date_availability' string="Available From" width="200px" optional='True'/>
-                <field name='state' widget='badge'
-                    decoration-success="state == 'sold'"
-                    decoration-danger="state == 'cancelled'"
-                    decoration-info="state == 'new'"
-                    decoration-warning="state == 'offer_accepted'"
-                    decoration-primary="state == 'offer_received'"/>
+                <field name='state' widget='badge' decoration-success="state == 'sold'" decoration-danger="state == 'cancelled'" decoration-info="state == 'new'" decoration-warning="state == 'offer_accepted'" decoration-primary="state == 'offer_received'"/>
             </list>
         </field>
     </record>
@@ -50,7 +45,7 @@
                             <field name='tag_ids' widget='many2many_tags' options="{'color_field': 'color'}" placeholder="add tags here...." />
                             <field name='property_type_id' String="Property Type" />
                             <field name='postcode'/>
-                            <field name='date_availability' string='Available From'/>
+                            <field name='date_availability' string='Available From' options="{'min_date': 'today', 'max_date': '2026-12-31'}"/>
                         </group>
                         <group>
                             <field name='expected_price'/>
@@ -66,24 +61,26 @@
                                 <field name='living_area' string="Living Area (sqm)"/>
                                 <field name='facades'/>
                                 <field name='garage'/>
-                                <field name='garden'/>
-                                <field name='garden_area' string="Garden Area (sqm)"/>
-                                <field name='garden_orientation'/>
+                                <field name='garden' widget="boolean_toggle"/>
+                                <field name='garden_area' string="Garden Area (sqm)" invisible="not garden"/>
+                                <field name='garden_orientation' invisible="not garden"/>
                                 <field name='total_area' string="Total Area (sqm)"/>
                             </group>
                         </page>
                         <page string='Offers'>
-                            <field name='offer_ids'>
+                            <field name='offer_ids' readonly="state == 'offer_accepted'">
                                 <list editable='bottom' decoration-danger="status and status == 'refused'" decoration-success="status and status == 'accepted'">
                                     <control>
                                         <create name="add_product_control" string="Add an Offer "/>
                                     </control>
+                                    <field name="sequence" widget="handle"/>
                                     <field name='partner_id' width='200px'/>
                                     <field name='price' width='200px'/>
                                     <field name='validity' string="Validity (Days)" width='200px'/>
                                     <field name='date_deadline' string="Deadline"/>
-                                    <button name='action_accept' string='Accept' type='object' icon='fa-check'/>
-                                    <button name='action_refuse' string='Refuse' type='object' icon='fa-times'/>
+                                    <field name="property_type_id"/>
+                                    <button name='action_accept' string='Accept' type='object' icon='fa-check' invisible="status == 'accepted'" class="text-success"/>
+                                    <button name='action_refuse' string='Refuse' type='object' icon='fa-times' invisible="status == 'refused'" class="text-danger"/>
                                     <field name='status' width='200px'/>
                                 </list>
                             </field>

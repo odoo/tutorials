@@ -6,6 +6,7 @@ from odoo import fields, models
 class EstatePropertyTag(models.Model):
     _name = 'estate.property.tag'
     _description = 'estate property tags'
+    _order = 'name'
 
     _name_uniq = models.Constraint(
         'unique (name)',

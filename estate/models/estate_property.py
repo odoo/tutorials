@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "estate property used to buy and sell houses"
+    _order = 'id desc'
     _log_access = False
 
     _check_expected_price = models.Constraint(
@@ -22,6 +23,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     facades = fields.Integer()
     postcode = fields.Char()
+    sequence = fields.Integer(default=1)
 
     garage = fields.Boolean()
     bedrooms = fields.Integer(default=2)

@@ -5,9 +5,42 @@
         <field name='model'>estate.property.type</field>
         <field name='arch' type='xml'>
             <list>
-                <field name='name' width='200px'/>
-                <field name='price' width='200px'/>
+                <field name="sequence" widget="handle"/>
+                <field name='name' />
+                <field name='price'  />
             </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div name="button_box">
+                        <button name="%(estate_property_offer_action)d" type="action" icon="fa-usd">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="price"/>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name" string="Title" width='200px'/>
+                                    <field name="expected_price" width='200px' />
+                                    <field name="state" string="status" width='200px'/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
         </field>
     </record>
 
