@@ -94,11 +94,11 @@ class Property(models.Model):
                 record.garden_area = 0
                 record.garden_orientation = None
 
-    @api.constrains("expected_price", "selling_price")
+    @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
             if (
-                record.state == "offer_received"
+                not float_utils.float_is_zero(record.selling_price, precision_digits=2)
                 and float_utils.float_compare(
                     record.selling_price,
                     record.expected_price * 0.9,

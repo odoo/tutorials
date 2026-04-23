@@ -23,6 +23,7 @@ class PropertyOffer(models.Model):
 
     _check_price = models.Constraint(
         "CHECK(price > 0)",
+        message="Check the price",
     )
 
     @api.depends("validity", "create_date")
