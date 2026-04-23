@@ -8,7 +8,10 @@
         <!-- Architecture of the view written in XML -->
         <field name="arch" type="xml">
             <!-- string = title shown in UI -->
-            <list string="Properties">
+            <list string="Properties"
+                  decoration-success="state in ['offer_accepted', 'sold']"
+                  decoration-bf="state == 'offer_received'"
+                  decoration-muted="state == 'cancelled'">
                 <field name="name"/>
                 <field name="property_type_id" width="130rem"/>
                 <field name="postcode" width="100rem"/>
@@ -18,6 +21,8 @@
                 <field name="selling_price" optional="hide"/>
                 <field name="salesperson_id"/>
                 <field name="buyer_id"/>
+                <field name="state"/>
+
                 <field name="date_availability" optional="show"/>
             </list>
         </field>
@@ -30,6 +35,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"
+                            class="btn-primary"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                </header>
                 <sheet>
                     <!-- Title at top -->
                     <div class="oe_title">
@@ -52,7 +64,7 @@
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="best_price"/>
-                            <field name="state"/>
+                            <!--                            <field name="state"/>-->
                             <field name="active"/>
                         </group>
                     </group>
