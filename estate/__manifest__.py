@@ -9,8 +9,16 @@
     "depends": ["base"],
     "license": "LGPL-3",
     "data": [
+        # Views per model
+        "views/tag_views.xml",
+        "views/customer_views.xml",
+        "views/estate_property_type_views.xml",
         "views/estate_property_views.xml",
+        "views/offer_views.xml",
+        # Menus
         "views/estate_menus.xml",
+        # Security
         "security/ir.model.access.csv",
+        # Dqtq
     ],
 }

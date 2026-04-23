@@ -1,62 +1,90 @@
 <?xml version="1.0" ?>
 <odoo>
+
+    <!-- ACTIONS -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
 
-
+    <!-- VIEWS -->
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" string="Title"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="bedrooms" string="Bderooms"/>
-                <field name="living_area" string="Living area (sqm)"/>
-                <field name="expected_price" string="Expected price"/>
-                <field name="selling_price" string="Selling price"/>
-                <field name="date_availability" string="Available from"/>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
             </list>
         </field>
     </record>
+
 
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Estate Property">
+            <form string="Form string estate property">
                 <sheet>
-                    <div>
+                    <div class="oe_title">
                         <h1 class="mb32">
                             <field name="name" placeholder="Your property name" class="mb16"/>
                         </h1>
                     </div>
+                    <div>
+                        <group>
+                            <!-- No label for tags ? -->
+                            <field name="tag_ids" widget="many2many_tags" string=""/>
+                        </group>
+                    </div>
                     <group>
                         <group>
-                            <field name="postcode" string="Postcode"/>
-                            <field name="date_availability" string="Available from"/>
+                            <field name="postcode"/>
+                            <field name="estate_property_type_id"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected price"/>
-                            <field name="selling_price" string="Selling price"/>
+                            <field name="expected_price"/>
+                            <field name="best_price" invisible="not offer_ids"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
+
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" string="Description"/>
-                                <field name="bedrooms" string="Bedrooms"/>
-                                <field name="living_area" string="Living Area (sqm)"/>
-                                <field name="facades" string="Facades"/>
-                                <field name="garage" string="Garage"/>
-                                <field name="garden" string="Garden area (sqm)"/>
-                                <field name="garden_orientation" string="Garden orientation"/>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <separator/>
+                                <field name="has_garden"/>
+                                <field name="garden_area"
+                                       invisible="not has_garden"/>
+                                <field name="garden_orientation"
+                                       invisible="not has_garden"/>
+                                <field name="total_area"/>
+                            </group>
+
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="customer_id"/>
+                                <field name="salesman_id"/>
                             </group>
                         </page>
                     </notebook>
+
                 </sheet>
             </form>
         </field>
@@ -78,7 +106,7 @@
                 <filter string="South Facing" name="only_south"
                         domain="[('garden_orientation', '=', 'south')]"/>
                 <filter string="Luxury" name="luxury"
-                        domain="[('selling_price', '&gt;', '750000')]"/>
+                        domain="[('expected_price', '&gt;', '750000')]"/>
                 <filter string="Available" name="available"
                         domain="[('state', 'in', ['new', 'offer_received'])]"/>
 
