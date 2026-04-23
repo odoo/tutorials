@@ -12,7 +12,9 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" string="Title" width="150px" />
+                <field name="estate_property_tag_ids" widget="many2many_tags"/>
                 <field name="postcode" string="Postcode" width="100px"/>
+                <field name="estate_property_type_id" string="Property Type"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area"/>
                 <field name="expected_price" string="Expected Price" widget="monetary"/>
@@ -34,7 +36,9 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="estate_property_tag_ids" widget="many2many_tags"/>
                         <group string="Key Information">
+                            <field name="estate_property_type_id" string="Property Type"/>
                             <field name="postcode" placeholder="e.g. 1000"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -44,7 +48,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Detailed Description">
+                        <page string="Description">
                             <group>
                                 <field name="description"/>
                             </group>
@@ -56,6 +60,21 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation" string="Garden Orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="estate_property_offer_ids">
+                                <list string="offers list" >
+                                    <field name='price'/>
+                                    <field name='partner_id' width="150px"/>
+                                    <field name='status' width="150px"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group col="4">
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -70,6 +89,7 @@
         <field name="arch" type="xml">
             <search string="Property">
                 <field name="name" string="Title"/>
+                <field name="estate_property_type_id" string="Property Type"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
