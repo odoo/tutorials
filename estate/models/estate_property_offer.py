@@ -1,5 +1,7 @@
 import datetime
+
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -34,3 +36,28 @@ class PropertyOffer(models.Model):
                 record.create_date if record.create_date else datetime.date.today()
             )
             record.validity = (record.deadline - create_date).days
+
+    def action_accept(self):
+        for record in self:
+            if record.status == "refused":
+                raise UserError("A refused offer cannot be accepted")
+            if record.property_id.state == "cancelled":
+                raise UserError("An offer on a cancelled property cannot be accepted")
+            if record.property_id.state == "sold":
+                raise UserError("An offer on a sold property cannot be accepted")
+
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = "sold"
+
+    def action_refuse(self):
+        for record in self:
+            if record.status == "accepted":
+                raise UserError("An accepted offer cannot be refused")
+            if record.property_id.state == "cancelled":
+                raise UserError("An offer on a cancelled property cannot be refused")
+            if record.property_id.state == "sold":
+                raise UserError("An offer on a sold property cannot be refused")
+
+            record.status = "refused"

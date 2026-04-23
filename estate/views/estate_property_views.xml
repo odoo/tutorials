@@ -29,17 +29,25 @@
 
         <field name='arch' type='xml'>
             <form>
-                <sheet>
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"/>
+                </header>
 
+                <sheet>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Estate Property Name"/>
                         </h1>
                     </div>
-                    <field name="tag_ids" widget="many2many_tags" placeholder="Select a tag."/>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags" placeholder="Select a tag."/>
+                    </group>
+
 
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="type_id" placeholder="eg. House"/>
                             <field name='postcode' placeholder="eg. 1234"/>
                             <field name='date_availability'/>
@@ -55,7 +63,7 @@
                     <notebook>
                         <page string='Description'>
                             <group>
-                                <field name="description"  placeholder="Write a short description of the property."/>
+                                <field name="description" placeholder="Write a short description of the property."/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>

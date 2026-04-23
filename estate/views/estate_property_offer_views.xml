@@ -27,6 +27,8 @@
                 <field name="validity"/>
                 <field name="deadline"/>
                 <field name="price"/>
+                <button name="action_accept" type="object" icon="fa-check" title="Accept"/>
+                <button name="action_refuse" type="object" icon="oi-close" title="Refuse"/>
             </list>
         </field>
     </record>
