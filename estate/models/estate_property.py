@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class EstatePropertytModel(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Estate Property Model"
 
     name = fields.Char(required=True)
@@ -18,9 +18,14 @@ class EstatePropertytModel(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string='Type',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
-        )
+    string='Type',
+    selection=[
+        ('north', 'North'), 
+        ('south', 'South'),
+        ('east', 'East'),
+        ('west', 'West'),
+    ]
+    )
     active = fields.Boolean(default=True)
     state = fields.Selection(
     selection=[
@@ -33,4 +38,4 @@ class EstatePropertytModel(models.Model):
     required=True,
     copy=False,
     default='new',
-)
+    )
