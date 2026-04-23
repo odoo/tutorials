@@ -73,8 +73,10 @@ class Estate_property(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids", "offer_ids.state")
     def _compute_state(self):
+        if self.state in ["sold", "cancelled"]:
+            return
         if self.offer_ids:
             self.state = "offer Received"
             for offer in self.offer_ids:
@@ -83,6 +85,7 @@ class Estate_property(models.Model):
                     break
         else:
             self.state = "new"
+            self.selling_price = 0
 
     def action_sold(self):
         for record in self:
