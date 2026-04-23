@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-
+from odoo.exceptions import UserError
 
 class Estate_property_offer(models.Model):
     _name = "estate_property_offer"
@@ -14,6 +14,11 @@ class Estate_property_offer(models.Model):
     ], string="State", copy=False)
     validaty = fields.Integer(string="Offer Validity (days)", default=7)
     date_deadline = fields.Date(string="Offer Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        message="The price must be strictly positive",
+    )
 
     @api.depends("validaty", "create_date")
     def _compute_date_deadline(self):
@@ -31,3 +36,23 @@ class Estate_property_offer(models.Model):
                 record.validaty = (record.date_deadline - create_date).days
             else:
                 record.validaty = 0
+
+    def accept_offer(self):
+        for record in self:
+            if record.state == "accepted" or record.state == "refused":
+                raise UserError("This offer has already been accepted or refused.")
+            for offer in record.property_id.offer_ids:
+                if offer.state == "accepted":
+                    raise UserError("Another offer has already been accepted for this property.")
+            record.state = "accepted"
+            record.property_id.state = "offer Accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+        return True
+
+    def refuse_offer(self):
+        for record in self:
+            if record.state == "accepted" or record.state == "refused":
+                raise UserError("This offer has already been accepted or refused.")
+            record.state = "refused"
+        return True

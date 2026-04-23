@@ -28,6 +28,10 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Channel">
+            <header>
+                <button name="action_sold" type="object" string="Sold"/>
+                <button name="action_cancel" type="object" string="Cancel"/>
+            </header>
                 <sheet>
                     <h1>
                         <field name="name" string="Name"/>
@@ -35,6 +39,7 @@
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state" string="Status"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
                             <field name="property_type_id" string="Property Type"/>
@@ -68,7 +73,7 @@
                         <page string="Others">
                             <group>
                                 <field name="active" string="Active"/>
-                                <field name="state" string="Status"/>
+
                             </group>
                         </page>
                     </notebook> 

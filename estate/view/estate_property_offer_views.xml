@@ -25,6 +25,8 @@
             <list string="Offers">
                 <field name="price" string="Price"/>
                 <field name="state" string="Status"/>
+                <button name="accept_offer" type="object" string="Accept" icon="fa-check"/>
+                <button name="refuse_offer" type="object" string="Refuse" icon="fa-close"/>
                 <field name="partner_id" string="Partner"/>
              </list>
         </field>
