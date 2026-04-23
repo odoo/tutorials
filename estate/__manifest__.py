@@ -10,14 +10,15 @@
     'author': "Odoo",
     'website': "https://www.odoo.com/",
     'category': 'Tutorials',
-    'version': '0.1',
+    'version': '19.0.0.1.0',
     'application': True,
-    'installable': True,
-    'depends': ['base'],
+    'depends': [
+        'base',
+    ],
     'data': [
         'data/ir.model.access.csv',
         'views/estate_property_views.xml',
-        'data/estate_menus.xml',
+        'views/estate_menus.xml',
     ],
-    'license': 'AGPL-3'
+    'license': 'LGPL-3',
 }

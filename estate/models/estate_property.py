@@ -38,3 +38,4 @@ class EstateProperty(models.Model):
         default='new',
         required=True,
     )
+    
