@@ -44,12 +44,15 @@
                             <field name="postcode"/>
                         </group>
                         <group>
-                            <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <group>
                         <group>
                             <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>

@@ -44,6 +44,7 @@ class Property(models.Model):
     salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+    best_price = fields.Float(compute="_compute_best_price")
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
@@ -62,3 +63,13 @@ class Property(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
+
+    @api.onchange("garden")
+    def _onchange_garden_values(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else None
