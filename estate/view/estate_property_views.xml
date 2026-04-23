@@ -18,6 +18,7 @@
                 <field name="expected_price" string="Expected price"/>
                 <field name="selling_price" string="Selling price"/>
                 <field name="date_availability" string="Available From"/>
+                <field name="property_type_id" string="Property Type"/>
             </list>
         </field>
     </record>
@@ -31,6 +32,7 @@
                     <h1>
                         <field name="name" string="Name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="postcode" string="Postcode"/>
@@ -52,13 +54,20 @@
                                 <field name="garden" string="Garden"/>
                                 <field name="garden_area" string="Garden area (sqm)"/>
                                 <field name="garden_orientation" string="Garden orientation"/>
+                                <field name="salesperson_id" string="Salesperson"/>
+                                <field name="buyer_id" string="Buyer"/>
                                 
                             </group>
+                        </page>
+                        <page string="Offers">
+                                <field name="offer_ids" string="Offers"/>
                         </page>
                         <page string="Others">
                             <group>
                                 <field name="active" string="Active"/>
                                 <field name="state" string="Status"/>
+                                <field name="property_type_id" string="Property Type"/>
+
                             </group>
                         </page>
                     </notebook> 
@@ -79,11 +88,10 @@
                 <field name="expected_price" string="Expected price"/>
                 <field name="selling_price" string="Selling price"/>
                 <field name="facades" string="Facades"/>
+                <field name="property_type_id" string="Property Type"/>
                 <separator/>
                 <filter string="Available" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer Received')]"/>
-                <group expand="1" string="Group By">
-                    <filter string="Provider" name="provider" context="{'group_by':'postcode', 'residual_visible':True}"/>
-                </group>
+                <filter string="Provider" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
             </search>
         </field>
     </record>
