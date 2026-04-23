@@ -47,7 +47,7 @@
 
                     <group>
                         <group>
-                            <field name="state"/>
+                            <field name="state" readonly="1" />
                             <field name="type_id" placeholder="eg. House"/>
                             <field name='postcode' placeholder="eg. 1234"/>
                             <field name='date_availability'/>

@@ -21,6 +21,10 @@ class PropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
 
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+    )
+
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for record in self:
@@ -49,7 +53,7 @@ class PropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
-            record.property_id.state = "sold"
+            record.property_id.state = "offer_accepted"
 
     def action_refuse(self):
         for record in self:
