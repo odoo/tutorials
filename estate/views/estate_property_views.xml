@@ -31,7 +31,32 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form string estate property">
+                <header>
+                    <button name="action_set_sold"
+                            icon="fa-check"
+                            class="oe_highlight"
+                            type="object"
+                            string="Mark as sold"
+                            invisible="not id and state != 'offer_accepted'"
+                    />
+                    <button name="action_set_cancelled"
+                            icon="fa-close"
+                            class="btn-danger"
+                            type="object"
+                            string="Cancel"
+                            invisible="not id or state == 'sold'"
+                            confirm="Are you sure you want to cancel this property ?"/>
+                </header>
                 <sheet>
+                    <widget name="web_ribbon"
+                            title="Sold"
+                            bg_color="text-bg-success"
+                            invisible="state != 'sold'"/>
+
+                    <widget name="web_ribbon"
+                            title="Cancelled"
+                            bg_color="text-bg-danger"
+                            invisible="state != 'cancelled'"/>
                     <div class="oe_title">
                         <h1 class="mb32">
                             <field name="name" placeholder="Your property name" class="mb16"/>
@@ -41,6 +66,10 @@
                         <group>
                             <!-- No label for tags ? -->
                             <field name="tag_ids" widget="many2many_tags" string=""/>
+                        </group>
+
+                        <group>
+                            <field name="state" readonly="1"/>
                         </group>
                     </div>
                     <group>

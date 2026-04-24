@@ -13,13 +13,26 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                    decoration-success="status == 'accepted'"
+                    decoration-danger="status == 'refused'"
+            >
                 <field name="partner_id"/>
                 <field name="price"/>
                 <field name="status"/>
                 <field name="date_deadline"/>
-                <field name="validity"/>
-
+                <button name="action_set_accepted"
+                        title="Accept offer"
+                        icon="fa-check"
+                        type="object"
+                        invisible="status != False"
+                />
+                <button name="action_set_refused"
+                        title="Refuse offer"
+                        icon="fa-close"
+                        type="object"
+                        invisible="status != False"
+                />
             </list>
         </field>
     </record>
@@ -29,6 +42,22 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="estate.property.offer">
+                <header>
+                    <button name="action_set_accepted"
+                            icon="fa-check"
+                            class="oe_highlight"
+                            type="object"
+                            string="Accept"
+                            invisible="not id or status != False"
+                    />
+                    <button name="action_set_refused"
+                            icon="fa-close"
+                            class=""
+                            type="object"
+                            string="Refuse"
+                            invisible="not id or status != False"
+                    />
+                </header>
                 <sheet>
 
                     <group>
@@ -47,7 +76,9 @@
                         </group>
                     </group>
                     <group>
-                        <field name="status"/>
+                        <field name="status"
+                               invisible="not id"
+                        />
                     </group>
                 </sheet>
             </form>
