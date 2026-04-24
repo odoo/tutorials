@@ -8,7 +8,27 @@
                 <field name="price"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="status"/>
+                <field name="date_deadline" string="Deadline"/>
+                <field name="validity" string="Validity (days)"/>
             </list>
             </field>
+    </record>
+
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="New offer">
+                <sheet>
+                        <group>
+                            <field name="price"/>
+                            <field name="partner_id"/>
+                            <field name="date_deadline" string="Deadline"/>
+                            <field name="validity"/>
+                            <field name="status"/>
+                        </group>
+                </sheet>
+            </form>
+        </field>
     </record>
 </odoo>
