@@ -5,6 +5,7 @@
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
             <list default_order="name" decoration-success="state in ['offer_received','offer_accepted']" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
+                <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
                 <field name='name' string="Title"/>
                 <field name='postcode'/>
                 <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -32,12 +33,16 @@
                     <button name="action_accept_best" string="Accept Best Offer" type="object"/>
                 </header>
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
                     <widget name='web_ribbon' title='cancelled' bg_color="text-bg-warning" invisible="state != 'cancelled'"/>
                     <widget name='web_ribbon' title='Sold' bg_color='text-bg-success' invisible="state != 'sold'"/>
                     <div class="oe_title mb16">
+                        <label for="name" string="Property Name"/>
                         <h1>
-                            <label for="name" string="Property Name"/>
-                            <field name='name' placeholder="Flat no 1"/>
+                            <div class="d-flex">
+                                <field name="is_favorite" widget="boolean_favorite" class="me-2" nolabel="1"/>
+                                <field name='name' placeholder="Flat no 1"/>
+                            </div>
                         </h1>
                     </div>
                     <group col='2'>
@@ -110,6 +115,7 @@
                 <field name="best_price" operator=">="/>
                 <field name='facades'/>
                 <filter name='active' string='Archived' domain='[("active", "=", False)]'/>
+                <filter name="is_favorite" string="Favorites" domain="[('is_favorite','=',True)]"/>
                 <separator/>
                 <filter name='state' string='Available' domain='[("state", "!=", "sold"), ("state", "!=", "cancelled")]'/>
                 <filter name='filter_sold' string='Sold' domain='[("state", "=", "sold")]'/>

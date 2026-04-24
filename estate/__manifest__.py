@@ -18,4 +18,9 @@
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'estate/static/src/scss/estate_form.scss',
+        ],
+    },
 }

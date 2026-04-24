@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "estate property used to buy and sell houses"
     _order = 'id desc'
-    _log_access = False
 
     _check_expected_price = models.Constraint(
         'CHECK (expected_price >= 0)',
@@ -67,6 +66,8 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     property_type_id = fields.Many2one('estate.property.type')
+    image = fields.Image()
+    is_favorite = fields.Boolean()
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
