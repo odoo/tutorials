@@ -36,3 +36,20 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - base_date).days
             else:
                 record.validity = 0
+
+    def action_accept(self):
+        for record in self:
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
+        return True
+
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "the offer price must be strictly positive.",
+    )
