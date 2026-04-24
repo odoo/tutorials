@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="property_menu_root" name="Property">
-        <menuitem id="property_first_level_menu" name="First Level">
+    <menuitem id="property_menu_root" name="Real Estate">
+        <menuitem id="property_first_level_menu" name="Advertisements">
             <menuitem id="property_model_menu_action" action="property_model_action"/>
         </menuitem>
     </menuitem>
