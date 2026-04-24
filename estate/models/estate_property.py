@@ -6,19 +6,19 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
 
-    active = fields.Boolean(string="Active", default=True)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    best_price = fields.Float(string="Best Offer", compute='_compute_best_price')
+    active = fields.Boolean(default=True)
+    bedrooms = fields.Integer(default=2)
+    best_price = fields.Float(string="Best Offer", compute='_compute_best_price', store=True)
     date_availability = fields.Date(
         string="Available From",
         default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
         copy=False
     )
-    description = fields.Text(string="Description")
-    expected_price = fields.Float(string="Expected Price", required=True)
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
+    description = fields.Text()
+    expected_price = fields.Float(required=True)
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[
@@ -27,13 +27,12 @@ class EstateProperty(models.Model):
             ('east', "East"),
             ('west', "West")
         ],
-        string="Garden Orientation",
         help="Direction the garden faces"
     )
     living_area = fields.Integer(string="Living Area (sqm)")
     name = fields.Char(string="Title", required=True)
-    postcode = fields.Char(string="Postcode")
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    postcode = fields.Char()
+    selling_price = fields.Float(readonly=True, copy=False)
     state = fields.Selection(
         [
             ('new', "New"),
@@ -42,14 +41,11 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
-        string="State",
         required=True,
         default='new',
         copy=False
     )
-    total_area = fields.Integer(string="Total Area",
-                                compute='_compute_total_area',
-                                store=True)
+    total_area = fields.Integer(compute='_compute_total_area', store=True)
 
     # Many2one: property type (House, Apartment, etc.)
     property_type_id = fields.Many2one(

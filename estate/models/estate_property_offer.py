@@ -57,16 +57,20 @@ class EstatePropertyOffer(models.Model):
             ).days
 
     def action_accept(self):
-        for record in self:
-            already_accepted = record.property_id.offer_ids.filtered(
-                lambda o: o.status == 'accepted' and o.id != record.id
-            )
-            if already_accepted:
-                raise UserError("An offer has already been accepted for this property!")
-            record.status = 'accepted'
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
-            record.property_id.state = 'offer_accepted'
+        self.ensure_one()
+        existing_offer = self.search([
+            ('property_id', '=', self.property_id.id),
+            ('status', '=', 'accepted'),
+            ('id', '!=', self.id),
+        ], limit=1)
+        if existing_offer:
+            raise UserError("An offer has already been accepted!")
+        self.write({'status': 'accepted'})
+        self.property_id.write({
+            'buyer_id': self.partner_id.id,
+            'selling_price': self.price,
+            'state': 'offer_accepted',
+        })
         return True
 
     def action_refuse(self):

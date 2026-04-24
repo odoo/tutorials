@@ -13,24 +13,23 @@
                   decoration-bf="state == 'offer_received'"
                   decoration-muted="state == 'cancelled'">
                 <field name="name"/>
-                <field name="property_type_id" width="130rem"/>
-                <field name="postcode" width="100rem"/>
-                <field name="bedrooms" width="150rem"/>
-                <field name="living_area" width="150rem"/>
-                <field name="expected_price" width="150rem"/>
+                <field name="property_type_id" class="w-50"/>
+                <field name="postcode" class="w-50"/>
+                <field name="bedrooms" class="w-50"/>
+                <field name="living_area" class="w-50"/>
+                <field name="expected_price" class="w-50"/>
                 <field name="selling_price" optional="hide"/>
                 <field name="salesperson_id"/>
                 <field name="buyer_id"/>
                 <field name="state"/>
-
+                <field name="best_price"/>
                 <field name="date_availability" optional="show"/>
             </list>
         </field>
     </record>
 
     <!-- ============ FORM VIEW ============ -->
-    <record id="estate_property_view_form"
-            model="ir.ui.view">
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -117,16 +116,17 @@
                 <field name="active"/>
                 <field name="state"/>
                 <field name="buyer_id"/>
+                <field name="best_price" operator=">="/>
                 <!-- filter -->
+                <filter string="Archived" domain="[('active', '=', False)]" name="archive"/>
                 <filter string="1 Bedroom &amp; 1 Garage" name="1BG"
                         domain="[('bedrooms', '=',1),('garage', '=', True)]"/>
-
-                <filter string="Postcode" name="postcode" domain="[('postcode', 'ilike', '1')]"/>
+                <filter string="Postcode" name="postcode" domain="[('postcode', '/', '1')]"/>
                 <separator/>
                 <filter string="Under Budget" name="budget" domain="[('expected_price', '&lt;=', 500000)]"/>
                 <separator/>
                 <filter string="Available" name="available"
-                        domain="['|', ('state', 'ilike', 'new'), ('state', 'ilike', 'offer_received')]"/>
+                        domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <separator/>
                 <filter string="Expensive" name="highest_price"
                         domain="[('expected_price', '&gt;',1000000 )]"/>
@@ -150,8 +150,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-        <field name="context">
-            {'search_default_available': 1}
-        </field>
+        <field name="context">{'search_default_available': 1}</field>
     </record>
 </odoo>
