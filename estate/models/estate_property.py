@@ -1,11 +1,19 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
 
+    _check_expected_price = models.Constraint(
+        definition='CHECK (expected_price > 0)',
+        message='The selling price must be positive do not enter negative values',
+    )
+    _check_selling_price = models.Constraint(
+        definition='CHECK (selling_price > 0)',
+        message='The selling price must be positive do not enter negative values',
+    )
     active = fields.Boolean(default=True)
     bedrooms = fields.Integer(default=2)
     best_price = fields.Float(string="Best Offer", compute='_compute_best_price', store=True)
@@ -100,13 +108,13 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
+                raise ValidationError("Cancelled properties cannot be sold.")
             record.state = 'sold'
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
+                raise ValidationError("Sold properties cannot be cancelled.")
             record.state = 'cancelled'
         return True

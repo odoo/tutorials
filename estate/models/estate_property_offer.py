@@ -7,6 +7,11 @@ class EstatePropertyOffer(models.Model):
     _description = 'Real Estate Property Offer'
     _order = 'price desc'
 
+    _check_price = models.Constraint(
+        'CHECK (price >0)',
+        'The price must be positive do not enter negative values',
+    )
+
     date_deadline = fields.Date(
         string="Deadline",
         compute='_compute_date_deadline',

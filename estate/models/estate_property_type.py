@@ -7,4 +7,9 @@ class EstatePropertyType(models.Model):
     _order = 'name'
     _rec_name = 'name'
 
+    _unique_property_type = models.Constraint(
+        'UNIQUE (name)',
+        'The Property Type must be Unique',
+    )
+
     name = fields.Char(required=True)
