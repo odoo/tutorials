@@ -4,8 +4,10 @@ from odoo import models, fields
 class Estate_property_tag(models.Model):
     _name = "estate_property_tag"
     _description = "tag super mega trop bien"
+    _order = "name"
 
     name = fields.Char(required=True)
+    color = fields.Integer()
 
     _check_name = models.Constraint(
         "UNIQUE(name)",
