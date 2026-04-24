@@ -30,6 +30,10 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <header>
+                        <button name="action_sell" type="object" string="Sold" class="oe_highlight"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"/>
+                    </header>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="My new house"/>
@@ -38,6 +42,7 @@
                     <group>
                         <field name="estate_property_tag_ids" widget="many2many_tags"/>
                         <group string="Key Information">
+                            <field name="state" string="Status"/>
                             <field name="estate_property_type_id" string="Property Type"/>
                             <field name="postcode" placeholder="e.g. 1000"/>
                             <field name="date_availability" string="Available From"/>
@@ -71,6 +76,8 @@
                                     <field name='partner_id' width="150px"/>
                                     <field name="date_deadline" string="Deadline"/>
                                     <field name="validity"/>
+                                        <button name="action_accept_offer" string="" type="object" icon="fa-check"/>
+                                        <button name="action_refuse_offer" string="" type="object" icon="fa-times"/>
                                     <field name='status' width="150px"/>
                                 </list>
                             </field>

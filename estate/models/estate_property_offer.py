@@ -1,3 +1,5 @@
+from odoo.exceptions import UserError
+
 from odoo import api, fields, models
 
 
@@ -38,3 +40,20 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
             else:
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
+
+    def action_accept_offer(self):
+        for offer in self:
+            if offer.property_id.buyer_id:
+                raise UserError(
+                    "a buyer is already assigned , therefore another offer has been accepted"
+                )
+            offer.status = "accepted"
+            offer.property_id.selling_price = self.price
+            offer.property_id.buyer_id = self.partner_id
+
+        return True
+
+    def action_refuse_offer(self):
+        for offer in self:
+            offer.status = "refused"
+        return True
