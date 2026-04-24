@@ -13,8 +13,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=lambda self: fields.Date.today() + relativedelta(months=3), copy=False)
-    expected_price = fields.Monetary(required=True)
-    selling_price = fields.Monetary(readonly=True, copy=False)
+    expected_price = fields.Monetary(currency_field="currency_id", required=True)
+    selling_price = fields.Monetary(currency_field="currency_id", readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -46,17 +46,25 @@ class EstateProperty(models.Model):
         copy=False,
         default="new"
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+
+    property_type_id = fields.Many2one("estate.property.type")
+    salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    currency_id = fields.Many2one("res.currency", default=lambda self: self.env.company.currency_id)
+    tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
     total_area = fields.Integer(compute="_compute_total_area", string="Total area (sqm)")
-    best_price = fields.Monetary(compute="_compute_best_price", string="Best Offer")
-    currency_id = fields.Many2one(
-        "res.currency",
-        required=True,
-        default=lambda self: self.env.company.currency_id
+    best_price = fields.Monetary(compute="_compute_best_price", currency_field="currency_id", string="Best Offer")
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "the expected price must be strictly positive.",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "the selling price must be positive.",
     )
 
     @api.depends("living_area", "garden_area")
@@ -67,12 +75,22 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            prices = record.offer_ids.mapped("price")
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
-            if prices:
-                record.best_price = max(prices)
-            else:
-                record.best_price = 0.0
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_limit(self):
+        for record in self:
+
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            lower_bound = 0.9 * record.expected_price
+
+            if float_compare(record.selling_price, lower_bound, precision_digits=2) == -1:
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! "
+                    "You must reduce the expected price if you want to accept this offer."
+                )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -96,24 +114,3 @@ class EstateProperty(models.Model):
                 raise UserError("Sold properties cannot be canceled.")
             record.state = "cancelled"
         return True
-
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "the expected price must be strictly positive.",
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "the selling price must be positive.",
-    )
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for record in self:
-
-            if not record.currency_id.is_zero(record.selling_price) \
-                    and record.currency_id.compare_amounts(record.selling_price, 0.9 * record.expected_price) < 0:
-                raise ValidationError(
-                    "The selling price must be at least 90% of the expected price! "
-                    "You must reduce the expected price if you want to accept this offer."
-                )
