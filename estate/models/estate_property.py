@@ -1,10 +1,10 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 
 class Property(models.Model):
-
     # Model definition
     _name = "estate.property"
     _description = "Estate Property"
@@ -73,3 +73,15 @@ class Property(models.Model):
     def _onchange_garden_values(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else None
+
+    def action_cancel_property(self):
+        if self.state == 'sold':
+            raise UserError("You can't cancel a property that is already sold.")
+        self.state = 'cancelled'
+        return True
+
+    def action_sold_property(self):
+        if self.state == 'cancelled':
+            raise UserError("You can't sell a property that is cancelled.")
+        self.state = 'sold'
+        return True

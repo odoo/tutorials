@@ -23,6 +23,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_sold_property" string="Sold" type="object" class="oe_highlight"/>
+                    <button name="action_cancel_property" string="Cancel" type="object"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -33,56 +37,31 @@
                     <p></p>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
-                        </group>
-                        <group>
-                            <field name="expected_price"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
                             <field name="postcode"/>
-                        </group>
-                        <group>
-                            <field name="best_price"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group>
                             <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
-                            </group>
-                            <group>
-                                <field name="bedrooms"/>
-                            </group>
-                            <group>
-                                <field name="living_area"/>
-                            </group>
-                            <group>
-                                <field name="facades"/>
-                            </group>
-                            <group>
-                                <field name="garage"/>
-                            </group>
-                            <group>
-                                <field name="garden"/>
-                            </group>
-                            <group>
-                                <field name="garden_area"/>
-                            </group>
-                            <group>
-                                <field name="garden_orientation"/>
-                            </group>
-                            <group>
-                                <field name="total_area"/>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area"/>
+                                    <field name="garden_orientation"/>
+                                    <field name="total_area"/>
+                                </group>
                             </group>
                         </page>
                         <page string="Offers">
@@ -90,10 +69,10 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesman"/>
-                            </group>
-                            <group>
-                                <field name="buyer"/>
+                                <group>
+                                    <field name="salesman"/>
+                                    <field name="buyer"/>
+                                </group>
                             </group>
                         </page>
                     </notebook>
