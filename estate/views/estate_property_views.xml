@@ -76,6 +76,7 @@
                             <group>
                                 <field name="salesman_id"/>
                                 <field name="buyer_id"/>
+                                <field name="currency_id"/>
                             </group>
                         </page>
                     </notebook>

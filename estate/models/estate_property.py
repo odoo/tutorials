@@ -13,8 +13,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=lambda self: fields.Date.today() + relativedelta(months=3), copy=False)
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    expected_price = fields.Monetary(required=True)
+    selling_price = fields.Monetary(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -52,7 +52,12 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", string="Total area (sqm)")
-    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    best_price = fields.Monetary(compute="_compute_best_price", string="Best Offer")
+    currency_id = fields.Many2one(
+        "res.currency",
+        required=True,
+        default=lambda self: self.env.company.currency_id
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -106,12 +111,8 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
 
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue
-
-            lower_bound = 0.9 * record.expected_price
-
-            if float_compare(record.selling_price, lower_bound, precision_digits=2) == -1:
+            if not record.currency_id.is_zero(record.selling_price) \
+                    and record.currency_id.compare_amounts(record.selling_price, 0.9 * record.expected_price) < 0:
                 raise ValidationError(
                     "The selling price must be at least 90% of the expected price! "
                     "You must reduce the expected price if you want to accept this offer."
