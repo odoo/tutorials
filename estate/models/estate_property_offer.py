@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class EstatePropertyOffer(models.Model):
@@ -15,7 +15,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one(
         "res.partner",
-        string="Partner", 
+        string="Partner",
         required=True
     )
     property_id = fields.Many2one(
@@ -42,3 +42,16 @@ class EstatePropertyOffer(models.Model):
             record.validity = (
                 record.date_deadline - (fields.Date.to_date(record.create_date) or fields.Date.today())
             ).days
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.property_id.state == 'sold':
+                raise exceptions.UserError("Prob is already sold")
+            record.property_id.state = 'sold'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+            record.status = 'accepted'
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = 'refused'

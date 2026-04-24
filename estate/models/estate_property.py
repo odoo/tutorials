@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class EstatePropertytModel(models.Model):
@@ -33,7 +33,7 @@ class EstatePropertytModel(models.Model):
         ('offer_received', 'Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
-        ('canceled', 'Cancelled'),
+        ('cancelled', 'Cancelled'),
     ],
     required=True,
     copy=False,
@@ -68,7 +68,7 @@ class EstatePropertytModel(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
-    
+
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
@@ -77,7 +77,7 @@ class EstatePropertytModel(models.Model):
                 if not offer.status:
                     highest_price = max(highest_price, offer.price)
             record.best_price = highest_price
-    
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -86,3 +86,15 @@ class EstatePropertytModel(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError("cancelled prop can't be sold")
+            record.state = 'sold'
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("Sold prop can't be cancelled")
+            record.state = 'cancelled'
