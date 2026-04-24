@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
@@ -35,6 +36,7 @@ class EstatePropertyOffer(models.Model):
                 (fields.Date.to_date(record.create_date) or fields.Date.today()), 
                 days=record.validity
             )
+
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (

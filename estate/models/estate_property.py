@@ -20,7 +20,7 @@ class EstatePropertytModel(models.Model):
     garden_orientation = fields.Selection(
     string='Type',
     selection=[
-        ('north', 'North'), 
+        ('north', 'North'),
         ('south', 'South'),
         ('east', 'East'),
         ('west', 'West'),
@@ -40,7 +40,7 @@ class EstatePropertytModel(models.Model):
     default='new',
     )
     type_id = fields.Many2one(
-        "estate.property.type", 
+        "estate.property.type",
         string="Tag",
     )
     salesperson_id = fields.Many2one(
@@ -57,30 +57,32 @@ class EstatePropertytModel(models.Model):
         "estate.property.tag", string="Tags",
     )
     offer_ids = fields.One2many(
-        "estate.property.offer", 
-        "property_id", 
+        "estate.property.offer",
+        "property_id",
         string="Offers"
     )
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
+    
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
             highest_price = 0
             for offer in record.offer_ids:
                 if not offer.status:
-                 highest_price = max(highest_price,offer.price)
+                    highest_price = max(highest_price, offer.price)
             record.best_price = highest_price
+    
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-           self.garden_area = 10
-           self.garden_orientation = 'north'
+            self.garden_area = 10
+            self.garden_orientation = 'north'
         else:
-           self.garden_area = 0
-           self.garden_orientation = ''
+            self.garden_area = 0
+            self.garden_orientation = ''
