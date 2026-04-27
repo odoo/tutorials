@@ -1,17 +1,17 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
 class Estate_property_offer(models.Model):
-    _name = "estate_property_offer"
+    _name = "estate.property.offer"
     _description = "Offer for estate properties"
     _order = "price desc"
 
     price = fields.Float(required=True)
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate_property", string="Property", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
     state = fields.Selection([
-        ('new', 'New'),
+        ("new", "New"),
         ("accepted", "Accepted"),
         ("refused", "Refused"),
     ], default="new", string="State", copy=False)
@@ -64,10 +64,13 @@ class Estate_property_offer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        max_price_list = 0
         for vals in vals_list:
-            if self.env["estate_property"].browse(vals["property_id"]).state == "new":
-                self.env["estate_property"].browse(vals["property_id"]).state = "offer Received"
-            max_price = max(self.env["estate_property_offer"].search([("property_id", "=", vals["property_id"])]).mapped("price") or [0])
+            if self.env["estate.property"].browse(vals["property_id"]).state == "new":
+                self.env["estate.property"].browse(vals["property_id"]).state = "offer_received"
+            max_price = max(self.env["estate.property.offer"].search([("property_id", "=", vals["property_id"])]).mapped("price") or [0])
+            max_price_list = max(max_price_list, max_price)
             if vals["price"] <= max_price:
                 raise UserError("The price must be higher than the current highest offer.")  # Error for one offer blocks all offers in the list
+            max_price_list = max(max_price_list, vals["price"])
         return super().create(vals_list)

@@ -7,6 +7,7 @@
     'application': True,
     'author': 'vibad',
     'license': 'LGPL-3',
+    'version': '1.0',
     'data': [
         'security/ir.model.access.csv',
         'view/estate_property_offer_views.xml',

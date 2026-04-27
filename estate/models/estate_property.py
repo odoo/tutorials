@@ -1,9 +1,9 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
 class Estate_property(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "APP super mega trop bien"
     _order = "id desc"
 
@@ -20,25 +20,25 @@ class Estate_property(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string='Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
+        string="Orientation",
+        selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
         help="The garden orientation",
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string="Status",
-        selection=[('new', 'New'), ('offer Received', 'Offer Received'), ('offer Accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
         required=True,
         copy=False,
         default="new",
         compute="_compute_state",
         store=True,
     )
-    property_type_id = fields.Many2one("estate_property_type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many("estate_property_tag", string="Tags")
-    offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offers")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_area")
     best_price = fields.Float(compute="_compute_best_price")
 
@@ -67,25 +67,27 @@ class Estate_property(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
 
     @api.depends("offer_ids", "offer_ids.state")
     def _compute_state(self):
-        if self.state in ["sold", "cancelled"]:
-            return
-        if self.offer_ids:
-            for offer in self.offer_ids:
-                if offer.state == "accepted":
-                    self.state = "offer Accepted"
+        for record in self:
+            if record.state in ["sold", "cancelled"]:
+                return
+            if record.offer_ids:
+                for offer in record.offer_ids:
+                    if offer.state == "accepted":
+                        record.state = "offer_accepted"
                     break
         else:
-            self.state = "new"
-            self.selling_price = 0
+            record.state = "new"
+            record.selling_price = 0
 
     def action_sold(self):
         for record in self:

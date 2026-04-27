@@ -2,14 +2,14 @@
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 s
     <record id="estate_list" model="ir.ui.view">
         <field name="name">estate.properties.list</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel" decoration-success="state in ['offer Received', 'offer Accepted']" decoration-bf="state == 'offer Accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title"/>
@@ -27,7 +27,7 @@ s
 
     <record id="estate_form" model="ir.ui.view">
         <field name="name">estate.properties.form</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Channel">
             <header>
@@ -87,7 +87,7 @@ s
 
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.properties.search</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search">
                 <field name="name" string="Title"/>
