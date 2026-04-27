@@ -7,7 +7,7 @@
     </record>
 
     <record id='estate_property_type_view_form' model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>

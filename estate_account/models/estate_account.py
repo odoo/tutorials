@@ -1,4 +1,5 @@
 from odoo import models
+from odoo.exceptions import UserError
 from odoo.orm.commands import Command
 
 
@@ -16,6 +17,9 @@ class EstateAccount(models.Model):
                 default=(None, None),
                 key=lambda x: x[0],
             )
+
+            if not buyer_id or not selling_price:
+                raise UserError("You cannot sell without a buyer")
 
             invoice_vals = {
                 "move_type": "out_invoice",

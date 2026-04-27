@@ -5,17 +5,17 @@ from odoo.tools import float_utils
 
 
 class Property(models.Model):
+    # Private attributes
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
 
-    # General information
+    # Field declarations
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     tag_ids = fields.Many2many("estate.property.tag")
     type_id = fields.Many2one("estate.property.type")
     postcode = fields.Char()
-
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -31,7 +31,6 @@ class Property(models.Model):
             ("west", "West"),
         ]
     )
-    # Sales info
     date_availability = fields.Date(
         copy=False,
         default=lambda x: fields.Date.today() + date_utils.relativedelta(months=3),
@@ -57,6 +56,7 @@ class Property(models.Model):
     )
     active = fields.Boolean(default=True)
 
+    # SQL constraints and indexes
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)", "The expected price should be a positive number."
     )
@@ -65,6 +65,7 @@ class Property(models.Model):
         "CHECK(selling_price > 0)", "The selling_price should be a positive number."
     )
 
+    # Compute, inverse and search methods
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -76,6 +77,7 @@ class Property(models.Model):
             offers = record.offer_ids.filtered(lambda offer: offer.status != "refused")
             record.best_offer = max(offers.mapped("price"), default=0)
 
+    # Constrains methods and onchange methods
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
@@ -102,20 +104,22 @@ class Property(models.Model):
                 record.garden_area = 0
                 record.garden_orientation = None
 
+    # CRUD methods
     @api.ondelete(at_uninstall=False)
-    def delete(self):
+    def _delete(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
                 raise UserError("Only new and cancelled properties can be deleted.")
         return super().unlink()
 
-    def sold_action(self):
+    # Action methods
+    def action_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold")
             record.state = "sold"
 
-    def cancel_action(self):
+    def action_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled")

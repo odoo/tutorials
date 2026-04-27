@@ -1,15 +1,16 @@
 import datetime
 
-
 from odoo import models, fields, api
 from odoo.exceptions import UserError, AccessError
 
 
 class PropertyOffer(models.Model):
+    # Private attributes
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
 
+    # Field declarations
     create_date = fields.Date(default=lambda self: datetime.date.today())
     price = fields.Float()
     status = fields.Selection(
@@ -30,10 +31,12 @@ class PropertyOffer(models.Model):
         related="property_id.type_id", comodel_name="estate.property.type"
     )
 
+    # SQL constraints and indexes
     _check_price = models.Constraint(
         "CHECK(price > 0)", "The price should be positive."
     )
 
+    # Compute, inverse and search methods
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for record in self:
@@ -57,6 +60,8 @@ class PropertyOffer(models.Model):
                 and record.status == "proposed"
             )
 
+    # Constrains methods and onchange methods
+    # CRUD methods
     def write(self, vals):
         best_price = max(self.property_id.offer_ids.mapped("price"), default=0)
         for record in self:
@@ -70,6 +75,7 @@ class PropertyOffer(models.Model):
 
         return super().write(vals)
 
+    # Action methods
     def action_accept(self):
         for record in self:
             if record.status == "refused":
