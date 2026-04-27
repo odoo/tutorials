@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.todo_list">
+    <t t-name="awesome_owl.TodoList">
         <div class="border d-inline-block p-2 m-2" style="width: 18rem;">
             <input t-ref="add_todo_input" t-on-keyup="addToDo" placeholder="Add a todo"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
@@ -9,5 +7,4 @@
             </t>
         </div>
     </t>
-
 </templates>

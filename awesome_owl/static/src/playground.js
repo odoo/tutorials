@@ -4,8 +4,9 @@ import { Card } from "./card/card";
 import { TodoList } from "./todo/todo_list";
 
 export class Playground extends Component {
-    static template = "awesome_owl.playground";
+    static template = "awesome_owl.Playground";
     static components = {Counter, Card, TodoList};
+    static props = [];
 
     setup() {
         this.content1 = "<div class='text-primary'>some content</div>";

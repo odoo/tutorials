@@ -3,8 +3,9 @@ import { TodoItem } from "./todo_item";
 import { useAutofocus } from "../utils";
 
 export class TodoList extends Component {
-    static template = "awesome_owl.todo_list";
+    static template = "awesome_owl.TodoList";
     static components = {TodoItem};
+    static props = [];
 
     setup() {
         this.todos = useState([]);
