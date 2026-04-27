@@ -120,4 +120,4 @@ class EstatePropertytModel(models.Model):
                 continue
             limit = record.expected_price * 0.9
             if float_compare(record.selling_price, limit, precision_digits=2) == -1:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")       
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")   

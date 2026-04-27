@@ -25,8 +25,8 @@ class EstatePropertyOffer(models.Model):
         required=True,
     )
     property_type_id = fields.Many2one(
-        related="property_id.type_id", 
-        string="Property Type", 
+        related="property_id.type_id",
+        string="Property Type",
         store=True
     )
     validity = fields.Integer(default=7)
@@ -72,5 +72,5 @@ class EstatePropertyOffer(models.Model):
         for offer in offers:
             if offer.property_id.state == 'new':
                 offer.property_id.state = 'offer_received'
-                
+
         return offers
