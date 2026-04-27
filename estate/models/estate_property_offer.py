@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from datetime import timedelta
 
 
@@ -32,10 +32,24 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.date_deadline:
                 if offer.create_date:
-                    offer.validity = (offer.date_deadline - offer.create_date).days
+                    offer.validity = offer.date_deadline.day - offer.create_date.day
                 else:
-                    offer.validity = (offer.date_deadline - fields.Date.today()).days
+                    offer.validity = (offer.date_deadline - fields.Date.today()).day
             else:
                 offer.validity = 0
 
     date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+
+    def action_accept(self):
+        for offer in self:
+            existing_accepted = self.env['estate.property.offer'].search([
+                ('property_id', '=', offer.property_id.id),
+                ('status', '=', 'accepted')
+            ])
+            if existing_accepted:
+                raise exceptions.UserError("An offer for this property has already been accepted.")
+            offer.status = 'accepted'
+
+    def action_refuse(self):
+        for offer in self:
+            offer.status = 'refused'

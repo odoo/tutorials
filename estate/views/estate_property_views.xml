@@ -31,10 +31,15 @@
                 <h1>
                     <field name="name" />
                 </h1>
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_sold" type="object" string="Sold"/>
+                </header>
                 <sheet>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state" />
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
@@ -88,6 +93,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" string="Available From" />
+                <field name="state" />
             </list>
         </field>
     </record>

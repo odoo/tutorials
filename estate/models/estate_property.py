@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class EstateProperty(models.Model):
@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Availability Date', copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    #selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area')
     facades = fields.Integer('Facades')
@@ -62,3 +62,30 @@ class EstateProperty(models.Model):
         for line in self:
             line.best_price = max(line.mapped('offer_ids.price') or [0])
     best_price = fields.Float('Best Offer', compute="_compute_best_price")
+
+    @api.depends('offer_ids.status', 'offer_ids.price')
+    def _compute_selling_price(self):
+        for line in self:
+            accepted_offer = line.offer_ids.filtered(lambda o: o.status == 'accepted')
+            if accepted_offer:
+                line.selling_price = accepted_offer[0].price
+                line.buyer_id = accepted_offer[0].partner_id
+            else:
+                line.selling_price = 0
+    selling_price = fields.Float('Selling Price', compute="_compute_selling_price", readonly=True, copy=False)
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("You cannot cancel a sold property.")
+            else:
+                record.state = 'cancelled'
+        return True
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError("You cannot mark a cancelled property as sold.")
+            else:
+                record.state = 'sold'
+        return True
