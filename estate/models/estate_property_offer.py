@@ -18,6 +18,11 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive.',
+    )
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
@@ -41,6 +46,7 @@ class EstatePropertyOffer(models.Model):
             if existing_accepted:
                 raise exceptions.UserError("An offer for this property has already been accepted.")
             offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
 
     def action_refuse(self):
         for offer in self:
