@@ -59,10 +59,11 @@ class PropertyOffer(models.Model):
 
     @api.model
     def write(self, vals):
-        super().write(vals)
+        result = super().write(vals)
         for record in self:
             if record.property_id.state not in ["sold", "cancelled"]:
                 record.property_id.state = "offer_received" if record.status != "accepted" else "offer_accepted"
+        return result
 
     def action_accept(self):
         for record in self:
