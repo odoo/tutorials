@@ -3,58 +3,50 @@
         <field name="name">estate.property.list.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" decoration-success="state in ['offer_received','accepted']" decoration-bf="state=='accepted'" decoration-muted="state=='sold'">
+            <list string="Properties" decoration-success="state in [&apos;offer_received&apos;,&apos;accepted&apos;]" decoration-bf="state==&apos;accepted&apos;" decoration-muted="state==&apos;sold&apos;">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" optional='hide'/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
-
     <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form view property">
                 <header>
-                    <button name="action_sold_offer" type="object" string="Save" invisible='state in ["sold", "cancelled"]'/>
-                    <button name="action_cancel_offer" type="object" string="Cancel" invisible='state in ["sold", "cancelled"]'/>
-                    <!-- For status bar widget of state -->
+                    <button name="action_sold_offer" type="object" string="Save" invisible="state in [&quot;sold&quot;, &quot;cancelled&quot;]"/>
+                    <button name="action_cancel_offer" type="object" string="Cancel" invisible="state in [&quot;sold&quot;, &quot;cancelled&quot;]"/><!-- For status bar widget of state -->
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,accepted,sold"/>
-                </header>
-                <!-- To make one whole page -->
+                </header><!-- To make one whole page -->
                 <sheet>
-                    <div>
-                        <!-- title name -->
+                    <div><!-- title name -->
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <field name="property_tag" widget="many2many_tags"/>
-                        <!-- Make group side by side -->
+                        <field name="property_tag" widget="many2many_tags"/><!-- Make group side by side -->
                         <group>
                             <group>
                                 <field name="state"/>
-                                <field name="property_type_id" options="{'no_create':True}"/>
+                                <field name="property_type_id" options="{&apos;no_create&apos;:True}"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                             </group>
                             <group>
-                                <field name="expected_price" />
+                                <field name="expected_price"/>
                                 <field name="selling_price"/>
                                 <field name="best_price"/>
                             </group>
-                        </group>
-                        <!-- create bottom part tabs -->
-                        <notebook>
-                            <!-- create tabs in bottom page-->
-                            <page string="Description" name="description">
-                                <!-- fields to show in that group -->
+                        </group><!-- create bottom part tabs -->
+                        <notebook><!-- create tabs in bottom page-->
+                            <page string="Description" name="description"><!-- fields to show in that group -->
                                 <group name="description_group">
-                                    <field name="description" />
+                                    <field name="description"/>
                                     <field name="bedrooms"/>
                                     <field name="living_area"/>
                                     <field name="facades"/>
@@ -81,43 +73,27 @@
             </form>
         </field>
     </record>
-
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search.view</field>
         <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-
-            <!-- used for filtering and search view -->
-            <search string="estate_search">
-
-                <!-- Searchable fields -->
+        <field name="arch" type="xml"><!-- used for filtering and search view -->
+            <search string="estate_search"><!-- Searchable fields -->
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" filter_domain="[('living_area', '>=', 'self')]"/>
-                <field name="facades"/>
-
-                <!-- custom filter -->
-                <!-- name=unique id for DB, string="What will get represented on field screen, domain="filtering condition" like for given it will filter only new and offer_receivable  -->
-                <filter name="state_wise_custom_filter" string="state" domain="[('state', 'in', ['new', 'offer_received'])]"/>
-                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_recieved'])]"/>
-                <!-- Custom Group by filter -->
-                <!-- name, string same as above, context=group_by record name -->
-                <filter name="postcode_wise_group_by" string="Postcode" context="{'group_by':'postcode'}"/>
+                <field name="living_area" filter_domain="[(&apos;living_area&apos;, &apos;&gt;=&apos;, &apos;self&apos;)]"/>
+                <field name="facades"/><!-- custom filter --><!-- name=unique id for DB, string="What will get represented on field screen, domain="filtering condition" like for given it will filter only new and offer_receivable  -->
+                <filter name="state_wise_custom_filter" string="state" domain="[(&apos;state&apos;, &apos;in&apos;, [&apos;new&apos;, &apos;offer_received&apos;])]"/>
+                <filter name="available" string="Available" domain="[(&apos;state&apos;, &apos;in&apos;, [&apos;new&apos;, &apos;offer_recieved&apos;])]"/><!-- Custom Group by filter --><!-- name, string same as above, context=group_by record name -->
+                <filter name="postcode_wise_group_by" string="Postcode" context="{&apos;group_by&apos;:&apos;postcode&apos;}"/>
             </search>
         </field>
     </record>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-
-        <!-- Connects directly with python model -->
-        <field name="res_model">estate.property</field>
-
-        <!-- Tells how to display it. -->
-        <field name="view_mode">list,form</field>
-
-        <!-- For default filter. name must be context and parameter will be {search_default_{filter_name}} -->
-        <field name="context">{'search_default_available': True}</field>
+        <field name="name">Properties</field><!-- Connects directly with python model -->
+        <field name="res_model">estate.property</field><!-- Tells how to display it. -->
+        <field name="view_mode">list,form</field><!-- For default filter. name must be context and parameter will be {search_default_{filter_name}} -->
+        <field name="context">{&apos;search_default_available&apos;: True}</field>
     </record>
 </odoo>
