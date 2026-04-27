@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -53,6 +54,7 @@ class PropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.buyer = self.partner_id
         self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
         return True
 
     def action_refuse_offer(self):

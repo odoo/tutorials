@@ -10,6 +10,7 @@ class Property(models.Model):
     # Model definition
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     # Fields
     name = fields.Char('Title', required=True)
@@ -59,6 +60,8 @@ class Property(models.Model):
         required=True,
         copy=False,
         default='new',
+        store=True,
+        compute='_compute_if_offer',
     )
 
     _check_expected_price = models.Constraint(
@@ -82,6 +85,12 @@ class Property(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
+
+    @api.depends("offer_ids")
+    def _compute_if_offer(self):
+        for record in self:
+            if (record.state == 'new' and len(record.offer_ids) > 0):
+                record.state = 'offer_received'
 
     @api.onchange("garden")
     def _onchange_garden_values(self):
