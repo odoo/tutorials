@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2 rounded-3 p-2" style="width: 18rem;">
+            <div class="d-flex justify-content-between">
+                <div >
+                    <h5 class="card-title"><t t-esc="props.title"/></h5>
+                    <t t-slot="default" t-if="state.isOpen"/>
+                </div>
+                <span role="button" t-att-class="this.state.isOpen ? 'fa fa-chevron-up' : 'fa fa-chevron-down'" t-on-click="toggleContent"/>
+            </div>
+        </div>
+    </t>
+</templates>
