@@ -17,4 +17,11 @@ export class TodoList extends Component {
             event.target.value = "";
         }
     }
+
+    toggleStateOfTodo(id) {
+        const todo = this.todos.find((todo) => todo.id === id);
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted;
+        }
+    }
 }

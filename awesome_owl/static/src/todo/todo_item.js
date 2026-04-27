@@ -10,7 +10,13 @@ export class TodoItem extends Component {
                 description: String,
                 isCompleted: Boolean
             }
+        },
+        "toggleState": {
+            type: Function
         }
     }
 
+    onChange(event) {
+        this.props.toggleState(this.props.todo.id);
+    }
 }
