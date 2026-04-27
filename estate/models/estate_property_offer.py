@@ -29,6 +29,7 @@ class PropertyOffer(models.Model):
     )
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
+    property_type_id = fields.Many2one("estate.property.type", store=True, related="property_id.property_type_id")
 
     _check_price = models.Constraint(
         'CHECK(price > 0.00)',
