@@ -5,27 +5,25 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    _order = "id desc"  # to order how it is presented on list view in which order
+    _order = "id desc"
 
-    name = fields.Char(string="Name", required=True, default="Unknown")
-    last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
-    description = fields.Text(string="Description")
+    name = fields.Char(required=True)
+    description = fields.Text()
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default=fields.Date.add(fields.Date.today(), months=3),
+        default=lambda self : fields.Date.add(fields.Date.today(), months=3),
     )
-    postcode = fields.Char(string="Postcode", required=True)
-    expected_price = fields.Float(string="Expected Price")
-    selling_price = fields.Float(string="Selling Price", readonly=True)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden area")
+    postcode = fields.Char(required=True)
+    expected_price = fields.Float()
+    selling_price = fields.Float(readonly=True)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("east", "East"),
@@ -33,17 +31,9 @@ class EstateProperty(models.Model):
             ("south", "South"),
         ],
     )
-    status = fields.Selection(
-        string="Status",
-        selection=[("sold", "Sold"), ("cancelled", "Cancel")],
-        readonly=True,
-    )
 
-    # If it is false then newly created record won't be appear. but record is created when active is set true record will appear.
     active = fields.Boolean("Active", default=True)
-    # State can get selected and as copy is set False in duplicate it cannot get copied
     state = fields.Selection(
-        string="state",
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),
@@ -61,30 +51,27 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: self.env.user.partner_id,
     )
-    # Here in estate_property table sales_person forign key is added.This key is id of res_partner table record id. with this key both tables are connected
     sales_person = fields.Many2one(
         comodel_name="res.users",
         string="Sales person",
         index=True,
         default=lambda self: self.env.user,
     )
-    # There will be a junction table created between these 2 tables named default like estate_property_estate_property_tag_rel
     property_tag = fields.Many2many(
         comodel_name="estate.property.tag",
-        string="Property Tags",
     )
-    # this connects estate_property with estate_property_offer with col property_id and by this we can access property_type attributes like price, name etc
     offer_ids = fields.One2many(
         comodel_name="estate.property.offer",
         inverse_name="property_id",
-        string="Property offer",
     )
 
     total_area = fields.Integer(
         string="total_area", name="Total area", compute="_compute_total"
     )
+
     best_price = fields.Integer(
-        string="best_price", name="Best Price", compute="_compute_best_price"
+        compute="_compute_best_price",
+        store=True,
     )
 
     @api.depends("garden_area", "living_area")
@@ -94,11 +81,11 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
+
         for record in self:
             prices = record.mapped("offer_ids.price")
             record.best_price = max(prices) if prices else 0
 
-    # to add when garden is clicked then its area and orientation is set to default values. works on decorators concepts
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -114,30 +101,29 @@ class EstateProperty(models.Model):
                 raise UserError("Saved properties can't be cancelled")
             else:
                 record.state = "cancelled"
-                record.status = "cancelled"
 
-    def action_save_offer(self):
+    def action_sold_offer(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled properties can't be saved")
             else:
                 record.state = "sold"
-                record.status = "sold"
+
+    def action_approve_best(self):
+        breakpoint()
+        self.offer_ids[0].status = "accepted"
 
     _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "Expected price must be positive"
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price > 0)", "Selling Price must be positive"
+        "CHECK(expected_price > 0 and selling_price > 0)",
+        "Expected price and selling price must be positive",
     )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_expected_price(self):
         for record in self:
             base = record.expected_price * 0.9
-            # here record.selling_price check is must as if it is not here than when we want to confirm the offer selling price is by default 0 so will generate error of 90% and till save we can't confirm the offer
+            # value = str(base)
             if record.selling_price and record.selling_price < base:
                 raise ValidationError(
-                    "Selling Price must be greater than 90 percent of expected price"
+                    f"Selling Price must be greater than 90 percent of expected price and atleast {base}"
                 )

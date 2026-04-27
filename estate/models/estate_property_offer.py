@@ -23,6 +23,9 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_deadline",
         readonly=False,
     )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
 
     # It gets changed on each changes because it works based on cache
     @api.depends("create_date", "validity")

@@ -21,7 +21,7 @@
         <field name="arch" type="xml">
             <form string="Form view property">
                 <header>
-                    <button name="action_save_offer" type="object" string="Save" invisible='state in ["sold", "cancelled"]'/>
+                    <button name="action_sold_offer" type="object" string="Save" invisible='state in ["sold", "cancelled"]'/>
                     <button name="action_cancel_offer" type="object" string="Cancel" invisible='state in ["sold", "cancelled"]'/>
                     <!-- For status bar widget of state -->
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,accepted,sold"/>
@@ -37,7 +37,7 @@
                         <!-- Make group side by side -->
                         <group>
                             <group>
-                                <field name="status"/>
+                                <field name="state"/>
                                 <field name="property_type_id" options="{'no_create':True}"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
@@ -100,7 +100,7 @@
 
                 <!-- custom filter -->
                 <!-- name=unique id for DB, string="What will get represented on field screen, domain="filtering condition" like for given it will filter only new and offer_receivable  -->
-                <filter name="state_wise_custom_filter" string="State" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <filter name="state_wise_custom_filter" string="state" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_recieved'])]"/>
                 <!-- Custom Group by filter -->
                 <!-- name, string same as above, context=group_by record name -->
