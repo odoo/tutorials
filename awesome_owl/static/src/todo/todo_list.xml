@@ -3,7 +3,7 @@
 
     <t t-name="awesome_owl.todo_list">
         <div class="border d-inline-block p-2 m-2" style="width: 18rem;">
-            <t t-foreach="todos" t-as="todo" t-key="todo">
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
                 <TodoItem todo="todo"/>
             </t>
         </div>
