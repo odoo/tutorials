@@ -34,6 +34,7 @@
                 <header>
                     <button name="property_sold" type="object" string="Sell" class="oe_highlight"/>
                     <button name="property_cancelled" type="object" string="Cancel"/>
+                    <button name="property_accept" type="object" string="Accept"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -59,7 +60,7 @@
                             </group>
                             <group>
                                 <field name="active"/>
-                                <field name="state"/>
+                                <field name="state" widget=""/>
                             </group>
                             <group>
                                 <field name="best_price"/>
@@ -88,6 +89,7 @@
                             <group>
                                 <field name="salesperson_id"/>
                                 <field name="buyer_id"/>
+                                <field name="commission"/>
                             </group>
                         </page>
                     </notebook>

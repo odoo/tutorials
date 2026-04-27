@@ -2,7 +2,7 @@ import datetime
 import logging
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError
 
 
 _logger = logging.getLogger(__name__)
@@ -23,7 +23,12 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False
     )
-    validity = fields.Integer(compute="_compute_validity", inverse="_inverse_deadline")
+    validity = fields.Integer(compute="_compute_validity", inverse="_inverse_deadline", default=7)
+
+    _check_offer_price = models.Constraint(
+        'CHECK (price > 0)',
+        "Offer price should be positive"
+    )
 
     @api.depends('deadline')
     def _compute_validity(self):
@@ -38,11 +43,11 @@ class EstatePropertyOffer(models.Model):
             start_date = offer.create_date.date() if offer.create_date else fields.Date.context_today(offer)
             offer.deadline = start_date + datetime.timedelta(days=offer.validity)
 
-    @api.constrains('price')
-    def _check_price(self):
-        for property in self:
-            if property.price < 0:
-                raise ValidationError("Value cannot be less than zero.")
+    # @api.constrains('price')
+    # def _check_price(self):
+    #     for property in self:
+    #         if property.price < 0:
+    #             raise ValidationError("Value cannot be less than zero.")
 
     # @api.constrains('deadline')
     # def _check_deadline(self):

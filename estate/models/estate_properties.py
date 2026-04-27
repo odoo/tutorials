@@ -26,8 +26,9 @@ class EstateProperties(models.Model):
 
     active = fields.Boolean(help="Should the property be listed?", default=True)
     bedrooms = fields.Integer(default=2)
-    best_price = fields.Integer(compute="_compute_best_price")
+    best_price = fields.Integer(compute='_compute_best_price')
     buyer_id = fields.Many2one(comodel_name='res.partner', copy=False)
+    commission = fields.Integer(compute='_compute_commission', store=True)
     date_availability = fields.Date(string="Availability Date", copy=False, default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3))
     description = fields.Text()
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -48,9 +49,9 @@ class EstateProperties(models.Model):
     name = fields.Char(string="Property Name", required=True)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     postcode = fields.Char()
-    price_gap = fields.Float(compute="_compute_price_gap")
-    property_type_colour = fields.Selection(related="property_type_id.colour", readonly=False)
-    property_type_id = fields.Many2one(comodel_name="estate.property.type")
+    price_gap = fields.Float(compute='_compute_price_gap')
+    property_type_colour = fields.Selection(related='property_type_id.colour', readonly=False)
+    property_type_id = fields.Many2one(comodel_name='estate.property.type')
     salesperson_id = fields.Many2one(comodel_name='res.partner', default=lambda self: self.env.user.partner_id)
     # salesperson = fields.Char(default=_get_salesperson)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -67,6 +68,11 @@ class EstateProperties(models.Model):
     tag_ids = fields.Many2many(comodel_name='estate.property.tag')
     total_area = fields.Integer(compute="_compute_total_area")
 
+    _check_expected_price = models.Constraint(
+        'CHECK (expected_price > 0 AND selling_price > 0)', 
+        "Price should strictly be positive",
+    )
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         # _logger.error(self)
@@ -82,11 +88,11 @@ class EstateProperties(models.Model):
             offer_prices = property.mapped('offer_ids.price')
             property.best_price = max(offer_prices) if offer_prices else 0
 
-    @api.constrains('expected_price')
-    def _check_expected_price(self):
-        for property in self:
-            if property.expected_price < 0:
-                raise UserError("Value cannot be less than zero.")
+    # @api.constrains('expected_price')
+    # def _check_expected_price(self):
+    #     for property in self:
+    #         if property.expected_price < 0:
+    #             raise UserError("Value cannot be less than zero.")
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -139,3 +145,25 @@ class EstateProperties(models.Model):
             else:
                 raise UserError("A cancelled property cannot be sold")
         return True
+
+    @api.depends('selling_price')
+    def _compute_commission(self):
+        for property in self:
+            if property.selling_price:
+                property.commission = property.selling_price * 0.06
+    
+    def property_accept(self):
+        # best_offers = []
+        # for property in self.offer_ids:
+        #     best_offers.append(property.price)
+        #     _logger.error(best_offers)
+        # property_to_accept = max(best_offers)
+        # _logger.error(property_to_accept)
+        best = self.offer_ids.search([('price', '=', self.best_price)])
+        _logger.error(best)
+        best.offer_accepted()
+        # for property in self.offer_ids:
+        #     if property.status == 'accepted':
+        #         pass
+        #     else:
+        #         property.status = 'refused'
