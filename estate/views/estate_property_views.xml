@@ -36,9 +36,9 @@
         <field name='arch' type='xml'>
             <form>
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"
+                    <button name="sold_action" type="object" string="Sold" class="oe_highlight"
                             invisible='state == "sold" or state == "cancelled"'/>
-                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"
+                    <button name="cancel_action" type="object" string="Cancel" class="oe_highlight"
                             invisible='state == "sold" or state == "cancelled"'/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>

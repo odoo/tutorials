@@ -109,13 +109,13 @@ class Property(models.Model):
                 raise UserError("Only new and cancelled properties can be deleted.")
         return super().unlink()
 
-    def action_sold(self):
+    def sold_action(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold")
             record.state = "sold"
 
-    def action_cancel(self):
+    def cancel_action(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled")
