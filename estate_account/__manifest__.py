@@ -10,5 +10,4 @@
     'author': 'vibad',
     'license': 'LGPL-3',
     'version': '1.0',
-    
 }

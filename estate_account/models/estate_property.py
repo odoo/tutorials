@@ -5,7 +5,6 @@ class Estate_account_model(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        print("Overriding the action_sold method in the inherited model")
         invoice = self.env["account.move"].create({
             "move_type": "out_invoice",
             "partner_id": self.buyer_id.id,

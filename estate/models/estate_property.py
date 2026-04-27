@@ -85,9 +85,9 @@ class Estate_property(models.Model):
                     if offer.state == "accepted":
                         record.state = "offer_accepted"
                     break
-        else:
-            record.state = "new"
-            record.selling_price = 0
+            else:
+                record.state = "new"
+                record.selling_price = 0
 
     def action_sold(self):
         for record in self:
