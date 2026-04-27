@@ -64,3 +64,12 @@ class PropertyOffer(models.Model):
                 record.property_id.buyer = None
                 record.property_id.selling_price = 0.00
             record.status = 'refused'
+
+    @api.model
+    def create(self, vals_list):
+        for vals_dict in vals_list:
+            property_id = self.env['estate.property'].browse(vals_dict['property_id'])
+            offers = property_id.offer_ids
+            if (len(offers) > 0 and vals_dict['price'] < min(offers.mapped('price'))):
+                raise UserError("Can't create an offer with a lower value than an existing offer.")
+        return super().create(vals_list)

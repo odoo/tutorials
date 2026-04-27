@@ -108,3 +108,9 @@ class Property(models.Model):
             raise UserError("You can't sell a property that is cancelled.")
         self.state = 'sold'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        if self.state in ('new', 'cancelled'):
+            raise UserError("Can't delete a new or cancelled property.")
+        return super().unlink()
