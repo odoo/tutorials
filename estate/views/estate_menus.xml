@@ -43,12 +43,6 @@
         sequence="2"/>
 
     <menuitem
-        id="menu_real_estate_property_offer"
-        name="Property Offfer"
-        parent="menu_real_estate_settings"
-        action="action_estate_property_offer"/>
-
-    <menuitem
         id="menu_real_estate_property_visit"
         name="Property visit"
         parent="menu_real_estate_settings"

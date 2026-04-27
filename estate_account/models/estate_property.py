@@ -1,6 +1,7 @@
 from odoo import models
 from odoo import Command
 
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
@@ -13,15 +14,18 @@ class EstateProperty(models.Model):
                     Command.create({
                         'name': record.name,
                         'quantity': 1,
-                        'price_unit': record.selling_price,}),
+                        'price_unit': record.selling_price,
+                    }),
                     Command.create({
                         'name': f'Commission (6%) on {record.name}',
                         'quantity': 1,
-                        'price_unit': record.selling_price * 0.06,}),
+                        'price_unit': record.selling_price * 0.06,
+                    }),
                     Command.create({
                         'name': 'Administrative Fees',
                         'quantity': 1,
-                        'price_unit': 100.0,}),
-                        ],
+                        'price_unit': 100.0,
                     })
+                ],
+            })
         return super().action_sold()

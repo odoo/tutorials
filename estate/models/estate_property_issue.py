@@ -32,15 +32,10 @@ class EstatePropertyIssue(models.Model):
         ('medium', "Medium"),
         ('high', "High")
         ])
-    reported_date = fields.Date(string="Reported Date",readonly=True, default=lambda self: fields.Date.today())
+    reported_date = fields.Date(string="Reported Date", readonly=True, default=lambda self: fields.Date.today())
     # reported_date = fields.Date(string="Reported Date")
     resolved_date = fields.Date(string="Resolved Date", readonly=True)
     assigned_date = fields.Date(string="Assigned Date")
-    # is_overdue = fields.Selection([
-    #     ('2_days', "Fix in 2 Days"),
-    #     ('5_days', "Fix in 5 Days"),
-    #     ('10_days', "Fix in 10 Days")
-    # ])
     overdue = fields.Boolean(string="Issue Overdue", compute="_compute_overdue")
 
     @api.onchange("issue_type")

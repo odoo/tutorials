@@ -15,8 +15,6 @@
                 <field name="partner_id"/>
                 <field name="visit_date"/>
                 <field name="end_date"/>
-                <!-- <field name="time_from"/>
-                <field name="time_to"/> -->
               
             </list>
         </field>
@@ -33,8 +31,6 @@
                         <field name="propert_id"/>
                         <field name="visit_date"/>
                         <field name="end_date"/>
-                        <!-- <field name="time_from"/>
-                        <field name="time_to"/> -->
                     </group>
                 </sheet>
             </form>

@@ -9,8 +9,6 @@ class EstatePropertyVisit(models.Model):
     propert_id = fields.Many2one("estate.property", string="Property", required=True)
     visit_date = fields.Datetime(string="Visiting Date")
     end_date = fields.Datetime(string="End date")
-    # time_from = fields.Float(string='Hour from')
-    # time_to = fields.Float(string='Hour to')
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -86,20 +86,9 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
-        
-    @api.depends("issue_ids")
 
     @api.depends("expected_price", "offer_ids", "state", "create_date")
     def _compute_tags(self):
-        # high = self.env['estate.property.tag'].search([('name', '=', 'high value')])
-        # if not high:
-        #     high = self.env['estate.property.tag'].create({'name': 'high value'})
-        # low = self.env['estate.property.tag'].search([('name', '=', 'low interest')])
-        # if not low:
-        #     low = self.env['estate.property.tag'].create({'name': 'low interest'})
-        # quick = self.env['estate.property.tag'].search([('name', '=', 'quick sale')])
-        # if not quick:
-        #     quick = self.env['estate.property.tag'].create({'name': 'quick sale'})
         Tag = self.env['estate.property.tag']
         tag_names = ['high value', 'low interest', 'quick sale']
         tags = Tag.search([('name', 'in', tag_names)])
@@ -151,10 +140,7 @@ class EstateProperty(models.Model):
         for record in self:
             for other_date in record.visit_ids:
                 for current_date in record.visit_ids:
-                    # print("hello", current_date.id)
-                    # print("whello", other_date.id)
                     if current_date.id != other_date.id:
-                        # if current_date.visit_date == other_date.visit_date:
                         if other_date.visit_date < current_date.end_date and current_date.visit_date < other_date.end_date:
                             raise ValidationError("only 1 partner in 1 day")
 
@@ -167,8 +153,8 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             for issue in record.issue_ids:
-                    if issue.priority == 'high' and issue.state == 'overdue':
-                        raise UserError("property cannot sold due to overdue")
+                if issue.priority == 'high' and issue.state == 'overdue':
+                    raise UserError("property cannot sold due to overdue")
             if record.state == 'cancelled':
                 raise UserError("Cancelled property cannot be sold.")
             if record.state != 'offer_accepted':
