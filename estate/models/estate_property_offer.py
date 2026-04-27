@@ -70,7 +70,6 @@ class PropertyOffer(models.Model):
 
         return super().write(vals)
 
-
     def action_accept(self):
         for record in self:
             if record.status == "refused":
