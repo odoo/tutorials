@@ -1,12 +1,13 @@
-from odoo import api, fields, models
-from odoo.tools import date_utils
+from odoo import _, api, fields, models
+from odoo.tools import date_utils, float_compare, float_is_zero
+
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property for purchasing and selling properties"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Property Name")
     description = fields.Char()
@@ -28,6 +29,7 @@ class EstateProperty(models.Model):
             ('west', 'West'),
 
         ],
+        default='north'
     )
     state = fields.Selection(
         selection=[
@@ -37,21 +39,26 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
+        default='new'
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type Id")
-    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
-    salesperson = fields.Many2one('res.users', default=lambda self: self.env.user)
-    buyer = fields.Many2one('res.partner', copy=False)
-    offer_ids = fields.One2many('estate.property.offer', 'property_id')
-    active = fields.Boolean()
-
-    total = fields.Integer(compute='_compute_totalArea')
+    active = fields.Boolean(default=True)
+    total_area = fields.Integer(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
+    property_type_id = fields.Many2one("estate.property.type")
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', copy=False)
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
+
+    _check_positive = models.Constraint(
+        'check(expected_price > 0 )',
+        'Expected price  must be positive'
+    )
 
     @api.depends('living_area', 'garden_area')
-    def _compute_totalArea(self):
+    def _compute_total_area(self):
         for record in self:
-            record.total = record.garden_area + record.living_area
+            record.total_area = record.garden_area + record.living_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -63,6 +70,13 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_90(self):
+        if float_is_zero(self.selling_price, precision_digits=2):
+            return
+        if float_compare(self.selling_price, 0.9 * self.expected_price, precision_digits=2) == -1:
+            raise ValidationError(_('Offer price should not be lower then 90% of expected price'))
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -73,8 +87,11 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     def action_sold_property(self):
+        if self.state != 'offer accepted':
+            raise UserError(_("The property cannot be set as sold because the offer is not accepted yet."))
+            return False
         if self.state == 'cancelled':
-            raise UserError("A cancelled property cannot be set as sold.")
+            raise UserError(_("A cancelled property cannot be set as sold."))
             return False
 
         self.state = 'sold'
@@ -82,20 +99,7 @@ class EstateProperty(models.Model):
 
     def action_cancel_property(self):
         if self.state == 'sold':
-            raise UserError("A sold property cannot be set as cancelled.")
+            raise UserError(_("A sold property cannot be set as cancelled."))
 
         self.state = 'cancelled'
         return True
-
-    _check_positive = models.Constraint(
-        'check(expected_price > 0 )',
-        'Expected price  must be positive'
-    )
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price_90(self):
-        if float_is_zero(self.selling_price, precision_digits=2):
-            return
-
-        if float_compare(self.selling_price, 0.9 * self.expected_price, precision_digits=2) == -1:
-            raise ValidationError('Offer price should not be lower then 90% of expected price')
