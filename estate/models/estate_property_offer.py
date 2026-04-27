@@ -61,7 +61,7 @@ class Estate_property_offer(models.Model):
                 raise UserError("This offer has already been accepted or refused.")
             record.state = "refused"
         return True
-    
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
