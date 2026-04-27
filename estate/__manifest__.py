@@ -13,6 +13,7 @@
         'view/estate_property_views.xml',
         'view/estate_property_type_views.xml',
         'view/estate_property_tag_views.xml',
+        'view/estate_inherit_view.xml',
         'view/estate_action.xml',
     ],
 

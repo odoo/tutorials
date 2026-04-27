@@ -61,3 +61,13 @@ class Estate_property_offer(models.Model):
                 raise UserError("This offer has already been accepted or refused.")
             record.state = "refused"
         return True
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if self.env["estate_property"].browse(vals["property_id"]).state == "new":
+                self.env["estate_property"].browse(vals["property_id"]).state = "offer Received"
+            max_price = max(self.env["estate_property_offer"].search([("property_id", "=", vals["property_id"])]).mapped("price") or [0])
+            if vals["price"] <= max_price:
+                raise UserError("The price must be higher than the current highest offer.")  # Error for one offer blocks all offers in the list
+        return super().create(vals_list)

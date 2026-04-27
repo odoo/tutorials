@@ -79,7 +79,6 @@ class Estate_property(models.Model):
         if self.state in ["sold", "cancelled"]:
             return
         if self.offer_ids:
-            self.state = "offer Received"
             for offer in self.offer_ids:
                 if offer.state == "accepted":
                     self.state = "offer Accepted"
@@ -107,3 +106,9 @@ class Estate_property(models.Model):
         for record in self:
             if record.selling_price and record.selling_price < record.expected_price * 0.9:
                 raise ValidationError("The selling price cannot be less than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_cancel_new(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError("You can only delete offers that are new or cancelled.")
