@@ -11,7 +11,7 @@
                 <field name="date_deadline"/>
                 <button name="action_accept" string="Accept" type="object" icon="fa-check" invisible="status != False"/>
                 <button name="action_refuse" string="Refuse" type="object" icon="fa-times" invisible="status != False"/>
-                <field name="status" column_invisible="True"/>
+                <field name="status" column_invisible="True" readonly="True"/>
             </list>
         </field>
     </record>
