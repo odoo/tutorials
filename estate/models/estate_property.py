@@ -111,7 +111,7 @@ class EstatePropertytModel(models.Model):
             if record.state == 'sold':
                 raise exceptions.UserError("Sold prop can't be cancelled")
             record.state = 'cancelled'
-    
+
     @api.constrains('selling_price')
     def _check_price(self):
         for record in self:
