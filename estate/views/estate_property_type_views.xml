@@ -11,12 +11,47 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <div class="oe-title">
-                    <h1>
-                        <field name="name" placeholder="Property Type Name"/>
-                    </h1>
-                </div>
+                <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button type="action"
+                                class="oe_stat_button"
+                                name="%(estate.estate_property_offer_action)d"
+                                icon="fa-money"
+                        >
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
+                    
+                    <div class="oe-title">
+                        <h1>
+                            <field name="name" placeholder="Property Type Name"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="properties_id">
+                                <list>
+                                    <field name="name" width="auto"/>
+                                    <field name="expected_price" width="auto"/>
+                                    <field name="state" width="auto"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+
+            </list>
         </field>
     </record>
 
