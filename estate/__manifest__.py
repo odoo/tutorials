@@ -1,12 +1,14 @@
 {
     "name": "Real Estate",
-    "version": "0.1",
+    "version": "19.0.0.1.0",
     "category": "Custom",
     "summary": "My first application",
     "installable": True,
     "application": True,
     "author": "belam",
-    "depends": ["base"],
+    "depends": [
+        "base",
+     ],
     "license": "LGPL-3",
     "data": [
         # Views per model

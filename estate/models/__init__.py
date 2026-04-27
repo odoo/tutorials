@@ -1,1 +1,5 @@
-from . import customer, estate_property, estate_property_type, offer, tag
+from . import customer
+from . import estate_property
+from . import estate_property_type
+from . import offer
+from . import tag

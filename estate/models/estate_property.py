@@ -1,5 +1,6 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -37,6 +38,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(
         string="Expected price",
     )
+
     selling_price = fields.Float(
         string="Selling price",
         readonly=True,
@@ -87,6 +89,29 @@ class EstateProperty(models.Model):
         compute="_compute_best_price",
     )
 
+    #### CONSTRAINTS ####
+    _check_expected_price_positive = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "Expected price must be positive",
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for ep in self:
+            if float_is_zero(ep.selling_price, precision_digits=2):
+                continue
+
+            lowest_selling_price = ep.expected_price * 0.9
+            if float_compare(ep.selling_price, lowest_selling_price, precision_digits=2) == -1:
+                raise ValidationError(
+                    _(
+                        "The selling price must be at least 90%% of the expected price! "
+                        "(Minimum expected: %s)",
+                    )
+                    % lowest_selling_price,
+                )
+
+    #### COMPUTED VALUES ####
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for ep in self:
@@ -104,48 +129,32 @@ class EstateProperty(models.Model):
         if self.has_garden:
             self.garden_area = 10
             self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    #### ACTIONS ####
 
     def action_set_accepted(self):
-        # todo: split action and validation (validation goes into python constraint)
         for ep in self:
-            # ideally this should refined but this is a tutorial so I think it s ok as is
-            accepted_offers = ep.offer_ids.filtered(lambda o: o.status == "accepted")
-            if (
-                ep.state in ("offer_accepted", "sold", "cancelled")
-                or len(accepted_offers) != 1
-            ):
-                raise UserError(
-                    _("Wrong status or there s something wrong with accepted offers"),
-                )
-
+            # removed validation this looks a bit empty...
             ep.state = "offer_accepted"
 
     def action_set_sold(self):
-        # todo: split action and validation (validation goes into python constraint)
         for ep in self:
             if ep.state == "cancelled":
-                raise UserError(_("A cancelled property cannot be sold"))
-            accepted_offers = ep.offer_ids.filtered(lambda o: o.status == "accepted")
+                raise UserError(_("Cancelled properties cannot be sold."))
+            accepted_offer = ep.offer_ids.filtered(lambda o: o.status == "accepted")
+            if not accepted_offer:
+                raise UserError(_("You must accept an offer before selling the property."))
 
-            if ep.state != "offer_accepted" or len(accepted_offers) < 1:
-                raise UserError(
-                    _(
-                        "Make sure to have an accepted offer before setting the property as sold",
-                    ),
-                )
-            if len(accepted_offers) > 1:
-                raise UserError(
-                    _(
-                        "Multiple accepted offers - fix this before marking the property as sold",
-                    ),
-                )
-
-            assert len(accepted_offers) == 1
-
-            ep.state = "sold"
-            ep.customer_id = accepted_offers[0].partner_id
-            ep.selling_price = accepted_offers[0].price
-
+            ep.write(
+                {
+                    "state": "sold",
+                    "customer_id": accepted_offer[0].partner_id.id,
+                    "selling_price": accepted_offer[0].price,
+                },
+            )
         return True
 
     def action_set_cancelled(self):
