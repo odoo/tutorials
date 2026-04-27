@@ -12,15 +12,15 @@ class EstatePropertyType(models.Model):
         inverse_name="property_type_id",
         string="Property Type",
     )
-    offer_ids = fields.One2many('estate.property.offer', inverse_name='property_type_id')
-    offer_count = fields.Integer(string="Total Offer", compute='_compute_offer_count')
+    offer_ids = fields.One2many(
+        "estate.property.offer", inverse_name="property_type_id"
+    )
+    offer_count = fields.Integer(string="Total Offer", compute="_compute_offer_count")
     sequence = fields.Integer("Sequence", default=1)
 
     _name_check = models.Constraint("UNIQUE (name)", "Please add unique type")
 
-    @api.depends('offer_ids')
+    @api.depends("offer_ids")
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
-    
-        

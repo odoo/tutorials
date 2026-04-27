@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default=lambda self : fields.Date.add(fields.Date.today(), months=3),
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
     )
     postcode = fields.Char(required=True)
     expected_price = fields.Float()
@@ -110,7 +110,6 @@ class EstateProperty(models.Model):
                 record.state = "sold"
 
     def action_approve_best(self):
-        breakpoint()
         self.offer_ids[0].status = "accepted"
 
     _check_expected_price = models.Constraint(
