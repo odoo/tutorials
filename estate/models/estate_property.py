@@ -5,26 +5,20 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     name = fields.Char('Property Name', required=True)
-    description = fields.Text('Description')
-    postcode = fields.Char('Postcode')
+    description = fields.Text()
+    property_type_id = fields.Many2one('estate.property.type')
+    buyer_id = fields.Many2one('res.partner', copy=False)
+    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.uid)
+    tag_ids = fields.Many2many('estate.property.tag', string="Property Tag")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    postcode = fields.Char()
     date_availability = fields.Date('Availability Date', copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
-    expected_price = fields.Float('Expected Price', required=True)
-    #selling_price = fields.Float('Selling Price', readonly=True, copy=False)
-    bedrooms = fields.Integer('Bedrooms', default=2)
-    living_area = fields.Integer('Living Area')
-    facades = fields.Integer('Facades')
-    garage = fields.Boolean('Garage')
-    garden = fields.Boolean('Garden')
-
-    @api.onchange('garden')
-    def _onchange_garden(self):
-        if not self.garden:
-            self.garden_area = 0
-            self.garden_orientation = False
-        else:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-
+    expected_price = fields.Float(required=True)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(
         selection=[
@@ -34,6 +28,9 @@ class EstateProperty(models.Model):
             ('west', 'West'),
         ],
     )
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Float('Best Offer', compute="_compute_best_price")
+    selling_price = fields.Float(compute="_compute_selling_price", readonly=True, copy=False)
     state = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -45,23 +42,25 @@ class EstateProperty(models.Model):
         default='new',
         required=True,
     )
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
-    salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.uid)
-    tag_ids = fields.Many2many('estate.property.tag', string="Property Tag")
-    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offer")
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if not self.garden:
+            self.garden_area = 0
+            self.garden_orientation = False
+        else:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for line in self:
             line.total_area = line.living_area + line.garden_area
-    total_area = fields.Integer('Total Area', compute="_compute_total_area")
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for line in self:
-            line.best_price = max(line.mapped('offer_ids.price') or [0])
-    best_price = fields.Float('Best Offer', compute="_compute_best_price")
+            line.best_price = max(line.mapped('offer_ids.price'), default=0)
 
     @api.depends('offer_ids.status', 'offer_ids.price')
     def _compute_selling_price(self):
@@ -72,7 +71,6 @@ class EstateProperty(models.Model):
                 line.buyer_id = accepted_offer[0].partner_id
             else:
                 line.selling_price = 0
-    selling_price = fields.Float('Selling Price', compute="_compute_selling_price", readonly=True, copy=False)
 
     def action_cancel(self):
         for record in self:

@@ -1,11 +1,15 @@
-from odoo import api, fields, models, exceptions
 from datetime import timedelta
+from odoo import api, fields, models, exceptions
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
-    price = fields.Float("Price")
+    price = fields.Float()
+    partner_id = fields.Many2one("res.partner", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
+    validity = fields.Integer("Validity (days)", default=7)
+    date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
     status = fields.Selection(
         selection=[
             ('accepted', 'Accepted'),
@@ -13,32 +17,20 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False,
     )
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
-    validity = fields.Integer("Validity (days)", default=7)
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
-            if offer.validity:
-                if offer.create_date:
-                    offer.date_deadline = offer.create_date + timedelta(days=offer.validity)
-                else:
-                    offer.date_deadline = fields.Date.today() + timedelta(days=offer.validity)
-            else:
-                offer.date_deadline = False
+            start_date = fields.Date.to_date(offer.create_date) or fields.Date.today()
+            offer.date_deadline = start_date + timedelta(days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
             if offer.date_deadline:
-                if offer.create_date:
-                    offer.validity = offer.date_deadline.day - offer.create_date.day
-                else:
-                    offer.validity = (offer.date_deadline - fields.Date.today()).day
+                start_date = fields.Date.to_date(offer.create_date) or fields.Date.today()
+                offer.validity = (offer.date_deadline - start_date).days
             else:
                 offer.validity = 0
-
-    date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
     def action_accept(self):
         for offer in self:
