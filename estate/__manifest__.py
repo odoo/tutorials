@@ -1,5 +1,6 @@
 {
     'name': "Sevan Estate",
+    'license': 'LGPL-3',
     'depends': ['base'],
     'summary': "Just a simple estate app for Sevan.",
     'application': True,
