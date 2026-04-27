@@ -9,12 +9,13 @@ export class TodoList extends Component {
 
     setup() {
         this.todos = useState([]);
+        this.nextId = this.todos.length;
         useAutofocus("add_todo_input");
     }
 
     addToDo(event) {
         if (event.keyCode === 13 && event.target.value !== "") {
-            this.todos.push({id: this.todos.length, description: event.target.value, isCompleted: false});
+            this.todos.push({id: this.nextId++, description: event.target.value, isCompleted: false});
             event.target.value = "";
         }
     }
@@ -23,6 +24,13 @@ export class TodoList extends Component {
         const todo = this.todos.find((todo) => todo.id === id);
         if (todo) {
             todo.isCompleted = !todo.isCompleted;
+        }
+    }
+
+    deleteTodo(id) {
+        const index = this.todos.findIndex((todo) => todo.id === id);
+        if (index >= 0) {
+            this.todos.splice(index, 1);
         }
     }
 }
