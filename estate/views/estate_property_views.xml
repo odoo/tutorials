@@ -16,13 +16,15 @@
                     decoration-bf="state == 'offer_accepted'"
                     decoration-muted="state == 'sold'"
             >
-                <field name='name' width='auto'/>
-                <field name='postcode' width='auto'/>
-                <field name='bedrooms' width='auto'/>
-                <field name='living_area' string='Living Area (sqm)' width='auto'/>
-                <field name='expected_price' width='auto'/>
-                <field name='selling_price' width='auto'/>
-                <field name='date_availability' width='auto' optional="hide"/>
+                <field name='name'/>
+                <field name="type_id"/>
+                <field name='postcode'/>
+                <field name="tag_ids" widget="many2many_tags" placeholder="Select a tag."/>
+                <field name='bedrooms'/>
+                <field name='living_area' string='Living Area (sqm)'/>
+                <field name='expected_price'/>
+                <field name='selling_price'/>
+                <field name='date_availability' optional="hide"/>
             </list>
         </field>
     </record>
@@ -107,7 +109,8 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" filter_domain='["|", ("living_area", ">", self), ("living_area", "=", self)]'/>
+                <field name="living_area"
+                       filter_domain='["|", ("living_area", ">", self), ("living_area", "=", self)]'/>
                 <field name="facades"/>
 
                 <filter name="postcode"

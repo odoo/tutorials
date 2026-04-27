@@ -2,7 +2,7 @@ import datetime
 
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
 
 
 class PropertyOffer(models.Model):
@@ -57,13 +57,19 @@ class PropertyOffer(models.Model):
                 and record.status == "proposed"
             )
 
-    @api.model
     def write(self, vals):
-        result = super().write(vals)
+        best_price = max(self.property_id.offer_ids.mapped("price"), default=0)
         for record in self:
+            if record.price < best_price:
+                raise UserError("You cannot go under the price of the current best offer")
+
             if record.property_id.state not in ["sold", "cancelled"]:
                 record.property_id.state = "offer_received" if record.status != "accepted" else "offer_accepted"
-        return result
+            else:
+                raise AccessError("You cannot create an offer on a sold or cancelled property.")
+
+        return super().write(vals)
+
 
     def action_accept(self):
         for record in self:
