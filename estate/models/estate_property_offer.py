@@ -27,6 +27,15 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id", store=True
     )
 
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property = self.env["estate.property"].browse(val["property_id"])
+            if property.best_price > val.get("price", 0):
+                raise UserError("Better offer than this already exist")
+            property.state = "offer_received"
+        return super().create(vals)
+
     # It gets changed on each changes because it works based on cache
     @api.depends("create_date", "validity")
     def _compute_deadline(self):

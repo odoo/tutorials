@@ -31,7 +31,6 @@ class EstateProperty(models.Model):
             ("south", "South"),
         ],
     )
-
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         selection=[
@@ -64,11 +63,9 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.offer",
         inverse_name="property_id",
     )
-
     total_area = fields.Integer(
         string="total_area", name="Total area", compute="_compute_total"
     )
-
     best_price = fields.Integer(
         compute="_compute_best_price",
         store=True,
@@ -94,6 +91,14 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_property(self):
+        for record in self:
+            if record.state != "new" or record.state != "cancelled":
+                raise UserError(
+                    "You can't delete the record which is not new or cancelled"
+                )
 
     def action_cancel_offer(self):
         for record in self:
