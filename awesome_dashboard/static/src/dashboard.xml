@@ -6,7 +6,7 @@
                 <button type="button" class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <t t-set-slot="default">
+            <t t-set-slot="default" t-if="results.isLoaded">
                 <DashboardItem>
                     Average amount of t-shirts by order this month
                     <div class="text-center text-success display-6 fw-bold"><t t-out="results.average_quantity"/></div>
