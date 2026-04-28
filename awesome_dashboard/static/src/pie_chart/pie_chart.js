@@ -14,8 +14,8 @@ export class PieChart extends Component {
         onWillStart(async () => await loadJS("/web/static/lib/Chart/Chart.js"));
         onMounted(() => this.renderChart());
         onPatched(() => {
-            this.renderChart();
             this.destroyChart();
+            this.renderChart();
         });
         onWillUnmount(() => this.destroyChart());
     }
