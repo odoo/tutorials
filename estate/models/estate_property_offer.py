@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import exceptions, api, fields, models
 
 
 class PropertyOffer(models.Model):
@@ -12,6 +12,11 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
+    _check_price = models.Constraint(
+    'CHECK(price > 0)',
+    'An offer price must be strictly positive',
+    )
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for offer in self:
@@ -23,11 +28,15 @@ class PropertyOffer(models.Model):
             start_date = fields.Date.to_date(offer.create_date) or fields.Date.today()
             offer.validity = (offer.date_deadline - start_date).days
 
-    def action_accept(self):
+    def accept_offer(self):
         for offer in self:
-            offer.status = 'accepted'
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
+            if offer.property_id.garden and offer.property_id.garden_orientation == 'south' and offer.price < offer.property_id.expected_price:
+                raise exceptions.ValidationError("The offer price must be higher than the expected price for this property.")
+            else:
+                offer.status = 'accepted'
+                offer.property_id.selling_price = offer.price
+                offer.property_id.buyer_id = offer.partner_id
+                offer.property_id.state = 'offer_accepted'
         return True
 
     def action_refuse(self):

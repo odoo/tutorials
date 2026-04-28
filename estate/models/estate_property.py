@@ -1,4 +1,5 @@
 from odoo import exceptions, api, fields, models
+from odoo.tools.float_utils import float_compare
 
 
 class Property(models.Model):
@@ -28,6 +29,16 @@ class Property(models.Model):
     total_area = fields.Integer(compute="_compute_living_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _check_expected_price = models.Constraint(
+    'CHECK(expected_price > 0)',
+    'A property expected price must be strictly positive',
+    )
+
+    _check_selling_price = models.Constraint(
+    'CHECK(selling_price >= 0)',
+    'A property selling price must be positive',
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_living_area(self):
         for property in self:
@@ -36,7 +47,7 @@ class Property(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for property in self:
-            property.best_price = max(property.mapped("offer_ids.price"))
+            property.best_price = max(property.mapped("offer_ids.price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -51,15 +62,22 @@ class Property(models.Model):
     def action_cancel(self):
         for property in self:
             if property.state == 'sold':
-               raise exceptions.UserError("Cannot cancel a sold peoperty")
+                raise exceptions.UserError("Cannot cancel a sold peoperty")
             else:
-                property.state = 'cancelled' 
+                property.state = 'cancelled'
         return True
-    
+
     def action_sold(self):
-        for property in self: 
+        for property in self:
             if property.state == 'cancelled':
                 raise exceptions.UserError("Cannot sell a cancelled peoperty")
             else:
                 property.state = 'sold'
         return True
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for property in self:
+            if property.state == 'offer_accepted':
+                if float_compare(property.selling_price, property.expected_price * (90 / 100), precision_rounding=0.01) < 0:
+                    raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
