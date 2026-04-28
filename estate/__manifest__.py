@@ -21,6 +21,9 @@
     'assets': {
         'web.assets_backend': [
             'estate/static/src/scss/estate_form.scss',
+            'estate/static/src/components/price_tag_widget/estate_price_tag_widget.js',
+            'estate/static/src/components/price_tag_widget/estate_price_tag_widget.xml',
+            'estate/static/src/components/price_tag_widget/estate_price_tag_widget.scss',
         ],
     },
 }

@@ -11,8 +11,8 @@
                 <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name='bedrooms' width="200px"/>
                 <field name='living_area' string="Living Area (sqm)" width="200px"/>
-                <field name='expected_price' width="200px"/>
-                <field name='selling_price' width="200px"/>
+                <field name='expected_price' widget="estate_price_tag" width="200px"/>
+                <field name='selling_price' widget="estate_price_tag" width="200px"/>
                 <field name="best_price"/>
                 <field name='date_availability' string="Available From" width="200px" optional='True'/>
                 <field name='state' widget='badge' decoration-success="state == 'sold'" decoration-danger="state == 'cancelled'" decoration-info="state == 'new'" decoration-warning="state == 'offer_accepted'" decoration-primary="state == 'offer_received'"/>
