@@ -1,5 +1,6 @@
-from odoo import models, Command
+from odoo import Command, models
 from odoo.tools.float_utils import float_round
+
 
 class EstateAccount(models.Model):
     _inherit = "estate.property"
@@ -12,7 +13,6 @@ class EstateAccount(models.Model):
                 if offer.status == 'accepted':
                     sold_to_partner_id = offer.partner_id
                     break
-            current_section_vals = None
             invoice_vals = {
                 'move_type': 'out_invoice',
                 'partner_id': sold_to_partner_id.id,

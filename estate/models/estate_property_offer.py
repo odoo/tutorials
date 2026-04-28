@@ -1,8 +1,9 @@
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
-from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 
 class PropertyOffer(models.Model):
