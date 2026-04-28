@@ -42,6 +42,13 @@
         ],
         'website.website_builder_assets': [
             'awesome_website/static/src/website_builder/**/*',
+        ],
+        'web.assets_unit_tests': [
+            'awesome_website/static/tests/interactions/**/*',
+        ],
+        'web.assets_unit_tests_setup': [
+            'awesome_website/static/src/snippets/s_image_comparison/image_comparison.js',
+            'awesome_website/static/src/snippets/s_image_comparison/000.scss',
         ]
     },
     'license': 'AGPL-3'
