@@ -16,8 +16,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Tags" decoration-danger="state and state == 'cancelled'" limit="20"
-                  decoration-success="state and state == 'offer_accepted'">
+            <list string="Tags" decoration-danger="state and state == 'cancelled'" limit="20" decoration-success="state and state == 'offer_accepted'">
                 <field name="name" string="Property Title"/>
                 <field name="postcode" width="96px"/>
                 <field name="bedrooms"/>
@@ -38,9 +37,7 @@
         <field name="arch" type="xml">
             <form string="Real Estate">
                 <header>
-                    <field name="state" widget="statusbar" class="oe_inline_end"
-                           statusbar_visible="new,offer_accepted,offer_received,sold,cancelled"
-                           options="{'clickable': True}"/>
+                    <field name="state" widget="statusbar" class="oe_inline_end" statusbar_visible="new,offer_accepted,offer_received,sold,cancelled" options="{'clickable': True}"/>
                 </header>
                 <sheet>
                     <h1>
@@ -58,6 +55,8 @@
                         <group>
                             <field name="postcode" width="96px" class="oe_inline oe_left"/>
                             <field name="expected_price" class="oe_inline oe_right"/>
+                            <field name="best_price" class="oe_inline oe_right"/>
+
                         </group>
                     </group>
                     <notebook>
@@ -70,6 +69,7 @@
                                 <field name="garage" widget="checkbox"/>
                                 <field name="garden"/>
                                 <field name="garden_area"/>
+                                <field name="total_area"/>
                                 <field name="garden_orientation" widget="radio"/>
                             </group>
                         </page>
@@ -101,8 +101,7 @@
                 <field name="postcode"/>
                 <separator/>
                 <filter string="Date Availability" name="Date Availability" date="date_availability"/>
-                <filter name="available_properties" string="Available"
-                        domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
+                <filter name="available_properties" string="Available" domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
                 <group>
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>

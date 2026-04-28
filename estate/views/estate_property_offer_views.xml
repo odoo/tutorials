@@ -20,6 +20,8 @@
             <list string="">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline" widget="datetime"/>
                 <field name="status"/>
             </list>
         </field>
@@ -35,6 +37,8 @@
                     <group>
                         <field name="price" widget=""/>
                         <field name="partner_id" widget="many2one_avatar_user"/>
+                        <field name="validity"/>
+                        <field name="date_deadline" widget="datetime"/>
                         <field name="status" widget="radio"/>
                     </group>
                 </sheet>

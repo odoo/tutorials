@@ -8,6 +8,8 @@ class EstateProperty(models.Model):
     _description = "A real estate model with many fields"
     active = fields.Boolean(string="Active", default="Active")
     bedrooms = fields.Integer(string="Bedrooms", default="2")
+    best_price = fields.Float(
+        string="Best Price", compute='_compute_best_price')
     buyer = fields.Many2one(
         'res.partner', string="Buyer", ondelete='restrict',
     )
@@ -52,6 +54,28 @@ class EstateProperty(models.Model):
         'estate.property.tag',
         string="Tags"
     )
+    total_area = fields.Float(
+        string="Total Area", compute='_compute_total_area'
+    )
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for rec in self:
+            rec.total_area = rec.living_area + rec.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for rec in self:
+            rec.best_price = max(rec.mapped('offer_ids.price') or [0])
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden == True:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     @api.constrains('expected_price')
     def _check_price(self):
