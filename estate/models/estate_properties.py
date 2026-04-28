@@ -23,6 +23,7 @@ def _get_salesperson(self):
 class EstateProperties(models.Model):
     _name = 'estate.properties'
     _description = 'Real Estate Properties'
+    _order = 'sequence'
 
     active = fields.Boolean(help="Should the property be listed?", default=True)
     bedrooms = fields.Integer(default=2)
@@ -55,6 +56,7 @@ class EstateProperties(models.Model):
     salesperson_id = fields.Many2one(comodel_name='res.partner', default=lambda self: self.env.user.partner_id)
     # salesperson = fields.Char(default=_get_salesperson)
     selling_price = fields.Float(readonly=True, copy=False)
+    sequence = fields.Integer()
     state = fields.Selection(
         [
             ('new', "New"),
@@ -69,7 +71,7 @@ class EstateProperties(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
 
     _check_expected_price = models.Constraint(
-        'CHECK (expected_price > 0 AND selling_price >= 0)', 
+        'CHECK (expected_price > 0 AND selling_price >= 0)',
         "Price should strictly be positive",
     )
 
@@ -166,7 +168,7 @@ class EstateProperties(models.Model):
         for property in self:
             if property.selling_price:
                 property.commission = property.selling_price * 0.06
-    
+
     def property_accept(self):
         # best_offers = []
         # for property in self.offer_ids:
@@ -185,7 +187,7 @@ class EstateProperties(models.Model):
         #         pass
         #     else:
         #         property.status = 'refused'
-    
+
     @api.onchange('offer_ids')
     def offer_received_state(self):
         if self.offer_ids and self.state == 'new':

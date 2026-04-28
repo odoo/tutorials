@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Real Estate Property Offers'
+    _order = 'price desc'
 
     deadline = fields.Date()
     partner_id = fields.Many2one(comodel_name='res.partner', required=True)
