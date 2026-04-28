@@ -64,20 +64,18 @@ class PropertyOffer(models.Model):
     # Constrains methods and onchange methods
     # CRUD methods
     def create(self, vals):
-        for record in vals:
-            property = self.env["estate.property"].browse(record["property_id"])
+        properties = self.env["estate.property"].browse(record["property_id"] for record in vals)
+
+        if any(properties.mapped(lambda x: x.state in ["sold", "offer_accepted", "cancelled"])):
+            raise AccessError("You cannot create an offer on a sold/cancelled property or when there\'s already an offer accepted.")
+
+        for property, record in zip(properties, vals):
             best_price = float(max(property.offer_ids.mapped("price"), default=0.0))
 
-            if ("price" not in record
-                or float_utils.float_compare(
-                    float(record["price"]), best_price, precision_digits=2
-                ) < 0):
+            if "price" not in record or float_utils.float_compare(float(record["price"]), best_price, precision_digits=2) < 0:
                 raise UserError("You cannot go under the price of the current best offer")
 
-            if property.state not in ["sold", "offer_accepted", "cancelled"]:
-                property.state = "offer_received"
-            else:
-                raise AccessError("You cannot create an offer on a sold or cancelled property.")
+            property.state = "offer_received"
 
         return super().create(vals)
 
@@ -86,7 +84,7 @@ class PropertyOffer(models.Model):
             for record in self:
                 best_price = float(max(record.property_id.offer_ids.mapped("price"), default=0.0))
 
-                if (float_utils.float_compare(float(vals["price"]), best_price, precision_digits=2) < 0):
+                if float_utils.float_compare(float(vals["price"]), best_price, precision_digits=2) < 0:
                     raise UserError("You cannot go under the price of the current best offer")
 
                 if record.property_id.state not in ["sold", "cancelled"]:
@@ -100,7 +98,10 @@ class PropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.status == "refused" or record.property_id.state in ['cancelled', 'sold']:
-                raise UserError("Invalid Action!")
+                raise UserError("Can\'t accept a refused offer or accept an offer on a sold/cancelled property.")
+
+            if float_utils.float_compare(record.price, record.property_id.expected_price, precision_digits=2) < 0:
+                raise UserError("You can\'t buy below the expected price")
 
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
@@ -110,6 +111,5 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             if record.status == "accepted" or record.property_id.state in ["cancelled", "sold"]:
-                raise UserError("Invalid Action")
-
+                raise UserError("Can\'t refuse an accepted offer or refuse an offer on a sold/cancelled property.")
             record.status = "refused"

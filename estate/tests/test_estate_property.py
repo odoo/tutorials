@@ -1,4 +1,4 @@
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 from odoo.tests import TransactionCase
 from odoo import Command
 
@@ -17,16 +17,16 @@ class TestEstateProperty(TransactionCase):
             'name': 'Maman ours',
         })
 
-    def test_estate_best_price(self):
+    def test_estate_best_offer(self):
         '''
         Ensure best price is correctly updated when an offer is received.
         '''
-        self.assertEqual(self.estate.best_price, 0.0)
+        self.assertEqual(self.estate.best_offer, 0.0)
         self.estate.offer_ids = [Command.create({
             'price': 125000.0,
             'partner_id': self.test_partner.id,
         })]
-        self.assertEqual(self.estate.best_price, 125000.0)
+        self.assertEqual(self.estate.best_offer, 125000.0)
 
     def test_accept_offer_south_facing_garden(self):
         '''
@@ -38,5 +38,5 @@ class TestEstateProperty(TransactionCase):
             'price': 475000.0,
             'partner_id': self.test_partner.id,
         })]
-        with self.assertRaises(ValidationError):
-            self.estate.offer_ids.accept_offer()
+        with self.assertRaises(UserError):
+            self.estate.offer_ids.action_accept()

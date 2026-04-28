@@ -29,7 +29,8 @@ class Property(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
-        ]
+        ],
+        default='south'
     )
     date_availability = fields.Date(
         copy=False,
