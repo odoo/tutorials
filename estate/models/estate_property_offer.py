@@ -50,6 +50,8 @@ class Estate_property_offer(models.Model):
             for offer in record.property_id.offer_ids:
                 if offer.state == "accepted":
                     raise UserError("Another offer has already been accepted for this property.")
+            if record.property_id.garden_orientation == "south" and record.price <= record.property_id.expected_price:
+                raise UserError("The price must be more than the expected price for properties with a south-facing garden.")
             record.state = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id

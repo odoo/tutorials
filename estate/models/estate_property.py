@@ -87,7 +87,6 @@ class Estate_property(models.Model):
                     break
             else:
                 record.state = "new"
-                record.selling_price = 0
 
     def action_sold(self):
         for record in self:
