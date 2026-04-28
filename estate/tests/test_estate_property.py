@@ -34,6 +34,8 @@ class TestEstateProperty(TransactionCase):
         price.
         '''
         self.estate.expected_price = 500000
+        self.estate.garden = True
+        self.estate.garden_orientation = 'south'
         self.estate.offer_ids = [Command.create({
             'price': 475000.0,
             'partner_id': self.test_partner.id,
