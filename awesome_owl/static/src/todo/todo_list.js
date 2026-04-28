@@ -10,7 +10,7 @@ export class TodoList extends Component {
     setup() {
         this.todos = useState([]);
         this.nextId = this.todos.length;
-        useAutofocus("add_todo_input");
+        useAutofocus("addTodoInput");
     }
 
     addToDo(event) {
