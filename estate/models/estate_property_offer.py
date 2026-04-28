@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -52,6 +53,9 @@ class PropertyOffer(models.Model):
     def action_accept_offer(self):
         if any(record != self and record.status == 'accepted' for record in self.property_id.offer_ids):
             raise UserError("Only one offer can be accepted")
+        if (self.property_id.garden_orientation == 'south' and
+        float_compare(self.property_id.expected_price, self.price, 2) == 1):
+            raise ValidationError("For properties South oriented gardens, only offers having a price higher than the expected value of the property can be accepted")
         self.status = 'accepted'
         self.property_id.buyer = self.partner_id
         self.property_id.selling_price = self.price
