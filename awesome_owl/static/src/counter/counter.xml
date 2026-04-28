@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.counter">
+    <t t-name="awesome_owl.Counter">
         <div>
             <button class="btn-primary" t-on-click="decrement">-</button>
             <t t-esc="count.value"/>

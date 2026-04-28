@@ -2,7 +2,7 @@ import { Component, useState, useRef, onMounted } from "@odoo/owl";
 import { TodoItem } from "./todo_item";
 
 export class TodoList extends Component {
-    static template = "awesome_owl.todo_list"
+    static template = "awesome_owl.TodoList"
     static components = {TodoItem}
 
     setup(){
