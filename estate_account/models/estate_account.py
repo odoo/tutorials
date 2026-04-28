@@ -8,18 +8,13 @@ class EstateAccount(models.Model):
 
     def sold_action(self):
         for order in self:
-            selling_price, buyer_id = max(
-                (
-                    (x.price, x.partner_id)
-                    for x in order.offer_ids
-                    if x.status != "refused"
-                ),
-                default=(None, None),
-                key=lambda x: x[0],
-            )
+            best_offer = order.offer_ids.filtered(lambda x: x.status == "accepted").sorted("price DESC")[:1]
 
-            if not buyer_id or not selling_price:
-                raise UserError("You cannot sell without a buyer")
+            if not best_offer:
+                raise UserError("You cannot sell without an accepted offer")
+
+            buyer_id = best_offer[0].buyer_id
+            selling_price = best_offer[0].selling_price
 
             invoice_vals = {
                 "move_type": "out_invoice",

@@ -2,6 +2,7 @@ import datetime
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError, AccessError
+from odoo.tools import float_utils
 
 
 class PropertyOffer(models.Model):
@@ -62,28 +63,44 @@ class PropertyOffer(models.Model):
 
     # Constrains methods and onchange methods
     # CRUD methods
-    def write(self, vals):
-        best_price = max(self.property_id.offer_ids.mapped("price"), default=0)
-        for record in self:
-            if record.price < best_price:
+    def create(self, vals):
+        for record in vals:
+            property = self.env["estate.property"].browse(record["property_id"])
+            best_price = float(max(property.offer_ids.mapped("price"), default=0.0))
+
+            if ("price" not in record
+                or float_utils.float_compare(
+                    float(record["price"]), best_price, precision_digits=2
+                ) < 0):
                 raise UserError("You cannot go under the price of the current best offer")
 
-            if record.property_id.state not in ["sold", "cancelled"]:
-                record.property_id.state = "offer_received" if record.status != "accepted" else "offer_accepted"
+            if property.state not in ["sold", "offer_accepted", "cancelled"]:
+                property.state = "offer_received"
             else:
                 raise AccessError("You cannot create an offer on a sold or cancelled property.")
+
+        return super().create(vals)
+
+    def write(self, vals):
+        if "price" in vals:
+            for record in self:
+                best_price = float(max(record.property_id.offer_ids.mapped("price"), default=0.0))
+
+                if (float_utils.float_compare(float(vals["price"]), best_price, precision_digits=2) < 0):
+                    raise UserError("You cannot go under the price of the current best offer")
+
+                if record.property_id.state not in ["sold", "cancelled"]:
+                    record.property_id.state = "offer_received"
+                else:
+                    raise AccessError("You cannot create an offer on a sold or cancelled property.")
 
         return super().write(vals)
 
     # Action methods
     def action_accept(self):
         for record in self:
-            if record.status == "refused":
-                raise UserError("A refused offer cannot be accepted")
-            if record.property_id.state == "cancelled":
-                raise UserError("An offer on a cancelled property cannot be accepted")
-            if record.property_id.state == "sold":
-                raise UserError("An offer on a sold property cannot be accepted")
+            if record.status == "refused" or record.property_id.state in ['cancelled', 'sold']:
+                raise UserError("Invalid Action!")
 
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
@@ -92,11 +109,7 @@ class PropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
-            if record.status == "accepted":
-                raise UserError("An accepted offer cannot be refused")
-            if record.property_id.state == "cancelled":
-                raise UserError("An offer on a cancelled property cannot be refused")
-            if record.property_id.state == "sold":
-                raise UserError("An offer on a sold property cannot be refused")
+            if record.status == "accepted" or record.property_id.state in ["cancelled", "sold"]:
+                raise UserError("Invalid Action")
 
             record.status = "refused"
