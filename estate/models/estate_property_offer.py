@@ -66,11 +66,16 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            if offer.property_id.state == 'new':
-                offer.property_id.state = 'offer_received'
+        for vals in vals_list:
+            prop = self.env['estate.property'].browse(vals.get('property_id'))
 
-        return offers
+            if prop.best_price > 0 and vals.get('price') < prop.best_price:
+                raise exceptions.UserError(
+                    f"The offer must be at least {prop.best_price}."
+                )
+            if prop.state == 'new':
+                prop.state = 'offer_received'
+
+        return super().create(vals_list)

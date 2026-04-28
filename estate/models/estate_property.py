@@ -1,5 +1,5 @@
 from odoo import api, fields, models, exceptions
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -121,3 +121,11 @@ class EstatePropertytModel(models.Model):
             limit = record.expected_price * 0.9
             if float_compare(record.selling_price, limit, precision_digits=2) == -1:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_state_on_delete(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(
+                    "You cannot delete a property that is not 'New' or 'Cancelled'!"
+                )
