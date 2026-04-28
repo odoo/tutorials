@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -45,12 +46,18 @@ class EstatePropertyOffer(models.Model):
             record.validity = delta.days
 
     @api.model
-    def create(self, vals):
+    def create(self, vals_list):
 
-        offer = super().create(vals)
-        offer.property_id.state = "offer_received"
+        for vals in vals_list:
+            prop = self.env["estate.property"].browse(vals.get("property_id"))
+            existing_prices = prop.offer_ids.mapped("price")
 
-        return offer
+            if existing_prices and vals.get("price") < max(existing_prices):
+                raise UserError(f"The offer must be higher than {max(existing_prices):.2f}")
+
+            prop.state = "offer_received"
+
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:
