@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -8,8 +8,8 @@ class EstatePropertyOffer(models.Model):
     _order = 'price desc'
 
     _check_price = models.Constraint(
-        'CHECK (price >0)',
-        'The price must be positive do not enter negative values',
+        'CHECK (price > 0.00)',
+        'The offer price must be greater than 0 and must be positive',
     )
 
     date_deadline = fields.Date(
@@ -56,18 +56,22 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            date = fields.Date.to_date(record.create_date) or fields.Date.today()
+            date = fields.Date.to_date(record.create_date) or fields.Date.context_today()
             record.validity = (
                     record.date_deadline - date
             ).days
 
     def action_accept(self):
+        if self.property_id.state == 'cancelled':
+            raise ValidationError("Already sold or cancelled property can not accept the offer!")
         self.ensure_one()
         existing_offer = self.search([
             ('property_id', '=', self.property_id.id),
             ('status', '=', 'accepted'),
             ('id', '!=', self.id),
         ], limit=1)
+        other_offers = self.property_id.offer_ids.filtered(lambda o: o.id != self.id)
+        other_offers.write({'status': 'refused'})
         if existing_offer:
             raise UserError("An offer has already been accepted!")
         self.write({'status': 'accepted'})
@@ -79,8 +83,11 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse(self):
-        for record in self:
-            if record.status == 'accepted':
-                raise UserError("You cannot refuse an already accepted offer!")
-            record.status = 'refused'
+        if self.property_id.state == 'cancelled':
+            raise UserError("You cannot reject an offer in a sold or cancelled property")
+        if self.status == 'accepted':
+            self.property_id.selling_price = 0
+            self.property_id.buyer_id = False
+            self.property_id.state = 'offer_received'
+        self.status = 'refused'
         return True

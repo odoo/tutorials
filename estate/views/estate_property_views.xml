@@ -36,8 +36,10 @@
             <form string="Property">
                 <header>
                     <button name="action_sold" type="object" string="Sold"
-                            class="btn-primary"/>
+                            class="btn-primary" invisible="state =='sold'"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_rest" type="object" string="Rest"
+                            invisible="state in ['offer_accepted', 'sold', 'cancelled']"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
@@ -63,7 +65,6 @@
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="best_price"/>
-                            <!--                            <field name="state"/>-->
                             <field name="active"/>
                         </group>
                     </group>
@@ -90,8 +91,6 @@
                         </page>
                         <page string="Offers" name="offers">
                             <field name="offer_ids"/>
-                            <field name="salesperson_id"/>
-                            <field name="buyer_id"/>
                         </page>
                     </notebook>
                 </sheet>

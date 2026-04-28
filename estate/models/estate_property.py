@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -86,6 +87,18 @@ class EstateProperty(models.Model):
         string='Tags'
     )
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_price = record.expected_price * 0.90
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    f"Selling price ({record.selling_price:.2f}) cannot be "
+                    f"lower than 90% of expected price ({min_price:.2f})."
+                )
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for rec in self:
@@ -109,7 +122,16 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise ValidationError("Cancelled properties cannot be sold.")
+            best_offer = record.offer_ids.filtered(lambda o: o.price == record.best_price)[:1]
+            if best_offer:
+                best_offer.action_accept()
             record.state = 'sold'
+        return True
+
+    def action_rest(self):
+        for record in self:
+            record.state = 'new'
+            record.selling_price = 0.0
         return True
 
     def action_cancel(self):
