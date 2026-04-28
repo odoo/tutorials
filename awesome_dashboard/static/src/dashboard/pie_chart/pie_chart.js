@@ -21,14 +21,13 @@ export class PieChart extends Component {
     }
 
     destroyChart() {
-        if (this.chart) {
-            this.chart.destroy();
-        }
+        this.chart?.destroy();
     }
 
     renderChart() {
         this.chart = new Chart(this.canvas.el, {
-            type: "pie", data: {
+            type: "pie",
+            data: {
                 labels: Object.keys(this.props.data),
                 datasets: [
                     {
