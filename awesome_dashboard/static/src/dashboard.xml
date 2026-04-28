@@ -7,8 +7,26 @@
                 <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
             <t t-set-slot="default">
-                <DashboardItem>some content</DashboardItem>
-                <DashboardItem size="2"> I love milk</DashboardItem>
+                <DashboardItem>
+                    Average amount of t-shirts by order this month
+                    <div class="text-center text-success display-6 fw-bold"><t t-out="results.average_quantity"/></div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from new to sent or canceled
+                    <div class="text-center text-success display-6 fw-bold"><t t-out="results.average_time"/></div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of new orders this month
+                    <div class="text-center text-success display-6 fw-bold"><t t-out="results.nb_new_orders"/></div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of canceled orders this month
+                    <div class="text-center text-success display-6 fw-bold"><t t-out="results.nb_cancelled_orders"/></div>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of orders this month
+                    <div class="text-center text-success display-6 fw-bold"><t t-out="results.total_amount"/></div>
+                </DashboardItem>
             </t>
         </Layout>
     </t>
