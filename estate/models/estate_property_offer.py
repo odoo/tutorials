@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
@@ -7,18 +7,13 @@ class EstatePropertyOffer(models.Model):
     _description = "Offers received for property"
     _order = "price desc"
 
-    price = fields.Float(string="Price")
+    price = fields.Float()
     status = fields.Selection(
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
-        string="Status",
         copy=False,
     )
-    partner_id = fields.Many2one(
-        comodel_name="res.partner", string="Partner", required=True
-    )
-    property_id = fields.Many2one(
-        comodel_name="estate_property", string="Property", required=True
-    )
+    partner_id = fields.Many2one(comodel_name="res.partner", required=True)
+    property_id = fields.Many2one(comodel_name="estate_property", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline",
@@ -62,20 +57,20 @@ class EstatePropertyOffer(models.Model):
         for vals in val_lists:
             property = self.env["estate_property"].browse(vals["property_id"])
             if property.best_price > vals.get("price", 0):
-                raise UserError("offer with price greater than current offer exists")
-            property.state = "offerRecieved"
+                raise UserError(_("offer with price greater than current offer exists"))
+            property.state = "offer_received"
         return super().create(val_lists)
 
-    def accept_offer(self):
-        for record in self:
-            for offer in record.property_id.offer_ids:
-                if offer.status == "accepted":
-                    raise UserError("offer is already accepted for the property")
-            record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+    def action_accept_offer(self):
+        if self.property_id.state == "offer_accepted":
+            raise UserError(_("offer is already accepted"))
+        (self.property_id.offer_ids - self).status = "rejected"
+        self.status = "accepted"
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        self.property_id.state = "offer_accepted"
 
-    def refuse_offer(self):
+    def action_refuse_offer(self):
         for record in self:
             if record.status == "accepted":
                 record.property_id.buyer_id = False

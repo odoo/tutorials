@@ -8,7 +8,7 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(string="Property Type", required=True)
     property_ids = fields.One2many("estate_property", "property_type_id")
-    sequence = fields.Integer(string="Sequence", default=1)
+    sequence = fields.Integer(default=1)
     offer_ids = fields.One2many(
         comodel_name="estate.property_offer", inverse_name="property_type_id"
     )

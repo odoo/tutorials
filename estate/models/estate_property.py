@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
@@ -8,24 +8,22 @@ class Estate(models.Model):
     _description = "real estate management"
     _order = "id desc"
 
-    name = fields.Char(string="Name", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    name = fields.Char(required=True)
+    description = fields.Text()
+    postcode = fields.Char()
     date_available = fields.Date(
-        string="Date available",
         copy=False,
-        default=fields.Datetime.add(fields.Date.today(), months=3),
+        default=lambda self: fields.Datetime.add(fields.Date.today(), months=3),
     )
-    expected_price = fields.Float(string="Expected price", required=True)
-    selling_price = fields.Float(string="Selling price", readonly=True, copy=False)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area")
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("south", "South"),
@@ -33,26 +31,23 @@ class Estate(models.Model):
             ("west", "West"),
         ],
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="State",
         selection=[
-            ("new", "NEW"),
-            ("offerRecieved", "OFFER RECIEVED"),
-            ("offerAccepted", "OFFER ACCEPTED"),
-            ("sold", "SOLD"),
-            ("cancelled", "CANCELLED"),
+            ("new", "New"),
+            ("offer_received", "Offer received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         default="new",
         copy=False,
         required=True,
     )
-    property_type_id = fields.Many2one(
-        comodel_name="estate.property_type", string="Property Type"
-    )
-    buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
+    property_type_id = fields.Many2one(comodel_name="estate.property_type")
+    buyer_id = fields.Many2one(comodel_name="res.partner", copy=False)
     salesman_id = fields.Many2one(
-        comodel_name="res.users", string="Salesman", default=lambda self: self.env.user
+        comodel_name="res.users", default=lambda self: self.env.user
     )
     property_tag_ids = fields.Many2many(
         comodel_name="estate.property_tag", string="Property Tags"
@@ -62,7 +57,7 @@ class Estate(models.Model):
         inverse_name="property_id",
         string="Offers",
     )
-    total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
+    total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
 
     _check_selling_price = models.Constraint(
@@ -84,7 +79,7 @@ class Estate(models.Model):
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.constrains("selling_price", "expected_price")
-    def _check_selling_price_90(self):
+    def _check_selling_price(self):
         for record in self:
             if (
                 record.selling_price
@@ -96,7 +91,7 @@ class Estate(models.Model):
                 == 1
             ):
                 raise ValidationError(
-                    "selling price must be least 90 percent of expected price"
+                    _("selling price must be least 90 percent of expected price")
                 )
 
     @api.onchange("garden")
@@ -113,19 +108,25 @@ class Estate(models.Model):
         for record in self:
             if record.state not in ["cancelled", "new"]:
                 raise UserError(
-                    "properties with state cancelled or new can only be deleted"
+                    _("properties with state cancelled or new can only be deleted")
                 )
 
-    def mark_property_sold(self):
+    def action_mark_property_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("cancelled property can't be sold")
+                raise UserError(_("cancelled property can't be sold"))
+            if record.selling_price:
+                record._check_selling_price()
+            else:
+                raise ValidationError(
+                    _("property cant be sold selling price must be greater than zero")
+                )
             record.state = "sold"
-            return True
+        return True
 
-    def mark_property_cancelled(self):
+    def action_mark_property_cancelled(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("sold property can't be canceled")
+                raise UserError(_("sold property can't be canceled"))
             record.state = "cancelled"
-            return True
+        return True
