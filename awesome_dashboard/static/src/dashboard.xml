@@ -6,7 +6,10 @@
                 <button type="button" class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            hello dashboard
+            <t t-set-slot="default">
+                <DashboardItem>some content</DashboardItem>
+                <DashboardItem size="2"> I love milk</DashboardItem>
+            </t>
         </Layout>
     </t>
 
