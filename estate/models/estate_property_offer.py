@@ -63,6 +63,7 @@ class EstatePropertyOffer(models.Model):
 
     def offer_accepted(self):
         offer_id = 0
+        # breakpoint()
         for offer in self:
             if offer.status == 'accepted':
                 raise UserError("Property already accepted!")
@@ -73,6 +74,7 @@ class EstatePropertyOffer(models.Model):
             offer._refuse_remaining_offers(offer_id, all_offers)
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
         return True
 
     def offer_refused(self):

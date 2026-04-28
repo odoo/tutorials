@@ -2,7 +2,7 @@ import logging
 from dateutil import relativedelta as rd
 
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 _logger = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ class EstateProperties(models.Model):
 
     active = fields.Boolean(help="Should the property be listed?", default=True)
     bedrooms = fields.Integer(default=2)
-    best_price = fields.Integer(compute='_compute_best_price')
+    best_price = fields.Float(compute='_compute_best_price')
     buyer_id = fields.Many2one(comodel_name='res.partner', copy=False)
     commission = fields.Integer(compute='_compute_commission', store=True)
     date_availability = fields.Date(string="Availability Date", copy=False, default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3))
@@ -69,9 +69,22 @@ class EstateProperties(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
 
     _check_expected_price = models.Constraint(
-        'CHECK (expected_price > 0 AND selling_price > 0)', 
+        'CHECK (expected_price > 0 AND selling_price >= 0)', 
         "Price should strictly be positive",
     )
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        # breakpoint()
+        _logger.error(self.id)
+        for property in self:
+            sp_threshold = 0.9 * property.expected_price
+            _logger.error(sp_threshold)
+            _logger.error(property.selling_price)
+            _logger.error(property.expected_price)
+            _logger.error(property.id)
+            if property.selling_price < sp_threshold:
+                raise ValidationError("Selling price cannot be less than 90% of the expected price")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -86,6 +99,8 @@ class EstateProperties(models.Model):
         for property in self:
             # _logger.error(self.mapped('offer_ids.price'))
             offer_prices = property.mapped('offer_ids.price')
+            # _logger.error(offer_prices)
+            # _logger.error(max(offer_prices))
             property.best_price = max(offer_prices) if offer_prices else 0
 
     # @api.constrains('expected_price')
@@ -113,7 +128,7 @@ class EstateProperties(models.Model):
     @api.depends('best_price', 'expected_price')
     def _compute_price_gap(self):
         for property in self:
-            if (property.best_price and property.expected_price) != 0:
+            if property.best_price and property.expected_price:
                 property.price_gap = property.best_price - property.expected_price
             else:
                 property.price_gap = 0
@@ -159,11 +174,19 @@ class EstateProperties(models.Model):
         #     _logger.error(best_offers)
         # property_to_accept = max(best_offers)
         # _logger.error(property_to_accept)
-        best = self.offer_ids.search([('price', '=', self.best_price)])
-        _logger.error(best)
-        best.offer_accepted()
+        if self.offer_ids:
+            best = self.offer_ids.search([('price', '=', self.best_price)])
+            # _logger.error(best)
+            best.offer_accepted()
+        else:
+            raise ValidationError("No offers listed for this property")
         # for property in self.offer_ids:
         #     if property.status == 'accepted':
         #         pass
         #     else:
         #         property.status = 'refused'
+    
+    @api.onchange('offer_ids')
+    def offer_received_state(self):
+        if self.offer_ids and self.state == 'new':
+            self.state = 'offer_received'
