@@ -33,10 +33,12 @@ class TestEstateProperty(TransactionCase):
         Ensure offers for estates with south-facing gardens can only be accepted if above expected
         price.
         '''
+        self.estate.garden = True
+        self.estate.garden_orientation = 'south'
         self.estate.expected_price = 500000
         self.estate.offer_ids = [Command.create({
             'price': 475000.0,
             'partner_id': self.test_partner.id,
         })]
         with self.assertRaises(ValidationError):
-            self.estate.offer_ids.accept_offer()
+            self.estate.offer_ids.action_accept_offer()

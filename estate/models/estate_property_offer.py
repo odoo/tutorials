@@ -1,4 +1,6 @@
 from odoo import api, fields, models, exceptions
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstatePropertyOffer(models.Model):
@@ -57,6 +59,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.state == 'sold':
                 raise exceptions.UserError("Prob is already sold")
+            if record.property_id.garden and record.property_id.garden_orientation == 'south':
+                if record.price < record.property_id.expected_price:
+                    raise ValidationError("South facing house should have offer with >= tothe prop expected price")
             record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
