@@ -1,6 +1,5 @@
 from odoo import api, fields, models, exceptions
 from odoo.exceptions import ValidationError
-from odoo.tools import float_compare, float_is_zero
 
 
 class EstatePropertyOffer(models.Model):
