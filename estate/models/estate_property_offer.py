@@ -6,9 +6,10 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for property"
+    _order = "price desc"
 
     price = fields.Float()
-    status = fields.Selection(
+    state = fields.Selection(
         string="Status",
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
         copy=False,
@@ -20,11 +21,13 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.estate_property_type_id", store=True
+    )
 
     _check_offer_price_positive = models.Constraint(
         "CHECK(price > 0)", "The offer price must be positive."
     )
-    
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -52,7 +55,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     "a buyer is already assigned , therefore another offer has been accepted"
                 )
-            offer.status = "accepted"
+            offer.state = "accepted"
             offer.property_id.selling_price = self.price
             offer.property_id.buyer_id = self.partner_id
 
@@ -60,5 +63,5 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         for offer in self:
-            offer.status = "refused"
+            offer.state = "refused"
         return True
