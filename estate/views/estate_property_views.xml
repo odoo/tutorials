@@ -8,7 +8,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties"
-                    editable="bottom"
                     decoration-success="state in ('new', 'offer_accepted')"
                     decoration-muted="state == 'sold'"
                     decoration-danger="state == 'cancelled'"

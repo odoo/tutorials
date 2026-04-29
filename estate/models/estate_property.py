@@ -38,7 +38,7 @@ class EstateProperty(models.Model):
     )
 
     expected_price = fields.Monetary(
-        string="Expected price", currency_field="currency_id"
+        string="Expected price", currency_field="currency_id",
     )
 
     selling_price = fields.Float(
@@ -49,7 +49,7 @@ class EstateProperty(models.Model):
         currency_field="currency_id",
     )
     currency_id = fields.Many2one(
-        "res.currency", default=lambda self: self.env.company.currency_id
+        "res.currency", default=lambda self: self.env.company.currency_id,
     )
 
     bedrooms = fields.Integer(default=2, string="Bedrooms")
@@ -117,8 +117,8 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     _(
                         "The selling price must be at least 90%% of the expected price! "
-                        "(Minimum expected: %s)", lowest_selling_price
-                    )
+                        "(Minimum expected: %s)", lowest_selling_price,
+                    ),
                 )
 
     #### COMPUTED VALUES ####
@@ -143,8 +143,9 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    #### ACTIONS ####
+    #### CRUD ####
 
+    #### ACTIONS ####
     def action_set_accepted(self):
         for ep in self:
             # removed validation this looks a bit empty...
@@ -154,17 +155,18 @@ class EstateProperty(models.Model):
         for ep in self:
             if ep.state == "cancelled":
                 raise UserError(_("Cancelled properties cannot be sold."))
+            if ep.state == "sold":
+                raise UserError(_("Sold properties cannot be sold (anymore)."))
+
             accepted_offer = ep.offer_ids.filtered(lambda o: o.status == "accepted")
             if not accepted_offer:
                 raise UserError(_("You must accept an offer before selling the property."))
 
-            ep.write(
-                {
+            ep.write({
                     "state": "sold",
                     "customer_id": accepted_offer[0].partner_id.id,
                     "selling_price": accepted_offer[0].price,
-                },
-            )
+            })
         return True
 
     def action_set_cancelled(self):

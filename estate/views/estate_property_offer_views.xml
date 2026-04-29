@@ -7,7 +7,6 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list
-                    editable="bottom"
                     decoration-success="status == 'accepted'"
                     decoration-danger="status == 'refused'"
             >
