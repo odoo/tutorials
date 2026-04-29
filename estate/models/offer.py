@@ -1,10 +1,11 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-
+from dateutil.relativedelta import relativedelta
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     partner_id = fields.Many2one("res.partner", string="Customer", required=True)
     estate_property_id = fields.Many2one(
@@ -12,8 +13,10 @@ class EstatePropertyOffer(models.Model):
         string="Estate Property",
         required=True,
     )
-    price = fields.Float(string="Price", required=True)
-
+    price = fields.Monetary(string="Price", required=True, currency_field="currency_id")
+    currency_id = fields.Many2one(
+        "res.currency", default=lambda self: self.env.company.currency_id
+    )
     # STATUS AND DATE #
     status = fields.Selection(
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
@@ -21,7 +24,7 @@ class EstatePropertyOffer(models.Model):
         string="Offer Status",
     )
 
-    validity = fields.Integer(string="Validity", default=7)
+    validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
@@ -29,12 +32,13 @@ class EstatePropertyOffer(models.Model):
     )
 
     # USEFUL FOR DISPLAY #
-    property_name = fields.Char(related="estate_property_id.name")
-    property_type_name = fields.Char(
+    property_name = fields.Char("estate.property.type", related="estate_property_id.name")
+    property_type_name = fields.Char("estate.property.type",
         related="estate_property_id.estate_property_type_id.name",
     )
-    property_price = fields.Float(related="estate_property_id.expected_price")
-    property_postcode = fields.Char(related="estate_property_id.postcode")
+    property_price = fields.Monetary("estate.property.type", related="estate_property_id.expected_price")
+    property_postcode = fields.Char("estate.property.type", related="estate_property_id.postcode")
+    property_type_id = fields.Many2one("estate.property.type", related="estate_property_id.estate_property_type_id", string="Property Type", store=True)
 
     ### CONSTRAINTS AND VALIDATION ###
     _check_expected_price_positive = models.Constraint(
@@ -56,14 +60,10 @@ class EstatePropertyOffer(models.Model):
     ### COMPUTATED VALUES ###
     @api.depends("validity")
     def _compute_date_deadline(self):
-        for o in self:
-            if o.create_date:
-                o.date_deadline = fields.Date.add(
-                    o.create_date,
-                    days=o.validity,
-                )
-            else:
-                o.date_deadline = fields.Date.add(fields.Date.today(), days=o.validity)
+        for record in self:
+            base_date = record.create_date or fields.Date.today()
+            days_to_add = record.validity or 0
+            record.date_deadline = base_date + relativedelta(days=days_to_add)
 
     def _inverse_date_deadline(self):
         for o in self:

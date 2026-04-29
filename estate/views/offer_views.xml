@@ -1,19 +1,13 @@
 <?xml version="1.0" ?>
 <odoo>
 
-    <!-- ACTIONS -->
-    <record id="estate_property_offer_action" model="ir.actions.act_window">
-        <field name="name">estate.property.offer action</field>
-        <field name="res_model">estate.property.offer</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
     <!-- VIEWS -->
     <record id="estate_property_offer_view_tree" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list
+                    editable="bottom"
                     decoration-success="status == 'accepted'"
                     decoration-danger="status == 'refused'"
             >
@@ -41,7 +35,7 @@
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form string="estate.property.offer">
+            <form string="Offer">
                 <header>
                     <button name="action_set_accepted"
                             icon="fa-check"
@@ -83,6 +77,20 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <!-- ACTIONS -->
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">estate.property.offer action</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_offer_per_property_type_action" model="ir.actions.act_window">
+        <field name="name">Offers per property type</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
 </odoo>

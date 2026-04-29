@@ -6,6 +6,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
+
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string="State",
@@ -35,8 +37,8 @@ class EstateProperty(models.Model):
         string="Available from",
     )
 
-    expected_price = fields.Float(
-        string="Expected price",
+    expected_price = fields.Monetary(
+        string="Expected price", currency_field="currency_id"
     )
 
     selling_price = fields.Float(
@@ -44,6 +46,10 @@ class EstateProperty(models.Model):
         readonly=True,
         copy=False,
         default_export_compatible=False,
+        currency_field="currency_id",
+    )
+    currency_id = fields.Many2one(
+        "res.currency", default=lambda self: self.env.company.currency_id
     )
 
     bedrooms = fields.Integer(default=2, string="Bedrooms")
@@ -95,6 +101,11 @@ class EstateProperty(models.Model):
         "Expected price must be positive",
     )
 
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "the selling price must be positive.",
+    )
+
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for ep in self:
@@ -106,9 +117,8 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     _(
                         "The selling price must be at least 90%% of the expected price! "
-                        "(Minimum expected: %s)",
+                        "(Minimum expected: %s)", lowest_selling_price
                     )
-                    % lowest_selling_price,
                 )
 
     #### COMPUTED VALUES ####
