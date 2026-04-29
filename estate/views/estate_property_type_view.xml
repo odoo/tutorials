@@ -4,6 +4,11 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_see_offers" type="object" string="Sell" class="oe_stat_button">
+                        <field name="offer_count" string="Offers" widget="statinfo"/>
+                    </button>
+                </header>
                 <sheet>
                     <h1>
                         <field name="type" placeholder="Add type name"/>

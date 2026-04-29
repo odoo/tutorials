@@ -36,3 +36,8 @@ class EstatePropertyType(models.Model):
             # _logger.error(property_type.offer_ids)
             # _logger.error(property_type.property_ids.offer_ids)
             property_type.offer_count = len(property_type.offer_ids)
+
+    def action_see_offers(self):
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_offer_action')
+        return action 
