@@ -10,12 +10,16 @@ class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
+    _check_price = models.Constraint(
+        'CHECK(price > 0.00)',
+        "The offer's amount should be strictly positive.",
+    )
 
     price = fields.Float()
     status = fields.Selection(
         selection=[
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused'),
+            ("accepted", "Accepted"),
+            ("refused", "Refused"),
         ],
         copy=False,
     )
@@ -33,48 +37,42 @@ class PropertyOffer(models.Model):
     date_deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
     property_type_id = fields.Many2one("estate.property.type", store=True, related="property_id.property_type_id")
 
-    _check_price = models.Constraint(
-        'CHECK(price > 0.00)',
-        "The offer's amount should be strictly positive.",
-    )
-
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            if not record.create_date:
-                record.create_date = datetime.today()
-            record.date_deadline = record.create_date + relativedelta(days=record.validity)
+            date = datetime.today() if not record.create_date else record.create_date.date()
+            record.date_deadline = date + relativedelta(days=record.validity)
 
     def _inverse_deadline(self):
         for record in self:
-            if not record.create_date:
-                record.create_date = datetime.today()
-            record.validity = (record.date_deadline - record.create_date.date()).days
-
-    def action_accept_offer(self):
-        if any(record != self and record.status == 'accepted' for record in self.property_id.offer_ids):
-            raise UserError("Only one offer can be accepted")
-        if (self.property_id.garden_orientation == 'south' and
-        float_compare(self.property_id.expected_price, self.price, 2) == 1):
-            raise ValidationError("For properties South oriented gardens, only offers having a price higher than the expected value of the property can be accepted")
-        self.status = 'accepted'
-        self.property_id.buyer = self.partner_id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer_accepted'
-        return True
-
-    def action_refuse_offer(self):
-        for record in self:
-            if record.status == 'accepted':
-                record.property_id.buyer = None
-                record.property_id.selling_price = 0.00
-            record.status = 'refused'
+            date = datetime.today() if not record.create_date else record.create_date.date()
+            record.validity = (record.date_deadline - date).days
 
     @api.model
     def create(self, vals_list):
         for vals_dict in vals_list:
-            property_id = self.env['estate.property'].browse(vals_dict['property_id'])
+            property_id = self.env["estate.property"].browse(vals_dict["property_id"])
             offers = property_id.offer_ids
-            if (len(offers) > 0 and vals_dict['price'] < min(offers.mapped('price'))):
-                raise UserError("Can't create an offer with a lower value than an existing offer.")
+            if (len(offers) > 0 and vals_dict["price"] < min(offers.mapped("price"))):
+                raise UserError("Offer with a lower value than an existing offer cannot be created.")
         return super().create(vals_list)
+
+    def action_accept_offer(self):
+        for record in self:
+            if "accepted" in record.mapped("property_id.offer_ids.status"):
+                raise UserError("Only one offer can be accepted")
+            if (record.property_id.garden_orientation == "south" and
+            float_compare(record.property_id.expected_price, record.price, 2) == 1):
+                raise ValidationError("For properties with South oriented gardens, only offers having a price higher than the expected value of the property can be accepted")
+        return self.status.write({
+            "status": "accepted",
+        }) and self.property_id.write({
+            "state": "offer_accepted",
+            "selling_price": record.price,
+            "buyer_id": record.partner_id,
+        })
+
+    def action_refuse_offer(self):
+        return self.write({
+            "status": "refused",
+        })

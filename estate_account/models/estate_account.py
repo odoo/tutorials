@@ -8,14 +8,9 @@ class EstateAccount(models.Model):
     def action_sold_property(self):
         invoice_vals_list = []
         for sold_property in self:
-            sold_to_partner_id = None
-            for offer in sold_property.offer_ids:
-                if offer.status == 'accepted':
-                    sold_to_partner_id = offer.partner_id
-                    break
             invoice_vals = {
                 'move_type': 'out_invoice',
-                'partner_id': sold_to_partner_id.id,
+                'partner_id': sold_property.buyer_id.id,
                 'line_ids': [
                     Command.create({
                         'name': "6% of the selling price",
