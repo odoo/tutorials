@@ -27,13 +27,8 @@ class Estate_property_offer(models.Model):
     @api.depends("validaty", "create_date")
     def _compute_date_deadline(self):
         for record in self:
-            date = record.create_date
-            if not date:
-                date = fields.Date.today()
-            if record.validaty:
-                record.date_deadline = fields.Date.add(date, days=record.validaty)
-            else:
-                record.date_deadline = False
+            date = record.create_date.date() if record.create_date else fields.Date.today()
+            record.date_deadline = fields.Date.add(date, days=record.validaty)
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -41,27 +36,30 @@ class Estate_property_offer(models.Model):
                 create_date = fields.Date.to_date(record.create_date)
                 record.validaty = (record.date_deadline - create_date).days
             else:
-                record.validaty = 0
+                record.validaty = 7
 
     def accept_offer(self):
         for record in self:
             if record.state == "accepted" or record.state == "refused":
                 raise UserError("This offer has already been accepted or refused.")
-            for offer in record.property_id.offer_ids:
-                if offer.state == "accepted":
-                    raise UserError("Another offer has already been accepted for this property.")
+            if "accepted" in record.mapped("property_id.offer_ids.state"):
+                raise UserError("Another offer has already been accepted for this property.")
             if record.property_id.garden_orientation == "south" and record.price <= record.property_id.expected_price:
                 raise UserError("The price must be more than the expected price for properties with a south-facing garden.")
-            record.state = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
+            record.write({
+                "state": "accepted",
+                "property_id": {
+                    "selling_price": record.price,
+                    "buyer_id": record.partner_id.id,
+                },
+            })
         return True
 
     def refuse_offer(self):
         for record in self:
             if record.state != "new":
                 raise UserError("This offer has already been accepted or refused.")
-            record.state = "refused"
+            record.write({"state": "refused"})
         return True
 
     @api.model_create_multi

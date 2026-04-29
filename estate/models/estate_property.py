@@ -6,6 +6,15 @@ class Estate_property(models.Model):
     _name = "estate.property"
     _description = "APP super mega trop bien"
     _order = "id desc"
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        message="The expected price must be strictly positive",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        message="The selling price cannot be negative",
+    )
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -39,21 +48,24 @@ class Estate_property(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Integer(compute="_compute_area")
+    total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        message="The expected price must be strictly positive",
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        message="The selling price cannot be negative",
-    )
+    @api.depends("offer_ids", "offer_ids.state")
+    def _compute_state(self):
+        for record in self:
+            if record.state in ["sold", "cancelled"]:
+                return
+            if record.offer_ids:
+                for offer in record.offer_ids:
+                    if offer.state == "accepted":
+                        record.state = "offer_accepted"
+                    return
+            else:
+                record.state = "new"
 
     @api.depends("living_area", "garden_area")
-    def _compute_area(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
@@ -69,38 +81,15 @@ class Estate_property(models.Model):
     def _onchange_garden(self):
         for record in self:
             if record.garden:
-                record.garden_area = 10
-                record.garden_orientation = "north"
+                record.write({
+                    "garden_area": 10,
+                    "garden_orientation": "north",
+                })
             else:
-                record.garden_area = 0
-                record.garden_orientation = False
-
-    @api.depends("offer_ids", "offer_ids.state")
-    def _compute_state(self):
-        for record in self:
-            if record.state in ["sold", "cancelled"]:
-                return
-            if record.offer_ids:
-                for offer in record.offer_ids:
-                    if offer.state == "accepted":
-                        record.state = "offer_accepted"
-                    break
-            else:
-                record.state = "new"
-
-    def action_sold(self):
-        for record in self:
-            if record.state != "cancelled" and record.state != "sold":
-                record.state = "sold"
-            else:
-                raise UserError("A property that is cancelled or already sold cannot be sold.")
-
-    def action_cancel(self):
-        for record in self:
-            if record.state != "sold" and record.state != "cancelled":
-                record.state = "cancelled"
-            else:
-                raise UserError("A property that is sold or already cancelled cannot be cancelled.")
+                record.write({
+                    "garden_area": 0,
+                    "garden_orientation": False,
+                })
 
     @api.constrains("selling_price", "expected_price")
     def _check_enough_selling_price(self):
@@ -113,3 +102,21 @@ class Estate_property(models.Model):
         for record in self:
             if record.state not in ["new", "cancelled"]:
                 raise UserError("You can only delete offers that are new or cancelled.")
+
+    def action_sold(self):
+        for record in self:
+            if record.state != "cancelled" and record.state != "sold":
+                record.write({
+                    "state": "sold",
+                })
+            else:
+                raise UserError("A property that is cancelled or already sold cannot be sold.")
+
+    def action_cancel(self):
+        for record in self:
+            if record.state != "sold" and record.state != "cancelled":
+                record.write({
+                    "state": "cancelled",
+                })
+            else:
+                raise UserError("A property that is sold or already cancelled cannot be cancelled.")
