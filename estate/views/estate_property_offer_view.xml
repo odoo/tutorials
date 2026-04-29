@@ -3,14 +3,15 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                 <field name="price" width="50px"/>
                 <field name="partner_id" string="Partner" width="50px"/>
                 <field name="property_id" string="Partner" width="50px"/>
+                <field name="property_type_id" string="Property Type" width="50px"/>
                 <button name="offer_accepted" string="Accept" type="object" icon="fa-check" width="50px" invisible="status"/>
                 <button name="offer_refused" string="Refuse" type="object" icon="fa-times" width="50px" invisible="status"/>
-                <field name="status" width="50px" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'"/>
-                <field name="validity" width="50px"/>
+                <!-- <field name="status" width="50px"/> -->
+                <field name="validity" string="Validity (days)" width="50px"/>
                 <field name="deadline" width="50px" options="{'min_date': 'today'}"/>
             </list>
         </field>

@@ -17,6 +17,8 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one(comodel_name='res.partner', required=True)
     price = fields.Float()
     property_id = fields.Many2one(comodel_name='estate.properties', readonly=True)
+    property_type = fields.Char(related='property_id.property_type_id.type')
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
     status = fields.Selection(
         [
             ('refused', "Refused"),
@@ -34,7 +36,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends('deadline')
     def _compute_validity(self):
         for offer in self:
-            offer.validity = (offer.deadline - offer.create_date.date()).days if offer.deadline and offer.create_date else 0
+            offer.validity = (offer.deadline - offer.create_date.date()).days if offer.deadline and offer.create_date else 7
 
     @api.depends('validity')
     def _inverse_deadline(self):
@@ -66,7 +68,7 @@ class EstatePropertyOffer(models.Model):
         offer_id = 0
         # breakpoint()
         for offer in self:
-            if offer.status == 'accepted':
+            if offer.status == 'accepted' and offer.property_id.state == 'offer_accepted':
                 raise UserError("Property already accepted!")
             offer.status = 'accepted'
             all_offers = offer.property_id.offer_ids

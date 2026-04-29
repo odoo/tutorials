@@ -8,6 +8,7 @@
                     <h1>
                         <field name="type" placeholder="Add type name"/>
                     </h1>
+                    <field name="offer_count"/>
                         <notebook>
                             <page string="Properties">
                                 <field name="property_ids">

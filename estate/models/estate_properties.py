@@ -158,7 +158,10 @@ class EstateProperties(models.Model):
             if property.state == 'sold':
                 raise UserError("Property already sold")
             elif property.state != 'cancelled':
-                property.state = 'sold'
+                if property.buyer_id:
+                    property.state = 'sold'
+                else:
+                    raise UserError("No buyer for this property yet")
             else:
                 raise UserError("A cancelled property cannot be sold")
         return True

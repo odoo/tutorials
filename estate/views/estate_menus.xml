@@ -2,11 +2,11 @@
     <menuitem id="estate_properties_menu_root" name="Real Estate">
         <menuitem id="estate_properties_menu_advertisements" name="Advertisements">
             <menuitem id="estate_properties_advertisement_action" action="estate_properties_action" />
+            <menuitem id="estate_proeprty_offer_menu" action="estate_property_offer_action" />
         </menuitem>
         <menuitem id="estate_properties_menu_settings" name="Settings">
             <menuitem id="estate_property_type_menu" action="estate_property_type_action" />
             <menuitem id="estate_property_tag_menu" action="estate_property_tag_action" />
-            <!-- <menuitem id="estate_proeprty_offer_menu" action="estate_property_offer_action" /> -->
         </menuitem>
     </menuitem>
 </odoo>
