@@ -1,0 +1,37 @@
+/* awesome_owl/static/src/counter/counter.scss */
+.o_awesome_owl_counter {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    p {
+        font-weight: bold;
+        color: #714B67; /* La couleur mauve d'Odoo */
+    }
+
+    .btn-primary {
+        margin-top: 8px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #875A7B 0%, #714B67 100%);
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(113, 75, 103, 0.18);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+
+        &:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(113, 75, 103, 0.24);
+            opacity: 0.98;
+        }
+
+        &:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 8px rgba(113, 75, 103, 0.18);
+        }
+    }
+}

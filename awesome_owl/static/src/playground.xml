@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+     <t t-name="awesome_owl.playground">
+        <div class="container">
+        <h1>Playground</h1>
+            <Counter onChange="() => this.onCounterIncremented()"/>
+            <Counter onChange="() => this.onCounterIncremented()"/>
+            <p>Total increments: <t t-esc="state.incrementSum"/></p>
+            <Card 
+                title="'Card Title'"
+                content="'je suis un card'"
+            />
+            <Card 
+                title="'Card Title 2'"
+                content="this.html"
+            />
         </div>
-    </t>
+     </t>
 
 </templates>
