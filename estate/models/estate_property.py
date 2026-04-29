@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Property Name', required=True)
     description = fields.Text()
     property_type_id = fields.Many2one(
-        'estate.property.type', option="{'no_quick_create': true}")
+        'estate.property.type')
     buyer_id = fields.Many2one('res.partner', copy=False)
     salesperson_id = fields.Many2one(
         'res.users', default=lambda self: self.env.uid)
