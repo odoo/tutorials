@@ -45,6 +45,7 @@
         ],
         'web.assets_unit_tests': [
             'awesome_website/static/tests/interactions/**/*',
+            'awesome_website/static/tests/builder/**/*',
         ],
         'web.assets_unit_tests_setup': [
             'awesome_website/static/src/snippets/s_image_comparison/image_comparison.js',
