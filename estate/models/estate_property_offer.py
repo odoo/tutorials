@@ -26,7 +26,6 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends('validity')
     def _compute_date_deadline(self):
-        records = self.env['estate.property'].search([('state', '=', 'new')])
         for record in self:
             create_date = record.create_date.date() if record.create_date else date.today()
             record.date_deadline = create_date + timedelta(days=record.validity)
