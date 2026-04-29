@@ -83,7 +83,7 @@ class EstatePropertyOffer(models.Model):
                 prop.state = 'offer_received'
 
         return super().create(vals_list)
-    
+
     _check_price = models.Constraint(
         'CHECK(price > 0)',
         'The offer price should be > 0',

@@ -57,7 +57,7 @@ class EstatePropertytModel(models.Model):
         copy=False,
     )
     tag_ids = fields.Many2many(
-        'estate.property.tag', 
+        'estate.property.tag',
         string='Tags',
     )
     offer_ids = fields.One2many(
@@ -105,7 +105,7 @@ class EstatePropertytModel(models.Model):
             limit = record.expected_price * 0.9
             if float_compare(record.selling_price, limit, precision_digits=2) == -1:
                 raise ValidationError('The selling price cannot be lower than 90% of the expected price!')
-            
+
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
         'The Expected price of a property should be > 0',
