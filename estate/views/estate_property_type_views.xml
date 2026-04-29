@@ -1,6 +1,12 @@
 <?xml version="1.0" ?>
 <odoo>
 
+    <!-- ACTIONS -->
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
     <!-- VIEWS -->
     <record id="estate_property_type_view_list" model="ir.ui.view">
@@ -21,7 +27,7 @@
             <form string="Property Types">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="%(estate_property_offer_per_property_type_action)d" type="action" class="oe_stat_button" icon="fa-money">
+                        <button name="%(estate.estate_property_offer_per_property_type_action)d" type="action" class="oe_stat_button" icon="fa-money">
                             <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button>
                     </div>
@@ -46,11 +52,5 @@
         </field>
     </record>
 
-    <!-- ACTIONS -->
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
 
 </odoo>
