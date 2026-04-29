@@ -1,6 +1,6 @@
+from odoo import Command
 from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase
-from odoo import Command
 
 
 class TestEstateProperty(TransactionCase):

@@ -34,12 +34,12 @@ class EstatePropertyOffer(models.Model):
     )
 
     # USEFUL FOR DISPLAY #
-    property_name = fields.Char("estate.property.type", related="estate_property_id.name")
-    property_type_name = fields.Char("estate.property.type",
-        related="estate_property_id.estate_property_type_id.name",
+    property_name = fields.Char("Property Name", related="estate_property_id.name")
+    property_type_name = fields.Char(
+        "Type Name", related="estate_property_id.estate_property_type_id.name",
     )
-    property_price = fields.Monetary("estate.property.type", related="estate_property_id.expected_price")
-    property_postcode = fields.Char("estate.property.type", related="estate_property_id.postcode")
+    property_price = fields.Monetary("Expected price", related="estate_property_id.expected_price")
+    property_postcode = fields.Char("Postcode", related="estate_property_id.postcode")
     property_type_id = fields.Many2one("estate.property.type", related="estate_property_id.estate_property_type_id", string="Property Type", store=True)
 
     ### CONSTRAINTS AND VALIDATION ###

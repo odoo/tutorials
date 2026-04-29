@@ -41,7 +41,7 @@ class EstateProperty(models.Model):
         string="Expected price", currency_field="currency_id",
     )
 
-    selling_price = fields.Float(
+    selling_price = fields.Monetary(
         string="Selling price",
         readonly=True,
         copy=False,
@@ -90,7 +90,7 @@ class EstateProperty(models.Model):
         inverse_name="estate_property_id",
     )
 
-    best_price = fields.Float(
+    best_price = fields.Monetary(
         string="Best Offer",
         compute="_compute_best_price",
     )
