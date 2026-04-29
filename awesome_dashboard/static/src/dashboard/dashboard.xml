@@ -20,7 +20,7 @@
         </Layout>
     </t>
     <t t-name="awesome_dashboard.DashboardConfiguration">
-        <Dialog title="'Dashboard items configuration'">
+        <Dialog title="title">
             <form t-ref="options">
                 <t t-foreach="items" t-as="item" t-key="item.id">
                     <CheckBox value="!item.disabled" onChange="state => updateDisabled(item,state)"><t t-out="item.description"/></CheckBox>

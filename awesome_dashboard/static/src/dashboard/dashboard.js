@@ -5,6 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
+import { _t } from "@web/core/l10n/translation";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -44,13 +45,14 @@ class AwesomeDashboard extends Component {
 
 class DashboardConfiguration extends Component {
     static template = "awesome_dashboard.DashboardConfiguration";
-    static components = {Dialog, CheckBox};
+    static components = {Dialog, CheckBox, _t};
     static props = ["close", "items", "disabled", "doneUpdating"];
 
 
     setup() {
         this.options = useRef("options");
         this.items = useState(this.props.items.map(item => ({...item, disabled: this.props.disabled.includes(item.id)})));
+        this.title = _t('Dashboard items configuration');
     }
 
     updateDisabled(item, checked) {
