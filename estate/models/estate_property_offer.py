@@ -46,12 +46,16 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            if offer.property_id.state == 'new':
-                offer.property_id.state = 'offer received'
+        for vals in vals_list:
+            prop = self.env['estate.property'].browse(vals['property_id'])
+            if prop.offer_ids:
+                max_offer = max(prop.offer_ids.mapped('price'))
+                if vals.get('price') < max_offer:
+                    raise exceptions.UserError(
+                        ("The offer must be higher than %.2f") % max_offer)
+            prop.state = 'offer received'
 
-        return offers
+        return super().create(vals_list)
 
     def action_accept(self):
         for offer in self:

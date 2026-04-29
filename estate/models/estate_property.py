@@ -112,3 +112,10 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 10
             self.garden_orientation = 'north'
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.UserError(
+                    "You cannot delete a property that is not 'New' or 'Cancelled'!")
