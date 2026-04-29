@@ -27,12 +27,6 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_date_deadline(self):
         records = self.env['estate.property'].search([('state', '=', 'new')])
-        print(records)
-        print(len(records))
-        records = records.filtered(lambda x: x.state == 'sold')
-        print(records)
-        print(len(records))
-
         for record in self:
             create_date = record.create_date.date() if record.create_date else date.today()
             record.date_deadline = create_date + timedelta(days=record.validity)
@@ -44,12 +38,13 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-        record = self.env['estate.property'].browse(vals_list[0]['property_id'])
-        if vals_list[0]['price'] < record.best_price:
-            raise UserError(_("Offer can't be created because current offer's amount is lower than an existing offer"))
+        if vals_list:
+            record = self.env['estate.property'].browse(vals_list[0]['property_id'])
+            if vals_list[0].get("price", 0) < record.best_price:
+                raise UserError(_("Offer can't be created because current offer's amount is lower than an existing offer"))
 
-        if record.state != 'offer received':
-            record.state = 'offer received'
+            if record.state != 'offer received':
+                record.state = 'offer received'
         return super().create(vals_list)
 
     def action_accept_offer(self):
