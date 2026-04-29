@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -59,12 +59,19 @@ class EstatePropertyOffer(models.Model):
 
         return super().create(vals_list)
 
-    def action_accept(self):
+    def accept_offer(self):
+
         for record in self:
+
+            if record.property_id.garden and record.property_id.garden_orientation == "south":
+                if record.price < record.property_id.expected_price:
+                    raise ValidationError("The offer is too low for a property with a garden in south orientation.")
+
             record.status = "accepted"
             record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
+
         return True
 
     def action_refuse(self):

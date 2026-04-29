@@ -1,8 +1,9 @@
 from odoo.exceptions import ValidationError
-from odoo.tests import TransactionCase
+from odoo.tests import TransactionCase, tagged
 from odoo import Command
 
 
+@tagged('post_install', '-at_install')
 class TestEstateProperty(TransactionCase):
 
     @classmethod
