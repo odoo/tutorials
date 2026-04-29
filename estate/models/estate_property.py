@@ -43,7 +43,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     total_area = fields.Integer(compute='_compute_total_area')
-    best_price = fields.Float(compute='_compute_best_price')
+    best_price = fields.Float(compute='_compute_best_price', store=True)
     property_type_id = fields.Many2one("estate.property.type")
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
@@ -85,6 +85,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_property_deletion(self):
+        if self.state not in ['new', 'cancelled']:
+            raise UserError(_("You can only delete property if it's in either new or cancelled state"))
+        return True
 
     def action_sold_property(self):
         if self.state != 'offer accepted':
