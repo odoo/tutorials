@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -8,8 +9,7 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float(required=True)
     status = fields.Selection(selection=[('accepted', "Accepted"),
-                              ('refused', "Refused")],
-                              required=True)
+                              ('refused', "Refused")])
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one(
         'estate.property', required=True)
@@ -27,3 +27,27 @@ class EstatePropertyOffer(models.Model):
         for rec in self:
             create_date = rec.create_date or fields.Date.context_today(self)
             rec.validity = (rec.date_deadline - create_date).days
+
+    def action_status_accepted(self):
+        for rec in self:
+            if rec.status == 'accepted':
+                raise UserError("Offer has already been accepted")
+            rec.status = 'accepted'
+
+            rec.property_id.write({
+                'buyer': rec.partner_id.id,
+                'selling_price': rec.price,
+            })
+
+        return True
+
+    def action_status_refused(self):
+        for rec in self:
+            if rec.status == 'refused':
+                raise UserError("Offer has already been refused")
+            rec.status = 'refused'
+            rec.property_id.write({
+                'buyer': False,
+                'selling_price': False,
+            })
+        return True

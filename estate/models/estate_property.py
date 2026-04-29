@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -82,3 +82,19 @@ class EstateProperty(models.Model):
         for rec in self:
             if rec.expected_price <= 0:
                 raise ValidationError("Price must be positive")  # Shown in UI
+
+    def action_property_sold(self):
+        for rec in self:
+            if rec.state == 'cancelled':
+                raise UserError('A cancelled property cannot be sold')
+            else:
+                rec.state = 'sold'
+        return True
+
+    def action_property_cancelled(self):
+        for rec in self:
+            if rec.state == 'sold':
+                raise UserError('A sold property cannot be cancelled')
+            else:
+                rec.state = 'cancelled'
+        return True

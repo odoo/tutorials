@@ -22,7 +22,9 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline" widget="datetime"/>
-                <field name="status"/>
+                <button name="action_status_accepted" string="Accept" type="object" class="btn-primary"/>
+                <button name="action_status_refused" string="Refuse" type="object" class="btn-secondary"/>
+                <field name="status" />
             </list>
         </field>
     </record>

@@ -38,6 +38,8 @@
             <form string="Real Estate">
                 <header>
                     <field name="state" widget="statusbar" class="oe_inline_end" statusbar_visible="new,offer_accepted,offer_received,sold,cancelled" options="{'clickable': True}"/>
+                    <button name="action_property_sold" type="object" string="Sold" class="btn-primary" />
+                    <button name="action_property_cancelled" type="object" string="Cancel"/>
                 </header>
                 <sheet>
                     <h1>
