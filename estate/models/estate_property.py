@@ -123,4 +123,6 @@ class EstateProperty(models.Model):
     def on_delete(self):
         for property in self:
             if property.state not in ["new", "cancelled"]:
-                raise UserError(f"You cannot delete a property at the {property.state} state")
+                raise UserError(
+                    f"You cannot delete a property at the {property.state} state"
+                )
