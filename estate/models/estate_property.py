@@ -14,8 +14,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=lambda self: fields.Date.today() + relativedelta(months=3), copy=False)
-    expected_price = fields.Monetary(currency_field="currency_id", required=True)
-    selling_price = fields.Monetary(currency_field="currency_id", readonly=True, copy=False)
+    expected_price = fields.Monetary(required=True)
+    selling_price = fields.Monetary(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -105,19 +105,19 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _check_state_before_deletion(self):
         for record in self:
-            if record.state not in ["new", "canceled"]:
+            if record.state not in ["new", "cancelled"]:
                 raise UserError("Only new and canceled properties can be deleted.")
 
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Canceled properties cannot be sold.")
-            record.state = "sold"
+        self.state = "sold"
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("Sold properties cannot be canceled.")
-            record.state = "cancelled"
+        self.state = "cancelled"
         return True

@@ -6,7 +6,6 @@
         "account",
     ],
     "data": [],
-    "application": False,
     "installable": True,
     "author": "dalio",
     "license": "LGPL-3"

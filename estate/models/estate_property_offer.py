@@ -9,9 +9,8 @@ class EstatePropertyOffer(models.Model):
     _description = "Property Offer"
     _order = "price desc"
 
-    price = fields.Monetary(currency_field="currency_id")
+    price = fields.Monetary()
     status = fields.Selection(
-        string="Status",
         selection=[
             ("accepted", "Accepted"),
             ("refused", "Refused")
@@ -48,8 +47,11 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals_list):
 
-        for vals in vals_list:
-            prop = self.env["estate.property"].browse(vals.get("property_id"))
+        property_ids = [vals.get("property_id") for vals in vals_list if vals.get("property_id")]
+        properties = self.env["estate.property"].browse(property_ids)
+
+        for vals, prop in zip(vals_list, properties):
+
             existing_prices = prop.offer_ids.mapped("price")
 
             if existing_prices and vals.get("price") < max(existing_prices):
