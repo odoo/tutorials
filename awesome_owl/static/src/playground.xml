@@ -12,6 +12,9 @@
             <hr/>
             <Card title="'Card 1'" content="htmlContent"/>
             <Card title="'Card 2'" content="normalString"/>
+
+            <h1>Todo List</h1>
+            <TodoList/>
         </div>
     </t>
 </templates>
