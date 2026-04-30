@@ -123,11 +123,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise ValidationError("Cancelled properties cannot be sold.")
-            best_offer = record.offer_ids.filtered(lambda o: o.price == record.best_price)[:1]
-            if best_offer:
-                best_offer.action_accept()
             record.state = 'sold'
         return True
+
+    def best_offer(self):
+        for record in self:
+            record.offer_ids.filtered(lambda o: o.price == record.best_price)[:1].action_accept()
 
     def action_rest(self):
         for record in self:

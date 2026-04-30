@@ -61,17 +61,14 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - date).days
 
     def action_accept(self):
-        if self.property_id.state == 'cancelled':
-            raise ValidationError("Already sold or cancelled property can not accept the offer!")
         self.ensure_one()
-        existing_offer = self.search([
-            ('property_id', '=', self.property_id.id),
-            ('status', '=', 'accepted'),
-            ('id', '!=', self.id),
-        ], limit=1)
-        other_offers = self.property_id.offer_ids.filtered(lambda o: o.id != self.id)
-        other_offers.write({'status': 'refused'})
+        if self.property_id.state in ('sold', 'cancelled'):
+            raise ValidationError("Already sold or cancelled property can not accept the offer!")
+
+        (self.property_id.offer_ids - self).write({'status': 'refused'})
+
         self.write({'status': 'accepted'})
+
         self.property_id.write({
             'buyer_id': self.partner_id.id,
             'selling_price': self.price,
