@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.pie_chart">
+        <div class="h-100 d-flex flex-column gap-2">
+            <t t-esc="props.title"/>
+            <canvas class="h-100" t-ref="canvas"/>
+        </div>
+    </t>
+</templates>

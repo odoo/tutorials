@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <DashboardItem size="5">
+                Number of new orders this month
+                <t t-esc="state.numOrders"/>
+            </DashboardItem>
+            <DashboardItem size="5">
+                Total amount of new orders this month
+                <t t-esc="state.newOrders"/>
+            </DashboardItem>
+            <DashboardItem size="5">
+                Average amount of t-shirt by order this month
+                <t t-esc="state.tShirtByOrder"/>
+            </DashboardItem>
+            <DashboardItem size="5">
+                Number of cancelled orders this month
+                <t t-esc="state.cancelledOrders"/>
+            </DashboardItem>
+            <DashboardItem size="5">
+                Average time for an order to go from new to sent or cancelled
+                <t t-esc="state.timeFromNew"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <PieChart
+                    labels="state.ordersBySize.labels"
+                    values="state.ordersBySize.values"
+                    title="'Shirts orders by sizes'"
+                />
+            </DashboardItem>
+        </Layout>
     </t>
 
 </templates>
