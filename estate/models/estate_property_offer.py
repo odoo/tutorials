@@ -1,5 +1,5 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -46,6 +46,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            current_property = self.env['estate.property'].browse(vals['property_id'])
+            best_price = max(current_property.offer_ids.mapped('price'), default=0.0)
+            price = vals.get('price')
+            if price < best_price:
+                raise ValidationError(_("price is lower than best price"))
         offers = super().create(vals_list)
         for offer in offers:
             if offer.property_id.state == 'new':
