@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_compare
 class Property(models.Model):
     _name = "estate.property"
     _description = "Properties"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -18,26 +19,34 @@ class Property(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
+    garden_orientation = fields.Selection(
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ],
+    )
     active = fields.Boolean(default=True)
-    state = fields.Selection(selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], required=True, copy=False, default='new')
-    property_type_id = fields.Many2one("estate.property.type", string="property Type")
+    state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+            required=True,
+            copy=False,
+            default='new',
+    )
+    property_type_id = fields.Many2one("estate.property.type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     sales_person_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_living_area")
     best_price = fields.Float(compute="_compute_best_price")
-
-    _check_expected_price = models.Constraint(
-    'CHECK(expected_price > 0)',
-    'A property expected price must be strictly positive',
-    )
-
-    _check_selling_price = models.Constraint(
-    'CHECK(selling_price >= 0)',
-    'A property selling price must be positive',
-    )
 
     @api.depends("living_area", "garden_area")
     def _compute_living_area(self):
@@ -48,6 +57,16 @@ class Property(models.Model):
     def _compute_best_price(self):
         for property in self:
             property.best_price = max(property.mapped("offer_ids.price"), default=0.0)
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'A property expected price must be strictly positive',
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'A property selling price must be positive',
+    )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -64,7 +83,9 @@ class Property(models.Model):
             if property.state == 'sold':
                 raise exceptions.UserError("Cannot cancel a sold peoperty")
             else:
-                property.state = 'cancelled'
+                property.write({
+                    'state': 'cancelled',
+                })
         return True
 
     def action_sold(self):
@@ -72,10 +93,12 @@ class Property(models.Model):
             if property.state == 'cancelled':
                 raise exceptions.UserError("Cannot sell a cancelled peoperty")
             else:
-                property.state = 'sold'
+                property.write({
+                    'state': 'sold',
+                })
         return True
 
-    @api.constrains('selling_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for property in self:
             if property.state == 'offer_accepted':
