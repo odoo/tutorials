@@ -3,6 +3,7 @@ import logging
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.orm.utils import ValidationError
 
 
 _logger = logging.getLogger(__name__)
@@ -65,19 +66,34 @@ class EstatePropertyOffer(models.Model):
                 offer.status = 'refused'
 
     def offer_accepted(self):
-        offer_id = 0
+        # offer_id = 0
         # breakpoint()
-        for offer in self:
-            if offer.status == 'accepted' and offer.property_id.state == 'offer_accepted':
-                raise UserError("Property already accepted!")
-            offer.status = 'accepted'
-            all_offers = offer.property_id.offer_ids
-            # _logger.error(all_offers)
-            offer_id = offer.id
-            offer._refuse_remaining_offers(offer_id, all_offers)
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
-            offer.property_id.state = 'offer_accepted'
+        # for offer in self:
+        #     if offer.status == 'accepted' and offer.property_id.state == 'offer_accepted':
+        #         raise UserError("Property already accepted!")
+        #     offer.status = 'accepted'
+        #     all_offers = offer.property_id.offer_ids
+        #     # _logger.error(all_offers)
+        #     offer_id = offer.id
+        #     offer._refuse_remaining_offers(offer_id, all_offers)
+        #     offer.property_id.buyer_id = offer.partner_id
+        #     offer.property_id.selling_price = offer.price
+        #     offer.property_id.state = 'offer_accepted'
+        # return True
+        self.ensure_one()
+        property = self.property_id
+        if property.state == 'offer_accepted' and self.status == 'accepted':
+            raise ValidationError("Property already accepted!")
+        remaining_offers = property.offer_ids - self
+        remaining_offers.write({
+            'status': 'refused'
+        })
+        self.status = 'accepted'
+        property.write({
+            'buyer_id': self.partner_id,
+            'selling_price': self.price,
+            'state': 'offer_accepted',
+        })
         return True
 
     def offer_refused(self):

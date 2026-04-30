@@ -78,13 +78,13 @@ class EstateProperties(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         # breakpoint()
-        _logger.error(self.id)
+        # _logger.error(self.id)
         for property in self:
             sp_threshold = 0.9 * property.expected_price
-            _logger.error(sp_threshold)
-            _logger.error(property.selling_price)
-            _logger.error(property.expected_price)
-            _logger.error(property.id)
+            # _logger.error(sp_threshold)
+            # _logger.error(property.selling_price)
+            # _logger.error(property.expected_price)
+            # _logger.error(property.id)
             if property.selling_price < sp_threshold:
                 raise ValidationError("Selling price cannot be less than 90% of the expected price")
 
@@ -173,23 +173,37 @@ class EstateProperties(models.Model):
                 property.commission = property.selling_price * 0.06
 
     def property_accept(self):
+        breakpoint()
         # best_offers = []
         # for property in self.offer_ids:
         #     best_offers.append(property.price)
         #     _logger.error(best_offers)
         # property_to_accept = max(best_offers)
         # _logger.error(property_to_accept)
-        if self.offer_ids:
-            best = self.offer_ids.search([('price', '=', self.best_price)])
-            # _logger.error(best)
-            best.offer_accepted()
-        else:
-            raise ValidationError("No offers listed for this property")
+        # if self.offer_ids:
+        #     best = self.offer_ids.search([('price', '=', self.best_price), ('status', 'not in', ['refused'])])
+        #     if best:
+        #         best.offer_accepted()
+        #         return
+        #     best = self.offer_ids.search([('price', '<', self.best_price), ('status', 'not in', ['refused'])], 0, 1, order='price DESC')
+        #     best.ensure_one()
+        #     best.offer_accepted()
+        #     # _logger.error(best)
+        # else:
+        #     raise ValidationError("No offers listed for this property")
         # for property in self.offer_ids:
         #     if property.status == 'accepted':
         #         pass
         #     else:
         #         property.status = 'refused'
+        self.ensure_one()
+        best_offer = self.offer_ids.filtered(lambda offer: offer.status not in ['accepted', 'refused'])
+
+        if not best_offer:
+            raise ValidationError("No offers listed for this property")
+        
+        best_offer = best_offer.sorted(lambda offer: offer.price, reverse=True)[0]
+        return best_offer.offer_accepted()
 
     @api.onchange('offer_ids')
     def offer_received_state(self):

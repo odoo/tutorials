@@ -1,4 +1,5 @@
 import logging
+from datetime import timedelta
 
 from odoo import api, fields, models
 
@@ -19,8 +20,10 @@ class EstatePropertyType(models.Model):
             ('yellow', 'Yellow')
         ]
     )
+    offer_alert = fields.Integer(compute='_compute_offer_alert')
     offer_count = fields.Integer(compute='_compute_offer_count')
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_type_id')
+    pricey_count = fields.Integer(compute='_compute_pricey_count')
     property_ids = fields.One2many(comodel_name='estate.properties', inverse_name='property_type_id')
     type = fields.Char(required=True)
 
@@ -37,9 +40,48 @@ class EstatePropertyType(models.Model):
             # _logger.error(property_type.property_ids.offer_ids)
             property_type.offer_count = len(property_type.offer_ids)
 
+    @api.depends('offer_ids.deadline')
+    def _compute_offer_alert(self):
+        # breakpoint()
+        for property in self:
+            today = fields.Date.context_today(property)
+            alert = timedelta(days=1)
+            property.offer_alert = len(property.offer_ids.filtered(
+                lambda o: o.deadline and abs(o.deadline - today) <= alert
+                and o.status not in ['refused', 'accepted'])
+            )
+            # _logger.error(property.offer_alert)
+
+    @api.depends('property_ids.expected_price')
+    def _compute_pricey_count(self):
+        for property in self:
+            property.pricey_count = len(property.property_ids.filtered(lambda prop: prop.expected_price > 100000))
+
     def action_see_offers(self):
         # breakpoint()
         self.ensure_one()
         action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_offer_action')
         action['domain'] = [('property_type_id', '=', self.id)]
-        return action 
+        return action
+
+    def action_pricey_property(self):
+        # breakpoint()
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('estate.estate_properties_action')
+        action['domain'] = [
+            ('expected_price', '>=', 100000),
+            ('property_type_id', '=', self.id)
+        ]
+        action['context'] = {'search_default_available': 0}
+        return action
+
+    def action_offer_alert(self):
+        # breakpoint()
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_offer_action')
+        action['domain'] = [
+            ('property_type_id', '=', self.id),
+            ('deadline', '>=', fields.Date.context_today(self)),
+            ('status', 'not in', ['refused', 'accepted'])
+        ]
+        return action

@@ -5,11 +5,23 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <!-- <button name="action_see_offers" type="object" string="Sell" class="oe_stat_button" icon="fa-money">
+                        <field name="offer_count" string="Offers" widget="statinfo"/>
+                    </button> -->
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_see_offers" type="object" string="Sell" class="oe_stat_button" icon="fa-money" invisible="offer_count == 0">
+                        <button name="estate.estate_property_offer_action" type="action" class="oe_stat_button" icon="fa-money" invisible="offer_count == 0">
+                            <field name="offer_count" widget="statinfo" string="Offers Full"/>
+                        </button>
+                        <button name="action_see_offers" type="object" class="oe_stat_button" icon="fa-money" invisible="offer_count == 0">
                             <field name="offer_count" string="Offers" widget="statinfo"/>
+                        </button>
+                        <button name="action_pricey_property" type="object" class="oe_stat_button" icon="fa-star" invisible="pricey_count == 0">
+                            <field name="pricey_count" string="Pricey" widget="statinfo"/>
+                        </button>
+                        <button name="action_offer_alert" type="object" class="oe_stat_button" icon="fa-warning" invisible="offer_alert == 0">
+                            <field name="offer_alert" string="Uh-0h!" widget="statinfo"/>
                         </button>
                     </div>
                     <h1>
