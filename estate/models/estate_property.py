@@ -1,6 +1,7 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+from random import randint
 
 
 class EstateProperty(models.Model):
@@ -17,6 +18,9 @@ class EstateProperty(models.Model):
         'CHECK (selling_price >= 0)',
         'The Selling price must be positive'
     )
+
+    def _get_default_color(self):
+        return randint(1, 11)
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -68,6 +72,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one('estate.property.type')
     image = fields.Image()
     is_favorite = fields.Boolean()
+    color = fields.Integer(default=_get_default_color)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -98,8 +103,9 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_new_cancelled_properties(self):
-        if self.state not in ['new', 'cancelled']:
-            raise UserError(_("You can only delete Properties that are only new and cancelled"))
+        for rec in self:
+            if rec.state not in ['new', 'cancelled']:
+                raise UserError(_("You can only delete Properties that are only new and cancelled"))
 
     def action_set_sold(self):
         if self.state == 'cancelled':
