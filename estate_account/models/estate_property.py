@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
 
     def action_sold_offer(self):
 
-        invoice = self.env["account.move"].create(
+        self.env["account.move"].create(
             {
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
