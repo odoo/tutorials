@@ -22,7 +22,9 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
     property_type_id = fields.Many2one(
-        "estate.property.type", related="property_id.estate_property_type_id", store=True
+        "estate.property.type",
+        related="property_id.estate_property_type_id",
+        store=True,
     )
 
     _check_offer_price_positive = models.Constraint(
@@ -65,3 +67,22 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.state = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            higher_offer = self.search_count(
+                [
+                    ("property_id.id", "=", vals["property_id"]),
+                    ("price", ">", vals["price"]),
+                ],
+                1,
+            )
+            if higher_offer:
+                raise UserError("Can't create an offer with a lower price")
+
+            self.env["estate.property"].browse(
+                vals["property_id"]
+            ).state = "offer_received"
+
+        return super().create(vals_list)
