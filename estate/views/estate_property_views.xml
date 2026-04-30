@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -29,8 +29,8 @@
         <field name="arch" type="xml">
             <form string="New House">
                 <header>
-                    <button name="mark_as_sold" type="object" string="Sold" invisible="state == 'cancelled'"/>
-                    <button name="cancel_sale" type="object" string="Cancel" invisible="state == 'cancelled'"/>
+                    <button name="action_mark_as_sold" type="object" string="Sold" invisible="state == 'cancelled'"/>
+                    <button name="action_cancel_sale" type="object" string="Cancel" invisible="state == 'cancelled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -71,7 +71,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
+                            <field name="offer_ids" force_save="1">
                                 <list editable="bottom" >
                                     <field name='price'/>
                                     <field name='partner_id'/>
@@ -116,4 +116,37 @@
             </search>
         </field>
     </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="estate_type_id" groups_draggable="false">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="fw-bold col">
+                            <h5>
+                                <field name="name"/>
+                            </h5>
+                        </div>
+                        <div>
+                            <div class="text-muted">
+                                Expected Price:
+                                <field name="expected_price" widget="monetary"/>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'" class="text-muted">
+                                Selling Price:
+                                <field name="selling_price" widget="monetary"/>
+                            </div>
+                        </div>
+                        <div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
 </odoo>

@@ -74,31 +74,40 @@ class EstateProperty(models.Model):
                 record.garden_area = 0
                 record.garden_orientation = None
 
-    def cancel_sale(self):
+    def action_cancel_sale(self):
         for record in self:
             record.state = "cancelled"
 
-    def mark_as_sold(self):
+    def action_mark_as_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise ValidationError("Cancelled properties cannot be sold.")
             record.state = "sold"
 
-    @api.constrains("selling_price", "expected_price")
-    def _check_date_end(self):
+    @api.constrains("expected_price")
+    def _check_expected_price(self):
         for record in self:
-            if any(
-                float_is_zero(value, precision_digits=2) 
-                for value in (record.selling_price, record.expected_price)
-            ):
-                raise ValidationError(
-                    "Selling price and expected price must be greater than zero."
+            if float_is_zero(record.expected_price, precision_digits=2):
+                raise ValidationError("Expected price must be greater than zero.")
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_digits=2,
                 )
-            if float_compare(
-                record.selling_price, 
-                record.expected_price * 0.9, 
-                precision_digits=2
-            ) < 0:
+                < 0
+            ):
                 raise ValidationError(
                     "Selling price cannot be lower than 90%of expected price!"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_inactive(self):
+        if any(record.state not in ("new", "cancelled") for record in self):
+            raise ValidationError(
+                "Can't delete an opportunity that is neither New or Cancelled."
+            )
