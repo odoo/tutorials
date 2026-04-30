@@ -127,7 +127,7 @@
                 <sheet>
                     <h1>
                         <field name="name"/>
-                         <button type="action" class="oe_stat_button" name="%(estate_property_offer_action)d" string="View Offers" icon="fa-money"/>
+                        <button type="action" class="oe_stat_button" name="%(estate_property_offer_action)d" string="View Offers" icon="fa-money"/>
                     </h1>
                     <notebook>
                         <page string="Properties">
