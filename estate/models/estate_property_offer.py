@@ -56,10 +56,9 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            date = fields.Date.to_date(record.create_date) or fields.Date.context_today()
-            record.validity = (
-                    record.date_deadline - date
-            ).days
+            date = (fields.Date.to_date(record.create_date)
+                    or fields.Date.today())
+            record.validity = (record.date_deadline - date).days
 
     def action_accept(self):
         if self.property_id.state == 'cancelled':
@@ -72,8 +71,6 @@ class EstatePropertyOffer(models.Model):
         ], limit=1)
         other_offers = self.property_id.offer_ids.filtered(lambda o: o.id != self.id)
         other_offers.write({'status': 'refused'})
-        if existing_offer:
-            raise UserError("An offer has already been accepted!")
         self.write({'status': 'accepted'})
         self.property_id.write({
             'buyer_id': self.partner_id.id,

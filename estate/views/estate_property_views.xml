@@ -120,7 +120,6 @@
                 <filter string="Archived" domain="[('active', '=', False)]" name="archive"/>
                 <filter string="1 Bedroom &amp; 1 Garage" name="1BG"
                         domain="[('bedrooms', '=',1),('garage', '=', True)]"/>
-                <filter string="Postcode" name="postcode" domain="[('postcode', '/', '1')]"/>
                 <separator/>
                 <filter string="Under Budget" name="budget" domain="[('expected_price', '&lt;=', 500000)]"/>
                 <separator/>

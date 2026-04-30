@@ -1,31 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!-- List view -->
-    <record id="estate_property_type_view_list" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list string="Property Types" editable="top">
-                <field name="name"/>
-            </list>
-        </field>
-    </record>
-
-    <!--    &lt;!&ndash; Form view &ndash;&gt;-->
-    <!--    <record id="estate_property_type_view_form" model="ir.ui.view">-->
-    <!--        <field name="name">estate.property.type.form</field>-->
+    <!--    &lt;!&ndash; List view &ndash;&gt;-->
+    <!--    <record id="estate_property_type_view_list" model="ir.ui.view">-->
+    <!--        <field name="name">estate.property.type.list</field>-->
     <!--        <field name="model">estate.property.type</field>-->
     <!--        <field name="arch" type="xml">-->
-    <!--            <form string="Property Type">-->
-    <!--                <sheet>-->
-    <!--                    <group>-->
-    <!--                        <field name="name"/>-->
-    <!--                    </group>-->
-    <!--                </sheet>-->
-    <!--            </form>-->
+    <!--            <list string="Property Types" editable="top">-->
+    <!--                <field name="sequence" widget="handle"/>-->
+    <!--                <field name="type"/>-->
+    <!--            </list>-->
     <!--        </field>-->
     <!--    </record>-->
+
+    <!-- Form view -->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <sheet>
+                    <h1>
+                        <field name="type" placeholder="Add type name"/>
+                    </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list default_order="expected_price desc">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
     <!-- Action -->
     <record id="action_estate_property_type" model="ir.actions.act_window">
