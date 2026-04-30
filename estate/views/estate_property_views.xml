@@ -11,7 +11,7 @@
                 <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name='bedrooms' width="200px"/>
                 <field name='living_area' string="Living Area (sqm)" width="200px"/>
-                <field name='expected_price' widget="estate_price_tag" width="200px"/>
+                <field name='expected_price' widget="estate_price_tag" options="{'currency_symbol': 'Rs'}" width="200px"/>
                 <field name='selling_price' widget="estate_price_tag" width="200px"/>
                 <field name="best_price"/>
                 <field name='date_availability' string="Available From" width="200px" optional='True'/>

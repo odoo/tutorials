@@ -49,9 +49,10 @@ export class EstatePriceTagWidget extends Component{
 export const estatePriceTagWidget = {
     component: EstatePriceTagWidget,
     supportedTypes: ["float","integer","monetary"],
-    extractProps: ({attrs}) => ({
-        currencySymbol : attrs.currency_symbol || "₹"
-    })
+    extractProps: ({options}) => {
+        return {
+        currencySymbol : options.currency_symbol || "₹"
+    }}
 }
 
 registry.category('fields').add('estate_price_tag',estatePriceTagWidget);
