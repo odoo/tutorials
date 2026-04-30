@@ -82,6 +82,8 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if self.state == "canceled":
             raise UserError("Canceled properties can not be sold")
+        if not [offer for offer in self.offer_ids if offer.status == 'accepted']:
+            raise UserError("Properties can not be marked as sold if there is no accepted offer")
         self.state = "sold"
 
     def action_state_to_canceled(self):
