@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property types">
+                <field name="name" string="Type"/>
+                <field name="sequence" widget="handle"/>
+            </list>
+            </field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="New Property Type">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    <button name="%(estate_property_offer_action)d" 
+                            type="action" 
+                            class="oe_stat_button" 
+                            icon="fa-money">
+                        <field name="offer_count" widget="statinfo" string="Offers"/>
+                    </button>
+        </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="New Property Type"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title" width="150px"/>
+                                    <field name="expected_price"/>
+                                    <field name="state" string="Status" width="150px"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
