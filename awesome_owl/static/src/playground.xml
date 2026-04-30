@@ -5,6 +5,9 @@
         First Counter: <t t-esc="state.value"/>
         <button class="btn btn-primary" t-on-click="increment">Increment</button>
         <Counter/>
+        <Card title="'My beautiful card'" content="'This card is really beautiful'"/>
+        <Card title="'HTML card'" content="str1"/>
+        <Card title="'Markup card'" content="str2"/>
     </t>
 
 </templates>
