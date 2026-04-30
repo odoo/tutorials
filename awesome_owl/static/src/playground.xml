@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="m-5">
+            <h1>Welcome everyone</h1>
+            <p>Click the button below and be amazed!</p>
+            <Card title="'Welcome!'">
+                <h6 class="m-2">As you can see next to this card is a counter, don't hesitate to use it.</h6>
+            </Card>
+            <Card title="'Use this one!'">
+                <Counter onChange="() => incrementSum()"/>
+            </Card>
+            <Counter onChange="() => incrementSum()"/>
+            <br/>
+            <h3>The sum of the counters is: <t t-out="this.state.sum"/></h3>
+            <br/>
+            <TodoList/>
         </div>
     </t>
 
