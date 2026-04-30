@@ -38,6 +38,8 @@ class EstatePropertyType(models.Model):
             property_type.offer_count = len(property_type.offer_ids)
 
     def action_see_offers(self):
+        # breakpoint()
         self.ensure_one()
         action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_offer_action')
+        action['domain'] = [('property_type_id', '=', self.id)]
         return action 
