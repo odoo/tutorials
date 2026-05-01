@@ -40,6 +40,9 @@
                     <field name="state" widget="statusbar" class="oe_inline_end" statusbar_visible="new,offer_accepted,offer_received,sold,cancelled" options="{'clickable': True}"/>
                     <button name="action_property_sold" type="object" string="Sold" class="btn-primary" />
                     <button name="action_property_cancelled" type="object" string="Cancel"/>
+                    <button name="action_select_best_offer" type="object" string="Accept Best Offer" class="btn-primary"/>
+                    <button name="action_auto_refuse" type="object" string="Auto Refuse" help="Refuses offer with price less than 90%" />
+
                 </header>
                 <sheet>
                     <h1>

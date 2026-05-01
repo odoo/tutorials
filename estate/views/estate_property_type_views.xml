@@ -14,12 +14,25 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <div class="oe_title oe_inline text-center">
-                        <label for="name"/>
-                        <h1>
-                            <field name="name" default_focus="1" class="oe_inline"/>
-                        </h1>
-                    </div>
+                    <sheet>
+                        <div class="oe_title oe_inline">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" default_focus="1" class="oe_inline"/>
+                            </h1>
+                        </div>
+
+                    </sheet>
+                    <sheet>
+                        <field name="property_ids">
+                            <list string="Type" editable="bottom" open_form_view="1">
+                                <field name="sequence" widget="handle"></field>
+                                <field name="name" />
+                                <field name="expected_price" />
+                                <field name="state" />
+                            </list>
+                        </field>
+                    </sheet>
                 </sheet>
             </form>
         </field>
