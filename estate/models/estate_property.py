@@ -73,7 +73,7 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden == True:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
@@ -104,7 +104,7 @@ class EstateProperty(models.Model):
             best_offer = self.env['estate.property.offer'].search(
                 domain=[
                     ('property_id', '=', rec.id),
-                    ('price', '=',  rec.best_price),
+                    ('price', '=', rec.best_price),
                 ],
                 limit=1,
             )
@@ -113,11 +113,11 @@ class EstateProperty(models.Model):
 
     def action_auto_refuse(self):
         for rec in self:
-            threshold = 90 * rec.expected_price/100
+            threshold = 90 * rec.expected_price / 100
             below_par_offers = self.env['estate.property.offer'].search(
                 domain=[
                     ('property_id', '=', rec.id),
-                    ('price', '<',  threshold),
+                    ('price', '<', threshold),
                     ('status', '!=', False)
                 ])
 
@@ -136,7 +136,7 @@ class EstateProperty(models.Model):
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
         for rec in self:
-            if not rec.selling_price == 0:
+            if rec.selling_price != 0:
                 percentage = rec.selling_price * 100 / rec.expected_price
                 if percentage <= 10:
                     raise UserError(

@@ -17,7 +17,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Proeperties" decoration-danger="state and state == 'cancelled'" limit="40"
-                  decoration-success="state and state == 'offer_accepted'" edit='1'>
+                  decoration-success="state and state == 'offer_accepted'">
                 <field name="name" string="Property Title"/>
                 <field name="postcode" width="96px"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
@@ -27,7 +27,7 @@
                 <field name="garage" widget="checkbox" optional="hide" width="36px"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -110,10 +110,14 @@
             <search>
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="living_area"
+                       filter_domain="[('living_area', '&gt;=', self)]"/>
                 <separator/>
                 <filter string="Date Availability" name="Date Availability" date="date_availability"/>
                 <filter name="available_properties" string="Available"
                         domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
+                <filter name="accepted_properties" string="Accepted Properties"
+                        domain="[('state','=','offer_accepted')]"/>
                 <group>
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>

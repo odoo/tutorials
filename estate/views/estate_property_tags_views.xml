@@ -18,7 +18,7 @@
         <field name="model">estate.property.tag</field>
 
         <field name="arch" type="xml">
-            <list string="">
+            <list string="" editable="top" open_form_view="true" >
 
 
                 <field name="name" default_focus="1" class="oe_inline"/>
