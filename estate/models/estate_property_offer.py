@@ -47,6 +47,25 @@ class EstatePropertyOffer(models.Model):
             start_date = offer.create_date.date() if offer.create_date else fields.Date.context_today(offer)
             offer.deadline = start_date + datetime.timedelta(days=offer.validity)
 
+    @api.model
+    def create(self, val_list):
+        # breakpoint()
+        for val in val_list:
+            current_price = val.get('price', 0)
+            properties = self.env['estate.properties'].browse(val.get('property_id'))
+            highest_offer = max(properties.mapped('offer_ids.price')) if properties.offer_ids else 0
+            if val.get('price') < highest_offer:
+                raise UserError(f"Offer price Rs.{current_price} is less than {highest_offer}!")
+            # _logger.error(f"properties = {properties}")
+            # _logger.error(f"current price = {current_price}")
+        return super().create(val_list)
+
+    # def unlink(self):
+    #     for offer in self:
+    #         if offer.status == 'accepted':
+    #             raise UserError("Cannot delete an already accepted offer")
+    #     return super().unlink()
+
     # @api.constrains('price')
     # def _check_price(self):
     #     for property in self:
