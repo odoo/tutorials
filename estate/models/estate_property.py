@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property for purchasing and selling properties"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True, string="Property Name")
     description = fields.Char()
@@ -42,7 +43,7 @@ class EstateProperty(models.Model):
         default='new'
     )
     active = fields.Boolean(default=True)
-    total_area = fields.Integer(compute='_compute_total_area')
+    total_area = fields.Integer(compute='_compute_total_area', search="_search_total_area")
     best_price = fields.Float(compute='_compute_best_price', store=True)
     property_type_id = fields.Many2one("estate.property.type")
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
@@ -92,15 +93,22 @@ class EstateProperty(models.Model):
             raise UserError(_("You can only delete property if it's in either new or cancelled state"))
         return True
 
+    def _search_total_area(self, operator, value):
+        records = self.search([])
+        ids = records.filtered(lambda x: x.total_area == value).ids
+        return [('id', 'in', ids)]
+
     def action_sold_property(self):
-        if self.state != 'offer accepted':
-            raise UserError(_("The property cannot be set as sold because the offer is not accepted yet."))
-            return False
         if self.state == 'cancelled':
             raise UserError(_("A cancelled property cannot be set as sold."))
             return False
+        if self.state != 'offer accepted':
+            raise UserError(_("The property cannot be set as sold because the offer is not accepted yet."))
+            return False
 
         self.state = 'sold'
+        self.send_offer_accepted_mail()
+
         return True
 
     def action_cancel_property(self):
@@ -109,3 +117,25 @@ class EstateProperty(models.Model):
 
         self.state = 'cancelled'
         return True
+
+    def action_accept_best_offer(self):
+        offer = self.offer_ids.filtered(lambda x: x.price == self.best_price)
+        if not offer:
+            raise UserError(_('not found offer'))
+        offer[0].action_accept_offer()
+
+    def send_offer_accepted_mail(self):
+        if not self.buyer_id.email:
+            raise UserError(_('buyer has not email'))
+
+        template = self.env.ref('estate.mail_template_offer_accepted')
+        template.send_mail(
+            self.id,
+            force_send=True,
+        )
+        # mail = self.env['mail.template'].send_mail(email_values={
+        #     'body_html': '<p>congratulations your offer is accepted</p>',
+        #     'email_to': self.buyer_id.email,
+        #     'email_from': 'vishwassinhvihol@gmail.com',
+        #     'subject': 'Offer accepted',
+        # })

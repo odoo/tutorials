@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="_refuse_offer" model="ir.cron">
+        <field name="name">Refusing old offers</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="code">model._refuse_offer()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>
