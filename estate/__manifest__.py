@@ -16,15 +16,20 @@
         'views/estate_property_offer.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
+        'views/estate_dashboard_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
     ],
     'assets': {
         'web.assets_backend': [
+            'estate/static/src/components/**/*',
             'estate/static/src/scss/estate_form.scss',
             'estate/static/src/components/price_tag_widget/estate_price_tag_widget.js',
             'estate/static/src/components/price_tag_widget/estate_price_tag_widget.xml',
             'estate/static/src/components/price_tag_widget/estate_price_tag_widget.scss',
         ],
+        'estate.dashboard': [
+            'estate/static/src/components/estate_dashboard/**/*',
+        ]
     },
 }

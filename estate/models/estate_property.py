@@ -1,7 +1,8 @@
+from random import randint
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from random import randint
 
 
 class EstateProperty(models.Model):
