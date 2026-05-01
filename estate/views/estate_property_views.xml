@@ -12,6 +12,7 @@
                   decoration-success="state in ['offer_accepted', 'sold']"
                   decoration-bf="state == 'offer_received'"
                   decoration-muted="state == 'cancelled'">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="property_type_id" class="w-50"/>
                 <field name="postcode" class="w-50"/>
@@ -78,8 +79,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
@@ -90,7 +91,7 @@
                             </group>
                         </page>
                         <page string="Offers" name="offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -108,7 +109,7 @@
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="expected_price"/>
                 <field name="facades"/>
                 <field name="garden_orientation"/>

@@ -64,11 +64,8 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         if self.property_id.state in ('sold', 'cancelled'):
             raise ValidationError("Already sold or cancelled property can not accept the offer!")
-
         (self.property_id.offer_ids - self).write({'status': 'refused'})
-
         self.write({'status': 'accepted'})
-
         self.property_id.write({
             'buyer_id': self.partner_id.id,
             'selling_price': self.price,

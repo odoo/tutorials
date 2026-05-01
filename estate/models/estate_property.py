@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
-    _order = 'sequence'
+    _order = 'id desc'
     _check_expected_price = models.Constraint(
         definition='CHECK (expected_price > 0)',
         message='The selling price must be positive do not enter negative values',
@@ -131,9 +131,12 @@ class EstateProperty(models.Model):
             record.offer_ids.filtered(lambda o: o.price == record.best_price)[:1].action_accept()
 
     def action_rest(self):
-        for record in self:
-            record.state = 'new'
-            record.selling_price = 0.0
+        self.write({
+            'state': 'new',
+            'selling_price': 0.0,
+            'buyer_id': '',
+        })
+        self.mapped('offer_ids').write({'status': False})
         return True
 
     def action_cancel(self):

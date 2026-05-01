@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <!--    &lt;!&ndash; List view &ndash;&gt;-->
-    <!--    <record id="estate_property_type_view_list" model="ir.ui.view">-->
-    <!--        <field name="name">estate.property.type.list</field>-->
-    <!--        <field name="model">estate.property.type</field>-->
-    <!--        <field name="arch" type="xml">-->
-    <!--            <list string="Property Types" editable="top">-->
-    <!--                <field name="sequence" widget="handle"/>-->
-    <!--                <field name="type"/>-->
-    <!--            </list>-->
-    <!--        </field>-->
-    <!--    </record>-->
+    <!-- List view -->
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Types" editable="top">
+                <field name="sequence" widget="handle"/>
+                <field name="type"/>
+            </list>
+        </field>
+    </record>
 
     <!-- Form view -->
     <record id="estate_property_type_view_form" model="ir.ui.view">
