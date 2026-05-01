@@ -42,10 +42,9 @@ class EstatePropertyOffer(models.Model):
                 'state': 'offer_accepted'
             })
 
-            rec.property_id.offer_ids.filtered(
-                lambda offer: offer.id != rec.id).write({
-                    'status': 'refused'
-                })
+            (rec.property_id.offer_ids - rec).write({
+                'status': 'refused'
+            })
 
         return True
 

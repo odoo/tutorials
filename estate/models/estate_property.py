@@ -101,8 +101,13 @@ class EstateProperty(models.Model):
 
         for rec in self:
 
-            best_offer = rec.offer_ids.filtered(
-                lambda o: o.price == rec.best_price)
+            best_offer = self.env['estate.property.offer'].search(
+                domain=[
+                    ('property_id', '=', rec.id),
+                    ('price', '=',  rec.best_price),
+                ],
+                limit=1,
+            )
 
             best_offer.action_status_accepted()
 
