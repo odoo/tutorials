@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mail_template_invoice_send" model="mail.template">
+            <field name="name">Property Invoice: Property Sold</field>
+            <field name="model_id" ref="model_estate_property" />
+            <field name="subject">This is the test subject</field>
+            <field name="email_from">gohelsneh21@gmail.com</field>
+            <field name="email_to">{{object.buyer_id.email}}</field>
+            <field name="body_html" type="html">
+                <div style="margin:0px; padding:0px; font-size:14px;">
+                    Hello <t t-out="object.buyer_id.name">Buyer Name</t>,<br />
+                    <br />
+                    We are happy to confirm your purches of <t t-out="object.name"> Property Name</t> property.<br />
+                    <br />
+                    Thank you.
+                </div>
+            </field>
+        </record>
+
+</odoo>

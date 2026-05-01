@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread"]
     _description = "Real Estate Property"
     _order = "id desc"
 
@@ -104,6 +105,8 @@ class EstateProperty(models.Model):
                 raise UserError(_("Cancelled property cannot be sold."))
             record.state = "sold"
             record.selling_price = record.selling_price
+            mail_template = record.env.ref("estate.mail_template_invoice_send")
+            mail_template.send_mail(record.id, force_send=True)
         return True
 
     def action_cancel(self):

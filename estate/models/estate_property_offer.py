@@ -70,3 +70,9 @@ class EstatePropertyOffer(models.Model):
                 )
 
         return super().create(vals_list)
+
+    def _auto_reject_offer_after_validity(self):
+        for record in self.search(["status", "not in", ["accepted", "refused"]]):
+            deadline = fields.Date.add(record.create_date, days=record.validity)
+            if deadline <= fields.Datetime.today():
+                record.status = "refused"
