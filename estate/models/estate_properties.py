@@ -173,7 +173,7 @@ class EstateProperties(models.Model):
                 property.commission = property.selling_price * 0.06
 
     def property_accept(self):
-        breakpoint()
+        # breakpoint()
         # best_offers = []
         # for property in self.offer_ids:
         #     best_offers.append(property.price)
@@ -201,7 +201,7 @@ class EstateProperties(models.Model):
 
         if not best_offer:
             raise ValidationError("No offers listed for this property")
-        
+
         best_offer = best_offer.sorted(lambda offer: offer.price, reverse=True)[0]
         return best_offer.offer_accepted()
 
