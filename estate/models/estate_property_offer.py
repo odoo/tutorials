@@ -6,6 +6,7 @@ class EstatePropertyOffer(models.Model):
 
     _name = 'estate.property.offer'
     _description = "A  model where offer for the properties are stored"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(selection=[('accepted', "Accepted"),
@@ -30,6 +31,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_status_accepted(self):
         for rec in self:
+
             if rec.status == 'accepted':
                 raise UserError("Offer has already been accepted")
             rec.status = 'accepted'
@@ -37,7 +39,13 @@ class EstatePropertyOffer(models.Model):
             rec.property_id.write({
                 'buyer': rec.partner_id.id,
                 'selling_price': rec.price,
+                'state': 'offer_accepted'
             })
+
+            rec.property_id.offer_ids.filtered(
+                lambda offer: offer.id != rec.id).write({
+                    'status': 'refused'
+                })
 
         return True
 
@@ -45,9 +53,19 @@ class EstatePropertyOffer(models.Model):
         for rec in self:
             if rec.status == 'refused':
                 raise UserError("Offer has already been refused")
+
+            other_offers = rec.property_id.offer_ids.filtered(
+                lambda offer: offer.id != rec.id)
+            other_offers.write({'status': 'refused'})
             rec.status = 'refused'
+
             rec.property_id.write({
                 'buyer': False,
                 'selling_price': False,
             })
         return True
+
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer Price Must Be Greater than zero'
+    )
