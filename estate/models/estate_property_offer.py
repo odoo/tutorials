@@ -1,5 +1,9 @@
+import logging
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+
+_logger = logging.getLogger(__name__)
 
 
 class EstatePropertyOffer(models.Model):
@@ -43,6 +47,18 @@ class EstatePropertyOffer(models.Model):
                 rec.validity = (rec.date_deadline - fields.Date.to_date(rec.create_date)).days
             else:
                 rec.validity = (rec.date_deadline - fields.Date.context_today(rec)).days
+
+    @api.model
+    def _cron_expire_offers(self):
+        expired_offers = self.search([
+            ('date_deadline', '<', fields.Date.context_today(self)),
+            ('status', '=', False)
+        ])
+        if expired_offers:
+            expired_offers.write({
+                'status': 'refused'
+            })
+        return True
 
     @api.model_create_multi
     def create(self, vals_list):
