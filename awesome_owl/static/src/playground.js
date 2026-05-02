@@ -10,10 +10,19 @@ export class Playground extends Component {
     setup(){
         this.htmlContent = markup("<span style='color:blue; font-weight:700'>some content.</span>")
         this.normalString = "<p style='color:blue>some content.</p>"
-        this.state = useState({ sum: 0 });
+        this.state = useState({ sum: 0, isOpen:true });
     }
 
     incrementSum(){
         this.state.sum++;
+    }
+
+    openToggle(){
+        if(this.state.isOpen === true)
+        {
+            this.state.isOpen = false
+        }else{
+            this.state.isOpen = true
+        }
     }
 }

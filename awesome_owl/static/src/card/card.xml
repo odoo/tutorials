@@ -1,9 +1,15 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body">
+            <div class="card-header fw-bold">
                 <h4 class="card-title"><t t-esc="props.title"/></h4>
-                <p class="card-text"><t t-out="props.content"/></p>
+                <button class="pl-2 pr-2 pt-1 pb-1" style="color: white; background: blue; border:none;" t-on-click="props.openCard">
+                <t t-if="props.isOpen === true">Hide</t>
+                <t t-else="">Show</t>
+                </button>
+            </div>
+            <div class="card-body" t-if="props.isOpen === true">
+                <p class="card-text"><t t-slot="default"/></p>
             </div>
         </div>
     </t>
