@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeCard">
+        <div class="p-2 shadow-sm mycard" t-att-style="'width:'+(props.size*5)+'rem;'">
+            <div class="flex row flex-row p-1 justify-content-between">
+                <div class="h4">
+                    <t t-slot="title"/>
+                </div>
+                <div class="h2 fw-bold ">
+                    <t t-if="props.value">
+                        <t t-out="props.value"/>
+                    </t>
+                    <t t-else="">
+                        <t t-slot="value"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

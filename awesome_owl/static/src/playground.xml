@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="h3 w-100 d-flex justify-content-between  p-2 bg-dark text-white shadow position-fixed text-white fixed position-top  ">
+            <div class="h3 my-auto px-3  py-1 text-white">Viraj Warhade</div>
+            <div class="h3 my-auto px-3  py-1 text-white">VIWAR-ODOO</div>
+        </div>
+        <div class="p-3   text-center center  text-lg-start fw-semibold ">
+        </div>
+        <div class="  mt-5  flex flex-row gap-4 row   mx-auto justify-content-center w-fit">
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+                <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+                <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+                <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+                <Counter/>
+            </div>
+            <div class="border p-4 bg-white shadow w-auto rounded ">
+                <Counter/>
+            </div>
+        </div>
+        <div class=" p-3">
+            <Card title="'title'" text="'this is text'" obj="this.obj" handledone="taskDone_2" toggle="toggle" newAdd="newAdd" handledelete="handledelete"/>
         </div>
     </t>
-
 </templates>

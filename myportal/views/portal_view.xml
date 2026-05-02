@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="portal_view_action" model="ir.actions.act_window">
+        <field name="name">portal</field>
+        <field name="res_model">portal</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+    <record id="portal_list_view" model="ir.ui.view">
+        <field name="name">portal.list.view</field>
+        <field name="model">portal</field>
+        <field name="arch" type="xml">
+            <list string="properties">
+                <header>
+                    <button
+                    
+                    string="button"
+                    display="always"
+                    type="action"
+                    class="oe_highlight"
+                    />
+                </header>
+                <field name="name"/>
+                
+            </list>
+        </field>
+    </record>
+    <record id="portal_form_view" model="ir.ui.view">
+        <field name="name">portal.form.view</field>
+        <field name="model">portal</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                       <notebook>
+                            <page string="Description">
+                                <group>
+                                   
+                                </group>
+                            </page>
+                           
+                        </notebook>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

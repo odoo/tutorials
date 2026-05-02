@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_model_action" model="ir.actions.act_window">
+        <field name="name">Real-estate Property"s</field>
+        <field name="res_model">estate.property</field>
+        <field name="context">{'search_default_available': 1}</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+    <record id="estate_property_list_view" model="ir.ui.view">
+        <field name="name">estate.property.list.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="properties" decoration-success="state in ['offer received','offer accepted']" decoration-bf="state=='offer accepted'" decoration-muted="state=='sold'">
+                <header>
+                    <button
+                    name="%(estate_property_offer_wizard)d"
+                    string="send offer wizard"
+                    display="always"
+                    type="action"
+                    class="oe_highlight"
+                    />
+                </header>
+                <field name="name"/>
+                <field name="last_seen"/>
+                <field name="bedrooms"/>
+                <field name="state"/>
+                <field name="total_area"/>
+                <field name="garden"/>
+                <field name="tag_ids"/>
+                <field name="selling_price"/>
+            </list>
+        </field>
+    </record>
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.form.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <header>
+                    <button
+                    name="button_sold"
+                    invisible="state == 'cancelled' or state == 'sold'"
+                    type="object"
+                    string="Sold"
+                    />
+                    <button
+                    name="button_cancel"
+                    invisible="state == 'cancelled' or state == 'sold'"
+                    class="btn btn-primary"
+                    type="object"
+                    string="Cancel"
+                    />
+                    <button
+                    name="accept_best_offer"
+                    class="btn btn-secondary"
+                    type="object"
+                    string="accept best offer"
+                    invisible="state != 'offer received'"
+                    />
+                    <button
+                    type="action"
+                    name="%(estate_property_visit_action)d"
+                    string="create visit"
+                    class="btn btn-secondary"
+                    />
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" groups="!estate.property_maintainance_staff"/>
+                        <field name="name" readonly="1" groups="estate.property_maintainance_staff"/>
+                        <field name="last_seen"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="expected_price"/>
+                        <field name="salesperson_id"/>
+                        <field name="buyer_id"/>
+                        <field name="max_offer_price" string="best offer" readonly="1"/>
+                        <field name="selling_price" string="selling price" groups="estate.property_admin,estate.property_agent,estate.property_manager"/>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="property_type_id" options="{'no_quick_create': True,'no_create': true}"/>
+                                    <field name="postcode"/>
+                                    <field name="date_availability"/>
+                                    <field name="selling_price"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="state"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="total_area"/>
+                                </group>
+                            </page>
+                            <page string="others">
+                                <group>
+                                    <field name="description"/>
+                                    <field name="active"/>
+                                    <field name="salesperson_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </page>
+                            <page string="offers" groups="estate.property_manager,estate.property_admin,estate.property_agent">
+                                <field name="offer_ids" readonly="state in ['offer accepted','cancelled','sold']">
+                                    <list decoration-success="status=='accepted'" decoration-danger="status=='refused'">
+                                        <field name="price"/>
+                                        <field name="validity"/>
+                                        <field name="deadline"/>
+                                        <field name="partner_id"/>
+                                        <button
+                    name="action_accept_offer"
+                    type="object"
+                    string="accept"
+                    invisible="status"
+                    groups="estate.property_admin,estate.property_manager"
+                                        />
+                                        <button
+                    name="action_reject_offer"
+                    type="object"
+                    string="reject"
+                    invisible="status"
+                    groups="estate.property_admin,estate.property_manager,estate.property_agent"
+                                        />
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="maintainance request" groups="estate.property_manager,estate.property_maintainance_staff">
+                                <field name="estate_maintainance_id">
+                                    <list default_order="id desc">
+                                        <field name="buyer_id"/>
+                                        <field name="technician_id"/>
+                                        <field name="state"/>
+                                        <field name="estimate_cost"/>
+                                        <field name="actual_cost" groups="estate.property_agent"/>
+                                        <field name="current_stage"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="visits" groups="estate.property_admin,estate.property_maintainance_staff,estate.property_manager">
+                                <field name="visit_ids">
+                                    <list>
+                                        <field name="date"/>
+                                        <field name="visitor_id"/>
+                                        <field name="comment"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name"/>
+                <field name="postcode"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <filter string="available" name="available" domain="[('active','=','True')]"/>
+                <filter string="new property" name="state" domain="[('state','=','new')]"/>
+                <filter string="2bhk" name="bedrooms" domain="[('bedrooms','=','2')]"/>
+                <filter string="greater than 3bhk" name="bedrooms" domain="[('bedrooms','&gt;','3')]"/>
+                <field name="living_area" filter_domain="['|',('living_area','&gt;',self),('living_area','=',self)]"/>
+                    <!-- experimented-->
+                <filter string="new or 2bhk" name="new_or_2bhk" domain="['|',('state','=','new'),'|',('bedrooms','=','2'),('active','=',False)]"/>
+                    <!--filter string="below 15h" name="below_15h" domain="[('total_area','&lt;','1500')]"/-->
+            </search>
+        </field>
+    </record>
+</odoo>
