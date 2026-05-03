@@ -1,16 +1,20 @@
 {
     "name": "estate",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "application": True,
     "author": "shrey patel",
+    "category": "Estate/Brokerage",
     "license": "LGPL-3",
     "data": [
         "security/ir.model.access.csv",
+        "security/security.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
         "views/res_users_views.xml",
+        "data/ir_cron_data.xml",
+        "data/mail_template_data.xml",
     ],
 }

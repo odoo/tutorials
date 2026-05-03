@@ -7,6 +7,7 @@ class Estate(models.Model):
     _name = "estate_property"
     _description = "real estate management"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -105,13 +106,14 @@ class Estate(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_state_is_cancelled_or_new(self):
-        for record in self:
-            if record.state not in ["cancelled", "new"]:
-                raise UserError(
-                    _("properties with state cancelled or new can only be deleted")
-                )
+        invalidRecords = self.filtered(lambda r: r.state not in ["cancelled", "new"])
+        if len(invalidRecords):
+            raise UserError(
+                _("properties with state cancelled or new can only be deleted")
+            )
 
     def action_mark_property_sold(self):
+        mailTemplate = self.env.ref("estate.mail_template_estate")
         for record in self:
             if record.state == "cancelled":
                 raise UserError(_("cancelled property can't be sold"))
@@ -121,6 +123,7 @@ class Estate(models.Model):
                 raise ValidationError(
                     _("property cant be sold selling price must be greater than zero")
                 )
+            mailTemplate.send_mail(record.id, force_send=True)
             record.state = "sold"
         return True
 

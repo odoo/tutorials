@@ -1,0 +1,17 @@
+<odoo>
+    <record id="groups_priviledge_real_estate" model="res.groups.privilege">
+        <field name="name">Real Estate</field>
+        <field name="category_id" ref="base.module_category_estate"/>
+    </record>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="privilege_id" ref="groups_priviledge_real_estate"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="groups_priviledge_real_estate"/>
+        <field name="implied_ids" eval="[Command.link(ref('estate_group_user'))]"/>
+    </record>
+</odoo>

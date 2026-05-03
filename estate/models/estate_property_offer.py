@@ -13,7 +13,7 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one(comodel_name="res.partner", required=True)
-    property_id = fields.Many2one(comodel_name="estate_property", required=True)
+    property_id = fields.Many2one(comodel_name="estate_property", required=True, ondelete='cascade')
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline",
@@ -58,13 +58,14 @@ class EstatePropertyOffer(models.Model):
             property = self.env["estate_property"].browse(vals["property_id"])
             if property.best_price > vals.get("price", 0):
                 raise UserError(_("offer with price greater than current offer exists"))
-            property.state = "offer_received"
+            if property.state == "new":
+                property.state = "offer_received"
         return super().create(val_lists)
 
     def action_accept_offer(self):
         if self.property_id.state == "offer_accepted":
             raise UserError(_("offer is already accepted"))
-        (self.property_id.offer_ids - self).status = "rejected"
+        (self.property_id.offer_ids - self).status = "refused"
         self.status = "accepted"
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
@@ -76,3 +77,9 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.buyer_id = False
                 record.property_id.selling_price = False
             record.status = "refused"
+
+    def _refuse_pending_offers(self):
+        offers = self.search([("status", "!=", "accepted")])
+        offers.filtered(
+            lambda self: self.date_deadline < fields.Date.today()
+        ).status = "refused"

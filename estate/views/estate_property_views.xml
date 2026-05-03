@@ -31,10 +31,10 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_mark_property_sold" type="object" string="Sold" class="btn-link"
-                            invisible="state in ['cancelled','sold']"/>
-                    <button name="action_mark_property_cancelled" type="object" string="Cancelled" class="btn-link"
-                            invisible="state in ['cancelled','sold']"/>
+                    <span invisible="state in ['cancelled','sold']">
+                    <button name="action_mark_property_sold" type="object" string="Sold" class="btn-link"/>
+                    <button name="action_mark_property_cancelled" type="object" string="Cancelled" class="btn-link"/>
+                    </span>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -81,6 +81,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
