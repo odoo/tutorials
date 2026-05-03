@@ -1,7 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
 
 
 class EstatePropertyVisit(models.Model):
@@ -20,11 +19,9 @@ class EstatePropertyVisit(models.Model):
         ('cancel', 'Cancelled'),
     ], string="Status", default='scheduled', copy=False)
 
-    def action_set_done(self):
-        self.state = 'done'
-
-    def action_set_cancel(self):
-        self.state = 'cancel'
+    _unique_property_visit = models.Constraint(
+        'UNIQUE("schedule_date", "property_id")', 'This date is already scheduled by an property.'
+    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -52,14 +49,8 @@ class EstatePropertyVisit(models.Model):
                     })
         return res
 
-    @api.constrains('schedule_date', 'property_id')
-    def _check_visit_date(self):
-        for rec in self:
-            exists = self.search([
-                ('property_id', '=', rec.property_id.id),
-                ('id', '!=', rec.id),
-                ('schedule_date', '=', rec.schedule_date)
-            ])
+    def action_set_done(self):
+        self.state = 'done'
 
-            if exists:
-                raise ValidationError(f"This date({rec.schedule_date}) is already scheduled by an customer.")
+    def action_set_cancel(self):
+        self.state = 'cancel'

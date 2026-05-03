@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(string="Deadline", compute="_compute_deadline_method", inverse="_inverse_deadline_method")
+    date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _check_offer_price = models.Constraint(
@@ -26,12 +26,12 @@ class EstatePropertyOffer(models.Model):
     )
 
     @api.depends("create_date", "validity")
-    def _compute_deadline_method(self):
+    def _compute_date_deadline(self):
         for rec in self:
             create_date = rec.create_date.date() if rec.create_date else fields.Date.today()
             rec.date_deadline = create_date + relativedelta(days=rec.validity)
 
-    def _inverse_deadline_method(self):
+    def _inverse_date_deadline(self):
         for rec in self:
             create_date = rec.create_date.date() if rec.create_date else fields.Date.today()
             rec.validity = relativedelta(rec.date_deadline, create_date).days
@@ -41,19 +41,22 @@ class EstatePropertyOffer(models.Model):
         for rec in vals_list:
             property_rec = self.env['estate.property'].browse(rec.get('property_id'))
             if rec.get('price') < property_rec.best_price:
-                raise UserError("The offer must be higher than the existing offer.")
+                raise UserError(_("The offer must be higher than the existing offer."))
             property_rec.state = "offer_received"
         return super().create(vals_list)
 
     def action_accept_offer(self):
         for rec in self:
             if any(i.status == "accepted" for i in rec.property_id.offer_ids):
-                raise UserError("Offer already accepted for given property.")
-
+                raise UserError(_("Offer already accepted for given property."))
             rec.status = "accepted"
-            rec.property_id.buyer_id = rec.partner_id.id
-            rec.property_id.selling_price = rec.price
-            rec.property_id.state = "offer_accepted"
+            rec.property_id.write({
+                'buyer_id': rec.partner_id.id,
+                'selling_price': rec.price,
+                'state': 'offer_accepted'
+            })
+        other_offers = self.property_id.offer_ids.filtered(lambda o: o.status != 'accepted')
+        other_offers.write({'status': 'refused'})
         return True
 
     def action_refuse_offer(self):

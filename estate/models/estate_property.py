@@ -17,12 +17,12 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Float(string="Living Area (spm)")
+    living_area = fields.Float(string="Living Area (sq. m)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Float(string="Garden Area (spm)")
-    total_area = fields.Float(string="Total Area (sqm)", compute="_computed_total_area")
+    garden_area = fields.Float(string="Garden Area (sq. m)")
+    total_area = fields.Float(string="Total Area (sq. m)", compute="_computed_total_area", store=True)
     garden_orientation = fields.Selection([
         ('north', "North"),
         ('east', "East"),
@@ -42,23 +42,13 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string='Buyer', ondelete='cascade')
     property_tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
-    best_price = fields.Float(string="Best Offer", compute="_computed_best_offer")
+    best_price = fields.Float(string="Best Offer", compute="_computed_best_price", store=True)
     visit_ids = fields.One2many('estate.property.visit', 'property_id', string="Visits")
     visit_count = fields.Integer(compute="_compute_visit_count")
-
-    @api.depends('visit_ids')
-    def _compute_visit_count(self):
-        for rec in self:
-            rec.visit_count = len(rec.visit_ids)
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price >= 1)',
         'The expected price must be strictly positive.'
-    )
-
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price > 0)',
-        'The selling price must be positive.'
     )
 
     @api.depends("living_area", "garden_area")
@@ -67,7 +57,7 @@ class EstateProperty(models.Model):
             rec.total_area = rec.living_area + rec.garden_area
 
     @api.depends("offer_ids.price")
-    def _computed_best_offer(self):
+    def _computed_best_price(self):
         for rec in self:
             prices = rec.offer_ids.mapped('price')
             if prices:
@@ -75,22 +65,21 @@ class EstateProperty(models.Model):
             else:
                 rec.best_price = 0.0
 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        visits = self.env['estate.property.visit']._read_group(
+            domain=[
+                ('property_id', 'in', self.ids),
+                ('state', '=', 'scheduled')
+            ], groupby=['property_id'], aggregates=['__count']
+        )
 
-            return {
-                'warning': {
-                    'title': "Garden Enabled",
-                    'message': "Default area set to 10 and orientation north",
-                    'type': "notification"
-                }
-            }
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        count_dict = {
+            prop.id: count for prop, count in visits
+        }
+
+        for rec in self:
+            rec.visit_count = count_dict.get(rec.id, 0)
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -100,6 +89,15 @@ class EstateProperty(models.Model):
             limit_price = rec.expected_price * 0.9
             if float_compare(rec.selling_price, limit_price, precision_digits=2) < 0:
                 raise ValidationError(_("selling price cannot be lower than 90% of the expected price"))
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
     def _check_state(self):
@@ -119,5 +117,14 @@ class EstateProperty(models.Model):
         for rec in self:
             if rec.state == 'cancelled':
                 raise UserError(_("%s property of %s can not be sold.", rec.state, rec.name))
-            rec.state = 'sold'
+            elif not rec.selling_price:
+                raise UserError(_("Property can not be sold without selling price"))
+            else:
+                rec.state = 'sold'
+        return True
+
+    def action_best_offer(self):
+        self.ensure_one()
+        best_offer = self.offer_ids.filtered(lambda o: o.price == self.best_price)
+        best_offer.action_accept_offer()
         return True

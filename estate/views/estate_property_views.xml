@@ -15,10 +15,11 @@
                 <header>
                     <button name="action_property_sold" type="object" invisible="state in ['sold', 'cancelled']">Sold</button>
                     <button name="action_property_cancelled" type="object" invisible="state in ['cancelled', 'sold']">Cancel</button>
+                    <button name="action_best_offer" type="object" invisible="state not in ['offer_received']">Best Offer</button>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                <div class="oe_button_box" name="button_box">
+                    <div class="oe_button_box" name="button_box">
                         <button type="action"
                             name="%(estate.estate_property_visit_action)d"
                             class="oe_stat_button"
@@ -61,7 +62,6 @@
                             <group>
                                 <field name="sales_person_id"/>
                                 <field name="buyer_id"/>
-                                <field name="visit_count"/>
                             </group>
                         </page>
                     </notebook>
@@ -74,7 +74,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" limit="20" decoration-muted="state == 'sold'" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'">
+            <list string="Properties" decoration-muted="state == 'sold'" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -94,7 +94,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id">
+            <kanban default_group_by="property_type_id" records_draggable="false">
                 <field name="state"/>
                 <templates>
                     <t t-name="card">
