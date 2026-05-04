@@ -1,4 +1,4 @@
-from odoo import fields, models, Command
+from odoo import models, Command
 
 
 class EstateAccount(models.Model):
