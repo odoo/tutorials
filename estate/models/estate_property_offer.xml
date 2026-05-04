@@ -20,12 +20,12 @@
 
 
     <record id="selection_estate_property_offer_status_accepted" model="ir.model.fields.selection">
-        <field name="field_id" ref="field_estate_property_garden_orientation"/>
+        <field name="field_id" ref="field_estate_property_offer_status"/>
         <field name="name">Accepted</field>
         <field name="value">accepted</field>
     </record>
     <record id="selection_estate_property_offer_status_refused" model="ir.model.fields.selection">
-        <field name="field_id" ref="field_estate_property_garden_orientation"/>
+        <field name="field_id" ref="field_estate_property_offer_status"/>
         <field name="name">Refused</field>
         <field name="value">refused</field>
     </record>
@@ -59,4 +59,5 @@
         <field name="relation">x_estate.property.offer</field>
         <field name="relation_field">x_property_id</field>
     </record>
+
 </odoo>
