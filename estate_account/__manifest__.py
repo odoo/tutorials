@@ -1,4 +1,4 @@
-{ 
+{
     'name': 'Estate Account',
     'category': 'Real Estate',
     'sequence': 2,
