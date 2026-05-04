@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="x_name"/>
+                <field name="x_property_type_id"/>
                 <field name="x_postcode"/>
                 <field name="x_bedrooms"/>
                 <field name="x_living_area"/>
@@ -25,9 +26,11 @@
                     <h1>
                         <field name="x_name"/>
                     </h1>
+                    <field name="x_property_tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="x_postcode"/>
+                            <field name="x_property_type_id"/>
                             <field name="x_date_available"/>
                         </group>
                         <group>
@@ -46,6 +49,16 @@
                                 <field name="x_garden"/>
                                 <field name="x_garden_area"/>
                                 <field name="x_garden_orientation"/>
+                                <field name="x_total_area"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="x_offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="x_user_id"/>
+                                <field name="x_partner_id"/>
                             </group>
                         </page>
                     </notebook>

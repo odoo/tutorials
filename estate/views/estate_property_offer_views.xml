@@ -1,0 +1,19 @@
+<odoo>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.list</field>
+        <field name="model">x_estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers" editable="bottom">
+                <field name="x_price"/>
+                <field name="x_partner_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">x_estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+</odoo>
