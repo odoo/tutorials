@@ -6,7 +6,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Property Types" editable="top">
+            <list string="Property Types">
                 <field name="sequence" widget="handle"/>
                 <field name="type"/>
             </list>
@@ -20,6 +20,12 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_see_offers" type="object" string="Sell"
+                                class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" string=" offers" widget="statinfo"/>
+                        </button>
+                    </div>
                     <h1>
                         <field name="type" placeholder="Add type name"/>
                     </h1>
