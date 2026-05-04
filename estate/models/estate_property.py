@@ -87,11 +87,11 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ""
 
-    @api.ondelete(at_uninstall=False)
-    def _prevent_property_deletion(self):
-        if self.state not in ['new', 'cancelled']:
-            raise UserError(_("You can only delete property if it's in either new or cancelled state"))
-        return True
+    # @api.ondelete(at_uninstall=False)
+    # def _prevent_property_deletion(self):
+    #     if self.state not in ['new', 'cancelled']:
+    #         raise UserError(_("You can only delete property if it's in either new or cancelled state"))
+    #     return True
 
     def _search_total_area(self, operator, value):
         records = self.search([])
