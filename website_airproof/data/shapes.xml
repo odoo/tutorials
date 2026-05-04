@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo noupdate="1">
     <!-- Background shapes -->
-    <record id="shape_waves" model="ir.attachment">
+    <record id="shape_waves_01" model="ir.attachment">
         <field name="name">waves_01.svg</field>
         <field name="datas" type="base64" file="website_airproof/static/shapes/waves/01.svg" />
         <field name="url">/html_editor/shape/website_airproof/waves/01.svg</field>
