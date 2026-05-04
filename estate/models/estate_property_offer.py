@@ -14,6 +14,8 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one(
         'estate.property', required=True)
+    property_type_id = fields.Many2one(
+        'estate.property.type', string='property_type_id', related='property_id.property_type_id')
     validity = fields.Integer(string="Validity", default='7')
     date_deadline = fields.Datetime(
         string="Deadline", compute='_compute_date_deadline', inverse='_inverse_date_deadline')
@@ -52,11 +54,6 @@ class EstatePropertyOffer(models.Model):
         for rec in self:
             if rec.status == 'refused':
                 raise UserError("Offer has already been refused")
-
-            other_offers = rec.property_id.offer_ids.filtered(
-                lambda offer: offer.id != rec.id)
-            other_offers.write({'status': 'refused'})
-            rec.status = 'refused'
 
             rec.property_id.write({
                 'buyer': False,
