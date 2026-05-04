@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_estate_property" model="ir.actions.report">
+        <field name="name">Property Sheet</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_estate_property_document</field>
+        <field name="report_file">estate.report_estate_property_document</field>
+        <field name="print_report_name">'Property - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_estate_property_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <div class="row mb-4">
+                            <div class="col-8">
+                                <h2 class="mb-1">
+                                    <t t-out="o.name"/>
+                                </h2>
+                                <span class="badge rounded-pill"
+                                    t-att-class="'text-bg-success' if o.state == 'sold' else
+                                                 'text-bg-warning' if o.state == 'offer_accepted' else
+                                                 'text-bg-info'    if o.state == 'offer_received' else
+                                                 'text-bg-danger'  if o.state == 'cancelled' else
+                                                 'text-bg-secondary'">
+                                    <t t-out="dict(o._fields['state'].selection).get(o.state)"/>
+                                </span>
+                            </div>
+                            <div class="col-4 text-end" t-if="o.image">
+                                <img t-att-src="image_data_uri(o.image)"
+                                     style="max-height:100px; max-width:160px; object-fit:cover; border-radius:4px;"/>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <h5>Property Details</h5>
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr t-if="o.property_type_id">
+                                            <td class="fw-bold bg-light" style="width:50%">Type</td>
+                                            <td><t t-out="o.property_type_id.name"/></td>
+                                        </tr>
+                                        <tr t-if="o.postcode">
+                                            <td class="fw-bold bg-light">Postcode</td>
+                                            <td><t t-out="o.postcode"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">Bedrooms</td>
+                                            <td><t t-out="o.bedrooms"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">Facades</td>
+                                            <td><t t-out="o.facades"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">Garage</td>
+                                            <td><t t-out="'Yes' if o.garage else 'No'"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">Garden</td>
+                                            <td><t t-out="'Yes' if o.garden else 'No'"/></td>
+                                        </tr>
+                                        <tr t-if="o.garden">
+                                            <td class="fw-bold bg-light">Garden Orientation</td>
+                                            <td><t t-out="dict(o._fields['garden_orientation'].selection).get(o.garden_orientation, '')"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">Date Available</td>
+                                            <td><t t-out="o.date_availability" t-options='{"widget": "date"}'/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-6">
+                                <h5>Area</h5>
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold bg-light" style="width:55%">Living Area</td>
+                                            <td><t t-out="o.living_area"/> m²</td>
+                                        </tr>
+                                        <tr t-if="o.garden">
+                                            <td class="fw-bold bg-light">Garden Area</td>
+                                            <td><t t-out="o.garden_area"/> m²</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold bg-light">Total Area</td>
+                                            <td><t t-out="o.total_area"/> m²</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h5 class="mt-3">Pricing</h5>
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td class="fw-bold bg-light" style="width:55%">Expected Price</td>
+                                            <td><t t-out="o.expected_price"/></td>
+                                        </tr>
+                                        <tr t-if="o.best_price">
+                                            <td class="fw-bold bg-light">Best Offer</td>
+                                            <td><t t-out="o.best_price"/></td>
+                                        </tr>
+                                        <tr t-if="o.selling_price">
+                                            <td class="fw-bold bg-light">Selling Price</td>
+                                            <td><t t-out="o.selling_price"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="row mt-2" t-if="o.tag_ids">
+                            <div class="col-12">
+                                <strong>Tags: </strong>
+                                <t t-foreach="o.tag_ids" t-as="tag">
+                                    <span class="badge text-bg-secondary me-1">
+                                        <t t-out="tag.name"/>
+                                    </span>
+                                </t>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3" t-if="o.description">
+                            <div class="col-12">
+                                <h5>Description</h5>
+                                <p><t t-out="o.description"/></p>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-6" t-if="o.salesperson_id">
+                                <strong>Salesperson:</strong>
+                                <t t-out="o.salesperson_id.name"/>
+                            </div>
+                            <div class="col-6" t-if="o.buyer_id">
+                                <strong>Buyer:</strong>
+                                <t t-out="o.buyer_id.name"/>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4" t-if="o.offer_ids">
+                            <div class="col-12">
+                                <h5>Offers</h5>
+                                <table class="table table-bordered table-sm">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Partner</th>
+                                            <th>Price</th>
+                                            <th>Validity (days)</th>
+                                            <th>Deadline</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="o.offer_ids" t-as="offer">
+                                            <tr>
+                                                <td><t t-out="offer.partner_id.name"/></td>
+                                                <td><t t-out="offer.price"/></td>
+                                                <td><t t-out="offer.validity"/></td>
+                                                <td><t t-out="offer.date_deadline" t-options='{"widget": "date"}'/></td>
+                                                <td><t t-out="dict(offer._fields['status'].selection).get(offer.status, '')"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

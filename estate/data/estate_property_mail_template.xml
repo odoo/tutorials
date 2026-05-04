@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="email_template_estate_property" model="mail.template">
+            <field name="name">Estate Property: Send by Email</field>
+            <field name="model_id" search="[('model', '=', 'estate.property')]"/>
+            <field name="subject">Property Sheet ({{ object.name or 'n/a' }})</field>
+            <field name="email_from">admin@odoo.com</field>
+            <field name="email_to">{{ object.buyer_id.email }}</field>
+            <field name="description">Used by salespersons when they send property sheets to buyers</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px; font-family: Arial, sans-serif; font-size: 13px; color: #333333; background-color: #ffffff;">
+    <p style="margin: 0px 0px 16px 0px; color: #333333;">
+        Hello <t t-out="object.buyer_id.name or 'Sir/Madam'">Sir/Madam</t>,
+    </p>
+    <p style="margin: 0px 0px 16px 0px; color: #333333;">
+        Please find attached the property sheet for
+        <strong t-out="object.name or ''">Property Name</strong>.
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-size: 13px; margin-bottom: 16px;">
+        <tr>
+            <td width="45%" style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Expected Price</td>
+            <td width="55%" style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.expected_price">0.00</td>
+        </tr>
+        <tr t-if="object.best_price">
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Best Offer</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.best_price">0.00</td>
+        </tr>
+        <tr t-if="object.selling_price">
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Selling Price</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.selling_price">0.00</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Available From</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="format_date(object.date_availability) or ''">01/01/2025</td>
+        </tr>
+        <tr t-if="object.property_type_id">
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Type</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.property_type_id.name or ''">Castle</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Living Area</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;"><t t-out="object.living_area">0</t> m²</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Total Area</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;"><t t-out="object.total_area">0</t> m²</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Bedrooms</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.bedrooms">2</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Facades</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.facades">0</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Garage</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="'Yes' if object.garage else 'No'">No</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Garden</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="'Yes' if object.garden else 'No'">No</td>
+        </tr>
+        <tr t-if="object.garden">
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Garden Area</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;"><t t-out="object.garden_area">0</t> m²</td>
+        </tr>
+        <tr t-if="object.garden">
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Garden Orientation</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.garden_orientation or ''">North</td>
+        </tr>
+        <tr t-if="object.postcode">
+            <td style="padding: 8px 12px; font-weight: bold; color: #333333; background-color: #f0f0f0; border: 1px solid #cccccc;">Postcode</td>
+            <td style="padding: 8px 12px; color: #333333; background-color: #ffffff; border: 1px solid #cccccc;" t-out="object.postcode or ''">000000</td>
+        </tr>
+    </table>
+
+    <t t-if="object.description">
+        <p style="color: #555555; font-style: italic; margin: 0px 0px 16px 0px;" t-out="object.description or ''">Description here.</p>
+    </t>
+
+    <p style="color: #333333; margin: 0px 0px 16px 0px;">
+        Do not hesitate to contact us if you have any questions.
+    </p>
+
+    <t t-if="object.salesperson_id">
+        <p style="color: #333333; margin: 0px;">
+            --<br/>
+            <strong t-out="object.salesperson_id.name or ''">Salesperson</strong><br/>
+            <t t-if="object.salesperson_id.phone">
+                <t t-out="object.salesperson_id.phone or ''">+1234567890</t><br/>
+            </t>
+            <t t-out="object.salesperson_id.email or ''">email@example.com</t>
+        </p>
+    </t>
+</div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('estate.action_report_estate_property'))]"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

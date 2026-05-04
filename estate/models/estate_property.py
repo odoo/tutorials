@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "estate property used to buy and sell houses"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
 
     _check_expected_price = models.Constraint(
@@ -23,7 +24,7 @@ class EstateProperty(models.Model):
     def _get_default_color(self):
         return randint(1, 11)
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, tracking=True)
     description = fields.Text()
     facades = fields.Integer()
     postcode = fields.Char()
@@ -44,11 +45,12 @@ class EstateProperty(models.Model):
         ],
     )
 
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    expected_price = fields.Float(required=True, tracking=True)
+    selling_price = fields.Float(readonly=True, tracking=True, copy=False)
     best_price = fields.Float(compute='_compute_best_price', store=True)
     date_availability = fields.Date(
         default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
+        tracking=True,
         copy=False
     )
 
@@ -61,18 +63,19 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
+        tracking=True,
         default='new',
         copy=False,
         required=True,
     )
 
-    buyer_id = fields.Many2one('res.partner', copy=False)
-    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', tracking=True, copy=False)
+    salesperson_id = fields.Many2one('res.users', tracking=True, default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag')
-    offer_ids = fields.One2many('estate.property.offer', 'property_id')
-    property_type_id = fields.Many2one('estate.property.type')
-    image = fields.Image()
-    is_favorite = fields.Boolean()
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', tracking=True)
+    property_type_id = fields.Many2one('estate.property.type', tracking=True)
+    image = fields.Image(tracking=True)
+    is_favorite = fields.Boolean(tracking=True)
     color = fields.Integer(default=_get_default_color)
 
     @api.depends('living_area', 'garden_area')
@@ -111,7 +114,19 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         if self.state == 'cancelled':
             raise UserError(_("You cannot sell an offer that is already Cancelled"))
+        if not self.buyer_id:
+            raise UserError(_("Please set a buyer before marking this property as sold."))
+
         self.state = 'sold'
+
+        template = self.env.ref('estate.email_template_estate_property')
+        self.message_post_with_source(
+            template,
+            render_values={},
+            message_type='comment',
+            subtype_xmlid='mail.mt_comment',
+        )
+
         return {
             'effect': {
                 'type': 'rainbow_man',
@@ -143,3 +158,25 @@ class EstateProperty(models.Model):
             best_offer = rec.offer_ids.sorted('price', reverse=True)[:1]
             best_offer.action_accept()
         return True
+
+    def action_mail_send(self):
+        template = self.env.ref('estate.email_template_estate_property', raise_if_not_found=False)
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_composition_mode': 'comment',
+            'default_template_id': template.id,
+            'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+            'force_email': True,
+            'default_partner_ids': self.buyer_id.ids if self.buyer_id else [],
+        }
+        return {
+            'name': "Send Mail",
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }

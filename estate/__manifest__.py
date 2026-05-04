@@ -4,7 +4,7 @@
     'category': 'Tutorials',
     'summary': 'The Real Estate Advertisement module',
     'description': 'Try installing the App',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'application': True,
     'installable': True,
     'author': 'times',
@@ -12,6 +12,8 @@
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
+        'report/estate_property_report.xml',
+        'data/estate_property_mail_template.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer.xml',
         'views/estate_property_type_views.xml',

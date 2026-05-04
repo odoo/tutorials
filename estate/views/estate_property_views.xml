@@ -4,18 +4,26 @@
         <field name='name'>estate.property.list</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
-            <list default_order="name" decoration-success="state in ['offer_received','offer_accepted']" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
-                <field name="is_favorite" widget="boolean_favorite" nolabel="1"/>
-                <field name='name' string="Title"/>
-                <field name='postcode'/>
-                <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name='bedrooms' width="200px"/>
-                <field name='living_area' string="Living Area (sqm)" width="200px"/>
-                <field name='expected_price' widget="estate_price_tag" options="{'currency_symbol': 'Rs'}" width="200px"/>
-                <field name='selling_price' widget="estate_price_tag" width="200px"/>
-                <field name="best_price"/>
-                <field name='date_availability' string="Available From" width="200px" optional='True'/>
-                <field name='state' widget='badge' decoration-success="state == 'sold'" decoration-danger="state == 'cancelled'" decoration-info="state == 'new'" decoration-warning="state == 'offer_accepted'" decoration-primary="state == 'offer_received'"/>
+            <list default_order="name"
+                decoration-success="state in ['offer_received','offer_accepted']"
+                decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
+                <field name="is_favorite" widget="boolean_favorite" nolabel="1" />
+                <field name='name' string="Title" />
+                <field name="activity_ids" widget="list_activity" optional="show" />
+                <field name='postcode' />
+                <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name='bedrooms' width="200px" />
+                <field name='living_area' string="Living Area (sqm)" width="200px" />
+                <field name='expected_price' widget="estate_price_tag"
+                    options="{'currency_symbol': 'Rs'}" width="200px" />
+                <field name='selling_price' widget="estate_price_tag" width="200px" />
+                <field name="best_price" />
+                <field name='date_availability' string="Available From" width="200px"
+                    optional='True' />
+                <field name='state' widget='badge' decoration-success="state == 'sold'"
+                    decoration-danger="state == 'cancelled'" decoration-info="state == 'new'"
+                    decoration-warning="state == 'offer_accepted'"
+                    decoration-primary="state == 'offer_received'" />
             </list>
         </field>
     </record>
@@ -24,7 +32,9 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" groups_draggable="false" records_draggable="false" default_order="expected_price desc" highlight_color="color">
+            <kanban default_group_by="property_type_id" groups_draggable="false"
+                records_draggable="false" default_order="expected_price desc"
+                highlight_color="color">
                 <field name="state" />
                 <field name="name" />
                 <field name="expected_price" />
@@ -35,27 +45,36 @@
                     <t t-name="card">
                         <div class="d-flex gap-3">
                             <div style="width:80px; height:80px; overflow:hidden; flex-shrink:0;">
-                                <field name="image" widget="image" style="width:100%; height:100%; object-fit:cover;"/>
+                                <field name="image" widget="image"
+                                    style="width:100%; height:100%; object-fit:cover;" />
                             </div>
                             <div class="d-flex flex-column">
-                                <field class="fw-bolder" name="name"/>
+                                <field class="fw-bolder" name="name" />
                                 <div>
                                     <span style="opacity:50%;">Expected Price: </span>
-                                    <field name="expected_price"/>
+                                    <field name="expected_price" />
                                 </div>
                                 <div t-if="record.state.raw_value == 'offer_accepted'">
                                     <span style="opacity:50%;">Best Price: </span>
-                                    <field name="best_price"/>
+                                    <field name="best_price" />
                                 </div>
                                 <div t-if="record.state.raw_value == 'sold'">
                                     <span style="opacity:50%;">Selling Price: </span>
-                                    <field name="selling_price"/>
+                                    <field name="selling_price" />
                                 </div>
                                 <div>
                                     <field name="tag_ids" options="{'color_field': 'color'}" />
                                 </div>
                             </div>
                         </div>
+                        <footer class="align-items-end">
+                            <div class="d-flex flex-wrap gap-1 text-muted text-nowrap">
+                                <field name="activity_ids" widget="kanban_activity" />
+                            </div>
+                            <field name="state" widget="label_selection"
+                                options="{'classes': {'new': 'info', 'offer_received': 'default', 'cancelled' : 'danger' , 'sold': 'success'}}"
+                                class="ms-auto" />
+                        </footer>
                     </t>
                 </templates>
             </kanban>
@@ -68,78 +87,96 @@
         <field name='arch' type='xml'>
             <form>
                 <header>
-                    <field name='state' widget='statusbar'/>
-                    <button name='action_set_sold' type='object' string='Sold' class="btn-primary" invisible="state in ['sold','cancelled']"/>
-                    <button name='action_set_cancelled' type='object' string='Cancel' invisible="state in ['sold','cancelled']"/>
-                    <button name='action_reset' type='object' string='Reset'/>
-                    <button name="action_accept_best" string="Accept Best Offer" type="object"/>
+                    <field name='state' widget='statusbar' />
+                    <button name='action_set_sold' type='object' string='Sold' class="btn-primary"
+                        invisible="state in ['sold','cancelled']" data-hotkey="s" />
+                    <button name='action_mail_send' type='object' string='Send' />
+                    <button name='action_set_cancelled' type='object' string='Cancel'
+                        invisible="state in ['sold','cancelled']" data-hotkey="c" />
+                    <button name='action_reset' type='object' string='Reset'
+                        invisible="state not in ['sold','cancelled']" data-hotkey="r" />
+                    <button name="action_accept_best" string="Accept Best Offer" type="object"
+                        data-hotkey="a" />
                 </header>
                 <sheet>
-                    <field name="image" widget="image" class="oe_avatar"/>
-                    <widget name='web_ribbon' title='cancelled' bg_color="text-bg-warning" invisible="state != 'cancelled'"/>
-                    <widget name='web_ribbon' title='Sold' bg_color='text-bg-success' invisible="state != 'sold'"/>
+                    <field name="image" widget="image" class="oe_avatar" />
+                    <widget name='web_ribbon' title='cancelled' bg_color="text-bg-warning"
+                        invisible="state != 'cancelled'" />
+                    <widget name='web_ribbon' title='Sold' bg_color='text-bg-success'
+                        invisible="state != 'sold'" />
                     <div class="oe_title mb16">
-                        <label for="name" string="Property Name"/>
+                        <label for="name" string="Property Name" />
                         <h1>
                             <div class="d-flex">
-                                <field name="is_favorite" widget="boolean_favorite" class="me-2" nolabel="1"/>
-                                <field name='name' placeholder="Flat no 1"/>
+                                <field name="is_favorite" widget="boolean_favorite" class="me-2"
+                                    nolabel="1" />
+                                <field name='name' placeholder="Flat no 1" />
                             </div>
                         </h1>
                     </div>
                     <group col='2'>
                         <group>
-                            <field name='tag_ids' widget='many2many_tags' options="{'color_field': 'color'}" placeholder="add tags here...." />
+                            <field name='tag_ids' widget='many2many_tags'
+                                options="{'color_field': 'color'}" placeholder="add tags here...." />
                             <field name='property_type_id' String="Property Type" />
-                            <field name='postcode'/>
-                            <field name='date_availability' string='Available From' options="{'min_date': 'today', 'max_date': '2026-12-31'}"/>
+                            <field name='postcode' />
+                            <field name='date_availability' string='Available From'
+                                options="{'min_date': 'today', 'max_date': '2026-12-31'}" />
                         </group>
                         <group>
-                            <field name='expected_price'/>
-                            <field name='best_price' string="Best Offer"/>
-                            <field name='selling_price'/>
+                            <field name='expected_price' />
+                            <field name='best_price' string="Best Offer" />
+                            <field name='selling_price' />
                         </group>
                     </group>
                     <notebook>
                         <page string='Description'>
                             <group>
-                                <field name='description'/>
-                                <field name='bedrooms'/>
-                                <field name='living_area' string="Living Area (sqm)"/>
-                                <field name='facades'/>
-                                <field name='garage'/>
-                                <field name='garden' widget="boolean_toggle"/>
-                                <field name='garden_area' string="Garden Area (sqm)" invisible="not garden"/>
-                                <field name='garden_orientation' invisible="not garden"/>
-                                <field name='total_area' string="Total Area (sqm)"/>
+                                <field name='description' />
+                                <field name='bedrooms' />
+                                <field name='living_area' string="Living Area (sqm)" />
+                                <field name='facades' />
+                                <field name='garage' />
+                                <field name='garden' widget="boolean_toggle" />
+                                <field name='garden_area' string="Garden Area (sqm)"
+                                    invisible="not garden" />
+                                <field name='garden_orientation' invisible="not garden" />
+                                <field name='total_area' string="Total Area (sqm)" />
                             </group>
                         </page>
                         <page string='Offers'>
                             <field name='offer_ids' readonly="state == 'offer_accepted'">
-                                <list editable='bottom' decoration-danger="status and status == 'refused'" decoration-success="status and status == 'accepted'">
+                                <list editable='bottom'
+                                    decoration-danger="status and status == 'refused'"
+                                    decoration-success="status and status == 'accepted'">
                                     <control>
-                                        <create name="add_product_control" string="Add an Offer "/>
+                                        <create name="add_product_control" string="Add an Offer " />
                                     </control>
-                                    <field name="sequence" widget="handle"/>
-                                    <field name='partner_id' width='200px'/>
-                                    <field name='price' width='200px'/>
-                                    <field name='validity' string="Validity (Days)" width='200px'/>
-                                    <field name='date_deadline' string="Deadline"/>
-                                    <field name="property_type_id"/>
-                                    <button name='action_accept' string='Accept' type='object' icon='fa-check' invisible="status == 'accepted'" class="text-success"/>
-                                    <button name='action_refuse' string='Refuse' type='object' icon='fa-times' invisible="status == 'refused'" class="text-danger"/>
-                                    <field name='status' width='200px'/>
+                                    <field name="sequence" widget="handle" />
+                                    <field name='partner_id' width='150px' />
+                                    <field name='price' width='150px' />
+                                    <field name='validity' string="Validity (Days)" width='150px' />
+                                    <field name='date_deadline' string="Deadline" />
+                                    <field name="property_type_id" />
+                                    <button name='action_accept' string='Accept' type='object'
+                                        icon='fa-check' invisible="status == 'accepted'"
+                                        class="text-success" />
+                                    <button name='action_refuse' string='Refuse' type='object'
+                                        icon='fa-times' invisible="status == 'refused'"
+                                        class="text-danger" />
+                                    <field name='status' width='200px' />
                                 </list>
                             </field>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name='salesperson_id' string="Salesman"/>
-                                <field name='buyer_id' string="Buyer"/>
+                                <field name='salesperson_id' string="Salesman" />
+                                <field name='buyer_id' string="Buyer" />
                             </group>
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>
@@ -149,20 +186,22 @@
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
             <search>
-                <field name='name' string="Title"/>
-                <field name='postcode'/>
-                <field name='expected_price'/>
-                <field name='bedrooms'/>
-                <field name='living_area' string="Living Area (sqm)" operator='>='/>
-                <field name="best_price" operator=">="/>
-                <field name='facades'/>
-                <filter name='active' string='Archived' domain='[("active", "=", False)]'/>
-                <filter name="is_favorite" string="Favorites" domain="[('is_favorite','=',True)]"/>
-                <separator/>
-                <filter name='state' string='Available' domain='[("state", "!=", "sold"), ("state", "!=", "cancelled")]'/>
-                <filter name='filter_sold' string='Sold' domain='[("state", "=", "sold")]'/>
-                <filter name='filter_cancelled' string='Cancelled' domain='[("state", "=", "cancelled")]'/>
-                <filter name='group_by_postcode' string="Postcode" context="{'group_by':'postcode'}"/>
+                <field name='name' string="Title" />
+                <field name='postcode' />
+                <field name='expected_price' />
+                <field name='bedrooms' />
+                <field name='living_area' string="Living Area (sqm)" operator='>=' />
+                <field name="best_price" operator=">=" />
+                <field name='facades' />
+                <filter name='active' string='Archived' domain='[("active", "=", False)]' />
+                <filter name="is_favorite" string="Favorites" domain="[('is_favorite','=',True)]" />
+                <separator />
+                <filter name='state' string='Available'
+                    domain='[("state", "!=", "sold"), ("state", "!=", "cancelled")]' />
+                <filter name='filter_sold' string='Sold' domain='[("state", "=", "sold")]' />
+                <filter name='filter_cancelled' string='Cancelled'
+                    domain='[("state", "=", "cancelled")]' />
+                <filter name='group_by_postcode' string="Postcode" context="{'group_by':'postcode'}" />
             </search>
         </field>
     </record>
