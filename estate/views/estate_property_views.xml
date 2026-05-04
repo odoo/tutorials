@@ -36,6 +36,7 @@
                         <group>
                             <field name="x_expected_price"/>
                             <field name="x_selling_price"/>
+                            <field name="x_api_published"/>
                         </group>
                     </group>
                     <notebook>
