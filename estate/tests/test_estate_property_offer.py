@@ -16,7 +16,7 @@ class TestEstatePropertyOffer(TransactionCase):
             'name': 'property1',
             'expected_price': 100,
         })
-        offer = self.env['estate.property.offer'].create({
+        self.env['estate.property.offer'].create({
             'price': 90,
             'partner_id': self.buyer.id,
             'property_id': self.property.id,
