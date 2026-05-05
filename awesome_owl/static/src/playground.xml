@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
+    <t t-name="awesome_owl.Playground">
         <div class="p-3">
             hello world
+            <h2>My Playground</h2>
+            <Counter/>
+            <Counter/>
         </div>
+
+        <div class="p-3">
+            <h2>Sum of Counters: <t t-esc="state.sum"/></h2>
+            
+            <Counter onChange="incrementSum.bind(this)"/>
+            <Counter onChange="incrementSum.bind(this)"/>
+        </div>
+        
+        <div class="p-3">
+            <TodoList/>
+        </div>
+
+        <Card title="'My Tasks'">
+            <TodoList/>
+        </Card>
+
+        <Card title="'Interactive Card'">
+            <div class="text-center">
+                <p>You can even put components here:</p>
+                <Counter/>
+            </div>
+        </Card>
     </t>
 
 </templates>
