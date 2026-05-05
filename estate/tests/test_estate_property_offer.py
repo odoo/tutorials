@@ -33,7 +33,7 @@ class TestEstatePropertyOffer(TransactionCase):
             'state': 'sold'
         })
         with self.assertRaises(UserError):
-            offer = self.env['estate.property.offer'].create({
+            self.env['estate.property.offer'].create({
                 'price': 90,
                 'partner_id': self.buyer.id,
                 'property_id': self.property.id,
