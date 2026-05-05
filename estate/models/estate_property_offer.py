@@ -59,6 +59,16 @@ class EstatePropertyOffer(models.Model):
             date = fields.Date.to_date(record.create_date) or fields.Date.today()
             record.date_deadline = fields.Date.add(date, days=record.validity)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_record = self.env['estate.property'].browse(vals.get('property_id'))
+            existing_prices = property_record.offer_ids.mapped('price')
+            if existing_prices and vals.get('price') <= max(existing_prices):
+                raise ValidationError("Offer price must be higher than existing offers!")
+            property_record.state = 'offer_received'
+        return super().create(vals_list)
+
     def _inverse_date_deadline(self):
         for record in self:
             date = (fields.Date.to_date(record.create_date)
