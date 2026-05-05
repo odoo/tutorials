@@ -1,0 +1,17 @@
+<odoo>
+    <record id="rule_estate_public_no_edit" model="ir.rule">
+        <field name="name">Public no edit</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[('id', '=', False)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="perm_write" eval="True"/>
+    </record>
+
+    <record id="rule_estate_public_only_see_api_published" model="ir.rule">
+        <field name="name">Public only see api published</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="domain_force">[('x_api_published', '=', True)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="perm_read" eval="True"/>
+    </record>
+</odoo>
