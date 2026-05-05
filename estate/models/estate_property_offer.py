@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -35,11 +35,11 @@ class EstatePropertyOffer(models.Model):
         for rec in self:
 
             if rec.status == 'accepted':
-                raise UserError("Offer has already been accepted")
+                raise UserError(_("Offer has already been accepted"))
             rec.status = 'accepted'
 
             rec.property_id.write({
-                'buyer': rec.partner_id.id,
+                'buyer_id': rec.partner_id.id,
                 'selling_price': rec.price,
                 'state': 'offer_accepted'
             })
@@ -53,10 +53,10 @@ class EstatePropertyOffer(models.Model):
     def action_status_refused(self):
         for rec in self:
             if rec.status == 'refused':
-                raise UserError("Offer has already been refused")
+                raise UserError(_("Offer has already been refused"))
 
             rec.property_id.write({
-                'buyer': False,
+                'buyer_id': False,
                 'selling_price': False,
             })
         return True
@@ -65,3 +65,19 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'Offer Price Must Be Greater than zero'
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            if property_id:
+                property = self.env['estate.property'].browse(property_id)
+                max_existing_offer = property.best_price or 0.0
+                price = vals.get('price')
+                if price is not None and price < max_existing_offer:
+                    raise UserError(
+                        _("The offer must be higher than %s") % max_existing_offer)
+
+                property.state = 'offer_received'
+        return super().create(vals_list)

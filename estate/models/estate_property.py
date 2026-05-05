@@ -1,5 +1,5 @@
-from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo import _, fields, models, api
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer(string="Bedrooms", default="2")
     best_price = fields.Float(
         string="Best Price", compute='_compute_best_price')
-    buyer = fields.Many2one(
+    buyer_id = fields.Many2one(
         'res.partner', string="Buyer", ondelete='restrict',
     )
     date_availability = fields.Datetime(
@@ -40,7 +40,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char(string="Postcode")
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
-    salesman = fields.Many2one(
+    salesman_id = fields.Many2one(
         'res.users', string="Salesman", ondelete='restrict',
     )
     selling_price = fields.Float(
@@ -83,7 +83,7 @@ class EstateProperty(models.Model):
     def action_property_sold(self):
         for rec in self:
             if rec.state == 'cancelled':
-                raise UserError('A cancelled property cannot be sold')
+                raise UserError(_('A cancelled property cannot be sold'))
             else:
                 rec.state = 'sold'
 
@@ -92,7 +92,7 @@ class EstateProperty(models.Model):
     def action_property_cancelled(self):
         for rec in self:
             if rec.state == 'sold':
-                raise UserError('A sold property cannot be cancelled')
+                raise UserError(_('A sold property cannot be cancelled'))
             else:
                 rec.state = 'cancelled'
         return True
@@ -139,5 +139,12 @@ class EstateProperty(models.Model):
             if rec.selling_price != 0:
                 percentage = rec.selling_price * 100 / rec.expected_price
                 if percentage <= 10:
-                    raise UserError(
-                        'Selling price cannot be lower than 90 percent of expected price')
+                    raise ValidationError(_(
+                        'Selling price cannot be lower than 90 percent of expected price'))
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_deletion(self):
+        for rec in self:
+            if rec.state not in ('new', 'cancelled'):
+                raise UserError(_(
+                    "Cannot delete this record because it has active orders"))
