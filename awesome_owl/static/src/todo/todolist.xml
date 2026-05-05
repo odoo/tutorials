@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoList">
+        <div>
+            <input
+                class="o_section_input py-1"
+                t-ref="inputTodo"
+                type="text"
+                placeholder="Enter a new task"
+                t-model="this.state.newTodoName"
+                t-on-keyup="addTodo"
+            />
+            <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo" toggleState="toggleTodo.bind(this)" delTodo="removeTodo.bind(this)"/>
+            </t>
+        </div>
+    </t>
+
+</templates>
