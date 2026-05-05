@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute='_compute_total_area', search="_search_total_area")
     best_price = fields.Float(compute='_compute_best_price', store=True)
     property_type_id = fields.Many2one("estate.property.type")
-    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    tag_ids = fields.Many2many("estate.property.tag")
     salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', copy=False)
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
