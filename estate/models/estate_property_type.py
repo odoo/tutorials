@@ -15,7 +15,7 @@ class EstatePropertyType(models.Model):
         compute='_compute_offer_count')
     sequence = fields.Integer(default=10)
 
-    @api.depends('offer_ids',)
+    @api.depends('offer_ids')
     def _compute_offer_count(self):
         for rec in self:
             rec.offer_count = len(rec.offer_ids)
