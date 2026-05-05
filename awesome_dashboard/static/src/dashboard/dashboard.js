@@ -17,7 +17,7 @@ class AwesomeDashboard extends Component {
         this.dialogService = useService("dialog");
         this.items = registry.category("awesome_dashboard").getAll();
         this.state = useState({
-            disabled: localStorage.getItem("awesome_dashboard_disabled")?.split(',') || []
+            disabledItems: localStorage.getItem("awesome_dashboard_disabled")?.split(',') || []
         });
     }
 
@@ -31,14 +31,14 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    updateDashboard(disabled) {
-        this.state.disabled = disabled;
+    updateDashboard(disabledItems) {
+        this.state.disabledItems = disabledItems;
     }
 
     openDialog() {
         this.dialog = this.dialogService.add(
             DashboardConfiguration,
-            {items: this.items, disabled: this.state.disabled, doneUpdating: this.updateDashboard.bind(this)},
+            {items: this.items, disabledItems: this.state.disabledItems, doneUpdating: this.updateDashboard.bind(this)},
             {});
     }
 }
@@ -46,12 +46,12 @@ class AwesomeDashboard extends Component {
 class DashboardConfiguration extends Component {
     static template = "awesome_dashboard.DashboardConfiguration";
     static components = {Dialog, CheckBox, _t};
-    static props = ["close", "items", "disabled", "doneUpdating"];
+    static props = ["close", "items", "disabledItems", "doneUpdating"];
 
 
     setup() {
         this.options = useRef("options");
-        this.items = useState(this.props.items.map(item => ({...item, disabled: this.props.disabled.includes(item.id)})));
+        this.items = useState(this.props.items.map(item => ({...item, disabled: this.props.disabledItems.includes(item.id)})));
         this.title = _t('Dashboard items configuration');
     }
 
@@ -60,9 +60,9 @@ class DashboardConfiguration extends Component {
     }
 
     apply() {
-        const disabled = this.items.filter(item => item.disabled).map(item => item.id);
-        localStorage.setItem("awesome_dashboard_disabled", disabled);
-        this.props.doneUpdating(disabled);
+        const disabledItems = this.items.filter(item => item.disabled).map(item => item.id);
+        localStorage.setItem("awesome_dashboard_disabled", disabledItems);
+        this.props.doneUpdating(disabledItems);
         this.props.close();
     }
 }
