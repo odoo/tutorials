@@ -99,6 +99,11 @@
                         data-hotkey="a" />
                 </header>
                 <sheet>
+                    <div name="button_box">
+                        <button name="action_open_invoice" type="object" icon="fa-book">
+                            <field name="account_move_ids" widget="statinfo" string="Invoices" />
+                        </button>
+                    </div>
                     <field name="image" widget="image" class="oe_avatar" />
                     <widget name='web_ribbon' title='cancelled' bg_color="text-bg-warning"
                         invisible="state != 'cancelled'" />
