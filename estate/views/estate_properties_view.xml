@@ -41,6 +41,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_potential_buyers" type="object" icon="fa-address-book" invisible="potential_buyer_count == 0 or state == 'cancelled'">
+                            <field name="potential_buyer_count" string="Potential Buyers" widget="statinfo"/>
+                        </button>
+                    </div>
                     <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title">
                         <h1>
@@ -76,15 +81,19 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" invisible="not garden"/>
-                                <field name="garden_orientation" invisible="not garden"/>
-                                <field name="total_area"/>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms" options="{'type': 'number'}"/>
+                                    <field name="living_area"/>
+                                    <field name="facades" options="{'type': 'number'}"/>
+                                    <field name="garage"/>
+                                </group>
+                                <group>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="total_area"/>
+                                </group>
                             </group>
                         </page>
                         <page string="Offers">

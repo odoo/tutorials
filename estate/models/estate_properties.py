@@ -50,6 +50,7 @@ class EstateProperties(models.Model):
     name = fields.Char(string="Property Name", required=True)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     postcode = fields.Char()
+    potential_buyer_count = fields.Integer(compute='_compute_potential_buuyers')
     price_gap = fields.Float(compute='_compute_price_gap')
     property_type_colour = fields.Selection(related='property_type_id.colour', readonly=False)
     property_type_id = fields.Many2one(comodel_name='estate.property.type')
@@ -74,6 +75,21 @@ class EstateProperties(models.Model):
         'CHECK (expected_price > 0 AND selling_price >= 0)',
         "Price should strictly be positive",
     )
+
+    @api.depends('buyer_id.property_id')
+    def _compute_potential_buuyers(self):
+        properties = self.env['estate.properties'].search([])
+        partners_detected = properties.buyer_id
+        # _logger.error(partners_detected)
+        # _logger.error(len(partners_detected))
+        for property in self:
+            # _logger.error("Found property")
+            if self.env.uid:
+                # _logger.error("LOgged in user")
+                # _logger.error(property.env.uid)
+                property.potential_buyer_count = len(partners_detected) - 1
+            else:
+                property.potential_buyer_count = len(partners_detected)
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
@@ -145,8 +161,8 @@ class EstateProperties(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_state(self):
         for property in self:
-            if property.state in ['new', 'cancelled']:
-                raise UserError("Cannot delete a new or cancelled property")
+            if property.state not in ['new', 'cancelled']:
+                raise UserError("Cannot delete property")
 
     def property_cancelled(self):
         for property in self:
@@ -215,3 +231,29 @@ class EstateProperties(models.Model):
     def offer_received_state(self):
         if self.offer_ids and self.state == 'new':
             self.state = 'offer_received'
+
+    def action_potential_buyers(self):
+        # _logger.error("Hellooooooooooooooooooooo")
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('base.action_partner_form')
+        action['view_mode'] = 'list'
+        action['views'] = []
+        action['domain'] = [
+            ('property_id', '!=', False)
+        ]
+        action['context'] = {
+            'create': False,
+            'edit': False,
+            'delete': False,
+        }
+        return action
+
+    # def action_view_partner_invoices(self):
+    #     self.ensure_one()
+    #     action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_out_invoice_type")  # type: ignore
+    #     action['domain'] = [
+    #         ('move_type', 'in', ('out_invoice')),
+    #         ('partner_id', 'in', self.buyer_id)
+    #     ]
+    #     action['context'] = {'default_move_type': 'out_invoice', 'move_type': 'out_invoice', 'journal_type': 'sale'}
+    #     return action
