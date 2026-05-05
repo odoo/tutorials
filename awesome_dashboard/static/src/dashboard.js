@@ -3,11 +3,11 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./item/dashboardItem";
-import { rpc } from "@web/core/network/rpc";
+import { PiChart } from "./chart/piChart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem }
+    static components = { Layout, DashboardItem, PiChart }
 
     setup(){
         this.display = {
@@ -15,10 +15,10 @@ class AwesomeDashboard extends Component {
         }
 
     this.action = useService("action")
-    this.statistics = {};
+    this.statiscticsService = useService("awesome_dashboard.statistics_service")
 
     onWillStart(async () => {
-        this.statistics = await rpc("/awesome_dashboard/statistics");
+        this.statistics = await this.statiscticsService.loadStatistics()
         })
     }
 
@@ -26,7 +26,7 @@ class AwesomeDashboard extends Component {
         this.action.doAction("base.action_partner_form")
     }
 
-    async openLeads(){
+    openLeads(){
         this.action.doAction({
             type: 'ir.actions.act_window',
             name: 'crm leads',

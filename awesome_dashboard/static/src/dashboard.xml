@@ -37,6 +37,9 @@
                         <div class="fw-bold text-success h1" t-esc="statistics.total_amount"></div>
                     </div>
                 </DashboardItem>
+                <DashboardItem size="2">
+                    <PiChart data="statistics.orders_by_size" label="'Order Size'"/>
+                </DashboardItem>
             </div>
         </Layout>
     </t>
