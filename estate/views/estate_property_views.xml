@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <search string="Search Properties">
                 <field name="name"/>
+                <field name="property_type_id" />
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
@@ -30,13 +31,16 @@
                     <field name="active" invisible="1" />
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" invisible="active"/>
                     <div class="oe_title">
-                        <h1 class="mb32">
+                        <h1>
                             <field name="name" class="mb16" />
                         </h1>
                     </div>
 
+                    <field name="property_tag_ids" widget="many2many_tags" class="mb32" />
+
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -61,18 +65,31 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Offers" name="offers">
+                            <field name="property_offer_ids" />
+                        </page>
+                        <page string="Other Info" name="other_info">
+                            <group>
+                                <group>
+                                    <field name="salesperson_id" />
+                                    <field name="buyer_id" />
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="estate_property_view_tree" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" />
+                <field name="property_type_id" />
+                <field name="property_tag_ids" widget="many2many_tags" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
@@ -96,4 +113,5 @@
             </p>
         </field>
     </record>
+
 </odoo>

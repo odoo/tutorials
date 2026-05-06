@@ -5,19 +5,18 @@ class EstateProperty(models.Model):
     _description = 'Estate Property'
 
     name = fields.Char('Title', required=True)
-    description = fields.Text('Description')
-    postcode = fields.Char('Postcode')
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date('Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
-    expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
-    bedrooms = fields.Integer('Bedrooms', default=2)
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer('Living Area (sqm)')
-    facades = fields.Integer('Facades')
-    garage = fields.Boolean('Garage')
-    garden = fields.Boolean('Garden')
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(
-        string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help='The orientation of the garden'
     )
@@ -28,4 +27,9 @@ class EstateProperty(models.Model):
         copy=False,
         default='new'
     )
-    active = fields.Boolean('Active', default=True)
+    active = fields.Boolean(default=True)
+    property_type_id = fields.Many2one('estate.property.type')
+    buyer_id = fields.Many2one('res.partner', copy=False)
+    salesperson_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+    property_tag_ids = fields.Many2many('estate.property.tag')
+    property_offer_ids = fields.One2many('estate.property.offer', 'property_id')
