@@ -1,0 +1,7 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="card h-100 shadow-sm" t-attf-style="width:{{props.size*18}}rem">
+            <t t-slot="default"/>
+        </div>
+    </t>
+</templates>

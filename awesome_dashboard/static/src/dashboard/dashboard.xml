@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="display">
+            <div class="overflow-auto">
+                <div class="p-3 d-flex gap-3">
+                    <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                    <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                </div>
+                <div class="d-flex gap-2 p-3 flex-wrap">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem>
+                            <t t-set="itemProp" t-value="item.props ? item.props(statistics.data) : {'data': statistics.data}"/>
+                            <t t-component="item.Component" t-props="itemProp"/>
+                        </DashboardItem>
+                    </t>
+                </div>
+            </div>
+        </Layout>
+    </t>
+</templates>
