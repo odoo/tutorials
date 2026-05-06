@@ -50,24 +50,33 @@
 
 <!-- PRODUCT PAGE -->
     <template id="product" inherit_id="website_sale.product" name="Airproof - Product">
+        <!-- Move breadcrumb -->
+        <xpath expr="//div[@id='o_wsale_product_details_content']" position="before">
+            <xpath expr="//ol[hasclass('o_wsale_breadcrumb')]" position="move" />
+        </xpath>
         <!-- Configure options of the product page -->
         <xpath expr="//section[@id='product_detail']" position="attributes">
-            <attribute name="class" add="o_wsale_product_page_opt_image_radius_medium" separator=" " />
+            <attribute name="t-attf-class" add="o_wsale_product_page_opt_image_radius_medium" remove="o_wsale_product_page_opt_separators" separator=" " />
         </xpath>
         <!-- Add drop zone on all products -->
-        <!-- <xpath expr="//section[@id='product_detail']" position="after">
-            <div id="oe_structure_layout_airproof_products" class="oe_structure oe_empty" data-editor-message="DROP ZONE VISIBLE ACROSS ALL PRODUCTS"/>
-        </xpath> -->
+        <xpath expr="//section[@id='product_detail']" position="after">
+            <div id="oe_structure_layout_airproof_products" class="oe_structure oe_empty" data-editor-message="AIRPROOF DROP ZONE VISIBLE ACROSS ALL PRODUCTS"/>
+        </xpath>
     </template>
 
     <template id="cta_wrapper" inherit_id="website_sale.cta_wrapper" name="Airproof - CTA Wrapper">
         <!-- Change icon "add to cart" -->
-        <xpath expr="//*[@id='add_to_cart']/i[hasclass('fa-shopping-cart')]" position="replace">
-            <img src="/web/image/website_airproof.img_shopping" alt="Shopping icon" class="img img-fluid me-1" /> <span
-                class="text-uppercase fw-bold">Add to cart</span>
-        </xpath>
-        <xpath expr="//div[@id='product_option_block']" position="attributes">
-            <attribute name="t-attf-class" remove="w-100 w-sm-auto" separator=" " />
+        <xpath expr="//*[@id='add_to_cart']" position="replace">
+            <a
+                id="add_to_cart"
+                role="button"
+                href="#"
+                t-attf-class="btn btn-primary js_check_product a-submit flex-grow-1"
+                t-att-data-show-quantity="is_view_active('website_sale.product_quantity')"
+                data-animation-selector=".o_wsale_product_images">
+                <img src="/web/image/website_airproof.img_shopping" alt="Shopping icon" class="img img-fluid me-1" />
+                <span>Add to cart</span>
+            </a>
         </xpath>
     </template>
 
@@ -106,15 +115,10 @@
             <attribute
                 name="class"
                 remove="s_product_product_borderless_1"
-                add="s_product_product_airproof o_wsale_products_opt_layout_catalog o_wsale_products_opt_design_cards o_wsale_products_opt_name_color_regular o_wsale_products_opt_thumb_cover o_wsale_products_opt_img_hover_zoom_out_light o_wsale_products_opt_has_cta o_wsale_products_opt_actions_onhover o_wsale_products_opt_wishlist_fixed .o_wsale_products_opt_cc o_wsale_products_opt_cc1 o_wsale_products_opt_rounded_2 o_wsale_products_opt_actions_promote o_wsale_products_opt_actions_subtle o_wsale_products_opt_name_weight_bold"
+                add="s_product_product_airproof o_wsale_products_opt_layout_catalog o_wsale_products_opt_design_cards o_wsale_products_opt_name_color_regular o_wsale_products_opt_thumb_4_3 o_wsale_products_opt_img_hover_zoom_out_light o_wsale_products_opt_actions_onhover o_wsale_products_opt_cc o_wsale_products_opt_cc1 o_wsale_products_opt_rounded_5 o_wsale_products_opt_name_weight_bold"
                 separator=" " />
             <attribute name="data-template-key">website_airproof.dynamic_filter_template_product_product_airproof</attribute>
             <attribute name="style" add="background-color: #E6E7E8; --o-wsale-products-grid-gap: 16px;" separator=" " />
-        </xpath>
-
-        <!-- Move the drop-zone before the alternative products -->
-        <xpath expr="//div[@t-field='product.website_description']" position="before">
-            <xpath expr="//div[@id='oe_structure_website_sale_product_2']" position="move" />
         </xpath>
     </template>
 </odoo>

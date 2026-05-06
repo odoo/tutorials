@@ -1,9 +1,6 @@
 #wrapwrap {
     // Img carousel
-    #o-carousel-product .carousel-indicators li {
-        box-shadow: 0 0 15px #CDCDCD;
-        .o_image_64_cover { border-radius: 5px; }
-    }
+    #o-carousel-product .carousel-indicators li { box-shadow: 0 0 15px #CDCDCD; }
 
     // Wishlist button
     .o_add_wishlist_dyn span:not(.fa) { display: inline-block !important; }
