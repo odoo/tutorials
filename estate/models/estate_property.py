@@ -4,7 +4,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
 
-    name = fields.Char('Property Name', required=True)
+    name = fields.Char('Title', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
