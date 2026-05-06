@@ -238,7 +238,7 @@
                         <section
                             data-snippet="s_dynamic_snippet_products"
                             data-name="Products"
-                            class="s_dynamic_snippet_products oe_website_sale s_dynamic pt32 pb32 o_colored_level s_product_product_airproof o_cc o_cc5 o_wsale_products_opt_layout_catalog o_wsale_products_opt_design_cards o_wsale_products_opt_name_color_regular o_wsale_products_opt_thumb_cover o_wsale_products_opt_img_hover_zoom_out_light o_wsale_products_opt_has_cta o_wsale_products_opt_actions_onhover o_wsale_products_opt_wishlist_fixed .o_wsale_products_opt_cc o_wsale_products_opt_cc1 o_wsale_products_opt_rounded_2 o_wsale_products_opt_actions_promote o_wsale_products_opt_actions_subtle o_wsale_products_opt_name_weight_bold"
+                            class="s_dynamic_snippet_products oe_website_sale s_dynamic pt32 pb32 o_colored_level s_product_product_airproof o_cc o_cc5 o_wsale_products_opt_layout_catalog o_wsale_products_opt_design_cards o_wsale_products_opt_name_color_regular o_wsale_products_opt_thumb_4_3 o_wsale_products_opt_img_hover_zoom_out_light o_wsale_products_opt_actions_onhover o_wsale_products_opt_wishlist_fixed .o_wsale_products_opt_cc o_wsale_products_opt_cc1 o_wsale_products_opt_rounded_2 o_wsale_products_opt_actions_promote o_wsale_products_opt_actions_subtle o_wsale_products_opt_name_weight_bold"
                             data-custom-template-data="{}"
                             data-number-of-records="16"
                             data-product-category-id="all"
@@ -292,10 +292,19 @@
                             <div class="container">
                                 <div class="row align-items-center">
                                     <div class="col-lg-4 offset-lg-1 pt16 pb16 o_colored_level">
-                                        <!-- Image shape -->
-                                        <img src="/web/image/website_airproof.img_drone_flying" class="img img-fluid" alt="Drone flying" data-shape="html_builder/geometric/geo_shuriken" data-shape-colors=";;;;" />
-
-                                        <img src="/html_editor/image_shape/website_airproof.img_drone_flying/html_builder/geometric_round/geo_round_square.svg" class="img img-fluid" alt="" data-shape="html_builder/geometric_round/geo_round_square" data-format-mimetype="image/jpeg" data-file-name="drone-flying.svg" data-shape-colors=";;;;" style="width: 100% !important;"/>
+                                        <!-- Custom image shape -->
+                                        <img
+                                            src="/html_editor/image_shape/website_airproof.img_drone_flying/website_airproof/duo/01.svg?c2=%23CEF8A1"
+                                            class="img img-fluid"
+                                            alt="Drone flying"
+                                            data-shape="website_airproof/duo/01"
+                                            data-shape-colors=";#CEF8A1;;;"
+                                            data-mimetype="image/svg+xml"
+                                            data-mimetype-before-conversion="image/webp"
+                                            data-original-src="website_airproof/static/src/img/content/drone-flying.webp"
+                                            data-file-name="drone-flying.svg" />
+                                        <!-- Standard image shape -->
+                                        <!-- <img src="/html_editor/image_shape/website_airproof.img_drone_flying/html_builder/geometric_round/geo_round_square.svg" class="img img-fluid" alt="Drone flying" data-shape="html_builder/geometric_round/geo_round_square" data-format-mimetype="image/jpeg" data-file-name="drone-flying.svg" data-shape-colors=";;;;" style="width: 100% !important;"/> -->
                                     </div>
                                     <div class="col-lg-5 offset-lg-1 pt16 pb16 o_colored_level">
                                         <span class="text-o-color-1 text-uppercase">The sky is the limit</span>
