@@ -26,7 +26,8 @@
                 name="unlink"
                 string="Delete"
                 type="object"
-                icon="fa-trash"/>
+                icon="fa-trash"
+                />
             </list>
         </field>
     </record>

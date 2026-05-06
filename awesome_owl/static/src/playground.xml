@@ -1,10 +1,32 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
+    <t t-name="awesome_owl.Playground">
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div style="padding:20px; font-family:sans-serif;">
+
+            <p style="margin-bottom:16px; font-size:15px;">Hello Counter</p>
+
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+
+            <p style="margin:12px 0; font-size:15px;">
+                The sum is: <t t-esc="state.sum"/>
+            </p>
+
+            <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:16px;">
+                <Card title="'Card 3'">
+                    This is simple text inside card
+                </Card>
+                <Card title="'Card 4'">
+                    <Counter/>
+                </Card>
+            </div>
+
+            <div style="margin-top:24px;">
+                <TodoList/>
+            </div>
+
         </div>
-    </t>
 
+    </t>
 </templates>

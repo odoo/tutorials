@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+        <div style="border:1px solid #ddd; border-radius:6px;
+                    min-width:180px; background:white;
+                    overflow:hidden;">
+
+            <div style="display:flex; justify-content:space-between;
+                        align-items:center; padding:10px 14px;
+                        border-bottom:1px solid #eee;">
+
+                <span style="font-size:14px; font-weight:600; color:#333;">
+                    <t t-esc="props.title"/>
+                </span>
+
+                <span style="cursor:pointer; font-size:16px;
+                            color:#7b3f6e; font-weight:bold;
+                            line-height:1; padding:0 4px;"
+                    t-on-click="toggleContent">
+                    <t t-if="state.isOpen">−</t>
+                    <t t-else="">+</t>
+                </span>
+
+            </div>
+
+            <div t-if="state.isOpen"
+                style="padding:12px 14px; font-size:14px; color:#555;">
+                <t t-slot="default"/>
+            </div>
+
+        </div>
+    </t>
+</templates>

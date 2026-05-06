@@ -44,7 +44,6 @@ class EstateProperty(models.Model):
         "estate.property.type",
         string="Property Type",
     )
-
     buyer_id = fields.Many2one(
         "res.partner",
         string="Buyer",
@@ -112,9 +111,7 @@ class EstateProperty(models.Model):
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
-            record.total_area = (
-                record.living_area +
-                record.garden_area
+            record.total_area = (record.living_area + record.garden_area
             )
 
     @api.depends("offer_ids.price")
@@ -186,9 +183,11 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled property cannot be sold!")
             for rec in record.issue_ids:
                 if rec.staty != 'resolved' and rec.priority == 'high':
-                    raise UserError("Cannot sell the property pls solve the issues")
+                    raise UserError(
+                    "Cannot sell the property, please solve the issues"
+                )
             record.state = 'sold'
-            record.sold_date = fields.Datetime.now()
+            record.sold_date = fields.Date.today()
         return True
 
     def action_cancel(self):
