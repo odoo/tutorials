@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800" height="800">
+    <defs>
+        <!-- Mask -->
+        <clipPath id="clip-path" clipPathUnits="objectBoundingBox">
+        <use xlink:href="#filterPath" fill="none" />
+        </clipPath>
+        <!-- Vector used in the mask definition (Clip-path) -->
+        <path id="filterPath" d="M0.325,0.75H0.125c-0.069,0-0.125-0.056-0.125-0.125V0.125C0,0.056,
+        0.056,0,0.125,0h0.2c0.069,0,0.125,0.056,0.125,0.125v0.5c0,0.069-0.056,0.125-0.125,0.125ZM1,
+        0.875v-0.5c0-0.069-0.056-0.125-0.125-0.125h-0.2c-0.069,0-0.125,0.056-0.125,0.125v0.5c0,
+        0.069,0.056,0.125,0.125,0.125h0.2c0.069,0,0.125-0.056,0.125-0.125Z"/>
+    </defs>
+
+    <!-- Other decorative element around (not used as a mask) -->
+    <svg viewBox="0 0 1 1" preserveAspectRatio="none">
+        <rect class="background" x="0.494" y="0.325" width="0.0125" height="0.35" rx="0.00625" ry="0.00625" fill="#E76362" />
+    </svg>
+</svg>
