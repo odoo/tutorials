@@ -25,6 +25,11 @@
         color: o-color('black') !important;
     }
 
+    // Language selector
+    .o_header_language_selector button {
+        background-color: white;
+    }
+
     // Centre logo
     @include media-breakpoint-up(lg) {
         header .o_header_centered_logo { width: 50%; }
