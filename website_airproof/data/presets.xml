@@ -45,6 +45,10 @@
     </record>
 
 <!-- SHOP PAGE -->
+    <!-- Disable Wishlist on product card // View template in: odoo/addons/website_sale_whishlist/views/website_sale_whishlist_template.xml  -->
+    <record id="website_sale_wishlist.add_to_wishlist" model="ir.ui.view">
+        <field name="active" eval="True" />
+    </record>
     <!-- Enable product categories in the left // View template in: odoo/addons/website_sale/views/templates.xml -->
     <record id="website_sale.products_categories" model="ir.ui.view">
         <field name="active" eval="True" />
