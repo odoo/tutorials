@@ -2,7 +2,7 @@
     'name': 'Real Estate',
     'author': 'soham',
     'license': 'LGPL-3',
-    'depends': ['base', 'calendar'],
+    'depends': ['base', 'calendar', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_visit_views.xml',
@@ -13,6 +13,7 @@
         'views/estate_property_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'data/mail_template_data.xml',
     ],
     'installable': True,
     'application': True,

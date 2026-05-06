@@ -5,13 +5,14 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Real Estate Property"
     _order = "id desc"
 
     name = fields.Char(required=True)
     expected_price = fields.Float(required=True)
     description = fields.Text()
-    postcode = fields.Char()
+    postcode = fields.Char(tracking=1)
     date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -188,7 +189,24 @@ class EstateProperty(models.Model):
                 )
             record.state = 'sold'
             record.sold_date = fields.Date.today()
-        return True
+
+        ctx = {
+        'default_model': 'estate.property',
+        'default_res_ids': self.ids,
+        'default_template_id': self.env.ref('estate.email_template_estate_property_sold').id,
+        'default_partner_ids': [self.buyer_id.id, self.salesman_id.partner_id.id],
+        }
+
+        return {
+        'name': 'Sold',
+        'type': 'ir.actions.act_window',
+        'view_mode': 'form',
+        'res_model': 'mail.compose.message',
+        'views': [(False, 'form')],
+        'view_id': False,
+        'target': 'new',
+        'context': ctx,
+    }
 
     def action_cancel(self):
         for record in self:
