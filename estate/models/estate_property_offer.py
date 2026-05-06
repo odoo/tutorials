@@ -76,8 +76,9 @@ class EstatePropertyOffer(models.Model):
                 max_existing_offer = property.best_price or 0.0
                 price = vals.get('price')
                 if price is not None and price < max_existing_offer:
-                    raise UserError(
-                        _("The offer must be higher than %s") % max_existing_offer)
+                    raise UserError(_(
+                        "The offer must be higher than %(price)s"
+                    ) % {'price': max_existing_offer})
 
                 property.state = 'offer_received'
         return super().create(vals_list)
