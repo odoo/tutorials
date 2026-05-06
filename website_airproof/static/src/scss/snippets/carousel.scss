@@ -1,7 +1,8 @@
 #wrapwrap {
     // Slider’s arrows
-    .s_carousel:not(.s_carousel.s_carousel_default),
-    .s_dynamic_snippet_products {
+    .s_dynamic_snippet_products,
+    .s_carousel_boxed,
+    .s_carousel_rounded {
         .carousel-control-next-icon,
         .carousel-control-prev-icon,
         .carousel-control-next .fa,
@@ -17,7 +18,18 @@
             display: inline-block;
             width: 48px;
             height: 48px;
-            border-radius: 99px;
+        }
+    }
+    .s_carousel_boxed {
+        .carousel-control-next::after,
+        .carousel-control-prev::after {
+            border-radius: 0.4rem;
+        }
+    }
+    .s_carousel_rounded {
+        .carousel-control-next::after,
+        .carousel-control-prev::after {
+            border-radius: 50rem;
         }
     }
 
@@ -63,7 +75,7 @@
 
             &::after {
                 width: 70px !important;
-                top: -65px !important;
+                top: -50px !important;
                 background-color: white !important;
             }
         }
