@@ -77,6 +77,8 @@ class EstateProperty(models.Model):
     image = fields.Image(tracking=True)
     is_favorite = fields.Boolean(tracking=True)
     color = fields.Integer(default=_get_default_color)
+    visit_ids = fields.One2many('estate.property.visit', 'estate_property_id')
+    calendar_event_ids = fields.One2many('calendar.event', 'estate_property_id')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -179,4 +181,25 @@ class EstateProperty(models.Model):
             'view_id': False,
             'target': 'new',
             'context': ctx,
+        }
+
+    def action_open_visits(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Property Visits',
+            'res_model': 'estate.property.visit',
+            'view_mode': 'list,form',
+            'domain': [('estate_property_id', '=', self.id)],
+            'context': {'default_estate_property_id': self.id},
+        }
+
+    def action_open_calendar(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Visit Calendar',
+            'res_model': 'calendar.event',
+            'view_mode': 'calendar,form',
+            'target': 'current',
+            'domain': [('estate_property_id', '=', self.id)],
+            'context': {'estate_property_id': self.id}
         }

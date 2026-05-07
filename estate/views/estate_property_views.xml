@@ -100,8 +100,11 @@
                 </header>
                 <sheet>
                     <div name="button_box">
-                        <button name="action_open_invoice" type="object" icon="fa-book">
-                            <field name="account_move_ids" widget="statinfo" string="Invoices" />
+                        <button name="action_open_visits" type="object" icon="fa-book">
+                            <field name="visit_ids" widget="statinfo" string="Property Visits" />
+                        </button>
+                        <button name="action_open_calendar" type="object" icon="fa-book">
+                            <field name="visit_ids" widget="statinfo" string="Calendar Events" />
                         </button>
                     </div>
                     <field name="image" widget="image" class="oe_avatar" />

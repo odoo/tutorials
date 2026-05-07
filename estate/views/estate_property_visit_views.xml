@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id='estate_property_visit_view_list' model='ir.ui.view'>
+        <field name='name'>estate.property.visit.list</field>
+        <field name='model'>estate.property.visit</field>
+        <field name='arch' type='xml'>
+            <list editable='bottom'>
+                <field name="estate_property_id" />
+                <field name='partner_id' />
+                <field name='time' />
+                <field name='state' />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_view_form" model="ir.ui.view">
+        <field name="name">estate.property.visit.form</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div name="button_box">
+                        <button name="action_open_calendar" type="object" icon="fa-book"
+                            invisible="not calendar_event_ids">
+                            <field name="calendar_event_ids" widget="statinfo"
+                                string="Property Visits" />
+                        </button>
+                    </div>
+                    <group>
+                        <field name="estate_property_id" />
+                        <field name='partner_id' />
+                        <field name='time' />
+                        <field name='state' />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="estate_property_visit" model="ir.actions.act_window">
+        <field name="name">Property Visits</field>
+        <field name="res_model">estate.property.visit</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="ir_cron_notify_salesperson" model="ir.cron">
+        <field name="name">Salesperson Notification</field>
+        <field name="model_id" ref="estate.model_estate_property_visit" />
+        <field name="state">code</field>
+        <field name="code">model._cron_notify_salesperson()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"></field>
+    </record>
+</odoo>

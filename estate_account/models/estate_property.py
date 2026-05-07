@@ -20,13 +20,3 @@ class EstateProperty(models.Model):
                 ]
             })
         return sold
-
-    def action_open_invoice(self):
-        invoice = self.account_move_ids[:1]
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Invoices',
-            'res_model': 'account.move',
-            'view_mode': 'form',
-            'res_id': invoice.id,
-        }

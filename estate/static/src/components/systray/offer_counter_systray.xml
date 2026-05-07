@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="estate.OfferCounterSystray" owl="1">
+        <div
+            class="o_estate_offer_counter"
+            t-att-class="{ o_estate_offer_counter_active: state.count > 0 }"
+            t-on-click="openOfferList"
+            title="Pending property offers"
+        >
+            <i class="fa fa-home" aria-hidden="true"/>
+            <sup
+                t-if="state.count > 0"
+                class="o_estate_offer_badge"
+                t-esc="displayCount"
+            />
+        </div>
+    </t>
+
+</templates>
