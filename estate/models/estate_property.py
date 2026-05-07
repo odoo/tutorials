@@ -6,6 +6,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
+    _inherit = 'mail.thread'
     _order = 'id desc'
 
     name = fields.Char(required=True)
@@ -42,7 +43,8 @@ class EstateProperty(models.Model):
         string="Status",
         required=True,
         copy=False,
-        default="new"
+        default="new",
+        tracking=2
     )
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
@@ -160,7 +162,28 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled properties cannot be sold!")
             record.state = 'sold'
             record.sold_date = fields.Date.today()
-        return True
+
+            template_id = self.env.ref('estate.mail_template_sold_confirmation', raise_if_not_found=False)
+            ctx = {
+                'default_model': 'estate.property',
+                'default_res_ids': self.ids,
+                'default_composition_mode': 'comment',
+                'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+                'force_email': True,
+                'default_template_id': template_id.id,
+            }
+
+            action = {
+                'name': ('Sold'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'mail.compose.message',
+                'views': [(False, 'form')],
+                'view_id': False,
+                'target': 'new',
+                'context': ctx,
+            }
+            return action
 
     def action_cancel(self):
         for record in self:

@@ -3,10 +3,11 @@
     'author': 'Aditi (adpaw)',
     'license': 'LGPL-3',
     'depends': [
-        'base', 'calendar'
+        'base', 'calendar', 'mail'
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/mail_template.xml',
         'views/estate_property_visit_views.xml',
         'views/estate_property_tags_views.xml',
         'views/estate_property_offer_views.xml',
