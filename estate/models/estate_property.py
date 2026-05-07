@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -41,7 +42,7 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        string="Status", required=True, copy=False, default='new')
+        string="Status", required=True, copy=False, default='new', tracking=True)
 
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
@@ -152,5 +153,29 @@ class EstateProperty(models.Model):
                     raise UserError("Property can not be sold as it is due and high priority")
             if record.state == 'cancelled':
                 raise UserError("Cancelled property cannot be sold.")
+            if record.state != 'offer_accepted':
+                raise UserError("Property cannot be sold without accepting offer")
             record.state = 'sold'
-        return True
+
+            template = self.env.ref('estate.email_template_edit_sale', raise_if_not_found=False)
+            # breakpoint()
+            ctx = {
+                'default_model': 'estate.property',
+                'default_res_ids': self.ids,
+                "default_partner_ids": [
+                    self.buyer_id.id,
+                    self.seller_id.partner_id.id,
+                    ],
+                'default_template_id': template.id,
+                }
+
+            return {
+                'name': 'Send',
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'mail.compose.message',
+                'views': [(False, 'form')],
+                'view_id': False,
+                'target': 'new',
+                'context': ctx,
+            }

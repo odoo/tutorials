@@ -8,6 +8,7 @@ class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate Property offer"
     _order = 'price desc'
+    # _inherit = 'crm.lead'
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -80,6 +81,21 @@ class EstatePropertyOffer(models.Model):
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
+
+        # self.env['crm.stage'].create({
+        #         'is_won':'t',
+        #         'fold':'f',
+        #     })
+
+        # a= self.env['crm.stage'].search([('id', '=', 4)])
+        #     # record.action_set_won()
+
+        # self.env['crm.lead'].create({
+        #         'name': 'mohit',
+        #         'stage_id' :a.id,
+        #         })
+
         return True
 
     def action_refuse(self):

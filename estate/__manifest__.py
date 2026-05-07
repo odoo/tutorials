@@ -7,9 +7,10 @@
     'category': 'Estate',
     'version': '1.0',
     'license': 'LGPL-3',
-    'depends': ['base', 'calendar'],
+    'depends': ['base', 'calendar', 'mail', 'crm'],
     'data': [
         'security/ir.model.access.csv',
+        'data/mail_template_data.xml',
         'views/estate_property_offer_views.xml',
         'views/esate_property_issue_views.xml',
         'views/estate_property_visit_views.xml',

@@ -5,8 +5,6 @@ class EstateAccount(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        super().action_sold()
-
         for record in self:
             if record.buyer_id:
                 self.env['account.move'].create({
@@ -27,3 +25,4 @@ class EstateAccount(models.Model):
                         }),
                     ],
                 })
+        return super().action_sold()

@@ -110,6 +110,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -118,7 +119,7 @@
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id">
+            <kanban default_group_by="property_type_id" records_draggable="False">
                 <field name="state"/>
                     <templates>
                         <t t-name="card">

@@ -46,17 +46,21 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="property_id"/>
-                        <field name="reported_by"/>
-                        <field name="assigned_to"/>
-                        <field name="issue_type"/>
-                        <field name="priority"/>
-                        <field name="reported_date"/>
-                        <field name="resolved_date"/>
-                        <field name="description"/>
-                        <field name="sla_deadline"/>
-                        <field name="is_due"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="property_id"/>
+                            <field name="reported_by"/>
+                            <field name="assigned_to"/>
+                            <field name="issue_type"/>
+                            <field name="priority"/>
+                        </group>
+                        <group>
+                            <field name="reported_date"/>
+                            <field name="resolved_date"/>
+                            <field name="description"/>
+                            <field name="sla_deadline"/>
+                            <field name="is_due"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
