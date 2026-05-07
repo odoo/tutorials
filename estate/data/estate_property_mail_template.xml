@@ -14,6 +14,14 @@
     <p style="margin: 0px 0px 16px 0px; color: #333333;">
         Hello <t t-out="object.buyer_id.name or 'Sir/Madam'">Sir/Madam</t>,
     </p>
+     <p style="margin: 0px 0px 16px 0px; color: #333333;">
+        this Property
+        <strong t-out="object.name or ''">Property Name</strong>
+        is sold to this buyer
+        <strong t-out="object.buyer_id.name or ''">Buyer Name</strong>
+        by
+        <strong t-out="object.salesperson_id.name or ''">Salesperson Name</strong>
+    </p>
     <p style="margin: 0px 0px 16px 0px; color: #333333;">
         Please find attached the property sheet for
         <strong t-out="object.name or ''">Property Name</strong>.

@@ -165,12 +165,11 @@
                                     <field name='price' width='150px' />
                                     <field name='validity' string="Validity (Days)" width='150px' />
                                     <field name='date_deadline' string="Deadline" />
-                                    <field name="property_type_id" />
                                     <button name='action_accept' string='Accept' type='object'
-                                        icon='fa-check' invisible="status == 'accepted'"
+                                        icon='fa-check' invisible="status"
                                         class="text-success" />
                                     <button name='action_refuse' string='Refuse' type='object'
-                                        icon='fa-times' invisible="status == 'refused'"
+                                        icon='fa-times' invisible="status"
                                         class="text-danger" />
                                     <field name='status' width='200px' />
                                 </list>
