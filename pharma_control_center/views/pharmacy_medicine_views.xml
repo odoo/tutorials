@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="pharmacy_medicine_list_view" model="ir.ui.view">
+        <field name="name">pharmacy.medicine.list</field>
+        <field name="model">pharmacy.medicine</field>
+        <field name="arch" type="xml">
+            <list string="💊 Medicines" create="false" delete="false" edit="false">
+                <field name="name" string="💊 Medicine"/>
+                <field name="license_category" string="🏷️ License" widget="badge"/>
+                <field name="category_id" string="📂 Category"/>
+                <field name="batch_number" string="🔢 Batch"/>
+                <field name="expiry_date" string="📅 Expiry"/>
+                <field name="quantity" string="📦 Stock" widget="integer"/>
+                <field name="today_orders_qty" string="📦 Today Orders" widget="float" sum="Total"/>
+                <field name="price" string="💰 Price" widget="monetary"/>
+                <field name="in_stock" string="✅ In Stock" widget="boolean"/>
+                <field name="expiry_status" string="⚠️ Status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="pharmacy_medicine_form_view" model="ir.ui.view">
+        <field name="name">pharmacy.medicine.form</field>
+        <field name="model">pharmacy.medicine</field>
+        <field name="arch" type="xml">
+            <form string="💊 Medicine">
+                <header>
+                    <button name="add_to_cart" type="object" string="➕ Add to Cart" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group string="📋 Basic Information">
+                            <field name="name" required="1"/>
+                            <field name="description"/>
+                            <field name="license_category" required="1" widget="radio"/>
+                            <field name="category_id" required="1"/>
+                            <field name="sub_category"/>
+                            <field name="manufacturer"/>
+                            <field name="barcode"/>
+                        </group>
+                        <group string="🔬 Batch &amp; Expiry">
+                            <field name="batch_number" required="1"/>
+                            <field name="expiry_date" required="1"/>
+                            <field name="days_to_expiry" readonly="1"/>
+                            <field name="expiry_status" widget="badge"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="💰 Pricing">
+                            <field name="cost_price" widget="monetary"/>
+                            <field name="price" required="1" widget="monetary"/>
+                            <field name="profit_margin" suffix="%" readonly="1"/>
+                        </group>
+                        <group string="📦 Stock Management">
+                            <field name="quantity"/>
+                            <field name="reorder_level"/>
+                            <field name="need_reorder" readonly="1" widget="boolean"/>
+                            <field name="in_stock" readonly="1" widget="boolean"/>
+                            <!-- order_qty field is editable for adding to cart, not part of medicine data -->
+                            <field name="order_qty" string="Quantity to Order" class="oe_inline"/>
+                        </group>
+                    </group>
+                    <group string="🧊 Storage &amp; Usage">
+                        <field name="storage_location" required="1"/>
+                        <field name="dosage"/>
+                        <field name="side_effects"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pharmacy_medicine_kanban_view" model="ir.ui.view">
+        <field name="name">pharmacy.medicine.kanban</field>
+        <field name="model">pharmacy.medicine</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="in_stock"/>
+                <field name="quantity"/>
+                <field name="price"/>
+                <field name="expiry_status"/>
+                <field name="category_id"/>
+                <field name="license_category"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_card">
+                            <div class="o_kanban_record_top">
+                                <strong><field name="name"/></strong>
+                                <span t-if="record.license_category.value == 'green'" class="badge bg-success">🟢 Full License</span>
+                                <span t-elif="record.license_category.value == 'blue'" class="badge bg-info">🔵 Limited License</span>
+                                <span t-else="" class="badge bg-secondary">⚪ Basic OTC</span>
+                                <span t-if="record.expiry_status.value == 'expired'" class="badge bg-danger">⚠️ Expired</span>
+                                <span t-elif="record.expiry_status.value == 'expiring_soon'" class="badge bg-warning">⏰ Expiring soon</span>
+                                <span t-else="" class="badge bg-success">✅ Fresh</span>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div>📂 <field name="category_id"/></div>
+                                <div>🔢 Batch: <field name="batch_number"/></div>
+                                <div>📅 Expiry: <field name="expiry_date"/></div>
+                                <div>📦 Stock: <field name="quantity"/></div>
+                                <div>💰 Price: <field name="price" widget="monetary"/></div>
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <t t-if="record.in_stock.value">
+                                    <span class="text-success">✅ In Stock</span>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-danger">❌ Out of Stock</span>
+                                </t>
+                                <t t-if="record.need_reorder and record.need_reorder.value">
+                                    <span class="badge bg-warning">🔄 Need reorder</span>
+                                </t>
+                                <div style="margin-top: 8px;">
+                                    <button name="add_to_cart" type="object" class="btn-sm btn-primary">🛒 Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="pharmacy_medicine_search_view" model="ir.ui.view">
+        <field name="name">pharmacy.medicine.search</field>
+        <field name="model">pharmacy.medicine</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="🔍 Medicine name"/>
+                <field name="batch_number" string="🔢 Batch"/>
+                <field name="manufacturer" string="🏭 Manufacturer"/>
+                <field name="category_id" string="📂 Category"/>
+                <filter name="in_stock" string="✅ In Stock" domain="[('in_stock','=',True)]"/>
+                <filter name="out_of_stock" string="❌ Out of Stock" domain="[('in_stock','=',False)]"/>
+                <filter name="need_reorder" string="🔄 Need Reorder" domain="[('need_reorder','=',True)]"/>
+                <filter name="expired" string="⚠️ Expired" domain="[('expiry_status','=','expired')]"/>
+                <filter name="expiring_soon" string="⏰ Expiring Soon" domain="[('expiry_status','=','expiring_soon')]"/>
+                <separator/>
+                <filter name="license_green" string="🟢 Full License (Green)" domain="[('license_category','=','green')]"/>
+                <filter name="license_blue" string="🔵 Limited License (Blue)" domain="[('license_category','=','blue')]"/>
+                <filter name="license_white" string="⚪ Basic OTC (White)" domain="[('license_category','=','white')]"/>
+                <group expand="0" string="📊 Group By">
+                    <filter name="group_by_category" string="📂 Category" context="{'group_by':'category_id'}"/>
+                    <filter name="group_by_expiry_status" string="⚠️ Expiry Status" context="{'group_by':'expiry_status'}"/>
+                    <filter name="group_by_storage" string="🧊 Storage Condition" context="{'group_by':'storage_location'}"/>
+                    <filter name="group_by_license" string="🏷️ License Category" context="{'group_by':'license_category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="pharmacy_medicine_action" model="ir.actions.act_window">
+        <field name="name">💊 Medicines</field>
+        <field name="res_model">pharmacy.medicine</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="pharmacy_medicine_search_view"/>
+    </record>
+
+    <menuitem id="pharmacy_medicine_menu"
+              name="💊 Medicines"
+              parent="pharma_root_menu"
+              action="pharmacy_medicine_action"
+              sequence="2"/>
+
+</odoo>

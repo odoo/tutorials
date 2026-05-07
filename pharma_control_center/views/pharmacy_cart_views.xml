@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="pharmacy_cart_line_list_view" model="ir.ui.view">
+        <field name="name">pharmacy.cart.line.list</field>
+        <field name="model">pharmacy.cart.line</field>
+        <field name="arch" type="xml">
+            <list string="Cart Items" editable="bottom" create="false" delete="false">
+                <field name="medicine_id" string="Medicine" readonly="1"/>
+                <field name="quantity" string="Quantity"/>
+                <field name="unit_price" string="Unit Price" widget="monetary"/>
+                <field name="subtotal" string="Subtotal" widget="monetary" sum="Total"/>
+                <button name="unlink" type="object" string="Remove" class="btn-danger"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="pharmacy_cart_form_view" model="ir.ui.view">
+        <field name="name">pharmacy.cart.form</field>
+        <field name="model">pharmacy.cart</field>
+        <field name="arch" type="xml">
+            <form string="My Cart">
+                <sheet>
+                    <!-- Barcode quick add -->
+                    <!-- NEW: Barcode quick add section -->
+                    <group string="Quick Add by Barcode" col="2">
+                        <field name="barcode_input" placeholder="Scan or type barcode..."/>
+                        <button name="action_add_by_barcode" type="object" string="Add" class="btn-primary"/>
+                        <div class="alert alert-info" style="margin-top: 8px; margin-bottom: 0;">
+                            <i class="fa fa-barcode"/> Scan any medicine barcode to add it immediately (quantity 1).
+                        </div>
+                    </group>
+
+                    <!-- Drug interaction warning (if any) -->
+                    <field name="interaction_warnings" invisible="not interaction_warnings">
+                        <div class="alert alert-warning" role="alert" style="margin-top: 8px;">
+                            <i class="fa fa-exclamation-triangle"/> <strong>Drug Interaction Warning:</strong>
+                            <p><field name="interaction_warnings" nolabel="1"/></p>
+                        </div>
+                    </field>
+
+                    <separator string="Add Medicines to Cart"/>
+
+                    <group string="Add Medicines to Cart" col="2">
+                        <field name="quick_medicine_ids" widget="many2many_tags" placeholder="Search and select medicines..."/>
+                        <field name="quick_order_qty" string="Quantity"/>
+                        <button name="action_add_quick_medicines" type="object" string="Add Selected" class="btn-primary"/>
+                    </group>
+
+                    <separator string="Current Cart Items"/>
+
+                    <group string="Cart Items">
+                        <field name="cart_line_ids" nolabel="1">
+                            <list string="Cart Items" editable="bottom" create="false" delete="false">
+                                <field name="medicine_id" string="Medicine" readonly="1"/>
+                                <field name="quantity" string="Quantity"/>
+                                <field name="unit_price" string="Unit Price" widget="monetary"/>
+                                <field name="subtotal" string="Subtotal" widget="monetary"/>
+                                <button name="unlink" type="object" string="Remove" class="btn-danger"/>
+                            </list>
+                        </field>
+                    </group>
+
+                    <group string="Order Summary" col="2">
+                        <field name="total_quantity" string="Total Quantity"/>
+                        <field name="total_amount" string="Total Amount" widget="monetary"/>
+                    </group>
+
+                    <div class="oe_button_box" style="margin-top: 16px;">
+                        <button name="action_checkout" type="object" string="Complete the order" class="btn-primary" confirm="Place all orders now?"/>
+                        <button special="cancel" string="Continue Shopping" class="btn-secondary"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pharmacy_cart_action" model="ir.actions.act_window">
+        <field name="name">My Cart</field>
+        <field name="res_model">pharmacy.cart</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="pharmacy_cart_form_view"/>
+        <field name="target">current</field>
+        <field name="domain">[('user_id', '=', uid)]</field>
+        <field name="context">{'default_user_id': uid}</field>
+    </record>
+
+    <menuitem id="pharmacy_cart_menu"
+              name="🛒 Order from Cart"
+              parent="pharma_root_menu"
+              action="pharmacy_cart_action"
+              sequence="3"/>
+
+</odoo>

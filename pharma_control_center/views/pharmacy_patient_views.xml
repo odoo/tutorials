@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- List view -->
+    <record id="pharmacy_patient_list_view" model="ir.ui.view">
+        <field name="name">pharmacy.patient.list</field>
+        <field name="model">pharmacy.patient</field>
+        <field name="arch" type="xml">
+            <list string="Patients" editable="bottom">
+                <field name="name" string="Name"/>
+                <field name="age" string="Age"/>
+                <field name="gender" string="Gender"/>
+                <field name="phone" string="Phone"/>
+                <field name="doctor_id" string="Doctor" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="pharmacy_patient_form_view" model="ir.ui.view">
+        <field name="name">pharmacy.patient.form</field>
+        <field name="model">pharmacy.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <sheet>
+                    <group>
+                        <group string="Personal Info">
+                            <field name="name" required="1"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                            <field name="blood_group"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="address"/>
+                        </group>
+                        <group string="Medical">
+                            <field name="doctor_id" required="1" options="{'no_create': True}"/>
+                            <field name="medical_history"/>
+                            <field name="allergies"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action (no domain, security rules will filter) -->
+    <record id="pharmacy_patient_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">pharmacy.patient</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No patients yet. Create your first patient.
+            </p>
+        </field>
+    </record>
+    
+    <menuitem id="pharmacy_patient_menu"
+              name="👥 Patients"
+              parent="pharma_root_menu"
+              action="pharmacy_patient_action"
+              sequence="3"
+              groups="pharma_control_center.group_pharmacy_doctor,pharma_control_center.group_pharmacy_manager"/>
+</odoo>

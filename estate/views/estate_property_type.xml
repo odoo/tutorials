@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================== -->
+    <!-- LIST VIEW -->
+    <!-- ===================== -->
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="property_ids" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- FORM VIEW -->
+    <!-- ===================== -->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <!-- BASIC INFO -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g., House, Apartment, Villa..."/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <field name="sequence"/>
+                    </group>
+
+                    <!-- RELATED PROPERTIES -->
+                    <notebook>
+                        <page string="Properties">
+
+                            <!-- FIXED ALERTS -->
+                            <div class="alert alert-info"
+                                 invisible="not property_ids">
+                                <strong>
+                                    <field name="property_ids" widget="badge"/>
+                                    properties of this type exist.
+                                </strong>
+                            </div>
+
+                            <div class="alert alert-warning"
+                                 invisible="property_ids">
+                                No properties of this type yet.
+                            </div>
+
+                            <!-- Properties list -->
+                            <field name="property_ids" nolabel="1">
+
+                                <list editable="bottom" string="Properties List">
+                                    <field name="name"/>
+                                    <field name="postcode"/>
+                                    <field name="expected_price"/>
+                                    <field name="best_price"/>
+                                    <field name="state"
+                                           decoration-success="state == 'sold'"
+                                           decoration-danger="state == 'cancelled'"/>
+                                </list>
+
+                            </field>
+
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- SEARCH VIEW -->
+    <!-- ===================== -->
+    <record id="estate_property_type_view_search" model="ir.ui.view">
+        <field name="name">estate.property.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Property Type"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- ACTION -->
+    <!-- ===================== -->
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new property type!
+            </p>
+            <p>
+                Define and manage different types of properties.
+            </p>
+        </field>
+    </record>
+
+</odoo>

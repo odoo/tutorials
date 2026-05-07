@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Record rules for pharmacy.medicine -->
+    <record id="pharmacy_medicine_patient_rule" model="ir.rule">
+        <field name="name">Patient: only White (OTC) medicines</field>
+        <field name="model_id" ref="model_pharmacy_medicine"/>
+        <field name="groups" eval="[(4, ref('pharma_control_center.group_pharmacy_patient'))]"/>
+        <field name="domain_force">[('license_category', '=', 'white')]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="pharmacy_medicine_doctor_rule" model="ir.rule">
+        <field name="name">Doctor: Blue + White medicines</field>
+        <field name="model_id" ref="model_pharmacy_medicine"/>
+        <field name="groups" eval="[(4, ref('pharma_control_center.group_pharmacy_doctor'))]"/>
+        <field name="domain_force">[('license_category', 'in', ['blue', 'white'])]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>   <!-- Doctors cannot edit -->
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Manager has no rule -> sees all medicines -->
+    <!-- Managers already have full access via CSV and implied group -->
+
+</odoo>

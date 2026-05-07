@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================== -->
+    <!-- PROPERTIES -->
+    <!-- ===================== -->
+
+    <record id="estate_property_big_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="expected_price">1000000</field>
+        <field name="selling_price">0</field>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+    </record>
+
+    <record id="estate_property_small_house" model="estate.property">
+        <field name="name">Small House</field>
+        <field name="expected_price">200000</field>
+        <field name="selling_price">0</field>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+    </record>
+
+    <!-- ===================== -->
+    <!-- OFFERS -->
+    <!-- ===================== -->
+
+    <!-- Azure Interior -->
+    <record id="estate_offer_1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate.estate_property_big_villa"/>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="estate_offer_2" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate.estate_property_big_villa"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+
+    <!-- Deco Addict -->
+    <record id="estate_offer_3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="property_id" ref="estate.estate_property_big_villa"/>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+    </record>
+
+</odoo>
