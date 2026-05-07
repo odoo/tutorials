@@ -11,7 +11,7 @@ class EstateProperties(models.BaseModel):
 
     invoice_count = fields.Integer(compute='')
 
-    
+
     def _check_admin_fees(self, admin_fees):
         if admin_fees < 100:
             return 100
@@ -21,7 +21,6 @@ class EstateProperties(models.BaseModel):
             return admin_fees
 
     def property_sold(self):
-        breakpoint()
         super().property_sold()  # type: ignore
         if self.property_type_id.type == 'Apartment':  # type:ignore
             # _logger.error(self.property_type_id.type)  # type:ignore

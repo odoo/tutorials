@@ -38,12 +38,19 @@
                     <button name="property_sold" type="object" string="Sell" class="oe_highlight" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="property_cancelled" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="property_accept" type="object" string="Accept" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'"/>
+                    <button name="action_schedule_visit" type="object" string="Schedule" invisible="state == 'cancelled' or state == 'new'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_potential_buyers" type="object" icon="fa-address-book" invisible="potential_buyer_count == 0 or state == 'cancelled'">
+                        <button class="oe_stat_button" name="action_potential_buyers" type="object" icon="fa-address-book" invisible="potential_buyer_count == 0 or state in ['cancelled', 'sold', 'offer_received', 'offer_accepted']">
                             <field name="potential_buyer_count" string="Potential Buyers" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_partner_invoices" type="object" icon="fa-medkit" invisible="invoice_count == 0">
+                            <field name="invoice_count" string="Invoice" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" name="show_visits" type="object" icon="fa-medkit">
+                            <field name="visit_count" string="Visits" widget="statinfo"/>
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
@@ -108,6 +115,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>

@@ -23,6 +23,7 @@ def _get_salesperson(self):
 class EstateProperties(models.Model):
     _name = 'estate.properties'
     _description = 'Real Estate Properties'
+    _inherit = ['mail.thread']
     _order = 'sequence'
 
     active = fields.Boolean(help="Should the property be listed?", default=True)
@@ -46,6 +47,7 @@ class EstateProperties(models.Model):
         ],
         help="Directional orientation of the garden of the property shown"
     )
+    invoice_count = fields.Integer(compute='_compute_invoice_count')
     living_area = fields.Integer()
     name = fields.Char(string="Property Name", required=True)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
@@ -54,9 +56,10 @@ class EstateProperties(models.Model):
     price_gap = fields.Float(compute='_compute_price_gap')
     property_type_colour = fields.Selection(related='property_type_id.colour', readonly=False)
     property_type_id = fields.Many2one(comodel_name='estate.property.type')
-    salesperson_id = fields.Many2one(comodel_name='res.partner', default=lambda self: self.env.user.partner_id)
+    property_visit_ids = fields.One2many(comodel_name='estate.property.visit', inverse_name='property_id')
+    salesperson_id = fields.Many2one(comodel_name='res.users', default=lambda self: self.env.user.id)
     # salesperson = fields.Char(default=_get_salesperson)
-    selling_price = fields.Float(readonly=True, copy=False)
+    selling_price = fields.Float(readonly=True, copy=False, tracking=True)
     sequence = fields.Integer()
     state = fields.Selection(
         [
@@ -70,23 +73,49 @@ class EstateProperties(models.Model):
     )
     tag_ids = fields.Many2many(comodel_name='estate.property.tag')
     total_area = fields.Integer(compute="_compute_total_area")
+    visit_count = fields.Integer(compute='_compute_visit_count')
 
     _check_expected_price = models.Constraint(
         'CHECK (expected_price > 0 AND selling_price >= 0)',
         "Price should strictly be positive",
     )
 
-    @api.depends('buyer_id.property_id')
-    def _compute_potential_buuyers(self):
-        properties = self.env['estate.properties'].search([])
-        partners_detected = properties.buyer_id
-        # _logger.error(partners_detected)
-        # _logger.error(len(partners_detected))
+    def _find_invoices(self):
+        self.ensure_one()
+        check_name = "Property: " + self.display_name if self.display_name else None
+        if check_name and self.selling_price > 0:
+            invoice_lines = self.env['account.move.line'].search([  # type: ignore
+                ('move_id.move_type', '=', 'out_invoice'),  # type: ignore
+                ('name', 'ilike', check_name),  # type: ignore
+            ])        
+            return invoice_lines.mapped('move_id').ids  # type: ignore
+        else:
+            return False
+
+    @api.depends('state')
+    def _compute_invoice_count(self):
+        # _logger.error("HELLOOOOOOOOOOO")
+        invoices = self._find_invoices()
         for property in self:
-            # _logger.error("Found property")
-            if self.env.uid:
-                # _logger.error("LOgged in user")
-                # _logger.error(property.env.uid)
+            if invoices:
+                property.invoice_count = len(invoices)
+            else:
+                property.invoice_count = 0
+    
+    @api.depends('property_visit_ids')
+    def _compute_visit_count(self):
+        for property in self:
+            property.visit_count = len(property.property_visit_ids)
+
+    @api.depends('buyer_id')
+    def _compute_potential_buuyers(self):
+        property_buyers = self.env['estate.properties'].search([
+            ('buyer_id', '!=', False)
+        ])
+        partners_detected = property_buyers.mapped('buyer_id')
+        current_user = self.env.user.partner_id
+        for property in self:
+            if current_user in partners_detected:
                 property.potential_buyer_count = len(partners_detected) - 1
             else:
                 property.potential_buyer_count = len(partners_detected)
@@ -175,6 +204,9 @@ class EstateProperties(models.Model):
                 raise UserError("A sold property cannot be cancelled")
         return True
 
+    def action_quotation_send(self):
+        """ Opens a wizard to compose an email, with relevant mail template loaded by default """
+
     def property_sold(self):
         for property in self:
             if property.state == 'sold':
@@ -186,7 +218,27 @@ class EstateProperties(models.Model):
                     raise UserError("No buyer for this property yet")
             else:
                 raise UserError("A cancelled property cannot be sold")
-        return True
+            # sep_ids = self.buyer_id.ids + self.salesperson_id.ids
+
+            template = self.env.ref('estate.estate_property_sold_mail_template')
+            ctx = {
+                    'default_model': 'estate.properties',
+                    'default_partner_ids': [self.buyer_id.id, self.salesperson_id.partner_id.id],
+                    'default_res_ids': self.ids,
+                    'default_template_id': template.id,
+                    'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+                }
+
+            return {
+                    'name': ('Send'),
+                    'type': 'ir.actions.act_window',
+                    'view_mode': 'form',
+                    'res_model': 'mail.compose.message',
+                    'views': [(False,'form')],
+                    'view_id': False,
+                    'target': 'new',
+                    'context': ctx,
+                }
 
     @api.depends('selling_price')
     def _compute_commission(self):
@@ -248,12 +300,42 @@ class EstateProperties(models.Model):
         }
         return action
 
-    # def action_view_partner_invoices(self):
-    #     self.ensure_one()
-    #     action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_out_invoice_type")  # type: ignore
-    #     action['domain'] = [
-    #         ('move_type', 'in', ('out_invoice')),
-    #         ('partner_id', 'in', self.buyer_id)
-    #     ]
-    #     action['context'] = {'default_move_type': 'out_invoice', 'move_type': 'out_invoice', 'journal_type': 'sale'}
-    #     return action
+    def action_view_partner_invoices(self):
+        if self.selling_price > 0:
+            invoice_ids = self._find_invoices()
+    
+            if invoice_ids:
+                invoice_ids = int(invoice_ids[0])
+                action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_out_invoice")  # type: ignore
+                action['res_id'] = invoice_ids
+                action['view_mode'] = 'form'
+                action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]  # type: ignore
+                action['domain'] = [
+                    ('id', 'in', invoice_ids),
+                    ('partner_id', '=', self.buyer_id.id),
+                ]
+                return action
+
+    def action_schedule_visit(self):
+        if not self.buyer_id:
+            raise ValidationError("No buyer set to visit the schedule")
+        return {
+            'name': 'Visit',
+            'res_model': 'estate.property.visit',
+            'view_mode': 'form',
+            'views': [[False, 'form']],
+            'context': {
+                'default_property_id': self.id,
+                'default_property_title': self.display_name,
+                'default_property_buyer': self.buyer_id.name,
+            },
+            'target': 'current',
+            'type': 'ir.actions.act_window',
+        }
+
+    def show_visits(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("estate.estate_property_visit_action")  # type: ignore
+        action['domain'] = [
+            ('property_title', 'ilike', self.display_name),
+        ]
+        return action

@@ -5,14 +5,16 @@
     'summary': 'Making the real estate app from tutorials',
     'website': 'www.odoo.com',
     'depends': [
-        'base',
+        'base', 'mail'
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/mail_template_data.xml',
         'views/estate_properties_view.xml',
         'views/estate_property_offer_view.xml',
         'views/estate_property_type_view.xml',
         'views/estate_property_tag_view.xml',
+        'views/estate_property_visit_view.xml',
         'views/estate_menus.xml',
         'views/res_partner_view.xml',
     ],

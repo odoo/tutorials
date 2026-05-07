@@ -1,6 +1,5 @@
 import datetime
 import logging
-from typing import Required
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
