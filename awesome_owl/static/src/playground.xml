@@ -2,8 +2,13 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world<Counter/>
+            hello world
             <Counter/>
-    </div>
-</t>
+            <Counter/>
+        </div>
+        <div>
+            <Card title="'card1'" content="'card 1\'s content'"/>
+            <Card title="'card2'" content="'card 2\'s content'"/>
+        </div>
+    </t>
 </templates>
