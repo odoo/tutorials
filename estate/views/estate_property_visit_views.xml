@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<odoo>
+
+
+    <!--_________________________________________   WINDOW ACTION _________________________________________-->
+
+    <record id="test_property_visits_action" model="ir.actions.act_window">
+        <field name="name">Property Visits</field>
+        <field name="res_model">estate.property.visit</field>
+        <field name="view_mode">calendarlist,form</field>
+        <!-- <field name="domain">[('agent_id', '=', self.id)]</field> -->
+    </record>
+
+
+    <!--_________________________________________ LIST VIEW _________________________________________-->
+    <record id="estate_property_visits_view_list" model="ir.ui.view">
+        <field name="name">estate.property.visit</field>
+        <field name="model">estate.property.visit</field>
+
+        <field name="arch" type="xml">
+            <list string="" editable="bottom" open_form_view="1">
+                <field name="visitor_id"/>
+                <field name="agent_id"/>
+                <field name="scheduled_on"/>
+                <field name="state" widget="radio" />
+                <field name="duration"/>
+
+                <field name="rating"/>
+                <field name="visits" readonly='1'/>
+
+            </list>
+        </field>
+    </record>
+
+
+
+    <!--_________________________________________   FORM VIEW _________________________________________-->
+
+    <record id="estate_property_visits_view_form" model="ir.ui.view">
+        <field name="name">estate.property.visits.view.form</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <field name="visitor_id"/>
+                        <field name="agent_id"/>
+                        <field name="scheduled_on"/>
+                        <field name="state" widget="radio" />
+                        <field name="duration"/>
+
+                        <field name="rating"/>
+                        <field name="visits" readonly='1'/>
+                        <chatter />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_visits_view_calendar" model="ir.ui.view">
+        <field name="name">estate.property.visits.view.calendar</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <calendar string="Calender" date_start="scheduled_on" date_stop="duration">
+                <field name="visitor_id"/>
+                <field name="agent_id"/>
+                <field name="scheduled_on"/>
+                <field name="state" widget="radio" />
+                <field name="duration"/>
+
+                <field name="rating"/>
+                <field name="visits" readonly='1'/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="ir_cron_estate_property_visit" model="ir.cron">
+        <field name="name">Send Reminder</field>
+        <field name="model_id" ref="estate.model_estate_property_visit"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_daily_reminder_send()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+
+</odoo>

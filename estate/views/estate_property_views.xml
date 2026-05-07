@@ -16,8 +16,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Proeperties" decoration-danger="state and state == 'cancelled'" limit="40"
-                  decoration-success="state and state == 'offer_accepted'">
+            <list string="Proeperties" decoration-danger="state and state == 'cancelled'" limit="40" decoration-success="state and state == 'offer_accepted'">
                 <field name="name" string="Property Title"/>
                 <field name="postcode" width="96px"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
@@ -39,16 +38,27 @@
         <field name="arch" type="xml">
             <form string="Real Estate">
                 <header>
-                    <field name="state" widget="statusbar" class="oe_inline_end"
-                           statusbar_visible="new,offer_accepted,offer_received,sold,cancelled"
-                           options="{'clickable': True}"/>
+                    <field name="state" widget="statusbar" class="oe_inline_end" statusbar_visible="new,offer_accepted,offer_received,sold,cancelled" options="{'clickable': True}"/>
                     <button name="action_property_sold" type="object" string="Sold" class="btn-primary"/>
                     <button name="action_property_cancelled" type="object" string="Cancel"/>
-                    <button name="action_select_best_offer" type="object" string="Accept Best Offer"
-                            class="btn-primary"/>
-                    <button name="action_auto_refuse" type="object" string="Auto Refuse"
-                            help="Refuses offer with price less than 90%"/>
+                    <button name="action_select_best_offer" type="object" string="Accept Best Offer" class="btn-primary"/>
+                    <button name="action_auto_refuse" type="object" string="Auto Refuse" help="Refuses offer with price less than 90%"/>
 
+
+                    <div class="oe_button_box oe_right" name="button_box">
+                        <button class="oe_stat_button" name="action_redirect_to_visits" type="object" icon="fa-bars">
+
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="visit_count"/>
+                                </span>
+                                <span class="o_stat_text">
+                                        Offers
+                                </span>
+                            </div>
+
+                        </button>
+                    </div>
                 </header>
                 <sheet>
                     <h1>
@@ -87,6 +97,9 @@
                         <page name="offers" string="Offers">
                             <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
+                        <page name="Visits" string="Visits">
+                            <field name="visits_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <field name="salesman_id" widget="many2one_avatar_user"/>
@@ -109,14 +122,11 @@
             <search>
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="living_area"
-                       filter_domain="[('living_area', '&gt;=', self)]"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <separator/>
                 <filter string="Date Availability" name="Date Availability" date="date_availability"/>
-                <filter name="available_properties" string="Available"
-                        domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
-                <filter name="accepted_properties" string="Accepted Properties"
-                        domain="[('state','=','offer_accepted')]"/>
+                <filter name="available_properties" string="Available" domain="['|', ('state','=','offer_received'), ('state','=','new')]"/>
+                <filter name="accepted_properties" string="Accepted Properties" domain="[('state','=','offer_accepted')]"/>
                 <group>
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>

@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "A real estate model with many fields"
     _order = "id desc"
-
     active = fields.Boolean(string="Active", default="Active")
     bedrooms = fields.Integer(string="Bedrooms", default="2")
     best_price = fields.Float(
@@ -60,6 +59,10 @@ class EstateProperty(models.Model):
     total_area = fields.Float(
         string="Total Area", compute='_compute_total_area'
     )
+    visits_ids = fields.One2many(
+        'estate.property.visit', 'property_id', string='Visits')
+    visit_count = fields.Integer(
+        compute='_compute_visit_count')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -73,6 +76,7 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
+        self.ensure_one()
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
@@ -84,9 +88,13 @@ class EstateProperty(models.Model):
         for rec in self:
             if rec.state == 'cancelled':
                 raise UserError(_('A cancelled property cannot be sold'))
-            else:
-                rec.state = 'sold'
-
+            if not rec.buyer_id or not rec.salesman_id:
+                raise UserError(
+                    _('Cant sell the property if it has no buyer or seller'))
+            if rec.selling_price <= 0:
+                raise UserError(
+                    _('We don\'t do charity here. Set a proper selling price.'))
+            rec.state = 'sold'
         return True
 
     def action_property_cancelled(self):
@@ -148,3 +156,15 @@ class EstateProperty(models.Model):
             if rec.state not in ('new', 'cancelled'):
                 raise UserError(_(
                     "Cannot delete this record because it has active orders"))
+
+    @api.depends('visits_ids')
+    def _compute_visit_count(self):
+        for rec in self:
+            rec.visit_count = len(rec.visits_ids)
+
+    def action_redirect_to_visits(self):
+        view = 'estate.test_property_visits_action'
+        action = self.env['ir.actions.act_window']._for_xml_id(view)
+        action['view_mode'] = 'calendar'
+        action['domain'] = [('agent_id', 'in', self.env.uid)]
+        return action

@@ -6,12 +6,9 @@
     <menuitem id="real_estate_properties_menu" name="Advertisements" parent="real_estate_root"/>
     <menuitem id="real_estate_properties_settings_menu" name="Settings" parent="real_estate_root"/>
 
-    <menuitem id="real_estate_menu_action" name="All Properties " parent="real_estate_properties_menu"
-              action="test_property_action"/>
-    <menuitem id="real_estate_property_type_action" name="Property Types" parent="real_estate_properties_settings_menu"
-              action="test_property_type_action"/>
-    <menuitem id="real_estate_property_tags_action" name="Property Tags" parent="real_estate_properties_settings_menu"
-              action="test_property_tags_action"/>
-
+    <menuitem id="real_estate_menu_action" name="All Properties " parent="real_estate_properties_menu" action="test_property_action"/>
+    <menuitem id="real_estate_property_type_action" name="Property Types" parent="real_estate_properties_settings_menu" action="test_property_type_action"/>
+    <menuitem id="real_estate_property_tags_action" name="Property Tags" parent="real_estate_properties_settings_menu" action="test_property_tags_action"/>
+    <menuitem id="real_estate_property_visits_action" name="Property Visits" parent="real_estate_properties_settings_menu" action="test_property_visits_action"/>
 
 </odoo>
