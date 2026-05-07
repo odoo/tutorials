@@ -8,7 +8,6 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
-
     _order = "price desc"
 
     price = fields.Float()
@@ -23,7 +22,7 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-
+    
     _check_price = models.Constraint(
         'CHECK(price > 0)',
         'Offer price must be strictly positive.'
@@ -63,9 +62,6 @@ class EstatePropertyOffer(models.Model):
                 if offer.status == 'accepted':
                     raise UserError("Only one offer can be accepted for a property.")
             record.status = 'accepted'
-            # record.property_id.selling_price = record.price
-            # record.property_id.buyer_id = record.partner_id
-            # record.property_id.state = 'offer_accepted'
             record.property_id.write({
             'selling_price': record.price,
             'buyer_id': record.partner_id.id,

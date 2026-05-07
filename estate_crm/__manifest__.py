@@ -1,6 +1,6 @@
 {
-    'name': 'Real Estate Account',
-    'description': "This module allows managing property invoice.",
+    'name': 'Real Estate Crm',
+    'description': "This module allows creating property lead in Crm.",
     'author': 'Sudarshan Maity (sumai)',
     'website': '',
     'category': 'Real Estate',
@@ -8,11 +8,11 @@
     'license': 'LGPL-3',
     'depends': [
         'estate',
-        'account',
+        'crm',
         ],
 
     'data': [
-        
+
     ],
 
     'installable': True,
