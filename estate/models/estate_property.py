@@ -163,6 +163,7 @@ class EstateProperty(models.Model):
 
     def action_mail_send(self):
         template = self.env.ref('estate.email_template_estate_property', raise_if_not_found=False)
+        salesp_id = self.salesperson_id.partner_id
         ctx = {
             'default_model': 'estate.property',
             'default_res_ids': self.ids,
@@ -170,7 +171,7 @@ class EstateProperty(models.Model):
             'default_template_id': template.id,
             'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
             'force_email': True,
-            'default_partner_ids': self.buyer_id.ids if self.buyer_id else [],
+            'default_partner_ids': [self.buyer_id.id, salesp_id.id],
         }
         return {
             'name': "Send Mail",

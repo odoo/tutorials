@@ -3,19 +3,19 @@ import { TodoItem } from "./todo_item";
 
 export class TodoList extends Component {
     static template = "awesome_owl.TodoList"
-    static components = {TodoItem}
+    static components = { TodoItem }
 
-    setup(){
+    setup() {
         this.todos = useState([]);
         this.inputRef = useRef('input');
-        onMounted (() => {
+        onMounted(() => {
             this.inputRef.el.focus();
         });
         this.nextId = 1;
     }
 
-    addTodo(ev){
-        if (ev.keyCode === 13 && ev.target.value){
+    addTodo(ev) {
+        if (ev.keyCode === 13 && ev.target.value) {
             this.todos.push({
                 id: this.nextId++,
                 description: ev.target.value,
@@ -25,17 +25,20 @@ export class TodoList extends Component {
         }
     }
 
-    toggleTodo(todoId){
+    toggleTodo(todoId) {
         const todo = this.todos.find((todo) => todo.id === todoId)
-        if (todo){
+        if (todo) {
             todo.isCompleted = !todo.isCompleted;
         }
     }
 
-    removeTodo(todoId){
-        const index = this.todos.findIndex((todo)=> todo.id === todoId)
-        if(index >= 0){   
-            this.todos.splice(index,1)
+    removeTodo(todoId) {
+        const index = this.todos.findIndex((todo) => todo.id === todoId)
+        if (index >= 0) {
+            this.todos.splice(index, 1)
+            this.todos.forEach((todo) => {
+                if (todo.id > index) todo.id--;
+            });
         }
     }
 }

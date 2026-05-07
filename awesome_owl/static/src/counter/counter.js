@@ -4,24 +4,26 @@ export class Counter extends Component {
     static template = "awesome_owl.Counter";
 
     static props = {
-        onincrement : { type: Function, optional: true },
-        ondecrement : { type: Function, optional: true }
+        onincrement: { type: Function, optional: true },
+        ondecrement: { type: Function, optional: true }
     };
 
     setup() {
-        this.count = useState({value:0});
+        this.count = useState({ value: 0 });
     }
 
     increment() {
         this.count.value++;
-        if(this.props.onincrement){
+        if (this.props.onincrement) {
             this.props.onincrement();
         }
     }
 
     decrement() {
-        this.count.value--;
-        if(this.props.ondecrement){
+        if (this.count.value > 0) {
+            this.count.value--;
+        }
+        if (this.props.ondecrement) {
             this.props.ondecrement();
         }
     }
