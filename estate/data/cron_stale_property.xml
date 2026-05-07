@@ -1,0 +1,10 @@
+<odoo>
+    <record id="ir_cron_stale_property" model="ir.cron">
+        <field name="name">Estate: stale property</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="code">model._cron_stale_property()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

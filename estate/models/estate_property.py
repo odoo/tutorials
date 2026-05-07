@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import _, fields, models, api
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -6,6 +6,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -14,6 +15,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: fields.Date.add(fields.Date.today(), months=3),
     )
+    create_property_date = fields.Date()
     postcode = fields.Char(required=True)
     expected_price = fields.Float()
     selling_price = fields.Float(readonly=True)
@@ -71,6 +73,16 @@ class EstateProperty(models.Model):
         store=True,
     )
 
+    @api.model
+    def _cron_stale_property(self):
+        body_html = self.env.ref("estate.email_template_stale_property_reminder")
+        properties = self.search([("state", "=", "new")])
+        for i in properties:
+            if i.create_property_date:
+                time_period = fields.Date.today() - i.create_property_date
+                if time_period.days > 30 and i.state == "new":
+                    body_html.send_mail(i.id, force_send=True)
+
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
         for record in self:
@@ -78,10 +90,8 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-
-        for record in self:
-            prices = record.mapped("offer_ids.price")
-            record.best_price = max(prices) if prices else 0
+        prices = self.mapped("offer_ids.price")
+        self.best_price = max(prices) if prices else 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -108,11 +118,17 @@ class EstateProperty(models.Model):
                 record.state = "cancelled"
 
     def action_sold_offer(self):
-        for record in self:
-            if record.state == "cancelled":
+        body_html = self.env.ref("estate.email_for_sold_property")
+        for buyer in self:
+            if buyer.state == "cancelled":
                 raise UserError("Cancelled properties can't be saved")
             else:
-                record.state = "sold"
+                buyer.state = "sold"
+
+            if buyer.buyer_id:
+                body_html.send_mail(buyer.id, force_send=True)
+
+        return True
 
     def action_approve_best(self):
         self.offer_ids[0].status = "accepted"
@@ -126,7 +142,6 @@ class EstateProperty(models.Model):
     def _check_selling_expected_price(self):
         for record in self:
             base = record.expected_price * 0.9
-            # value = str(base)
             if record.selling_price and record.selling_price < base:
                 raise ValidationError(
                     f"Selling Price must be greater than 90 percent of expected price and atleast {base}"
