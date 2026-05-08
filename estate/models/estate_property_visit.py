@@ -46,7 +46,7 @@ class EstatePropertyVisit(models.Model):
                 # _logger.error(wrong_visit)
                 if wrong_visit:
                     raise UserError('Time occupied, please select some other time.')
-    
+
     def _cron_send_reminder(self):
         now = fields.Datetime.now()
         next = fields.Datetime.add(now, days=1)
@@ -63,4 +63,3 @@ class EstatePropertyVisit(models.Model):
             )
             visit.reminder = True
         # _logger.error("CRON RUNNING!!!!")
-

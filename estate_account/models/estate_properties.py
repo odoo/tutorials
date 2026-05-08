@@ -11,7 +11,6 @@ class EstateProperties(models.BaseModel):
 
     invoice_count = fields.Integer(compute='_compute_invoice_count')
 
-
     def _check_admin_fees(self, admin_fees):
         if admin_fees < 100:
             return 100
@@ -63,7 +62,7 @@ class EstateProperties(models.BaseModel):
             invoice_lines = self.env['account.move.line'].search([  # type: ignore
                 ('move_id.move_type', '=', 'out_invoice'),  # type: ignore
                 ('name', 'ilike', check_name),  # type: ignore
-            ])        
+            ])
             return invoice_lines.mapped('move_id').ids  # type: ignore
         else:
             return False
@@ -81,7 +80,7 @@ class EstateProperties(models.BaseModel):
     def action_view_partner_invoices(self):
         if self.selling_price > 0:  # type: ignore
             invoice_ids = self._find_invoices()
-    
+
             if invoice_ids:
                 invoice_ids = int(invoice_ids[0])
                 action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_out_invoice")  # type: ignore

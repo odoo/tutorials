@@ -58,7 +58,7 @@ class EstateProperties(models.Model):
     property_type_id = fields.Many2one(comodel_name='estate.property.type')
     reminder_sent = fields.Boolean(default=False)
     property_visit_ids = fields.One2many(comodel_name='estate.property.visit', inverse_name='property_id')
-    salesperson_id = fields.Many2one(comodel_name='res.users', default=lambda self: self.env.user.id)
+    salesperson_id = fields.Many2one(comodel_name='res.users', default=lambda self: self.env.user)
     # salesperson = fields.Char(default=_get_salesperson)
     selling_price = fields.Float(readonly=True, copy=False, tracking=True)
     sequence = fields.Integer()
@@ -80,7 +80,7 @@ class EstateProperties(models.Model):
         'CHECK (expected_price > 0 AND selling_price >= 0)',
         "Price should strictly be positive",
     )
-    
+
     @api.depends('property_visit_ids')
     def _compute_visit_count(self):
         for property in self:
@@ -213,7 +213,7 @@ class EstateProperties(models.Model):
                     'type': 'ir.actions.act_window',
                     'view_mode': 'form',
                     'res_model': 'mail.compose.message',
-                    'views': [(False,'form')],
+                    'views': [(False, 'form')],
                     'view_id': False,
                     'target': 'new',
                     'context': ctx,
