@@ -46,9 +46,6 @@
                         <button class="oe_stat_button" name="action_potential_buyers" type="object" icon="fa-address-book" invisible="potential_buyer_count == 0 or state in ['cancelled', 'sold', 'offer_received', 'offer_accepted']">
                             <field name="potential_buyer_count" string="Potential Buyers" widget="statinfo"/>
                         </button>
-                        <button class="oe_stat_button" name="action_view_partner_invoices" type="object" icon="fa-medkit" invisible="invoice_count == 0">
-                            <field name="invoice_count" string="Invoice" widget="statinfo"/>
-                        </button>
                         <button class="oe_stat_button" name="show_visits" type="object" icon="fa-medkit">
                             <field name="visit_count" string="Visits" widget="statinfo"/>
                         </button>

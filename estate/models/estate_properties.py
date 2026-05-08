@@ -47,7 +47,7 @@ class EstateProperties(models.Model):
         ],
         help="Directional orientation of the garden of the property shown"
     )
-    invoice_count = fields.Integer(compute='_compute_invoice_count')
+    invoice_count = fields.Integer(default=0)
     living_area = fields.Integer()
     name = fields.Char(string="Property Name", required=True)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
@@ -56,6 +56,7 @@ class EstateProperties(models.Model):
     price_gap = fields.Float(compute='_compute_price_gap')
     property_type_colour = fields.Selection(related='property_type_id.colour', readonly=False)
     property_type_id = fields.Many2one(comodel_name='estate.property.type')
+    reminder_sent = fields.Boolean(default=False)
     property_visit_ids = fields.One2many(comodel_name='estate.property.visit', inverse_name='property_id')
     salesperson_id = fields.Many2one(comodel_name='res.users', default=lambda self: self.env.user.id)
     # salesperson = fields.Char(default=_get_salesperson)
@@ -79,28 +80,6 @@ class EstateProperties(models.Model):
         'CHECK (expected_price > 0 AND selling_price >= 0)',
         "Price should strictly be positive",
     )
-
-    def _find_invoices(self):
-        self.ensure_one()
-        check_name = "Property: " + self.display_name if self.display_name else None
-        if check_name and self.selling_price > 0:
-            invoice_lines = self.env['account.move.line'].search([  # type: ignore
-                ('move_id.move_type', '=', 'out_invoice'),  # type: ignore
-                ('name', 'ilike', check_name),  # type: ignore
-            ])        
-            return invoice_lines.mapped('move_id').ids  # type: ignore
-        else:
-            return False
-
-    @api.depends('state')
-    def _compute_invoice_count(self):
-        # _logger.error("HELLOOOOOOOOOOO")
-        invoices = self._find_invoices()
-        for property in self:
-            if invoices:
-                property.invoice_count = len(invoices)
-            else:
-                property.invoice_count = 0
     
     @api.depends('property_visit_ids')
     def _compute_visit_count(self):
@@ -299,22 +278,6 @@ class EstateProperties(models.Model):
             'delete': False,
         }
         return action
-
-    def action_view_partner_invoices(self):
-        if self.selling_price > 0:
-            invoice_ids = self._find_invoices()
-    
-            if invoice_ids:
-                invoice_ids = int(invoice_ids[0])
-                action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_out_invoice")  # type: ignore
-                action['res_id'] = invoice_ids
-                action['view_mode'] = 'form'
-                action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]  # type: ignore
-                action['domain'] = [
-                    ('id', 'in', invoice_ids),
-                    ('partner_id', '=', self.buyer_id.id),
-                ]
-                return action
 
     def action_schedule_visit(self):
         if not self.buyer_id:

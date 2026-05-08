@@ -25,7 +25,7 @@
                     </h1>
                     <group>
                         <field name="visit_time_start" options="{'min_date': 'today'}"/>
-                        <field name="visit_time_end" readonly="True"/>
+                        <!-- <field name="visit_time_end" readonly="True"/> -->
                         <field name="property_buyer" readonly="True"/>
                     </group>
                 </sheet>
@@ -42,7 +42,7 @@
                 <field name="property_title"/>
                 <field name="property_buyer" avatar_field="avatar_128"/>
                 <field name="visit_time_start"/>
-                <field name="visit_time_end"/>
+                <!-- <field name="visit_time_end"/> -->
             </calendar>
         </field>
     </record>
@@ -53,7 +53,7 @@
         <field name="view_mode">calendar,list,form</field>
     </record>
 
-    <record id="estate_property_visit_reminder_cron" model="ir.cron">
+    <!-- <record id="estate_property_visit_reminder_cron" model="ir.cron">
         <field name="name">Send email reminder</field>
         <field name="model_id" ref="estate.model_estate_property_type"/>
         <field name="state">code</field>
@@ -61,5 +61,5 @@
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="active" eval="False"/>
-    </record>
+    </record> -->
 </odoo>

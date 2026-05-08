@@ -1,0 +1,12 @@
+<record id="inherited_estate_properties_view_form" model="ir.ui.view">
+    <field name="name">inherited.estate.properties.view.form</field>
+    <field name="model">estate.properties</field>
+    <field name="inherit_id" ref="estate.estate_properties_view_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='button_box']" position="after">
+            <button class="oe_stat_button" name="action_view_partner_invoices" type="object" icon="fa-medkit" invisible="invoice_count == 0">
+                <field name="invoice_count" string="Invoice" widget="statinfo"/>
+            </button>
+        </xpath>
+    </field>
+</record>

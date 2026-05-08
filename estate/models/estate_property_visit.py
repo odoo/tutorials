@@ -19,7 +19,6 @@ class EstatePropertyVisit(models.Model):
     property_title = fields.Char()
     property_buyer = fields.Char()
     visit_time_start = fields.Datetime()
-    visit_time_end = fields.Datetime(compute='_compute_visit_end_time', store=True)
     status = fields.Selection(
         [
             ('scheduled', "Scheduled"),
@@ -29,27 +28,22 @@ class EstatePropertyVisit(models.Model):
 
     )
 
-    @api.depends('visit_time_start')
-    def _compute_visit_end_time(self):
-        for visit in self:
-            if visit.visit_time_start:
-                visit.visit_time_end = fields.Datetime.add(visit.visit_time_start, hours=1)
-            else:
-                visit.visit_time_end = False
-
-    @api.constrains('property_id', 'visit_time_start', 'visit_time_end')
+    @api.constrains('property_id', 'visit_time_start')
     def _check_visit_time(self):
         for visit in self:
-            if visit.visit_time_end and visit.visit_time_start:
-                _logger.error("FOUND DA TIME")
-                if visit.visit_time_start > visit.visit_time_end:
-                    raise UserError("Start time cannot be after end time")
+            if visit.visit_time_start:
+                # _logger.error("FOUND DA TIME")
+                after_start_hour = fields.Datetime.add(visit.visit_time_start, hours=1)
+                before_start_hour = fields.Datetime.subtract(visit.visit_time_start, hours=1)
+                # _logger.error(after_start_hour)
+                # _logger.error(before_start_hour)
                 wrong_visit = self.env['estate.property.visit'].search([
-                    ('id', '!=', visit.id), # Use visit.id
-                    ('property_id', '=', visit.property_id.id), # Use visit.property_id.id
-                    ('visit_time_start', '<', visit.visit_time_end),
-                    ('visit_time_end', '>', visit.visit_time_start)
+                    ('id', '!=', visit.id),
+                    ('property_id', '=', visit.property_id.id),
+                    ('visit_time_start', '>', before_start_hour),
+                    ('visit_time_start', '<', after_start_hour)
                 ], limit=1)
+                # _logger.error(wrong_visit)
                 if wrong_visit:
                     raise UserError('Time occupied, please select some other time.')
     
@@ -62,13 +56,11 @@ class EstatePropertyVisit(models.Model):
             ('visit_time_start', '>=', now),
             ('visit_time_start', '<=', next),
         ])
-        if visits:
-            for visit in visits:
-                visit.message_post(
-                    body="Reminder",
-                    message_type='notification',
-                )
-                visit.status = 'finished'
-            
-        _logger.info("Cron duration = %d seconds" % ((fields.Datetime.now() - now).total_seconds()))
+        for visit in visits:
+            visit.message_post(
+                body=f"Reminder!! Your visit to Property:{visit.property_title or 'Unknown'} is scheduled at {visit.visit_time_start or 'Unknown'} with {visit.property_buyer or 'Unknown'}",
+                message_type='notification',
+            )
+            visit.reminder = True
+        # _logger.error("CRON RUNNING!!!!")
 

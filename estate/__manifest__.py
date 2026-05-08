@@ -10,6 +10,7 @@
     'data': [
         'security/ir.model.access.csv',
         'data/mail_template_data.xml',
+        'data/ir_cron_data.xml',
         'views/estate_properties_view.xml',
         'views/estate_property_offer_view.xml',
         'views/estate_property_type_view.xml',
