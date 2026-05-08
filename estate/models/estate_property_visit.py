@@ -27,7 +27,7 @@ class EstatePropertyVisit(models.Model):
     visits = fields.Integer(string="Visits")
 
     duration = fields.Datetime(
-        string="Visit End",)
+        string="Visit End")
 
     @api.onchange('scheduled_on', 'duration')
     def _onchange_scheduled_on(self):
@@ -81,7 +81,7 @@ class EstatePropertyVisit(models.Model):
         tomorrow_end = fields.Date.add(now, days=2)
         visits = self.env['estate.property.visit'].search([
             ('scheduled_on', '>=', tomorrow_start),
-            ('scheduled_on', '<',  tomorrow_end),
+            ('scheduled_on', '<', tomorrow_end),
             ('state', '=', 'pending'),
         ])
 
@@ -101,7 +101,7 @@ class EstatePropertyVisit(models.Model):
             visit.activity_schedule(
                 activity_type_id=15,
                 summary='Visit Schedules',
-                note=_("Visit scheduled tomorrow at %s") % visit.scheduled_on,
+                note=_(f"Visit scheduled tomorrow at {visit.scheduled_on}"),
                 date_deadline=visit.scheduled_on.date(),
                 user_id=visit.agent_id.id,   # assign to the agent
             )

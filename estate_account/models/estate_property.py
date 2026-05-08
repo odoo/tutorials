@@ -1,6 +1,4 @@
-from odoo import _, fields, models, api
-from odoo.exceptions import AccessError, UserError, ValidationError
-from odoo.fields import Command
+from odoo import models, api
 
 
 class EstateProperty(models.Model):
