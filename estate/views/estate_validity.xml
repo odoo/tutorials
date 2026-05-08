@@ -6,6 +6,6 @@
         <field name="code">model._refuse_offer()</field>
         <field name="user_id" ref="base.user_root"/>
         <field name="interval_number">1</field>
-        <field name="interval_type">days</field>
+        <field name="interval_type">minutes</field>
     </record>
 </odoo>

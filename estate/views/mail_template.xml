@@ -2,21 +2,28 @@
 
 <odoo>
     <record id="mail_template_offer_accepted" model="mail.template">
-        <field name="name">Mail Group: Mailing offer accepted</field>
+        <field name="name">Property: Offer Accepted</field>
         <field name="model_id" ref="model_estate_property"/>
-        <field name="use_default_to" eval="False"/>
-        <field name="subject">Offer accepted</field>
-        <field name="description">Offer accepted</field>
+        <field name="subject">Congratulations! Your offer for {{ object.name }} was accepted</field>
         <field name="email_to">{{ object.buyer_id.email }}</field>
-        <field name="email_from">vishwassinhvihol@gmail.com</field>
         <field name="body_html" type="html">
-            <div style="margin: 0px; padding: 0px;">
-                Hello,
-                <br/>
-                    Your offer is accepted <strong t-out="object.name or ''"></strong>.
-                <br/>
-            </div>
-        </field>
-        <field name="auto_delete" eval="True"/>
-    </record>
+            <div style="font-family: sans-serif; font-size: 14px; color: #333;">
+                <p>Hello <strong t-out="object.buyer_id.name"></strong>,
+                </p>
+
+                <p>We are excited to inform you that your offer for <strong t-out="object.name "></strong> has been <strong>Accepted</strong>!
+                </p>
+                <p>
+                    <strong t-out="object.selling_price">Agreed Price:</strong>
+                </p>
+
+                <p>Our team will reach out shortly with the next steps for the legal documentation.</p>
+
+                <p style="margin-top: 24px;">
+                    Best regards,<br/>
+                <strong t-out="object.salesperson_id.name or 'The Real Estate Team'"></strong>
+            </p>
+        </div>
+    </field>
+</record>
 </odoo>
