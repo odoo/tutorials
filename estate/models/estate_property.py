@@ -7,6 +7,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Real Estate Property'
 
     _order = "id desc"
@@ -42,7 +43,7 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        string="Status", required=True, copy=False, default='new', readonly=False)
+        string="Status", required=True, copy=False, default='new', readonly=False, tracking=True)
     swimming_pool = fields.Boolean(string="Swimming Pool")
     property_age = fields.Integer(string="Property Age")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -150,7 +151,7 @@ class EstateProperty(models.Model):
             if record.state not in ('new', 'cancelled'):
                 raise UserError("You can only delete properties in New or Cancelled state.")
 
-    def action_sold(self):
+    def _mark_as_sold(self):
         for record in self:
             for issue in record.issue_ids:
                 if issue.priority == 'high' and issue.state == 'overdue':
@@ -161,7 +162,34 @@ class EstateProperty(models.Model):
                 raise UserError("Property cannot be sold without an accepted offer.")
 
             record.state = 'sold'
-        return True
+
+    def action_sold(self):
+        # self._mark_as_sold()
+        template = self.env.ref('estate.email_template_edi_estate', raise_if_not_found=False)
+        partner_ids = []
+        for record in self:
+            if record.buyer_id:
+                partner_ids.append(record.buyer_id.id)
+            if record.salesperson_id:
+                partner_ids.append(record.salesperson_id.partner_id.id)
+
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_composition_mode': 'comment',
+            'default_template_id': template.id,
+            'default_use_template': True,
+            'default_partner_ids': partner_ids,
+            'mark_property_sold': True,
+        }
+        return {
+            'name': 'Send Email',
+            'type': 'ir.actions.act_window',
+            'res_model': 'mail.compose.message',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': ctx,
+        }
 
     def action_cancel(self):
         for record in self:

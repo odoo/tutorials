@@ -1,6 +1,6 @@
 {
     'name': 'Real Estate Crm',
-    'description': "This module allows creating property lead in Crm.",
+    'description': "This module allows creating property offer lead in Crm.",
     'author': 'Sudarshan Maity (sumai)',
     'website': '',
     'category': 'Real Estate',

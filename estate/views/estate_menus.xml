@@ -4,6 +4,7 @@
     <menuitem
         id="menu_real_estate_root"
         name="Real Estate"
+        web_icon="estate,static/description/logo.png"
         sequence="1"/>
 
     <!-- First Level Menu Advertisement -->
