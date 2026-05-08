@@ -167,8 +167,6 @@ class EstateProperty(models.Model):
             ctx = {
                 'default_model': 'estate.property',
                 'default_res_ids': self.ids,
-                'default_composition_mode': 'comment',
-                'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
                 'force_email': True,
                 'default_template_id': template_id.id,
             }
@@ -178,8 +176,6 @@ class EstateProperty(models.Model):
                 'type': 'ir.actions.act_window',
                 'view_mode': 'form',
                 'res_model': 'mail.compose.message',
-                'views': [(False, 'form')],
-                'view_id': False,
                 'target': 'new',
                 'context': ctx,
             }
