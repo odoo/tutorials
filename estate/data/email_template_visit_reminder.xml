@@ -3,7 +3,8 @@
     <record id="email_template_visit_reminder" model="mail.template">
         <field name="body_html" type="html">
             <div>
-                Hello<t t-out="ctx.get('sales_person')"/>,
+                Hello
+                <t t-out="ctx.get('sales_person')"/>,
                 <br/>
                 Property:
                 <t t-out="ctx.get('property_name')"/>

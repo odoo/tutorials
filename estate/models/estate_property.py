@@ -94,7 +94,7 @@ class EstateProperty(models.Model):
         string='Visits'
     )
 
-    visits_count = fields.Integer(string="Visits", compute='_compute_visits_count')
+    visits_count = fields.Integer(string="Number of Visits", compute='_compute_visits_count')
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -169,5 +169,5 @@ class EstateProperty(models.Model):
     def action_see_visits(self):
         self.ensure_one()
         action = self.env['ir.actions.act_window']._for_xml_id('estate.estate_visit_action')
-        # action['domain'] = [('property_id', '=', self.id)]
+        action['domain'] = [('property_id', '=', self.id)]
         return action

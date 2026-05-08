@@ -9,6 +9,7 @@ _logger = logging.getLogger(__name__)
 
 class EstateVisit(models.Model):
     _name = 'estate.visit'
+    _description = 'Property Visit'
     _rec_name = 'property_id'
     _inherit = ['mail.thread']
 
