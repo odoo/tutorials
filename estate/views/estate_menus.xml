@@ -9,7 +9,12 @@
               name="Property List"
               parent="estate_menu_properties"
               action="estate_property_action"/>
-    
+
+    <menuitem id="estate_menu_visit_properties"
+              name="Visit List"
+              parent="estate_menu_properties"
+              action="estate_visit_action"/>
+
     <menuitem id="estate_property_setting_menu"
               parent="estate_menu_root"
               name="Setting"/>

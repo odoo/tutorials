@@ -88,6 +88,14 @@ class EstateProperty(models.Model):
         string='Tags'
     )
 
+    visit_ids = fields.One2many(
+        'estate.visit',
+        'property_id',
+        string='Visits'
+    )
+
+    visits_count = fields.Integer(string="Visits", compute='_compute_visits_count')
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
@@ -137,6 +145,7 @@ class EstateProperty(models.Model):
             record.offer_ids.filtered(lambda o: o.price == record.best_price)[:1].action_accept()
 
     def action_rest(self):
+        self.ensure_one()
         self.write({
             'state': 'new',
             'selling_price': 0.0,
@@ -151,3 +160,14 @@ class EstateProperty(models.Model):
                 raise ValidationError("Sold properties cannot be cancelled.")
             record.state = 'cancelled'
         return True
+
+    @api.depends('visit_ids')
+    def _compute_visits_count(self):
+        for rec in self:
+            rec.visits_count = len(rec.visit_ids)
+
+    def action_see_visits(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('estate.estate_visit_action')
+        # action['domain'] = [('property_id', '=', self.id)]
+        return action
