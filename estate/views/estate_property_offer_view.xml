@@ -6,9 +6,9 @@
             <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                 <field name="price" width="50px"/>
                 <field name="partner_id" string="Partner" width="50px"/>
-                <field name="property_type_id" string="Property Type" width="50px"/>
-                <button name="offer_accepted" string="Accept" type="object" icon="fa-check" width="50px" invisible="status"/>
-                <button name="offer_refused" string="Refuse" type="object" icon="fa-times" width="50px" invisible="status"/>
+                <field name="property_type_id" string="Property Type" width="50px" group="estate."/>
+                <button name="offer_accepted" string="Accept" type="object" icon="fa-check" width="50px" invisible="status" groups="estate.group_estate_manager,base.group_system"/>
+                <button name="offer_refused" string="Refuse" type="object" icon="fa-times" width="50px" invisible="status" groups="estate.group_estate_manager,base.group_system"/>
                 <field name="status" width="50px"/>
                 <field name="validity" string="Validity (days)" width="50px"/>
                 <field name="deadline" width="50px" options="{'min_date': 'today'}"/>

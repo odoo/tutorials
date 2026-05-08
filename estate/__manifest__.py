@@ -8,6 +8,8 @@
         'base', 'mail'
     ],
     'data': [
+        'data/ir_module_category_data.xml',
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',

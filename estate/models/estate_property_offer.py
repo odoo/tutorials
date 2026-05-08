@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     deadline = fields.Date()
     partner_id = fields.Many2one(comodel_name='res.partner', required=True)
     price = fields.Float()
-    property_id = fields.Many2one(comodel_name='estate.properties', readonly=True, required=True)
+    property_id = fields.Many2one(comodel_name='estate.properties', readonly=True, required=True, ondelete='cascade')
     property_type = fields.Char(related='property_id.property_type_id.type')
     property_type_id = fields.Many2one(related='property_id.property_type_id')
     status = fields.Selection(

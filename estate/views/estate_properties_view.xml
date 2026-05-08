@@ -37,7 +37,7 @@
                 <header>
                     <button name="property_sold" type="object" string="Sell" class="oe_highlight" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="property_cancelled" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <button name="property_accept" type="object" string="Accept" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'"/>
+                    <button name="property_accept" type="object" string="Accept" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" groups="estate.group_estate_manager,base.group_system"/>
                     <button name="action_schedule_visit" type="object" string="Schedule" invisible="state == 'cancelled' or state == 'new'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
