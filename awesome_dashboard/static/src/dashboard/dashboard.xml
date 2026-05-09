@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary me-2" t-on-click="openCustomers">
+                    Customers
+                </button>
+
+                <button class="btn btn-primary" t-on-click="openLeads">
+                    Leads
+                </button>
+            </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn btn-secondary fa fa-cog"
+                        t-on-click="openConfiguration"/>
+            </t>
+
+            <div t-if="stats" class="d-flex flex-wrap gap-3">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+    <DashboardItem size="item.size || 1">
+        <t t-set="itemProps"
+        t-value="item.props ? item.props(stats) : { data: stats }"/>
+
+        <!-- uppercase Component ✅ -->
+        <t t-component="item.Component"
+        t-props="itemProps"/>
+
+    </DashboardItem>
+</t>
+            </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard Configuration'">
+            <div class="p-3">
+                <p>Which cards do you want to see?</p>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <CheckBox
+                        value="item.enabled"
+                        onChange="(checked) => this.onChange(checked, item)">
+                            <span>
+                                <t t-esc="item.description"/>
+                            </span>
+                    </CheckBox>
+                </t>
+            </div>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
