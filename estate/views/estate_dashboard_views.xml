@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="dashboard" model="ir.actions.client">
+        <field name="name">Dashboard</field>
+        <field name="tag">estate.dashboard</field>
+    </record>
+</odoo>

@@ -1,0 +1,43 @@
+.o_estate_offer_counter {
+    display:     flex;
+    align-items: center;
+    padding:     0 8px;
+    height:      100%;
+    cursor:      pointer;
+    position:    relative;
+    transition:  background 0.15s ease;
+
+    &:hover {
+        background: var(--o-navbar-item-active-background, rgba(0, 0, 0, 0.06));
+    }
+
+    &.o_estate_offer_counter_active {
+        .fa-home {
+            color: var(--o-color-primary, #875a7b);
+        }
+    }
+
+    .fa-home {
+        font-size:  18px;
+        color:      var(--o-navbar-icon-color, rgba(255, 255, 255, 0.85));
+        transition: color 0.2s ease;
+    }
+
+    .o_estate_offer_badge {
+        position:         absolute;
+        top:              6px;
+        right:            2px;
+        min-width:        16px;
+        height:           16px;
+        padding:          0 4px;
+        border-radius:    8px;
+        background:       #e74c3c;
+        color:            #fff;
+        font-size:        10px;
+        font-weight:      700;
+        line-height:      16px;
+        text-align:       center;
+        pointer-events:   none;
+        white-space:      nowrap;
+    }
+}

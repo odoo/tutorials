@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="estate.EstateDashboard">
+        <Layout display="display" className="h-100">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openProperties">Properties</button>
+                <button class="btn btn-secondary" t-on-click="openChartjs">Chart.js</button>
+            </t>
+            <div class="card p-3 m-3 d-flex flex-column justify-content-center h-100 text-center" style="width:500px;height:500px">
+                <div class="card-header">
+                    <h4>Property Count on Each Type</h4>
+                </div>
+                <div class="card-body">
+                    <PieChart data="counts"/>
+                </div>
+            </div>
+        </Layout>
+    </t>
+</templates>

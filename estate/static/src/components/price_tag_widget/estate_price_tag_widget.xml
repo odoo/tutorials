@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preseve">
+    <t t-name="estate.PriceTagWidget">
+        <div class="o_estate_price_tag d-inline-flex align-items-baseline gap-1 px-3 py-1 rounded-3 shadow-sm">
+            <span class="o_price_symbol fw-semibold" t-esc="symbol"/>
+            <span class="o_price_value fw-bold" t-esc="formattedPrice"/>
+            <span t-if="priceLabel" class="o_price_label badge self-center ms-1 fw-semibold" t-esc="priceLabel"/>
+        </div>
+    </t>
+</template>

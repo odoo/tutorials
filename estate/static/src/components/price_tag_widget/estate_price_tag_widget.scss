@@ -1,0 +1,23 @@
+.o_estate_price_tag{
+    background: repeating-linear-gradient(135deg, #5f9fc410, #5f9fc410 10px, #00000000 10px, #00000000 20px);
+    border:  1px solid #77858d79;
+    color: #ffffffda;
+    width: fit-content;
+}
+
+.o_price_symbol{
+    font-size: 0.7rem;
+    opacity: 0.85;
+}
+
+.o_price_value{
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.o_price_label{
+    font-size: 0.45rem;
+    background: rgba(236, 224, 202, 0.2);
+    color: #ffffffee;
+    letter-spacing: 0.3px;
+}

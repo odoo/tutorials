@@ -54,6 +54,8 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+*.po
+/estate/i18n
 
 # Django stuff:
 *.log
@@ -127,3 +129,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+/health
+/library
+/vanilla_js
