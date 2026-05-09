@@ -1,0 +1,10 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PiChart">
+        <div class="d-flex flex-column h-100 w-100 p-3">
+            <h4 class="text-center mb-2">T-shirt Size</h4>
+            <div style="min-height: 0;">
+                <canvas t-ref="canvas"></canvas>
+            </div>
+        </div>
+    </t>
+</templates>

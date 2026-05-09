@@ -1,0 +1,8 @@
+<templates>
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="p-2">
+            <h4><t t-esc="props.title"/></h4>
+            <PiChart data="props.data"/>
+        </div>
+    </t>
+</templates>
