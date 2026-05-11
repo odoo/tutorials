@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="todolist">
+        <div class="d-flex mt-4">
+            <div class=" border rounded p-4 shadow-sm" style="min-width: 300px;">
+                <h3 class="mb-3 text-center">
+                    Todo List
+                </h3>
+                <div class="border rounded p-2" >
+                <input type="Text" placeholder="Enter Todo Item" t-on-keyup="addTodo" t-ref="input"/>
+                    <t t-foreach="todo" t-as="todo" t-key="todo.id">
+                        <TodoItems todo="todo" toggleState.bind="toggleItem" removeState.bind="removeItem"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

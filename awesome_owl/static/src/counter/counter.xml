@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="counter">
+        <div class="p-2 grid inline-block">
+            <div class="p-3 border grid">
+            Counter
+            <div class="me-2 p-2 border d-inline-block">
+                    <span class="me-2">Counter: <t t-esc="state.value"/>
+                    </span>
+                    <button class="btn btn-primary" t-on-click="increment" t-if="this.state.value lt 10">Increment</button>
+                    <button class="btn btn-primary" t-on-click="decrement" t-if="this.state.value gt 0">Decrement</button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

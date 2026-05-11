@@ -71,7 +71,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.status == "accepted":
                 note = "Property offer accepted"
-                breakpoint()
                 activity_type = self.env.ref("mail.mail_activity_data_todo")
                 date_deadline = fields.Date.add(record.create_date, months=1)
                 res_model_id = self.env["ir.model"]._get_id("estate.property")
