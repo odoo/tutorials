@@ -37,7 +37,8 @@
             <form string="Property">
                 <header>
                     <button name="action_sold" type="object" string="Sold"
-                            class="btn-primary" invisible="state =='sold'"/>
+                            class="btn-primary"/>
+                    <button name="action_send_mail_property" type="object" string="Send Mail"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
                     <button name="action_rest" type="object" string="Rest"/>
                     <button name="best_offer" type="object" string="Accept Best Offer"/>
@@ -73,6 +74,8 @@
                             <field name="selling_price"/>
                             <field name="best_price"/>
                             <field name="active"/>
+                            <chatter/>
+
                         </group>
                     </group>
                     <!-- Notebook tabs -->

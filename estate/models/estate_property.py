@@ -1,10 +1,15 @@
-from odoo import fields, models, api
+import logging
+
+from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+
+_logger = logging.getLogger(__name__)
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
+    _inherit = ['mail.thread']
     _description = "Real Estate Property"
     _order = 'id desc'
     _check_expected_price = models.Constraint(
@@ -170,4 +175,35 @@ class EstateProperty(models.Model):
         self.ensure_one()
         action = self.env['ir.actions.act_window']._for_xml_id('estate.estate_visit_action')
         action['domain'] = [('property_id', '=', self.id)]
+        return action
+
+    def action_send_mail_property(self):
+        _logger.info("--send mail is starting--")
+        self.ensure_one()
+        template = self.env.ref('estate.send_email_templates', raise_if_not_found=False)
+
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_template_id': template.id,
+            'force_email': True,
+            'default_partner_ids': [self.buyer_id.id, self.salesperson_id.partner_id.id],
+            'sales_person': self.salesperson_id.name,
+            'property_name': self.name,
+            'buyer_name': self.buyer_id.name,
+            'selling_price': self.selling_price
+
+        }
+
+        action = {
+            'name': _('Send'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
+        _logger.info("--sending mail is stopped--")
         return action

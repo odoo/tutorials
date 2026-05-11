@@ -85,11 +85,13 @@ class EstateVisit(models.Model):
                 'start_time': visit.start_time,
                 'end_time': visit.end_time
             }
+            _logger.info("=========email_from: %s=========", visit.salesperson_id.email)
+            _logger.info("==========visitor email: %s======", visit.visitor_id.email)
             template.with_context(ctx).send_mail(
                 visit.id,
                 email_values={
-                    'email_to': 'vivah@odoo.com',
                     'email_from': visit.salesperson_id.email,
+                    'email_to': visit.visitor_id.email
                 },
                 force_send=True
             )
