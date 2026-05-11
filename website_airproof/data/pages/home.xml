@@ -299,9 +299,7 @@
                                             alt="Drone flying"
                                             data-shape="website_airproof/duo/01"
                                             data-shape-colors=";#CEF8A1;;;"
-                                            data-mimetype="image/svg+xml"
-                                            data-mimetype-before-conversion="image/webp"
-                                            data-original-src="website_airproof/static/src/img/content/drone-flying.webp"
+                                            data-format-mimetype="image/webp"
                                             data-file-name="drone-flying.svg" />
                                         <!-- Standard image shape -->
                                         <!-- <img src="/html_editor/image_shape/website_airproof.img_drone_flying/html_builder/geometric_round/geo_round_square.svg" class="img img-fluid" alt="Drone flying" data-shape="html_builder/geometric_round/geo_round_square" data-format-mimetype="image/jpeg" data-file-name="drone-flying.svg" data-shape-colors=";;;;" style="width: 100% !important;"/> -->
