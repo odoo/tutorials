@@ -20,7 +20,8 @@ class EstateProperties(models.BaseModel):
             return admin_fees
 
     def property_sold(self):
-        super().property_sold()  # type: ignore
+        _logger.error("Reached inherited")
+        action = super().property_sold()  # type: ignore
         if self.property_type_id.type == 'Apartment':  # type:ignore
             # _logger.error(self.property_type_id.type)  # type:ignore
             admin_fees = 0.02 * self.selling_price  # type: ignore
@@ -53,7 +54,7 @@ class EstateProperties(models.BaseModel):
         }
         # _logger.error(invoice_vals)
         self.env['account.move'].create(invoice_vals)
-        return super()
+        return action
 
     def _find_invoices(self):
         self.ensure_one()

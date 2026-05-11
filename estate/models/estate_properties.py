@@ -207,8 +207,7 @@ class EstateProperties(models.Model):
                     'default_template_id': template.id,
                     'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
                 }
-
-            return {
+            action = {
                     'name': ('Send'),
                     'type': 'ir.actions.act_window',
                     'view_mode': 'form',
@@ -218,6 +217,7 @@ class EstateProperties(models.Model):
                     'target': 'new',
                     'context': ctx,
                 }
+            return action
 
     @api.depends('selling_price')
     def _compute_commission(self):
@@ -266,7 +266,7 @@ class EstateProperties(models.Model):
     def action_potential_buyers(self):
         # _logger.error("Hellooooooooooooooooooooo")
         self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id('base.action_partner_form')
+        action = self.env['ir.actions.actions']._for_xml_id('base.action_res_users')
         action['view_mode'] = 'list'
         action['views'] = []
         action['domain'] = [

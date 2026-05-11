@@ -1,0 +1,37 @@
+<odoo>
+    <template id="report_propertysale">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Buyer: </strong>
+                            <span t-field="property.buyer_id.name"/>
+                        </div>
+                        <div>
+                            <strong>Selling Price: </strong>
+                            <span t-field="property.selling_price"/>
+                        </div>
+                        <div>
+                            <strong>Salesperson: </strong>
+                            <span t-field="property.salesperson_id.name"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="action_report_propertysale" model="ir.actions.report">
+        <field name="name">Property Sale</field>
+        <field name="model">estate.properties</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_propertysale</field>
+        <field name="report_file">estate.report_propertysale</field>
+        <field name="print_report_name">'Property Sale - %s' % (object.display_name)</field>
+        <field name="binding_model_id" ref="model_estate_properties"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

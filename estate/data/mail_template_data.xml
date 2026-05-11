@@ -27,7 +27,8 @@
                     </p>
                 </div>
             </field>
+            <field name="report_template_ids" eval="[(4, ref('estate.action_report_propertysale'))]"/>
+            <field name="auto_delete" eval="True"/>
         </record>
-
     </data>
 </odoo>

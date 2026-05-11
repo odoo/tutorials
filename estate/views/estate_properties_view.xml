@@ -43,7 +43,7 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="action_potential_buyers" type="object" icon="fa-address-book" invisible="potential_buyer_count == 0 or state in ['cancelled', 'sold', 'offer_received', 'offer_accepted']">
+                        <button class="oe_stat_button" name="action_potential_buyers" type="object" icon="fa-address-book" invisible="potential_buyer_count == 0 or state in ['cancelled', 'sold', 'offer_received', 'offer_accepted'] or expected_price == 0">
                             <field name="potential_buyer_count" string="Potential Buyers" widget="statinfo"/>
                         </button>
                         <button class="oe_stat_button" name="show_visits" type="object" icon="fa-medkit">
@@ -162,11 +162,58 @@
             </search>
         </field>
     </record>
-    
+
+    <record id="estate_properties_view_kanban" model="ir.ui.view">
+        <field name="name">estate.properties.view.kanban</field>
+        <field name="model">estate.properties</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1" default_group_by="property_type_id" groups_draggable="1" records_draggable="0" archivable="0">
+                <progressbar field="state" colors='{"offer_received": "info", "offer_accepted": "primary", "sold": "success","cancelled": "danger"}' sum_field="selling_price"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <main>
+                            <field name="name" class="fw-bold fs-5 mb-1 d-block"/>
+                            <div class="text-muted">
+                                <div>
+                                    Expected Price: <field name="expected_price" decoration-warning="expected_price &gt; 0"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_received'">
+                                    Best Price: <field name="best_price" decoration-success="best_price &gt; 0"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_accepted'">
+                                    Selling Price: <field name="selling_price" decoration-success="selling_price &gt; 0"/>
+                                </div>
+                            </div>
+
+                            <div class="mt-2">
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                            <footer class="mt-2">
+                                <div class="text-muted">
+                                    <field name="salesperson_id" widget="many2one_avatar_user"/>
+                                </div>
+                            </footer>
+                        </main>
+                        <aside class="p-3 gap-4">
+                            <div class="mb-2">
+                                <field name="state" class="badge rounded-pill text-bg-info"/>
+                            </div>
+                            <button name="property_sold" type="object" title="Sell" class="btn btn-primary" icon="fa-shopping-cart" invisible="state == 'sold' or state == 'cancelled'"/>
+                            <button name="property_cancelled" type="object" title="Cancel" class="btn btn-secondary" icon="fa-times" invisible="state == 'sold' or state == 'cancelled'"/>
+                            <button name="property_accept" type="object" title="Accept" class="btn btn-success" icon="fa-check" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" groups="estate.group_estate_manager,base.group_system"/>
+                            <button name="action_schedule_visit" type="object" title="Schedule" class="btn btn-outline-primary" icon="fa-male" invisible="state == 'cancelled' or state == 'new'"/>
+                        </aside>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_properties_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.properties</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': 1}</field>
     </record>
 </odoo>

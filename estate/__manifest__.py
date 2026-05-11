@@ -9,6 +9,7 @@
     ],
     'data': [
         'data/ir_module_category_data.xml',
+        'report/ir_actions_report.xml',
         'security/estate_security.xml',
         'security/ir.model.access.csv',
         'data/mail_template_data.xml',
