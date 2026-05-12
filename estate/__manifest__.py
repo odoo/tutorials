@@ -5,7 +5,7 @@
     'category': 'tutorials',
     'author': "sadeo-odoo",
     'license': 'LGPL-3',
-    'description': "A real estate module",
+    'description': 'A real estate module',
     'installable': True,
     'application': True,
     
