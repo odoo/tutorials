@@ -195,14 +195,16 @@
                                 </div>
                             </footer>
                         </main>
-                        <aside class="p-3 gap-4">
-                            <div class="mb-2">
+                        <aside class="px-2 my-2">
+                            <div class="d-flex mb-2 justify-content-end gap-2">
                                 <field name="state" class="badge rounded-pill text-bg-info"/>
                             </div>
-                            <button name="property_sold" type="object" title="Sell" class="btn btn-primary" icon="fa-shopping-cart" invisible="state == 'sold' or state == 'cancelled'"/>
-                            <button name="property_cancelled" type="object" title="Cancel" class="btn btn-secondary" icon="fa-times" invisible="state == 'sold' or state == 'cancelled'"/>
-                            <button name="property_accept" type="object" title="Accept" class="btn btn-success" icon="fa-check" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" groups="estate.group_estate_manager,base.group_system"/>
-                            <button name="action_schedule_visit" type="object" title="Schedule" class="btn btn-outline-primary" icon="fa-male" invisible="state == 'cancelled' or state == 'new'"/>
+                            <div class="d-flex flex-wrap justify-content-center alight-items-center gap-2">
+                                <button name="property_sold" type="object" title="Sell" class="btn btn-primary" icon="fa-shopping-cart" invisible="state == 'sold' or state == 'cancelled'"/>
+                                <button name="property_cancelled" type="object" title="Cancel" class="btn btn-secondary" icon="fa-times" invisible="state == 'sold' or state == 'cancelled'"/>
+                                <button name="property_accept" type="object" title="Accept" class="btn btn-success" icon="fa-check" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" groups="estate.group_estate_manager,base.group_system"/>
+                                <button name="action_schedule_visit" type="object" title="Schedule" class="btn btn-outline-primary" icon="fa-male" invisible="state == 'cancelled' or state == 'new' or state == 'sold'"/>
+                            </div>
                         </aside>
                     </t>
                 </templates>
