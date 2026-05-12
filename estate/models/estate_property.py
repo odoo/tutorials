@@ -139,11 +139,39 @@ class EstateProperty(models.Model):
                 raise ValidationError("Can't delete Property!")
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise ValidationError("Cancelled properties cannot be sold.")
-            record.state = 'sold'
-        return True
+        _logger.info("--send mail is starting--")
+        self.ensure_one()
+        template = self.env.ref('estate.send_email_templates', raise_if_not_found=False)
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_template_id': template.id,
+            'force_email': True,
+            'default_partner_ids': [self.buyer_id.id, self.salesperson_id.partner_id.id],
+            'sales_person': self.salesperson_id.name,
+            'property_name': self.name,
+            'buyer_name': self.buyer_id.name,
+            'selling_price': self.selling_price
+
+        }
+
+        action = {
+            'name': _('Send'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
+        _logger.info("--sending mail is end--")
+        if self.state == 'cancelled':
+            raise ValidationError("Cancelled properties cannot be sold.")
+        self.state = 'sold'
+        _logger.info("--action sold is ended--")
+
+        return action
 
     def best_offer(self):
         for record in self:
