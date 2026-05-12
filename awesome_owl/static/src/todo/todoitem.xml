@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <div class="p-1">
+            <div>
+                <span>
+                    <t t-esc="props.todo['id']"/>
+                .
+                    <t t-esc="props.todo['description']"/>
+                </span>
+            </div>
+        </div>
+    </t>
+</templates>
