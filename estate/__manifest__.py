@@ -8,6 +8,7 @@
     'category': 'Tutorials',
     'license': 'AGPL-3',
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'data/mail_template_data.xml',
         'data/email_template_visit_reminder.xml',
