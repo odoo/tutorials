@@ -66,22 +66,22 @@
     </template>
     <record id="action_report_property_sale" model="ir.actions.report">
         <field name="name">Property Sale</field>
-        <field name="model">estate.properties</field>
+        <field name="model">estate.property</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.report_property_sale</field>
         <field name="report_file">estate.report_property_sale</field>
         <field name="print_report_name">'Property Sale - %s' % (object.display_name)</field>
-        <field name="binding_model_id" ref="model_estate_properties"/>
+        <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
     <record id="action_report_property_summary" model="ir.actions.report">
         <field name="name">Property Summary</field>
-        <field name="model">estate.properties</field>
+        <field name="model">estate.property</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">estate.report_property_summary</field>
         <field name="report_file">estate.report_property_summary</field>
         <field name="print_report_name">'Property Summary - %s' % (object.display_name)</field>
-        <field name="binding_model_id" ref="model_estate_properties"/>
+        <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
 </odoo>

@@ -8,6 +8,9 @@
         'estate',
         'account',
     ],
+    'data': [
+        'views/estate_property_view.xml',
+    ],
     'installable': True,
     'author': 'Rini Pillai',
     'license': 'LGPL-3',

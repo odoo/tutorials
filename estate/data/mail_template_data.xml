@@ -3,7 +3,7 @@
     <data>
         <record id="estate_property_sold_mail_template" model="mail.template">
             <field name="name">Property Booked</field>
-            <field name="model_id" ref="estate.model_estate_properties"/>
+            <field name="model_id" ref="estate.model_estate_property"/>
             <field name="subject">Property: {{ object.display_name }}</field>
             <field name="email_from">{{ object.salesperson_id.email }}</field>
             <field name="email_to">{{ object.buyer_id.email }} {{ object.salesperson_id.email }}</field>

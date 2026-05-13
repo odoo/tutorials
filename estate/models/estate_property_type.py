@@ -1,10 +1,6 @@
-import logging
 from datetime import timedelta
 
 from odoo import api, fields, models
-
-
-_logger = logging.getLogger(__name__)
 
 
 class EstatePropertyType(models.Model):
@@ -24,7 +20,7 @@ class EstatePropertyType(models.Model):
     offer_count = fields.Integer(compute='_compute_offer_count')
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_type_id')
     pricey_count = fields.Integer(compute='_compute_pricey_count')
-    property_ids = fields.One2many(comodel_name='estate.properties', inverse_name='property_type_id')
+    property_ids = fields.One2many(comodel_name='estate.property', inverse_name='property_type_id')
     type = fields.Char(required=True)
 
     _check_name = models.Constraint(
@@ -32,17 +28,8 @@ class EstatePropertyType(models.Model):
         "Property Type should be unique",
     )
 
-    @api.depends('offer_ids')
-    def _compute_offer_count(self):
-        for property_type in self:
-            # _logger.error(property_type)
-            # _logger.error(property_type.offer_ids)
-            # _logger.error(property_type.property_ids.offer_ids)
-            property_type.offer_count = len(property_type.offer_ids)
-
     @api.depends('offer_ids.deadline')
     def _compute_offer_alert(self):
-        # breakpoint()
         for property in self:
             today = fields.Date.context_today(property)
             alert = timedelta(days=1)
@@ -50,7 +37,11 @@ class EstatePropertyType(models.Model):
                 lambda o: o.deadline and abs(o.deadline - today) <= alert
                 and o.status not in ['refused', 'accepted'])
             )
-            # _logger.error(property.offer_alert)
+
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for property_type in self:
+            property_type.offer_count = len(property_type.offer_ids)
 
     @api.depends('property_ids.expected_price')
     def _compute_pricey_count(self):
@@ -58,16 +49,20 @@ class EstatePropertyType(models.Model):
             property.pricey_count = len(property.property_ids.filtered(lambda prop: prop.expected_price > 100000))
 
     def action_see_offers(self):
-        # breakpoint()
+        """
+        Returns an action to display all offers associated with this property type.
+        """
         self.ensure_one()
         action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_offer_action')
         action['domain'] = [('property_type_id', '=', self.id)]
         return action
 
     def action_pricey_property(self):
-        # breakpoint()
+        """
+        Displays high-value available properties of this specific type.
+        """
         self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id('estate.estate_properties_action')
+        action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_action')
         action['domain'] = [
             ('expected_price', '>=', 100000),
             ('property_type_id', '=', self.id)
@@ -76,7 +71,10 @@ class EstatePropertyType(models.Model):
         return action
 
     def action_offer_alert(self):
-        # breakpoint()
+        """
+        Filters for offers linked to this property type that have not been
+        accepted or refused and where the deadline is today or in the future.
+        """
         self.ensure_one()
         action = self.env['ir.actions.actions']._for_xml_id('estate.estate_property_offer_action')
         action['domain'] = [

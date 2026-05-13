@@ -1,10 +1,5 @@
-import logging
-
 from odoo import fields, models, api
 from odoo.exceptions import UserError
-
-
-_logger = logging.getLogger(__name__)
 
 
 class EstatePropertyVisit(models.Model):
@@ -15,7 +10,7 @@ class EstatePropertyVisit(models.Model):
 
     finished = fields.Boolean(default=True)
     reminder = fields.Boolean(default=False)
-    property_id = fields.Many2one(comodel_name='estate.properties')
+    property_id = fields.Many2one(comodel_name='estate.property')
     property_title = fields.Char()
     property_buyer = fields.Char()
     visit_time_start = fields.Datetime()
@@ -32,18 +27,14 @@ class EstatePropertyVisit(models.Model):
     def _check_visit_time(self):
         for visit in self:
             if visit.visit_time_start:
-                # _logger.error("FOUND DA TIME")
                 after_start_hour = fields.Datetime.add(visit.visit_time_start, hours=1)
                 before_start_hour = fields.Datetime.subtract(visit.visit_time_start, hours=1)
-                # _logger.error(after_start_hour)
-                # _logger.error(before_start_hour)
                 wrong_visit = self.env['estate.property.visit'].search([
                     ('id', '!=', visit.id),
                     ('property_id', '=', visit.property_id.id),
                     ('visit_time_start', '>', before_start_hour),
                     ('visit_time_start', '<', after_start_hour)
                 ], limit=1)
-                # _logger.error(wrong_visit)
                 if wrong_visit:
                     raise UserError('Time occupied, please select some other time.')
 
@@ -62,4 +53,3 @@ class EstatePropertyVisit(models.Model):
                 message_type='notification',
             )
             visit.reminder = True
-        # _logger.error("CRON RUNNING!!!!")
