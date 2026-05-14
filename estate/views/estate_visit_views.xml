@@ -31,10 +31,9 @@
                         <field name="status"/>
                         <field name="salesperson_id"/>
                         <field name="reminder_sent"/>
-                        <chatter/>
                     </group>
                 </sheet>
-
+                <chatter/>
             </form>
         </field>
     </record>

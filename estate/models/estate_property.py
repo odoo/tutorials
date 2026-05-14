@@ -1,7 +1,7 @@
 import logging
 
-from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 _logger = logging.getLogger(__name__)
@@ -101,18 +101,6 @@ class EstateProperty(models.Model):
 
     visits_count = fields.Integer(string="Number of Visits", compute='_compute_visits_count')
 
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue
-            min_price = record.expected_price * 0.90
-            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
-                raise ValidationError(
-                    f"Selling price ({record.selling_price:.2f}) cannot be "
-                    f"lower than 90% of expected price ({min_price:.2f})."
-                )
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for rec in self:
@@ -123,6 +111,11 @@ class EstateProperty(models.Model):
         for rec in self:
             rec.best_price = max(rec.offer_ids.mapped('price'), default=0.0)
 
+    @api.depends('visit_ids')
+    def _compute_visits_count(self):
+        for rec in self:
+            rec.visits_count = len(rec.visit_ids)
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -132,15 +125,28 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_price = record.expected_price * 0.90
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise ValidationError(_("Selling price (%.2f) cannot be "
+                                        "lower than 90%% of expected price (%.2f).", record.selling_price, min_price))
+
     @api.ondelete(at_uninstall=False)
     def _unlink_ondelete(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise ValidationError("Can't delete Property!")
+                raise UserError(_("Can't delete Property!"))
 
     def action_sold(self):
-        _logger.info("--send mail is starting--")
+        _logger.info("Sending sale confirmation email for property %s (id=%s)", self.name, self.id)
         self.ensure_one()
+        if self.state == 'cancelled':
+            raise UserError(_("Cancelled properties cannot be sold."))
+        self.state = 'sold'
         template = self.env.ref('estate.send_email_templates', raise_if_not_found=False)
         ctx = {
             'default_model': 'estate.property',
@@ -154,8 +160,7 @@ class EstateProperty(models.Model):
             'selling_price': self.selling_price
 
         }
-
-        action = {
+        return {
             'name': _('Send'),
             'type': 'ir.actions.act_window',
             'view_mode': 'form',
@@ -165,39 +170,27 @@ class EstateProperty(models.Model):
             'target': 'new',
             'context': ctx,
         }
-        _logger.info("--sending mail is end--")
-        if self.state == 'cancelled':
-            raise ValidationError("Cancelled properties cannot be sold.")
-        self.state = 'sold'
-        _logger.info("--action sold is ended--")
-
-        return action
 
     def best_offer(self):
         for record in self:
             record.offer_ids.filtered(lambda o: o.price == record.best_price)[:1].action_accept()
 
-    def action_rest(self):
+    def action_reset(self):
         self.ensure_one()
         self.write({
             'state': 'new',
             'selling_price': 0.0,
-            'buyer_id': '',
+            'buyer_id': False,
         })
-        self.mapped('offer_ids').write({'status': False})
+        self.offer_ids.write({'status': False})
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise ValidationError("Sold properties cannot be cancelled.")
+                raise ValidationError(_("Sold properties cannot be cancelled."))
             record.state = 'cancelled'
         return True
-
-    @api.depends('visit_ids')
-    def _compute_visits_count(self):
-        for rec in self:
-            rec.visits_count = len(rec.visit_ids)
 
     def action_see_visits(self):
         self.ensure_one()

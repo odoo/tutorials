@@ -40,7 +40,7 @@
                             class="btn-primary"/>
                     <button name="action_send_mail_property" type="object" string="Send Mail"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
-                    <button name="action_rest" type="object" string="Rest"/>
+                    <button name="action_reset" type="object" string="Rest"/>
                     <button name="best_offer" type="object" string="Accept Best Offer"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
@@ -74,8 +74,6 @@
                             <field name="selling_price"/>
                             <field name="best_price"/>
                             <field name="active"/>
-                            <chatter/>
-
                         </group>
                     </group>
                     <!-- Notebook tabs -->
@@ -104,6 +102,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -188,7 +187,7 @@
                                 <field name="best_price"/>
                             </div>
 
-                            <div t-if="record.state.value == 'offer_accepted'">
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
                                 Selling:
                                 <field name="selling_price"/>
                             </div>

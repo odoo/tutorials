@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from odoo import fields, models, api
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -47,9 +47,7 @@ class EstateVisit(models.Model):
             ], limit=1)
 
             if overlapping_visit:
-                raise ValidationError(
-                    "Another visit is already scheduled during this time."
-                )
+                raise ValidationError(_("Another visit is already scheduled during this time."))
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -58,9 +56,7 @@ class EstateVisit(models.Model):
             if start_time:
                 start_time = fields.Datetime.from_string(start_time)
                 if start_time < fields.Datetime.now():
-                    raise ValidationError(
-                        "Start time must be in the future."
-                    )
+                    raise ValidationError(_("Start time must be in the future."))
         return super().create(vals_list)
 
     @api.model
@@ -105,4 +101,4 @@ class EstateVisit(models.Model):
         #     force_send=True
         # )
         # visit.reminder_sent = True
-        _logger.info("=================Visit reminder cron FINSH=====")
+        _logger.info("Visit reminder cron finished — sent %s reminders", len(visits))

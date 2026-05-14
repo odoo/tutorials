@@ -5,7 +5,6 @@ class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = 'Real Estate Property Type'
     _order = 'type'
-    _rec_name = 'type'
 
     _unique_property_type = models.Constraint(
         'UNIQUE (type)',
@@ -38,5 +37,5 @@ class EstatePropertyType(models.Model):
     def action_see_offers(self):
         self.ensure_one()
         action = self.env['ir.actions.act_window']._for_xml_id('estate.estate_property_offer_action')
-        # action['domain'] = [('property_type_id', '=', self.id)]
+        action['domain'] = [('property_type_id', '=', self.id)]
         return action

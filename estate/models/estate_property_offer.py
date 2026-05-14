@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
             property_record = self.env['estate.property'].browse(vals.get('property_id'))
             existing_prices = property_record.offer_ids.mapped('price')
             if existing_prices and vals.get('price') <= max(existing_prices):
-                raise ValidationError("Offer price must be higher than existing offers!")
+                raise ValidationError(_("Offer price must be higher than existing offers!"))
             property_record.state = 'offer_received'
         return super().create(vals_list)
 
@@ -78,7 +78,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         self.ensure_one()
         if self.property_id.state in ('sold', 'cancelled'):
-            raise ValidationError("Already sold or cancelled property can not accept the offer!")
+            raise ValidationError(_("Already sold or cancelled property can not accept the offer!"))
         (self.property_id.offer_ids - self).write({'status': 'refused'})
         self.write({'status': 'accepted'})
         self.property_id.write({
@@ -90,7 +90,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         if self.property_id.state == 'cancelled':
-            raise UserError("You cannot reject an offer in a sold or cancelled property")
+            raise UserError(_("You cannot reject an offer in a sold or cancelled property"))
         if self.status == 'accepted':
             self.property_id.selling_price = 0
             self.property_id.buyer_id = False

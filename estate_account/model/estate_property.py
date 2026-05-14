@@ -1,6 +1,6 @@
 import logging
 
-from odoo import Command, models
+from odoo import Command, models, _
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -14,10 +14,8 @@ class EstateProperty(models.Model):
         _logger.info("================calling sold action=============")
         for record in self:
             if not record.buyer_id:
-                raise UserError(
-                    f"Property '{record.name}' has no buyer. "
-                    f"Please accept an offer before marking as sold."
-                )
+                raise UserError(_("Property '%s' has no buyer. "
+                                  "Please accept an offer before marking as sold.", record.name))
 
             self.env['account.move'].create({
                 'partner_id': record.buyer_id.id,
