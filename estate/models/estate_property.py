@@ -1,6 +1,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
+from odoo.tools.profiler import Profiler, SQLCollector
+from markupsafe import Markup
 
 
 class EstateProperty(models.Model):
@@ -100,13 +102,22 @@ class EstateProperty(models.Model):
                 record.garden_orientation = False
 
     def action_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError(_("Cancelled property cannot be sold."))
-            record.state = "sold"
-            record.selling_price = record.selling_price
-            mail_template = record.env.ref("estate.mail_template_invoice_send")
-            mail_template.send_mail(record.id, force_send=True)
+        with Profiler(collectors=[SQLCollector()]):
+            for record in self:
+                if record.state == "cancelled":
+                    raise UserError(_("Cancelled property cannot be sold."))
+                record.state = "sold"
+                record.selling_price = record.selling_price
+                mail_template = record.env.ref("estate.mail_template_invoice_send")
+                mail_template.send_mail(record.id, force_send=True)
+                partner_to_mention = record.salesman_id.partner_id
+                _msg = Markup(
+                    f"""Hello <a href="#" data-oe-model="res.partner" data-oe-id="{partner_to_mention.id}">@{record.salesman_id.name}</a>! Congratulations for selling the property."""
+                )
+
+                record.message_post(
+                    body=_msg,
+                )
         return True
 
     def action_cancel(self):
