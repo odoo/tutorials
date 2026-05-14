@@ -1,8 +1,8 @@
-_propertfrom odoo import fields,models
+from odoo import fields,models
 
 class EstateProperty(models.Model):
     _name='estate.property'
-    _descripion='Estate Property description module'
+    _descripion='Estate Property description modulee'
     name=fields.Char(string='Name',required=True)
     description=fields.Text(string='Description')
     bedrooms=fields.Integer(string='Bedrooms')
