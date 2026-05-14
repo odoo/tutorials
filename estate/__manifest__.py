@@ -8,6 +8,10 @@
     "website": "https://www.odoo.com/",
     "category": "Uncategorized",
     "depends": ["base"],
+    "data":[
+        "security/ir.model.access.csv"
+    ],
+    "LICENSE":"LGPL",
     "application": True,
     "installable":True
 }
