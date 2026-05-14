@@ -36,6 +36,12 @@ class EstatePropertyOffer(models.Model):
         string="Validity (days)",
         default=7,
     )
+    quotation_id = fields.Many2one(
+        "sale.order",
+        string="Quotation",
+        readonly=True,
+        copy=False
+    )
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
@@ -129,3 +135,15 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    def _cron_automatic_refuse(self):
+        today = fields.Datetime.now()
+        offers = self.search([
+            ('status', "not in", ["accepted", "refused"]),
+        ])
+        for offer in offers:
+            expiry_date = offer.create_date + timedelta(days=offer.validity)
+            if expiry_date < today:
+                offer.write({
+                    'status': 'refused'
+                })

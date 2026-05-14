@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, Command, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -215,6 +215,28 @@ class EstateProperty(models.Model):
                     "Sold property cannot be cancelled!"
                 )
             record.state = 'canceled'
+        return True
+
+    def action_create_quotations(self):
+        if not self.offer_ids:
+            raise UserError("No offers found")
+
+        for offer in self.offer_ids:
+            if offer.quotation_id:
+                continue
+                quotation = self.env["sale.order"].create({
+                "partner_id": offer.partner_id.id,
+                "origin": self.name,
+                "order_line": [
+                    Command.create({
+                        "name": self.name,
+                        "product_uom_qty": 1,
+                        "price_unit": offer.price,
+                    })
+                ],
+            })
+
+                offer.quotation_id = quotation.id
         return True
 
     def _search_tag(self, tag_name):

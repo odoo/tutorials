@@ -20,4 +20,7 @@
 
         <menuitem id="estate_property_issue_menu" action="estate_property_issue_action"
         parent="estate_menu_settings"/>
+
+        <menuitem id="estate_property_wizard_menu" action="action_estate_property_offer_wizard"
+        parent="estate_menu_settings"/>
 </odoo>

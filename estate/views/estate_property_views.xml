@@ -14,6 +14,13 @@
                     decoration-bf="state == 'offer_accepted'"
                     decoration-muted="state == 'sold'"
                     delete="True">
+                <header>
+                    <button
+                        string="Create Offers"
+                        name="%(estate.action_estate_property_offer_wizard)d"
+                        type="action"
+                        class="btn-secondary"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -40,6 +47,7 @@
         <header>
             <button name="action_sold" type="object" string="Sold" invisible="state in ('sold', 'canceled')"/>
             <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold', 'canceled')"/>
+            <button name="action_create_quotations" type="object" string="Create Quotation" invisible="state != 'sold'"/>
             <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
         </header>
                 <sheet>
