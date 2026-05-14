@@ -2,12 +2,14 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
         <div class="p-1">
-            <div>
+            <div t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
+                <input t-att-id="props.todo['id']" t-on-checked="props.todo.isCompleted" t-on-change="onChange" type="checkbox"/>
                 <span>
                     <t t-esc="props.todo['id']"/>
                 .
                     <t t-esc="props.todo['description']"/>
                 </span>
+                <button t-att-id="props.todo['id']" t-on-click="onDelete">X</button>
             </div>
         </div>
     </t>

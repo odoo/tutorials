@@ -11,10 +11,10 @@ export class Playground extends Component {
         this.content = markup("<div>Hello dosto</div>")
         this.sum = useState({ value: 2 })
     }
+    calcSum(str) {
+        if (str == 'Increment') this.sum.value++
+        else this.sum.value--
 
-    incrementSum() {
-        this.sum.value++
     }
-
     static components = { Counter, Card, TodoList }
 }

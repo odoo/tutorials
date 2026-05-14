@@ -5,7 +5,9 @@
             hello world
             <p>Counter: <t t-esc="state.value"/>
             </p>
-            <button class="btn bg-primary text-white" t-on-click="() => {this.increment()}">Increment</button>
+            <input t-ref="Input" t-on-keyup="setLimit" placeholder="enter val"/>
+            <button t-att-class="{'invisible': state.value > limit.value-1}" class="btn bg-primary text-white"  t-on-click="(e) => {this.increment(e)}">Increment</button>
+            <button  t-att-class="{'invisible': state.value &lt; 1}" class="btn bg-primary text-white" t-on-click="(e) => {this.decrement(e)}">Decrement</button>
         </div>
     </t>
 </templates>

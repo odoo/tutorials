@@ -6,11 +6,12 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-out="props.title"/>
+                    <button t-on-click="clicked">toggle</button>
                 </h5>
                 <p class="card-text">
-                    <t t-out="props.content"/>
+                    <t t-slot="default"> hwllloo</t>
                 </p>
-                <p class="card-text">
+                <p t-if="state.click" class="card-text">
                     <t t-out="props.pincode"/>
                 </p>
             </div>
