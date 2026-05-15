@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="product_template_inherit" inherit_id="website_sale.cta_wrapper">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.deposit_required">
+                <div class="mt-3 p-2 o_deposit_wrapper" t-att-data-deposit-unit="product.deposit_amount" t-att-data-currency-symbol="product.currency_id.symbol">
+                    <div class="text-danger fw-semibold fs-6 mb-1">
+                        <strong class="fw-bold text-dark">Deposit per unit:</strong>
+                        <span class="o_deposit_amount_unit">
+                            <span t-esc="product.currency_id.symbol"/>
+                            <span t-esc="product.deposit_amount"/>
+                        </span>
+                    </div>
+                    <div class="text-danger fw-semibold fs-6">
+                        <strong class="fw-bold text-dark">Total deposit:</strong>
+                        <span class="o_deposit_amount_total">
+                            <span t-esc="product.currency_id.symbol"/>
+                            <span class="o_deposit_amount_value" t-esc="product.deposit_amount"/>
+                        </span>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
