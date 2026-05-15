@@ -97,3 +97,11 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Property already refused!")
             offer.status = 'refused'
         return True
+
+    def _cron_refuse_offer(self):
+        now = fields.Datetime.now()
+        offers = self.search([
+            ('deadline', '<=', now)
+        ])
+        for offer in offers:
+            offer.status = 'refused'

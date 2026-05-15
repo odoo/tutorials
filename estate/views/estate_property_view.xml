@@ -4,6 +4,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state == 'offer_received'" decoration-bf="state == 'offer_accepted'" decoration-danger="state == 'cancelled'" decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(estate.estate_property_send_offer_action)d" string="Create Offer" type="action"/>
+                </header>
                 <field name="sequence" widget="handle"/>
                 <field name="name" string="Title" width="130px"/>
                 <field name="property_type_id" string="Property Type" width="130px"/>
@@ -37,7 +40,7 @@
                 <header>
                     <button name="property_sold" type="object" string="Sell" class="oe_highlight" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="property_cancelled" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <button name="property_accept" type="object" string="Accept" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" groups="estate.group_estate_manager,base.group_system"/>
+                    <button name="property_accept" type="object" string="Accept Best Offer" invisible="state == 'sold' or state == 'cancelled' or state == 'offer_accepted'" groups="estate.group_estate_manager,base.group_system"/>
                     <button name="action_schedule_visit" type="object" string="Schedule" invisible="state == 'cancelled' or state == 'new'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>

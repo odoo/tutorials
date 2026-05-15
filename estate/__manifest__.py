@@ -12,6 +12,7 @@
         'security/estate_groups.xml',
         'security/ir.model.access.csv',
         'data/mail_template_data.xml',
+        'wizard/estate_property_offer_view.xml',
         'data/ir_cron_data.xml',
         'views/estate_property_view.xml',
         'views/estate_property_offer_view.xml',

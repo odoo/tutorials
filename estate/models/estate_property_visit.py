@@ -10,7 +10,7 @@ class EstatePropertyVisit(models.Model):
 
     finished = fields.Boolean(default=True)
     reminder = fields.Boolean(default=False)
-    property_id = fields.Many2one(comodel_name='estate.property')
+    property_id = fields.Many2one(comodel_name='estate.property', ondelete='cascade')
     property_title = fields.Char()
     property_buyer = fields.Char()
     visit_time_start = fields.Datetime()
