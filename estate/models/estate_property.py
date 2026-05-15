@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
             ('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")],
         help="Direction the garden faces"
     )
-    tag_ids = fields.Many2many('estate.property.tag', compute='_dynamic_tags', string="Tags")
+    tag_ids = fields.Many2many('estate.property.tag', compute='_dynamic_tag_ids', string="Tags")
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
@@ -79,7 +79,7 @@ class EstateProperty(models.Model):
                 record.best_price = 0.0
 
     @api.depends('expected_price', 'offer_ids', 'sold_within')
-    def _dynamic_tags(self):
+    def _dynamic_tag_ids(self):
         all_tags = self.env['estate.property.tag'].search([('name', 'in', ('High Value', 'Quick Sale', 'Low Interest'))])
 
         if 'High Value' not in all_tags.mapped('name'):

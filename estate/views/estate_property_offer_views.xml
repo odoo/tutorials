@@ -15,8 +15,10 @@
                 <field name="partner_id"/>
                 <field name="date_deadline"/>
                 <field name="validity"/>
-                <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status"/>
-                <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status"/>
+                <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status"
+                        groups="estate.group_estate_users,estate.group_estate_manager"/>
+                <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status"
+                        groups="estate.group_estate_users,estate.group_estate_manager"/>
                 <field name="status"/>
             </list>
         </field>

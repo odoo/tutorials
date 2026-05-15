@@ -19,8 +19,11 @@ class EstatepropertyIssues(models.Model):
     )
     issue_state = fields.Selection(
         selection=[
-        ('new', "New"), ('in progress', "In Progress"),
-        ('resolved', "Resolved"), ('cancelled', "Cancelled")],
+            ('new', "New"),
+            ('in progress', "In Progress"),
+            ('resolved', "Resolved"),
+            ('cancelled', "Cancelled")
+        ],
         default='new',
         string="Status"
     )

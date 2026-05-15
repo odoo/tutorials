@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -77,6 +78,8 @@ class EstatepropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept(self):
+        if self.env.user.has_group('estate.group_estate_agent'):
+            raise UserError("Agents can add offers but cannot accept them.")
         for record in self:
             if record.property_id.state == 'sold':
                 raise UserError("This property is already sold!")
@@ -93,6 +96,8 @@ class EstatepropertyOffer(models.Model):
             return True
 
     def action_refuse(self):
+        if self.env.user.has_group('estate.group_estate_agent'):
+            raise UserError("Agents can add offers but cannot refuse them.")
         for record in self:
             record.status = 'refused'
         return True

@@ -6,6 +6,7 @@
         'base', 'calendar', 'mail'
     ],
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
         'data/mail_template.xml',
         'views/estate_property_visit_views.xml',
