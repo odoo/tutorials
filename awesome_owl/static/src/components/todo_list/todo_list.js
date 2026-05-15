@@ -29,4 +29,11 @@ export class TodoList extends Component {
             todo.isCompleted = !todo.isCompleted;
         }
     }
+
+    deleteTodo(todoId) {
+        const todoIdx = this.todos.findIndex((todo) => todo.id === todoId);
+        if (todoIdx >= 0) {
+            this.todos.splice(todoIdx, 1);
+        }
+    }
 }
