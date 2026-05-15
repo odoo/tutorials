@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.number_card">
+        <t t-if="props.title !== undefined">
+            <p><t t-out="props.title" /></p>
+        </t>
+        <t t-if="props.count !== undefined">
+            <h1 style="color: green;"><t t-out="props.count" /></h1>
+        </t>
+    </t>
+</templates>

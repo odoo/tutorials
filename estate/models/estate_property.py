@@ -111,12 +111,12 @@ class EstateProperty(models.Model):
                 mail_template = record.env.ref("estate.mail_template_invoice_send")
                 mail_template.send_mail(record.id, force_send=True)
                 partner_to_mention = record.salesman_id.partner_id
-                _msg = Markup(
+                msg = Markup(
                     f"""Hello <a href="#" data-oe-model="res.partner" data-oe-id="{partner_to_mention.id}">@{record.salesman_id.name}</a>! Congratulations for selling the property."""
                 )
 
                 record.message_post(
-                    body=_msg,
+                    body=msg,
                 )
         return True
 
