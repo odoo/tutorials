@@ -8,8 +8,12 @@
             <div>The sum is: <t t-out="state.sum"></t></div>
         </div>
         <div>
-            <Card title="'card1'" content="card1Body"/>
-            <Card title="'card2'" content="card2Body"/>
+            <Card title="'card1'">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
+            <Card title="'card2'">
+                <p>hello user</p>
+            </Card>
         </div>
         <TodoList/>
     </t>
