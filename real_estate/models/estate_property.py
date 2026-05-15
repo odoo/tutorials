@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "real estate property module"
@@ -8,11 +9,10 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postal Code")
     date_availability = fields.Date(
-        string='Available From', 
-        default=lambda self: fields.Date.today() 
+        string="Available From", default=lambda self: fields.Date.today()
     )
-    expected_price = fields.Float(string='Expected Price', required=True)
-    selling_price = fields.Float(string='Selling Price', required=True)
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", required=True)
     bedrooms = fields.Integer(string="Bedroom Count")
     living_area = fields.Integer(string="Living Area Count")
     facades = fields.Integer(string="Facades Count")
@@ -22,6 +22,10 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
-            ('north','North'),('south','South'),('east','East'),('west','West')
-        ]
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ],
     )
+    active = fields.Boolean(string="Field Activity Status", default=True)
