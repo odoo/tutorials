@@ -9,9 +9,11 @@
     "category": "Uncategorized",
     "depends": ["base"],
     "data":[
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+         "views/estate_property_views.xml"
     ],
-    "LICENSE":"LGPL",
+    "license":"LGPL-3",
     "application": True,
     "installable":True
 }
+
