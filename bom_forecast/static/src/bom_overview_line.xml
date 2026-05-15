@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="mrp.BomOverviewLine" t-inherit-mode="extension">
+
+        <xpath expr="//td[t[@t-if=&quot;data.hasOwnProperty('availability_state')&quot;]]"
+            position="replace"/>
+
+        <xpath expr="//td//div[hasclass('o_field_badge')]" position="replace">
+            <div class="o_field_badge">
+
+                <t t-if="data.type == 'operation'">
+                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundColor}}"
+                        t-esc="data.availability_display"/>
+                </t>
+
+                <t t-elif="data.level === 0">
+                    <t t-if="data.status == 'No Ready To Produce'">
+                        <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundColor}}"
+                            t-on-click.prevent="goToForecast"
+                            t-esc="data.availability_display"/>
+                    </t>
+                    <t t-else="">
+                        <span class="badge rounded-pill o_mrp_overview_badge text-bg-success"
+                            t-on-click.prevent="goToForecast"
+                            t-esc="data.status"/>
+                    </t>
+                </t>
+
+                <t t-else="">
+                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundColor}}"
+                        t-on-click.prevent="goToForecast"
+                        t-esc="statusDisplay"/>
+                </t>
+
+            </div>
+        </xpath>
+    </t>
+</templates>

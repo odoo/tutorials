@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="mrp.change_forecast_view" t-inherit="mrp.BomOverviewTable" t-inherit-mode="extension">
+        <xpath expr="//a[@t-on-click.prevent='goToProduct']/ancestor::div[2]" position="replace"/>
+        <xpath expr="//th[text()='Availability']" position="replace"/>
+    </t>
+</templates>
