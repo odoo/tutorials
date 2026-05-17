@@ -5,8 +5,18 @@
           <t t-set-slot="layout-buttons">
             <button t-on-click="openCustomers">Customers</button>
             <button t-on-click="openLeads">Leads</button>
-          </t>  
-          Some Content
+          </t> 
+          <div class="d-flex flex-wrap">
+          <DashboardItem >
+             some content
+          </DashboardItem>
+          <DashboardItem size="2">
+             i love milk
+          </DashboardItem>
+         <DashboardItem>
+            some content
+         </DashboardItem>
+         </div> 
         </Layout>
     </t>
 </templates>
