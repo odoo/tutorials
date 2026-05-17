@@ -1,5 +1,6 @@
 import { Component } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 
 class AwesomeDashboard extends Component {
@@ -7,9 +8,26 @@ class AwesomeDashboard extends Component {
     static components = { Layout };
 
     setup() {
+        this.action = useService("action");
         this.display = {
             controlPanel: {},
         };
+    }
+
+    openCustomers() {
+        this.action.doAction("base.action_partner_form");
+    }
+
+    openLeads() {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: "Leads",
+            res_model: "crm.lead",
+            views: [
+                [false, "list"],
+                [false, "form"],
+            ],
+        });
     }
 }
 
