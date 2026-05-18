@@ -1,0 +1,10 @@
+<t t-name="awesome_owl.counter">
+    <div class="p-3">
+        <h4>Counter: <t t-esc="state.value"/></h4>
+        <div>
+            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            <button class="btn btn-danger" t-on-click="decrement">Decrement</button>
+            <button class="btn btn-warning" t-on-click="powerof">Power of 2</button>
+        </div>
+    </div>
+</t>

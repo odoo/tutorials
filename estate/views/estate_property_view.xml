@@ -54,6 +54,12 @@
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field
+                        name="image_1920"
+                        widget="image"
+                        class="oe_avatar"
+                        options="{'convert_to_webp': True, 'preview_image': 'image_128'}"
+                    />
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -199,6 +205,12 @@
                             </footer>
                         </main>
                         <aside class="px-2 my-2">
+                            <field
+                                name="image_1920"
+                                widget="image"
+                                class="oe_avatar"
+                                options="{'convert_to_webp': True, 'preview_image': 'image_128'}"
+                            />
                             <div class="d-flex mb-2 justify-content-end gap-2">
                                 <field name="state" class="badge rounded-pill text-bg-info"/>
                             </div>

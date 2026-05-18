@@ -5,7 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Properties'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'image.mixin']
     _order = 'sequence'
 
     active = fields.Boolean(help="Should the property be listed?", default=True)
