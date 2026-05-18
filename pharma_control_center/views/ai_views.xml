@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- CHATBOT -->
+    <record id="pharmacy_chatbot_form_view" model="ir.ui.view">
+        <field name="name">pharmacy.chatbot.form</field>
+        <field name="model">pharmacy.chatbot</field>
+        <field name="arch" type="xml">
+            <form string="🤖 AI Pharmacy Assistant">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>🤖 AI Pharmacy Assistant</h1>
+                        <p>Ask me anything about medicines, dosage, side effects, or pharmacy policies.</p>
+                    </div>
+                    <group col="1">
+                        <field name="chat_history" widget="text"
+                               style="background: #f8f9fa; font-family: monospace; min-height: 300px; max-height: 400px; overflow: auto;"
+                               readonly="1"/>
+                        <field name="user_message" placeholder="Type your question here..." nolabel="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_send_message" type="object" string="Send" class="btn-primary"/>
+                        <button string="Close" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pharmacy_chatbot_action" model="ir.actions.act_window">
+        <field name="name">🤖 AI Assistant</field>
+        <field name="res_model">pharmacy.chatbot</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="pharmacy_chatbot_menu"
+              name="🤖 AI Assistant"
+              parent="pharma_root_menu"
+              action="pharmacy_chatbot_action"
+              sequence="70"
+              groups="base.group_user"/>
+
+    <!-- SENTIMENT ANALYSIS -->
+    <record id="sentiment_analysis_form_view" model="ir.ui.view">
+        <field name="name">sentiment.analysis.wizard.form</field>
+        <field name="model">sentiment.analysis.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Customer Sentiment Analysis">
+                <group>
+                    <field name="feedback_text" placeholder="Enter customer feedback..." nolabel="1"/>
+                    <field name="sentiment_result" readonly="1" placeholder="Result will appear here"/>
+                </group>
+                <footer>
+                    <button name="action_analyze" string="Analyze Sentiment" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="sentiment_analysis_action" model="ir.actions.act_window">
+        <field name="name">🤖 AI Sentiment Analysis</field>
+        <field name="res_model">sentiment.analysis.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="sentiment_analysis_menu"
+              name="🤖 AI Sentiment Analysis"
+              parent="pharma_root_menu"
+              action="sentiment_analysis_action"
+              sequence="60"
+              groups="pharma_control_center.group_pharmacy_manager"/>
+
+    <!-- PRIVACY POLICY -->
+    <record id="action_privacy_policy_url" model="ir.actions.act_url">
+        <field name="name">Privacy Policy</field>
+        <field name="target">self</field>
+        <field name="url">/pharma/privacy-policy</field>
+    </record>
+    <menuitem id="menu_privacy_policy"
+              name="🔒 Privacy Policy"
+              parent="pharma_root_menu"
+              action="action_privacy_policy_url"
+              sequence="100"
+              groups="base.group_user"/>
+
+</odoo>

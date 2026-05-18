@@ -1,0 +1,25 @@
+<odoo>
+    <!-- Patient: no create/write, only read their own? Actually patient doesn't have doctor_id.
+         We'll keep patient read-only for all, but doctors see only theirs. -->
+    <record id="pharmacy_patient_doctor_rule" model="ir.rule">
+        <field name="name">Doctor: own patients only</field>
+        <field name="model_id" ref="model_pharmacy_patient"/>
+        <field name="groups" eval="[(4, ref('pharma_control_center.group_pharmacy_doctor'))]"/>
+        <field name="domain_force">[('doctor_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="pharmacy_patient_manager_rule" model="ir.rule">
+        <field name="name">Manager: all patients</field>
+        <field name="model_id" ref="model_pharmacy_patient"/>
+        <field name="groups" eval="[(4, ref('pharma_control_center.group_pharmacy_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

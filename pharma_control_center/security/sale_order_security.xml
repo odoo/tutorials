@@ -1,0 +1,37 @@
+<odoo>
+    <!-- Patients: only their own orders -->
+    <record id="sale_order_patient_own" model="ir.rule">
+        <field name="name">Sale Order: Patient own orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="groups" eval="[(4, ref('pharma_control_center.group_pharmacy_patient'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+    </record>
+
+    <!-- Doctors: only their own orders -->
+    <record id="sale_order_doctor_own" model="ir.rule">
+        <field name="name">Sale Order: Doctor own orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="groups" eval="[(4, ref('pharma_control_center.group_pharmacy_doctor'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+    </record>
+
+    <!-- Managers: all orders -->
+    <record id="sale_order_manager_all" model="ir.rule">
+        <field name="name">Sale Order: Manager all orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="groups" eval="[(4, ref('pharma_control_center.group_pharmacy_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

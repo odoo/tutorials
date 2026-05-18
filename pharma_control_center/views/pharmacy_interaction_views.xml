@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="pharmacy_interaction_tree" model="ir.ui.view">
+        <field name="name">pharmacy.interaction.tree</field>
+        <field name="model">pharmacy.interaction</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="medicine1_id"/>
+                <field name="medicine2_id"/>
+                <field name="severity"/>
+                <field name="warning_text"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="pharmacy_interaction_form" model="ir.ui.view">
+        <field name="name">pharmacy.interaction.form</field>
+        <field name="model">pharmacy.interaction</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="medicine1_id" required="1"/>
+                    <field name="medicine2_id" required="1"/>
+                    <field name="severity" required="1"/>
+                    <field name="warning_text" required="1"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="pharmacy_interaction_action" model="ir.actions.act_window">
+        <field name="name">Drug Interactions</field>
+        <field name="res_model">pharmacy.interaction</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="pharmacy_interaction_menu"
+              name="⚠️ Drug Interactions"
+              parent="pharma_root_menu"
+              action="pharmacy_interaction_action"
+              sequence="40"
+              groups="pharma_control_center.group_pharmacy_manager"/>
+</odoo>

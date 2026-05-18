@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Demo patients -->
+        <record id="demo_patient_1" model="pharmacy.patient">
+            <field name="name">Ali Khan</field>
+            <field name="doctor_id" ref="base.user_admin"/>
+            <field name="age">32</field>
+            <field name="gender">male</field>
+            <field name="blood_group">O+</field>
+            <field name="phone">+92 300 0000001</field>
+            <field name="email">ali.khan.demo@example.com</field>
+            <field name="address">Demo Address 1</field>
+            <field name="medical_history">Seasonal allergies</field>
+            <field name="allergies">Pollen</field>
+        </record>
+
+        <!-- ... more patients ... -->
+
+        <!-- Demo category -->
+        <record id="demo_category_painkiller" model="pharmacy.category">
+            <field name="name">Painkiller</field>
+            <field name="code">PAIN</field>
+            <field name="description">Medicines for pain relief</field>
+        </record>
+
+        <!-- Demo medicines -->
+        <record id="demo_medicine_1" model="pharmacy.medicine">
+            <field name="name">Paracetamol 500mg</field>
+            <field name="batch_number">BATCH-001</field>
+            <field name="expiry_date">2025-12-31</field>
+            <field name="price">5.99</field>
+            <field name="cost_price">3.50</field>
+            <field name="quantity">100</field>
+            <field name="license_category">white</field>
+            <field name="category_id" ref="demo_category_painkiller"/>
+            <field name="storage_location">room_temp</field>
+            <field name="dosage">1 tablet every 4-6 hours</field>
+        </record>
+
+        <!-- ... more medicines ... -->
+    </data>
+</odoo>

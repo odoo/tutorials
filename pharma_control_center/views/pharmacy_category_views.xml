@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="pharmacy_category_list_view" model="ir.ui.view">
+        <field name="name">pharmacy.category.list</field>
+        <field name="model">pharmacy.category</field>
+        <field name="arch" type="xml">
+            <list string="📂 Medicine Categories">
+                <field name="name" string="Category"/>
+                <field name="code" string="Code"/>
+                <field name="parent_id" string="Parent"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="pharmacy_category_form_view" model="ir.ui.view">
+        <field name="name">pharmacy.category.form</field>
+        <field name="model">pharmacy.category</field>
+        <field name="arch" type="xml">
+            <form string="📂 Category">
+                <sheet>
+                    <group>
+                        <field name="name" placeholder="e.g., Antibiotics"/>
+                        <field name="code" placeholder="e.g., ANT"/>
+                        <field name="parent_id" options="{'no_create': True}"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pharmacy_category_action" model="ir.actions.act_window">
+        <field name="name">📂 Categories</field>
+        <field name="res_model">pharmacy.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Restrict menus to managers only -->
+    <menuitem id="pharmacy_config_menu"
+              name="⚙️ Configuration"
+              parent="pharma_root_menu"
+              sequence="10"
+              groups="pharma_control_center.group_pharmacy_manager"/>
+
+    <menuitem id="pharmacy_category_menu"
+              name="📂 Categories"
+              parent="pharmacy_config_menu"
+              action="pharmacy_category_action"
+              sequence="1"
+              groups="pharma_control_center.group_pharmacy_manager"/>
+
+</odoo>

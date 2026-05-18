@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Analytics root menu (visible only to managers) -->
+    <menuitem id="analytics_root_menu"
+              name="📊 Analytics"
+              parent="pharma_root_menu"
+              sequence="50"
+              groups="pharma_control_center.group_pharmacy_manager"/>
+
+    <!-- Graph view -->
+    <record id="manager_sales_graph_view" model="ir.ui.view">
+        <field name="name">manager.sales.graph</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="Sales Trends" type="bar" sample="1">
+                <field name="date_order" type="row" interval="day"/>
+                <field name="amount_total" type="measure" string="Sales" widget="monetary"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot view (optional) -->
+    <record id="manager_sales_pivot_view" model="ir.ui.view">
+        <field name="name">manager.sales.pivot</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Sales Data">
+                <field name="date_order" type="row" interval="month"/>
+                <field name="partner_id" type="row"/>
+                <field name="user_id" type="row"/>
+                <field name="amount_total" type="measure" string="Total Sales" widget="monetary"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Action with graph and pivot tabs -->
+    <record id="manager_analytics_action" model="ir.actions.act_window">
+        <field name="name">Sales Analytics</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id" ref="manager_sales_graph_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No sales data yet. Orders will appear here after checkout.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="manager_analytics_menu"
+              name="📈 Sales Analytics"
+              parent="analytics_root_menu"
+              action="manager_analytics_action"
+              sequence="10"
+              groups="pharma_control_center.group_pharmacy_manager"/>
+</odoo>

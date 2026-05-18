@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="pharma_control_center_form_view" model="ir.ui.view">
+        <field name="name">pharma.control.center.form</field>
+        <field name="model">pharma.control.center</field>
+        <field name="arch" type="xml">
+            <form string="👤 User Dashboard">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Welcome, <field name="display_name"/></h1>
+                        <p>Pharma Control Center</p>
+                    </div>
+
+                    <!-- Two columns: left profile card, right statistics -->
+                    <group col="2">
+                        <!-- LEFT: Profile card (editable) -->
+                        <group string="Profile" name="profile">
+                            <field name="avatar" widget="image" class="oe_avatar" style="width: 150px; height: 150px;"/>
+                            <div style="margin-top: 8px;">
+                                <label for="avatar" string="Change Picture"/>
+                                <field name="avatar_filename" invisible="1"/>
+                            </div>
+                            <field name="display_name" string="Full Name"/>
+                            <field name="email" string="Email"/>
+                            <field name="phone" string="Phone"/>
+                        </group>
+
+                        <!-- RIGHT: Medicine Overview -->
+                        <group string="💊 Medicine Overview" col="2">
+                            <field name="total_medicines" widget="statinfo" string="Total Medicines"/>
+                            <field name="total_stock_quantity" widget="statinfo" string="Total Stock Units"/>
+                            <field name="stock_value" widget="monetary" string="Stock Value"/>
+                            <field name="out_of_stock_count" widget="statinfo" string="Out of Stock"/>
+                            <field name="low_stock_count" widget="statinfo" string="Low Stock (&lt;10)"/>
+                            <field name="expiring_soon_count" widget="statinfo" string="Expiring ≤30 Days"/>
+                            <field name="expired_count" widget="statinfo" string="Expired"/>
+                        </group>
+                    </group>
+
+                    <!-- Today's Orders Summary + Button -->
+                    <group string="🧾 Today's Orders" col="2">
+                        <field name="today_order_total_qty" string="Total Order Quantity" widget="float"/>
+                        <field name="today_order_total_amount" string="Total Order Amount" widget="monetary"/>
+                        <button name="action_view_today_orders" type="object"
+                                string="View Details" class="btn-primary" icon="fa-list-alt"/>
+                    </group>
+
+                    <!-- Notebook with additional tabs -->
+                    <notebook>
+                        <page string="📋 My Patients" name="patients"
+                              groups="pharma_control_center.group_pharmacy_doctor,pharma_control_center.group_pharmacy_manager">
+                            <field name="patient_ids" nolabel="1">
+                                <list string="Patients">
+                                    <field name="name" string="Name"/>
+                                    <field name="age" string="Age"/>
+                                    <field name="gender" string="Gender"/>
+                                    <field name="phone" string="Phone"/>
+                                    <field name="doctor_id" string="Doctor"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="⚠️ Expiry Alerts" name="expiry">
+                            <group string="Expiring Medicines (Next 30 days)">
+                                <field name="expiring_soon_count" widget="statinfo" string="Count"/>
+                                <!-- Removed the problematic button -->
+                                <div class="alert alert-warning">
+                                    <i class="fa fa-clock-o"></i> <strong>Note:</strong> Check the Medicines menu to view expiring products.
+                                </div>
+                            </group>
+                        </page>
+                    </notebook>
+
+                    <div class="alert alert-info" role="alert" style="margin-top: 16px;">
+                        ⚠️ <strong>Reminder:</strong> Low stock and expired medicines need immediate attention.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Window action -->
+    <record id="pharma_control_center_action" model="ir.actions.act_window">
+        <field name="name">👤 User Dashboard</field>
+        <field name="res_model">pharma.control.center</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="pharma_control_center_form_view"/>
+        <field name="target">main</field>
+        <field name="context">{'default_user_id': uid}</field>
+    </record>
+
+    <!-- Main menu -->
+    <menuitem id="pharma_root_menu"
+              name="💊 Your Pharma CC"
+              sequence="10"/>
+
+    <!-- Dashboard sub‑menu -->
+    <menuitem id="pharma_dashboard_menu"
+              name="👤 User Dashboard"
+              parent="pharma_root_menu"
+              action="pharma_control_center_action"
+              sequence="1"/>
+
+</odoo>

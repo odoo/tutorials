@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- =============================== PRIVACY POLICY =============================== -->
+    <record id="privacy_policy_form_view" model="ir.ui.view">
+        <field name="name">privacy.policy.form</field>
+        <field name="model">privacy.terms</field>
+        <field name="arch" type="xml">
+            <form string="🔒 Privacy Policy">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>🔒 Privacy Policy</h1>
+                        <p>Last Updated: May 14, 2026</p>
+                    </div>
+                    <div style="padding: 20px;">
+                        <h3>1. Information We Collect</h3>
+                        <p>We collect personal information such as name, email address, phone number, medical history, and prescription details when you use our Pharma Control Center application.</p>
+
+                        <h3>2. How We Use Your Information</h3>
+                        <p>We use your information to: process orders and prescriptions, manage patient records and doctor assignments, send order confirmations and notifications, and improve our services.</p>
+
+                        <h3>3. Data Sharing</h3>
+                        <p>We do not sell or share your personal information with third parties except as required by law or to fulfill your orders.</p>
+
+                        <h3>4. Data Security</h3>
+                        <p>We implement industry-standard security measures to protect your data from unauthorized access, alteration, or disclosure.</p>
+
+                        <h3>5. Your Rights</h3>
+                        <p>You have the right to access, correct, or delete your personal information. Contact your pharmacy administrator for assistance.</p>
+
+                        <h3>6. Contact Us</h3>
+                        <p>Email: <a href="mailto:privacy@yourpharmacy.com">privacy@yourpharmacy.com</a><br/>Phone: +1 (555) 555-5555</p>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_privacy_policy" model="ir.actions.act_window">
+        <field name="name">Privacy Policy</field>
+        <field name="res_model">privacy.terms</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="privacy_policy_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- =============================== TERMS OF SERVICE =============================== -->
+    <record id="terms_of_service_form_view" model="ir.ui.view">
+        <field name="name">terms.of.service.form</field>
+        <field name="model">privacy.terms</field>
+        <field name="arch" type="xml">
+            <form string="📜 Terms of Service">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>📜 Terms of Service</h1>
+                        <p>Last Updated: May 14, 2026</p>
+                    </div>
+                    <div style="padding: 20px;">
+                        <h3>1. Acceptance of Terms</h3>
+                        <p>By accessing or using the Pharma Control Center application, you agree to be bound by these Terms of Service.</p>
+
+                        <h3>2. Account Responsibility</h3>
+                        <p>You are responsible for maintaining the confidentiality of your login credentials and all activities that occur under your account.</p>
+
+                        <h3>3. Medical Disclaimer</h3>
+                        <p>The Pharma Control Center is a pharmacy management tool and does not provide medical advice, diagnosis, or treatment. Always consult a qualified healthcare professional for medical decisions.</p>
+
+                        <h3>4. Order Processing</h3>
+                        <p>All orders are subject to availability. We reserve the right to refuse or cancel any order.</p>
+
+                        <h3>5. Limitation of Liability</h3>
+                        <p>To the maximum extent permitted by law, Pharma Control Center shall not be liable for any indirect, incidental, or consequential damages resulting from your use of the application.</p>
+
+                        <h3>6. Governing Law</h3>
+                        <p>These terms shall be governed by the laws of your jurisdiction.</p>
+
+                        <h3>7. Changes to Terms</h3>
+                        <p>We may modify these terms at any time. Continued use of the application after changes constitutes acceptance of the new terms.</p>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_terms_of_service" model="ir.actions.act_window">
+        <field name="name">Terms of Service</field>
+        <field name="res_model">privacy.terms</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="terms_of_service_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- =============================== MENU ITEMS =============================== -->
+    <menuitem id="menu_privacy_policy"
+              name="🔒 Privacy Policy"
+              parent="pharma_root_menu"
+              action="action_privacy_policy"
+              sequence="100"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_terms_of_service"
+              name="📜 Terms of Service"
+              parent="pharma_root_menu"
+              action="action_terms_of_service"
+              sequence="110"
+              groups="base.group_user"/>
+
+</odoo>

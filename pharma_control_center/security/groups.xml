@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Category -->
+    <record id="module_pharmacy_control_center" model="ir.module.category">
+        <field name="name">Pharma Control Center</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Patient group – add invoice access -->
+    <record id="group_pharmacy_patient" model="res.groups">
+        <field name="name">Patient</field>
+        <field name="category_id" ref="module_pharmacy_control_center"/>
+        <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+    </record>
+
+    <!-- Doctor group – add invoice access -->
+    <record id="group_pharmacy_doctor" model="res.groups">
+        <field name="name">Doctor</field>
+        <field name="category_id" ref="module_pharmacy_control_center"/>
+        <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+    </record>
+
+    <!-- Manager group – add invoice access (though managers often already have it) -->
+    <record id="group_pharmacy_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_pharmacy_control_center"/>
+        <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+    </record>
+
+</odoo>
