@@ -3,6 +3,7 @@ import { Layout } from "@web/search/layout"
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
 import { registry } from "@web/core/registry";
+import { PieChart } from "./PieChart/pie_chart";
 
 
 class AwesomeDashboard extends Component {
@@ -28,7 +29,7 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    static components = { Layout, DashboardItem }
+    static components = { Layout, DashboardItem, PieChart }
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
