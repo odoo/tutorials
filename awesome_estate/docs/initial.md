@@ -1,44 +1,45 @@
 # Notes
 
+## Start Odoo command
 
-## Start odoo command:
+`odoo-bin -d <db_name> --addons-path=<paths...>`
 
-`./odoo-bin -d <db_name> --addons-path=<paths...>`
+### Breakdown
 
-### Breakdown:
+- `odoo-bin` starts the Odoo server.
+- `-d <db_name>` selects which PostgreSQL database to use.
+- `--addons-path=<paths...>` is a comma-separated list of addon folders that Odoo scans.
 
-`./odoo-bin` : starts the Odoo server
-`-d <db_name>` : which PostgreSQL database to use (for me: patja)
-`--addons-path=<paths...>` : comma-separated addon folders that Odoo will scan
-  
-### it does:
-- loads already-installed modules
-- starts the UI and backend services
+### It does
 
+- Loads already-installed modules.
+- Starts the UI and backend services.
 
-## Upgrade a module (Chapter - 3)
+## Upgrade a module
 
-### Command:
+### Command
 
-`./odoo-bin -d <db_name> -u <module_name> --addons-path=<paths...>`
+`odoo-bin -d <db_name> -u <module_name> --addons-path=<paths...>`
 
-### Meaning:
-`- -u <module_name>` : reload it and apply its model/data changes
+### Meaning
 
-### it does:
+`-u <module_name>` reloads the module and applies its model and data changes.
 
-- after changing Python models (ORM), upgrade so database schema updates happen`
-- after adding security/ACL, upgrade so access rules apply`
+### It does
 
-### for me:
+- After changing Python models (ORM), upgrade the module so database schema changes happen.
+- After adding security or ACLs, upgrade the module so access rules apply.
 
-`./odoo-bin --addons-path=addons,../enterprise/,../tutorials/ -d patja -u awesome_estate`
+### For me
 
+`odoo-bin --addons-path=addons,../enterprise/,../tutorials/ -d patja -u awesome_estate`
 
-## Install a module (first time)
+## Install a module for the first time
 
-### Command:
-`./odoo-bin -d <db_name> -i <module_name> --addons-path=<paths...>`
+### Command
 
-### Meaning:
-`- -i <module_name> `: install the module for the first time in that database
+`odoo-bin -d <db_name> -i <module_name> --addons-path=<paths...>`
+
+### Meaning
+
+`-i <module_name>` installs the module for the first time in that database.

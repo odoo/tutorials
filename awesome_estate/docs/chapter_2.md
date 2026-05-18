@@ -1,20 +1,25 @@
+# Chapter 2
 
-Chapter 2: 
+## Module dependency
 
-["base"]
+`base`
 
-- my module needs Odoo core to be installed first
+- My module needs Odoo core to be installed first.
 
-Where base is in this repo:
+### Where `base` lives in this repo
 
-community/odoo/addons/base/
+`community/odoo/addons/base/`
 
-What base provides (high level):
-- it loads fundamental UI framework pieces, and security bootstrap
-- it sets up core records like languages, users, partners, currencies, companies, countries
-- it also provides base security/group/access basics(Chapter 4)
+### What `base` provides
 
-Why my module depends on it:
-- without base, Odoo is missing required core models/config/security, so my module can’t install safely
+- Fundamental UI framework pieces and security bootstrap.
+- Core records like languages, users, partners, currencies, companies, and countries.
+- Base security, group, and access basics (Chapter 4).
 
-application:true suggests that is an installable app and false means its a module.
+### Why my module depends on it
+
+Without `base`, Odoo is missing the required core models, configuration, and security layer, so my module cannot install safely.
+
+### Notes
+
+`application: true` suggests that this is an installable app, and `false` means it is a module.
