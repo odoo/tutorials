@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="product_view_kanban_catalog_inherit.image_dialog">
+        <div role="dialog" class="modal d-flex justify-content-center align-items-center fixed-top w-100" style="background: rgba(0, 0, 0, 0.75); z-index: 1050;">
+            <div class="modal-dialog bg-white d-flex flex-column h-auto rounded shadow-lg overflow-hidden" style="width: 90vw; max-width: 500px;">
+                <div class="modal-content border-0">
+                    <div class="modal-header py-2 px-3 d-flex align-items-center justify-content-between border-bottom bg-light">
+                        <div class="d-flex flex-column text-truncate">
+                            <span class="fw-bold fs-6 text-dark text-truncate" t-out="props.productName"/>
+                        </div>
+                        <i class="fa fa-fw fa-times cursor-pointer ms-auto p-2 text-secondary fs-5" t-on-click="props.close" title="Close" aria-label="Close"></i>
+                    </div>
+
+                    <div class="modal-body p-0 d-flex justify-content-center align-items-center position-relative overflow-hidden" style="height: 50vh; min-height: 300px; background: rgba(0, 0, 0, 0.75);">
+                        <img class="img-fluid rounded" 
+                            style="object-fit: contain; max-width: 100%; max-height: 100%; transition: transform 0.15s ease-in-out;" 
+                            t-att-src="props.imgSrc"
+                            t-attf-style="transform: scale({{state.zoomScale}});"/>
+                    </div>
+
+                    <div class="modal-footer py-2 px-3 d-flex align-items-center justify-content-around border-top bg-light">
+                        <button class="btn btn-outline-secondary btn-sm d-flex align-items-center" t-on-click="zoomOut" title="Zoom Out">
+                            <i class="fa fa-search-minus me-1"/> Zoom Out
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm d-flex align-items-center" t-on-click="resetZoom" title="100% Sizing">
+                            <i class="fa fa-refresh me-1"/> 1:1
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm d-flex align-items-center" t-on-click="zoomIn" title="Zoom In">
+                            <i class="fa fa-search-plus me-1"/> Zoom In
+                        </button>
+                        <button class="btn btn-primary btn-sm d-flex align-items-center" t-on-click="downloadImage" title="Download Image">
+                            <i class="fa fa-download me-1"/> Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
