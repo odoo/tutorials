@@ -1,13 +1,19 @@
+import { reactive } from "@odoo/owl";
 import { rpc } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
-import { memoize } from "@web/core/utils/functions";
 
 const statisticsService = {
-    async: ["preload"],
     start() {
-        return {
-            loadStatistics: memoize((url) => rpc(url)),
-        };
+        const statistics = reactive({});
+
+        async function loadData() {
+            const updates = await rpc("/awesome_dashboard/statistics");
+            Object.assign(statistics, updates);
+        }
+
+        setInterval(loadData, 600000);
+        loadData();
+        return { statistics };
     },
 };
 
