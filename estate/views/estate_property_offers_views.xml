@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="est_test_view_tree" model="ir.ui.view">
+		<field name="name">est_property_offer_view_list</field>
+        <field name="model">est.property.offer</field>
+        <field name="arch" type="xml">
+        <list string="Tests">
+            
+
+            <field name="name"/>
+            <field name="price" />
+            <field name="status"/>
+
+        </list> 
+        </field>
+    </record>
+
+    <record id="est_property_offer_model_action" model="ir.actions.act_window">
+        <field name="name">Property offers</field>
+        <field name="res_model">est.property.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

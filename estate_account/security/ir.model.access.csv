@@ -1,0 +1,2 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_estacc_main,access_estacc_main,model_estacc_main,base.group_user,1,1,1,1
