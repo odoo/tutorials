@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="estate.app_menu" name="Estate">
+        <menuitem id="advertisements_list_menu" name="Advertisements">
+            <menuitem 
+                id="estate.advertisements_properties_list_menu_item"
+                name="Properties"
+                action="estate.estate_property_list_form"/>
+        </menuitem>
+        <menuitem id="estate.settings_list_menu" name="Settings">
+            <menuitem 
+                id="estate.advertisements_property_types_list_menu_item"
+                name="Property Types"
+                action="estate.estate_property_type_list_form"/>
+            <menuitem 
+                id="estate.advertisements_property_tag_list_menu_item"
+                name="Property Tags"
+                action="estate.estate_property_tag_list_form"/>
+        </menuitem>
+    </menuitem>
+</odoo>
