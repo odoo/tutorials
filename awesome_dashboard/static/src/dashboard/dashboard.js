@@ -3,7 +3,6 @@ import { Layout } from "@web/search/layout"
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
 import { registry } from "@web/core/registry";
-import { items } from "./dashboard_items";
 
 
 class AwesomeDashboard extends Component {
@@ -12,7 +11,7 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.result = useState(useService("awesome_dashboard.statistics"))
-        this.items = items
+        this.items = registry.category('awesome_dashboard').getAll()
     }
     openCustomerView() {
         this.action.doAction('base.action_partner_form')
