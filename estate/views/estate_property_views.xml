@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- views  -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+
+        <field name="context">
+            {'search_default_filter_available_status': 1 }
+        </field>
+    </record>
+
+    <!-- view config -->
+    <!-- SEARCH -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"
+                    filter_domain="[('living_area', '&gt;=', self)]"/>
+                <field name="facades"/>
+                <separator/>
+                <!--FILTER-->
+                <filter name="filter_available_date" string="stinky houses only" domain="[('date_availability', '&lt;=', 'today')]"/>
+                <filter name="filter_available_status" string="available houses only" domain="[('status','in',['new', 'offer_received'])]"/>
+                <separator/>
+                <!--GROUP-->
+                <filter string="Postal Code Grouping" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                <filter string="Status Grouping" name="group_by_status" context="{'group_by': 'status'}"/>
+            </search>
+        </field>
+    </record>
+
+    <!--LIST-->
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list
+                decoration-muted="status=='sold' or status=='cancelled'"
+                decoration-success="status=='offer_received' or status=='offer_accepted'"
+                decoration-bf="status=='offer_accepted'">
+                    <field name="name" string="Property Name"/>
+                    <field name="estate_property_type_id"/>
+                    <field name="status" string="Status"/>
+                    <field name="postcode" string="Postcode" optional="hide"/>
+                    <field name="estate_property_tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}"/>
+                    <field name="bedrooms" string="Bedrooms"/>
+                    <field name="living_area" string="Living Area (sqm)" optional="hide"/>
+                    <field name="expected_price" string="Expected Price"/>
+                    <field name="date_availability" string="Available From" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!--FORM-->
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <group>
+                    <group>
+                        <button name="action_set_sold" type="object" string="Mark Sold" class="oe_highlight"
+                            invisible="status == 'cancelled' or status == 'sold'"/>
+                        <button name="action_set_cancelled" type="object" string="Cancel Property"
+                            invisible="status == 'cancelled' or status == 'sold'"/>
+                        <button name="action_uncancel" type="object" string="Restore Property"
+                            invisible="status != 'cancelled'"/>
+                    </group>
+                    <group>
+                        <field name="status" widget="statusbar" options="{'clickable': '1'}" nolabel="1"/>
+                    </group>
+
+                    <group colspan="2">
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                        </div>
+                    </group>
+
+                    <group>
+                        <group>
+                            <field name="estate_property_tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}"/>
+                            <field name="seller_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="estate_property_type_id"
+                                    options="{'no_create': true}"/>
+                            <field name="total_area"/>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
+                            <field name="buyer_id"/>
+                        </group>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page string="Description">s
+                        <group>
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                            </group>
+                            <group>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                            </group>
+                        </group>
+                    </page>
+
+                    <page string="Ragebait">
+                        <group string="did u rly look here lmao"/>
+                    </page>
+
+                    <page string="Offers">
+                        <group>
+                            <field name="estate_property_offer_ids" context="
+                                {
+                                    'list_view_ref': 'estate.estate_property_offer_view_list_from_property',
+                                    'form_view_ref': 'estate.estate_property_offer_view_form_from_property'
+                                }"
+                                readonly="status=='sold' or status=='cancelled' or status=='offer_accepted'"
+                                nolabel="1"/>
+                        </group>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <!--KANBAN-->
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="estate_property_type_id"
+                records_draggable="False">
+                <t t-name="card">
+
+                        <field name="name"/>
+                        <field name="expected_price"/>
+                        <field name="estate_property_tag_ids" widget="many2many_tags"/>
+
+                        <field name="status" invisible="1"/>
+                        <field name="best_price"
+                            t-if="record.status.raw_value == 'offer_received'"/>
+                        <field name="selling_price"
+                            t-if="record.status.raw_value == 'offer_accepted'"/>
+
+
+                </t>
+            </kanban>
+        </field>
+    </record>
+</odoo>
+

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- menu -->
+    <menuitem id="estate_menu_root" name="Estate">
+        <menuitem id="estate_menu_main" name="Estates">
+            <menuitem id="estate_property_menu_action" action="estate_property_action"/>
+            <menuitem id="estate_property_offer_menu_action" action="estate_property_offer_action_menu_view"/>
+        </menuitem>
+        <menuitem id="estate_menu_settings" name="Settings">
+            <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
+            <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
