@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="estate_property_type_action" model="ir.actions.act_window">
+            <field name="name">Property Types</field>
+            <field name="res_model">estate.property.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+
+        <record id="estate_property_type_view_form" model="ir.ui.view">
+            <field name="name">estate.property.type.form</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <form string="Type">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="estate.estate_property_offer_action"
+                                type="action"
+                                class="oe_stat_button"
+                                invisible="not offer_count"
+                                icon="fa-money-bill-1">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="offer_count"/>
+                                    </span>
+                                    <span class="o_stat_text">
+                                        Offers
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="oe_title mb-4">
+                            <h1>
+                                <field name="name" placeholder="e.g. Appartment"/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="Description">
+                                <field name="property_ids">
+                                    <list>
+                                        <field name="name" string="Title"/>
+                                        <field name="expected_price"/>
+                                        <field name="state" string="Status"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
