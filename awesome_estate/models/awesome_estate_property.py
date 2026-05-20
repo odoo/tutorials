@@ -6,30 +6,25 @@ from odoo import fields, models
 
 
 class AwesomeEstateProperty(models.Model):
-    _name = 'awesome_estate.property'
+    _name = 'awesome.estate.property'
     _description = "Real Estate Property"
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-
     date_availability = fields.Date(
         copy=False,
         default=lambda self: date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
-
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-
     active = fields.Boolean(default=True)
-
     state = fields.Selection(
         [
             ('new', "New"),
@@ -42,7 +37,6 @@ class AwesomeEstateProperty(models.Model):
         copy=False,
         default='new',
     )
-
     garden_orientation = fields.Selection(
         [
             ('north', "North"),
