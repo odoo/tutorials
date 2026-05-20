@@ -1,0 +1,8 @@
+<t t-name="awesome_dashboard.DashboardItem">
+        <div class="card shadow-sm p-3 m-2"
+             t-att-style="width">
+
+            <t t-slot="default"/>
+
+        </div>
+    </t>
