@@ -7,7 +7,15 @@
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Properties" name="properties">
-                    <field name="property_ids" />
+                    <field name="property_ids">
+                        <list>
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="state"/>
+                            <field name="bedrooms"/>
+                        </list>
+                    </field>
                 </page>
             </xpath>
         </field>

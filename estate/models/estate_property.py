@@ -73,7 +73,10 @@ class EstateProperty(models.Model):
         "estate.property.issue",
         "property_id"
     )
-    visit_ids = fields.One2many("estate.property.visit", "property_id")
+    visit_ids = fields.One2many(
+        "estate.property.visit",
+         "property_id"
+    )
     visit_count = fields.Integer(compute="_compute_visit_count")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
@@ -129,7 +132,7 @@ class EstateProperty(models.Model):
     def _check_poperty_delete(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise UserError('you are not in new or cancel')
+                raise UserError('For Deletion your state should be in New Or Cancle')
 
     def action_sold(self):
         for record in self:
