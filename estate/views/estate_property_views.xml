@@ -40,6 +40,7 @@
                             </group>
                             <group>
                                 <field name="expected_price"/>
+                                <field name="best_price" readonly="True"/>
                                 <field name="selling_price"/>
                             </group>
                         </group>
@@ -53,6 +54,7 @@
                                     <field name="garage"/>
                                     <field name="garden"/>
                                     <field name="garden_area" string="Garden Area (sqm)"/>
+                                    <field name="total_area" readonly="True"/>
                                     <field name="garden_orientation"/>
                                 </group>
                             </page>
@@ -82,7 +84,7 @@
                     <field name="facades"/>
                     <filter name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                     
-                    <filter string="Postcode" name="groupby_postcode" domain="[]" context="{'group_by': 'postcode'}"/>
+                    <filter string="Postcode" name="groupby_postcode" context="{'group_by': 'postcode'}"/>
                 </search>
             </field>
         </record>
