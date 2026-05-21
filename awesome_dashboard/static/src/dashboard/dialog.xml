@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.dialog">
+        <Dialog size="'md'" title.translate="Dashboard items configuration" >
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <div> 
+                    <input type="checkbox" t-on-change="onChange.bind(this,item)" t-att-checked="item.enabled"/>
+                    <t t-esc="item.description"/>
+                </div>
+            </t>
+            <footer>
+                <button t-on-click="onApply">Apply</button>
+            </footer>
+        </Dialog>
+    </t>
+</templates>
