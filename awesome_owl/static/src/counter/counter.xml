@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Counter">
+        <div class="p-3">
+            hello world
+            <p>Counter: <t t-esc="state.value"/>
+            </p>
+            <input t-ref="Input" t-on-keyup="setLimit" placeholder="enter val"/>
+            <button t-att-class="{'invisible': state.value > limit.value-1}" class="btn bg-primary text-white"  t-on-click="(e) => {this.increment(e)}">Increment</button>
+            <button  t-att-class="{'invisible': state.value &lt; 1}" class="btn bg-primary text-white" t-on-click="(e) => {this.decrement(e)}">Decrement</button>
+        </div>
+    </t>
+</templates>
