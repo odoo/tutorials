@@ -1,6 +1,11 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
 
+import logging
+
+
+_logger = logging.getLogger(__name__)
+
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -37,6 +42,7 @@ class EstateProperty(models.Model):
         help="Directional orientation of the garden of the property shown"
     )
     invoice_count = fields.Integer(default=0)
+    is_sus = fields.Boolean(compute='_is_suspicious', store=True)
     living_area = fields.Integer()
     name = fields.Char(string="Property Name", required=True)
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
@@ -80,6 +86,17 @@ class EstateProperty(models.Model):
         for property in self:
             if property.selling_price:
                 property.commission = property.selling_price * 0.06
+
+    @api.onchange('best_price')
+    def _is_suspicious(self):
+        for property in self:
+            property.is_sus = False
+            if property.offer_ids:
+                for offer in property.offer_ids:
+                    if offer.is_sus:
+                        property.is_sus = True
+                        _logger.error("SUS")
+                        break
 
     @api.depends('buyer_id')
     def _compute_potential_buuyers(self):

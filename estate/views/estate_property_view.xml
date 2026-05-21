@@ -54,6 +54,7 @@
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <widget name="web_ribbon" title="Sus" bg_color="text-bg-danger" invisible="not is_sus"/>
                     <field
                         name="image_1920"
                         widget="image"

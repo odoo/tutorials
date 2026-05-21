@@ -11,6 +11,7 @@ class EstatePropertyOffer(models.Model):
     _order = 'price desc'
 
     deadline = fields.Date()
+    is_sus = fields.Boolean(default=False, readonly=True)
     partner_id = fields.Many2one(comodel_name='res.partner', required=True)
     price = fields.Float()
     property_id = fields.Many2one(comodel_name='estate.property', readonly=True, required=True, ondelete='cascade')
@@ -47,6 +48,15 @@ class EstatePropertyOffer(models.Model):
             current_price = val.get('price', 0)
             properties = self.env['estate.property'].browse(val.get('property_id'))
             highest_offer = max(properties.mapped('offer_ids.price')) if properties.offer_ids else 0
+            offer_by = val.get('partner_id')
+            all_offers = self.env['estate.property.offer'].search([('partner_id', '=', offer_by)], order='id asc')
+            if all_offers:
+                last_offer_at = fields.Datetime.add(all_offers[-1].create_date, minutes=5)
+                if fields.Datetime.now() <= last_offer_at:
+                    if not val.get('is_sus'):
+                        val.update({
+                            'is_sus': True,
+                        })
             if val.get('price') < highest_offer:
                 raise UserError(f"Offer price Rs.{current_price} is less than {highest_offer}!")
         return super().create(val_list)

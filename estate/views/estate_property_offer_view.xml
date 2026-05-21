@@ -3,12 +3,13 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
+            <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'" open_form_view="True">
                 <field name="price" width="50px"/>
                 <field name="partner_id" string="Partner" width="50px"/>
                 <button name="offer_accepted" string="Accept" type="object" icon="fa-check" width="50px" invisible="status" groups="estate.group_estate_manager,base.group_system"/>
                 <button name="offer_refused" string="Refuse" type="object" icon="fa-times" width="50px" invisible="status" groups="estate.group_estate_manager,base.group_system"/>
                 <field name="status" width="50px"/>
+                <field name="is_sus"/>
                 <field name="validity" string="Validity (days)" width="50px"/>
                 <field name="deadline" width="50px" options="{'min_date': 'today'}"/>
             </list>
@@ -31,6 +32,7 @@
                 <group>
                     <field name="partner_id"/>
                     <field name="validity"/>
+                    <field name="is_sus"/>
                 </group>
             </form>
         </field>
