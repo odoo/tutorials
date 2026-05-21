@@ -7,7 +7,8 @@ class EstatePropertyOffer(models.Model):
     _description = "Real E-state offer"
     _order = "price desc"
 
-    price = fields.Float()
+    currency_id = fields.Many2one("res.currency", related="property_id.currency_id")
+    price = fields.Monetary(currency_field="currency_id")
     status = fields.Selection(
         string="Offer Status",
         selection=[
