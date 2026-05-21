@@ -29,3 +29,14 @@ class EstateProperty(models.Model):
         ],
     )
     active = fields.Boolean(string="Field Activity Status", default=True)
+    state = fields.Selection(
+        string="Property State",
+        selection=[
+            ("1", "New"),
+            ("2", "Offer Received"),
+            ("3", "Offer Accepted"),
+            ("4", "Sold"),
+            ("5", "Cancelled"),
+        ],
+        default="1",
+    )
