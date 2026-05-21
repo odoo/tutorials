@@ -91,5 +91,35 @@
 
     </record>
 
-</odoo>
- 
+    <record id="estate_property_search_view" model="ir.ui.view">
+
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="selling_price" />
+                <field name="date_available" />
+                <field name="facades" />
+                <filter name="state"
+                    string="Available"
+                    domain="['|',('state','=','new'),('state','=','offer_recieved')]"
+                />
+                <filter
+                    string="Postcode"
+                    name="group_by_postcode"
+                    context="{'group_by':'postcode'}"
+                />
+
+            </search>
+        </field>
+
+    </record>
+
+
+</odoo> 
