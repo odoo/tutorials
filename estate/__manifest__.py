@@ -7,7 +7,7 @@
     'category': 'Estate',
     'version': '1.0',
     'license': 'LGPL-3',
-    'depends': ['base', 'calendar', 'mail', 'crm'],
+    'depends': ['base', 'calendar', 'mail', 'crm', 'event'],
     'data': [
         'security/ir.model.access.csv',
         'data/mail_template_data.xml',

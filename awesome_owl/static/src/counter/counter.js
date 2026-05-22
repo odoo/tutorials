@@ -16,4 +16,14 @@ export class Counter extends Component {
             this.props.onChange(this.state.count);
         }
     }
+
+    decrement() {
+        if (this.state.count>0){
+            this.state.count--;
+
+            if (this.props.onchanges) {
+                this.props.onchanges(this.state.count);
+            }
+        }
+    }
 }

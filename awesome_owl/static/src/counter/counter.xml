@@ -2,5 +2,6 @@
     <div class="m-2 p-2 border d-inline-block">
         <span>Counter: <t t-esc="state.count"/></span>
         <button class="btn ms-3 bg-primary text-white" t-on-click="increment">Increment</button>
+        <button class="btn ms-3 bg-primary text-white" t-on-click="decrement">decrement</button>
     </div>
 </t>

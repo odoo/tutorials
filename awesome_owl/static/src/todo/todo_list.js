@@ -40,7 +40,11 @@ export class TodoList extends Component {
     removeTodo(id) {
         const index = this.todos.findIndex(t => t.id === id);
         if (index >= 0) {
-            this.todos.splice(index, 1);
+            this.todos.splice(index,1);
+        }
+
+        if (this.todos.length === 0) {
+            this.nextId = 1;
         }
     }
 }
