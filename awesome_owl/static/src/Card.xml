@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+	<t t-name="awesome_owl.Card">
+		<div class="card">
+			<div class="card-header">
+				<button class="btn btn-secondary" t-on-click="toggle">Toggle</button>
+			</div>
+			<div class="card-body" t-if="!state.minimized">
+				<h1 class="card-title">
+					<t t-slot="title">Card</t>
+				</h1>
+				<t t-slot="default" />
+			</div>
+		</div>
+	</t>
+</templates>
