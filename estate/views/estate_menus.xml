@@ -1,7 +1,5 @@
 <odoo>
-    
     <menuitem id="estate_menu_root" name="Estate"/>
     <menuitem id="estate_menu_advetisement" name="Advertisement" parent="estate_menu_root"/>
     <menuitem id="estate_menu_properties" name="Properties" parent="estate_menu_advetisement" action="estate_property_action"/>
-
 </odoo>

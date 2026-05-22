@@ -1,10 +1,10 @@
 <odoo>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
-
 
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">Estate.properties.list</field>
@@ -31,7 +31,6 @@
                 <field name="selling_price" />
                 <field name="date_available" />
                 <field name="state" />
-
             </list>
         </field>
     </record>
@@ -39,15 +38,12 @@
     <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
-
         <field name="arch" type="xml">
             <form
                 string="Form_view"
                 edit="0"
             >
                 <sheet>
-
-
                     <div>
                         <h1>
                             <field name="name" />
@@ -82,13 +78,9 @@
                             <!-- <field name="description" /> -->
                         </page>
                     </notebook>
-
-
                 </sheet>
             </form>
         </field>
-
-
     </record>
 
     <record id="estate_property_search_view" model="ir.ui.view">
@@ -121,5 +113,4 @@
 
     </record>
 
-
-</odoo> 
+</odoo>
