@@ -9,6 +9,10 @@
                         type="object"
                         string="Reset"
                         confirm="Do you want to reset ?"/>
+                    <button name = "action_best"
+                        type="object"
+                        string="Automate"
+                        confirm="Do you want to automate all ?"/>
                 </header>
 
                 <field name="name" optional="show"/>
@@ -52,7 +56,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
                 </header>
                 <sheet>
-                      
+                    <div class ="oe_button_box" name="button_box"/>
                     <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
@@ -97,7 +101,9 @@
                                 <list  editable = "bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name="price"/>
                                     <field name="margin" optional="hide"/>
-                                    <field name="partner_id"/>
+                                    <!-- attendee_ids is used to restrict partner_id domain to event registrants -->
+                                    <field name="attendee_ids" column_invisible="1"/>
+                                    <field name="partner_id" domain="[('id', 'in', attendee_ids)]"/>
                                     <button name="action_accept"
                                         type="object"
                                         icon="fa-check"
@@ -118,6 +124,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -211,6 +218,7 @@
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': 1}</field>
     </record>
+
 </odoo>
 
 

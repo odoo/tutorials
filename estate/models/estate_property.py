@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -29,7 +30,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
     expected_price = fields.Float(string="Expected Price", required=True, help='Enter the expected price of the property')
-    selling_price = fields.Float(string="Selling Price", help='Enter the selling price of the property', readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", help='Enter the selling price of the property', readonly=True, copy=False, tracking=2)
     bedrooms = fields.Integer(string="Number of Bedrooms", help='Enter the number of bedrooms in the property', default=2)
     living_area = fields.Integer(string="Living Area", help='Enter the living area of the property in square meters')
     facades = fields.Integer(string="Number of Facades", help='Enter the number of facades of the property')
@@ -61,6 +62,7 @@ class EstateProperty(models.Model):
         default='new',
         store=True,
         readonly=False,
+        tracking=1,
         help='Current state of the property'
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
@@ -136,12 +138,22 @@ class EstateProperty(models.Model):
 
     def action_best(self):
         for record in self:
+            if not record.offer_ids:
+                if len(self) == 1:
+                    raise UserError(_("No offers received for this property"))
+                else:
+                    continue
             for offer in record.offer_ids:
                 if offer.price == record.best_price:
                     offer.status = 'accepted'
                     other = record.offer_ids - offer
                     other.status = 'refused'
-                    record.state = 'offer_accepted'
+                    record.buyer_id = offer.partner_id
+                    record.selling_price = offer.price
+                    if len(self) == 1:
+                        return record.action_sold()
+                    else:
+                        record.action_sold(open_wizard=False)
 
     @api.depends("expected_price", "state", "offer_ids", "create_date")
     def _compute_tags(self):

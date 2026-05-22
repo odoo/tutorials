@@ -7,7 +7,7 @@
         Real Estate tutorial module.
     """,
     'author': 'Parth Sawant',
-    'depends': ['base'],
+    'depends': ['base', 'mail', 'event'],
     'category': 'Real Estate',
     'data': [
         'security/ir.model.access.csv',

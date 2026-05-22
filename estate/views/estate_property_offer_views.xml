@@ -36,7 +36,9 @@
             <group>
                 <group>
                     <field name="price"/>
-                    <field name="partner_id"/>
+                    <!-- attendee_ids is used to restrict partner_id domain to event registrants -->
+                    <field name="attendee_ids" invisible="1"/>
+                    <field name="partner_id" domain="[('id', 'in', attendee_ids)]"/>
                 </group>
                 <group>
                     <field name="status"/>

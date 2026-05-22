@@ -1,6 +1,7 @@
 {
     'name': 'Real Estate Account',
     'version': '1.0',
+    'author': 'Parth Sawant',
     'license': 'LGPL-3',
     'summary': 'Real Estate and Accounting integration',
     'description': """
