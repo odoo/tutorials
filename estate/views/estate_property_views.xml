@@ -27,17 +27,18 @@
                     <div>
                             <h1><field name="name"/></h1>
                     </div>
+                    <group>
                         <group>
-                            <group>
-                                <field name="postcode"/>
-                                <field name="expected_price"/>
-                            </group>
-                            <group>
-                                <field name="date_availability"/>
-                                <field name="selling_price"/>
-                            </group>
+                            <field name="postcode"/>
+                            <field name="expected_price"/>
                         </group>
-                        <notebook>
+
+                        <group>
+                            <field name="date_availability"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>    
+                    <notebook>
                             <page string="Description">
                                 <group>    
                                     <field name="description"/>
@@ -52,7 +53,9 @@
                                     <field name="state"/>
                                 </group>    
                             </page>
-                        </notebook>
+                            <page string="Other Info">
+                            </page>
+                    </notebook>
                 </sheet>    
             </form>
         </field>
@@ -75,8 +78,7 @@
                         domain="['|',('state','=','new'),('state','=','offer_received')]"/>
                 <filter string="Postcode"
                         name="postcode"
-                        context="{'group_by':'postcode'}"/>
-                        
+                        context="{'group_by':'postcode'}"/> 
             </search>
         </field>
     </record> 
@@ -87,8 +89,6 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>    
-    
-
 
 </odoo>
 
