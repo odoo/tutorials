@@ -36,7 +36,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.lead_id:
                 record.lead_id.action_set_won()
-            remaining = (record.property_id.offer_ids-record)
+            remaining = (record.property_id.offer_ids - record)
             for other in remaining:
                 if other.lead_id:
                     other.lead_id.action_set_lost()

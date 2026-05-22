@@ -1,6 +1,6 @@
 {
-    'name': 'Real Estate Account',
-    'description': "This module allows managing property invoice.",
+    'name': 'Real Estate Event',
+    'description': "This module allows creating Event.",
     'author': 'Sudarshan Maity (sumai)',
     'website': '',
     'category': 'Real Estate',
@@ -8,10 +8,12 @@
     'license': 'LGPL-3',
     'depends': [
         'estate',
-        'account',
+        'event',
         ],
 
     'data': [
+        'views/estate_property_views.xml',
+        # 'views/estate_property_offer_views.xml'
     ],
 
     'installable': True,
