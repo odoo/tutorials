@@ -41,4 +41,28 @@ export class TodoList extends Component {
             this.getLength();
         }
     }
+
+    toggleStatus(id) {
+        for (let i=0; i<this.todos.length; i++) {
+            if (this.todos[i].id === id) {
+                console.log("Before check it was: " + this.todos[i].isCompleted);
+                if (!this.todos[i].isCompleted) {
+                    this.todos[i].isCompleted = true;
+                    console.log("After check it was: " + this.todos[i].isCompleted);
+                } else {
+                    this.todos[i].isCompleted = false;
+                    console.log("After check it was: " + this.todos[i].isCompleted);
+                }
+                break
+            }
+        }
+    }
+
+    deleteTodo(id) {
+        const index = this.todos.findIndex((elem) => elem.id === id);
+        console.log(index);
+        if (index >= 0) {
+            this.todos.splice(index, 1);
+        }
+    }
 }
