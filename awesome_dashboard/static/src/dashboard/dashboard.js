@@ -84,7 +84,7 @@ class ConfigurationDialog extends Component {
         this.items = useState(
             this.props.items.map((item) => ({
                 ...item,
-                enabled: !disabled.includes(item.id), // always boolean
+                enabled: !disabled.includes(item.id), 
             }))
         );
     }

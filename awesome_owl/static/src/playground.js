@@ -16,7 +16,7 @@ export class Playground extends Component {
         this.normalContent = "<div class='text-danger'>hel0o world</div>";
     }
     
-    incrementSum() {
-        this.state.sum++;
+    incrementSum(xyz) {
+        this.state.sum += xyz;
     }
 }

@@ -9,6 +9,7 @@
             </span>
 
             <button class="btn ms-3 bg-primary text-white " t-on-click="increment"> Increment </button>
+            <button class="btn ms-3 bg-primary text-white " t-on-click="decrement"> Decrement </button>
 
         </div>
     </t>
