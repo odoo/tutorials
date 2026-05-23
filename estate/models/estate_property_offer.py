@@ -119,16 +119,22 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept(self):
-        if any(offer.status == 'accepted' for offer in self.property_id.offer_ids):
-            raise UserError("An offer has already been accepted for this property.")
-        self.status = 'accepted'
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
-        self.property_id.state = 'offer_accepted'
+        for record in self:
+            accepted_offer = record.property_id.offer_ids.filtered_domain([
+            ("status", "=", "accepted"),
+            ("id", "!=", record.id),
+        ])
+            if accepted_offer:
+                raise UserError("An offer has already been accepted for this property.")
+            record.property_id.write({
+                'buyer_id': record.partner_id.id,
+                'selling_price': record.price,
+                'state': 'offer_accepted',
+        })
 
-        for offer in self.property_id.offer_ids:
-            if offer.id != self.id:
-                offer.status = 'refused'
+            for offer in record.property_id.offer_ids:
+                if offer.id != record.id:
+                    offer.status = "refused"
         return True
 
     def action_refuse(self):

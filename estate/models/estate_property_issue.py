@@ -30,7 +30,7 @@ class EstatePropertyIssue(models.Model):
         required=True,
     )
 
-    staty = fields.Selection(
+    state = fields.Selection(
         selection=[
             ('new', "New"),
             ('in_progress', "In Progress"),
@@ -79,27 +79,27 @@ class EstatePropertyIssue(models.Model):
                 rec.is_overdue = False
                 continue
 
-            if rec.priority == 'high':
-                days = 2
-            elif rec.priority == 'medium':
-                days = 5
-            else:
-                days = 10
+            days = {
+            'high': 2,
+            'medium': 5,
+            'low': 10,
+        }.get(rec.priority, 10)
 
             deadline = rec.create_date + timedelta(days=days)
             end_time = rec.resolved_date or fields.Datetime.now()
             rec.is_overdue = end_time > deadline
 
-    @api.onchange("salesman_id")
-    def _onchange_salesman_id(self):
-        if self.salesman_id:
-            self.staty = 'in_progress'
+    def write(self, vals):
+        if vals.get("salesman_id"):
+            vals["staty"] = "in_progress"
+
+        return super().write(vals)
 
     def action_resolve(self):
         for rec in self:
-            rec.staty = 'resolved'
+            rec.state = 'resolved'
             rec.resolved_date = fields.Datetime.now()
 
     def action_cancel(self):
         for rec in self:
-            rec.staty = 'canceled'
+            rec.state = 'canceled'

@@ -15,7 +15,7 @@
                 <field name="priority"/>
                 <field name="buyer_id"/>
                 <field name="salesman_id"/>
-                <field name="staty"/>
+                <field name="state"/>
                 <field name="resolved_date"/>
             </list>
         </field>
@@ -27,9 +27,9 @@
         <field name="arch" type="xml">
             <form>
             <header>
-            <button name="action_resolve" type="object" string="Resolved" invisible="staty in ('resolved', 'canceled')"/>
-            <button name="action_cancel" type="object" string="Cancel" invisible="staty in ('resolved', 'canceled')"/>
-            <field name="staty" widget="statusbar" statusbar_visible="new,in_progress,resolved,canceled"/>
+            <button name="action_resolve" type="object" string="Resolved" invisible="state in ('resolved', 'canceled')"/>
+            <button name="action_cancel" type="object" string="Cancel" invisible="state in ('resolved', 'canceled')"/>
+            <field name="state" widget="statusbar" statusbar_visible="new,in_progress,resolved,canceled"/>
         </header>
                 <sheet>
                     <div class="oe_title">

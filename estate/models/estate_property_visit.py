@@ -10,7 +10,7 @@ class EstatePropertyVisit(models.Model):
     property_id = fields.Many2one("estate.property", string="Property")
     partner_id = fields.Many2one("res.partner", string="Customer")
     visit_date = fields.Datetime(required=True)
-    stato = fields.Selection(
+    state = fields.Selection(
         selection=[
             ('scheduled', "Scheduled"),
             ('done', "Done"),

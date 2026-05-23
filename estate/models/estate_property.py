@@ -94,7 +94,6 @@ class EstateProperty(models.Model):
         compute="_compute_visit_count",
         store=True,
     )
-
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
         'Expected price must be strictly positive!',
@@ -118,12 +117,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(
-                    record.offer_ids.mapped("price")
-                )
-            else:
-                record.best_price = 0.0
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
 
     @api.depends("offer_ids.is_suspicious")
     def _compute_has_suspicious_offers(self):
@@ -183,7 +177,7 @@ class EstateProperty(models.Model):
             if record.state == 'canceled':
                 raise UserError("Cancelled property cannot be sold!")
             for rec in record.issue_ids:
-                if rec.staty != 'resolved' and rec.priority == 'high':
+                if rec.state != 'resolved' and rec.priority == 'high':
                     raise UserError(
                     "Cannot sell the property, please solve the issues"
                 )
@@ -224,7 +218,7 @@ class EstateProperty(models.Model):
         for offer in self.offer_ids:
             if offer.quotation_id:
                 continue
-                quotation = self.env["sale.order"].create({
+            quotation = self.env["sale.order"].create({
                 "partner_id": offer.partner_id.id,
                 "origin": self.name,
                 "order_line": [
@@ -236,7 +230,7 @@ class EstateProperty(models.Model):
                 ],
             })
 
-                offer.quotation_id = quotation.id
+            offer.quotation_id = quotation.id
         return True
 
     def _search_tag(self, tag_name):
