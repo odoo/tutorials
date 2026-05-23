@@ -3,7 +3,7 @@
     'author': 'Aditi (adpaw)',
     'license': 'LGPL-3',
     'depends': [
-        'base', 'calendar', 'mail'
+        'base', 'calendar', 'mail', 'event'
     ],
     'data': [
         'security/estate_security.xml',

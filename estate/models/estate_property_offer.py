@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -44,21 +43,18 @@ class EstatepropertyOffer(models.Model):
 
     @api.depends('partner_id', 'create_date')
     def _compute_is_suspicious_offer(self):
-        all_offers = self.env['estate.property.offer'].search([])
-
         for record in self:
-            if record.create_date:
-                same_partner = all_offers.filtered(lambda offer: offer.partner_id == record.partner_id)
-
-                def within_5_mins(offer):
-                    if offer.create_date:
-                        diff = abs(offer.create_date - record.create_date)
-                        return diff <= timedelta(minutes=5)
-
-                suspicious_window = same_partner.filtered(within_5_mins)
-                record.suspicious_offer = len(suspicious_window) >= 3
-            else:
+            if not record.create_date or not record.partner_id:
                 record.suspicious_offer = False
+                continue
+
+            suspicious_offers_count = self.env['estate.property.offer'].search_count([
+                ('partner_id', '=', record.partner_id.id),
+                ('create_date', '>=', record.create_date - timedelta(minutes=5)),
+                ('create_date', '<=', record.create_date + timedelta(minutes=5)),
+            ])
+
+            record.suspicious_offer = suspicious_offers_count >= 3
 
     @api.model_create_multi
     def create(self, vals_list):

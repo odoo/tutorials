@@ -31,7 +31,7 @@ class EstatepropertyVisit(models.Model):
         records = super().create(vals_list)
         for record in records:
             self.env['calendar.event'].create({
-                'name': f'Visit: {record.property_id.name} - {record.buyer_id.name}',
+                'name': f"Visit: {record.property_id.name} - {record.buyer_id.name}",
                 'start': record.visit_date,
                 'stop': record.stop_date
             })

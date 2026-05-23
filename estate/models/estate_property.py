@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
             ('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")],
         help="Direction the garden faces"
     )
-    tag_ids = fields.Many2many('estate.property.tag', compute='_dynamic_tag_ids', string="Tags")
+    tag_ids = fields.Many2many('estate.property.tag', compute='_compute_dynamic_tag_ids', string="Tags")
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
@@ -72,22 +72,21 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
+        offer_data = self.env["estate.property.offer"]._read_group(
+            domain=[("property_id", "in", self.ids)],
+            groupby=["property_id"],
+            aggregates=["price:max"]
+        )
+        mapped_prices = {property.id: max_price for property, max_price in offer_data}
+
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = 0.0
+            record.best_price = mapped_prices.get(record.id, 0.0)
 
     @api.depends('expected_price', 'offer_ids', 'sold_within')
-    def _dynamic_tag_ids(self):
-        all_tags = self.env['estate.property.tag'].search([('name', 'in', ('High Value', 'Quick Sale', 'Low Interest'))])
-
-        if 'High Value' not in all_tags.mapped('name'):
-            all_tags |= self.env['estate.property.tag'].create({'name': 'High Value'})
-        if 'Low Interest' not in all_tags.mapped('name'):
-            all_tags |= self.env['estate.property.tag'].create({'name': 'Low Interest'})
-        if 'Quick Sale' not in all_tags.mapped('name'):
-            all_tags |= self.env['estate.property.tag'].create({'name': 'Quick Sale'})
+    def _compute_dynamic_tag_ids(self):
+        all_tags = self.env['estate.property.tag'].search([
+            ('name', 'in', ('High Value', 'Quick Sale', 'Low Interest'))
+        ])
 
         high_value_tag = all_tags.filtered(lambda t: t.name == 'High Value')
         low_interest_tag = all_tags.filtered(lambda t: t.name == 'Low Interest')
@@ -95,13 +94,15 @@ class EstateProperty(models.Model):
 
         for record in self:
             tags_to_add = self.env['estate.property.tag']
+
             if record.expected_price > 1000:
                 tags_to_add |= high_value_tag
             if len(record.offer_ids) < 2:
                 tags_to_add |= low_interest_tag
             if record.sold_within and record.sold_within <= 10:
                 tags_to_add |= quick_sale_tag
-            record.tag_ids = [(6, 0, tags_to_add.ids)]
+
+            record.tag_ids = tags_to_add
 
     @api.depends('sold_date', 'create_date')
     def _compute_sold_within(self):
