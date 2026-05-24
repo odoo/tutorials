@@ -14,7 +14,7 @@ export class Playground extends Component {
         this.unsafeHtml = "<div class='text-primary'>some content</div>";
     }
 
-    incrementSum() {
-        this.state.sum++;
+    updateSum(value) {
+        this.state.sum += value;
     }
 }

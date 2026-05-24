@@ -2,6 +2,6 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.PieChart">
-        <canvas t-ref="chart" style="max-width: 300px;"/>
+        <canvas t-ref="soham" style="max-width: 300px;"/>
     </t>
 </templates>

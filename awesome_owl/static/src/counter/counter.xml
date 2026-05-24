@@ -17,6 +17,13 @@
                 Increment
             </button>
 
+            <button style="background:#7b3f6e; border:none; color:white;
+                        border-radius:6px; padding:6px 14px;
+                        font-size:13px; cursor:pointer;"
+                    t-on-click="decrement">
+                Decrement
+            </button>
+
         </div>
     </t>
 </templates>

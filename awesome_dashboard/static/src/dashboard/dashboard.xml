@@ -23,12 +23,10 @@
     <DashboardItem size="item.size || 1">
         <t t-set="itemProps"
         t-value="item.props ? item.props(stats) : { data: stats }"/>
-
         <t t-component="item.Component"
         t-props="itemProps"/>
-
     </DashboardItem>
-</t>
+    </t>
             </div>
         </Layout>
     </t>

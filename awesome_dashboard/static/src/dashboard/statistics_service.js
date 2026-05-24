@@ -2,6 +2,7 @@
 import { registry } from "@web/core/registry";
 import { rpc } from "@web/core/network/rpc";
 import { reactive } from "@odoo/owl";
+import { browser } from "@web/core/browser/browser";
 
 const statisticsService = {
     name: "awesome_dashboard.statistics",
@@ -15,7 +16,7 @@ const statisticsService = {
         }
 
         loadStatistics();
-        setInterval(loadStatistics, 10 * 60 * 1000);
+        browser.setInterval(loadStatistics, 10 * 60 * 1000);
 
         return stats;
     },

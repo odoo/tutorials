@@ -6,8 +6,8 @@
 
             <p style="margin-bottom:16px; font-size:15px;">Hello Counter</p>
 
-            <Counter onChange.bind="incrementSum"/>
-            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="updateSum"/>
+            <Counter onChange.bind="updateSum"/>
 
             <p style="margin:12px 0; font-size:15px;">
                 The sum is: <t t-esc="state.sum"/>

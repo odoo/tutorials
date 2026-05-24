@@ -17,6 +17,7 @@
 
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
                 <TodoItem todo="todo"
+                        number="todo_index + 1"
                         toggleState.bind="toggleState"
                         removeTodo.bind="removeTodo"/>
             </t>
