@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="todoitems">
+        <div class="p-2 grid">
+            <div class="me-2 p-2 border d-inline-block" style="width:200px" t-att-for="props.todo.id" t-att-class="props.todo.isCompleted ? &apos;text-decoration-line-through text-muted&apos; : &apos;&apos;">
+                <div class="pl-2 pr-2 d-flex align-items-center gap-2">
+                    <input type="checkbox" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-change="onChange"/>
+                    <t t-esc="props.todo.id"/>
+                    <span></span>
+                    <t t-esc="props.todo.description"/>
+                    <span class="fa fa-remove" style="color: red; cursor: pointer" t-on-click="onRemove" />
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

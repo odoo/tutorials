@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pieChartCard">
+        <div class="card d-inline-block m-2 rounded-2">
+            <div class="card-body">
+                <p class="card-text">
+                    <t t-out="props.title"/>
+                </p>
+                <PieChart data="props.value" label="''"/>
+            </div>
+        </div>
+    </t>
+</templates>

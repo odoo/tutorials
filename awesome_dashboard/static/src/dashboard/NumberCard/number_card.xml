@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="numberCard">
+        <div class="card d-inline-block m-2 rounded-2">
+            <div class="card-body">
+                <p class="card-text">
+                    <t t-out="props.title"/>
+                </p>
+                <p class="card-text">
+                    <t t-out="props.value"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>

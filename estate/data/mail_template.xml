@@ -1,0 +1,29 @@
+<odoo>
+    <record id="email_for_sold_property" model="mail.template">
+        <field name="name">Property: Property sold</field>
+        <field name="subject">Property purchased</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="email_to">${object.buyer_id.email}</field>
+        <field name="description">Sent automatically to the buyer</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Dear Buyer,</p>
+                <br/>
+                <p>Congratulations on your purchase!</p>
+            </div>
+        </field>
+    </record>
+    <record id="email_template_stale_property_reminder" model="mail.template">
+        <field name="name">Estate: Stale property reminder</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="email_to">${object.sales_person.email}</field>
+        <field name="description">Property has not received any offer for a long time</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <strong>Reminder</strong>
+                <br/>
+                <p>This property has not received an offer in a long time period.</p>
+            </div>
+        </field>
+    </record>
+</odoo>
