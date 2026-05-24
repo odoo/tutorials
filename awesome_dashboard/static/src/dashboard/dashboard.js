@@ -6,8 +6,8 @@ import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { browser } from "@web/core/browser/browser";
-import "./statistics_service";   // ← add this
-import "./dashboard_items";      // ← add this ← THIS IS THE FIX
+import "./statistics_service";
+import "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template   = "awesome_dashboard.AwesomeDashboard";

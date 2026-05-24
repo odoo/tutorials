@@ -3,9 +3,9 @@
         <div class="p-3">
             <p>hello world</p>
 
-            <Counter onChange.bind="incrementSum"/>
-            <Counter onChange.bind="incrementSum"/>
-            <p>The sum is: <t t-esc="state.sum"/></p>
+            <Counter onChange.bind="updateC1" max="10"/>
+            <Counter onChange.bind="updateC2" max="5"/>
+            <p>The sum is: <t t-esc="state.c1 + state.c2"/></p>
 
             <hr class="my-3"/>
 
@@ -17,7 +17,6 @@
             </div>
 
             <hr class="my-3"/>
-
             <TodoList/>
         </div>
     </t>

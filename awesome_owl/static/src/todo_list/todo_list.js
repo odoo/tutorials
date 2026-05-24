@@ -16,11 +16,12 @@ export class TodoList extends Component {
     }
 
     addTodo(ev) {
-        if (ev.keyCode === 13) {
+        if (ev.key === "Enter") {
             const description = ev.target.value.trim();
+            debugger;
             if (!description) return;
             this.todos.push({
-                id:          this.nextId++,
+                id: this.nextId++,
                 description: description,
                 isCompleted: false,
             });
@@ -39,6 +40,10 @@ export class TodoList extends Component {
         const index = this.todos.findIndex(t => t.id === todoId);
         if (index >= 0) {
             this.todos.splice(index, 1);
+            this.todos.forEach((todo, idx) => {
+            todo.id = idx + 1;
+            });
+            this.nextId = this.todos.length + 1;
         }
     }
 }

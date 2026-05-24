@@ -24,7 +24,6 @@
         <t t-set="itemProps"
         t-value="item.props ? item.props(stats) : { data: stats }"/>
 
-        <!-- uppercase Component ✅ -->
         <t t-component="item.Component"
         t-props="itemProps"/>
 
