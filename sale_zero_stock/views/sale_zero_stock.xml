@@ -1,0 +1,12 @@
+<odoo>
+    <record id="sale_order_zero_stock_view_form" model="ir.ui.view">
+        <field name="name">sale.zero.stock.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name=&apos;payment_term_id&apos;]" position="after">
+                <field name="zero_stock_approval" readonly="access_user"></field>
+            </xpath>
+        </field>
+    </record>
+</odoo>
