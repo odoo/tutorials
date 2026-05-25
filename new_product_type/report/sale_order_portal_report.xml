@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="sale_order_portal_content_inherit_print_option"
+            inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//t[@t-set='lines_to_report']"
+            position="attributes">
+            <attribute name="t-value">
+                sale_order._get_order_lines_to_report().filtered(
+                    lambda l: l.show_in_report()
+                )
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
