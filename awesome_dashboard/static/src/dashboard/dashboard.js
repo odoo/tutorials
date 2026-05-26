@@ -25,18 +25,15 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useService("awesome_dashboard.statistics");
+        this.statisticsService = useState(useService("awesome_dashboard.statistics"));
         this.dialogService = useService("dialog");
-        console.log(this.dialogService);
 
         this.state = useState({
-            stats: {},
             removedItems: this.loadRemovedItems(),
         });
 
         onWillStart(async () => {
-            await this.statistics.loadStatistics();
-            this.state.stats = this.statistics.statistics;
+            await this.statisticsService.loadStatistics();
         });
 
         this.items = dashboardItemRegistry.getAll();

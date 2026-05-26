@@ -2,7 +2,7 @@
     <div class="card d-inline-block m-2" style="width: 18rem;">
         <div class="card-body">
             <h5 class="card-title">
-                <t t-esc="props.title"/>
+                <t t-out="props.title"/>
             </h5>
 
             <button class="btn ms-3 bg-primary text-white" t-on-click="toggle">

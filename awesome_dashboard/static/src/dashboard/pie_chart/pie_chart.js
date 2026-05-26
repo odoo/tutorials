@@ -1,4 +1,4 @@
-import { Component, onWillStart, onMounted, useRef, onWillUpdateProps } from "@odoo/owl";
+import { Component, onWillStart, onMounted, onPatched, useRef, onWillUnmount, } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
@@ -19,8 +19,14 @@ export class PieChart extends Component {
             this.renderChart();
         });
 
-        onWillUpdateProps(() => {
+        onPatched(() => {
             this.renderChart();
+        });
+
+        onWillUnmount(() => {
+        if (this.chart) {
+            this.chart.destroy();
+            }
         });
     }
 

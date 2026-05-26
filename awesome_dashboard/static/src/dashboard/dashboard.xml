@@ -26,8 +26,8 @@
 
                             <t t-set="itemProp"
                                 t-value="item.props 
-                                    ? sanitizeProps(item.props(state.stats))
-                                    : { data: state.stats }"/>
+                                    ? sanitizeProps(item.props(statisticsService.statistics.data))
+                                    : { data: statisticsService.statistics.data  }"/>
 
                             <t t-component="item.Component"
                             t-props="itemProp"/>

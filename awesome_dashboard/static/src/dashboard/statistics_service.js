@@ -2,12 +2,21 @@ import { registry } from "@web/core/registry";
 import { rpc } from "@web/core/network/rpc";
 import { reactive } from "@odoo/owl";
 
-const statistics = reactive({});
+const statistics = reactive({
+    data: {},
+});
 
 async function loadStatistics() {
-    const result = await rpc("/awesome_dashboard/statistics");
+    try {
+        const result = await rpc("/awesome_dashboard/statistics");
+        console.log("API Result:", result);
 
-    Object.assign(statistics, result);
+        if (result) {
+            statistics.data = result;;
+        }
+    } catch (error) {
+        console.error("Error loading stats:", error);
+    }
 }
 
 export const statisticsService = {

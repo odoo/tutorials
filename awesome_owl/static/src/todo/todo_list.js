@@ -18,7 +18,7 @@ export class TodoList extends Component {
 
     }
     addTodo(ev) {
-        if (ev.keyCode != 13) return
+        if (ev.key != "Enter") return
 
         this.todos.push({
             id : this.nextId++,
