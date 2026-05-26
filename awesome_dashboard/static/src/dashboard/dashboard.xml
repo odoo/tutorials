@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary me-2" t-on-click="openCustomers">
+                    Customers
+                </button>
+
+                <button class="btn btn-secondary" t-on-click="openLeads">
+                    Leads
+                </button>
+
+                <button class="btn btn-outline-secondary" t-on-click="openSettings">
+                    <i class="fa fa-cog"/> Settings
+                </button>
+            </t>
+            
+            <div class="p-3">
+                <div class="d-flex flex-wrap">
+
+                    <t t-foreach="visibleItems" t-as="item" t-key="item.id">
+
+                        <DashboardItem size="item.size || 1">
+
+                            <t t-set="itemProp"
+                                t-value="item.props 
+                                    ? sanitizeProps(item.props(statisticsService.statistics.data))
+                                    : { data: statisticsService.statistics.data  }"/>
+
+                            <t t-component="item.Component"
+                            t-props="itemProp"/>
+
+                        </DashboardItem>
+
+                    </t>
+
+                </div>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

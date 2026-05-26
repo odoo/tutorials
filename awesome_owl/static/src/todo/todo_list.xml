@@ -1,0 +1,15 @@
+<t t-name="awesome_owl.TodoList">
+    <div class="m-2 p-2 border d-inline-block">
+     <input 
+            type="text"
+            placeholder="Add a Todo"
+            class="form-control mb-2"
+            t-model="inputValue.text"
+            t-on-keyup="addTodo"
+            t-ref="input"
+        />
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+        </t>
+    </div>
+</t>

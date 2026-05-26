@@ -1,0 +1,22 @@
+<t t-name="awesome_dashboard.SettingsDialog">
+    <Dialog title="'Dashboard Settings'" size="'md'">
+        
+        <div class="modal-body">
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
+                <div>
+                    <input type="checkbox"
+                        t-att-checked="state.selected.has(item.id)"
+                        t-on-click="toggleItem.bind(this, item.id)"/>
+                    <t t-esc="item.description"/>
+                </div>
+            </t>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary" t-on-click="apply">
+                Apply
+            </button>
+        </div>
+
+    </Dialog>
+</t>
