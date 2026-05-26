@@ -105,6 +105,6 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def action_refused_cron(self):
-        (self.search([('status', '!=', 'accepted'), ]).filtered(
+        (self.search([('status', '!=', 'accepted')]).filtered(
             lambda o: o.create_date + timedelta(days=o.validity) < fields.Datetime.today()).write(
             {'status': 'refused'}))
