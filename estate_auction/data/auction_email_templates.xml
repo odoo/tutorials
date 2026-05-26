@@ -1,0 +1,53 @@
+<odoo>
+
+    <record id="email_template_auction_offer_accepted" model="mail.template">
+        <field name="name">Auction Offer Accepted</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="subject"> Your Auction Bid Has Been Accepted</field>
+        <field name="email_from">{{ user.email_formatted }}</field>
+        <field name="partner_to"> {{ object.partner_id.id }}</field>
+        <field name="body_html" type="html">
+
+            <p>Hello <t t-out="object.partner_id.name"/>,</p>
+            <p>Congratulations!</p>
+            <p>
+                Your bid for property
+                <strong>
+                    <t t-out="object.property_id.name"/>
+                </strong>
+                has been accepted.
+            </p>
+            <p>
+                Final Bid Amount:
+                <strong>
+                    <t t-out="object.price"/>
+                </strong>
+            </p>
+        </field>
+    </record>
+
+    <record id="email_template_auction_offer_rejected" model="mail.template">
+        <field name="name">Auction Offer Rejected</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="subject">Auction Result</field>
+        <field name="email_from">{{ user.email_formatted }}</field>
+        <field name="partner_to">{{ object.partner_id.id }}</field>
+        <field name="body_html" type="html">
+
+            <p>Hello <t t-out="object.partner_id.name"/>,</p>
+            <p>
+                Thank you for participating
+                in the auction for
+                <strong>
+                    <t t-out="object.property_id.name"/>
+                </strong>.
+            </p>
+            <p>
+                Unfortunately your offer
+                was not selected.
+            </p>
+
+        </field>
+    </record>
+
+</odoo>
