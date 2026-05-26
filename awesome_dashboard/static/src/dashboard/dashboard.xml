@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard" owl="1">
+        <Layout className="'o_dashboard h-100'" display="displayProps">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary me-2" t-on-click="openCustomers">
+                    Customers
+                </button>
+                <button class="btn btn-secondary" t-on-click="openLeads">
+                    Leads
+                </button>
+            </t>
+            <div class="p-3">
+                HELLO
+            </div>
+            
+            <div class="d-flex gap-2" t-if="this.stats.isLoaded">
+                <DashboardItem>
+                    <h4>Number of new orders this month</h4>
+                    <t t-esc="this.stats.data.nb_new_orders"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <h4>Total amount of new orders this month</h4>
+                    Rs.<t t-esc="this.stats.data.total_amount"/>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <h4>Average amount of t-shirts by order</h4>
+                    <t t-esc="this.stats.data.average_quantity"/>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <h4>Average time from 'new' to closed</h4>
+                    <t t-esc="this.stats.data.average_time"/>
+                </DashboardItem>
+                <DashboardItem size="3">
+                    <h4>Number of cancelled orders this month</h4>
+                    <t t-esc="this.stats.data.nb_cancelled_orders"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <h4>ORders by Size</h4>
+                    <hr/>
+                    M: <t t-esc="this.stats.data.orders_by_size.m"/>
+                    <hr/>
+                    S: <t t-esc="this.stats.data.orders_by_size.s"/>
+                    <hr/>
+                    XL: <t t-esc="this.stats.data.orders_by_size.xl"/>
+                    
+                    <PieChart chart_data="this.stats.data.orders_by_size"/>
+                </DashboardItem>
+            </div>
+            
+            <div class="p-5 text-center" t-else="">
+                <p class="text-muted">Loading live dashboard metrics...</p>
+            </div>
+        </Layout>
+    </t>
+
+</templates>
