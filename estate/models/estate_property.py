@@ -3,6 +3,7 @@ from datetime import timedelta
 
 
 class EstateProperty(models.Model):
+
     _name = "estate.property"
     _description = "Real Estate Property"
 
@@ -26,6 +27,7 @@ class EstateProperty(models.Model):
     )
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
+    garden = fields.Boolean(string="Garden")
     garage = fields.Boolean(string="Garage")
     garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(
@@ -51,3 +53,5 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
     )
+   
+    
