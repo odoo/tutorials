@@ -5,14 +5,29 @@ import { reactive } from "@odoo/owl";
 const statisticsService = {
     start() {
         const stats = reactive({});
+
+        let isStopped = false;
+
         async function load() {
-            const result = await rpc("/awesome_dashboard/statistics", {});
-            Object.assign(stats, result);
+            try {
+                const result = await rpc("/awesome_dashboard/statistics", {});
+                Object.assign(stats, result);
+            } catch (error) {
+                console.error("Failed to load dashboard stats:", error);
+            }
         }
-        load();
-        setInterval(load, 10000);
+
+        async function loop() {
+            if (isStopped) return;
+            await load();
+            setTimeout(loop, 10000);
+        }
+        loop();
         return {
             stats,
+            stop() {
+                isStopped = true;
+            },
         };
     },
 };

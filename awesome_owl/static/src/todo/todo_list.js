@@ -12,7 +12,7 @@ export class TodoList extends Component {
     }
 
     addTodo(ev) {
-        if (ev.keyCode === 13) {
+        if (ev.key === "Enter") {
             const value = ev.target.value.trim();
             if (!value) return;
             this.todos.push({
