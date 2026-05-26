@@ -56,6 +56,21 @@ class EstatePropertyOffer(models.Model):
             property_rec.state = 'offer_received'
         return records
 
+    @api.model
+    def _cron_offers_expire(self, job_count=20):
+        domain = [
+            ('date_deadline', '<', fields.Date.context_today(self)),
+            ('status', 'not in', ['accepted', 'refused']),
+        ]
+        expired_offers = self.search(
+            domain, order='date_deadline asc', limit=job_count
+        )
+        if expired_offers:
+            expired_offers.write({
+                'status': 'refused'
+            })
+        return True
+
     def action_accept(self):
         for record in self:
             for offer in record.property_id.offer_ids:

@@ -6,3 +6,4 @@ from . import estate_property_visit
 from . import estate_property_issue
 from . import res_users
 from . import mail_compose_message
+from . import res_config_settings

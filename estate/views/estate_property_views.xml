@@ -40,6 +40,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                 <field name="image_1920" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
                             <h1>
@@ -95,7 +96,7 @@
                                 </group>
                             </group>
                         </page>
-                        <page string="Offers">
+                        <page string="Offers" name="offers">
                             <field name="offer_ids"  readonly="state in ('offer_accepted', 'sold', 'cancel')"/>
                         </page>
                         <page string="Visits">
