@@ -1,0 +1,76 @@
+<odoo>
+
+    <record id="estate_property_form_auction" model="ir.ui.view">
+        <field name="name"> estate.property.form.auction </field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.view_estate_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_sold']" position="before">
+                <button name="action_start_auction" type="object" string="Start Auction" class="btn btn-primary" invisible="selling_mode != 'auction' or auction_state != 'draft'"/>
+                <button name="action_end_auction" type="object" string="End Auction" class="btn btn-danger" invisible="selling_mode != 'auction' or auction_state in ('draft', 'ended', 'sold') or offer_ids.length &lt; 1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='date_availability']" position="after">
+                <field name="selling_mode" widget="radio"/>
+            </xpath>
+
+            <xpath expr="//sheet/notebook/page[@name='offers']" position="attributes">
+                <attribute name="invisible"> selling_mode == 'auction' and auction_state == 'draft'</attribute>
+            </xpath>
+
+            <xpath expr="//sheet/group" position="inside">
+                <group>
+                     <field name="auction_state" widget="badge"
+                           invisible="selling_mode != 'auction'"
+                           decoration-muted="state == 'draft'"
+                           decoration-warning="state == 'in_progress'"
+                           decoration-success="state == 'sold'"/>
+                    </group>
+                </xpath>
+
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Auction Details" invisible="selling_mode != 'auction'">
+                    <group>
+                        <!-- <field name="auction_state"/> -->
+                        <field name="auction_end"/>
+                        <field name="best_price" string="Highest Offer"/>
+                        <field name="highest_bidder_id"/>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="estate_property_kanban_auction" model="ir.ui.view">
+        <field name="name">estate.property.kanban.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.view_estate_property_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="selling_mode"/>
+                <field name="auction_state"/>
+            </xpath>
+            <xpath expr="//div[hasclass('card_details')]" position="inside">
+                <div class="float-end">
+                    <span
+                        t-if="record.selling_mode.raw_value == 'auction' and record.auction_state.raw_value == 'in_progress'"
+                        class="badge rounded-pill bg-success">
+                        In Progress
+                    </span>
+                    <span
+                        t-if="record.selling_mode.raw_value == 'auction' and record.auction_state.raw_value == 'ended'"
+                        class="badge rounded-pill bg-warning">
+                        Ended
+                    </span>
+                    <span
+                        t-if="record.selling_mode.raw_value == 'auction' and record.auction_state.raw_value == 'sold'"
+                        class="badge rounded-pill bg-primary">
+                        Sold
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="email_template_edi_estate" model="mail.template">
+            <field name="name">Estate: Sold property</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">Property {{ object.name }} is Sold</field>
+            <field name="email_from">{{ object.salesperson_id.email or '' }}</field>
+            <!-- <field name="partner_to" eval="False"/>
+            <field name="use_default_to" eval="True"/>
+            <field name="description">Used by salespeople when they send quotations or proforma to prospects</field> -->
+            <field name="body_html" type="html">
+                 <div style="margin: 0px; padding: 0px;">
+                  <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                  <t t-set="doc_name" t-value="'property'"/>
+                <b>Hello</b><br/><br/>
+                The property <t t-out="object.name or ''"></t> has been successfully sold.<br/>
+                Buyer: <t t-out="object.buyer_id.name or ''"></t><br/>
+                Salesperson:<t t-out="object.salesperson_id.name or ''"></t><br/><br/>
+
+                Thank you.
+                </p>
+            </div>
+            </field>
+        </record>
+    </data>
+</odoo>

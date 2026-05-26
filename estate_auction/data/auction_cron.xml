@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir_cron_close_auction" model="ir.cron">
+        <field name="name">close auctions automatically</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_close_auction(job_count=20)</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+    </record>
+
+</odoo>

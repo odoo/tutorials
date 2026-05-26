@@ -1,0 +1,124 @@
+<odoo>
+
+    <data>
+
+        <record id="menu_property" model="website.menu">
+            <field name="name">Properties</field>
+            <field name="url">/properties</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int"> 20 </field>
+        </record>
+
+        <template id="estate_properties_template" name="Estate Properties">
+            <t t-call="website.layout">
+                <div class="container mt-4 mb-4">
+                    <form action="/properties" method="get" class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label">
+                                Selling Mode
+                            </label>
+
+                            <select name="selling_mode" class="form-select">
+                                <option value="">All</option>
+                                <option value="regular" t-att-selected=" 'selected' if selling_mode == 'regular' else None ">
+                                    Regular
+                                </option>
+                                <option value="auction" t-att-selected=" 'selected' if selling_mode == 'auction' else None ">
+                                    Auction
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="container mt-5">
+                    <div class="text-center mb-5">
+                        <h1>Estate Properties</h1>
+                        <p class="text-muted"> Explore available properties </p>
+                    </div>
+                    <div class="row">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <img
+                                        t-if="property.image_1920"
+                                        t-att-src="image_data_uri(property.image_1920)"
+                                        class="card-img-top"
+                                        style="height:250px; object-fit:cover;"
+                                    />
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a t-att-href="'/properties/%s' % property.id" class="text-decoration-none">
+                                                <t t-esc="property.name"/>
+                                            </a>
+                                        </h4>
+                                        <p class="text-muted">
+                                            <t t-esc="property.description"/>
+                                        </p>
+                                        <p>
+                                            <strong> Available From: </strong>
+                                            <t t-esc="property.date_availability"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="estate_property_detail_template" name="Property Detail">
+            <t t-call="website.layout">
+                <div class="container mt-5">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <img
+                                t-if="property.image_1920"
+                                t-att-src="image_data_uri(property.image_1920)"
+                                class="img-fluid rounded shadow"
+                                style=" width:100%; height:500px; object-fit:cover "/>
+                        </div>
+                        <div class="col-lg-5">
+                            <h1 class="mb-4">
+                                <t t-esc="property.name"/>
+                            </h1> <hr/>
+                            <p>
+                                <strong>Description:</strong>
+                                <br/>
+                                <t t-esc="property.description"/>
+                            </p>
+                            <p>
+                                <strong>Expected Price:</strong> ₹
+                                <t t-esc="property.expected_price"/>
+                            </p>
+                            <p>
+                                <strong>Bedrooms:</strong>
+                                <t t-esc="property.bedrooms"/>
+                            </p>
+                            <p>
+                                <strong>Living Area:</strong>
+                                <t t-esc="property.living_area"/> sq.ft
+                            </p>
+                            <p>
+                                <strong>Salesperson:</strong>
+                                <t t-esc="property.salesperson_id.name"/>
+                            </p>
+                            <p>
+                                <strong>Available From:</strong>
+                                <t t-esc="property.date_availability"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+
+</odoo>
