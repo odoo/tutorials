@@ -31,6 +31,9 @@
                 <field name="selling_price" />
                 <field name="date_available" />
                 <field name="state" />
+                <field name="property_type_id" />
+                <field name="buyer_id" />
+                <field name="salesperson_id" />
             </list>
         </field>
     </record>
@@ -74,9 +77,19 @@
                                 <field name="selling_price" />
                                 <field name="date_available" />
                                 <field name="state" />
+                                <field name="property_type_id" />
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
                             </group>
                             <!-- <field name="description" /> -->
                         </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
+                            </group>
+                        </page>
+
                     </notebook>
                 </sheet>
             </form>
@@ -98,6 +111,7 @@
                 <field name="selling_price" />
                 <field name="date_available" />
                 <field name="facades" />
+                <field name="property_type_id" />
                 <filter name="state"
                     string="Available"
                     domain="['|',('state','=','new'),('state','=','offer_recieved')]"
