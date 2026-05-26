@@ -1,5 +1,10 @@
+import logging
+from datetime import timedelta
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+
+_logger = logging.getLogger(__name__)
 
 
 class EstatePropertyOffer(models.Model):
@@ -97,3 +102,9 @@ class EstatePropertyOffer(models.Model):
             self.property_id.state = 'offer_received'
         self.status = 'refused'
         return True
+
+    @api.model
+    def action_refused_cron(self):
+        (self.search([('status', '!=', 'accepted'), ]).filtered(
+            lambda o: o.create_date + timedelta(days=o.validity) < fields.Datetime.today()).write(
+            {'status': 'refused'}))

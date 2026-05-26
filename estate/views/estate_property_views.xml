@@ -40,7 +40,7 @@
                             class="btn-primary"/>
                     <button name="action_send_mail_property" type="object" string="Send Mail"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
-                    <button name="action_reset" type="object" string="Rest"/>
+                    <button name="action_reset" type="object" string="Reset"/>
                     <button name="best_offer" type="object" string="Accept Best Offer"/>
                     <field name="state" widget="statusbar"
                            statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
