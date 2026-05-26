@@ -5,6 +5,7 @@ export class PieChart extends Component {
     static template = "awesome_dashboard.piechart";
     static props = {
         chart_data: { type: Object },
+        clickPie: { type: Function, optional: true },
     };
     setup () {
         this.canvasRef = useRef("dashboard");
@@ -39,6 +40,29 @@ export class PieChart extends Component {
             },
             options: {
                 responsive: true,
+                // 2. Add the Chart.js onClick handler hook
+                onClick: (event, activeElements) => {
+                    let elements = activeElements;
+                    
+                    // Fallback for older/newer Chart.js event signature variations
+                    if (!elements || !elements.length) {
+                        if (this.chart.getElementsAtEventForMode) {
+                            elements = this.chart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+                        } else if (this.chart.getElementAtEvent) {
+                            elements = this.chart.getElementAtEvent(event);
+                        }
+                    }
+
+                    if (elements && elements.length > 0 && this.props.clickPie) {
+                        const firstElement = elements[0];
+                        // Extract index safely across standard versions (.index vs ._index)
+                        const elementIndex = firstElement.index !== undefined ? firstElement.index : firstElement._index;
+                        const label = this.chart.data.labels[elementIndex];
+                        
+                        // 3. Fire the dashboard callback action!
+                        this.props.clickPie(label);
+                    }
+                }
             },
         }
         this.chart = new Chart(this.canvasRef.el, config);

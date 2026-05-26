@@ -1,4 +1,4 @@
-<t t-name="awesome_dashboard.dashboardItem">
+<t t-name="awesome_dashboard.dashboarditem">
     <div class="p-3 m-2 dashboard_item_white" t-attf-style="width: {{ 18 * props.size }}rem;">
         <div>
             <t t-slot="default"/>
