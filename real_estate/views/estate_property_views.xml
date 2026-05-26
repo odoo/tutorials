@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-    <!-- List View -->
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -17,8 +15,6 @@
             </list>
         </field>
     </record>
-
-    <!-- Form View -->
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -54,7 +50,6 @@
             </form>
         </field>
     </record>
-
     <record id="view_estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -78,8 +73,12 @@
                     name="active"
                     domain="[('active', '=', True)]"
                 />
-                <filter name="luxury house" domain="[('selling_price', '&gt;', 10000)]"/>
-                <group expand="0" string="Group By">
+                <filter
+                    string="Luxury House"
+                    name="luxury_house"
+                    domain="[('selling_price', '&gt;', 10000)]"
+                />
+                <group>
                     <filter
                         string="Postcode"
                         name="group_postcode"
@@ -89,41 +88,26 @@
             </search>
         </field>
     </record>
-
-    <!-- Window Action -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_estate_property_search" />
     </record>
-
     <record id="estate_property_add_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">form</field>
     </record>
-
-    <!-- Root Menu -->
     <menuitem
         id="estate_menu_root"
         name="Real Estate"
         web_icon="real_estate,static/description/icon.png"
     />
-
-    <!-- Properties Menu -->
     <menuitem
         id="estate_property_menu"
         name="Properties"
         parent="estate_menu_root"
         action="estate_property_action"
-    />
-
-    <!-- TEMP /// New Menu -->
-    <menuitem
-        id="estate_add_menu"
-        name="Add"
-        parent="estate_menu_root"
-        action="estate_property_add_action"
     />
 </odoo>
