@@ -16,6 +16,9 @@
     'data': [
         'security/ir.model.access.csv',
         'data/mail_template.xml',
+        'data/offer_cron.xml',
+        'data/estate_website_templates.xml',
+        'views/res_config_settings_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',

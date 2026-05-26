@@ -46,6 +46,7 @@ class EstatePropertyOffer(models.Model):
         for record in records:
             property_rec = record.property_id
             existing_offers = property_rec.offer_ids - record
+            # if record.partner_id  == record.property_id.  
             if existing_offers:
                 max_price = 0
                 for offer in existing_offers:
@@ -55,6 +56,21 @@ class EstatePropertyOffer(models.Model):
                     raise UserError("Offer must be higher than existing offers.")
             property_rec.state = 'offer_received'
         return records
+
+    @api.model
+    def _cron_offers_expire(self, job_count=20):
+        domain = [
+            ('date_deadline', '<', fields.Date.context_today(self)),
+            ('status', 'not in', ['accepted', 'refused']),
+        ]
+        expired_offers = self.search(
+            domain, order= 'date_deadline asc', limit=job_count
+        )
+        if expired_offers:
+            expired_offers.write({
+                'status': 'refused'
+            })
+        return True
 
     def action_accept(self):
         for record in self:

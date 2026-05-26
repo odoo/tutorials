@@ -4,7 +4,7 @@
     <menuitem
         id="menu_real_estate_root"
         name="Real Estate"
-        web_icon="estate,static/description/logo.png"
+        web_icon="estate,static/description/icon.png"
         sequence="1"/>
 
     <!-- First Level Menu Advertisement -->
@@ -54,5 +54,19 @@
         name="Property Issue"
         parent="menu_real_estate_settings"
         action="action_estate_property_issue"/>
-        
+
+    <!-- First Level Menu configurations -->
+    <menuitem
+        id="menu_real_estate_configurations"
+        name="Configurations"
+        parent="menu_real_estate_root"
+        sequence="2"/>
+
+    <!-- Second Level Menu -->
+    <menuitem
+        id="menu_real_estate_configuration_setting"
+        name="Settings"
+        parent="menu_real_estate_configurations"
+        action="action_estate_property_configuration"/>
+
 </odoo>
