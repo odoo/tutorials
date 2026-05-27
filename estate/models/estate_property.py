@@ -1,5 +1,5 @@
 from odoo import _, fields, models, api
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError, ValidationError, AccessError
 
 
 class EstateProperty(models.Model):
@@ -72,7 +72,8 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for rec in self:
-            rec.best_price = max(rec.mapped('offer_ids.price') or [0])
+            if rec.state != 'refused':
+                rec.best_price = max(rec.mapped('offer_ids.price') or [0])
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -85,6 +86,14 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_property_sold(self):
+        if not self.env['crm.lead'].check_access_rights('create'):
+            try:
+                self.check_access_rights('write')
+                self.check_access_rule('write')
+            except AccessError:
+                return self.env['crm.lead']
+
+        values = []
         for rec in self:
             if rec.state == 'cancelled':
                 raise UserError(_('A cancelled property cannot be sold'))
@@ -95,7 +104,33 @@ class EstateProperty(models.Model):
                 raise UserError(
                     _('We don\'t do charity here. Set a proper selling price.'))
             rec.state = 'sold'
-        return True
+
+            won_stage = self.env['crm.stage'].search([
+                ('is_won', '=', True)
+            ], limit=1)  # To get id of won stage  We Can harcode it but if it chnages later on it will prove to be a difficult task
+            values.append({
+                'name': rec.name + "Lead",
+                'partner_id': rec.buyer_id.id,
+                'expected_revenue': rec.selling_price,
+                'user_id': rec.salesman_id.id,
+                'type': 'opportunity',
+                'won_status': 'won',
+                'probability': 100,
+                'stage_id': won_stage.id,
+
+                # 'invoice_line_ids': [
+                #     Command.create({
+                #         'name': f'6% Lead for {rec.name}',
+                #         'quantity': 1,
+                #         'price_unit': rec.selling_price * 0.06 + rec.selling_price,
+                #         'account_id': income_account.id
+                #     })
+                # ]
+            })
+
+        self.env['crm.lead'].sudo().create(values)
+        # breakpoint()
+        # return moves
 
     def action_property_cancelled(self):
         for rec in self:
