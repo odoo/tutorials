@@ -5,9 +5,9 @@ from odoo.tests import tagged
 
 
 @tagged('post_install', '-at_install')
-class EstatePropertyOfferTestCase(EstateTestCommon): 
+class EstatePropertyOfferTestCase(EstateTestCommon):
     @classmethod
-    def setUpClass(cls): 
+    def setUpClass(cls):
         super().setUpClass()
 
         cls.property_offer_received = cls.env['estate.property'].create(
@@ -23,7 +23,7 @@ class EstatePropertyOfferTestCase(EstateTestCommon):
         cls.property = cls.env['estate.property'].create(
             {"name": "Test 5", "expected_price": 100000})
 
-    def test_create(self): 
+    def test_create(self):
         """Test that an offer is created with the correct behavior
             price lower than current lowest: userError (must be >= current lowest offer)
             property already sold: userError (cannot offer on sold property)
