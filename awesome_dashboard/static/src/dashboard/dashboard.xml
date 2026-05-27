@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.awesome_dashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <div class="d-inline-flex gap-2 mx-2">
+                    <button class="btn btn-primary d-flex align-items-center gap-2" t-on-click="openCustomerList">
+                        <i class="fa fa-users"/><span>Customers</span>
+                    </button>
+                    <button class="btn btn-secondary d-flex align-items-center gap-2" t-on-click="openLeadsList">
+                        <i class="fa fa-vcard-o"/><span>Leads</span>
+                    </button>
+                    <button name="dashboard_config" t-on-click="openConfig">
+                        <i class="fa fa-gear"/>
+                    </button>
+                </div>
+            </t>
+            <div class="j-flex flex-wrap">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+    <t t-name="awesome_dashboard.config_dialog">
+        <Dialog title="'Dashboard Items Configuration'">
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-out="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

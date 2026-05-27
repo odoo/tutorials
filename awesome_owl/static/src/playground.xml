@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <Counter onChange.bind="updateSum"/>    
+        <Counter onChange.bind="updateSum"/>    
+        <div t-out="this.state.sum"/>
+
+        <Card 
+            title="'Hello, world!'"
+            content="'this is a card component. do with this information what you will .'"/>
+
+        <div>
+            <h2 class="text-center text-secondary mb-3">Todo</h2>
+            <div class="d-flex justify-content-center">
+                <TodoList/>
+            </div>
         </div>
     </t>
-
 </templates>
+

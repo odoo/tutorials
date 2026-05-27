@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <div class="w-100 p-3 bg-white border rounded shadow-sm text-center" style="max-width: 500px; margin: 0 auto;">
+
+            <div class="mb-3">
+                <input type="text" 
+                    t-ref="input"
+                    class="form-control form-control-lg border-primary shadow-sm" 
+                    placeholder="Add a new task.." 
+                    t-on-keyup="createItem" />
+            </div>
+
+            <t t-if="items.length > 0">
+                <t t-foreach="items" t-as="todo" t-key="todo.id">
+                    <TodoItem
+                        todo="todo" 
+                        toggleState.bind="toggleItem"
+                        removeTodo.bind="deleteItem"/>
+                </t>
+            </t>
+            <t t-else="">
+                <p class="text-muted my-4 small font-italic">You currently have on tasks.</p>
+            </t>
+        </div>
+    </t>
+</templates>
