@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp.BomoverviewforecastHeader" t-inherit="mrp.BomOverviewTable" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('d-flex', 'mb-5')]" position="replace"/>
+        <xpath expr="//div[hasclass('o_mrp_bom_report_page')]" position="attributes">
+            <attribute name="class">o_mrp_bom_report_page py-3 py-lg-2 px-0 overflow-auto border-bottom bg-view</attribute>
+        </xpath>
+        <xpath expr="//th[@t-if='forecastMode' and @title='Reception time estimation.']" position="replace" />
+        <xpath expr="//td[@name='td_mrp_bom_f']/following-sibling::td[@t-if='forecastMode'][3]" position="replace"/>
+        <xpath expr="//td[@name='td_mrp_bom_b']/following-sibling::td[@t-if='forecastMode'][3]" position="replace"/>
+    </t>
+
+    <t t-name="mrp.BomoverviewforecastLine" t-inherit="mrp.BomOverviewLine" t-inherit-mode="extension">
+        <xpath expr="//td[@t-if='forecastMode' and .//t[@t-if=&quot;data.hasOwnProperty('availability_state')&quot; ]]" position="replace" />
+        <xpath expr="//td[@class='text-center' and .//div[hasclass('o_field_badge')]]" position="replace">
+            <td t-if="forecastMode" class="text-center">
+                <div  class="o_field_badge" role="button" t-on-click.prevent="goToForecast">
+                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusStyleClass}}" t-out="status"/>
+                </div>
+            </td>
+        </xpath>
+    </t>    
+</templates>
