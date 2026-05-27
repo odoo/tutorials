@@ -101,8 +101,7 @@
                                 <list  editable = "bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name="price"/>
                                     <field name="margin" optional="hide"/>
-                                    <!-- attendee_ids is used to restrict partner_id domain to event registrants -->
-                                    <field name="attendee_ids" column_invisible="1"/>
+                                    <field name="attendee_ids" column_invisible="1"/> <!-- used to restrict partner_id domain to event registrants -->
                                     <field name="partner_id" domain="[('id', 'in', attendee_ids)]"/>
                                     <button name="action_accept"
                                         type="object"
