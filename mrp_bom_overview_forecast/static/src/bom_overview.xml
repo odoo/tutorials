@@ -9,27 +9,27 @@
     </t>
 
     <t t-name="mrp.BomOverviewLine" t-inherit="mrp.BomOverviewLine" t-inherit-mode="extension">
-        <xpath expr="//td[@class='text-center' and .//div[hasclass('o_field_badge')]]" position="replace">
+        <xpath expr="//td[.//div[@t-if=&quot;data.hasOwnProperty('status')&quot;]]" position="replace">
             <td t-if="forecastMode" class="text-center">
                 <div t-if="data.is_storable" class="o_field_badge" role="button" t-on-click.prevent="goToForecast">
                     <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundClass}}" t-out="statusData"/>
                 </div>
             </td>
         </xpath>
-        <xpath expr="//td[@class='text-center' and .//t[@t-if=&quot;data.hasOwnProperty('availability_state')&quot;]]" position="replace"/>
+        <xpath expr="//td[.//t[@t-if=&quot;data.hasOwnProperty('availability_state')&quot;]]" position="replace"/>
     </t>
 
     <t t-name="mrp.BomOverviewTable.headers" t-inherit="mrp.BomOverviewTable" t-inherit-mode="extension">
-        <xpath expr="//th[@title='Reception time estimation.']" position="replace"/>
-        <xpath expr="//tfoot//tr[1]/td[@t-if='forecastMode'][3]" position="replace"/>
+        <xpath expr="//th[@name='th_mrp_bom_h']/following-sibling::th[@t-if='forecastMode'][3]" position="replace"/>
+        <xpath expr="//td[@name='td_mrp_bom_f']/following-sibling::td[@t-if='forecastMode'][3]" position="replace"/>
     </t>
 
     <t t-name="mrp.BomOverviewTable.byproducts_footer" t-inherit="mrp.BomOverviewTable" t-inherit-mode="extension">
-        <xpath expr="//tfoot//t//tr/td[@t-if='forecastMode'][3]" position="replace"/>
+        <xpath expr="//td[@name='td_mrp_bom_b']/following-sibling::td[@t-if='forecastMode'][3]" position="replace"/>
     </t>
 
     <t t-name="mrp.BomOverviewSpecialLine" t-inherit="mrp.BomOverviewSpecialLine" t-inherit-mode="extension">
-        <xpath expr="//td[@t-if='forecastMode'][3]" position="replace"/>
+        <xpath expr="//td[@name='bom_cost']/preceding-sibling::td[@t-if='forecastMode'][last()]" position="replace"/>
     </t>
 
     <t t-name="mrp.BomOverviewComponentsBlock" t-inherit="mrp.BomOverviewComponentsBlock" t-inherit-mode="extension">
