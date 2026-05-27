@@ -34,7 +34,6 @@
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
-
                         <group>
                             <field name="bedrooms"/>
                             <field name="living_area"/>
@@ -46,7 +45,6 @@
                             <field name="active"/>
                         </group>
                     </group>
-
                     <notebook>
                         <page string="Description">
                             <field name="description"/>
