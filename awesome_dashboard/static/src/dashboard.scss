@@ -1,0 +1,15 @@
+.o_dashboard {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    
+    .dashboard-card {
+        background: #ffffff;
+        border: 1px solid rgba(0, 160, 157, 0.12);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 160, 157, 0.08) !important;
+        }
+    }
+}

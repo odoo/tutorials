@@ -2,9 +2,43 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+        <div class="p-4 border rounded shadow-sm m-4 mx-auto" style="max-width: 800px; background-color: #ffe4e1;">
+            <h2 class="text-muted text-center fw-normal mb-4">Owl Playground</h2>
+            
+            <h3 class="text-center text-dark mb-3">
+                The Sum is: <t t-esc="state.sum"/>
+            </h3>
+
+            <div class="d-flex justify-content-around">
+                <Counter onChange="incrementSum.bind(this)"/>
+                <Counter onChange="incrementSum.bind(this)"/>
+            </div>
+            
+            <hr class="text-muted my-4" />
+            
+            <h4 class="text-muted mb-3">Slots Containers</h4>
+            <div class="text-center">
+                
+                <Card title="'Standard Text'">
+                    <p class="text-secondary small m-0">
+                        text text text UwU
+                    </p>
+                </Card>
+
+                <Card title="'Interactive Counter'">
+                    <Counter onChange="incrementSum.bind(this)"/>
+                </Card>
+
+            </div>
+            
+            <hr class="text-muted my-4" />
+
+            <h2 class="text-center text-secondary mb-3">Todo Workspace</h2>
+            <div class="d-flex justify-content-center">
+                <TodoList/>
+            </div>
+
+        </div> 
     </t>
 
 </templates>

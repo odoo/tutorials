@@ -2,7 +2,63 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            
+            <t t-set-slot="layout-buttons">
+                <div class="d-inline-flex gap-2 mx-2">
+                    <button class="btn btn-primary d-flex align-items-center gap-2" t-on-click="openCustomers">
+                        <i class="fa fa-users"/><span>Customers</span>
+                    </button>
+                    <button class="btn btn-secondary d-flex align-items-center gap-2" t-on-click="openLeads">
+                        <i class="fa fa-vcard-o"/><span>Leads</span>
+                    </button>
+                </div>
+            </t>
+
+            <div class="p-4 d-flex flex-wrap gap-2">
+                
+                <DashboardItem>
+                    <div class="text-uppercase text-muted fw-bold small mb-1">New Orders This Month</div>
+                    <h2 class="fw-bold text-dark m-0">
+                        <t t-esc="stats.nb_new_orders"/>
+                    </h2>
+                    <p class="text-primary small mt-2 mb-0"><i class="fa fa-shopping-cart me-1"/> Incoming volume</p>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="text-uppercase text-muted fw-bold small mb-1">Total Order Value</div>
+                    <h2 class="fw-bold text-success m-0">
+                        $<t t-esc="stats.total_amount"/>
+                    </h2>
+                    <p class="text-muted small mt-2 mb-0"><i class="fa fa-line-chart me-1"/> Gross monthly revenue</p>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="text-uppercase text-muted fw-bold small mb-1">Avg T-Shirts Per Order</div>
+                    <h2 class="fw-bold text-info m-0">
+                        <t t-esc="stats.avg_t_shirts"/> units
+                    </h2>
+                    <p class="text-muted small mt-2 mb-0"><i class="fa fa-tags me-1"/> Basket density score</p>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="text-uppercase text-muted fw-bold small mb-1">Cancelled Orders</div>
+                    <h2 class="fw-bold text-danger m-0">
+                        <t t-esc="stats.nb_cancelled_orders"/>
+                    </h2>
+                    <p class="text-muted small mt-2 mb-0"><i class="fa fa-ban me-1"/> Order attrition tracking</p>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    <div class="text-uppercase text-muted fw-bold small mb-1">Average Fullfilment Lead Time</div>
+                    <h2 class="fw-bold text-warning m-0">
+                        <t t-esc="stats.avg_days_to_close"/> sent
+                    </h2>
+                </DashboardItem>
+
+            </div>
+
+        </Layout>
     </t>
 
 </templates>

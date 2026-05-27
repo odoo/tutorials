@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2 text-start align-top shadow-sm" style="width: 18rem;">
+            <div class="card-body">
+                
+                <div class="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
+                    <h5 class="card-title fw-bold text-dark m-0">
+                        <t t-esc="props.title"/>
+                    </h5>
+                    
+                    <button class="btn btn-sm btn-link" 
+                            t-on-click="toggleContent">
+                        <span t-att-class="state.isOpen ? 'fa fa-eye' : 'fa fa-eye-slash'"/>
+                    </button>
+                </div>
+                
+                <div class="card-text" t-if="state.isOpen">
+                    <t t-slot="default"/>
+                </div>
+                <t t-else="">
+                    <p class="text-muted small font-italic m-0 text-center py-1">Content hidden.</p>
+                </t>
+                
+            </div>
+        </div>
+    </t>
+
+</templates>
