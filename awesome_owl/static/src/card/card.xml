@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-header d-flex justify-content-between align-items-center" style="cursor: pointer;">
+                <h5 class="card-title m-0" t-esc="props.title"/>
+                <button 
+                    class="btn btn-sm btn-link p-0"
+                    t-on-click="toggleCard"
+                    style="text-decoration: none; color: inherit;"
+                >
+                    <i 
+                        class="fa fa-chevron-down"
+                        t-att-style="state.isOpen ? 'transform: rotate(0deg);' : 'transform: rotate(-90deg); transform-origin: center;'"
+                    />
+                </button>
+            </div>
+
+            <div class="card-body" t-if="state.isOpen">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+
+</templates>

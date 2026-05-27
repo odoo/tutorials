@@ -6,8 +6,8 @@
         <field name="arch" type="xml">
             <form>
             <header>
-                             <button 
-                                    name="action_sold" 
+                            <button 
+                                    name="action_sold"
                                     string="Sold" 
                                     type="object"
                                     class="btn-primary"
@@ -68,6 +68,8 @@
                             </group>
                         </page>
                     </notebook>
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
+                    <widget name="web_ribbon" title="Cancel" bg_color="text-bg-success" invisible="state != 'cancelled'"/>
                 </sheet>
                 <chatter/>
             </form>
@@ -165,6 +167,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,kanban,form</field>
+        <field name="path">estate</field>
         <field name="context">{'search_default_properties_with_offers': 1}</field>
     </record>
 </odoo>

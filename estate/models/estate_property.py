@@ -75,24 +75,35 @@ class EstateProperty(models.Model):
             raise UserError("Cancelled properties cannot be sold.")
         self.state = 'sold'
 
-        ctx = {
-            'default_model': 'estate.property',
-            'default_res_ids': self.ids,
-            'default_partner_ids': self.buyer_id.ids,
-            'default_composition_mode': 'comment',
-            'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
-            'default_subject': f"Property Confirmed: {self.name}",
-            'default_body': f"<p>Hello,<br/>The property <b>{self.name}</b> has been sold for <b>${self.selling_price}</b>.</p>",
-        }
+        # ctx = {
+        #     'default_model': 'estate.property',
+        #     'default_res_ids': self.ids,
+        #     'default_partner_ids': self.buyer_id.ids,
+        #     'default_composition_mode': 'comment',
+        #     'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
+        #     'default_subject': f"Property Confirmed: {self.name}",
+        #     'default_body': f"<p>Hello,<br/>The property <b>{self.name}</b> has been sold for <b>${self.selling_price}</b>.</p>",
+        # }
 
-        return {
-            'name': 'Send Email',
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'mail.compose.message',
-            'target': 'new',
-            'context': ctx,
-        }
+        # return {
+        #     'name': 'Send Email',
+        #     'type': 'ir.actions.act_window',
+        #     'view_mode': 'form',
+        #     'res_model': 'mail.compose.message',
+        #     'target': 'new',
+        #     'context': ctx,
+        # }
+        message = "Successfully Sold the product"
+        if message:
+            return {
+                'effect': {
+                    'fadeout': 'slow',
+                    'message': message,
+                    'img_url': '/web/static/img/smile.svg',
+                    'type': 'rainbow_man',
+                }
+            }
+        return True
 
     def action_cancel(self):
         for record in self:
