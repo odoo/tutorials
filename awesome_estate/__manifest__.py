@@ -9,6 +9,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/awesome_estate_property_views.xml',
+        'views/awesome_estate_property_type_views.xml',
     ],
     'application': True,
     'installable': True,

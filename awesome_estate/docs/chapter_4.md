@@ -19,6 +19,16 @@ If a model has no access rights, Odoo treats it as inaccessible and prints a war
 2. **Groups**  
    ACLs are assigned to a group like `base.group_user`.
 
+   Common groups:
+   - `base.group_user` — internal backend users who can log into the Odoo backend
+   - `base.group_portal` — portal users who usually access the frontend and their own documents only
+   - `base.group_public` — public/anonymous users who are not logged in
+
+   Difference:
+   - internal users work in the backend and can use normal business screens
+   - portal users have limited frontend access
+   - public users have the least access and are typically anonymous visitors
+
 3. **Record rules**  
    Used later to limit which records a group can see or edit.
 
