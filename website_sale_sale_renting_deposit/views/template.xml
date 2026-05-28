@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="product_template_inherit" inherit_id="website_sale.cta_wrapper">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.is_deposit_required">
+                <div class="mt-3 py-2 o_deposit_wrapper"
+                    t-att-data-deposit-unit="product.deposit_amount"
+                    t-att-data-currency-symbol="product.currency_id.symbol">
+                    <div class=" fw-semibold fs-6">
+                        <h4>
+                            <strong class="fw-bold text-dark">Total deposit:</strong>
+                            <span class="o_deposit_amount_total">
+                                <span t-out="product.currency_id.symbol" />
+                                <span class="o_deposit_amount_value" t-out="product.deposit_amount" />
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="cart_lines_hide_delete_deposit" inherit_id="website_sale.cart_lines">
+        <xpath expr="//a[hasclass('js_delete_product')]" position="attributes">
+            <attribute name="t-if">not line.is_deposit_line</attribute>
+        </xpath>
+    </template>
+
+</odoo>
