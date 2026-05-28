@@ -4,6 +4,16 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <h2>Total Sum: <t t-esc="this.counterSum"/></h2>
+            <h2>Total Todo: <t t-esc="this.counterTodo"/></h2>
+            <Counter value="this.state.counter1" callback.bind="updateCounter1"/>
+            <Counter value="this.state.counter2" callback.bind="updateCounter2"/>
+            <Card title="'HTML CHECK'">
+                <Counter value="state.counter1" callback.bind="updateCounter1"/>
+            </Card>
+            <Card title="'HTML PLAIN'"/>
+            <Card title="'my title'"/>
+            <TodoList callback.bind="updateTodoCounter"/>
         </div>
     </t>
 

@@ -1,0 +1,15 @@
+.o_dashboard {
+    background-color: gray;
+}
+
+.dashboard_item_white {
+    border: 0.1rem dashed black;
+    border-radius: 0.5rem;
+    background-color: white;
+    * {
+        color: black;
+    }
+    h4 {
+        color: green;
+    }
+}

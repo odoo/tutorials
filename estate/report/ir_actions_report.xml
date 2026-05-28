@@ -1,0 +1,87 @@
+<odoo>
+    <template id="report_property_sale">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="property">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Buyer: </strong>
+                            <span t-field="property.buyer_id.name"/>
+                        </div>
+                        <div>
+                            <strong>Selling Price: </strong>
+                            <span t-field="property.selling_price"/>
+                        </div>
+                        <div>
+                            <strong>Salesperson: </strong>
+                            <span t-field="property.salesperson_id.name"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="report_property_summary">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="property">
+                    <div class="page" style="margin-bottom: 20px">
+                        <t t-if="property.state == 'sold'">
+                            <h2>
+                                <span t-field="property.name"/>
+                            </h2>
+                            <div>
+                                <strong>Buyer: </strong>
+                                <span t-field="property.buyer_id.name"/>
+                            </div>
+                            <div>
+                                <strong>Selling Price: </strong>
+                                <span t-field="property.selling_price"/>
+                            </div>
+                            <div>
+                                <strong>Salesperson: </strong>
+                                <span t-field="property.salesperson_id.name"/>
+                            </div>
+                            <h2 style="margin-top: 10px">
+                            Offers
+                            </h2>
+                            <t t-foreach="property.offer_ids" t-as="offer">
+                                <div>
+                                    <strong>Price: </strong>
+                                    <span t-field="offer.price"/>
+                                </div>
+                                <div>
+                                    <strong>Offer By: </strong>
+                                    <span t-field="offer.partner_id.name"/>
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="action_report_property_sale" model="ir.actions.report">
+        <field name="name">Property Sale</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_sale</field>
+        <field name="report_file">estate.report_property_sale</field>
+        <field name="print_report_name">'Property Sale - %s' % (object.display_name)</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="action_report_property_summary" model="ir.actions.report">
+        <field name="name">Property Summary</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_summary</field>
+        <field name="report_file">estate.report_property_summary</field>
+        <field name="print_report_name">'Property Summary - %s' % (object.display_name)</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

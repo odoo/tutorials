@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.awesomedashboard">
+        <Layout className="'o_dashboard h-100'" display="displayProps">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary me-2" t-on-click="openCustomers">
+                    <t t-esc="this._t('Customers')"/>
+                </button>
+                <button class="btn btn-secondary" t-on-click="openLeads">
+                    <t t-esc="this._t('Leads')"/>
+                </button>
+                <button class="btn" t-on-click="openConfiguration" t-att-title="this._t('Configuration Settings')">
+                    <i class="fa fa-gear"/>
+                </button>
+            </t>            
+            <div class="container-fluid p-3" t-if="this.stats.isLoaded">
+                <div class="row g-3">
+                    <t t-foreach="this.itemsList" t-as="item" t-key="item.id">
+                        <div t-attf-class="col-12 col-md-#{item.size ? item.size * 3 : 4}">
+                            <DashboardItem>
+                                <t t-set="itemProp" t-value="item.props ? item.props(this.stats.data) : {'statistics': this.stats.data}"/>
+                                
+                                <t t-if="item.id === 'orders_by_size'">
+                                    <t t-set="itemProp" t-value="Object.assign({}, itemProp, { clickPie: this.clickPie.bind(this) })"/>
+                                </t>
+                                
+                                <t t-component="item.Component" t-props="itemProp" />
+                            </DashboardItem>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </Layout>
+    </t>
+</templates>

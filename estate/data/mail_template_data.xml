@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_sold_mail_template" model="mail.template">
+            <field name="name">Property Booked</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">Property: {{ object.display_name }}</field>
+            <field name="email_from">{{ object.salesperson_id.email }}</field>
+            <field name="email_to">{{ object.buyer_id.email }} {{ object.salesperson_id.email }}</field>
+            <field name="use_default_to" eval="True"/>
+            <field name="description">Sent to customers when a property is sold</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 12px;">
+                        Hello,
+                        <br/><br/>
+                        Property
+                        <span style="font-weight:bold;" t-out="object.display_name or ''">_placeholder_</span>
+                        sold to
+                        <span style="font-weight:bold;" t-out="object.buyer_id.name or ''">_placeholder_</span>
+                        by
+                        <span style="font-weight:bold;" t-out="object.salesperson_id.name or ''">_placeholder_</span>
+                        at price Rs.
+                        <span style="font-weight:bold;" t-out="object.selling_price or ''">_placeholder_</span>
+                        <br/><br/>
+                        Thank you for your trust!
+                    </p>
+                </div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('estate.action_report_property_sale'))]"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.piechart">
+        <div class="w-100 h-100" style="position: relative; min-height: 250px;">
+            <canvas t-ref="dashboard"/>
+        </div>
+    </t>
+</templates>

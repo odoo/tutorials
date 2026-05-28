@@ -1,0 +1,11 @@
+<t t-name="awesome_owl.counter">
+    <div class="p-3">
+        <h4>Counter: <t t-esc="props.value"/></h4>
+        <div class="d-flex gap-2">
+            <button class="btn bg-primary" t-on-click="increment"><i class="fa fa-plus p-2"/>Increment</button>
+            <button class="btn bg-danger" t-on-click="decrement"><i class="fa fa-plus p-2"/>Decrement</button>
+            <button class="btn bg-warning" t-on-click="powerof"><i class="fa fa-plus p-2"/>Power of 2</button>
+            <button class="btn bg-secondary" t-on-click="reset"><i class="fa fa-plus p-2"/>Reset</button>
+        </div>
+    </div>
+</t>

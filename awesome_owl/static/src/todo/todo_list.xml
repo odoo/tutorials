@@ -1,0 +1,9 @@
+<t t-name="awesome_owl.TodoList">
+    <div class="p-3">
+        <h1>TODO List</h1>
+        <input placeholder="Enter task" type="text" t-on-keyup="newTask" t-ref="myinput"/>
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo" toggleStatus.bind="toggleStatus" deleteTodo.bind="deleteTodo"/>
+        </t>
+    </div>
+</t>

@@ -1,0 +1,8 @@
+<t t-name="awesome_owl.TodoItem">
+    <div class="p-3" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+        <t t-esc="props.todo.id"/>.
+        <t t-esc="props.todo.description"/>
+        <span class="mx-2"><input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="callbackStatus"></input></span>
+        <span class="fa fa-remove mx-2" t-on-click="callbackDelete"></span>
+    </div>
+</t>

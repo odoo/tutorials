@@ -1,0 +1,90 @@
+<odoo>
+    <record id="estate_property_visit_view_list" model="ir.ui.view">
+        <field name="name">estate.property.visit.view.list</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="visit_time_start"/>
+                <field name="property_title"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_view_form" model="ir.ui.view">
+        <field name="name">estate.property.visit.view.form</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="scheduled,finished"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <!-- <field name="property_id" options="{'no_create': '1'}"/> -->
+                        <field name="property_title" readonly="True"/>
+                    </h1>
+                    <group>
+                        <field name="visit_time_start" options="{'min_date': 'today'}"/>
+                        <!-- <field name="visit_time_end" readonly="True"/> -->
+                        <field name="property_buyer" readonly="True"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_view_calendar" model="ir.ui.view">
+        <field name="name">estate.property.visit.view.calendar</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <calendar string="Visits scheduled" date_start="visit_time_start">
+                <field name="property_title"/>
+                <field name="property_buyer" avatar_field="avatar_128"/>
+                <field name="visit_time_start"/>
+                <!-- <field name="visit_time_end"/> -->
+            </calendar>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.visit.view.kanban</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1" default_group_by="status">
+                <field name="status"/>
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <main>
+                            <field name="property_title" class="fw-bold fs-5 mb-1 d-block"/>
+                            <div class="text-muted">
+                                <div>
+                                    Buyer: <field name="property_buyer" widget="many2one_avatar_user"/>
+                                </div>
+                                <div>
+                                    Time: <field name="visit_time_start"/>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_action" model="ir.actions.act_window">
+        <field name="name">Visits</field>
+        <field name="res_model">estate.property.visit</field>
+        <field name="view_mode">calendar,list,form,kanban</field>
+    </record>
+
+    <!-- <record id="estate_property_visit_reminder_cron" model="ir.cron">
+        <field name="name">Send email reminder</field>
+        <field name="model_id" ref="estate.model_estate_property_type"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_reminder</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="False"/>
+    </record> -->
+</odoo>

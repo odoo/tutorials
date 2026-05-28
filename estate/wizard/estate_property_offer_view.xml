@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_send_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.send.offer.view.form</field>
+        <field name="model">estate.property.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Offer">
+                <group>
+                    <field name="price"></field>
+                    <field name="partner_id" string="partner"/>
+                </group>
+                <footer>
+                    <button name="action_create_offer" string="OFfer" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_send_offer_action" model="ir.actions.act_window">
+        <field name="name">Create Offer</field>
+        <field name="res_model">estate.property.offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="estate_property_send_offer_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="estate.model_estate_property"/>
+    </record>
+</odoo>
