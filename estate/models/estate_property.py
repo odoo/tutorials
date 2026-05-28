@@ -24,12 +24,14 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection([
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West'),
-    ])
+    garden_orientation = fields.Selection(
+        [
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ]
+    )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
@@ -37,13 +39,24 @@ class EstateProperty(models.Model):
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('canceled', 'Canceled')
+            ('canceled', 'Canceled'),
         ],
         required=True,
         copy=False,
         default='new'
     )
-    buyer_id = fields.Many2one("res.partner",string="buyer",copy=False)
-    salesperson_id = fields.Many2one("res.users",string="salesperson",default=lambda self:self.env.user)
-    property_id= fields.Many2one("estate.property.type",string="Property Type")
+    buyer_id = fields.Many2one(
+        "res.partner",
+        string="Buyer",
+        copy=False,
+    )
+    salesperson_id = fields.Many2one(
+        "res.users",
+        string="salesperson",
+        default=lambda self: self.env.user,
+    )
+    property_type_id= fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+    )
 
