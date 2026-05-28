@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="mrp.BomOverviewLine" t-inherit-mode="extension">
+
+        <xpath expr="//td[t[@t-if=&quot;data.hasOwnProperty('availability_state')&quot;]]"
+            position="replace"/>
+
+        <xpath expr="//td//div[hasclass('o_field_badge')]" position="replace">
+            <div class="o_field_badge">
+
+                <t t-set="statusClass"
+                t-value="data.availability_state === 'available'
+                            ? 'text-bg-success'
+                            : data.availability_state === 'unavailable'
+                                ? 'text-bg-danger'
+                                : ['expected', 'estimated'].includes(data.availability_state)
+                                    ? data.level === 0
+                                        ? 'text-bg-dark'
+                                        : 'border border-warning text-warning'
+                                    : 'text-bg-dark'"/>
+
+                <t t-if="data.type == 'operation'">
+                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{ statusClass }}"
+                        t-out="data.forecast_status_display"/>
+                </t>
+
+                <t t-elif="data.level === 0 and data.status">
+                    <span class="badge rounded-pill o_mrp_overview_badge text-bg-success"
+                        t-on-click.prevent="goToForecast"
+                        t-out="data.status"/>
+                </t>
+
+                <t t-else="">
+                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{ statusClass }}"
+                        t-on-click.prevent="goToForecast"
+                        t-out="data.forecast_status_display"/>
+                </t>
+
+            </div>
+        </xpath>
+    </t>
+</templates>
