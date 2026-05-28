@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dashboard_item">
+      <div class="d-flex flex-column justify-content-center align-items-center shadow-lg rounded-3 p-3 w-100 h-100" t-attf-style="grid-column: span {{ itemSize }};">
+        <t t-slot="default"></t>
+      </div>
+    </t>
+
+</templates>

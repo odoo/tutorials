@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.pie_chart_card">
+      <div class="d-flex flex-column align-items-center">
+        <div class="o_dashboard_item_title">
+          <t t-out="props.title"></t>
+        </div>
+        <canvas t-ref="canvasRef"></canvas>
+      </div>
+    </t>
+
+</templates>

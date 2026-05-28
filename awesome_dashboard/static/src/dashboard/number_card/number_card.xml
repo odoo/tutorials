@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.number_card">
+      <div class="d-flex flex-column align-items-center">
+        <div class="o_dashboard_item_title">
+          <t t-out="props.title"></t>
+        </div>
+        <div class="o_dashboard_item_value">
+          <t t-out="props.value"></t>
+        </div>
+      </div>
+    </t>
+
+</templates>

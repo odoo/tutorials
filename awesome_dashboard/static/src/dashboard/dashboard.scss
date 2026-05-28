@@ -1,0 +1,10 @@
+.o_dashboard {
+  background-color: #e3e3e3;
+  color: #1f1f1f;
+  padding: 1rem;
+  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  // align-items: start;
+  align-content: start;
+}
