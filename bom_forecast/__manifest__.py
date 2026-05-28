@@ -7,7 +7,6 @@
     "license": "LGPL-3",
     'installable': True,
     'auto_install': True,
-    'application': True,
     "assets": {
         "web.assets_backend": [
             "bom_forecast/static/src/**/*",

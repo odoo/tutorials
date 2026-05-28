@@ -8,28 +8,32 @@
         <xpath expr="//td//div[hasclass('o_field_badge')]" position="replace">
             <div class="o_field_badge">
 
+                <t t-set="statusClass"
+                t-value="data.availability_state === 'available'
+                            ? 'text-bg-success'
+                            : data.availability_state === 'unavailable'
+                                ? 'text-bg-danger'
+                                : ['expected', 'estimated'].includes(data.availability_state)
+                                    ? data.level === 0
+                                        ? 'text-bg-dark'
+                                        : 'border border-warning text-warning'
+                                    : 'text-bg-dark'"/>
+
                 <t t-if="data.type == 'operation'">
-                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundColor}}"
-                        t-esc="data.availability_display"/>
+                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{ statusClass }}"
+                        t-out="data.forecast_status_display"/>
                 </t>
 
-                <t t-elif="data.level === 0">
-                    <t t-if="data.status == 'No Ready To Produce'">
-                        <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundColor}}"
-                            t-on-click.prevent="goToForecast"
-                            t-esc="data.availability_display"/>
-                    </t>
-                    <t t-else="">
-                        <span class="badge rounded-pill o_mrp_overview_badge text-bg-success"
-                            t-on-click.prevent="goToForecast"
-                            t-esc="data.status"/>
-                    </t>
+                <t t-elif="data.level === 0 and data.status">
+                    <span class="badge rounded-pill o_mrp_overview_badge text-bg-success"
+                        t-on-click.prevent="goToForecast"
+                        t-out="data.status"/>
                 </t>
 
                 <t t-else="">
-                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{statusBackgroundColor}}"
+                    <span t-attf-class="badge rounded-pill o_mrp_overview_badge {{ statusClass }}"
                         t-on-click.prevent="goToForecast"
-                        t-esc="statusDisplay"/>
+                        t-out="data.forecast_status_display"/>
                 </t>
 
             </div>
