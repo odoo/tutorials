@@ -1,0 +1,9 @@
+.o_dashboard {
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+}
+.o_dashboard .display-1 {
+    color: var(--primary);
+    font-weight: 500;
+}
