@@ -4,6 +4,21 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <div class="d-flex justify-content-around">
+                <Counter onChange="() => this.incrementSum()"/>
+                <Counter onChange="() => this.incrementSum()"/>
+            </div>
+            <div class="alert alert-info d-inline-block fw-bold fs-4">
+                The sum is: <t t-esc="state.sum"/>
+            </div>
+        </div>
+        <div>
+            <Card title="'card 1'" content="htmlNormal"/>
+            <Card title="'card 2'" content="htmlMarkup"/>
+        </div>
+        <hr/>
+        <div class="mt-4">
+            <TodoList/>
         </div>
     </t>
 
