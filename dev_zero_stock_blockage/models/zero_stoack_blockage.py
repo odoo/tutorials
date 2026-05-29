@@ -13,8 +13,7 @@ class ZeroStock(models.Model):
                 for line in record.order_line:
                     if line.product_id.qty_available <= 0:
                         raise ValidationError(_(
-                            "You cannot confirm this order because the product '%s' has zero stock. "
-                            "Please ask a Sales Manager to toggle the 'Zero Stock Approval' checkbox first!"
-                            % line.product_id.name)
+                            "You cannot confirm this order because the product has zero stock. "
+                            "Please ask a Sales Manager to toggle the 'Zero Stock Approval' checkbox first!")
                         )
         return super().action_confirm()
