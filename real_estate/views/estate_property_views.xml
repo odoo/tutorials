@@ -7,6 +7,7 @@
             <list string="Properties">
                 <field name="name" />
                 <field name="postcode" />
+                <field name="property_type_id" />
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="bedrooms" />
@@ -19,7 +20,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form>
                 <sheet>
                     <group>
                         <group>
@@ -35,10 +36,12 @@
                             <field name="facades" />
                             <field name="has_garage" />
                             <field name="has_garden" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Garden">
                             <field name="garden_area" />
                             <field name="garden_orientation" />
-                            <field name="active" />
-                            <field name="state" />
                         </group>
                     </group>
                     <notebook>
@@ -58,6 +61,7 @@
                 <field name="name" />
                 <field name="postcode" />
                 <field name="state" />
+                <field name="property_type_id" />
                 <field name="description" />
                 <filter
                     string="Available"
@@ -84,6 +88,11 @@
                         name="group_postcode"
                         context="{'group_by': 'postcode'}"
                     />
+                    <filter
+                        string="Property Type"
+                        name="group_property_type"
+                        context="{'group_by': 'property_type_id'}"
+                    />
                 </group>
             </search>
         </field>
@@ -99,15 +108,4 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">form</field>
     </record>
-    <menuitem
-        id="estate_menu_root"
-        name="Real Estate"
-        web_icon="real_estate,static/description/icon.png"
-    />
-    <menuitem
-        id="estate_property_menu"
-        name="Properties"
-        parent="estate_menu_root"
-        action="estate_property_action"
-    />
 </odoo>
