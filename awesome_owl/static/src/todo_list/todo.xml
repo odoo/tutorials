@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<t t-name="awesome_owl.Todo">
-    <div class="form-check mb-2">
-        <input class="form-check-input" type="checkbox"
-               t-att-id="props.todo.id"
-               t-att-checked="props.todo.done"
-               t-on-click="() => props.toggleState(props.todo.id)"/>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <div class="form-check mb-2 d-flex align-items-center">
+             <input class="form-check-input" type="checkbox"
+                    t-att-id="'todo_' + props.todo.id"
+                    t-att-checked="props.todo.isCompleted"
+                    t-on-change="onToggle"/>
 
-        <label class="form-check-label"
-               t-att-class="{'text-muted text-decoration-line-through': props.todo.done}"
-               t-att-for="props.todo.id">
-            <t t-esc="props.todo.id"/>.
-            <t t-esc="props.todo.description"/>
-        </label>
-    </div>
-</t>
+            <label class="form-check-label ms-2 flex-grow-1"
+                   t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}"
+                   t-att-for="'todo_' + props.todo.id">
+                <t t-esc="props.todo.id"/>.
+                <t t-esc="props.todo.description"/>
+            </label>
+
+            <span class="fa fa-remove text-danger ms-2" role="button"
+                  t-on-click="onRemove" title="Delete"/>
+        </div>
+    </t>
+</templates>

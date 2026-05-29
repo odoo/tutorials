@@ -3,8 +3,17 @@
     <t t-name="awesome_owl.Card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text"><t t-esc="props.content"/></p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0"><t t-esc="props.title"/></h5>
+                    <button class="btn btn-sm btn-outline-primary"
+                            t-on-click="toggle">
+                        <t t-if="state.open">▲</t>
+                        <t t-else="">▼</t>
+                    </button>
+                </div>
+                <div t-if="state.open" class="mt-2">
+                    <t t-slot="default"/>
+                </div>
             </div>
         </div>
     </t>
