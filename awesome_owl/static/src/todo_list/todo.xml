@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<t t-name="awesome_owl.Todo">
+    <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox"
+               t-att-id="props.todo.id"
+               t-att-checked="props.todo.done"
+               t-on-click="() => props.toggleState(props.todo.id)"/>
+
+        <label class="form-check-label"
+               t-att-class="{'text-muted text-decoration-line-through': props.todo.done}"
+               t-att-for="props.todo.id">
+            <t t-esc="props.todo.id"/>.
+            <t t-esc="props.todo.description"/>
+        </label>
+    </div>
+</t>

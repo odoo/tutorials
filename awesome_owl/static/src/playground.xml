@@ -4,7 +4,35 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
-            <Counter/>
+            <div class="d-flex gap-3 mb-3">
+                <Counter value="counter.value1" onChange="(val) => counter.value1 = val"/>
+                <Counter value="counter.value2" onChange="(val) => counter.value2 = val"/>
+                <Card title="'my title'" content="htmlContent1"/>
+                <Card title="'my title'" content="htmlContent2"/>
+            </div>
+            <p>Total: <t t-esc="counter.value1 + counter.value2"/></p>
+            <button class="btn bg-muted mb-3" t-on-click="resetCounters">Reset All Counters</button>
+            <hr class="my-4"/>
+         
+
+            <hr class="my-4"/>
+
+            <div class="mb-5 border p-3 rounded bg-light">
+                    <h2 class="text-2xl font-bold mb-3">Todo List</h2>
+
+                <input type="text"
+                       class="form-control mb-3"
+                       placeholder="Add a new task and press Enter..."
+                       t-on-keyup="addTodo"/>
+
+                <div class="todo-list">
+                        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                            <Todo todo="todo" toggleState="toggleTodo"/>
+                        </t>
+                    </div>
+                </div>
+
+            <hr class="my-4"/>
         </div>
     </t>
 
