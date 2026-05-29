@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <div class="todo-item border border-1 border-secondary rounded p-2 mb-2 d-flex align-items-center gap-2">
+            <strong>#<t t-esc="props.todo.id"/></strong>
+            <span><t t-esc="props.todo.description"/></span>
+        </div>
+    </t>
+</templates>
