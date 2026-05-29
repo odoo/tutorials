@@ -9,6 +9,7 @@
             <list>
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="property_type_id"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="bedrooms"/>
@@ -31,6 +32,7 @@
                             <field name="name"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="property_type_id"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
