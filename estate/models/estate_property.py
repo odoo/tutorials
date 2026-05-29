@@ -55,8 +55,17 @@ class EstateProperty(models.Model):
         string="salesperson",
         default=lambda self: self.env.user,
     )
-    property_type_id= fields.Many2one(
+    property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
     )
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+        string="Tags",
+    )
+    # def test_tags(self):
+    #     breakpoint()
+
+    #     for tag in self.tag_ids:
+    #         print(tag.name)
 
