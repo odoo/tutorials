@@ -1,10 +1,11 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Estate Property description modulee"
+    _description = "Estate Property description module"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -16,7 +17,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
-    expected_price = fields.Float(string="Expected Price")
+    expected_price = fields.Float(string="Expectddscsfed Price")
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     meeting_time = fields.Datetime(string="Meeting")
     living_area = fields.Integer(string="Living Area")
@@ -46,3 +47,5 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
+    tag_ids = fields.Many2many("estate.property.tag")
+     
