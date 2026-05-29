@@ -24,6 +24,7 @@ class AwesomeEstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    property_type_id = fields.Many2one('awesome.estate.property.type')
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
