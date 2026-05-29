@@ -1,0 +1,11 @@
+<odoo>
+    <menuitem id="menu_root" name="E-state">
+        <menuitem id="advertisement" name="Advertisements">
+            <menuitem id="property_menu" action="estate_property_action" />
+        </menuitem>
+        <menuitem id="settings" name="settings">
+            <menuitem id="property_types" action="estate_property_type_action" />
+            <menuitem id="property_tag" action="estate_property_tag_action" />
+        </menuitem>
+    </menuitem>
+</odoo>

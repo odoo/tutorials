@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="menu_property" model="website.menu">
+        <field name="name">Property</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu" />
+        <field name="sequence" type="int">10</field>
+    </record>
+
+    <template id="estate_property_home_page">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container mt-5 mb-5">
+                    <div class="row">
+                        <t t-foreach="properties_test" t-as="property">
+                            <div class="col-12 col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100 shadow-sm border-0 transition-base">
+                                    <t t-if="property.image">
+                                        <img class="card-img-top"
+                                            t-attf-src="data:image/*;base64,{{property.image}}"
+                                            alt="Property Image"
+                                            style="height: 250px; object-fit: cover;" />
+                                    </t>
+                                    <t t-else="">
+                                        <img class="card-img-top bg-light"
+                                            src="website_sale/static/src/img/categories/placeholder_thumbnail.png"
+                                            alt="Placeholder Image"
+                                            style="height: 250px; object-fit: contain; padding: 2rem;" />
+                                    </t>
+                                    <div class="card-body d-flex flex-column">
+                                        <div
+                                            class="d-flex justify-content-between align-items-start mb-2">
+                                            <h5 class="card-title fw-bold text-truncate mb-0"
+                                                style="max-width: 70%;">
+                                                <t t-out="property.name" />
+                                            </h5>
+                                            <span class="badge bg-primary text-uppercase px-2 py-1">
+                                                <t t-out="property.state" />
+                                            </span>
+                                        </div>
+                                        <p class="text-muted small mb-3">
+                                            <i class="fa fa-map-marker me-1"></i>
+                                            <t t-if="property.postcode">
+                                                <t t-out="property.postcode" />
+                                            </t>
+                                            <t t-else="">
+                                                Location not specified
+                                            </t>
+                                        </p>
+                                        <h4 class="text-success fw-bold mb-4">
+                                            <t t-out="property.expected_price"
+                                                t-options="{'widget': 'monetary', 'display_currency': property.currency_id}" />
+                                        </h4>
+                                        <div class="mt-auto">
+                                            <div class="row text-center bg-light rounded py-3 mx-0">
+                                                <div class="col-4 border-end">
+                                                    <i class="fa fa-bed d-block text-secondary mb-1"></i>
+                                                    <span class="fw-semibold">
+                                                        <t t-out="property.bedrooms" />
+                                                    </span>
+                                                </div>
+                                                <div class="col-4 border-end">
+                                                    <i
+                                                        class="fa fa-square-o d-block text-secondary mb-1"></i>
+                                                    <span class="fw-semibold">
+                                                        <t t-out="property.total_area" />
+                                                    </span>
+                                                    <span class="small text-muted">sqm</span>
+                                                </div>
+                                                <div class="col-4">
+                                                    <i class="fa fa-car d-block text-secondary mb-1"></i>
+                                                    <span class="fw-semibold">
+                                                        <t t-if="property.garage">Yes</t>
+                                                        <t t-else="">No</t>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

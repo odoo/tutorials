@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <span>
+                    <span class="h5"><t t-out="props.title"/></span>
+                    <button class="btn btn-primary ms-2" t-on-click="()=>{this.state.toggleStatus = !this.state.toggleStatus}">Toggle</button>
+                </span>
+                <t t-if="this.state.toggleStatus">
+                    <t t-slot="content" />
+                </t>
+            </div>
+        </div>
+    </t>
+
+</template>
