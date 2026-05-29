@@ -13,6 +13,7 @@
                 <field name="selling_price" />
                 <field name="date_availability" />
                 <field name="property_type_id" />
+                <field name="tag_ids" widget="many2many_tags" />
             </list>
         </field>
     </record>
@@ -28,6 +29,9 @@
                         <h1>
                             <field name="name" />
                         </h1>
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags" />
+                        </group>
                     </div>
 
                     <group>

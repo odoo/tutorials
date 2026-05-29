@@ -34,4 +34,10 @@
         parent="estate_property_type_menu"
         action="estate_property_type_action"
     />
+    <menuitem
+        id="estate_property_tag_menu"
+        name="Property Tags"
+        parent="estate_property_type_menu"
+        action="estate_property_tag_action"
+    />
 </odoo>
