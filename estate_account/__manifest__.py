@@ -8,10 +8,12 @@
     'license': 'LGPL-3',
     'depends': [
         'estate',
+        'estate_event',
         'account',
         ],
 
     'data': [
+        'views/estate_property_views.xml',
     ],
 
     'installable': True,
