@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        
+        <div t-att-class="this.activeCheck">
+            <input type='checkbox' 
+            t-on-change='boxClicked'
+            t-att-checked="props.active"/>
+            <t t-esc="props.id"/> ....
+            <t t-esc="props.description"/>
+            <br/>
+        </div>
+    </t>
+
+</templates>
