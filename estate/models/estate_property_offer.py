@@ -83,6 +83,9 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = "offer_accepted"
 
+            offers = self.property_id.offer_ids.filtered(lambda x: x.status != "accepted")
+            offers.write({'status': 'refused'})
+
     def action_cancel(self):
         for record in self:
             if record.status == 'accepted':
