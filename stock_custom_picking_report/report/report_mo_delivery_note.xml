@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="mo_delivery_note_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <div class="row mt-4">
+                            <div class="col-5 offset-7" style="font-size: 14px;">
+                                <strong>Delivery Address:</strong>
+                                <div t-field="o.partner_id"
+                                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True}' />
+                            </div>
+                        </div>
+
+                        <h1 class="mt-4 mb-4"
+                            style="color: #b11f24; font-size: 38px; font-weight: 500;">
+                            <span t-field="o.name" />
+                        </h1>
+
+                        <div class="row mb-4" style="font-size: 14px;">
+                            <div class="col-6">
+                                <strong>Order:</strong>
+                                <div t-field="o.origin" />
+                            </div>
+                            <div class="col-6">
+                                <strong>Shipping Date:</strong>
+                                <div t-if="o.state == 'done'" t-field="o.date_done"
+                                    t-options='{"widget": "date"}' />
+                                <div t-else="" t-field="o.scheduled_date"
+                                    t-options='{"widget": "date"}' />
+                            </div>
+                        </div>
+
+                        <table class="table table-sm mt-4" style="border-top: 2px solid #000;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #000;">
+                                    <th class="text-start" style="color: #777;">Product</th>
+                                    <th class="text-end" style="color: #777; width: 15%;">Ordered</th>
+                                    <th class="text-end" style="color: #777; width: 15%;">Delivered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="filtered_moves[o.id]" t-as="move">
+                                    <tr style="border-bottom: 1px solid #dee2e6;">
+                                        <td class="text-start py-2">
+                                            <span t-field="move.product_id.display_name" />
+                                        </td>
+                                        <td class="text-end py-2">
+                                            <span t-out="'%.2f' % move.product_uom_qty" />
+                                            <span t-field="move.product_uom.name" />
+                                        </td>
+                                        <td class="text-end py-2">
+                                            <span t-out="'%.2f' % move.quantity" />
+                                            <span t-field="move.product_uom.name" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
