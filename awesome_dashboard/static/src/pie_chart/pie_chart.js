@@ -1,4 +1,4 @@
-import { Component, onMounted, onWillStart, onWillUnmount, useRef } from "@odoo/owl"
+import { Component, onMounted, onPatched, onWillStart, onWillUnmount, useRef, useState } from "@odoo/owl"
 import { loadJS } from "@web/core/assets";
 import { getColor } from "@web/core/colors/colors";
 
@@ -11,7 +11,6 @@ export class PieChart extends Component {
     }
 
     setup() {
-        this.state =
         onWillStart(async () => {
             await loadJS("/web/static/lib/Chart/Chart.js")
         })
@@ -20,27 +19,36 @@ export class PieChart extends Component {
 
         if (this.props.data) {
             onMounted(() => {
-                const keys = Object.keys(this.props.data)
-                const values = Object.values(this.props.data)
-                const colors = keys.map((_, index) => getColor(index));
-
-                this.chart = new Chart(this.canvasRef.el, {
-                    type: "pie",
-                    data: {
-                        labels: keys,
-                        datasets: [
-                            {
-                                backgroundColor: colors,
-                                data: values,
-                            },
-                        ]
-                    }
-                });
+                this.renderChart()
             })
 
-                    onWillUnmount(() => {
-            this.chart.destroy();
+            onPatched(() => {
+                this.chart.destroy()
+                this.renderChart()
+            })
+
+            onWillUnmount(() => {
+            this.chart.destroy()
         });
         }
+    }
+
+    renderChart() {
+        const keys = Object.keys(this.props.data)
+        const values = Object.values(this.props.data)
+        const colors = keys.map((_, index) => getColor(index));
+
+        this.chart = new Chart(this.canvasRef.el, {
+            type: "pie",
+            data: {
+                labels: keys,
+                datasets: [
+                    {
+                        backgroundColor: colors,
+                        data: values,
+                    },
+                ]
+            }
+        });
     }
 }

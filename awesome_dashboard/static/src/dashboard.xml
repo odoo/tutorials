@@ -12,7 +12,7 @@
                          <p>Counter: <t t-esc="this.state.stats.nb_new_orders"/></p>
             </DashboardItem>
 
-            <DashboardItem>
+            <DashboardItem size="1">
                 <PieChart data="this.state.stats.orders_by_size"/>
             </DashboardItem>
         </Layout>
