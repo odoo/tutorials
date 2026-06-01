@@ -32,7 +32,7 @@ class EstatePropery(models.Model):
         selection=[
             ('north', "North"),
             ('east', "East"),
-            ('soutch', "South"),
+            ('south', "South"),
             ('west', "West"),
         ],
     )
