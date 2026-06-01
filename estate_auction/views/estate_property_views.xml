@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//header/button[@name='action_sold']" position="before">
                 <button name="action_start_auction" type="object" string="Start Auction" class="btn btn-primary" invisible="selling_mode != 'auction' or auction_state != 'draft'"/>
-                <button name="action_end_auction" type="object" string="End Auction" class="btn btn-danger" invisible="selling_mode != 'auction' or auction_state in ('draft', 'ended', 'sold') or offer_ids.length &lt; 1"/>
+                <button name="action_end_auction" type="object" string="End Auction" class="btn btn-danger" invisible="selling_mode != 'auction' or auction_state in ('draft', 'agreement_sent', 'ended','in_payment', 'sold') or offer_ids.length &lt; 1"/>
             </xpath>
 
             <xpath expr="//field[@name='date_availability']" position="after">
@@ -15,7 +15,11 @@
             </xpath>
 
             <xpath expr="//sheet/notebook/page[@name='offers']" position="attributes">
-                <attribute name="invisible"> selling_mode == 'auction' and auction_state == 'draft'</attribute>
+                <attribute name="invisible">selling_mode == 'auction' and auction_state == 'draft'</attribute>
+            </xpath>
+
+            <xpath expr="//sheet/notebook/page/field[@name='offer_ids']" position="attributes">
+                <attribute name="readonly">selling_mode == 'auction'</attribute>
             </xpath>
 
             <xpath expr="//sheet/group" position="inside">
@@ -23,8 +27,8 @@
                      <field name="auction_state" widget="badge"
                            invisible="selling_mode != 'auction'"
                            decoration-muted="state == 'draft'"
-                           decoration-warning="state == 'in_progress'"
-                           decoration-success="state == 'sold'"/>
+                           decoration-warning="state in ('in_progress', 'in_payment')"
+                           decoration-success="state in ('agreement_sent', 'sold')"/>
                     </group>
                 </xpath>
 
@@ -37,6 +41,31 @@
                         <field name="highest_bidder_id"/>
                     </group>
                 </page>
+            </xpath>
+
+            <xpath expr="//button[@name='action_sold']" position="attributes">
+                <attribute name="invisible">selling_mode == 'auction' and auction_state in ('draft', 'in_progress', 'agreement_sent', 'in_payment', 'sold', 'ended')</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="invisible">selling_mode == 'auction' and auction_state in ('draft', 'in_progress','agreement_sent', 'in_payment', 'sold', 'ended')</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="view_property_form_inherit_website" model="ir.ui.view">
+        <field name="name">estate.property.form.website.button</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate_event.view_property_form_inherit_property"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button type="object" name="action_view_website_property" class="oe_stat_button" icon="fa-globe" >
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">Website</span>
+                        </div>
+                    </button>
+                </div>
             </xpath>
 
         </field>

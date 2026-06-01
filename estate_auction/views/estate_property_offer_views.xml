@@ -12,7 +12,7 @@
                 <attribute name="invisible">status in ('accepted', 'refused') or is_auction_property</attribute>
             </xpath>
             <xpath expr="//list" position="inside">
-                <field name="is_auction_property" column_invisible="1"/>
+                <field name="is_auction_property" column_invisible="1"/> <!-- Required for button invisible condition: is_auction_property -->
             </xpath>
         </field>
     </record>

@@ -23,6 +23,32 @@
                     <t t-out="object.price"/>
                 </strong>
             </p>
+            <p>
+                Please sign the auction agreement before the deadline.
+            </p>
+            <p>
+                Signature Deadline:
+                <strong>
+                    <t t-out="object.property_id.signature_deadline"/>
+                </strong>
+            </p>
+            <p>
+                Click below to review and sign the agreement document.
+            </p>
+            <p>
+                <a t-att-href="object.property_id.sign_url"
+                    style="
+                            background-color:#875A7B;
+                            color:white;
+                            padding:10px 15px;
+                            text-decoration:none;
+                            border-radius:5px;">
+                    Sign Agreement
+                </a>
+            </p>
+            <p>
+                Thank you for participating in the auction.
+            </p>
         </field>
     </record>
 

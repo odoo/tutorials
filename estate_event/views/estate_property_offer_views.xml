@@ -1,0 +1,15 @@
+<!-- <odoo>
+    <record id="estate_property_offer_inherit_event" model="ir.ui.view">
+        <field name="name">estate.property.offer.inherit.event</field>
+        <field name="model">estate.property.offer</field>
+        <field name="inherit_id" ref="estate.list_estate_property_offer"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='price']" position="before">
+                <field name="eligible_partner_ids" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="domain">[('id', 'in', eligible_partner_ids)]</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo> -->

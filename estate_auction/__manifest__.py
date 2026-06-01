@@ -8,6 +8,11 @@
     'license': 'LGPL-3',
     'depends': [
         'estate',
+        'estate_event',
+        'estate_account',
+        'website',
+        'mail',
+        'sign',
         ],
 
     'data': [

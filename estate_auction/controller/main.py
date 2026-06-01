@@ -69,8 +69,7 @@ class EstateAuctionWebsite(EstateWebsite):
         "/properties/<int:property_id>/bid/success",
         type="http",
         auth="user",
-        website=True,
-    )
+        website=True)
     def auction_bid_success(self, property_id, **kwargs):
         property_obj = request.env["estate.property"].sudo().browse(property_id)
         return request.render(

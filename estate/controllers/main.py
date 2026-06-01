@@ -40,11 +40,7 @@ class EstateWebsite(Controller):
         website=True
     )
     def property_detail(self, property_id, **kwargs):
-
-        property_record = request.env[
-            'estate.property'
-        ].sudo().browse(property_id)
-
+        property_record = request.env['estate.property'].sudo().browse(property_id)
         return request.render(
             'estate.estate_property_detail_template',
             {
