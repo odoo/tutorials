@@ -17,8 +17,6 @@ class ReportMODeliveryNote(models.AbstractModel):
                 components = self.env["stock.move"].search(
                     [
                         ("raw_material_production_id", "in", linked_mos.ids),
-                        "|",
-                        ("bom_line_id", "=", False),
                         ("bom_line_id.bom_id.type", "!=", "phantom"),
                     ]
                 )
