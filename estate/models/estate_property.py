@@ -63,9 +63,9 @@ class EstateProperty(models.Model):
         "estate.property.tag",
         string="Tags",
     )
-    # def test_tags(self):
-    #     breakpoint()
-
-    #     for tag in self.tag_ids:
-    #         print(tag.name)
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+        string="Offer",
+    )
 
