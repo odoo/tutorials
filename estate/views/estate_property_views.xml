@@ -63,6 +63,10 @@
                             </group>
                         </page>
 
+                        <page string="Offer">
+                            <field name="offer_ids" />
+                        </page>
+
                         <page string="Other Info">
                             <group>
                                 <field name="buyer_id" />
@@ -82,7 +86,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" string="xyz" />
+                <field name="name" />
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
