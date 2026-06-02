@@ -14,6 +14,7 @@
                 <field name="selling_price"/>
                 <field name="bedrooms"/>
                 <field name="active"/>
+                <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -33,6 +34,7 @@
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="property_type_id"/>
+                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>

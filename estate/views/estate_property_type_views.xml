@@ -34,14 +34,6 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Menu -->
-    <menuitem
-        id="menu_property_type"
-        name="Property Types"
-        parent="estate_menu_root"
-        action="action_property_type"
-        sequence="20"
-    />
 
 </odoo>
 
