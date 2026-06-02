@@ -13,10 +13,10 @@
             <list
                 string="Properties"
                 create="1"
-                edit="0"
+                edit="1"
                 delete="1"
                 multi_edit="1"
-                open_form_view="1"
+                open_form_view="0"
                 default_group_by="state"
                 default_order="expected_price desc"
                 decoration-danger="expected_price>1000000"
@@ -45,7 +45,7 @@
         <field name="arch" type="xml">
             <form
                 string="Form_view"
-                edit="0"
+                edit="1"
             >
                 <sheet>
                     <div>
@@ -83,6 +83,7 @@
                                 <field name="buyer_id" />
                                 <field name="salesperson_id" />
                                 <field name="tag_ids" widget="many2many_tags" />
+
                             </group>
                             <!-- <field name="description" /> -->
                         </page>
@@ -91,6 +92,11 @@
                                 <field name="buyer_id" />
                                 <field name="salesperson_id" />
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+
+
                         </page>
 
                     </notebook>

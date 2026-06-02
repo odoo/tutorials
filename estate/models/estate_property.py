@@ -5,30 +5,38 @@ from odoo import fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Estate Property description module"
+    _description = "Real Estate Property"
 
-    name = fields.Char(string="Name", required=True)
-    description = fields.Text(string="Description")
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    price = fields.Float(string="Price")
-    postcode = fields.Char(string="Postal Code")
+    name = fields.Char(required=True)
+    description = fields.Text()
+    postcode = fields.Char()
+
     date_available = fields.Date(
-        string="Available Date",
-        copy=False,
-        default=lambda self: fields.Date.today() + relativedelta(months=3),
+        default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
-    expected_price = fields.Float(string="Expectddscsfed Price")
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
-    meeting_time = fields.Datetime(string="Meeting")
-    living_area = fields.Integer(string="Living Area")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area")
+
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+
     garden_orientation = fields.Selection(
-        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
+        [
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ]
     )
+
     active = fields.Boolean(default=True)
+
     state = fields.Selection(
         [
             ("new", "New"),
@@ -38,14 +46,33 @@ class EstateProperty(models.Model):
             ("canceled", "Canceled"),
         ],
         default="new",
-        string="Status",
-        copy=False,
         required=True,
+        copy=False,
     )
-    property_type_id = fields.Char(string="Property ID")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+
+    buyer_id = fields.Many2one(
+        "res.partner",
+        string="Buyer",
+        copy=False,
+    )
+
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
     )
-    tag_ids = fields.Many2many("estate.property.tag")
-     
+
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+    )
+
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+        string="Tags",
+    )
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+        string="Offers",
+    )
