@@ -5,12 +5,10 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     is_deposit_line = fields.Boolean(default=False)
-    linked_line_id = fields.Many2one(
-        "sale.order.line", string="Linked Line", ondelete="cascade"
-    )
 
     @api.model_create_multi
     def create(self, vals_list):
+
         lines = super().create(vals_list)
         rental_lines = lines.filtered(
             lambda l: l.product_id.is_deposit_required and not l.is_deposit_line
@@ -23,7 +21,6 @@ class SaleOrderLine(models.Model):
                     "product_id": line.company_id.deposit_product.id,
                     "product_uom_qty": 1,
                     "price_unit": line.product_id.deposit_amount * line.product_uom_qty,
-                    "name": f"This amount is deposit for {line.product_id.name} product",
                     "is_deposit_line": True,
                     "linked_line_id": line.id,
                 }
@@ -31,6 +28,16 @@ class SaleOrderLine(models.Model):
         if deposit_vals:
             self.env["sale.order.line"].create(deposit_vals)
         return lines
+
+    def _get_sale_order_line_multiline_description_sale(self):
+        self.ensure_one()
+        if self.is_deposit_line and self.linked_line_id:
+            return (
+                self.product_id.display_name
+                + "\n"
+                + f"This amount is deposit for {self.linked_line_id.product_id.name} product"
+            )
+        return super()._get_sale_order_line_multiline_description_sale()
 
     def write(self, vals):
         res = super().write(vals)

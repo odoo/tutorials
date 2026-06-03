@@ -12,7 +12,7 @@
     ],
     "assets": {
         "web.assets_frontend": [
-            "website_sale_sale_renting_deposit_bridge/static/src/js/variant_configurator.js"
+            "website_sale_sale_renting_deposit/static/src/js/variant_configurator.js"
         ],
     },
 }
