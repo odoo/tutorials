@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class SaleOrderKitLine(models.TransientModel):
@@ -49,7 +49,7 @@ class SaleOrderKit(models.TransientModel):
     @api.model
     def default_get(self, fields):
         res = super().default_get(fields)
-        sol_id = res.get('sale_order_line_id') or self.env.context.get('default_sale_order_line_id')
+        sol_id = self.env.context.get('default_sale_order_line_id')
         if sol_id:
             sol = self.env['sale.order.line'].browse(sol_id)
 
@@ -98,22 +98,11 @@ class SaleOrderKit(models.TransientModel):
         product_name = sol.product_id.display_name
 
         sol.kit_config_line_ids.unlink()
-        config_vals = [{
-            'sale_order_line_id': sol.id,
-            'product_id': line.product_id.id,
-            'kit_unit_qty': line.kit_unit_qty,
-            'price_unit': line.price_unit,
-        } for line in self.kit_line_ids]
-        self.env['sale.order.kit.config.line'].create(config_vals)
 
         sol.price_unit = sum(
             line.price_unit * line.kit_unit_qty
             for line in self.kit_line_ids
         )
-
-        order.order_line.filtered(
-            lambda l: l.kit_parent_line_id.id == sol.id
-        ).unlink()
 
         self.env['sale.order.line'].create({
             'order_id': order.id,

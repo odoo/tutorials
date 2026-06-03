@@ -7,7 +7,7 @@ class SaleOrderLine(models.Model):
     is_kit = fields.Boolean(related='product_id.product_tmpl_id.is_kit')
     is_kit_subproduct = fields.Boolean(string="Is Kit Subproduct", default=False)
     kit_unit_qty = fields.Float(string="Kit Unit Qty")
-    kit_parent_line_id = fields.Many2one('sale.order.line', string="Kit Parent Line", ondelete='cascade', index=True,)
+    kit_parent_line_id = fields.Many2one('sale.order.line', string="Kit Parent Line", ondelete='cascade', index=True)
     has_kit_subproducts = fields.Boolean(compute='_compute_has_kit_subproducts')
     kit_config_line_ids = fields.One2many('sale.order.kit.config.line', 'sale_order_line_id', string="Kit Configuration")
 
@@ -45,12 +45,36 @@ class SaleOrderLine(models.Model):
         return result
 
     def unlink(self):
+        subproduct_lines = self.filtered(lambda l: l.is_kit_subproduct)
+        parent_lines = subproduct_lines.mapped('kit_parent_line_id')
+
         child_lines = self.env['sale.order.line'].search([
             ('kit_parent_line_id', 'in', self.ids)
         ])
         if child_lines:
             child_lines.unlink()
-        return super().unlink()
+
+        result = super().unlink()
+
+        for parent in parent_lines.exists():
+            remaining = self.env['sale.order.line'].search([
+                ('kit_parent_line_id', '=', parent.id),
+                ('is_kit_subproduct', '=', True),
+            ])
+            section_lines = self.env['sale.order.line'].search([
+                ('display_type', '=', 'line_section'),
+                ('kit_parent_line_id', '=', parent.id),
+            ])
+            if remaining:
+                parent.price_unit = sum(
+                    child.price_unit * child.kit_unit_qty
+                    for child in remaining
+                )
+            else:
+                if section_lines:
+                    section_lines.unlink()
+                parent.price_unit = parent.product_id.lst_price
+        return result
 
     def action_open_kit_configurator(self):
         self.ensure_one()

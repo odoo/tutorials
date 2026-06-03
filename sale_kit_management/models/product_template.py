@@ -7,13 +7,12 @@ class ProductTemplate(models.Model):
     is_kit = fields.Boolean()
     subproduct_ids = fields.One2many('product.subproduct.line', 'product_tmpl_id')
 
-    @api.depends('is_kit', 'subproduct_ids.price_unit', 'subproduct_ids.kit_unit_qty')
-    def _compute_kit_list_price(self):
-        for product in self:
-            if product.is_kit and product.subproduct_ids:
-                product.list_price = sum(
+    def _recompute_kit_list_price(self):
+        for tmpl in self:
+            if tmpl.is_kit and tmpl.subproduct_ids:
+                tmpl.list_price = sum(
                     sub.price_unit * sub.kit_unit_qty
-                    for sub in product.subproduct_ids
+                    for sub in tmpl.subproduct_ids
                 )
 
     @api.onchange('subproduct_ids')
