@@ -36,14 +36,22 @@ export class TodoList extends Component {
         }
     }
 
+    todoCount() {
+        this.nextId = this.todos.length + 1;
+    }
+
     removeTodo(todoId) {
-        const index = this.todos.findIndex((t) => t.id === todoId);
-        if (index >= 0) {
-            this.todos.splice(index, 1);
-        }
+        const index = this.todos.findIndex((todo) => todo.id === todoId);
+        this.todos.splice(index, 1);
+        this.todos.forEach((todo, index) => {
+            todo.id = index + 1;
+        });
+        this.todoCount()
     }
 
     clear() {
         this.todos.splice(0);
+        this.todoCount()
+
     }
 }
