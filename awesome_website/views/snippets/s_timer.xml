@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="s_timer" name="Owl Timer">
+		<section>
+			<owl-component name="OwlTimer" props='{"locale": "de"}'/>
+		</section>
+	</template>
+
+</odoo>
