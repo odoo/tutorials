@@ -43,6 +43,23 @@
                 </page>
             </xpath>
 
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Auto Bids" invisible="selling_mode != 'auction' or offer_ids.length &lt; 1">
+                    <field name="auto_bid_ids">
+                        <list editable="bottom">
+                            <field name="partner_id"/>
+                            <field name="current_bid_price" readonly="1"/>
+                            <field name="increment_amount"/>
+                            <field name="max_bid_price"/>
+                            <field name="state"
+                                decoration-success="state == 'running'"
+                                decoration-danger="state == 'stopped'"
+                                widget="badge" readonly="1"/>
+                        </list>
+                    </field> 
+                </page>
+            </xpath>
+
             <xpath expr="//button[@name='action_sold']" position="attributes">
                 <attribute name="invisible">selling_mode == 'auction' and auction_state in ('draft', 'in_progress', 'agreement_sent', 'in_payment', 'sold', 'ended')</attribute>
             </xpath>

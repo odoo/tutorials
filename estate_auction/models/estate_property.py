@@ -8,6 +8,14 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
+    state = fields.Selection(
+        selection_add=[
+            ('partially_sold', 'Partially Sold'),
+        ],
+        ondelete={
+            'partially_sold': 'set default',
+        }
+    )
     selling_mode = fields.Selection([
             ('regular', 'Regular'),
             ('auction', 'Auction')
@@ -30,6 +38,7 @@ class EstateProperty(models.Model):
     sign_url = fields.Char(string="Sign URL")
     agreement_signed = fields.Boolean(string="Agreement Signed")
     signature_deadline = fields.Datetime(string="Signature Deadline")
+    auto_bid_ids = fields.One2many("estate.property.auto.bid", "property_id", string="Auto Bids")
 
     @api.onchange('selling_mode')
     def _onchange_selling_mode(self):
@@ -69,7 +78,6 @@ class EstateProperty(models.Model):
             if high_offer:
                 high_offer.action_accept()
                 property_record.action_create_sign_request()
-                accepted_template.send_mail(high_offer.id, force_send=True)
                 # high_offer.property_id._mark_as_sold()
                 # property_record.auction_state = 'sold'
                 property_record.auction_state = 'agreement_sent'
@@ -160,11 +168,15 @@ class EstateProperty(models.Model):
                     continue
                 record.agreement_signed = True
                 record._mark_as_sold()
-                record.auction_state = 'in_payment'
+                record.write({
+                    'state': 'partially_sold',
+                    'auction_state': 'in_payment',
+                })
 
     def action_check_invoice_payment(self):
         properties = self.search([('auction_state', '=', 'in_payment')])
         for record in properties:
             invoice = record.invoice_ids[:1]
             if invoice and invoice.payment_state == 'paid':
+                record.state = 'sold'
                 record.auction_state = 'sold'
