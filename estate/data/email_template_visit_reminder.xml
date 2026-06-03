@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="email_template_visit_reminder" model="mail.template">
+        <field name="body_html" type="html">
+            <div>
+                Hello
+                <t t-out="ctx.get('sales_person')"/>,
+                <br/>
+                Property:
+                <t t-out="ctx.get('property_name')"/>
+                <br/>
+                <t t-out="ctx.get('custom_message')"/>
+                <br/>
+                Starting Time :
+                <t t-out="ctx.get('start_time')"/>
+                <br/>
+                Ending Time :
+                <t t-out="ctx.get('end_time')"/>
+            </div>
+        </field>
+    </record>
+</odoo>

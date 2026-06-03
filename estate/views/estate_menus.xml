@@ -1,0 +1,21 @@
+<odoo>
+    <menuitem id="estate_menu_root" name="Real Estate"/>
+
+    <menuitem id="estate_menu_properties"
+              name="Properties"
+              parent="estate_menu_root"/>
+
+    <menuitem id="estate_menu_action_properties"
+              name="Property List"
+              parent="estate_menu_properties"
+              action="estate_property_action"/>
+
+    <menuitem id="estate_menu_visit_properties"
+              name="Visit List"
+              parent="estate_menu_properties"
+              action="estate_visit_action"/>
+
+    <menuitem id="estate_property_setting_menu"
+              parent="estate_menu_root"
+              name="Setting"/>
+</odoo>

@@ -3,7 +3,31 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <div class="d-flex gap-3 mb-3">
+                Hello World!
+            </div>
+            <div class="d-flex gap-3 mb-3">
+                <Counter value="counter.value1" onChange="(val) => counter.value1 = val"/>
+                <Counter value="counter.value2" onChange="(val) => counter.value2 = val"/>
+                <div class="d-flex gap-3 mb-3">
+                <Card title="'Card 1'">
+                    <t t-out="htmlContent1"/>
+                </Card>
+                    <Card title="'Card 2'">
+                    <t t-out="htmlContent2"/>
+                </Card>
+                    <Card title="'Counter inside card'">
+                    <Counter value="counter.value1" onChange="(val) => counter.value1 = val"/>
+                </Card>
+            </div>
+            </div>
+            <h1>Total: <t t-out="counter.value1 + counter.value2"/></h1>
+            <button class="btn bg-outline-primary mb-3" t-on-click="resetCounters">Reset All Counters</button>
+
+            <hr class="my-4"/>
+
+
+            <TodoList/>
         </div>
     </t>
 

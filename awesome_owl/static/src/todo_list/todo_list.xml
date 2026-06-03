@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <div class="todo-list p-3 bg-light rounded">
+            <h3 class="mb-3">Todo List</h3>
+            <div class="position-relative mb-3">
+                <input type="text" class="form-control pe-5"
+                       placeholder="Enter a new task"
+                       t-ref="todo_input"
+                       t-model="state.inputValue"
+                       t-on-keydown="addTodo"/>
+
+            </div>
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo"
+                          toggleState="toggleTodo"
+                          removeTodo="removeTodo"/>
+            </t>
+            <button class="btn btn-danger mt-2" t-on-click="clear"
+                    t-if="todos.length">Clear All</button>
+        </div>
+    </t>
+</templates>
+

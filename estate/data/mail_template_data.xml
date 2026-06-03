@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="send_email_templates" model="mail.template">
+        <field name="name">Real Estate: Property Sale</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="subject">{{ object.name }}</field>
+        <field name="use_default_to" eval="True"/>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello
+
+                    <br/>
+                    Property Name:
+                    <t t-out="ctx.get('property_name')"/>
+                    <br/>
+                    Buyer Name:
+                    <t t-out="ctx.get('buyer_name')"/>
+                    <br/>
+                    Seller Name:
+                    <t t-out="ctx.get('sales_person')"/>
+                    <br/>
+                    Selling Price:
+                    <t t-out="ctx.get('selling_price')"/>
+
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

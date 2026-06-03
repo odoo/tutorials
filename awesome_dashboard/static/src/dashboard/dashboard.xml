@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary me-2" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary me-2" t-on-click="openLeads">Leads</button>
+                <button class="btn btn-secondary" t-on-click="openConfiguration" title="Configure">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+
+            <div class="d-flex flex-wrap gap-3 p-3">
+                <t t-if="statistics.isReady">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <t t-if="!state.disabledItems.includes(item.id)">
+                            <DashboardItem size="item.size || 1">
+                                <t t-component="item.Component" t-props="item.props(statistics)"/>
+                            </DashboardItem>
+                        </t>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div class="text-center w-100 mt-5">
+                        <i class="fa fa-spinner fa-spin fa-3x text-muted"/>
+                        <p class="mt-2 text-muted">Loading statistics...</p>
+                    </div>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard Configuration'">
+            <div class="p-3">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <div class="form-check mb-2">
+                        <CheckBox value="item.enabled" onChange="(checked) => this.onChange(checked, item)">
+                            <span t-out="item.description"/>
+                        </CheckBox>
+                    </div>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers" editable="bottom"
+                  decoration-success="status == 'accepted'"
+                  decoration-danger="status == 'refused'">
+                <field name="price" class="w-50"
+                       readonly="status"/>
+                <field name="partner_id"
+                       readonly="status"/>
+                <field name="validity" class="w-50"
+                       readonly="status"/>
+                <field name="date_deadline"
+                       readonly="status"/>
+                <button name="action_accept" type="object" icon="fa-check" string="Accept"
+                        groups="estate.group_estate_manager"
+                        invisible="status"/>
+                <button name="action_refuse" type="object" icon="fa-times" string="Refuse"
+                        invisible="status"/>
+                <field name="status" readonly="1" class="w-50"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer">
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+
+    </record>
+</odoo>
+
