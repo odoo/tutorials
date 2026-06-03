@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_form_kit_view" model="ir.ui.view">
+        <field name="name">product.template.form.kit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//span[@name='sale_option']" position="after">
+                <span name="kit_option" class="d-inline-flex">
+                    <field name="is_kit" string="Is Kit" />
+                    <label string="Kit" for="is_kit" />
+                </span>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='general_information']" position="after">
+                <page name="subproducts" string="Subproducts" invisible="not is_kit">
+                    <field name="subproduct_ids">
+                        <list editable="bottom">
+                            <field name="product_id" string="Product" />
+                            <field name="product_uom_qty" string="On Hand Qty" />
+                            <field name="kit_unit_qty" string="Kit Unit Qty"
+                                decoration-info="product_id" />
+                            <field name="price_unit" string="Unit Price" />
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
