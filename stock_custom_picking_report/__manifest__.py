@@ -4,6 +4,7 @@
     "installable": True,
     "author": "sngoh",
     "depends": ["mrp", "stock"],
+    "auto_install": True,
     "license": "LGPL-3",
     "data": [
         "report/report_mo_delivery_note.xml",
