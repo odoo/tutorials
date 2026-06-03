@@ -1,0 +1,10 @@
+<t t-name="awesome_dashboard.PieChartCard">
+    <div class="text-center">
+        <t t-if="props.title">
+            <h5 class="card-title">
+                <t t-esc="props.title"/>
+            </h5>
+        </t>
+        <canvas t-ref="canvas"/>
+    </div>
+</t>

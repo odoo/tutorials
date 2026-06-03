@@ -1,0 +1,8 @@
+<t t-name="awesome_owl.todolist">
+    <div>
+        <input placeholder="Enter todo" t-on-keyup="onKeydown" t-ref="nameInput"/>
+        <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo" toggleState.bind="toggleState" handleDelete.bind="handleDelete"/>
+        </t>
+    </div>
+</t>

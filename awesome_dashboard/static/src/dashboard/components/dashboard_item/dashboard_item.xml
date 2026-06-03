@@ -1,0 +1,14 @@
+<t t-name="awesome_dashboard.DashboardItem">
+
+    <div class="card shadow-sm" t-att-style="'width:' + width">
+
+        <div class="card-header">
+            <t t-slot="header"/>
+        </div>
+        <div class="card-body">
+            <t t-slot="default"/>
+        </div>
+
+    </div>
+
+</t>

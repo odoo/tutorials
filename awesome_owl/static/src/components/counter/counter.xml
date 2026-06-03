@@ -1,0 +1,28 @@
+<!-- ✅ -->
+<t t-name="awesome_owl.counter">
+    <div class="p-3">
+        <p>Hello world</p>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <p class="text-danger">Counter: <t t-esc="state.value"/>
+                    </p>
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary" t-on-click="handleIncrement">
+                        Increment
+                    </button>
+                    <button class="btn btn-primary bg-primary" t-on-click="decrement">
+                        Decrement
+                    </button>
+                    <button class="btn btn-primary bg-secondary mx-auto p-2" t-on-click="reset">
+                        Reset
+                    </button>
+                    <button class="btn btn-primary" t-on-click="multiply">
+                        Multipl OneSelf
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</t>

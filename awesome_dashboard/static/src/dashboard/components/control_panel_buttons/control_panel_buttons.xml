@@ -1,0 +1,14 @@
+<t t-name="awesome_dashboard.control_panel_buttons">
+
+    <button class="btn btn-primary me-2" t-on-click="redirectToCustomers">
+        Customers
+    </button>
+
+    <button class="btn btn-primary" t-on-click="redirectToLeads">
+        Leads
+    </button>
+    <button class="btn btn-secondary" t-on-click="openSettings">
+        <i class="fa fa-gear"/>
+    </button>
+
+</t>

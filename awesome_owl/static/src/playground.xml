@@ -4,7 +4,35 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter onButtonClick.bind="handleSum" sum="state.sum"/>
+            <Counter onButtonClick.bind="handleSum" sum="state.sum"/>
+
         </div>
+        <p class="text-danger">Counter: <t t-esc="state.sum"/>
+        </p>
+        <div class="col">
+            <!-- ✅ New — content goes between tags, title uses t-set-slot -->
+            <Card >
+                <t t-set-slot="title">Title 1</t>
+                <p>Hey i dont think you can code</p>
+            </Card>
+
+            <!-- card with a Counter inside — this is the whole point of slots! -->
+            <Card >
+                <t t-set-slot="title">Card with Counter</t>
+                <Counter onButtonClick.bind="handleSum" sum="state.sum" />
+            </Card>
+
+            <!-- card with no title — h5 won't render at all -->
+            <Card>
+                <p>No title on this one</p>
+            </Card>
+
+        </div>
+
+        <TodoList />
+
+
     </t>
 
 </templates>
