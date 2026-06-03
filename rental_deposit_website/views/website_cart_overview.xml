@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="product_template_inherit" inherit_id="website_sale.cta_wrapper">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.is_deposit">
+                <div class="mt-3 p-2 deposit_div" t-att-data-deposit-unit="product.deposit_amount" >
+                    <div class="fw-semibold fs-6">
+                        <strong class="fw-bold text-dark"> Deposit Required:</strong>
+                        <span class="o_deposit_amount_total">
+                            <span t-esc="product.currency_id.symbol"/>
+                            <span class="deposit_value" t-esc="product.deposit_amount"/>
+                        </span>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+    <template id="cart_lines_deposit_inherit" inherit_id="website_sale.cart_lines">
+        <xpath expr="//t[@t-foreach='website_sale_order.website_order_line']" position="inside">
+            <t t-set="deposit_param_id" t-value="request.env['ir.config_parameter'].sudo().get_param('sale_renting.deposit_product_id')"/>
+        </xpath>
+        <xpath expr="//h6[contains(@class, 'text-wrap') and contains(@class, 'mb-1')]" position="replace">
+            <h6 class="text-wrap mb-1">
+                <t t-if="deposit_param_id and line.product_id.id == int(deposit_param_id)">
+                    Deposit for <t t-out="line.linked_deposit_line_id.product_id.name"/>
+                </t>
+                <t t-else="">
+                    <t t-out="line._get_line_header()"/>
+                </t>
+            </h6>
+        </xpath>
+
+        <xpath expr="//a[hasclass('js_delete_product')]" position="attributes">
+            <attribute name="t-attf-class">{{ 'd-none' if deposit_param_id  else '' }} js_delete_product small</attribute>
+        </xpath>
+    </template>
+</odoo>
