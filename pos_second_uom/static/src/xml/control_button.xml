@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('more-btn')]" position="before">
+            <button t-if="displaySecondUomButton()"
+                    t-att-class="ui.isSmall
+                        ? 'btn bg-100 btn-md py-2 mt-2 text-start flex-shrink-0'
+                        : 'btn btn-secondary btn-lg flex-shrink-0'"
+                    t-on-click="clickSecondUomButton">
+                Add Quantity
+            </button>
+        </xpath>
+    </t>
+
+    <t t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath expr="//div//span[hasclass('qty')]" position="after">
+            <span t-if="props.line.product_id.uom_id" class="pos-uom-tag me-1 small fw-bold" style="font-size: 0.9em; vertical-align: middle;">
+                <t t-out="props.line.product_id.uom_id.name"/>
+            </span>
+        </xpath>
+    </t>
+</templates>
