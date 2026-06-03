@@ -3,7 +3,7 @@
     <div class="p-3">
         <h1 class="text-2xl font-bold mb-4">Counter App</h1>
         <p class="text-lg">Current value:
-            <t t-esc="props.value"/>
+            <t t-out="props.value"/>
         </p>
         <button class="btn bg-primary" t-on-click="() => props.onChange(props.value + 1)">
             Increment
@@ -14,3 +14,4 @@
         </button>
     </div>
 </t>
+

@@ -31,7 +31,7 @@ registry.category("awesome_dashboard").add("number_total_amount", {
     Component: NumberCard,
     size: 1,
     props: (data) => ({
-        title: "Total amount of new orders this month",
+        title: _t("Total amount of new orders this month"),
         value: data.total_amount,
     }),
 });

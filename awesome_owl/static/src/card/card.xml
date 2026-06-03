@@ -4,7 +4,7 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0"><t t-esc="props.title"/></h5>
+                    <h5 class="card-title mb-0"><t t-out="props.title"/></h5>
                     <button class="btn btn-sm btn-outline-primary"
                             t-on-click="toggle">
                         <t t-if="state.open">▲</t>

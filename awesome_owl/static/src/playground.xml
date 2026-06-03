@@ -21,7 +21,7 @@
                 </Card>
             </div>
             </div>
-            <h1>Total: <t t-esc="counter.value1 + counter.value2"/></h1>
+            <h1>Total: <t t-out="counter.value1 + counter.value2"/></h1>
             <button class="btn bg-outline-primary mb-3" t-on-click="resetCounters">Reset All Counters</button>
 
             <hr class="my-4"/>

@@ -7,11 +7,15 @@ const statisticsService = {
         const stats = reactive({isReady: false});
 
         async function loadData() {
-            const updates = await rpc("/awesome_dashboard/statistics");
-            Object.assign(stats, updates, {isReady: true});
+            try {
+                const updates = await rpc("/awesome_dashboard/statistics");
+                Object.assign(stats, updates, {isReady: true});
+            } catch (error) {
+                console.error("Failed to load dashboard statistics", error);
+            }
         }
 
-        setInterval(loadData, 10 * 60 * 1000);
+        clearInterval(loadData, 10 * 60 * 1000);
         loadData();
         return stats;
     },

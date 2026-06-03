@@ -37,7 +37,7 @@
                 <t t-foreach="items" t-as="item" t-key="item.id">
                     <div class="form-check mb-2">
                         <CheckBox value="item.enabled" onChange="(checked) => this.onChange(checked, item)">
-                            <span t-esc="item.description"/>
+                            <span t-out="item.description"/>
                         </CheckBox>
                     </div>
                 </t>
@@ -49,3 +49,4 @@
     </t>
 
 </templates>
+

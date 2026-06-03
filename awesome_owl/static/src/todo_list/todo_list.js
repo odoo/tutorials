@@ -19,7 +19,7 @@ export class TodoList extends Component {
     }
 
     addTodo(ev) {
-        if (ev.keyCode === 13 && this.state.inputValue.trim() !== "") {
+        if (ev.key === 'Enter' && this.state.inputValue.trim() !== "") {
             this.todos.push({
                 id: this.nextId++,
                 description: this.state.inputValue.trim(),
