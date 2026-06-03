@@ -1,0 +1,51 @@
+.o_dashboard_item {
+    padding: 1rem;
+    display: flex;
+    
+    .card {
+        width: 100%;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        border: 1px solid #d0d0d0;
+        transition: all 0.3s ease;
+        background-color: white;
+        
+        &:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-body {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 120px;
+            
+            span {
+                font-size: 0.95rem;
+                color: #666;
+                margin-bottom: 1rem;
+                font-weight: 500;
+            }
+            
+            strong {
+                font-size: 3rem;
+                color: #2ecc71;
+                font-weight: bold;
+                line-height: 1;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .o_dashboard_item {
+        width: 100% !important;
+
+        .card {
+            width: 100%;
+        }
+    }
+}

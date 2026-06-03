@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="d-flex flex-column align-items-center">
+            <span class="fs-6 text-muted"><t t-esc="props.title"/></span>
+            <PieChart data="props.data" onSliceClick="(size) => this.openOrdersBySize(size)"/>
+        </div>
+    </t>
+</templates>
