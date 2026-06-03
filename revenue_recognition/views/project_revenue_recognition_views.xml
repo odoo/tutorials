@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="project_project_form_revenue_recognition" model="ir.ui.view">
+        <field name="name">project.project.form.revenue.recognition</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <field name="has_unrecognized_entries" invisible="1"/>
+                <field name="unrecognized_entries_message" invisible="1"/>
+                <div class="alert alert-info mb-3" role="alert" invisible="not has_unrecognized_entries">
+                    <i class="fa fa-info-circle me-2" title="Information"/>
+                    <field name="unrecognized_entries_message"
+                           readonly="1"
+                           nolabel="1"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='date_start']"
+                   position="after">
+                <button
+                    name="action_recognize_invoices"
+                    invisible="not has_unrecognized_entries"
+                    type="object"
+                    string="Recognize Invoices"
+                    icon="fa-refresh"
+                    class="btn btn-link"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
