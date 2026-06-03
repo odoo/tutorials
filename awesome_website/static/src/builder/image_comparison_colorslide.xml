@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_website.imageComparisonColorSlide">
+        <BuilderRow label.translate="Pick Slider Color">
+            <BuilderColorPicker
+                styleAction="'background-color'"
+                applyTo="'.o_image_comparison_handle'"/>
+        </BuilderRow>
+    </t>
+    <t t-inherit="website.BuilderOptions" t-inherit-mode="extension">
+        <xpath expr="//t[@id='snippet_specific_options']" position="after">
+            <slider_color_picker
+                template="awesome_website.imageComparisonColorSlide"
+                selector=".s_image_comparison"/>
+        </xpath>
+    </t>
+</templates>
+

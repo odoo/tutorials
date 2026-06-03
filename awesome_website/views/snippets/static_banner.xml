@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="static_banner" name="Static Banner Snippet">
+        <section>
+            <owl-component name="static_banner" props='{"name": "World"}'/>
+        </section>
+    </template>
+</odoo>

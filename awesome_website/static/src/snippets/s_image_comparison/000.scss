@@ -1,6 +1,41 @@
 .o_image_comparison_container {
     --slider-position: 50%;
 
+    .o_image_comparison_horizontal & {
+        --handle-left: var(--slider-position);
+        --handle-top: 50%;
+        --slider-img-left: var(--slider-position);
+        --slider-img-right: 100%;
+        --slider-img-top: 0;
+        --slider-cursor: ew-resize;
+        --slider-height: 100vh;
+        --slider-width: 4px;
+        --slider-margin-inline: -2px;
+        --slider-margin-block: 0;
+        --slider-writing-mode: horizontal-tb;
+        --slider-transform: unset;
+
+        .o_rtl & {
+            --slider-img-left: 0;
+            --slider-img-right: calc(100% - var(--slider-position));
+        }
+    }
+    .o_image_comparison_vertical & {
+        --handle-left: 50%;
+        --handle-top: var(--slider-position);
+        --slider-img-top: var(--slider-position);
+        --slider-img-left: 0;
+        --slider-img-right: 100%;
+        --slider-cursor: ns-resize;
+        --slider-height: 4px;
+        --slider-width: 100vw;
+        --slider-margin-inline: 0;
+        --slider-margin-block: -2px;
+        --slider-writing-mode: vertical-rl;
+        --slider-transform: scaleY(-1);
+    }
+
+
     img {
         grid-area: 1 / 1;
         width: 100%;
