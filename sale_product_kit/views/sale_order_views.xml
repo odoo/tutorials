@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_product_kit_wizard" model="ir.actions.act_window">
+        <field name="name">Product Kit Values</field>
+        <field name="res_model">product.kit.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="sale_order_form_view_inherit_product_kit" model="ir.ui.view">
+        <field name="name">sale.order.form.product.kit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="widget">product_kit_sol_o2m</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='currency_id']" position="before">
+                <field name="is_kit_child" column_invisible="True"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_kit_components"/>
+            </xpath>
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <button
+                    name="%(action_product_kit_wizard)d"
+                    type="action"
+                    icon="fa-flask"
+                    context="{'active_order_line_id': id}"
+                    invisible="not is_kit or state!='draft'"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
