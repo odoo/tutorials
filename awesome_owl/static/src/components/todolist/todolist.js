@@ -12,49 +12,52 @@ export class TodoList extends Component {
 
     setup() {
         this.nextId = 1;
-
         this.state = useState({
             todos: [],
         });
 
         this.ref = useRef("nameInput");
         onMounted(() => {
-
-            console.log(this.ref.el);
-
             this.ref.el.focus();
+        });
+    }
 
+    todoCount() {
+        this.nextId = this.state.todos.length + 1;
+    }
+
+    handleDelete(id) {
+        const index = this.state.todos.findIndex((todo) => todo.id === id);
+        this.state.todos.splice(index, 1);
+        this.state.todos.forEach((todo, index) => {
+            todo.id = index + 1;
+        });
+        this.todoCount()
+    }
+
+    toggleState(id) {
+        this.state.todos.find(t => t.id === id) ? todo.isCompleted = !todo.isCompleted : ""
+    }
+
+    clearAll() {
+        this.state.todos = []
+    }
+
+    markAll() {
+        this.state.todos.filter(t => t.isCompleted == false).forEach((todo) => {
+            todo.isCompleted = true
         });
     }
 
 
-    handleDelete(id) {
-        this.state.todos = this.state.todos.filter(
-            t => t.id !== id
-        )
-    }
-    toggleState(id) {
-        const todo = this.state.todos.find(t => t.id === id);
-        if (todo) {
-            todo.isCompleted = !todo.isCompleted;
-        }
-    }
-    onKeydown(ev) {
-
-        if (ev.key === "Enter") {
-
-            const title = ev.target.value.trim();
-
-            if (!title) {
-                return;
-            }
-
-            this.state.todos.push({
-                id: this.nextId++,
-                title: title,
-                isCompleted: false,
-            });
-
+    addTodo(ev) {
+        if (ev.key === "Enter" && ev.target.value.trim() !== "") {
+            this.state.todos.find(t => t.title === ev.target.value.trim()) ? alert("Cant write a duplicate todo")
+                : this.state.todos.push({
+                    id: this.nextId++,
+                    title: ev.target.value.trim(),
+                    isCompleted: false,
+                });
             ev.target.value = "";
         }
     }

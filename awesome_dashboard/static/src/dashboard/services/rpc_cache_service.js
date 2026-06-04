@@ -1,20 +1,26 @@
-import {reactive} from "@odoo/owl";
-import {registry} from "@web/core/registry";
-import {rpc} from "@web/core/network/rpc";
+import { reactive } from "@odoo/owl";
+import { registry } from "@web/core/registry";
+import { rpc } from "@web/core/network/rpc";
 
 export const statisticsService = {
     start() {
         const statistics = reactive({});
 
         async function reload() {
-            const result = await rpc("/awesome_dashboard/statistics");
-            Object.assign(statistics, result);
+
+            try {
+                const result = await rpc("/awesome_dashboard/statistics");
+                Object.assign(statistics, result);
+            }
+            catch (error) {
+                console.error("Failed to load statistics:", error);
+            }
         }
 
         reload();
-        setInterval(reload, 100 * 1000);
+        setInterval(reload, 50 * 1000);
 
-        return {statistics};
+        return { statistics };
     },
 };
 

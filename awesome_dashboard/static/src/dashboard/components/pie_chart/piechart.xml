@@ -5,6 +5,6 @@
                 <t t-esc="props.title"/>
             </h5>
         </t>
-        <canvas t-ref="canvas"/>
+        <canvas t-ref="canvas2"/>
     </div>
 </t>

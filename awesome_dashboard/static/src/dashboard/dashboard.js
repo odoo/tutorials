@@ -1,15 +1,14 @@
-import {Component, useState} from "@odoo/owl";
-import {useService} from "@web/core/utils/hooks";
-import {registry} from "@web/core/registry";
-import {Layout} from "@web/search/layout";
-import {DashboardItem} from "./components/dashboard_item/dashboard_item";
-// REMOVE this line:
-// import { dashboardItems } from "./dashboard_items";
-import {ControlPanelButtons} from "./components/control_panel_buttons/control_panel_buttons";
+import { Component, useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
+import { registry } from "@web/core/registry";
+import { Layout } from "@web/search/layout";
+import { DashboardItem } from "./components/dashboard_item/dashboard_item";
+
+import { ControlPanelButtons } from "./components/control_panel_buttons/control_panel_buttons";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = {Layout, DashboardItem, ControlPanelButtons};
+    static components = { Layout, DashboardItem, ControlPanelButtons };
     static props = {};
 
     setup() {
@@ -21,6 +20,10 @@ class AwesomeDashboard extends Component {
         );
 
         this.items = registry
+            .category("awesome_dashboard")
+            .getAll()
+
+        this.itemsondashboard = registry
             .category("awesome_dashboard")
             .getAll()
             .filter(item => !removedIds.includes(item.id));
