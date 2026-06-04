@@ -1,4 +1,5 @@
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class SaleOrderLine(models.Model):
@@ -54,37 +55,32 @@ class SaleOrderLine(models.Model):
                 for child in child_lines:
                     if child.kit_unit_qty:
                         child.product_uom_qty = line.product_uom_qty * child.kit_unit_qty
+                        child.price_unit = 0
         return result
 
     @api.ondelete(at_uninstall=False)
     def _ondelete_handle_kit(self):
+        for line in self.filtered(lambda l: l.is_kit_subproduct):
+            if line.kit_parent_line_id in self:
+                continue
+            section_in_batch = any(
+                l.display_type == 'line_section'
+                and l.kit_parent_line_id.id == line.kit_parent_line_id.id
+                for l in self
+            )
+            if section_in_batch:
+                continue
+            raise UserError(_(
+                "You cannot delete subproduct lines directly. "
+                "Delete the parent kit product or delete the entire subproducts section."
+            ))
+
         child_lines = self.env['sale.order.line'].search([
             ('kit_parent_line_id', 'in', self.ids),
+            ('id', 'not in', self.ids),
         ])
         if child_lines:
             child_lines.unlink()
-
-        subproduct_lines = self.filtered(lambda l: l.is_kit_subproduct)
-        for parent in subproduct_lines.mapped('kit_parent_line_id'):
-            if parent in self:
-                continue
-            remaining = self.env['sale.order.line'].search([
-                ('kit_parent_line_id', '=', parent.id),
-                ('is_kit_subproduct', '=', True),
-            ])
-            if remaining:
-                parent.price_unit = sum(
-                    child.price_unit * child.kit_unit_qty
-                    for child in remaining
-                )
-            else:
-                section_lines = self.env['sale.order.line'].search([
-                    ('display_type', '=', 'line_section'),
-                    ('kit_parent_line_id', '=', parent.id),
-                ])
-                if section_lines:
-                    section_lines.unlink()
-                parent.price_unit = parent.product_id.lst_price
 
     def action_open_kit_configurator(self):
         self.ensure_one()
