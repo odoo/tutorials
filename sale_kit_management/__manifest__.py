@@ -3,7 +3,7 @@
     'version': "1.0",
     'category': "Sales/Sales",
     'description': "Creates a Kit Option in Products and Sales Order",
-    'depends': ['sale_management'],
+    'depends': ['sale_management', 'stock'],
     'data': [
         'security/ir.model.access.csv',
         'wizard/sale_order_kit_views.xml',

@@ -15,6 +15,7 @@
                         </group>
                         <group>
                             <field name="kit_total_price" widget="monetary" readonly="1" />
+                            <field name="has_kit_subproducts" column_invisible="1" />
                         </group>
                     </group>
 
@@ -41,6 +42,7 @@
                         name="action_confirm"
                         type="object"
                         class="btn btn-secondary"
+                        invisible="has_kit_subproducts"
                         data-hotkey="x" />
                 </footer>
             </form>

@@ -12,7 +12,7 @@
                 <button name="action_open_kit_configurator"
                     type="object"
                     icon="fa-cubes"
-                    invisible="not is_kit or has_kit_subproducts" width="25px" />
+                    invisible="not is_kit" width="25px" />
             </xpath>
 
             <xpath

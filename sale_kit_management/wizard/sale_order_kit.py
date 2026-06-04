@@ -21,7 +21,7 @@ class SaleOrderKit(models.TransientModel):
     _name = 'sale.order.kit'
     _description = "Kit Configurator Wizard"
 
-    _KIT_SUBPRODUCT_SEQ_BASE = 9990
+    _KIT_SUBPRODUCT_SEQ_BASE = 200
 
     sale_order_line_id = fields.Many2one('sale.order.line', required=True)
     parent_product = fields.Many2one(
@@ -34,6 +34,7 @@ class SaleOrderKit(models.TransientModel):
         string="Kit Price",
         compute='_compute_kit_total_price',
     )
+    has_kit_subproducts = fields.Boolean(compute='_compute_has_kit_subproducts')
 
     @api.depends('sale_order_line_id.product_id')
     def _compute_parent_product(self):
@@ -47,6 +48,11 @@ class SaleOrderKit(models.TransientModel):
                 line.price_unit * line.kit_unit_qty
                 for line in rec.kit_line_ids
             )
+
+    @api.depends('sale_order_line_id.has_kit_subproducts')
+    def _compute_has_kit_subproducts(self):
+        for rec in self:
+            rec.has_kit_subproducts = rec.sale_order_line_id.has_kit_subproducts
 
     @api.model
     def default_get(self, fields):
@@ -100,6 +106,13 @@ class SaleOrderKit(models.TransientModel):
         product_name = sol.product_id.display_name
 
         sol.kit_config_line_ids.unlink()
+        config_vals = [{
+            'sale_order_line_id': sol.id,
+            'product_id': line.product_id.id,
+            'kit_unit_qty': line.kit_unit_qty,
+            'price_unit': line.price_unit,
+        } for line in self.kit_line_ids]
+        self.env['sale.order.kit.config.line'].create(config_vals)
 
         sol.price_unit = sum(
             line.price_unit * line.kit_unit_qty
@@ -109,7 +122,21 @@ class SaleOrderKit(models.TransientModel):
         existing_kit_sections = order.order_line.filtered(
             lambda l: l.display_type == 'line_section' and l.kit_parent_line_id
         )
-        base_seq = self._KIT_SUBPRODUCT_SEQ_BASE + len(existing_kit_sections) * 10
+        max_sequence = max(seq.sequence
+                           for seq in existing_kit_sections
+                           ) if existing_kit_sections else 0
+
+        base_seq = self._KIT_SUBPRODUCT_SEQ_BASE + max_sequence * 2
+
+        child_lines = self.env['sale.order.line'].search([
+            ('kit_parent_line_id', 'in', sol.id),
+            ('id', 'not in', sol.id),
+        ])
+        if child_lines:
+            for line in child_lines:
+                if line.display_type == 'line_section':
+                    base_seq = line.sequence
+            child_lines.unlink()
 
         self.env['sale.order.line'].create({
             'order_id': order.id,

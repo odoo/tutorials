@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    _KIT_SUBPRODUCT_SEQ_BASE = 9990
+    _KIT_SUBPRODUCT_SEQ_BASE = 200
 
     is_kit = fields.Boolean(related='product_id.product_tmpl_id.is_kit')
     is_kit_subproduct = fields.Boolean(string="Is Kit Subproduct", default=False)
