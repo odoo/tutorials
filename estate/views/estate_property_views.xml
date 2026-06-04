@@ -60,6 +60,7 @@
                                 <field name="garden_orientation" />
                                 <field name="active" />
                                 <field name="state" />
+                                <field name="total_area" />
                             </group>
                         </page>
 
