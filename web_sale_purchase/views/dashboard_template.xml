@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="seller_dashboard_template" name="Seller Dashboard">
+        <t t-call="website.layout">
+            <div id="wrap" class="container o_portal_wrap mt-4">
+                <div class="row pt-3">
+                    <div class="col-lg-12">
+                        <h2 class="mb-3">Welcome Back,
+                            <t t-esc="seller.name"/>!
+                        </h2>
+                        <p class="text-muted">Manage your marketplace inventory rows below.</p>
+                        <hr/>
+                    </div>
+                </div>
+                <div class="card mt-2">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Your Listed Products</h5>
+                        <a href="/shop/add_product" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"/> Add New Item
+                        </a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Sales Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="not products">
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted py-4">You haven't listed any products yet.</td>
+                                    </tr>
+                                </t>
+                                <t t-foreach="products" t-as="product">
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                <t t-esc="product.name"/>
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <t t-esc="product.list_price" t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}"/>
+                                        </td>
+                                        <td>
+                                            <span t-if="product.website_published" class="badge bg-success">Live on Shop</span>
+                                            <span t-if="not product.website_published" class="badge bg-warning">Draft / Hidden</span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

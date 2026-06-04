@@ -1,0 +1,13 @@
+<odoo>
+    <template id="portal_my_home_purchase" inherit_id="portal.portal_my_home" name="Portal Home: Purchase Entries">
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/purchase/static/description/icon.png'"/>
+                <t t-set="title">Purchase Orders</t>
+                <t t-set="text">View, track, and manage your purchase orders</t>
+                <t t-set="url" t-value="'/my/purchase'"/>
+                <t t-set="placeholder_count" t-value="'purchase_count'"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>

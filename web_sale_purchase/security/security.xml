@@ -1,0 +1,12 @@
+<odoo>
+    <record id="seller_individual_rights" model="ir.rule">
+        <field name="name">seller_individuak_right_per_seller</field>
+        <field name="model_id" ref="product.model_product_template"></field>
+        <field name="domain_force">['|', ('seller_id', '=', False), ('seller_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="perm_create" eval="True" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_unlink" eval="True" />
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="auth_signup_web_sale_purchase" inherit_id="auth_signup.signup" name="Sign up">
+        <xpath expr="//div[hasclass('oe_login_buttons')]" position="before">
+            <label for="user_type" class="form-label">Role</label>
+            <select name="user_type" class="form-select mb-3 field-user_type" required="required">
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+            </select>
+        </xpath>
+    </template>
+</odoo>
