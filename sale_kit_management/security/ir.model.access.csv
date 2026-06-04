@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_subproduct_line,access_product_subproduct_line,model_product_subproduct_line,sales_team.group_sale_salesman,1,1,1,1
+access_sale_order_kit,access_sale_order_kit,model_sale_order_kit,sales_team.group_sale_salesman,1,1,1,1
+access_sale_order_kit_line,access_sale_order_kit_line,model_sale_order_kit_line,sales_team.group_sale_salesman,1,1,1,1
+access_sale_order_kit_config_line,access_sale_order_kit_config_line,model_sale_order_kit_config_line,sales_team.group_sale_salesman,1,1,1,1
+

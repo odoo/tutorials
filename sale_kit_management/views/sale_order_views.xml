@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sale_order_form_kit" model="ir.ui.view">
+        <field name="name">sale.order.form.kit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_id' and @optional='hide']"
+                position="after">
+                <button name="action_open_kit_configurator"
+                    type="object"
+                    icon="fa-cubes"
+                    invisible="not is_kit" width="25px" />
+            </xpath>
+
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_id']"
+                position="before">
+                <field name="is_kit_subproduct" column_invisible="1" />
+                <field name="has_kit_subproducts" column_invisible="1" />
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list"
+                position="attributes">
+                <attribute name="decoration-muted">is_kit_subproduct</attribute>
+            </xpath>
+
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_id' and @optional='hide']"
+                position="attributes">
+                <attribute name="readonly">is_kit_subproduct or not product_updatable</attribute>
+            </xpath>
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_template_id']"
+                position="attributes">
+                <attribute name="readonly">is_kit_subproduct or (id and not product_updatable)</attribute>
+            </xpath>
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_uom_qty']"
+                position="attributes">
+                <attribute name="readonly">is_kit_subproduct</attribute>
+            </xpath>
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='product_uom_id']"
+                position="attributes">
+                <attribute name="readonly">is_kit_subproduct</attribute>
+            </xpath>
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='price_unit']"
+                position="attributes">
+                <attribute name="readonly">is_kit_subproduct</attribute>
+            </xpath>
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='tax_ids']"
+                position="attributes">
+                <attribute name="readonly">is_kit_subproduct</attribute>
+            </xpath>
+            <xpath
+                expr="//notebook/page[@name='order_lines']/field[@name='order_line']/list/field[@name='discount']"
+                position="attributes">
+                <attribute name="readonly">is_kit_subproduct</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
