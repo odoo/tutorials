@@ -2,13 +2,13 @@
 <odoo>
 
     <!-- List View -->
-    <record id="view_property_type_list" model="ir.ui.view">
+    <record id="property_type_view_list" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <tree>
-                <field name="name"/>
-            </tree>
+            <list>
+                <field name="name" />
+            </list>
         </field>
     </record>
 
@@ -20,7 +20,7 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -33,7 +33,4 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-
-
 </odoo>
-
