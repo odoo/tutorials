@@ -1,0 +1,52 @@
+<odoo>
+
+    <record id="action_estate_property_issue" model="ir.actions.act_window">
+        <field name="name">Property Issue</field>
+        <field name="res_model">estate.property.issue</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="list_estate_property_issue" model="ir.ui.view">
+        <field name="name">estate.property.issue.list</field>
+        <field name="model">estate.property.issue</field>
+        <field name="arch" type="xml">
+            <list string="Property Offer">
+                <field name="name"/>
+                <field name="issue_type"/>
+                <field name="priority"/>
+                <field name="overdue"/>
+                <field name="assigned_date"/>
+                <button name="action_accept" type="object" string="Accept" icon="fa-check"/>
+                </list>
+        </field>
+    </record>
+
+    <record id="form_estate_propety_issue" model="ir.ui.view">
+        <field name="name">estate.property.issue.form</field>
+        <field name="model">estate.property.issue</field>
+        <field name="arch" type="xml">
+             <form>
+                <header>
+                    <button name="action_resolved" type="object" string="Resolved"/>
+                    <button name="action_cancelled" type="object" string="Cancelled"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,resolved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="property_id"/>
+                        <field name="reported_by_id"/>
+                        <field name="assigned_to_id"/>
+                        <field name="issue_type"/>
+                        <field name="priority"/>
+                        <field name="reported_date"/>
+                        <field name="resolved_date"/>
+                        <field name="assigned_date"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

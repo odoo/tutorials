@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="estatepropertydetail_auction_bid" inherit_id="estate.estate_property_detail_template">
+        <xpath expr="//div[hasclass('col-lg-5')]" position="inside">
+            <t t-if="property.selling_mode == 'auction'">
+                <div class="mt-4 p-3 border rounded bg-light">
+                    <h3>Auction Details</h3>
+                    <p>
+                        <strong>Auction Ends In:</strong>
+                        <span
+                            id="auction_countdown"
+                            t-att-data-end-time="property.auction_end.isoformat()"
+                            class="badge bg-dark fs-6 p-2">
+                            Loading...
+                        </span>
+                    </p>
+                    <p>
+                        <strong>Status:</strong>
+
+                        <span t-if="property.auction_state == 'in_progress'"
+                              class="badge bg-success">
+                            In Progress
+                        </span>
+
+                        <span t-if="property.auction_state == 'ended'"
+                              class="badge bg-warning">
+                            Ended
+                        </span>
+
+                        <span t-if="property.auction_state == 'sold'"
+                              class="badge bg-primary">
+                            Sold
+                        </span>
+                    </p>
+
+                    <!-- <p>
+                        <strong>Auction End:</strong>
+                        <span t-field="property.auction_end"/>
+                    </p> -->
+
+                    <p>
+                        <strong>Highest Bid:</strong>
+                        ₹ <span t-out="property.best_price"/>
+                    </p>
+
+                    <p t-if="property.highest_bidder_id">
+                        <strong>Highest Bidder:</strong>
+                        <span t-out="property.highest_bidder_id.name"/>
+                    </p>
+
+                </div>
+
+                <t t-if="property.auction_state == 'in_progress'">
+
+                    <div class="mt-3">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#estateAuctionBidModal">
+                            Place Offer
+                        </button>
+                    </div>
+
+                    <div class="modal fade" id="estateAuctionBidModal" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <form t-attf-action="/properties/{{ property.id }}/bid" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">
+                                            Add Offer for
+                                            <t t-out="property.name"/>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"/>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label class="form-label">
+                                            Buyer Name
+                                        </label>
+                                        <input type="text" class="form-control mb-3" t-att-value="request.env.user.partner_id.name" readonly="readonly"/>
+                                        <label class="form-label">
+                                            Bid Amount
+                                        </label>
+
+                                        <input type="number"
+                                               name="amount"
+                                               min="0.01"
+                                               step="0.01"
+                                               class="form-control"
+                                               required="required"/>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">
+                                            Submit Bid
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+
+    </template>
+
+    <template id="website_auction_bid_success" name="Estate Auction Bid Success">
+        <t t-call="website.layout">
+            <div class="container text-center mt-5">
+                <div class="alert alert-success p-5">
+                    <h1>Congratulations!</h1>
+                    <p class="mt-3">
+                        Your bid has been successfully placed.
+                    </p>
+                    <p>
+                        We will notify you after the auction ends.
+                    </p>
+                    <a t-attf-href="/properties/{{ property.id }}" class="btn btn-primary mt-3">
+                        Back to Property
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

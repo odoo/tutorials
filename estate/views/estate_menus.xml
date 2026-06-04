@@ -1,0 +1,72 @@
+<odoo>
+
+    <!-- Root Menu -->
+    <menuitem
+        id="menu_real_estate_root"
+        name="Real Estate"
+        web_icon="estate,static/description/icon.png"
+        sequence="1"/>
+
+    <!-- First Level Menu Advertisement -->
+    <menuitem
+        id="menu_real_estate_advertisements"
+        name="Advertisements"
+        parent="menu_real_estate_root"
+        sequence="1"/>
+
+    <!-- Second Level Menu -->
+    <menuitem
+        id="menu_real_estate_properties"
+        name="Properties"
+        parent="menu_real_estate_advertisements"
+        action="action_estate_property"
+        sequence="1"/>
+
+    <!-- First Level Menu Settings -->
+    <menuitem
+        id="menu_real_estate_settings"
+        name="Settings"
+        parent="menu_real_estate_root"
+        sequence="2"/>
+
+    <menuitem
+        id="menu_real_estate_property_types"
+        name="Property Types"
+        parent="menu_real_estate_settings"
+        action="action_estate_property_type"
+        sequence="1"/>
+
+    <menuitem
+        id="menu_real_estate_property_tags"
+        name="property Tags"
+        parent="menu_real_estate_settings"
+        action="action_estate_property_tag"
+        sequence="2"/>
+
+    <menuitem
+        id="menu_real_estate_property_visit"
+        name="Property visit"
+        parent="menu_real_estate_settings"
+        action="action_estate_property_visit"/>
+    
+    <menuitem
+        id="menu_real_estate_property_issue"
+        name="Property Issue"
+        parent="menu_real_estate_settings"
+        action="action_estate_property_issue"/>
+
+    <!-- First Level Menu configurations -->
+    <menuitem
+        id="menu_real_estate_configurations"
+        name="Configurations"
+        parent="menu_real_estate_root"
+        sequence="2"/>
+
+    <!-- Second Level Menu -->
+    <menuitem
+        id="menu_real_estate_configuration_setting"
+        name="Settings"
+        parent="menu_real_estate_configurations"
+        action="action_estate_property_configuration"/>
+
+</odoo>
