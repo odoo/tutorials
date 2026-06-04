@@ -4,12 +4,24 @@ from odoo import _, api, fields, models
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
+    _KIT_SUBPRODUCT_SEQ_BASE = 9990
+
     is_kit = fields.Boolean(related='product_id.product_tmpl_id.is_kit')
     is_kit_subproduct = fields.Boolean(string="Is Kit Subproduct", default=False)
     kit_unit_qty = fields.Float(string="Kit Unit Qty")
     kit_parent_line_id = fields.Many2one('sale.order.line', string="Kit Parent Line", ondelete='cascade', index=True)
     has_kit_subproducts = fields.Boolean(compute='_compute_has_kit_subproducts')
     kit_config_line_ids = fields.One2many('sale.order.kit.config.line', 'sale_order_line_id', string="Kit Configuration")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('is_kit_subproduct') or vals.get('kit_parent_line_id'):
+                continue
+            seq = vals.get('sequence', 0)
+            if seq >= self._KIT_SUBPRODUCT_SEQ_BASE:
+                vals['sequence'] = self._KIT_SUBPRODUCT_SEQ_BASE - 1
+        return super().create(vals_list)
 
     @api.depends('order_id.order_line.kit_parent_line_id')
     def _compute_has_kit_subproducts(self):
@@ -44,26 +56,21 @@ class SaleOrderLine(models.Model):
                         child.product_uom_qty = line.product_uom_qty * child.kit_unit_qty
         return result
 
-    def unlink(self):
-        subproduct_lines = self.filtered(lambda l: l.is_kit_subproduct)
-        parent_lines = subproduct_lines.mapped('kit_parent_line_id')
-
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_handle_kit(self):
         child_lines = self.env['sale.order.line'].search([
-            ('kit_parent_line_id', 'in', self.ids)
+            ('kit_parent_line_id', 'in', self.ids),
         ])
         if child_lines:
             child_lines.unlink()
 
-        result = super().unlink()
-
-        for parent in parent_lines.exists():
+        subproduct_lines = self.filtered(lambda l: l.is_kit_subproduct)
+        for parent in subproduct_lines.mapped('kit_parent_line_id'):
+            if parent in self:
+                continue
             remaining = self.env['sale.order.line'].search([
                 ('kit_parent_line_id', '=', parent.id),
                 ('is_kit_subproduct', '=', True),
-            ])
-            section_lines = self.env['sale.order.line'].search([
-                ('display_type', '=', 'line_section'),
-                ('kit_parent_line_id', '=', parent.id),
             ])
             if remaining:
                 parent.price_unit = sum(
@@ -71,10 +78,13 @@ class SaleOrderLine(models.Model):
                     for child in remaining
                 )
             else:
+                section_lines = self.env['sale.order.line'].search([
+                    ('display_type', '=', 'line_section'),
+                    ('kit_parent_line_id', '=', parent.id),
+                ])
                 if section_lines:
                     section_lines.unlink()
                 parent.price_unit = parent.product_id.lst_price
-        return result
 
     def action_open_kit_configurator(self):
         self.ensure_one()

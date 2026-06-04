@@ -21,6 +21,8 @@ class SaleOrderKit(models.TransientModel):
     _name = 'sale.order.kit'
     _description = "Kit Configurator Wizard"
 
+    _KIT_SUBPRODUCT_SEQ_BASE = 9990
+
     sale_order_line_id = fields.Many2one('sale.order.line', required=True)
     parent_product = fields.Many2one(
         'product.product',
@@ -104,21 +106,26 @@ class SaleOrderKit(models.TransientModel):
             for line in self.kit_line_ids
         )
 
+        existing_kit_sections = order.order_line.filtered(
+            lambda l: l.display_type == 'line_section' and l.kit_parent_line_id
+        )
+        base_seq = self._KIT_SUBPRODUCT_SEQ_BASE + len(existing_kit_sections) * 10
+
         self.env['sale.order.line'].create({
             'order_id': order.id,
             'display_type': 'line_section',
             'name': f"Subproducts of {product_name}",
-            'sequence': sol.sequence + 1,
+            'sequence': base_seq,
             'kit_parent_line_id': sol.id,
         })
 
-        for line in self.kit_line_ids:
+        for idx, line in enumerate(self.kit_line_ids, start=1):
             self.env['sale.order.line'].create({
                 'order_id': order.id,
                 'product_id': line.product_id.id,
                 'product_uom_qty': line.kit_unit_qty * sol.product_uom_qty,
-                'price_unit': line.price_unit,
-                'sequence': sol.sequence + 2,
+                'price_unit': 0,
+                'sequence': base_seq + idx,
                 'is_kit_subproduct': True,
                 'kit_parent_line_id': sol.id,
                 'kit_unit_qty': line.kit_unit_qty,
