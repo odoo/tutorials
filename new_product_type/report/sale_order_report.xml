@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template
+        id="report_saleorder_document_inherit_print_option"
+        inherit_id="sale.report_saleorder_document">
+        <xpath expr="//t[@t-set='lines_to_report']" position="attributes">
+            <attribute name="t-value">
+                doc._get_order_lines_to_report().filtered(
+                    lambda l: not l.is_kit_sub_line or doc.print_kit_in_report
+                )
+            </attribute>
+        </xpath>
+    </template>
+</odoo>

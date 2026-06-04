@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template
+        id="report_invoice_document_inherit_print_option"
+        inherit_id="account.report_invoice_document">
+        <xpath expr="//t[@t-set='lines_to_report']" position="attributes">
+            <attribute name="t-value">
+                o._get_move_lines_to_report().filtered(
+                    lambda l: not any(sl.is_kit_sub_line for sl in l.sale_line_ids)
+                    or any(sl.order_id.print_kit_in_report for sl in l.sale_line_ids)
+                )
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
