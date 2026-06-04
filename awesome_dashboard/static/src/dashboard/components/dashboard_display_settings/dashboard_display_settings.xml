@@ -1,32 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
-
-    <t t-name="awesome_dashboard.DashboardSettingsDialog">
-
-        <Dialog title="'Dashboard Settings'">
-
+<t t-name="awesome_dashboard.DashboardSettingsDialog">
+    <Dialog title="'Dashboard Settings'">
+        <div class="px-2 py-1">
             <t t-foreach="props.items" t-as="item" t-key="item.id">
-
-                <div class="form-check">
-
-                    <input type="checkbox" class="form-check-input" t-att-checked="isChecked(item.id)" t-on-change="(ev) => this.toggleItem(item.id, ev)"/>
-
-                    <label class="form-check-label">
+                <div class="form-check form-switch py-2 border-bottom border-light">
+                    <input type="checkbox" class="form-check-input cursor-pointer"
+                           t-att-checked="isChecked(item.id)"
+                           t-on-change="(ev) => this.toggleItem(item.id, ev)"/>
+                    <label class="form-check-label ms-2 text-secondary">
                         <t t-esc="item.description"/>
                     </label>
-
                 </div>
             </t>
+        </div>
 
-            <t t-set-slot="footer">
-
-                <button class="btn btn-primary" t-on-click="apply">
-                    Apply
-                </button>
-            </t>
-
-        </Dialog>
-
-    </t>
-
-</templates>
+        <t t-set-slot="footer">
+            <button class="btn btn-primary px-4" t-on-click="apply">
+                Apply
+            </button>
+        </t>
+    </Dialog>
+</t>
+   

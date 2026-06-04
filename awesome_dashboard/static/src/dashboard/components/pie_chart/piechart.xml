@@ -1,10 +1,12 @@
 <t t-name="awesome_dashboard.PieChartCard">
-    <div class="text-center">
+    <div class="d-flex flex-column h-100 w-100">
         <t t-if="props.title">
-            <h5 class="card-title">
+            <span class="text-muted mb-3 fs-6">
                 <t t-esc="props.title"/>
-            </h5>
+            </span>
         </t>
-        <canvas t-ref="canvas2"/>
+        <div class="position-relative d-flex justify-content-center w-100 flex-grow-1">
+            <canvas t-ref="canvas2" class="w-100" style="max-height: 250px;"/>
+        </div>
     </div>
 </t>

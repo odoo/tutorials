@@ -1,32 +1,29 @@
 <t t-name="awesome_owl.card">
-    <div class="p-3">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body">
-
-
+    <div class="card shadow-sm m-2 d-inline-block align-top" style="width: 22rem;">
+        <!-- Card Header with Title and Toggle -->
+        <div class="card-header d-flex justify-content-between align-items-center bg-light">
+            <h5 class="card-title m-0 text-primary">
                 <t t-if="props.slots.title">
-                    <h5 class="card-title">
-                        <t t-slot="title"/>
-                    </h5>
+                    <t t-slot="title"/>
                 </t>
-
-
-
-                <div class="card-content">
-                    <p>
-                        <input type="checkbox" t-on-click="toggleState"/>
-                        <span class="fa fa-remove"/>
-                    </p>
-                </div>
-                <t t-if="state.isOpen">
-                    <h5 class="card-title">
-                        <p> You man just close me boy </p>
-
-                        <div class="card-text">
-                            <t t-slot="default"/>
-                        </div>
-                    </h5>
+                <t t-else="">
+                        Default Card
                 </t>
+            </h5>
+
+            <div class="form-check form-switch m-0">
+                <input class="form-check-input cursor-pointer" type="checkbox" role="switch" t-on-click="toggleState" title="Toggle Content"/>
+            </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body" t-if="state.isOpen">
+            <p class="text-muted small mb-3">
+                <i class="fa fa-info-circle me-1"/>
+ Content is now visible
+            </p>
+            <div class="card-text">
+                <t t-slot="default"/>
             </div>
         </div>
     </div>

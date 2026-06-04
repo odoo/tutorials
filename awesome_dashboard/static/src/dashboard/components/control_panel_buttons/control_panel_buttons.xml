@@ -1,14 +1,20 @@
 <t t-name="awesome_dashboard.control_panel_buttons">
+    <div class="d-flex align-items-center gap-3 pe-3">
+        <!-- Grouped main actions -->
+        <div class="btn-group shadow-sm">
+            <button class="btn btn-primary d-flex align-items-center gap-2 fw-medium px-3" t-on-click="redirectToCustomers">
+                <i class="fa fa-users"/>
+                Customers
+            </button>
+            <button class="btn btn-info text-white d-flex align-items-center gap-2 fw-medium px-3" t-on-click="redirectToLeads">
+                <i class="fa fa-bullseye"/>
+                Leads
+            </button>
+        </div>
 
-    <button class="btn btn-primary me-2" t-on-click="redirectToCustomers">
-        Customers
-    </button>
 
-    <button class="btn btn-primary" t-on-click="redirectToLeads">
-        Leads
-    </button>
-    <button class="btn btn-secondary" t-on-click="openSettings">
-        <i class="fa fa-gear"/>
-    </button>
-
+        <button class="btn btn-dark shadow-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; transition: transform 0.3s;" onmouseover="this.style.transform='rotate(45deg)'" onmouseout="this.style.transform='rotate(0deg)'" t-on-click="openSettings" title="Dashboard Settings">
+            <i class="fa fa-gear fs-5"/>
+        </button>
+    </div>
 </t>

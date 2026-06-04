@@ -1,17 +1,41 @@
 <t t-name="awesome_owl.todolist">
-    <div>
-        <input placeholder="Enter todo" t-on-keydown="addTodo" t-ref="nameInput"/>
-        <button class="btn btn-primary" t-on-click="clearAll">
-       Clear All 
-        </button>
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center p-3">
+            <h4 class="m-0">
+                <i class="fa fa-list-check me-2"/>
+ Todo List</h4>
+            <div class="btn-group">
+                <button class="btn btn-light btn-sm" t-on-click="markAll">
+                    <i class="fa fa-check-double me-1"/>
+ Mark All
+                </button>
+                <button class="btn btn-danger btn-sm" t-on-click="clearAll">
+                    <i class="fa fa-eraser me-1"/>
+ Clear All
+                </button>
+            </div>
+        </div>
 
+        <div class="card-body bg-light">
+            <!-- Input Group -->
+            <div class="input-group input-group-lg mb-4 shadow-sm">
+                <span class="input-group-text bg-white">
+                    <i class="fa fa-plus text-muted"/>
+                </span>
+                <input type="text" class="form-control border-start-0 pl-0" placeholder="What needs to be done? (Press Enter)" t-on-keydown="addTodo" t-ref="nameInput"/>
+            </div>
 
-        <button class="btn btn-secondary" t-on-click="markAll">
-       Mark All
-        </button>
-
-        <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
-            <TodoItem todo="todo" toggleState.bind="toggleState" handleDelete.bind="handleDelete"/>
-        </t>
+            <!-- List Group -->
+            <div class="list-group shadow-sm rounded">
+                <t t-if="state.todos.length == 0">
+                    <div class="list-group-item text-center text-muted p-4">
+                            No tasks yet. Add a task above!
+                    </div>
+                </t>
+                <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                    <TodoItem todo="todo" toggleState.bind="toggleState" handleDelete.bind="handleDelete"/>
+                </t>
+            </div>
+        </div>
     </div>
 </t>

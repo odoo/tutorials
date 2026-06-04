@@ -1,10 +1,10 @@
 <t t-name="awesome_dashboard.NumberCard">
-    <div class="text-center p-2">
-        <h5 class="card-title">
+    <div class="d-flex flex-column h-100">
+        <span class="text-muted mb-1 fs-6">
             <t t-esc="props.title"/>
-        </h5>
-        <p class="display-6 fw-bold">
+        </span>
+        <span class="fs-2 fw-medium text-dark" style="line-height: 1.2;">
             <t t-esc="props.value"/>
-        </p>
+        </span>
     </div>
 </t>

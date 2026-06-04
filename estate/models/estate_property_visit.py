@@ -101,7 +101,7 @@ class EstatePropertyVisit(models.Model):
             visit.activity_schedule(
                 activity_type_id=15,
                 summary='Visit Schedules',
-                note=_("Visit scheduled tomorrow at %s") % visit.scheduled_on,
+                note=_(f"Visit scheduled tomorrow at {visit.scheduled_on}"),
                 date_deadline=visit.scheduled_on.date(),
                 user_id=visit.agent_id.id,   # assign to the agent
             )
