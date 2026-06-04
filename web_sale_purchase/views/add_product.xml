@@ -1,0 +1,68 @@
+<odoo>
+    <template id="seller_add_product_template" name="Seller Add Products">
+        <t t-call="website.layout">
+            <div id="wrap" class="container o_portal_wrap mt-4">
+                <div class="row pt-3">
+                    <div class="col-lg-8 offset-lg-2">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h2>Add a New Product</h2>
+                            <a href="/my/marksheet/dashboard" class="btn btn-secondary btn-sm">Back to Dashboard</a>
+                        </div>
+                        <hr/>
+                        <form action="/shop/create_product" method="post" enctype="multipart/form-data" class="card p-4 bg-white shadow-sm">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">
+                                    <strong>Product Title</strong>
+                                </label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Product name" required="required"/>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="list_price" class="form-label">
+                                        <strong>Sales Price</strong>
+                                    </label>
+                                    <input type="number" name="list_price" id="price_list" class="form-control" placeholder="0.00" required="required"/>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description_sale" class="form-label">
+                                    <strong>Short Description</strong>
+                                </label>
+                                <textarea name="description" id="description_sale" class="form-control" rows="4" placeholder="Tell about your product to buyers..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">
+                                    <strong>Type</strong>
+                                </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="product" value="consu" checked="checked"/>
+                                    <label class="form-check-label" for="consumable">Product</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="service" value="service"/>
+                                    <label class="form-check-label" for="service">Service</label>
+                                </div>
+                            </div>
+                            <div class="mb-4 form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="website_published" id="website_published" value="True"/>
+                                <label class="form-check-label" for="website_published">
+                                    <strong>Publish on Website Immediately</strong>
+                                </label>
+                                <div class="form-text">If checked, customers will be able to see this product right away.</div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="image" class="form-label">
+                                    <strong>Product Display Image</strong>
+                                </label>
+                                <input type="file" name="image" id="image_product" class="form-control" accept="image/*"/>
+                                <div class="form-text">JPEG or PNG. Max size 2MB</div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

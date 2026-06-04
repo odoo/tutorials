@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_template_dashboard_view" inherit_id="website_sale.cta_wrapper" name="Product Dashboard View">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <div class="d-flex gap-2 flex-grow-1 align-items-center order-first w-100 mb-3 pb-3 border-bottom">
+                <span name="o_wsale_cta_wrapper_boxed_seller_id" class="text-primary">Seller: </span>
+                <t t-if="product.sudo().seller_id" t-esc="product.sudo().seller_id.name"/>
+                <t t-if="not product.sudo().seller_id" t-esc="'Official Store'"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

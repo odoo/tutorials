@@ -1,7 +1,6 @@
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 from odoo import http
 from odoo.http import request
-from odoo.exceptions import UserError
 
 
 class MarketPlaceSignup(AuthSignupHome):
@@ -13,8 +12,6 @@ class MarketPlaceSignup(AuthSignupHome):
             .get_param("website_sale.is_marketplace_enabled")
         )
 
-        user_role = kw.get("user_role")
-
         if request.httprequest.method == "POST":
             if not is_marketplace_enabled:
                 kw["error"] = (
@@ -22,15 +19,26 @@ class MarketPlaceSignup(AuthSignupHome):
                 )
                 return request.render("auth_signup.signup", kw)
 
-        response = super(MarketPlaceSignup, self).web_auth_signup(*args, **kw)
+        response = super().web_auth_signup(*args, **kw)
+
+        if request.httprequest.method == "POST" and "user_type" in request.params:
+            if hasattr(response, "qcontext"):
+                response.qcontext["user_type"] = request.params.get("user_type")
+
         return response
 
     def do_signup(self, qcontext):
-        super(MarketPlaceSignup, self).do_signup(qcontext)
+        super().do_signup(qcontext)
 
-        user_role = qcontext.get("user_role")
+        user_role = request.params.get("user_type")
+        if user_role == "seller":
+            login = qcontext.get("login")
+            if login:
+                new_user = (
+                    request.env["res.users"]
+                    .sudo()
+                    .search([("login", "=", login)], limit=1)
+                )
 
-        if user_role == "vendor":
-            current_user = request.env.user
-            if current_user and current_user.partner_id:
-                current_user.partner_id.sudo().write({"is_seller": True})
+                if new_user and new_user.partner_id:
+                    new_user.partner_id.sudo().write({"is_seller": True})

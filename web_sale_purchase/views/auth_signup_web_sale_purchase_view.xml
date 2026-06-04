@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="auth_signup.login" inherit_id="auth_signup.fields" name="Sign up">
-        <xpath expr="//label[@for='password']" position="before">
+    <template id="auth_signup_web_sale_purchase" inherit_id="auth_signup.signup" name="Sign up">
+        <xpath expr="//div[hasclass('oe_login_buttons')]" position="before">
             <label for="user_type" class="form-label">Role</label>
-            <select class="form-select mb-3 field-user_type" required="required">
+            <select name="user_type" class="form-select mb-3 field-user_type" required="required">
                 <option value="buyer">Buyer</option>
                 <option value="seller">Seller</option>
             </select>

@@ -12,7 +12,7 @@ class ResConfigSettings(models.TransientModel):
     )
 
     def get_values(self):
-        res = super(ResConfigSettings, self).get_values()
+        res = super().get_values()
 
         params = self.env["ir.config_parameter"].sudo()
         res.update(
@@ -24,7 +24,7 @@ class ResConfigSettings(models.TransientModel):
         return res
 
     def set_values(self):
-        super(ResConfigSettings, self).set_values()
+        super().set_values()
 
         if self.is_marketplace_enabled:
             website = self.env["website"].sudo().search([])

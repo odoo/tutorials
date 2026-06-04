@@ -1,0 +1,46 @@
+<odoo>
+    <template id="purchase_order_portal" name="My Purchase Orders">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Your Purchase Orders</t>
+            </t>
+            
+            <div t-if="not orders" class="alert alert-warning" role="alert">
+                There are currently no purchase orders for your account.
+            </div>
+            
+            <t t-if="orders" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>
+                            <span class='d-none d-md-inline'>Purchase Order #</span>
+                            <span class='d-block d-md-none'>Ref.</span>
+                        </th>
+                        <th class="text-end">Order Date</th>
+                        <th name="order_total" class="text-end">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="orders" t-as="order">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/my/purchase/#{order.id}">
+                                    <t t-out="order.name"/>
+                                </a>
+                            </td>
+                            <td class="text-end">
+                                <span t-field="order.date_order" t-options="{'widget': 'date'}"/>&amp;nbsp;
+                                <span class='d-none d-md-inline' t-field="order.date_order" t-options="{'time_only': True}"/>
+                            </td>
+                            <td name="order_amount_total" class="text-end">
+                                <span t-field="order.amount_total" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+</odoo>
