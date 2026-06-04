@@ -25,6 +25,18 @@ class AwesomeEstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     property_type_id = fields.Many2one('awesome.estate.property.type')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesperson_id = fields.Many2one(
+        'res.users',
+        string='Salesperson',
+        default=lambda self: self.env.user,
+    )
+    tag_ids = fields.Many2many('awesome.estate.property.tag')
+    offer_ids = fields.One2many(
+        'awesome.estate.property.offer',
+        'property_id',
+        string='Offers',
+    )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [

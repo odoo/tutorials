@@ -12,6 +12,8 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="postcode"/>
+                <field name="buyer_id"/>
+                <field name="salesperson_id"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="garage"/>
@@ -38,6 +40,8 @@
                             <field name="selling_price"/>
                         </group>
                         <group>
+                            <field name="buyer_id"/>
+                            <field name="salesperson_id"/>
                             <field name="bedrooms"/>
                             <field name="living_area"/>
                             <field name="facades"/>
@@ -50,10 +54,32 @@
                             <field name="garden_area"/>
                             <field name="garden_orientation"/>
                         </group>
+                        <group string="Tags">
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <field name="description"/>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="price"/>
+                                            <field name="partner_id"/>
+                                            <field name="status"/>
+                                            <field name="property_id" invisible="1"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
@@ -69,6 +95,9 @@
             <search>
                 <field name="name"/>
                 <field name="property_type_id"/>
+                <field name="buyer_id"/>
+                <field name="salesperson_id"/>
+                <field name="tag_ids"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
@@ -79,6 +108,10 @@
                 <group name="groupby">
                     <filter name="groupby_postcode" string="Postcode"
                             context="{'group_by': 'postcode'}"/>
+                    <filter name="groupby_type" string="Type"
+                            context="{'group_by': 'property_type_id'}"/>
+                    <filter name="groupby_salesperson" string="Salesperson"
+                            context="{'group_by': 'salesperson_id'}"/>
                 </group>
             </search>
         </field>
