@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_view_zero_stock_blockage" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.sale.zero.stock.blockage</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='order_details'] //field[@name='payment_term_id']"
+                position="after">
+                <field name="zero_stock_approval" string="Approval" readonly="has_user_access" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
