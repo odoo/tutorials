@@ -21,4 +21,3 @@ class EstatePropertyOffer(models.Model):
         'estate.property',
         required=True,
     )
-
