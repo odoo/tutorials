@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_project_form_recognition_sync" model="ir.ui.view">
+        <field name="name">project.project.form.recognition.sync</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-warning" invisible="not needs_recognition_sync">
+                    <field name="recognition_sync_message" readonly="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
