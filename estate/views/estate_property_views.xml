@@ -44,6 +44,7 @@
                         <group>
                             <field name="date_availability" />
                             <field name="selling_price" />
+                            <field name="best_offer" />
                         </group>
                     </group>
 
@@ -93,8 +94,7 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
-                <filter string="Available" name="state"
-                    domain="['|',('state','=','new'),('state','=','offer_received')]" />
+                <filter string="Available" name="state" domain="['|',('state','=','new'),('state','=','offer_received')]" />
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
             </search>
         </field>

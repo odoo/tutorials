@@ -24,8 +24,12 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    total_area = fields.Char(
-        compute='_compute_total'
+    total_area = fields.Integer(
+        compute = '_compute_total'
+    )
+    best_offer = fields.Integer(
+        string = 'Best Offer',
+        compute = '_compute_best_offer'
     )
     garden_orientation = fields.Selection(
         [
@@ -71,8 +75,16 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offer",
     )
-    @api.depends('living_area','garden_area')
+
+    @api.depends('living_area', 'garden_area')
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
+    @api.depends('offer_ids.price')
+    def _compute_best_offer(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_offer = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_offer = 0
