@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="product.product_template_only_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//group[@name='group_standard_price']" position="inside">
-                <field name="is_deposit_required" />
+                <field name="is_deposit_required" invisible="not rent_ok" />
                 <field name="deposit_amount" invisible="not is_deposit_required" widget="monetary" />
             </xpath>
         </field>
