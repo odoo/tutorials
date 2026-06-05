@@ -6,10 +6,10 @@
     "author": "Odoo S.A.",
     "website": "https://www.odoo.com/",
     "license": "LGPL-3",
-    "category": "Uncategorized",  
-    "depends": ["base"],         
-    "installable": True,        
-    "application": True,          
+    "category": "Uncategorized",
+    "depends": ["base"],
+    "installable": True,
+    "application": True,
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
@@ -19,4 +19,3 @@
         "views/estate_menus.xml"
     ],
 }
-
