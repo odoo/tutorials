@@ -1,0 +1,29 @@
+@property --slider-position {
+    syntax: "<percentage>";
+    inherits: true;
+    initial-value: 50%;
+}
+
+@keyframes slide {
+0% {
+  --slider-position: 50%;
+}
+25% {
+  --slider-position: 100%;
+}
+50% {
+  --slider-position: 50%;
+}
+75% {
+  --slider-position: 0%;
+}
+100% {
+  --slider-position: 50%;
+}
+}
+
+.o_snippet_preview_wrap:hover{
+  .o_image_comparison_container{
+    animation: 5s linear infinite slide;
+  }
+}

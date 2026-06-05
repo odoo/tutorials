@@ -33,4 +33,7 @@ class AwesomeDashboard(http.Controller):
             },
             'total_amount': random.randint(100, 1000)
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7064949f3 ([ADD] Discover the JavaScript framework)

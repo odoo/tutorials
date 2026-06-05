@@ -1,0 +1,22 @@
+<templates>
+    <t t-name="awesome_website.ImageComparisonSnippetOption">
+        <BuilderRow label.translate="Black and White">
+            <BuilderCheckbox classAction="'o_image_comparison_bw'" string="B&amp;W"/>
+        </BuilderRow>
+        <BuilderRow label.translate="Rounded">
+            <BuilderButtonGroup>
+                <BuilderButton classAction="'o_image_comparison_s_rounded'">S</BuilderButton>
+                <BuilderButton classAction="'o_image_comparison_m_rounded'">M</BuilderButton>
+                <BuilderButton classAction="'o_image_comparison_xl_rounded'">XL</BuilderButton>
+            </BuilderButtonGroup>
+        </BuilderRow>
+    </t>
+
+    <t t-inherit="website.BuilderOptions" t-inherit-mode="extension">
+        <xpath expr="//t[@id='snippet_specific_options']" position="after">
+            <image_comparison_option
+                template="awesome_website.ImageComparisonSnippetOption"
+                selector=".s_image_comparison"/>
+        </xpath>
+    </t>
+</templates>
