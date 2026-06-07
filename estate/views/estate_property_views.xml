@@ -10,19 +10,9 @@
         <field name="name">Estate.properties.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list
-                string="Properties"
-                create="1"
-                edit="1"
-                delete="1"
-                multi_edit="1"
-                open_form_view="0"
-                default_group_by="state"
-                default_order="expected_price desc"
-                decoration-danger="expected_price>1000000"
-                limit="20"
-                expand="1"
-            >
+            <list string="Properties" create="1" edit="1" delete="1" multi_edit="1"
+                open_form_view="0" default_group_by="state" default_order="expected_price desc"
+                decoration-danger="expected_price>1000000" limit="20" expand="1">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
@@ -43,10 +33,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form
-                string="Form_view"
-                edit="1"
-            >
+            <form string="Form_view" edit="1">
                 <sheet>
                     <div>
                         <h1>
@@ -65,6 +52,7 @@
                         <group>
                             <field name="selling_price" />
                             <field name="date_available" />
+                            <field name="best_offer" />
                         </group>
                     </group>
                     <notebook>
@@ -75,6 +63,9 @@
                                 <field name="postcode" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
+                                <field name="garden"/>
+                                <field name="garden_area" />
+                                <field name="garden_orientation"/>
                                 <field name="expected_price" />
                                 <field name="selling_price" />
                                 <field name="date_available" />
@@ -82,8 +73,8 @@
                                 <field name="property_type_id" />
                                 <field name="buyer_id" />
                                 <field name="salesperson_id" />
+                                <field name="total" />
                                 <field name="tag_ids" widget="many2many_tags" />
-
                             </group>
                             <!-- <field name="description" /> -->
                         </page>
@@ -95,8 +86,6 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids" />
-
-
                         </page>
 
                     </notebook>
@@ -121,15 +110,9 @@
                 <field name="date_available" />
                 <field name="facades" />
                 <field name="property_type_id" />
-                <filter name="state"
-                    string="Available"
-                    domain="['|',('state','=','new'),('state','=','offer_recieved')]"
-                />
-                <filter
-                    string="Postcode"
-                    name="group_by_postcode"
-                    context="{'group_by':'postcode'}"
-                />
+                <filter name="state" string="Available"
+                    domain="['|',('state','=','new'),('state','=','offer_recieved')]" />
+                <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}" />
 
             </search>
         </field>
