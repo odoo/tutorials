@@ -1,14 +1,16 @@
 from odoo import models, fields
+
+
 class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "real state property"
-    name=fields.Char(required=True)
+    name = fields.Char(required=True)
 
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date()
-   
+
     expected_price = fields.Float(required=True)
     selling_price = fields.Float()
 
@@ -27,6 +29,3 @@ class EstateProperty(models.Model):
         ('east', 'East'),
         ('west', 'West'),
     ])
-    
-
-

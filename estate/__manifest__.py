@@ -2,5 +2,7 @@
     'name': 'Estate',
     'depends': ['base'],
     'application': True,
-    'data':['security/ir.model.access.csv']
+    'data': ['security/ir.model.access.csv'],
+    'author':'dheer',
+    'license': 'LGPL-3'
 }
