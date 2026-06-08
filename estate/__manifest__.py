@@ -3,5 +3,4 @@
     "depends": ["base"],
     "application": True,
     "installable": True,
-
 }
