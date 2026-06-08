@@ -1,4 +1,6 @@
-from . import awesome_estate_property
-from . import awesome_estate_property_offer
-from . import awesome_estate_property_tag
-from . import awesome_estate_property_type
+from . import (
+    awesome_estate_property,
+    awesome_estate_property_offer,
+    awesome_estate_property_tag,
+    awesome_estate_property_type,
+)

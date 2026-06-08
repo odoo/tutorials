@@ -75,7 +75,6 @@
                                             <field name="price"/>
                                             <field name="partner_id"/>
                                             <field name="status"/>
-                                            <field name="property_id" invisible="1"/>
                                         </group>
                                     </sheet>
                                 </form>
