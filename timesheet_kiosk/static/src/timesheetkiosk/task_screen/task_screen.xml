@@ -1,0 +1,30 @@
+<templates xml:space="preserve">
+    <t t-name="timesheet_kiosk.TaskScreen">
+        <div class="o_kiosk_task_screen">
+            <h2>Welcome, <t t-esc="props.employee.name"/>! Please select a project and task.</h2>
+
+            <div class="mb-3">
+                <label class="form-label">Project</label>
+                <select class="form-select" t-on-change="onProjectChange">
+                    <option value="">-- Select Project --</option>
+                    <t t-foreach="props.projects" t-as="project" t-key="project.id">
+                        <option t-att-value="project.id" t-att-selected="state.projectId === project.id" t-esc="project.name"/>
+                    </t>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Task</label>
+                <select class="form-select" t-on-change="onTaskChange">
+                    <option value="">-- Select Task --</option>
+                    <t t-foreach="filteredTasks" t-as="task" t-key="task.id">
+                        <option t-att-value="task.id" t-att-selected="state.taskId === task.id" t-esc="task.name"/>
+                    </t>
+                </select>
+            </div>
+
+            <button class="btn btn-outline-secondary" t-on-click="back">Change Employee</button>
+            <button class="btn btn-success" t-on-click="startTimer">Start Timer</button>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,21 @@
+<templates xml:space="preserve">
+    <t t-name="timesheet_kiosk.StartScreen">
+        <div class="o_kiosk_start_screen">
+            <h2>Scan / Enter ID</h2>
+            <input
+                type="text"
+                placeholder="Scan or type employee ID"
+                class="o_kiosk_input"
+                t-ref="input"
+                t-model="state.barcode"
+                t-on-keyup="onKeyUp"
+            />
+            <button class="btn btn-primary mt-3" t-on-click="onSearch">
+                <i class="fa fa-arrow-right"/>
+            </button>
+            <t t-if="state.error">
+                <p class="text-danger mt-2" t-esc="state.error"/>
+            </t>
+        </div>
+    </t>
+</templates>

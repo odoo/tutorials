@@ -1,0 +1,19 @@
+<odoo>
+    <record id="res_config_kiosk_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.kiosk.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_timesheet.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='section_leaves']" position="after">
+                <block title="Kiosk">
+                    <setting string="Max Allowed Timesheet Hours from Kiosk">
+                        <field name="timesheet_kiosk_max_hours"/>
+                    </setting>
+                    <setting string="Email Template for PM">
+                        <field name="timesheet_kiosk_email_template_id"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

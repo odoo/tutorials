@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_timesheet_kiosk" model="ir.actions.client">
+        <field name="name">Timesheet Kiosk</field>
+        <field name="tag">timesheet_kiosk</field>
+    </record>
+
+    <menuitem
+        id="menu_timesheet_kiosk_root"
+        name="Timesheet Kiosk"
+        action="action_timesheet_kiosk"
+        groups="timesheet_kiosk.group_timesheet_kiosk"
+        sequence="1"
+        web_icon="timesheet_kiosk,static/description/icon.png"/>
+</odoo>

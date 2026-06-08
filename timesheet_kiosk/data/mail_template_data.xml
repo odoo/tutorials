@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_timesheet_kiosk_entry" model="mail.template">
+            <field name="name">Timesheet: Kiosk Entry Logged</field>
+            <field name="model_id" ref="analytic.model_account_analytic_line"/>
+            <field name="subject">Timesheet logged by {{ object.employee_id.name }} - {{ object.project_id.name }}</field>
+            <field name="email_from">{{ (object.employee_id.work_email or object.employee_id.user_id.email_formatted or user.email_formatted or '') }}</field>
+            <field name="email_to">{{ object.project_id.user_id.email_formatted }}</field>
+            <field name="description">Email sent to project manager when a timesheet is logged via Kiosk</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr><td align="center">
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: #ffffff; color: #454748; border-collapse:separate;">
+                            <tbody>
+                                <!-- CONTENT -->
+                                <tr>
+                                    <td align="center" style="min-width: 590px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                            <tr><td valign="top" style="font-size: 14px;">
+                                                <div>
+                                                    <p style="margin-top: 0px">Dear <t t-out="object.project_id.user_id.name or 'Manager'"/>,</p>
+                                                    <br/>
+                                                    <p>A timesheet entry has been logged via the Kiosk.</p>
+                                                    <br/>
+                                                    <div style="background-color: #f8f9fa; padding: 15px; border-radius: 4px;">
+                                                        <h3 style="margin-top: 0px; margin-bottom: 10px; color: #212529;">Entry Details</h3>
+                                                        <ul style="list-style-type: none; padding-left: 0; margin: 0;">
+                                                            <li style="margin-bottom: 8px;"><strong>Employee:</strong> <t t-out="object.employee_id.name or ''"/></li>
+                                                            <li style="margin-bottom: 8px;"><strong>Project:</strong> <t t-out="object.project_id.name or ''"/></li>
+                                                            <li style="margin-bottom: 8px;"><strong>Task:</strong> <t t-out="object.task_id.name or ''"/></li>
+                                                            <li style="margin-bottom: 8px;"><strong>Time Spent:</strong> <t t-out="round(object.unit_amount, 2)"/> hours</li>
+                                                            <li><strong>Date:</strong> <t t-out="object.date or ''"/></li>
+                                                        </ul>
+                                                    </div>
+                                                    <br/>
+                                                    <p>Please review the entry at your earliest convenience.</p>
+                                                    <br/>
+                                                    <p style="margin-bottom: 0px">
+                                                        Regards,<br/>
+                                                        <strong>Timesheet Kiosk System</strong>
+                                                    </p>
+                                                </div>
+                                            </td></tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td></tr>
+                </table>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<templates xml:space="preserve">
+    <t t-name="timesheet_kiosk.TaskScreen2">
+        <div class="o_kiosk_task_screen">
+            <h2>Welcome, <t t-esc="props.employee.name"/>! Your timer is running.</h2>
+
+            <div class="mb-3">
+                <label class="form-label">Project</label>
+                <input type="text" class="form-control" t-att-value="props.timmerproject.name" readonly="readonly"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Task</label>
+                <input type="text" class="form-control" t-att-value="activeTask.name" readonly="readonly"/>
+            </div>
+
+            <button class="btn btn-outline-secondary" t-on-click="back">Change Employee</button>
+            <button class="btn btn-danger" t-on-click="stopTimer">Stop Timer</button>
+        </div>
+    </t>
+</templates>
