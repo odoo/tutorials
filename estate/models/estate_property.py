@@ -24,5 +24,5 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
         ],
-        (string="Garden Orientation")
+        string="Garden Orientation"
     )
