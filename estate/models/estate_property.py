@@ -25,11 +25,11 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     total_area = fields.Integer(
-        compute = '_compute_total'
+        compute='_compute_total'
     )
     best_offer = fields.Integer(
-        string = 'Best Offer',
-        compute = '_compute_best_offer'
+        string='Best Offer',
+        compute='_compute_best_offer'
     )
     garden_orientation = fields.Selection(
         [
@@ -88,3 +88,12 @@ class EstateProperty(models.Model):
                 record.best_offer = max(record.offer_ids.mapped('price'))
             else:
                 record.best_offer = 0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation =' north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
