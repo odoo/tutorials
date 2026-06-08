@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="timesheet_kiosk.KioskApp">
+        <Layout display="{controlPanel: {}}" className="'o_timesheet_kiosk h-100'">
+            <div class="o_timesheet_kiosk_app">
+                <StartScreen
+                    t-if="state.screen === 'start'"
+                    onEmployeeFound.bind="onEmployeeFound"
+                />
+                <TaskScreen
+                    t-if="state.screen === 'task'"
+                    employee="state.employee"
+                    tasks="state.tasks"
+                    projects="state.projects"
+                    goToStart.bind="goToStart"
+                    startTimer.bind="startTimer"
+                />
+                <TaskScreen2
+                    t-if="state.screen === 'task_running'"
+                    employee="state.employee"
+                    tasks="state.tasks"
+                    timertask="state.timertask"
+                    timmerproject="state.timmerproject"
+                    timerlineid="state.timerlineid"
+                    goToStart.bind="goToStart"
+                    stopTimer.bind="stopTimer"
+                />
+            </div>
+        </Layout>
+    </t>
+</templates>
