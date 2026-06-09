@@ -8,9 +8,8 @@
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="status" />
-                
-                <field name="validity"/>
-                <field name="date_deadline"/>
+                <field name="validity" />
+                <field name="date_deadline" />
             </list>
         </field>
     </record>
@@ -24,10 +23,10 @@
                     <group>
                         <field name="price" />
                         <field name="partner_id" />
-                        <field name="status" />
                         <field name="property_id" />
-                        <field name="date_deadline"/>
-                        <field name="validity"/>
+                        <field name="date_deadline" />
+                        <field name="status" />
+                        <field name="validity" />
                     </group>
                 </sheet>
             </form>
@@ -35,3 +34,4 @@
     </record>
 
 </odoo>
+

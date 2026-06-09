@@ -11,7 +11,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties" create="1" edit="1" delete="1" multi_edit="1"
-                open_form_view="0" default_group_by="state" default_order="expected_price desc"
+                open_form_view="1" default_group_by="state" default_order="expected_price desc"
                 decoration-danger="expected_price>1000000" limit="20" expand="1">
                 <field name="name" />
                 <field name="postcode" />
@@ -30,10 +30,15 @@
     </record>
 
     <record id="estate_property_form_view" model="ir.ui.view">
+
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Form_view" edit="1">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <div>
                         <h1>
@@ -120,3 +125,4 @@
     </record>
 
 </odoo>
+
