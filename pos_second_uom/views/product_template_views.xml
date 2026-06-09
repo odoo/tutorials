@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_form_view_inherit_pos_second_uom" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.second.uom</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_id']" position="after">
+                <div class="d-inline-flex align-items-center gap-1 ms-2">
+                    <span>/ per</span>
+                    <field name="pos_second_uom_id"
+                        domain="[('id', '=', pos_uom_reference_id)]"
+                        options="{'no_create': True}"
+                        class="oe_inline" style="max-width:136px"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

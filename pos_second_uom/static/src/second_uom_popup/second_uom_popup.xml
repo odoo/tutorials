@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_second_uom.SecondUomPopup" t-inherit="point_of_sale.NumberPopup" t-inherit-mode="primary">
+        <xpath expr="//div[hasclass('input-symbol')]" position="before">
+            <div class="text-center mb-2 fw-bold text-primary">
+                Unit: <t t-out="props.uomName"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('popup-input')]" position="inside">
+            <span class="ms-1 text-muted" style="font-size: 0.8em;">
+                (<t t-out="props.uomName"/>)
+            </span>
+        </xpath>
+    </t>
+</templates>
