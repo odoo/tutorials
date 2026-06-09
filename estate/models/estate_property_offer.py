@@ -59,3 +59,4 @@ class EstatePropertyOffer(models.Model):
                         - fields.Date.today()
                     )
                     record.validity = delta.days
+

@@ -6,3 +6,4 @@ class EstatePropertyType(models.Model):
     _description = "Property Types"
 
     name = fields.Char(required=True)
+
