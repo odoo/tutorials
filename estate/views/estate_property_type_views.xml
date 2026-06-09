@@ -22,7 +22,12 @@
             <form string="Property Type">
                 <sheet>
                     <group>
-                        <field name="name" />
+                        <div>
+                            <h1>
+                                <field name="name" />
+                            </h1>
+                            <br></br>
+                        </div>
                     </group>
                 </sheet>
             </form>

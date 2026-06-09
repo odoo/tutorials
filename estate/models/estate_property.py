@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -15,6 +16,7 @@ class EstateProperty(models.Model):
     date_available = fields.Date(
         default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
+    _log_access = False
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -41,11 +43,11 @@ class EstateProperty(models.Model):
 
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('canceled', "Canceled"),
         ],
         default="new",
         required=True,
@@ -108,15 +110,44 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ""
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)", "The expected price must be strictly positive."
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)", "The selling price must be positive."
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_seling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            if (
+                float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_digits=2,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "Selling price cannot be lower than 90%of expected price!"
+                )
+
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("A sold property cannot be canceled")
             record.state = "canceled"
 
+        return True
+
     def action_sold(self):
         for record in self:
             if record.state == "canceled":
                 raise UserError("A canceled property can't be sold")
             record.state = "sold"
+
+        return True
 
