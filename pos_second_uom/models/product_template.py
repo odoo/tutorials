@@ -1,12 +1,12 @@
 from odoo import api, fields, models
 
 
-class InheritedProductTemplate(models.Model):
+class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     pos_second_uom_id = fields.Many2one('uom.uom', string="POS Second UoM")
     pos_uom_reference_id = fields.Many2one(
-        'uom.uom', string="UoM Root", compute='_compute_pos_uom_reference_id', store=True
+        'uom.uom', string="UoM Root", compute='_compute_pos_uom_reference_id'
     )
 
     @api.depends('uom_id')

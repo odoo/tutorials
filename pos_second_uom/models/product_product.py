@@ -1,7 +1,7 @@
 from odoo import api, models
 
 
-class InheritedProductProduct(models.Model):
+class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     @api.model

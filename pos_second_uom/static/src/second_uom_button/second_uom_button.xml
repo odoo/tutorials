@@ -5,7 +5,7 @@
             <button t-if="displaySecondUomBtn()" 
                     class="btn btn-secondary btn-lg flex-shrink-0" 
                     t-on-click="clickSecondUom">
-                <t t-esc="currentOrder.getSelectedOrderline().product_id.pos_second_uom_id.name"/>
+                <t t-out="currentOrder.getSelectedOrderline().product_id.pos_second_uom_id.name"/>
             </button>
         </xpath>
     </t>

@@ -6,13 +6,13 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='uom_id']" position="after">
-                <field name="pos_uom_reference_id" invisible="1"/>
-                <field
-                    name="pos_second_uom_id"
-                    string="POS second UOM"
-                    domain="[('id', '=', pos_uom_reference_id)]"
-                    options="{'no_create': True, 'no_open': True}"
-                />
+                <div class="d-inline-flex align-items-center gap-1 ms-2">
+                    <span>/ per</span>
+                    <field name="pos_second_uom_id"
+                        domain="[('id', '=', pos_uom_reference_id)]"
+                        options="{'no_create': True}"
+                        class="oe_inline" style="max-width:136px"/>
+                </div>
             </xpath>
         </field>
     </record>
