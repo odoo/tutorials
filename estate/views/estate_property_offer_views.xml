@@ -8,6 +8,8 @@
             <list>
                 <field name="price" />
                 <field name="partner_id" />
+                <field name="validity" />
+                <field name="date_deadline" />
                 <field name="status" />
             </list>
         </field>
@@ -20,11 +22,13 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="price" />
-                        <field name="partner_id" />
-                        <field name="property_id" />
-                        <field name="status" />
-                    </group>
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                    <field name="property_id"/>
+                    <field name="validity"/>
+                    <field name="date_deadline"/>
+                    <field name="status"/>
+                </group>
                 </sheet>
             </form>
         </field>
