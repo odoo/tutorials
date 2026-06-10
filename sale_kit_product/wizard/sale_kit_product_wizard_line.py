@@ -7,5 +7,5 @@ class SaleKitProductWizardLine(models.TransientModel):
 
     product_wizard_line = fields.Many2one("sale.kit.product.sub.product.wizard")
     product_id = fields.Many2one("product.product")
-    product_qty = fields.Integer(default=0)
-    product_price = fields.Float(string="Product Unit Price")
+    product_qty = fields.Integer(default=0, string="Quantity")
+    product_price = fields.Float(string="Unit Price ")

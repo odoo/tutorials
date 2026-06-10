@@ -15,8 +15,40 @@
                     icon="fa-cog"
                     title="Sub Product List"
                     class="btn-primary"
+                    invisible="not is_kit"
                 />
 
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']"
+                position="before">
+                <field name="is_sub_product" column_invisible="True" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="decoration-info">is_sub_product</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='customer_lead']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='discount']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_ids']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
             </xpath>
         </field>
     </record>

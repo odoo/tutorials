@@ -8,12 +8,17 @@
             <form string="Product">
                 <sheet>
                     <field name="wizard_line_ids" options="{'no_open': True}">
-                        <list>
+                        <list editable="bottom" edit="True">
                             <field name="product_id" options="{'no_create': True}" />
                             <field name="product_qty" />
                             <field name="product_price" />
                         </list>
                     </field>
+                    <footer>
+                        <button class="btn-primary" string="Confirm" name="action_confirm"
+                            type="object" />
+                        <button class="btn-secondary" string="Cancel" special="cancel" />
+                    </footer>
                 </sheet>
             </form>
         </field>
