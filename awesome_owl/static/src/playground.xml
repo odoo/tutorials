@@ -5,7 +5,7 @@
 
             <Counter onChange.bind="updateC1" max="10"/>
             <Counter onChange.bind="updateC2" max="5"/>
-            <p>The sum is: <t t-esc="state.c1 + state.c2"/></p>
+            <p>The sum is: <t t-out="state.c1 + state.c2"/></p>
 
             <hr class="my-3"/>
 

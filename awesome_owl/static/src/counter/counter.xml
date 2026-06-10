@@ -4,7 +4,7 @@
             <span>Counter: <t t-esc="state.value"/></span>
             <button class="btn btn-sm btn-secondary" t-on-click="increment">Increment</button>
             <button class="btn btn-sm btn-secondary" t-on-click="decrement">Decrement</button>
-            <button class="btn btn-sm btn-danger" t-on-click="reset">Reset</button>
+            <!-- <button class="btn btn-sm btn-danger" t-on-click="reset">Reset</button> -->
         </div>
     </t>
 </templates>
