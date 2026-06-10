@@ -9,7 +9,12 @@ export class Counter extends Component {
     }
 
     increment() {
-        this.state.count++;
-        this.props.onChange(this.state.count);
+            this.state.count++;
+            this.props.onChange(this.state.count);
+    }
+
+    decrement() {
+            this.state.count--;
+            this.props.onChange(this.state.count);
     }
 }

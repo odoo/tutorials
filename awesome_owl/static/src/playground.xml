@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             <h2>Owl Components Demo</h2>
-
             <div class="mb-3">
                 <p><strong>Independent Counters:</strong></p>
                 <Counter onChange.bind="updateCount1"/>
                 <Counter onChange.bind="updateCount2"/>
                 <p>Total: <t t-esc="state.count1 + state.count2"/></p>
             </div>
-
             <div class="d-flex flex-wrap">
                 <Card title="'Card 1: Counter'">
                     <Counter onChange.bind="updateCount1"/>
@@ -32,5 +29,4 @@
             </div>
         </div>
     </t>
-
 </templates>

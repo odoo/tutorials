@@ -26,7 +26,6 @@ export class TodoList extends Component {
             ev.target.value = "";
         }
     }
-    
     toggleTodo(todoId) {
         const todo = this.todos.find((t) => t.id === todoId);
         if (todo) {
@@ -34,10 +33,9 @@ export class TodoList extends Component {
         }
     }
     deleteTodo(todoId) {
-            const index = this.todos.findIndex((t) => t.id === todoId);
-            if (index >= 0) {
-                this.todos.splice(index, 1);
-            }
-        
+        const index = this.todos.findIndex((t) => t.id === todoId);
+        if (index >= 0) { 
+            this.todos.splice(index, 1);
         }
+    }
 }

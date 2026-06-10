@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     _check_offer_price_positive = models.Constraint(
-        'CHECK(price > 0)',
+        "CHECK(price > 0)",
         'Offer Price must be strictly positive'
     )
 
@@ -42,6 +42,7 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - start).days
 
     def action_accept_offer(self):
+        self.ensure_one()
         if self.property_id.state in ('sold', 'cancelled'):
             raise UserError("Cannot accept an offer on a sold or cancelled property.")
         if self.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted'):
@@ -56,6 +57,7 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse_offer(self):
+        self.ensure_one()
         if self.property_id.state in ('sold', 'cancelled'):
             raise UserError("Cannot refuse an offer on a sold or cancelled property.")
         if self.status == 'accepted':

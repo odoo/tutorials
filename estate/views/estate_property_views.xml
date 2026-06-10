@@ -5,27 +5,27 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
-            <header>
-                            <button 
-                                    name="action_sold"
-                                    string="Sold" 
-                                    type="object"
-                                    class="btn-primary"
-                                    invisible="state in ('sold','cancelled')"
-                            />
-                            <button
-                                    name="action_cancel" 
-                                    string="Cancel" 
-                                    type="object"
-                                    class="btn-secondary"
-                                    invisible="state in ('sold','cancelled')"
-                            />
-                            <field name="state"
-                                   widget="statusbar"
-                                   statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
-                                   options="{'clickable': 'True'}"
-                            />
-                    </header>
+                <header>
+                    <button
+                        name="action_sold"
+                        string="Sold"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state in ('sold','cancelled')"
+                    />
+                    <button
+                        name="action_cancel"
+                        string="Cancel"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="state in ('sold','cancelled')"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
+                    />
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
