@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mention_setup_wizard_view_form" model="ir.ui.view">
+        <field name="name">crm.mention.setup.wizard.view.form</field>
+        <field name="model">crm.mention.setup.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Mentions to Leads — Setup">
+                <sheet>
+                    <div class="o_setting_box mb16">
+                        <p class="text-muted">
+                            Tell us about your business so we can find the right buying signals on Reddit.
+                        </p>
+                    </div>
+                    <group>
+                        <field
+                            name="product_description"
+                            placeholder="e.g. HR software for small and medium businesses"
+                        />
+                        <field
+                            name="target_customer"
+                            placeholder="e.g. HR managers at companies with 50-500 employees"
+                        />
+                        <field
+                            name="target_industries"
+                            placeholder="e.g. Manufacturing, Retail, Healthcare"
+                        />
+                        <field
+                            name="target_subreddits"
+                            placeholder="e.g. entrepreneur,smallbusiness,humanresources"
+                        />
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        name="action_confirm"
+                        type="object"
+                        string="Save &amp; Continue"
+                        class="btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

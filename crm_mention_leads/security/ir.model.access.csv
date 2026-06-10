@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+crm_mention_leads.access_crm_mention_job,access_crm_mention_job,crm_mention_leads.model_crm_mention_job,base.group_user,1,1,1,1
+crm_mention_leads.access_crm_mention_setup_wizard,access_crm_mention_setup_wizard,crm_mention_leads.model_crm_mention_setup_wizard,base.group_user,1,1,1,1
