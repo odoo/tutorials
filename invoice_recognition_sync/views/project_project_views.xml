@@ -6,9 +6,22 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="before">
-                <div class="alert alert-warning" invisible="not needs_recognition_sync">
-                    <field name="recognition_sync_message" readonly="1"/>
+
+                <div class="alert alert-warning mb-3" role="alert" invisible="not needs_recognition_sync">
+                    <i class="fa fa-info-circle me-2" title="Information"/>
+                    <field name="recognition_sync_message"
+                           readonly="1"
+                           nolabel="1"/>
+
                 </div>
+            </xpath>
+            <xpath expr="//field[@name='date_start']" position="after">
+                <button name="action_open_recognition_wizard"
+                        type="object"
+                        string="Recognize Invoices"
+                        class="btn btn-primary text-nowrap ms-2"
+                        icon="fa-refresh"
+                        invisible="not needs_recognition_sync"/>
             </xpath>
         </field>
     </record>
