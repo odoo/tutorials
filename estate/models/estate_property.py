@@ -13,11 +13,11 @@ class EstateProperty(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
+        "CHECK(expected_price > 0)",
         'Expected Price must be strictly positive'
     )
     _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
+        "CHECK(selling_price >= 0)",
         'Selling Price must be positive'
     )
 
@@ -74,25 +74,6 @@ class EstateProperty(models.Model):
         if self.state == 'cancelled':
             raise UserError("Cancelled properties cannot be sold.")
         self.state = 'sold'
-
-        # ctx = {
-        #     'default_model': 'estate.property',
-        #     'default_res_ids': self.ids,
-        #     'default_partner_ids': self.buyer_id.ids,
-        #     'default_composition_mode': 'comment',
-        #     'default_email_layout_xmlid': 'mail.mail_notification_layout_with_responsible_signature',
-        #     'default_subject': f"Property Confirmed: {self.name}",
-        #     'default_body': f"<p>Hello,<br/>The property <b>{self.name}</b> has been sold for <b>${self.selling_price}</b>.</p>",
-        # }
-
-        # return {
-        #     'name': 'Send Email',
-        #     'type': 'ir.actions.act_window',
-        #     'view_mode': 'form',
-        #     'res_model': 'mail.compose.message',
-        #     'target': 'new',
-        #     'context': ctx,
-        # }
         message = "Successfully Sold the product"
         if message:
             return {
