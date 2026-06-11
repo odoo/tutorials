@@ -6,8 +6,13 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_in_report" />
+            </xpath>
+
             <xpath expr="//field[@name='order_line']//field[@name='product_template_id']"
-                position="after">
+                position="after" >
 
                 <button name="%(sale_kit_product.sub_products_wizard_view_action)d"
                     type="action"
@@ -15,7 +20,7 @@
                     icon="fa-cog"
                     title="Sub Product List"
                     class="btn-primary"
-                    invisible="not is_kit"
+                    invisible="not is_kit or state not in ['draft','sent']"
                 />
 
             </xpath>
