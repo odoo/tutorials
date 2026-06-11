@@ -1,0 +1,9 @@
+.o_dashboard {
+    background-color: gray;
+
+    .o_dashboard_item {
+        @media (max-width: 576px) {
+            width: 100% !important;
+        }
+    }
+}

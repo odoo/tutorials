@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <Counter onChange.bind="updateCount1"/>
+            <Counter onChange.bind="updateCount2"/>
+            <p>Total: <t t-esc="state.count1 + state.count2"/></p>
+            <Card title="'My First Card'">
+                <b>Hello World!</b>
+            </Card>
+            <Card title="'Second Card'">
+                <p>Odoo OWL is fun!</p>
+            </Card>
+            <Card title="'Counter Card'">
+                <Counter onChange.bind="updateCount1"/>
+            </Card>
+            <TodoList/>
         </div>
     </t>
-
 </templates>

@@ -1,0 +1,69 @@
+<odoo>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list  decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
+                <field name="price"/>
+                <field name="margin" optional="hide"/>
+                <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button name="action_accept"
+                        type="object"
+                        icon="fa-check"
+                        title="Accept"
+                        confirm="Are you sure you want to accept the offer"
+                        invisible="status == 'accepted' or status == 'refused'"/>
+                <button name="action_reject"
+                        type="object"
+                        icon="fa-times"
+                        title="Reject"
+                        confirm="Are you sure you want to reject the offer"
+                        invisible="status == 'refused' or status == 'accepted'"/>
+                <field name="status"/>
+                <field name="property_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer">
+            <sheet>
+            <group>
+                <group>
+                    <field name="price"/>
+                    <field name="attendee_ids" invisible="1"/>
+                    <!-- used to restrict partner_id domain to event registrants -->
+                    <field name="partner_id" domain="[('id', 'in', attendee_ids)]"/>
+                </group>
+                <group>
+                    <field name="status"/>
+                    <field name="property_id"/>
+                </group>
+            </group>
+            <div invisible="spam_offer == False">
+                <h1 class="mt-3 mb-1 text-danger">This property is suspicious</h1>
+            </div>
+    
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+    <record id="estate_property_offer_action_view" model="ir.actions.act_window">
+        <field name="name">Property view offer </field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
+
