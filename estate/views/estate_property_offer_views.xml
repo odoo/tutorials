@@ -7,6 +7,10 @@
             <list>
                 <field name="price" />
                 <field name="partner_id" />
+                <button name="action_confirm" type="object" title="Confirm"
+                    icon="fa-check" />
+                <button name="action_refuse" type="object" title="Refuse"
+                    icon="fa-times" />
                 <field name="status" />
                 <field name="validity" />
                 <field name="date_deadline" />
