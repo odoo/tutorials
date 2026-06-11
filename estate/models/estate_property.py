@@ -1,8 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
-from odoo.exceptions import UserError
-
+from odoo import api, fields, models # pylint: disable=import-error
+from odoo.exceptions import UserError # pylint: disable=import-error
+from odoo.exceptions import ValidationError # pylint: disable=import-error
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(
         compute='_compute_total'
     )
-    best_offer = fields.Integer(
+    best_offer = fields.Float(
         string='Best Offer',
         compute='_compute_best_offer'
     )
@@ -99,13 +99,23 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price>0)',
+        'Expected price must be strictly positive'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price>0)',
+        'Selling price must be positive'
+    )
+
     def action_sold(self):
         for record in self:
             if record.state == 'canceled':
                 raise UserError("Canceled Property cannot be sold")
             record.state = "sold"
         return True
-     
+
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':

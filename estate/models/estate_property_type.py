@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models # pylint: disable=import-error
 
 
 class EstatePropertyType(models.Model):
@@ -6,4 +6,8 @@ class EstatePropertyType(models.Model):
     _description = "Property Types"
 
     name = fields.Char(required=True)
+    _unique_name = models.Constraint(
+        'UNIQUE(name)',
+        'Property type name must be unique.'
+    )
 
