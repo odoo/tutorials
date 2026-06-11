@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem 
+        id="estate_menu_root" 
+        name="Real Estate" 
+        web_icon="estate,static/description/icon.png" 
+        sequence="1"/>
+    <!-- Advertisements Main Menu item -->
+    <menuitem 
+        id="menu_estate_advertisement" 
+        name="Advertisements" 
+        parent="estate_menu_root"/>
+    <!-- Properties sub menu of Advertisements Menu item -->
+    <menuitem 
+        id="menu_estate_properties" 
+        name="Properties" 
+        parent="menu_estate_advertisement" 
+        action="estate_property_action"/>
+    <!-- Settings Main Menu item -->
+    <!-- <menuitem 
+        id="menu_estate_settings" 
+        name="Settings" 
+        parent="estate_menu_root"/>
+    Property Type sub menu of Settings Menu item
+    <menuitem 
+        id="menu_estate_property_type" 
+        name="Property Type" 
+        parent="menu_estate_settings" 
+        action="estate_property_action"/> -->
+</odoo>
