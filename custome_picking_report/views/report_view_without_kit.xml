@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_mo_delivery_slip">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="custome_picking_report.report_mo_delivery_document_clean"/>
+        </t>
+    </template>
+
+    <template id="report_mo_delivery_document_clean" inherit_id="stock.report_delivery_document">
+        <xpath expr="//table[@name='stock_move_table']/tbody" position="replace">
+            <tbody>
+                <t t-foreach="o.move_ids" t-as="move">
+                    <t t-set="production_order" t-value="move.move_orig_ids.production_id"/>
+                    <tr t-foreach="production_order.move_raw_ids" t-as="raw_move">
+                        <t t-if="not raw_move.bom_line_id or raw_move.bom_line_id.bom_id.type != 'phantom'">
+                            <td>
+                                <span t-field="raw_move.product_id"/>
+                                <p t-if="raw_move.description_picking and raw_move.description_picking != raw_move.product_id.name">
+                                    <span t-out="raw_move.description_picking"/>
+                                </p>
+                            </td>
+                            <td class="o_td_quantity text-end">
+                                <span t-out="format_number(raw_move.product_uom_qty)" class="text-nowrap"/>
+                                <span t-field="raw_move.product_uom" groups="uom.group_uom"/>
+                            </td>
+                            <td class="o_td_quantity text-end">
+                                <span t-out="format_number(raw_move.quantity)" class="text-nowrap"/>
+                                <span t-field="raw_move.product_uom" groups="uom.group_uom"/>
+                            </td>
+                        </t>
+                    </tr>
+                </t>
+            </tbody>
+        </xpath>
+    </template>
+</odoo>
