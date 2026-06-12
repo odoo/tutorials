@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="expense_tracker.ExpenseCard">
+        <div class="card shadow-sm border-light mb-4" style="max-width: 600px;">
+            
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="mb-0 text-dark font-weight-bold">Expenses</h5>
+                <button class="btn btn-sm btn-outline-primary" t-on-click="toggleContent">
+                    <t t-if="!state.isOpen">+ Add Expense</t>
+                    <t t-else="">Cancel</t>
+                </button>
+            </div>
+
+            <div class="card-body p-4">
+                
+                <t t-if="state.isOpen">
+                    <div class="p-3 bg-light rounded mb-4 border">
+                        <div class="form-group mb-2">
+                            <input type="text" 
+                                    class="form-control form-control-sm" 
+                                    placeholder="Description" 
+                                    t-att-value="state.description"
+                                    t-on-input="onDescriptionInput"/>
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="number" 
+                                    class="form-control form-control-sm" 
+                                    placeholder="Amount" 
+                                    t-att-value="state.amount"
+                                    t-on-input="onAmountInput"/>
+                            </div>
+                        <div class="form-group mb-3">
+                            <select class="form-control form-control-sm" 
+                                    t-att-value="state.category"
+                                    t-on-change="onCategoryChange">
+                                <option value="">-- Select Category --</option>
+                                <option value="Food">Food</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-sm btn-success px-3 mr-2" t-on-click="saveExpense">Save</button>
+                            <button class="btn btn-sm btn-secondary px-3" t-on-click="toggleContent">Cancel</button>
+                        </div>
+                    </div>
+                </t>
+
+                <div class="expense-history">
+                    <t t-if="state.expenses.length === 0">
+                        <p class="text-muted small mb-0">No expenses added yet.</p>
+                    </t>
+                    <t t-else="">
+                        <ul class="list-group list-group-flush mb-3">
+                            <t t-foreach="state.expenses" t-as="exp" t-key="exp_index">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                                    <div>
+                                        <span class="text-dark font-weight-bold"><t t-out="exp.description"/></span>
+                                        <span class="badge badge-light ms-2 text-muted border"><t t-out="exp.category"/></span>
+                                    </div>
+                                    <span class="text-danger font-weight-bold">₹<t t-out="exp.amount"/></span>
+                                </li>
+                            </t>
+                        </ul>
+                    </t>
+                </div>
+
+                <t t-if="state.expenses.length > 0">
+                    <div class="mt-4 pt-3 border-top">
+                        <h6 class="text-muted small font-weight-bold mb-3">Category Totals</h6>
+                        
+                        <div class="row no-gutters mb-3">
+                            <div class="col-6 p-1"><div class="bg-light p-2 rounded small d-flex justify-content-between"><span>Food:</span> <strong>₹<t t-out="foodTotal"/></strong></div></div>
+                            <div class="col-6 p-1"><div class="bg-light p-2 rounded small d-flex justify-content-between"><span>Travel:</span> <strong>₹<t t-out="travelTotal"/></strong></div></div>
+                            <div class="col-6 p-1"><div class="bg-light p-2 rounded small d-flex justify-content-between"><span>Shopping:</span> <strong>₹<t t-out="shoppingTotal"/></strong></div></div>
+                            <div class="col-6 p-1"><div class="bg-light p-2 rounded small d-flex justify-content-between"><span>Other:</span> <strong>₹<t t-out="otherTotal"/></strong></div></div>
+                        </div>
+                        
+                        <div class="alert alert-success d-flex justify-content-between align-items-center mb-0 py-2 px-3 border-success-light">
+                            <span class="font-weight-bold text-success">Grand Total:</span>
+                            <span class="h5 mb-0 font-weight-bold text-success">₹<t t-out="grandTotal"/></span>
+                        </div>
+                    </div>
+                </t>
+
+            </div>
+        </div>
+    </t>
+</templates>

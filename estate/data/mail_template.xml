@@ -1,0 +1,20 @@
+<odoo>
+    <data>
+        <record id="mail_template_sold_confirmation" model="mail.template">
+            <field name="name">Estate: Property sold Confirmation</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">Property Sold: {{ object.name }}</field>
+            <field name="email_from">{{ (object.salesperson_id.email_formatted or object.buyer_id.email_formatted)}}</field>
+            <field name="partner_to">{{ (object.salesperson_id.partner_id.id or object.buyer_id.id) }}</field>
+            <field name="use_default_to" eval="False"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p><strong>Property:</strong> <t t-out="object.name">Property Name</t></p>
+                    <p><strong>Salesperson:</strong> <t t-out="object.salesperson_id.name">Salesperson</t></p>
+                    <p><strong>Price:</strong> <t t-out="str(object.selling_price)">0.00</t></p>
+                    <p><strong>Description:</strong> <t t-out="object.description">Description</t></p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

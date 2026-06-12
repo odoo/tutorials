@@ -1,0 +1,33 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <div>
+            <div class="p-2">
+                <h5 class="mb-2">Todo List</h5>
+                <button class="btn btn-sm btn-secondary" t-if="todos.length" t-on-click="clear">Clear</button>
+                <button class="btn btn-sm btn-secondary" t-if="todos.length" t-on-click="markascomplete">All Complete</button>
+            <div style="max-width: 400px;">
+                <input class="form-control mb-2"
+                placeholder="Enter a new task"
+                t-ref="todoInput"
+                t-on-keyup="addTodo"/></div>
+            </div>
+            <t t-foreach="todos"
+            t-as="todo"
+            t-key="todo.id">
+                <TodoItem todo="todo"
+                        toggleState.bind="toggleState"
+                        removeTodo.bind="removeTodo"/>
+            </t>
+            <div t-if="todos.length">
+                <!-- <p> Total: <t t-esc="this.todos.length"/></p>
+                <p> Completed: <t t-esc="todos.filter(t => t.isCompleted).length"/></p>
+                <p> Pending: <t t-esc="todos.filter(t => !t.isCompleted).length"/></p>
+                <p> Deleted: <t t-esc="deletedTodos.count"/></p> -->
+                <p t-out="'Total: ' + todos.length"/>
+                <p t-out="'Completed: ' + completedTodos"/>
+                <p t-out="'Pending: ' + pendingTodos"/>
+                <p t-out="'Deleted: ' + deletedCount.count"/>
+            </div>
+        </div>
+    </t>
+</templates>
