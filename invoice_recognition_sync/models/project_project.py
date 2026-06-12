@@ -1,9 +1,5 @@
-import logging
-
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-
-logger = logging.getLogger(__name__)
 
 
 class ProjectProject(models.Model):
@@ -26,21 +22,16 @@ class ProjectProject(models.Model):
 
         sale_orders = (self.sale_order_id | self.reinvoiced_sale_order_id)
 
-        logger.warning("self.sale_order_id ============ %s", self.sale_order_id)
-        logger.warning("self.reinvoiced_sale_order_id ============ %s", self.reinvoiced_sale_order_id)
-        logger.warning("sale_orders ============ %s", sale_orders)
         if not sale_orders:
             return self.env["account.move"]
 
         invoice_entries = sale_orders.invoice_ids.adjusting_entries_move_ids
 
-        logger.warning("invoice_entries  --------- %s", invoice_entries.read())
-
         if not invoice_entries:
             return self.env["account.move"]
 
         wizard_entries = invoice_entries.adjusting_entries_move_ids
-        # logger.warning("wizard_entries ----------------- %s", wizard_entries)
+
         return invoice_entries | wizard_entries
 
     @api.depends(
@@ -58,12 +49,11 @@ class ProjectProject(models.Model):
             target_date = (
                 project._get_recognition_sync_target_date()
             )
-            # logger.warning("Target date =========== %s", target_date)
+
             if not target_date:
                 continue
 
             entries = project._get_adjusting_entries()
-            # logger.warning("Entries  ++++++++++ %s", entries)
 
             if not entries:
                 continue
@@ -76,10 +66,10 @@ class ProjectProject(models.Model):
             project.needs_recognition_sync = True
 
             count = len(entries)
-            # logger.info("Count of date ---------- %s", count)
+
             project.recognition_sync_message = _(
                 "%(count)d revenue recognition entries are not aligned with the project start date (%(date)s).",
-                count=count, date=target_date, )
+                count=count, date=target_date)
 
     def action_open_recognition_wizard(self):
         self.ensure_one()
