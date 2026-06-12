@@ -53,13 +53,11 @@ Menu IDs:
 
 The menu IDs are the technical names Odoo uses in XML.
 
-### Database record example
+### How actions and menus work
 
-| Record type | Example | What it does |
-| --- | --- | --- |
-| `ir.actions.act_window` | `awesome_estate_property_action` | Opens the property model |
-| `ir.ui.menu` | `awesome_estate_property_menu` | Adds the menu entry |
-| `ir.ui.view` | property list/form/search views | Defines the screen layout |
+- `ir.actions.act_window` (e.g. `awesome_estate_property_action`) — opens the model
+- `ir.ui.menu` (e.g. `awesome_estate_property_menu`) — adds the menu entry
+- `ir.ui.view` (e.g. property list/form/search views) — defines the screen layout
 
 ---
 
@@ -95,6 +93,27 @@ That is how Odoo extends views cleanly.
 
 ---
 
+## List View attributes learned
+
+### `editable`
+- `"top"` or `"bottom"` — makes list inline-editable, skips form view
+- Used on Property Type list (single field `name`, form view is overkill)
+- Used on Offers tab inside Property form (`editable="bottom"`)
+- Internally: `_editable_tag_list()` in `ir_ui_view.py` returns `True` when `editable` is set
+
+### `form_view_ref`
+- Context key (NOT `open_form_view`) — controls which form opens for relational fields
+- `<field name="partner_id" context="{'form_view_ref': 'base.view_partner_form'}"/>`
+- Read by `_get_view_refs()` and `_get_x2many_missing_view_archs()` in `ir_ui_view.py`
+
+### Other common attributes
+- `multi_edit="1"` — bulk editing
+- `decoration-*` — conditional styling (bf=bold, danger=red, success=green, muted=grey)
+- `create/delete/edit="0"` — hide buttons
+- Field-level: `invisible`, `readonly`, `required`, `widget`, `sum`, `optional`
+
+---
+
 ## What I learned
 
 - Python defines the model
@@ -105,6 +124,7 @@ That is how Odoo extends views cleanly.
 - menus make the model reachable
 - XML IDs connect records together
 - inheritance lets us modify an existing view instead of rewriting it
+- `editable="bottom"` makes a list inline-editable, form view not needed for simple models
 
 ---
 
@@ -112,5 +132,3 @@ That is how Odoo extends views cleanly.
 
 ```bash
 community/odoo-bin -d patja --addons-path=community/addons,enterprise,tutorials -u awesome_estate --dev xml
-```
-

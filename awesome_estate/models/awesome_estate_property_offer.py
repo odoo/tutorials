@@ -9,19 +9,19 @@ class AwesomeEstatePropertyOffer(models.Model):
     price = fields.Float()
     status = fields.Selection(
         [
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused'),
+            ('accepted', "Accepted"),
+            ('refused', "Refused"),
         ],
         copy=False,
     )
     partner_id = fields.Many2one(
         'res.partner',
-        string='Buyer',
+        string="Buyer",
         required=True,
     )
     property_id = fields.Many2one(
         'awesome.estate.property',
-        string='Property',
+        string="Property",
         required=True,
         ondelete='cascade',
         index=True,
