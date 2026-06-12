@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <template id="expense_tracker.expenseCard">
+            <html>
+                <head>
+                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                    <t t-call-assets="expense_tracker.assets_expenses"/>
+                </head>
+
+                <body>
+                </body>
+            </html>
+        </template>
+    </data>
+</odoo>
