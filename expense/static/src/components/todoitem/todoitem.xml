@@ -1,0 +1,31 @@
+<t t-name="awesome_owl.todoitem">
+    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3" t-att-class="props.todo.isCompleted ? 'bg-light' : ''" t-att-data-id="props.todo.id">
+
+        <div class="d-flex align-items-center gap-3">
+            <!-- Checkbox -->
+            <input class="form-check-input fs-5 m-0 cursor-pointer" type="checkbox" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-click="handletoggleState"/>
+
+            <!-- ID Badge -->
+            <span class="badge text-bg-secondary rounded-pill">#                <t t-esc="props.todo.id"/>
+            </span>
+
+            <!-- Title with dynamic strikethrough class -->
+            <span class="fs-5" t-att-class="props.todo.isCompleted ? 'text-success text-decoration-line-through text-muted' : 'fw-medium text-dark'">
+                <t t-esc="props.todo.title"/>
+            </span>
+
+
+            <span class="">
+                <t t-esc="props.todo.amount"/>
+            </span>
+
+            <span class="badge text-bg-secondary">#                <t t-esc="props.todo.category"/>
+            </span>
+        </div>
+
+        <!-- Delete Button -->
+        <button class="btn btn-outline-danger btn-sm" t-att-id="props.todo.id" t-on-click="handleDelete" title="Delete Task">
+            <i class="fa fa-trash"/>
+        </button>
+    </div>
+</t>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="expense.playground">
+        <div class="container-fluid py-4 bg-light min-vh-100">
+
+            <!-- Page Header -->
+            <div class="row mb-4">
+                <div class="col">
+                    <h2 class="fw-bold border-bottom pb-2">
+                        <i class="fa fa-gamepad text-primary me-2"/>
+ Expense Tracker
+                    </h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Left Column: Counters and Cards -->
+
+                <!-- Right Column: Todo App -->
+                <div class="col-lg-6 mb-4">
+                    <TodoList />
+                </div>
+            </div>
+
+        </div>
+    </t>
+
+</templates>
