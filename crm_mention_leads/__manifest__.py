@@ -1,13 +1,13 @@
 {
-    'name': 'Mentions to Leads',
+    'name': 'CRM Lead Internet Discovery',
     'category': 'Demo',
     'summary': 'Convert Reddit mentions into CRM leads automatically',
     'description': """
         Scans Reddit for posts matching your product/service keywords,
         scores them for buying intent, and creates leads in CRM automatically.
     """,
-    'author': 'ASURK',
-    'depends': ['crm', 'base_setup'],
+    'author': 'ODOO S.A',
+    'depends': ['crm'],
     'data': [
         'security/ir.model.access.csv',
         'data/cron_job.xml',

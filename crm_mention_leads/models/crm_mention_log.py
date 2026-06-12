@@ -19,13 +19,20 @@ class CrmMentionLog(models.Model):
 
     # Outcome
     lead_created = fields.Boolean(string="Lead Created", readonly=True)
-    lead_id = fields.Many2one('crm.lead', string="Lead", readonly=True, ondelete='set null')
+    lead_id = fields.Many2one(
+        'crm.lead', string="Lead", readonly=True, ondelete='set null')
 
     # Meta
-    fetched_on = fields.Datetime(string="Fetched On", default=fields.Datetime.now, readonly=True)
-    post_reddit_id = fields.Char(string="Reddit Post ID", readonly=True)  # to avoid duplicate leads
+    fetched_on = fields.Datetime(
+        string="Fetched On", default=fields.Datetime.now, readonly=True)
+    # to avoid duplicate leads
+    post_reddit_id = fields.Char(string="Reddit Post ID", readonly=True)
 
     @api.model
-    def post_already_processed(self, reddit_post_id):
-        """Check if we already processed this Reddit post."""
-        return self.search_count([('post_reddit_id', '=', reddit_post_id)]) > 0
+    def _reddit_post_exists(self, reddit_post_id):
+        return bool(
+            self.search(
+                [('post_reddit_id', '=', reddit_post_id)],
+                limit=1,
+            )
+        )

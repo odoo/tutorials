@@ -7,7 +7,7 @@ from odoo import api, models
 _logger = logging.getLogger(__name__)
 
 
-class CrmMentionJob(models.Model):
+class CrmMentionJob(models.TransientModel):
     _name = 'crm.mention.job'
     _description = 'Mention Lead Scanner'
 
@@ -18,12 +18,11 @@ class CrmMentionJob(models.Model):
     @api.model
     def run_mention_scan(self):
         params = self.env['ir.config_parameter'].sudo()
-        breakpoint()
+
         if not params.get_param('crm_mention_leads.enabled'):
             _logger.info("Mentions to Leads: disabled, skipping scan.")
             return
 
-        # Load config
         product_desc = params.get_param('crm_mention_leads.product_desc', '')
         target_customer = params.get_param(
             'crm_mention_leads.target_customer', '')
@@ -37,41 +36,49 @@ class CrmMentionJob(models.Model):
                 "Mentions to Leads: no product description configured. Run setup wizard.")
             return
 
-        # Step 1 — Generate intent queries via AI
+        # Step 1 — Generate intent queries (1 Gemini call)
         queries = self._generate_intent_queries(product_desc, target_customer)
         _logger.info("Mentions to Leads: generated %d queries", len(queries))
 
-        # Step 2 — Fetch Reddit posts via ScrapeCreators
+        # Step 2 — Fetch Reddit posts
         posts = self._fetch_reddit_posts(subreddits.split(','), queries)
-        _logger.info("Mentions to Leads: fetched %d posts", len(posts))
 
-        # Step 3 — Score and create leads
-        leads_created = 0
-        for post in posts:
-            # Skip already-processed posts
-            if self.env['crm.mention.log'].post_already_processed(post['id']):
-                continue
+        # Deduplicate against already-processed posts
+        new_posts = [
+            p for p in posts
+            if not self.env['crm.mention.log'].post_already_processed(p['id'])
+        ]
+        _logger.info("Mentions to Leads: %d new posts to score",
+                     len(new_posts))
 
-            score, reason = self._score_post(
-                post, product_desc, target_customer)
+        if not new_posts:
+            return
 
-            lead = None
-            if score >= threshold:
-                lead = self._create_lead(post, score)
-                leads_created += 1
+        # Step 3 — Score ALL posts in a single Gemini call
+        scored = self._score_posts_batch(
+            new_posts, product_desc, target_customer)
 
-            # Always log the post
-            self._log_mention(post, score, reason, lead)
+        # Step 4 — Split into leads_to_create and logs_to_write
+        qualifying = [s for s in scored if s['score'] >= threshold]
+        _logger.info("Mentions to Leads: %d posts qualify (score >= %d)", len(
+            qualifying), threshold)
+
+        # Bulk create leads — 1 DB call
+        leads_by_post_id = self._create_leads_bulk(qualifying)
+
+        # Bulk create logs — 1 DB call for all posts
+        self._log_mentions_bulk(scored, leads_by_post_id)
 
         _logger.info(
-            "Mentions to Leads: scan complete. %d leads created.", leads_created)
+            "Mentions to Leads: scan complete. %d leads created.", len(qualifying))
 
     # ------------------------------------------------------------------
-    # STEP 1 — Generate intent queries using Gemini
+    # STEP 1 — Generate intent queries (1 Gemini call)
     # ------------------------------------------------------------------
 
     def _gemini_generate(self, prompt, temperature=0.3):
         params = self.env['ir.config_parameter'].sudo()
+
         api_key = params.get_param('crm_mention_leads.gemini_api_key')
 
         if not api_key:
@@ -82,32 +89,20 @@ class CrmMentionJob(models.Model):
             params={"key": api_key},
             headers={"Content-Type": "application/json"},
             json={
-                "contents": [
-                    {
-                        "parts": [
-                            {
-                                "text": prompt
-                            }
-                        ]
-                    }
-                ],
+                "contents": [{"parts": [{"text": prompt}]}],
                 "generationConfig": {
                     "temperature": temperature,
-                    "responseMimeType": "application/json"
-                }
+                    "responseMimeType": "application/json",
+                },
             },
             timeout=30,
         )
-
         response.raise_for_status()
-        data = response.json()
-        return data["candidates"][0]["content"]["parts"][0]["text"]
+        return response.json()["candidates"][0]["content"]["parts"][0]["text"]
 
     def _generate_intent_queries(self, product_desc, target_customer):
         params = self.env['ir.config_parameter'].sudo()
-        api_key = params.get_param('crm_mention_leads.gemini_api_key')
-
-        if not api_key:
+        if not params.get_param('crm_mention_leads.gemini_api_key'):
             return [product_desc[:50]]
 
         prompt = f"""
@@ -127,27 +122,20 @@ Return ONLY a JSON array.
 Example:
 [
   "looking for HR software",
-  "payroll tool recommendation",
-  "replacing BambooHR"
+  "payroll tool recommendation"
 ]
 """
-
         try:
-            content = self._gemini_generate(prompt, temperature=0.7)
-            return json.loads(content)
-        except Exception as e:
-            _logger.error(
-                "Mentions to Leads: query generation failed: %s", e)
+            return json.loads(self._gemini_generate(prompt, temperature=0.7))
+        except Exception as e:  # noqa: BLE001
+            _logger.error("Mentions to Leads: query generation failed: %s", e)
             return [product_desc[:50]]
 
     # ------------------------------------------------------------------
-    # STEP 2 — Fetch Reddit posts via ScrapeCreators API
-    # Docs: https://docs.scrapecreators.com/v1/reddit/subreddit/search
-    #       https://docs.scrapecreators.com/v1/reddit/search
+    # STEP 2 — Fetch Reddit posts via ScrapeCreators
     # ------------------------------------------------------------------
 
     def _get_scrapecreators_headers(self):
-        """Return auth headers for ScrapeCreators API."""
         params = self.env['ir.config_parameter'].sudo()
         api_key = params.get_param('crm_mention_leads.scrapecreators_api_key')
         if not api_key:
@@ -156,14 +144,10 @@ Example:
 
     def _parse_scrapecreators_posts(self, data, subreddit_name):
         posts = []
-
         for item in data.get('posts', []):
-
             subreddit = item.get('subreddit')
-
             if isinstance(subreddit, dict):
                 subreddit = subreddit.get('name')
-
             posts.append({
                 'id': str(item.get('id', '')),
                 'title': item.get('title', ''),
@@ -172,98 +156,71 @@ Example:
                 'subreddit': subreddit or subreddit_name,
                 'author': item.get('author') or item.get('author_name') or '',
             })
-
         return posts
 
     def _fetch_reddit_posts(self, subreddits, queries):
-        """
-        For each subreddit + query pair, call ScrapeCreators
-        /v1/reddit/subreddit/search and collect posts.
-
-        Falls back to global /v1/reddit/search when no subreddits are
-        configured.
-        """
-        posts = [{'id': '1u0hln0', 'title': 'I am looking to buy computers for my office workers', 'body': '', 'url': 'https://www.reddit.com/r/Entrepreneur/comments/1u0hln0/iot_business_has_anyone_here_built_one/', 'subreddit': 'Entrepreneur', 'author': 'Draviddavid'}
-                 ]
+        posts = []
         try:
             headers = self._get_scrapecreators_headers()
-
             for subreddit in subreddits:
                 subreddit = subreddit.strip()
                 if not subreddit:
                     continue
-
                 for query in queries:
                     try:
-
-                        _logger.info(
-                            "Fetching r/%s query='%s'",
-                            subreddit,
-                            query,
-                        )
-
+                        _logger.info("Fetching r/%s query='%s'",
+                                     subreddit, query)
                         response = requests.get(
                             "https://api.scrapecreators.com/v1/reddit/subreddit/search",
                             headers=headers,
                             params={
-                                "subreddit": subreddit,   # no "r/" prefix
+                                "subreddit": subreddit,
                                 "query": query,
                                 "sort": "new",
-                                "timeframe": "week",      # recent posts only
+                                "timeframe": "week",
                             },
                             timeout=15,
                         )
-
-                        _logger.info(
-                            "Response %s for r/%s query='%s'",
-                            response.status_code,
-                            subreddit,
-                            query,
-                        )
-
                         if response.status_code != 200:
                             _logger.warning(
-                                "Mentions to Leads: ScrapeCreators returned %d "
-                                "for r/%s query '%s'",
+                                "Mentions to Leads: ScrapeCreators returned %d for r/%s query '%s'",
                                 response.status_code, subreddit, query,
                             )
                             continue
-
                         data = response.json()
-
-                        _logger.info(
-                            "Received %d posts",
-                            len(data.get("posts", []))
-                        )
-
-                        parsed = self._parse_scrapecreators_posts(
-                            data,
+                        _logger.info("Received %d posts",
+                                     len(data.get("posts", [])))
+                        posts.extend(
+                            self._parse_scrapecreators_posts(data, subreddit))
+                    except Exception:  # noqa: BLE001
+                        _logger.exception(
+                            "Mentions to Leads: fetch failed for r/%s '%s'",
                             subreddit,
+                            query,
                         )
-                        posts.extend(parsed)
-
-                    except Exception as e:
-                        _logger.error(
-                            "Mentions to Leads: fetch failed for r/%s '%s': %s",
-                            subreddit, query, e,
-                        )
-
         except ValueError as e:
-            # API key not configured
             _logger.error("Mentions to Leads: %s", e)
-
         return posts
 
     # ------------------------------------------------------------------
-    # STEP 3 — Score post for buying intent
+    # STEP 3 — Score ALL posts in ONE Gemini call
     # ------------------------------------------------------------------
 
-    def _score_post(self, post, product_desc, target_customer):
+    def _score_posts_batch(self, posts, product_desc, target_customer):
+        """
+        Send all posts to Gemini in a single call.
+        Returns the same list with 'score' and 'reason' added to each post.
+        """
         params = self.env['ir.config_parameter'].sudo()
-        api_key = params.get_param('crm_mention_leads.gemini_api_key')
+        if not params.get_param('crm_mention_leads.gemini_api_key'):
+            # No AI key — assign default score to all
+            return [{**p, 'score': 50, 'reason': 'No Gemini key configured'} for p in posts]
 
-        if not api_key:
-            return 50, "No Gemini key configured"
+        # Build a numbered list of posts for the prompt
+        posts_text = "\n\n".join(
+            f"[{i}] Title: {p['title']}\nBody: {p['body'][:300]}"
+            for i, p in enumerate(posts)
+        )
 
         prompt = f"""
 You are a B2B sales qualification expert.
@@ -274,80 +231,112 @@ Our Product:
 Our Target Customer:
 {target_customer}
 
-Post Title:
-{post['title']}
-
-Post Body:
-{post['body'][:500]}
-
-Score from 0 to 100 where:
-
+Score each post below for buying intent from 0 to 100 where:
 80-100 = Strong buying intent
 60-79 = Moderate intent
 40-59 = Weak intent
-0-39 = Not relevant
+0-39  = Not relevant
 
-Return ONLY JSON.
+Posts:
+{posts_text}
+
+Return ONLY a JSON array with one object per post, in the same order.
+Each object must have "index", "score", and "reason".
 
 Example:
-{{
-  "score": 75,
-  "reason": "User is actively comparing tools and mentions budget"
-}}
+[
+  {{"index": 0, "score": 75, "reason": "User is actively comparing tools"}},
+  {{"index": 1, "score": 20, "reason": "Unrelated post about personal finance"}}
+]
 """
-
         try:
             content = self._gemini_generate(prompt, temperature=0.2)
-            breakpoint()
-            result = json.loads(content)
-            return (
-                int(result.get("score", 0)),
-                result.get("reason", "")
-            )
-        except Exception as e:
-            _logger.error(
-                "Mentions to Leads: scoring failed: %s", e)
-            return 0, f"Scoring error: {e}"
+            results = json.loads(content)
+
+            # Map scores back onto posts by index
+            score_map = {r['index']: r for r in results}
+            scored_posts = []
+            for i, post in enumerate(posts):
+                result = score_map.get(i, {})
+                scored_posts.append({
+                    **post,
+                    'score': int(result.get('score', 0)),
+                    'reason': result.get('reason', ''),
+                })
+            return scored_posts
+
+        except Exception as e:  # noqa: BLE001
+            _logger.error("Mentions to Leads: batch scoring failed: %s", e)
+            # Fallback — assign 0 to all so nothing slips through
+            return [{**p, 'score': 0, 'reason': f'Scoring error: {e}'} for p in posts]
 
     # ------------------------------------------------------------------
-    # STEP 4 — Create CRM lead
+    # STEP 4 — Bulk create leads — 1 DB call
     # ------------------------------------------------------------------
 
-    def _create_lead(self, post, score):
-        breakpoint()
+    def _create_leads_bulk(self, qualifying_posts):
+        """
+        Create all qualifying leads in a single ORM create() call.
+        Returns a dict of {post_id: lead_id} for logging.
+        """
+        if not qualifying_posts:
+            return {}
+
         source = self.env['utm.source'].search(
             [('name', '=', 'Reddit')], limit=1)
         if not source:
             source = self.env['utm.source'].create({'name': 'Reddit'})
 
-        lead = self.env['crm.lead'].create({
-            'name': f"Reddit Mention — {post['title'][:60]}",
-            'description': (
-                f"<b>Subreddit:</b> r/{post['subreddit']}<br/>"
-                f"<b>Author:</b> u/{post['author']}<br/>"
-                f"<b>Intent Score:</b> {score}/100<br/>"
-                f"<b>URL:</b> <a href='{post['url']}'>{post['url']}</a><br/><br/>"
-                f"{post['body'][:1000]}"
-            ),
-            'source_id': source.id,
-            'type': 'opportunity',
-        })
-        return lead
+        vals_list = []
+        for post in qualifying_posts:
+            vals_list.append({
+                'name': f"Reddit Mention — {post['title'][:60]}",
+                'description': (
+                    f"<b>Subreddit:</b> r/{post['subreddit']}<br/>"
+                    f"<b>Author:</b> u/{post['author']}<br/>"
+                    f"<b>Intent Score:</b> {post['score']}/100<br/>"
+                    f"<b>URL:</b> <a href='{post['url']}'>{post['url']}</a><br/><br/>"
+                    f"{post['body'][:1000]}"
+                ),
+                'source_id': source.id,
+                'type': 'opportunity',
+            })
+
+        # Single DB call for all leads
+        leads = self.env['crm.lead'].create(vals_list)
+
+        # Map post_id → lead record for log linking
+        return {
+            post['id']: lead
+            for post, lead in zip(qualifying_posts, leads)
+        }
 
     # ------------------------------------------------------------------
-    # STEP 5 — Log the mention
+    # STEP 5 — Bulk create logs — 1 DB call
     # ------------------------------------------------------------------
 
-    def _log_mention(self, post, score, reason, lead=None):
-        self.env['crm.mention.log'].create({
-            'post_title': post['title'],
-            'post_url': post['url'],
-            'post_body': post['body'][:2000],
-            'subreddit': post['subreddit'],
-            'reddit_author': post['author'],
-            'post_reddit_id': post['id'],
-            'intent_score': score,
-            'score_reason': reason,
-            'lead_created': bool(lead),
-            'lead_id': lead.id if lead else False,
-        })
+    def _log_mentions_bulk(self, scored_posts, leads_by_post_id):
+        """
+        Write all mention logs in a single ORM create() call.
+        """
+        if not scored_posts:
+            return
+
+        vals_list = []
+        for post in scored_posts:
+            lead = leads_by_post_id.get(post['id'])
+            vals_list.append({
+                'post_title': post['title'],
+                'post_url': post['url'],
+                'post_body': post['body'][:2000],
+                'subreddit': post['subreddit'],
+                'reddit_author': post['author'],
+                'post_reddit_id': post['id'],
+                'intent_score': post['score'],
+                'score_reason': post['reason'],
+                'lead_created': bool(lead),
+                'lead_id': lead.id if lead else False,
+            })
+
+        # Single DB call for all logs
+        self.env['crm.mention.log'].create(vals_list)
