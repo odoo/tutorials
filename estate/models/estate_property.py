@@ -42,4 +42,4 @@ class EstateProperty(models.Model):
         copy=False,
         default="New",
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)

@@ -9,3 +9,7 @@ class OwlPlayground(http.Controller):
         Renders the owl playground page
         """
         return request.render("awesome_owl.playground")
+
+    @http.route(["/counter"], type="http", auth="public")
+    def show_counter(self):
+        return request.render("awesome_owl.counter_page")
