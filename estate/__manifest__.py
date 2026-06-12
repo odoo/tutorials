@@ -4,9 +4,13 @@
     'license': 'LGPL-3',
     'depends': ['base', 'calendar', 'mail', 'sale'],
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
+        'data/master_data.xml',
         'data/mail_template_data.xml',
         'data/ir_cron.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
         'views/estate_property_visit_views.xml',
         'views/estate_property_issue_views.xml',
         'views/estate_property_offer_views.xml',
@@ -16,6 +20,9 @@
         'views/estate_property_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+    ],
+    'demo': [
+        'demo/demo_data.xml',
     ],
     'installable': True,
     'application': True,

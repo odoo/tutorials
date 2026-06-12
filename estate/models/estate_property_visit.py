@@ -22,6 +22,10 @@ class EstatePropertyVisit(models.Model):
         'UNIQUE(property_id, visit_date)',
         'Already Scheduled!!',
     )
+    _unique_partner_date = models.Constraint(
+        'UNIQUE(partner_id, visit_date)',
+        'This customer already has a visit scheduled at this time!',
+    )
 
     @api.model_create_multi
     def create(self, vals_list):

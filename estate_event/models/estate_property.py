@@ -41,13 +41,14 @@ class EstateProperty(models.Model):
                         })
                         partners |= partner
 
-            done_visits = self.env["estate.property.visit"].search([
-                ("property_id", "=", rec.id),
-                ("state", "=", "done"),
-            ])
-            for visit in done_visits:
-                if visit.partner_id:
-                    partners |= visit.partner_id
+            if rec.id:
+                done_visits = self.env["estate.property.visit"].search([
+                    ("property_id", "=", rec.id),
+                    ("state", "=", "done"),
+                ])
+                for visit in done_visits:
+                    if visit.partner_id:
+                        partners |= visit.partner_id
 
             rec.attended_partner_ids = partners
 

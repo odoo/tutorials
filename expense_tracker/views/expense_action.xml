@@ -1,0 +1,9 @@
+<odoo>
+    <record id="action_expense_tracker" model="ir.actions.client">
+        <field name="name">Expense Tracker</field>
+        <field name="tag">expense_tracker.expenses</field>
+    </record>
+
+    <menuitem id="menu_tutorials_root" name="Expense Tracker"/>
+    <menuitem id="menu_expense_tracker" name="Expense Tracker" parent="menu_tutorials_root" action="action_expense_tracker"/>
+</odoo>

@@ -1,4 +1,5 @@
 /** @odoo-module **/
+
 import { Component } from "@odoo/owl";
 
 export class TodoItem extends Component {
@@ -8,13 +9,13 @@ export class TodoItem extends Component {
         todo: {
             type: Object,
             shape: {
-                id:          Number,
+                id: Number,
                 description: String,
                 isCompleted: Boolean,
             },
         },
         number: Number,
         toggleState: { type: Function },
-        removeTodo:  { type: Function },
+        removeTodo: { type: Function },
     };
 }

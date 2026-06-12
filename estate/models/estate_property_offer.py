@@ -119,6 +119,8 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept(self):
+        if not self.env.user.has_group("estate.group_estate_manager"):
+            raise UserError("Estate agent cannot accept offers.")
         for record in self:
             accepted_offer = record.property_id.offer_ids.filtered_domain([
             ("status", "=", "accepted"),
@@ -126,6 +128,7 @@ class EstatePropertyOffer(models.Model):
         ])
             if accepted_offer:
                 raise UserError("An offer has already been accepted for this property.")
+            record.status = "accepted"
             record.property_id.write({
                 'buyer_id': record.partner_id.id,
                 'selling_price': record.price,
@@ -138,6 +141,8 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse(self):
+        if not self.env.user.has_group("estate.group_estate_manager"):
+            raise UserError("Estate agent cannot refuse offer")
         for record in self:
             record.status = 'refused'
         return True

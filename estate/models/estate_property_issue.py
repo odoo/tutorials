@@ -91,7 +91,7 @@ class EstatePropertyIssue(models.Model):
 
     def write(self, vals):
         if vals.get("salesman_id"):
-            vals["staty"] = "in_progress"
+            vals["state"] = "in_progress"
 
         return super().write(vals)
 

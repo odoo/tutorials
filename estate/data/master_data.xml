@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="estate_master_data_1" model="estate.property">
+            <field name="name">winnn</field>
+            <field name="postcode">12322</field>
+            <field name="expected_price">1020</field>
+            <field name="bedrooms">31</field>
+        </record>
+    </data>
+</odoo>
