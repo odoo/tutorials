@@ -2,8 +2,66 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container-fluid py-4 bg-light min-vh-100">
+
+            <!-- Page Header -->
+            <div class="row mb-4">
+                <div class="col">
+                    <h2 class="fw-bold border-bottom pb-2">
+                        <i class="fa fa-gamepad text-primary me-2"/>
+ OWL Playground
+                    </h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Left Column: Counters and Cards -->
+                <div class="col-lg-6 mb-4">
+
+                    <h4 class="mb-3 text-secondary">State &amp; Components</h4>
+
+                    <div class="alert alert-info shadow-sm d-flex justify-content-between align-items-center">
+                        <h5 class="m-0">Global Sum:</h5>
+                        <span class="badge text-bg-primary fs-5">
+                            <t t-esc="state.sum"/>
+                        </span>
+                    </div>
+
+                    <!-- Row for Counters -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <Counter onButtonClick.bind="handleSum" sum="state.sum"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <Counter onButtonClick.bind="handleSum" sum="state.sum"/>
+                        </div>
+                    </div>
+
+                    <hr class="my-4"/>
+
+                    <h4 class="mb-3 text-secondary">Slot Cards</h4>
+
+                    <Card>
+                        <t t-set-slot="title">General Info</t>
+                        <p class="mb-0">Hey, the UI is looking much better now!</p>
+                    </Card>
+
+                    <Card>
+                        <t t-set-slot="title">Card with a Counter</t>
+                        <Counter onButtonClick.bind="handleSum" sum="state.sum" />
+                    </Card>
+
+                    <Card>
+                        <p class="mb-0">I am a card with no title set.</p>
+                    </Card>
+                </div>
+
+                <!-- Right Column: Todo App -->
+                <div class="col-lg-6 mb-4">
+                    <TodoList />
+                </div>
+            </div>
+
         </div>
     </t>
 

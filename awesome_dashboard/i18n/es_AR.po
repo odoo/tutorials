@@ -1,0 +1,106 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* awesome_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-04 07:03+0000\n"
+"PO-Revision-Date: 2026-06-04 07:03+0000\n"
+"Last-Translator: \n"
+"Language-Team: es_AR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+"Language: es_AR\n"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/components/dashboard_display_settings/dashboard_display_settings.xml:0
+msgid "Apply"
+msgstr "Aplicar"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average amount of t-shirt by order this month"
+msgstr "Cantidad promedio de remeras por pedido este mes"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average quantity of t-shirts"
+msgstr "Cantidad promedio de remeras"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average time for an order"
+msgstr "Tiempo promedio de un pedido"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average time to complete an order (days)"
+msgstr "Tiempo promedio para completar un pedido (días)"
+
+#. module: awesome_dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.menu_root
+msgid "Awesome Dashboard"
+msgstr "Panel Increíble"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/components/control_panel_buttons/control_panel_buttons.js:0
+msgid "Breadcrumb"
+msgstr "Ruta de navegación"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/components/control_panel_buttons/control_panel_buttons.xml:0
+msgid "Customers"
+msgstr "Clientes"
+
+#. module: awesome_dashboard
+#: model:ir.actions.client,name:awesome_dashboard.dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.dashboard_menu
+msgid "Dashboard"
+msgstr "Tablero"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/components/control_panel_buttons/control_panel_buttons.xml:0
+msgid "Leads"
+msgstr "Prospectos"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "New orders this month"
+msgstr "Nuevos pedidos este mes"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Number of new orders this month"
+msgstr "Número de nuevos pedidos este mes"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Orders by size"
+msgstr "Pedidos por talla"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Orders by t-shirt size"
+msgstr "Pedidos por tamaño de remera"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "hello BashDoard"
+msgstr "hola Dashboard"

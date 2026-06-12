@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard bg-light min-vh-100'" display="{ controlPanel: true }">
+
+            <t t-set-slot="control-panel-create-button">
+                <ControlPanelButtons items="items"/>
+            </t>
+
+            <div class="container-fluid py-4 px-4">
+
+                <!-- Minimal Title -->
+                <h4 class="text-secondary fw-normal mb-4">Dashboard Overview</h4>
+
+                <!-- Clean, auto-sizing flex grid -->
+                <div class="d-flex flex-wrap gap-4">
+                    <t t-foreach="itemsondashboard" t-as="item" t-key="item.description">
+
+                        <!-- Base width of ~280px, flexing up depending on item.size -->
+                        <div class="flex-grow-1"
+                             t-att-style="'min-width: 280px; flex-basis: ' + ((item.size || 1) * 25) + '%;'">
+                            <DashboardItem width="'100%'">
+                                <t t-set="itemProp"
+                                   t-value="item.props ? item.props(statistics) : { data: statistics }"/>
+                                <t t-component="item.Component" t-props="itemProp"/>
+                            </DashboardItem>
+                        </div>
+
+                    </t>
+                </div>
+            </div>
+
+        </Layout>
+    </t>
+
+</templates>
