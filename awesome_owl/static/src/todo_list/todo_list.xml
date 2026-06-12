@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <div>
+        
+            <p style="font-size:15px; font-weight:600;
+                    color:#333; margin-bottom:10px;">
+                Todo List
+            </p>
+            <div style="display:flex; gap:10px; margin-bottom:10px; font-size:13px;">
+                <span>Total: <t t-out="totalTodos"/></span>
+                <span>Completed: <t t-out="completedTodos"/></span>
+                <span>Pending: <t t-out="pendingTodos"/></span>
+                <span>Deleted: <t t-out="deletedCount.value"/></span>
+            </div>
+            <button type="button"
+                        class="btn btn-primary"
+                        t-if="todos.length"
+                        t-on-click="markAllRead">
+                        markAllRead
+                    </button>
+
+            <button type="button"
+                        class="btn btn-primary"
+                        t-if="todos.length"
+                        t-on-click="clearAll">
+                        clearAll
+                    </button>
+
+            <input style="padding:8px 12px; border-radius:6px;
+                        border:1px solid #ddd; font-size:13px;
+                        width:200px; outline:none;"
+                placeholder="Enter a new task"
+                t-ref="todoInput"
+                t-on-keyup="addTodo"/>
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo"
+                        number="todo_index + 1"
+                        toggleState.bind="toggleState"
+                        removeTodo.bind="removeTodo"/>
+            </t>
+
+
+        </div>
+
+    </t>
+</templates>

@@ -1,0 +1,9 @@
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.NumberCard">
+        <div>
+            <div><t t-esc="props.title"/></div>
+            <h3><t t-out="props.value"/></h3>
+        </div>
+    </t>
+</templates>

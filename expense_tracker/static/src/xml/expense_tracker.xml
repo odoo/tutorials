@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="expense_tracker.ExpenseAction">
+
+        <div class="o_expense_tracker container" style="margin-top: 20px; padding: 10px;">
+
+            <div style="margin-bottom: 15px;">
+                <button t-if="!state.showForm" class="btn btn-primary" t-on-click="showForm">Add Expense</button>
+            </div>
+
+            <div t-if="state.showForm" class="card" style="margin-bottom: 20px; padding: 5px;">
+                <div class="card-header" style="padding: 10px;">
+                    <h4 style="margin: 0px;">Add Expense</h4>
+                </div>
+
+                <div class="card-body" style="padding: 15px;">
+
+                    <div style="margin-bottom: 12px;">
+                        <label class="form-label" style="margin-bottom: 4px;">Category</label>
+                        <select class="form-select" t-on-change="onCategoryChange" style="padding: 6px;">
+                            <t t-foreach="categories" t-as="category" t-key="category.value">
+                                <option t-att-value="category.value" t-att-selected="category.value === state.form.category">
+                                    <t t-out="category.label"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 12px;">
+                        <label class="form-label" style="margin-bottom: 4px;">Price</label>
+                        <input type="number" step="0.01" class="form-control" t-att-value="state.form.price" t-on-input="onPriceChange" style="padding: 6px;"/>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label class="form-label" style="margin-bottom: 4px;">Description</label>
+                        <input type="text" class="form-control" t-att-value="state.form.description" t-on-input="onDescriptionChange" style="padding: 6px;"/>
+                    </div>
+
+                    <button class="btn btn-success" t-on-click="addExpense" style="margin-top: 5px;">Save</button>
+
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 20px; margin-top: 10px;">
+                <t t-foreach="categories" t-as="category" t-key="category.value">
+                    <div class="col-md-3" style="margin-bottom: 10px; padding: 5px;">
+                        <div class="card text-center" style="padding: 5px;">
+                            <div class="card-header" style="padding: 8px;">
+                                <t t-out="category.label"/>
+                            </div>
+                            <div class="card-body" style="padding: 10px;">
+                                ₹ <t t-out="totals[category.value] || 0"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+                <t t-foreach="state.expenses" t-as="expense" t-key="expense.id">
+                    <div class="col-md-4" style="margin-bottom: 15px; padding: 5px;">
+                        <div class="card" style="padding: 5px;">
+                            <div class="card-header" style="padding: 8px;">
+                                <t t-out="displayCategory(expense.category)"/>
+                            </div>
+                            <div class="card-body" style="padding: 10px;">
+                                <h5 style="margin-bottom: 8px;">₹ <t t-out="expense.price"/></h5>
+                                <p style="margin: 0px;"><t t-out="expense.description"/></p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+
+        </div>
+
+    </t>
+
+</templates>
