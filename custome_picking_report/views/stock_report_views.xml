@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_delivery_note" model="ir.actions.report">
+        <field name="name">MO Delivery Note</field>
+        <field name="model">stock.picking</field>
+        <field name="report_name">custome_picking_report.report_mo_delivery_slip</field>
+        <field name="print_report_name">'MO Delivery Note - %s - %s' % (object.partner_id.name or '', object.name)</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking"/>
+    </record>
+</odoo>
