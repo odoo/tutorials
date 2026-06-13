@@ -16,6 +16,10 @@
                     removeTodo.bind="removeTodo"
                 />
             </t>
+            <div t-if="todos.length">
+                <button class="btn-primary" t-on-click="clear">delete all offer</button>
+                <button class="btn-primary" t-on-click="complete">complete all todo</button>
+            </div>
         </div>
     </t>
 </templates>

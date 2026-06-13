@@ -26,10 +26,29 @@ export class TodoList extends Component {
         }
     }
 
+    complete() {
+        const all_todos = this.todos;
+        for (let i = 0; i < all_todos.length; i++) {
+            const todo = all_todos[i];
+            todo.isCompleted = !todo.isCompleted;
+        }
+
+    }
+    clear() {
+        const all_todos = [...this.todos];
+        for (let i = 0; i < all_todos.length; i++) {
+            const todo = all_todos[i];
+            const index = this.todos.findIndex((t) => t.id === todo.id);
+            if (index >= 0) {
+                this.todos.splice(index, 1);
+            }
+        }
+    }
     addTodo(ev) {
         if (ev.keyCode === 13) {
             const description = ev.target.value;
-            if (description) {
+            const todo = this.todos.find((t) => t.description == description)
+            if (!todo) {
                 this.todos.push({
                     id: this.nextId++,
                     description: description,

@@ -17,6 +17,7 @@
         'views/estate_property_tags_views.xml',
         'views/estate_menus.xml',
         'views/res_users_views.xml',
+        'wizard/estate_offer_wizard.xml',
     ],
     'demo': [
         'demo/demo.xml',

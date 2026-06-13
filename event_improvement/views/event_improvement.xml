@@ -1,0 +1,21 @@
+
+<odoo>
+    <record id="inherited_event_view_form" model="ir.ui.view">
+        <field name="name">event.event.form.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="recurrency"/>
+                <label for="repeat_interval" invisible="not recurrency"/>
+                <div class="d-flex" invisible="not recurrency">
+                    <field name="repeat_interval" required="recurrency" class="me-2" style="max-width: 2rem !important;"/>
+                    <field name="repeat_type" required="recurrency" class="me-2" style="max-width: 4rem !important;"/>
+                    <field name="repeat_until" required="recurrency" class="me-2" style="max-width: 15rem !important;"/>
+                    <field name="end_date" invisible="repeat_until != 'end_date'" required="repeat_until == 'end_date'" class="me-2"/>
+                    <field name="count" invisible="repeat_until != 'count'" required="repeat_until == 'count'" class="me-2"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

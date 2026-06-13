@@ -211,6 +211,22 @@
         </field>
     </record>
 
+    <record id="estate_create_offer" model="ir.actions.server">
+        <field name="name">Create Offer</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="binding_model_id" ref="estate.model_estate_property"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = {
+                'name': 'Create Offer',
+                'type': 'ir.actions.act_window',
+                'res_model': 'estate.offer.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+            }
+        </field>
+    </record>
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
