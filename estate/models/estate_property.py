@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -43,11 +44,11 @@ class EstateProperty(models.Model):
 
     state = fields.Selection(
         [
-            ('new', "New"),
-            ('offer_received', "Offer Received"),
-            ('offer_accepted', "Offer Accepted"),
-            ('sold', "Sold"),
-            ('canceled', "Canceled"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
         ],
         default="new",
         required=True,
@@ -94,7 +95,6 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        # breakpoint()
         for record in self:
             if record.offer_ids:
                 record.best_offer = max(record.offer_ids.mapped("price"))
@@ -103,7 +103,7 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden == True:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -132,7 +132,7 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    "Selling price cannot be lower than 90%of expected price!"
+                    "Selling price cannot be lower than 90% of expected price!"
                 )
 
     def action_cancel(self):
@@ -150,4 +150,3 @@ class EstateProperty(models.Model):
             record.state = "sold"
 
         return True
-

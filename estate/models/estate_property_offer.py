@@ -2,19 +2,19 @@ from datetime import timedelta
 
 from odoo import api, models, fields
 from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "It is estate property offer"
+    _order = "price desc"
 
     price = fields.Float()
 
     status = fields.Selection(
         [
-            ('accepted', "Accepted"),
-            ('rejected', "Rejected"),
+            ("accepted", "Accepted"),
+            ("rejected", "Rejected"),
         ],
         copy=False,
     )
@@ -39,11 +39,7 @@ class EstatePropertyOffer(models.Model):
                     days=record.validity
                 )
 
-    @api.constrains("price")
-    def _check_price(self):
-        for record in self:
-            if record.price <= 0:
-                raise ValidationError("They should be positive")
+    _check_price = models.Constraint("CHECK(price>0)", "The Price should be Positive")
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -70,4 +66,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "rejected"
         return True
-
