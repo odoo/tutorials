@@ -39,7 +39,7 @@
                     <button name="action_sold" type="object" string="Sold" />
                     <button name="action_cancel" type="object" string="Cancel" />
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,Offer_recieved,offer_accepted,sold" />
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <div>
@@ -50,10 +50,10 @@
                     </div>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                             <field name="postcode" />
                             <field name="expected_price" />
-                            <field name="property_type_id" />
+                            <field name="property_type_id" options="{'no_create': true}"/>
                         </group>
 
                         <group>
@@ -77,7 +77,7 @@
                                 <field name="selling_price" />
                                 <field name="date_available" />
                                 <field name="state" />
-                                <field name="property_type_id" />
+                                <field name="property_type_id" options="{'no_create': true}"/>
                                 <field name="buyer_id" />
                                 <field name="salesperson_id" />
                                 <field name="total" />

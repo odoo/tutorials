@@ -8,6 +8,8 @@
         <field name="arch" type="xml">
             <list string="Property Types">
                 <field name="name" />
+                <field name="sequence" widget="handle"/>
+                <field name="sequence"/>
             </list>
         </field>
     </record>
