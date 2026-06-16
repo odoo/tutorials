@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="bill_added_page" model="website.page">
+        <field name="name">Bill Added</field>
+        <field name="type">qweb</field>
+        <field name="url">/supplier-portal-bill-added</field>
+        <field name="website_indexed" eval="False" />
+        <field name="is_published">True</field>
+        <field name="key">account_supplier_portal.bill_added_page</field>
+        <field name="arch" type="xml">
+            <t name="Bill Added" t-name="account_supplier_portal.bill_added_page">
+                <t t-call="website.layout">
+                    <div id="wrap" class="oe_structure">
+                        <section class="s_text_block pt-5 pb-5">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-8 offset-lg-2 text-center">
+                                        <div class="p-5 border-0 bg-white">
+                                            <div class="mb-4">
+                                                <i class="fa fa-file-text fa-4x text-primary"
+                                                    role="presentation" />
+                                            </div>
+
+                                            <h1 class="fw-bold mb-3">Bill Successfully Uploaded</h1>
+                                            <p class="lead text-muted mb-4">
+                                                Your vendor bill has been received.
+                                            </p>
+
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a href="/" class="btn btn-outline-primary ">Back to
+                                                    Home</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+
+</odoo>

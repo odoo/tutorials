@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="custom_header_button" inherit_id="portal.placeholder_user_sign_in"
+        name="Add Custom Header Button">
+        <xpath expr="." position="inside">
+            <li class="o_no_autohide_item" t-if="user_id.has_group('base.group_portal')">
+                <a href="/my/supplier/upload_bill" class="btn btn-secondary">
+                    Add Bill
+                </a>
+            </li>
+        </xpath>
+    </template>
+
+</odoo>

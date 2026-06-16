@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="account_supplier_portal_view">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 border p-4 bg-white rounded shadow-sm">
+                        <h3 class="text-center mb-4">Bill Details</h3>
+
+                        <form action="/my/supplier/upload_bill" method="post"
+                            enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token"
+                                t-att-value="request.csrf_token()" />
+
+                            <div class="form-group mb-3">
+                                <label for="partner_id" class="form-label font-weight-bold">Select
+                                    Organisation:</label>
+                                <select name="partner_id" id="parent_id" class="form-control"
+                                    required="required">
+                                    <t t-foreach="allowed_companies" t-as="comp">
+                                        <option t-att-value="comp.id">
+                                            <t t-esc="comp.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="pdf_file" class="form-label">Upload PDF:</label>
+                                <input type="file" name="pdf_file" id="pdf_file"
+                                    class="form-control" accept="application/pdf"
+                                    required="required" />
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="xml_file" class="form-label">Upload XML file:</label>
+                                <input type="file" name="xml_file" id="xml_file"
+                                    class="form-control" accept=".xml" required="required" />
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary px-5">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
