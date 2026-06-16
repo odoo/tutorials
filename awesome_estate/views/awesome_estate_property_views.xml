@@ -37,6 +37,7 @@
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                         <group>
@@ -44,6 +45,7 @@
                             <field name="salesperson_id"/>
                             <field name="bedrooms"/>
                             <field name="living_area"/>
+                            <field name="total_area"/>
                             <field name="facades"/>
                             <field name="garage"/>
                             <field name="garden"/>
