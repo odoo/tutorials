@@ -27,6 +27,7 @@
                 <header>
                     <button name="action_sold" type="object" string="SOLD" />
                     <button name="action_cancel" type="object" string="CANCEL" />
+                    <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
                     <div>
@@ -42,7 +43,8 @@
                         <group>
                             <field name="property_type_id" />
                             <field name="postcode" />
-                            <field name="expected_price" />
+                            <field name="expected_price"
+                                decoration-danger="expected_price &lt;1000000" />
                         </group>
 
                         <group>
