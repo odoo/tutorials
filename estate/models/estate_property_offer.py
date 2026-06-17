@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError # pylint: disable=import-error
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -80,3 +81,4 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+    
