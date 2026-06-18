@@ -1,33 +1,29 @@
 <odoo>
-    <!-- Main App Menu -->
+
     <menuitem
         id="estate_menu_root"
         name="Real Estate"
     />
-    <!--First
-    Level Menu-->
+
     <menuitem
         id="estate_property_menu"
         name="Advertisement"
         parent="estate_menu_root"
     />
-    <!--Action
-    Menu-->
+
     <menuitem
         id="estate_property_action_menu"
         name="Property List"
         parent="estate_property_menu"
         action="estate_property_action"
     />
-    <!--Action
-    Menu-->
+
     <menuitem
         id="estate_property_type_menu"
         name="Settings"
         parent="estate_menu_root"
     />
-    <!--Action
-    Menu-->
+
     <menuitem
         id="estate_property_type_list_menu"
         name="Property Type"

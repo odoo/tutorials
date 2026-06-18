@@ -1,9 +1,9 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models  # pylint: disable=import-error
-from odoo.exceptions import UserError  # pylint: disable=import-error
-from odoo.exceptions import ValidationError  # pylint: disable=import-error
-from odoo.tools.float_utils import float_compare, float_is_zero  # pylint: disable=import-error
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -16,7 +16,6 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(
         default=lambda self: (
-            # Without lambda, date would be fixed permanently
             fields.Date.today() + relativedelta(months=3)
         )
     )
@@ -75,6 +74,10 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offer",
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -103,8 +106,7 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    "Selling price cannot be lower than 90% of the expected price"
-                )
+                    _("Selling price cannot be lower than 90% of the expected price"))
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -126,14 +128,13 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "canceled":
-                raise UserError("Canceled Property cannot be sold")
+                raise UserError(_("Canceled Property cannot be sold"))
             record.state = "sold"
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("Sold Property cannot be canceled")
+                raise UserError(_("Sold Property cannot be canceled"))
             record.state = "canceled"
         return True
-
