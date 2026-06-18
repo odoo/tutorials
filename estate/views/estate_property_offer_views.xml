@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="estate_property_offer_list_view" model="ir.ui.view">
         <field name="name">estate.property.offer.list.view</field>
         <field name="model">estate.property.offer</field>
@@ -35,5 +34,4 @@
             </form>
         </field>
     </record>
-
 </odoo>
