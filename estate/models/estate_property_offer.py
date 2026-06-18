@@ -1,8 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models # pylint: disable=import-error
-from odoo.exceptions import UserError # pylint: disable=import-error
-from odoo.exceptions import ValidationError # pylint: disable=import-error
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -64,9 +64,7 @@ class EstatePropertyOffer(models.Model):
                     record.validity = delta.days
 
     _check_price = models.Constraint(
-        'CHECK(price>0)',
-        'Price must be positive'
-    )
+        'CHECK(price>0)', 'Price must be positive')
 
     def action_confirm(self):
         for offer in self.property_id.offer_ids:
@@ -81,4 +79,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
-    
