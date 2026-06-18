@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="pdf_preview_report.PdfPreviewDialog">
+        <Dialog title="'PDF Preview'" size="'xl'">
+            <t t-set-slot="default">
+                <div class="position-relative" style="height: 75vh;">
+                    <!-- Loading overlay -->
+                    <div t-if="this.state.loading"
+                         class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75"
+                         style="z-index: 10;">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary mb-2" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="text-muted">Loading preview...</div>
+                        </div>
+                    </div>
+                    <!-- Preview iframe -->
+                    <iframe
+                        t-custom-ref="previewIframe"
+                        t-att-src="this.props.previewUrl"
+                        style="width: 100%; height: 100%; border: none;"
+                    />
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-outline-secondary btn-sm" t-on-click="this.onZoomOut" title="Zoom Out">
+                            <i class="fa fa-minus"/>
+                        </button>
+                        <span class="text-muted small px-1" style="min-width: 45px; text-align: center;"><t t-out="this.zoomPercent"/>%</span>
+                        <button class="btn btn-outline-secondary btn-sm" t-on-click="this.onZoomIn" title="Zoom In">
+                            <i class="fa fa-plus"/>
+                        </button>
+                        <button class="btn btn-outline-secondary btn-sm" t-on-click="this.onZoomReset">
+                            Reset
+                        </button>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary me-1" t-on-click="this.onClose">
+                            Close
+                        </button>
+                        <button class="btn btn-primary" t-on-click="this.onExportPdf">
+                            <i class="fa fa-file-pdf-o me-1"/>
+                            Export PDF
+                        </button>
+                    </div>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+</templates>
