@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="hr_loan_root_menu" name="Loans" web_icon="hr_loan,static/description/icon.png">
+        <menuitem id="hr_loan_first_menu" name="Loans">
+            <menuitem id="hr_loan_action_menu" name="All Loans" action="hr_loan_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>

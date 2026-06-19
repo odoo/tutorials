@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="library.TableRenderer">
+        <div class="p-3">
+
+            <t t-if="values.length === 0">
+                <div class="text-center text-muted py-5">
+                    <i class="fa fa-inbox fa-2x mb-2 d-block"/>
+                    <span>No Borrows yet.</span>
+                </div>
+            </t>
+
+            <t t-else="">
+                <table class="table table-borderless align-middle" style="border-radius:12px;overflow:hidden">
+                    <thead style="background:#f8fafc">
+                        <tr>
+                            <th class="ps-4 text-muted fw-semibold" style="font-size:12px">BOOK NAME</th>
+                            <th class="text-muted fw-semibold" style="font-size:12px">MEMBER NAME</th>
+                            <th class="text-muted fw-semibold" style="font-size:12px">BORROW DATE</th>
+                            <th class="text-muted fw-semibold" style="font-size:12px">DUE DATE</th>
+                            <th class="text-muted fw-semibold" style="font-size:12px">RETURN DATE</th>
+                            <th class="text-muted fw-semibold" style="font-size:12px">STATE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="values" t-as="value" t-key="value.id">
+                            <tr style="cursor:pointer;border-bottom:1px solid #f1f5f942" t-on-click="() => this.openRecord(value)">
+
+                                <td class="ps-4">
+                                    <span class="fw-medium" t-esc="value.data.book_id?.display_name  || '—'"/>
+                                </td>
+
+                                <td class="ps-4">
+                                    <span class="fw-medium" t-esc="value.data.member_id?.display_name  || '—'"/>
+                                </td>
+
+
+                                <td>
+                                    <span class="text-muted" style="font-size:13px" t-esc="formatDate(value.data.borrow_date)"/>
+                                </td>
+
+                                <td>
+                                    <span class="text-muted" style="font-size:13px" t-esc="formatDate(value.data.due_date)"/>
+                                </td>
+
+                                <td>
+                                    <span class="text-muted" style="font-size:13px" t-esc="formatDate(value.data.return_date)"/>
+                                </td>
+
+                                <td>
+                                    <span class="badge rounded-pill px-3 py-1" t-attf-style="background:#{getStatusColor(value.data.state)}20;color:#{getStatusColor(value.data.state)};font-size:11px;font-weight:600">
+                                        <t t-esc="getStatusLabel(value.data.state)"/>
+                                    </span>
+                                </td>
+
+                            </tr>
+                        </t>
+                    </tbody>
+                    <t t-if="!props.readonly and props.activeActions?.create">
+                        <div class="m-3">
+                            <a href="#" style="color:#35d7f3;" t-on-click.prevent="addRecord">
+                                <i class="fa fa-plus me-1"/>
+                                    Add a line
+                            </a>
+                        </div>
+                    </t>
+                </table>
+            </t>
+
+        </div>
+    </t>
+</templates>

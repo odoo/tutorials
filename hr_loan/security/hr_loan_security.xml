@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_loan_officer" model="res.groups">
+        <field name="name">Loan Officer</field>
+    </record>
+
+    <record id="hr_loan_rule_employee" model="ir.rule">
+        <field name="name">Loan: Employee sees own loans only</field>
+        <field name="model_id" ref="model_hr_loan"/>
+        <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="hr_loan_rule_manager" model="ir.rule">
+        <field name="name">Loan: HR Manager sees all loans</field>
+        <field name="model_id" ref="model_hr_loan"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="hr_loan_rule_loan_officer" model="ir.rule">
+        <field name="name">Loan: Loan Officer sees all loans</field>
+        <field name="model_id" ref="model_hr_loan"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('hr_loan.group_loan_officer'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

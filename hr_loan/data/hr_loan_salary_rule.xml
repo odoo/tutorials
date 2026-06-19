@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="default_basic_salary_rule" model="hr.salary.rule">
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Loan Deduction</field>
+            <field name="sequence">175</field>
+            <field name="code">DED</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">
+                loan = env['hr.loan'].search([
+                ('employee_id','=',payslip.employee_id.id),
+                ('state','in',['approved','ongoing')
+                ],limit=1)
+                result = bool(loan)
+            </field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+                loan = env['hr.loan'].search([
+                ('employee_id', '=', payslip.employee_id.id),
+                ('state', 'in', ['approved', 'ongoing'])
+                ], limit=1)
+                line = loan.loan_line_ids.filtered(
+                    lambda l: not l.paid and l.date &lt;= payslip.date_to
+                )[:1]
+                result = -line.amount if line else 0.0
+            </field>
+            <field name="struct_id" ref="hr_payroll.default_structure"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="library_waive_wizard_form" model="ir.ui.view">
+        <field name="name">library.waive.wizard.form</field>
+        <field name="model">library.waive.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="total_fine"/>
+                    <field name="remaining_amount"/>
+                    <field name="paid_amount"/>
+                </group>
+                <footer>
+                    <button special="cancel" type="object" string="cancel"/>
+                    <button name="action_pay" type="object" string="Pay" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

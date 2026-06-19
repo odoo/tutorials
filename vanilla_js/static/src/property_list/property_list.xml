@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preserve">
+    <t t-name="vanilla_js.PropertyList">
+        <div>
+            <div class="d-flex gap-3 align-items-center bg-secondary bg-opacity-50 p-2">
+                Filters:
+                <button class="btn border rounded-2" t-on-click="orderByID" t-att-disabled="toggleOrder.value=='id'">by id</button>
+                <button class="btn border rounded-2" t-on-click="orderByName" t-att-disabled="toggleOrder.value=='name'">by Name</button>
+                <button class="btn border rounded-2" t-on-click="orderByState" t-att-disabled="toggleOrder.value=='state'">by State</button>
+                <button class="btn border rounded-2" t-on-click="orderByBedrooms" t-att-disabled="toggleOrder.value=='bedrooms'">by Bedrooms</button>
+                Sort by:
+                <button class="btn border rounded-2" t-on-click="sortBy" t-att-disabled="toggleState.value=='asc'">Asc</button>
+                <button class="btn border rounded-2" t-on-click="sortBy" t-att-disabled="toggleState.value=='desc'">Desc</button>
+            </div>
+            <table class="table table-lg table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>State</th>
+                        <th>Bedrooms</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <tr>
+                        <td><t t-esc="item.id"/></td>
+                        <td><t t-esc="item.name"/></td>
+                        <td><t t-esc="item.state"/></td>
+                        <td><t t-esc="item.bedrooms"/></td>
+                        <td class="d-flex gap-3">
+                            <span role="button" class="fa fa-trash text-danger " t-on-click="()=>this.removeItem(item.id)"/>
+                            <span role="button" class="fa fa-circle" t-att-class="item.state != 'sold' ? 'text-success' : 'text-danger'" t-on-click="()=>item.state = item.state != 'sold' ? 'sold' : 'new'"/>
+                        </td>
+                    </tr>
+                </t>
+                </tbody>
+            </table>
+            <div class="d-flex gap-3 input-group  align-items-center bg-secondary bg-opacity-50 p-3">
+                name: <input id="name" class="form-control bg-white" placeholder="enter property name"/>
+                state:
+                <select id="state"  class="form-select form-select-md bg-white w-10">
+                    <t t-foreach="props.items.state" t-as="state" t-key="state.id">
+                        <option><t t-esc="state.name"/></option>
+                    </t>
+                </select>
+                Bedrooms: <input id="bedrooms" class="form-control bg-white" placeholder="enter no of bedrooms"/>
+                <button class="btn border rounded-2 bg-black text-white" t-on-click="addToList">Add to List</button>
+            </div>
+        </div>
+    </t>
+</template>

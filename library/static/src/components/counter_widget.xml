@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preserve">
+    <t t-name="library.CounterWidget">
+        <div class="d-flex gap-3">
+            <button class="btn btn-primary" t-on-click="decrement">-</button>
+            <input  class="form-control" t-att-value="recordValue" style="width:100px"/>
+            <button class="btn btn-primary" t-on-click="increment">+</button>
+            <select class="form-select form-select-sm bg-secondary" t-on-change="onChangeDegree" style="width:70px;">
+                <t t-foreach="degrees" t-as="degree" t-key="degree.id">
+                    <option t-att-value="degree.value"><t t-esc="degree.value"/></option>
+                </t>
+            </select>
+        </div>
+    </t>
+</template>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_loan_view_list" model="ir.ui.view">
+        <field name="name">hr.loan.list</field>
+        <field name="model">hr.loan</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'approved'" decoration-info="state == 'ongoing'" decoration-danger="state == 'refused'" decoration-muted="state == 'closed'">
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="loan_amount"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_loan_view_kanban" model="ir.ui.view">
+        <field name="name">hr.loan.kanban</field>
+        <field name="model">hr.loan</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" default_order="date_start desc">
+                <field name="state" />
+                <field name="employee_id" />
+                <field name="loan_amount" />
+                <field name="date_start" />
+                <field name="duration_months" />
+                <field name="total_paid" />
+                <field name="total_outstanding" />
+                <field name="progress" />
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <aside class="o_kanban_aside_full">
+                            <t>
+                                <field name="image_1024" class="d-block position-relative" preview_image="image_128" widget="background_image" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                            </t>
+                        </aside>
+                        <main class="ms-2">
+                            <div class="d-flex justify-content-between border-bottom" style="padding-bottom: 6px; margin-bottom: 6px;">
+                                <field name="employee_id" />
+                                <field name="progress" widget="progressbar" options="{'current_value':'progress', 'max_value':100.0}"/>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex flex-column align-items-start gap-2">
+                                    <div>
+                                        <span class="text-muted">Start date: </span>
+                                        <field name="date_start" />
+                                    </div>
+                                    <div>
+                                        <span class="text-muted">Duration: </span>
+                                        <field name="duration_months" />
+                                        <span> Months</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column align-items-start gap-2">
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-muted" style="margin-right:5px">Paid: </span>
+                                        <field name="total_paid" class="text-success"/>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-muted" style="margin-right:5px">Pending: </span>
+                                        <field name="total_outstanding" class="text-danger"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="hr_loan_view_form" model="ir.ui.view">
+        <field name="name">hr.loan.form</field>
+        <field name="model">hr.loan</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
+                    <button string="Approve" name="action_approve" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button string="Refuse" name="action_refuse" type="object" invisible="state != 'draft'"/>
+                    <button string="Close" name="action_close" type="object" invisible="state != 'ongoing'"/>
+                    <button string="Reset" name="action_reset" type="object" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                            <field name="loan_amount"/>
+                            <field name="reason"/>
+                        </group>
+                        <group>
+                            <field name="duration_months"/>
+                            <field name="date_start"/>
+                            <field name="total_paid"/>
+                            <field name="total_outstanding"/>
+                            <field name="progress" widget="progressbar" options="{'current_value':'progress', 'max_value':100.0}" string="Progress (%)"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Loan line">
+                            <field name="loan_line_ids">
+                                <list editable="bottom">
+                                    <field name="hr_loan_id"/>
+                                    <field name="date"/>
+                                    <field name="amount"/>
+                                    <field name="status" decoration-success="paid" decoration-danger="not paid" widget="badge"/>
+                                    <button name='action_pay' string='Pay' type='object' icon='fa-check' class="text-success" invisible="paid"/>
+                                    <button name='action_not_paid' string='Not Paid' type='object' icon='fa-times' class="text-danger" invisible="not paid"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_loan_view_search" model="ir.ui.view">
+        <field name="name">hr.loan.search</field>
+        <field name="model">hr.loan</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="loan_amount" operator=">="/>
+                <filter name="my_loans" string="My Loans" domain="[('employee_id','=',uid)]"/>
+                <filter name='approved' string="Approved" domain="[('state','=','approved')]"/>
+                <filter name='ongoing' string="Ongoing" domain="[('state','=','ongoing')]"/>
+                <filter name="group_by_employee_id" string="Employee" context="{'group_by':'employee_id'}"/>
+                <filter name="group_by_department_id" string="Department" context="{'group_by':'department_id'}"/>
+                <filter name="group_by_state" string="State" context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="hr_loan_action" model="ir.actions.act_window">
+        <field name="name">Loans</field>
+        <field name="res_model">hr.loan</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preserve">
+    <t t-name="vanilla_js.Formatter">
+        <div class="d-flex gap-3 align-items-center">
+            <input id="input" class="form-control bg-white" placeholder="enter your number to format" t-on-keyup="format"/>
+            <button class="btn bg-primary text-white" t-on-click="format">
+                Format
+            </button>
+            <div class="card text-bg-dark bg-opacity-75 rounded-2 p-2 d-flex flex-row gap-2" style="width: 100rem">
+                <span class="text-secondary text-opacity-50">Output: </span>
+                <span class="me-2">Rs. <t t-esc="this.output.value"/>
+                </span>
+            </div>
+        </div>
+    </t>
+</template>

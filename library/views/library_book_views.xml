@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="library_book_view_list" model="ir.ui.view">
+        <field name="name">library.book.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="author" />
+                <field name="total_copies"/>
+                <field name="available_copies"/>
+                <field name="popularity"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="library_book_view_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="author" />
+                        </group>
+                        <group>
+                            <field name="total_copies" widget="counter_widget"/>
+                            <field name="available_copies"/>
+                            <field name="popularity"/>
+                            <field name="state"/>
+                            <field name="active_borrow_count"/>
+                        </group>
+                        <notebook>
+                            <page string="Borrows">
+                                <field name="borrow_ids" widget="table_widget"/>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="library_book_action" model="ir.actions.act_window">
+        <field name='name'>Books</field>
+        <field name='res_model'>library.book</field>
+        <field name='view_mode'>list,form</field>
+    </record>
+</odoo>

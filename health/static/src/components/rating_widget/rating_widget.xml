@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preserve">
+    <t t-name="health.RatingWidget">
+        <div class="d-flex gap-2 align-items-center">
+            <span class="fw-medium bg-secondary p-1 px-2 rounded-3" t-att-class="recordValue >= 5 ? 'text-success': recordValue>=3 ? 'text-warning' : 'text-danger'">
+                <t t-esc="formatValue(recordValue)"/>
+            </span>
+            <div class="d-flex gap-1">
+                <t t-foreach="degrees" t-as="degree" t-key="degree.id">
+                    <span role="button" class="fa fs-2 text-warning" t-att-class=" recordValue >= degree.value ? 'fa-star' : 'fa-star-o'" t-on-click="()=>this.updateRecord(degree.value)" />
+                </t>
+            </div>
+        </div>
+    </t>
+</template>

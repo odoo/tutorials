@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="health_appointment_view_list" model="ir.ui.view">
+        <field name="name">health.appointment.list</field>
+        <field name="model">health.appointment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="patient_id" />
+                <field name="doctor_id" />
+                <field name="appointment_date" />
+            </list>
+        </field>
+    </record>
+
+    <record id="health_appointment_view_form" model="ir.ui.view">
+        <field name="name">health.appointment.form</field>
+        <field name="model">health.appointment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_reschedule" string="Reschedule" type="object" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="patient_id" />
+                            <field name="doctor_id" />
+                            <field name="appointment_date" />
+                            <field name="reschedule_count" />
+                            <field name="original_date" />
+                        </group>
+                        <group>
+                            <field name="state" />
+                            <field name="priority" widget="priority" />
+                            <field name="notes" />
+                            <field name="patient_age" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="health_appointment_action" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="res_model">health.appointment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

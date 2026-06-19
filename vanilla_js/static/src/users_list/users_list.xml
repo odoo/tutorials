@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preserve">
+    <t t-name="vanilla_js.UsersList">
+        <div class="modal fade" id="userModal" role="modal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">User Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"/>
+                    </div>
+                    <div class="modal-body" t-if="state.selectedUser">
+                        <div class="  p-3 d-flex flex-row gap-3">
+                            <div class="bg-primary d-flex justify-content-center align-items-center" style="width:60px;height:60px">
+                                <h1 class="text-white"><t t-esc="cu.name.charAt(0)"/></h1>
+                            </div>
+                            <div>
+                                <div class="d-flex flex-row gap-2">
+                                    <h4><t t-esc="cu.name"/></h4>
+                                    <span>(<t t-esc="cu.username"/>)</span>
+                                </div>
+                                <div>
+                                    <div class="d-flex flex-row gap-2 align-items-baseline">
+                                        <span class="fa fa-envelope text-primary"/>
+                                        <span><t t-esc="cu.email"/></span>
+                                    </div>
+                                    <div class="d-flex flex-row gap-2 align-items-baseline">
+                                        <span class="fa fa-phone text-primary"/>
+                                        <span><t t-esc="cu.phone"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mx-3">
+                            <div class=" border-bottom">
+                                <h5>LOCATION</h5>
+                            </div>
+                            <div class="row g-0 p-3">
+                                <span class="col-2" style="color:#737373;">Address</span>
+                                <div class="col d-flex flex-column">
+                                    <span><t t-esc="cu.address.suite"/>, <t t-esc="cu.address.street"/>,</span>
+                                    <span><t t-esc="cu.address.city"/>,</span>
+                                    <span><t t-esc="cu.address.zipcode"/></span>
+                                </div>
+                            </div>
+                            <div class="row g-0 p-3">
+                                <span class="col-2" style="color:#737373;">Work</span>
+                                <div class="col d-flex flex-column">
+                                    <span class="fw-bolder"><t t-esc="cu.company.name"/>,</span>
+                                    <span><t t-esc="cu.company.catchPhrase"/></span>
+                                </div>
+                            </div>
+                            <div class="row g-0 p-3">
+                                <span class="col-2" style="color:#737373;">Website</span>
+                                <div class="col d-flex flex-column">
+                                    <a class="fw-bolder" role="button" t-att-href="'https://' + cu.website" target="_blank"><t t-esc="cu.website"/></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-primary text-white" data-bs-dismiss="modal">close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-4 g-3">
+            <t t-foreach="this.state.data" t-as="user" t-key="user.id">
+                <div class="col">
+                    <div class="card  p-3 d-flex flex-row gap-3">
+                        <div class="bg-primary d-flex justify-content-center align-items-center" style="width:60px;height:60px">
+                            <h1 class="text-white"><t t-esc="user.name.charAt(0)"/></h1>
+                        </div>
+                        <div>
+                            <div class="d-flex flex-row gap-2">
+                                <h4 role="button" t-on-click="()=>openModal(user.id)"><t t-esc="user.name"/></h4>
+                                <span>(<t t-esc="user.username"/>)</span>
+                            </div>
+                            <div>
+                                <div class="d-flex flex-row gap-2 align-items-baseline">
+                                    <span class="fa fa-envelope text-primary"/>
+                                    <span><t t-esc="user.email"/></span>
+                                </div>
+                                <div class="d-flex flex-row gap-2 align-items-baseline">
+                                    <span class="fa fa-phone text-primary"/>
+                                    <span><t t-esc="user.phone"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</template>

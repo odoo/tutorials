@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="health_root_menu" name="Health" web_icon="health,static/description/icon.png">
+        <menuitem id="health_first_level_menu" name="Hospitals">
+            <menuitem id="health_patient_action_menu" name="Patients" action="health_patient_action"/>
+            <menuitem id="health_appointmetn_action_menu" name="Appointments" action="health_appointment_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>

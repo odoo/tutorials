@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_health_patient,access_health_patient,model_health_patient,base.group_user,1,1,1,1
+access_health_appointment,access_health_appointment,model_health_appointment,base.group_user,1,1,1,1

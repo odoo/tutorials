@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xml:space="preserve">
+    <t t-name="vanilla_js.OfferList">
+        <div>
+            <button class="btn bg-primary text-white" t-on-click="acceptBestOffer">Accept Best Offer</button>
+            <table class="table table-ls table-hover mt-3">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Buyer</th>
+                        <th>Price</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="props.offers" t-as="offer" t-key="offer.id">
+                        <tr t-att-class="offer.state === 'accepted' ? 'table-success' : offer.state === 'refused' ? 'table-danger' : ''">
+                            <td><t t-esc="offer.id"/></td>
+                            <td><t t-esc="offer.buyer"/></td>
+                            <td><t t-esc="offer.price"/></td>
+                            <td><t t-esc="new Date(offer.deadline).toLocaleDateString()"/></td>
+                            <td><t t-esc="offer.state"/></td>
+                            <td class="d-flex gap-3">
+                                <span role="button" class="fa fa-check text-success" t-on-click="()=>this.acceptOffer(offer.id)"/>
+                                <span role="button" class="fa fa-times text-danger" t-on-click="()=>this.refuseOffer(offer.id)"/>
+                                <span role="button" class="fa fa-trash" t-on-click="()=>this.removeOffer(offer.id)"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <div class="d-flex input-group gap-3 bg-secondary bg-opacity-50 p-3 align-items-center">
+                Buyer:<input id="buyer" class="form-control bg-white" placeholder="enter Buyer name"/>
+                Price:<input id="price" class="form-control bg-white"  placeholder="enter the  Price"/>
+                Deadline:<input id="deadline" class="form-control bg-white" t-att-value="new Date().toISOString().split('T')[0]" type="date"/>
+                State:
+                <select id="status" class="form-select form-select-md bg-white">
+                    <t t-foreach="props.offers.state" t-as="state" t-key="state.id">
+                        <option><t t-esc="state.name"/></option>
+                    </t>
+                </select>
+                <button class="btn bg-black text-white" t-on-click="addToOffer">Add to Offers</button>
+            </div>
+            <div t-if="errorMessage.value" class="alert alert-danger m-3" role="alert">
+                <span class="fa fa-exclamation-triangle me-2"/>
+                <t t-esc="errorMessage.value"/>
+            </div>
+        </div>
+    </t>
+</template>

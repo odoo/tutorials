@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="library_root_menu" name="Library" web_icon="library,static/description/icon.png">
+        <menuitem id="library_borrow" name="Borrows" action="library_borrorw_action"/>
+        <menuitem id="library_book" name="Books" action="library_book_action"/>
+        <menuitem id="library_member" name="Members" action="library_member_action"/>
+    </menuitem>
+</odoo>

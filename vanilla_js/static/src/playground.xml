@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="vanilla_js.playground">
+        <div class="card m-4">
+            <div class="card-header">
+                Calculator
+            </div>
+            <div class="card-body">
+                <Calculator/>
+            </div>
+        </div>
+        <div class="card m-4">
+            <div class="card-header">
+                Currency Formatter
+            </div>
+            <div class="card-body">
+                <Formatter/>
+            </div>
+        </div>
+        <div class="card m-4">
+            <div class="card-header">
+                Property List
+            </div>
+            <div class="card-body">
+                <PropertyList/>
+            </div>
+        </div>
+        <div class="card m-4">
+            <div class="card-header">
+                Offers List
+            </div>
+            <div class="card-body">
+                <OfferList/>
+            </div>
+        </div>
+        <div class="card m-4">
+            <div class="card-header">
+                Users List
+            </div>
+            <div class="card-body">
+                <UsersList/>
+            </div>
+        </div>
+    </t>
+
+</templates>
