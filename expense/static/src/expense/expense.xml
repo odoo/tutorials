@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="expense.Expense">
+        <div class="card p-3 mt-3" style="width: 350px;">
+            <h4>Add Expense</h4>
+            <div class="mb-3">
+                <label>Description</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter description"
+                    t-model="state.description"
+                />
+            </div>
+            <div class="mb-3">
+                <label>Amount</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Enter amount"
+                    t-model="state.amount"
+                />
+            </div>
+            <div class="mb-3">
+                <label>Category</label>
+                <select
+                    class="form-select"
+                    t-model="state.category"
+                >
+                    <option value="Food">Food</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" t-on-click="addExpense">
+                Add Expense
+            </button>
+        </div>
+
+        <div class="mt-3">
+            <t t-foreach="state.expenses"
+               t-as="expense"
+               t-key="expense.id">
+                <div class="card p-3 mb-2" style="width: 350px;">
+                    <div>
+                        <strong>
+                            <t t-esc="expense.description"/>
+                        </strong>
+                    </div>
+                    <div>
+                        Amount :
+                        <t t-esc="expense.amount"/>
+                    </div>
+                    <div>
+                        Category :
+                        <t t-esc="expense.category"/>
+                    </div>
+                </div>
+            </t>
+        </div>
+        
+        <div class="card p-3 mt-3" style="width:350px;">
+            <h5>Expense Statistics</h5>
+            <p>
+                Food :
+                <t t-esc="getCategoryTotal('Food')"/>
+            </p>
+            <p>
+                Shopping :
+                <t t-esc="getCategoryTotal('Shopping')"/>
+            </p>
+            <p>
+                Travel :
+                <t t-esc="getCategoryTotal('Travel')"/>
+            </p>
+            <p>
+                Other :
+                <t t-esc="getCategoryTotal('Other')"/>
+            </p>
+            <hr/>
+            <strong>
+                Total :
+                <t t-esc="getTotalExpense()"/>
+            </strong>
+        </div>
+
+        <div class="mb-3">
+            <h5>Filter By Category</h5>
+
+            <select
+                class="form-select"
+                t-model="state.filterCategory"
+            >
+                <option value="Food">Food</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Travel">Travel</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="card p-3 mt-3">
+            <h5>
+                <t t-esc="state.filterCategory"/> Expenses
+            </h5>
+
+            <div class="mt-3">
+                <t t-foreach="state.expenses"
+                t-as="expense"
+                t-key="expense.id">
+
+                    <t t-if="expense.category === state.filterCategory">
+
+                        <div class="card p-3 mb-2" style="width: 350px;">
+                            <div>
+                                <strong>
+                                    <t t-esc="expense.description"/>
+                                </strong>
+                            </div>
+
+                            <div>
+                                Amount :
+                                <t t-esc="expense.amount"/>
+                            </div>
+
+                            <div>
+                                Category :
+                                <t t-esc="expense.category"/>
+                            </div>
+                        </div>
+
+                    </t>
+
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
