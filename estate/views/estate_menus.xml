@@ -1,31 +1,36 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Top menu item -->
-    <menuitem 
-        id="estate_menu_root" 
-        name="Real Estate" 
-        web_icon="estate,static/description/icon.png" 
+    <menuitem
+        id="estate_menu_root"
+        name="Real Estate"
+        web_icon="estate,static/description/icon.png"
         sequence="1"/>
-    <!-- Advertisements Main Menu item -->
-    <menuitem 
-        id="menu_estate_advertisement" 
-        name="Advertisements" 
+
+    <menuitem
+        id="estate_property_menu_advertisement"
+        name="Advertisements"
         parent="estate_menu_root"/>
-    <!-- Properties sub menu of Advertisements Menu item -->
-    <menuitem 
-        id="menu_estate_properties" 
-        name="Properties" 
-        parent="menu_estate_advertisement" 
+
+    <menuitem
+        id="estate_property_menu_properties"
+        name="Properties"
+        parent="estate_property_menu_advertisement"
         action="estate_property_action"/>
-    <!-- Settings Main Menu item -->
-    <!-- <menuitem 
-        id="menu_estate_settings" 
-        name="Settings" 
+
+    <menuitem
+        id="estate_property_menu_settings"
+        name="Settings"
         parent="estate_menu_root"/>
-    Property Type sub menu of Settings Menu item
-    <menuitem 
-        id="menu_estate_property_type" 
-        name="Property Type" 
-        parent="menu_estate_settings" 
-        action="estate_property_action"/> -->
+
+    <menuitem
+        id="estate_property_menu_type"
+        name="Property Type"
+        parent="estate_property_menu_settings"
+        action="estate_property_type_action"/>
+
+    <menuitem
+        id="estate_property_menu_tag"
+        name="Property Tag"
+        parent="estate_property_menu_settings"
+        action="estate_property_tag_action"/>
 </odoo>
