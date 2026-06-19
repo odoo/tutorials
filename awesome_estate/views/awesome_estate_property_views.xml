@@ -16,6 +16,8 @@
                 <field name="salesperson_id"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
+                <field name="total_area"/>
+                <field name="squared_area"/>
                 <field name="garage"/>
                 <field name="garden"/>
                 <field name="state"/>
@@ -46,6 +48,7 @@
                             <field name="bedrooms"/>
                             <field name="living_area"/>
                             <field name="total_area"/>
+                            <field name="squared_area"/>
                             <field name="facades"/>
                             <field name="garage"/>
                             <field name="garden"/>
@@ -107,6 +110,11 @@
                 <filter
                     name="available" string="Available"
                     domain="[('state', 'in', ['new', 'offer_received'])]"
+                />
+                <filter
+                    name="best_price"
+                    string="Best Price"
+                    domain="[('best_price', '>', 1000)]"
                 />
                 <group name="groupby">
                     <filter
