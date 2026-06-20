@@ -9,10 +9,23 @@
     </record>
 
     <!-- Menu -->
-    <menuitem id="estate_property_model_menu_root" name="Real Estate Test"/>
-    <menuitem id="estate_property_model_menu" name="Real Estate Models"
+    <menuitem id="estate_property_model_menu_root" name="Real Estate" sequence="1" />
+    <menuitem id="estate_property_model_menu" name="Properties"
               parent="estate_property_model_menu_root"
-              action="estate_property_model_action"/>
+              action="estate_property_model_action" sequence="1"/>
+
+    <menuitem id="estate_property_type_model_menu" name="Types"
+              parent="estate_property_model_menu_root"
+              action="estate_property_type_model_action" sequence="2"/>
+
+    <menuitem id="estate_property_tag_model_menu" name="Tags"
+              parent="estate_property_model_menu_root"
+              action="estate_property_tag_model_action" sequence="3"/>
+
+    <menuitem id="estate_property_offer_model_menu" name="Offers"
+              parent="estate_property_model_menu_root"
+              action="estate_property_offer_model_action" sequence="4"/>
+
 
     <!-- List View -->
     <record id="view_estate_property_model_list" model="ir.ui.view">
@@ -23,6 +36,9 @@
           <field name="name"/>
           <field name="description"/>
           <field name="expected_price"/>
+          <field name="property_type_id" />
+          <field name="property_tag_ids" />
+          <field name="property_offer_ids" />
         </list>
       </field>
     </record>
@@ -41,12 +57,21 @@
               <group>
                 <field name="expected_price"/>
               </group>
+              <group>
+                <field name="property_type_id"/>
+              </group>
+              <group>
+                <field name="property_tag_ids"/>
+              </group>
             </group>
             <notebook>
               <page string="Description">
                   <field name="description"/>
               </page>
-          </notebook>
+              <page string="Offers">
+                <field name="property_offer_ids" />
+              </page>
+            </notebook>
           </sheet>
         </form>
       </field>
@@ -61,6 +86,7 @@
           <field name="name" string="Property Name"></field>
           <field name="expected_price"></field>
           <field name="description" string="Description"></field>
+          <field name="property_type_id" string="Type"></field>
 
           <filter string="High Value" name="high_value" domain="[('expected_price', '>=', '500000')]"></filter>
         </search>
