@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class EstatePropertyModel(models.Model):                              # Inheritence -> This class inherits from models.Model
@@ -8,6 +8,16 @@ class EstatePropertyModel(models.Model):                              # Inherite
     name = fields.Char(required=True)                       # VARCHAR & NOT NULL
     expected_price = fields.Float(required=True)            # NUMERIC & NOT NULL
     description = fields.Char()
+
+    living_area = fields.Integer()
+    garden_area = fields.Integer()
+    total_area = fields.Integer(compute="_compute_total_area")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
     property_type_id = fields.Many2one(
         comodel_name="estate_property_type_model",
         string="Property Type",
