@@ -1,23 +1,10 @@
 from odoo import models, fields
 
-class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Estate Property"
 
-    name = fields.Char(string="Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(string="Available From")
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True)
-    bedrooms = fields.Integer(string="Bedrooms")
-    living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area (sqm)")
-    garden_orientation = fields.Selection(
-        string="Garden Orientation",
-        selection=[('north', 'North'), ('south', 'South'),
-                   ('east', 'East'), ('west', 'West')],
-    )
+class TestModel(models.Model):                              # Inheritence -> This class inherits from models.Model
+    _name = "estate_property_model"                         # Name of the table in database
+    _description = "Estate Property Model"                  # user-friendly name    
+
+    name = fields.Char(required=True)                       # VARCHAR & NOT NULL
+    expected_price = fields.Float(required=True)            # NUMERIC & NOT NULL
+    description = fields.Char()

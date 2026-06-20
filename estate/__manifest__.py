@@ -6,7 +6,8 @@
     'author': 'Your Name',
     'depends': ['base'],
     'data': [
-        'views/estate_property_views.xml',
+        "views/views.xml",
+        "security/ir.model.access.csv"
     ],
     'installable': True,
     'application': True,
