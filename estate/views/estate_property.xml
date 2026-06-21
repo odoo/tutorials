@@ -42,6 +42,7 @@
           <field name="property_type_id" />
           <field name="property_tag_ids" />
           <field name="property_offer_ids" />
+          <field name="best_price"/>
         </list>
       </field>
     </record>
@@ -52,6 +53,10 @@
       <field name="model">estate_property_model</field>
       <field name="arch" type="xml">
         <form>
+          <header>
+            <button name="action_property_sold" string="Sold" type="object" icon="fa-check" />
+            <button name="action_property_cancelled" string="Cancelled" type="object" icon="fa-times" />
+          </header>
           <sheet>
             <group>
               <group>
@@ -61,14 +66,13 @@
                 <field name="expected_price"/>
               </group>
               <group>
-                <field name="living_area"/>
-                <field name="garden_area"/>
-              </group>
-              <group>
                 <field name="property_type_id"/>
               </group>
               <group>
                 <field name="property_tag_ids"/>
+              </group>
+              <group>
+                <field name="property_status"/>
               </group>
             </group>
             <notebook>
@@ -76,7 +80,23 @@
                   <field name="description"/>
               </page>
               <page string="Offers">
-                <field name="property_offer_ids" />
+                <group>
+                  <group>
+                    <field name="property_offer_ids" />
+                  </group>
+                </group>
+              </page>
+              <page string="Other Info">
+                <group>
+                  <group>
+                    <field name="living_area"/>
+                  </group>
+                  <group>
+                    <field name="garden" />
+                    <field name="garden_area"/>
+                    <field name="garden_orientation"/>
+                  </group>
+                </group>
               </page>
             </notebook>
           </sheet>
