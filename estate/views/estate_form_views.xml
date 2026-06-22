@@ -5,46 +5,58 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Description">
-                <sheet >
+                <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="e.g.Downtown Apartment"/>
+                            <field name="name" placeholder="e.g.Downtown Apartment" />
                         </h1>
                     </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </group>
+                    <group>
                         <group>
-                            <field  name="postcode"/>
-                            <field  name="date_availability"/>
+                            <field name="property_type_id" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
-                            <field  name="expected_price"/>
-                            <field name="selling_price"/>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" placeholder="when duplicated, status and date are not copied"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="description"
+                                    placeholder="when duplicated, status and date are not copied" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
                             </group>
                         </page>
+
+                        <page string="Offers">
+                            <field name="offer_ids" editable="bottom"
+                                context="{'tree_view_ref':'estate_property_offer_list'}" />
+                        </page>
+
                         <page string="Other">
                             <group>
-                                <field name="description" placeholder="when duplicated, status and date are not copied"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
-                                <field name="state"/>
+                                <field name="description"
+                                    placeholder="when duplicated, status and date are not copied" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                                <field name="state" />
                             </group>
                         </page>
                     </notebook>
@@ -57,15 +69,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Search">
-                <field name="name" string="Title"/>
-                <field name="postcode" string="Postcode"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
-                <field name="facades" string="Facades"/>
-                <filter name="state" string="Available" domain="['|',('state','=','new'),('state','=','offer_recieved')]"/>
+                <field name="name" string="Title" />
+                <field name="postcode" string="Postcode" />
+                <field name="expected_price" string="Expected Price" />
+                <field name="bedrooms" string="Bedrooms" />
+                <field name="living_area" string="Living Area (sqm)" />
+                <field name="facades" string="Facades" />
+                <filter name="state" string="Available"
+                    domain="['|',('state','=','new'),('state','=','offer_recieved')]" />
                 <group>
-                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
+                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}" />
                 </group>
             </search>
         </field>

@@ -1,0 +1,13 @@
+<odoo noupdate="1"> 
+    <record id="estate_property_tag_1" model="estate.property.tag">
+        <field name="name">filter</field>
+    </record>
+
+     <record id="estate_property_tag_2" model="estate.property.tag">
+        <field name="name">reno</field>
+    </record>
+
+     <record id="estate_property_tag_3" model="estate.property.tag">
+        <field name="name">remodeled</field>
+    </record>
+</odoo>

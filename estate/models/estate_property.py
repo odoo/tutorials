@@ -1,10 +1,34 @@
 from odoo import models, fields
 from dateutil.relativedelta import relativedelta
 
-
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "real state property"
+
+    property_type_id =fields.Many2one(
+        "estate.property.type",
+        string="Poperty Type"
+    )
+    buyer_id= fields.Many2one(
+        "res.partner", string="buyer", copy=False
+    )
+    salesperson_id = fields.Many2one(
+        "res.users" , string ="sales person" ,default=lambda self: self.env.user
+    )
+
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+         string="Tags"
+    )
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        'property_id',
+        string="Offer"
+    )
+
+    
+
+
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
 
@@ -43,3 +67,7 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ]
     )
+
+    language= fields.selection([
+        ('language','Language'),('hindi','Hindi')
+    ])

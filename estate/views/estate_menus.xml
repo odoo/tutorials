@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-
-    <menuitem id="estate_property_menu" name="real estate" action="estate_property_action"
+    <menuitem id="estate_property_menu"
+        name="real estate"
+        action="estate_property_action"
         web_icon="estate,static/description/icon.png">
+        
+        <menuitem
+            name="Advertisements"
+            id="estate_property_type_advertisements"
+            action="estate_property_action"
+            sequence="1" />
 
-        <menuitem name="customer" id="estate_customer_menu">
+        <menuitem 
+            name="settings"
+            id="estate_property_type_setting"> 
 
-        <menuitem name="sales" id="estate_sales_property" action="estate_property_action" />
-        <menuitem name="crm" id="estate_crm_property" action="estate_property_action"/>
+            <menuitem 
+            name="Property Types"
+            id="estate_property_type"
+            action="estate_property_type_action" />
+
+             
+            <menuitem 
+            name="Property Tag"
+            id="estate_property_tag"
+            action="estate_property_tag_action" />
+
+
 
         </menuitem>
-
-     <menuitem name="parent" id="estate_parent_action" action="estate_property_action" />
-
-        <menuitem name="child" id="estate_child_action"  >
-
-         <menuitem name="projects" id="estate_projects_property"  action="estate_property_action"/>
-          <menuitem name="timesheet" id="estate_timesheet_property" action="estate_property_action" />
-
-        </menuitem>
-
-    
 
     </menuitem>
 </odoo>
