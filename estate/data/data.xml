@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="estate_property_list_view_demo_1" model="estate.property">
         <field name="name">ABC Ltd</field>
         <field name="property_type_id" ref="estate_property_type_1"/>
@@ -35,4 +36,5 @@
         <field name="selling_price">800000</field>
         <field name="date_availability">2026-09-30</field>
     </record>
+
 </odoo>

@@ -11,6 +11,6 @@
         'views/estate_menus.xml',
         'data/data_type.xml',
         'data/data_tags.xml',
-        'data/data.xml',   
+        'data/data.xml',
     ],
 }

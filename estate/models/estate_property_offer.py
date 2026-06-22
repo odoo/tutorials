@@ -1,6 +1,5 @@
 from odoo import fields, models
 
-
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
@@ -24,5 +23,3 @@ class EstatePropertyOffer(models.Model):
         "estate.property",
         required=True,
     )
-
-
