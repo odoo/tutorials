@@ -1,0 +1,3 @@
+id,name,model_id,group_id/id,operation,domain
+access_task_manager,access_task_manager,task.manager,base.group_user,crud,
+access_task_manager_tags,access_task_manager_tags,task.manager.tags,base.group_user,crud,

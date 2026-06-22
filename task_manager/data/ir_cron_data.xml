@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+    
+        <record id="ir_cron_auto_archive_task_after_7_pm" model="ir.cron">
+        <field name="name">Auto Archive Task After 7pm</field>
+        <field name="model_id" ref="model_task_manager" />
+        <field name="state">code</field>
+        <field name="code">model._auto_archive()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="nextcall" eval="(DateTime.now().replace(hour=19, minute=0, second=0)).strftime('%Y-%m-%d %H:%M:%S')" />
+    </record>
+    
+    </data>
+    
+
+</odoo>

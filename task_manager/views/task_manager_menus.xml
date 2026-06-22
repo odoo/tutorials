@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_root" name="Task Manager">
+        <menuitem id="task_menu" name="Tasks">
+            <menuitem id="task" action="task_manager_action_view" />
+        </menuitem>
+        <menuitem id="Configuration" name="Configuration">
+            <menuitem id="tags" action="task_manager_tags_action_view" />
+        </menuitem>
+    </menuitem>
+
+</odoo>
