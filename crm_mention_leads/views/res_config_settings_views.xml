@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_mention_leads" model="ir.ui.view">
+        <field name="name">res.config.settings.view.mention.leads</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//block[@name='generate_lead_setting_container']" position="after">
+                <block title="Mentions to Leads">
+                    <setting string="Mentions to Leads" help="Convert Reddit mentions into CRM leads automatically">
+                        <field name="mention_leads_enabled"/>
+                        <div class="mt8" invisible="not mention_leads_enabled">
+                            <div class="mt8">
+                                <button name="action_open_mention_setup_wizard" type="object" string="→ Configure Company Profile" class="btn-link"/>
+                            </div>
+                            <div class="mt8">
+                                <label for="scrapecreators_api_key" string="ScrapeCreators API Key"/>
+                                <field name="scrapecreators_api_key" password="True" class="o_light_label"/>
+                                <span class="text-muted">
+                                            Get your key at
+                                    <a href="https://app.scrapecreators.com" target="_blank">app.scrapecreators.com</a>
+                                </span>
+                            </div>
+                            <div class="mt4">
+                                <label for="gemini_api_key" string="Gemini API Key (for scoring)"/>
+                                <field name="gemini_api_key" password="True" class="o_light_label"/>
+                            </div>
+                            <div class="mt4">
+                                <label for="mention_score_threshold" string="Minimum Intent Score"/>
+                                <field name="mention_score_threshold" class="o_light_label"/>
+                                <span class="text-muted"> / 100 — posts below this score are skipped</span>
+                            </div>
+                        </div>
+                    </setting>
+                </block>
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>
