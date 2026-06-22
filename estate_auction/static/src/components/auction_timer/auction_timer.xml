@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <templates xml:space="preserve">
+        <t t-name="estate_auction.AuctionTimer">
+            <span class="fw-bold">
+                <t t-if="state.isExpired">
+                    Auction Closed
+                </t>
+                <t t-else="">
+                    <t t-esc="state.remaining"/>
+                </t>
+            </span>
+        </t>
+    </templates>

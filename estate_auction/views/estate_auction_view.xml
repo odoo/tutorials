@@ -40,10 +40,6 @@
                     </group>
                 </page>
             </xpath>
-
-            <!-- <xpath expr="//sheet/h1" position="after">
-                    <field name="sale_mode" widget="radio" nolabel="1" options="{'horizontal': true}"/>
-            </xpath> -->
         </field>
     </record>
 </odoo>

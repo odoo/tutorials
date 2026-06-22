@@ -175,6 +175,7 @@
         <field name="garden_orientation">south</field>
         <field name="state">new</field>
     </record>
+    
     <record id="estate_property_12" model="estate.property">
         <field name="name">Historic Listed Building</field>
         <field name="description">Charming historic property with character</field>
@@ -190,6 +191,7 @@
         <field name="garden_orientation">west</field>
         <field name="state">new</field>
     </record>
+    
     <record id="estate_property_13" model="estate.property">
         <field name="name">Twin Home Units</field>
         <field name="description">Duplex with rental income potential</field>
@@ -205,6 +207,7 @@
         <field name="garden_orientation">north</field>
         <field name="state">new</field>
     </record>
+    
     <record id="estate_property_14" model="estate.property">
         <field name="name">Contemporary Townhouse</field>
         <field name="description">Modern townhouse in trendy neighborhood</field>
@@ -220,6 +223,7 @@
         <field name="garden_orientation">east</field>
         <field name="state">new</field>
     </record>
+    
     <record id="estate_property_15" model="estate.property">
         <field name="name">Lakeside Retreat</field>
         <field name="description">Peaceful waterfront property</field>

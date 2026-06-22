@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_property_detail_auction" inherit_id="estate_website_settings.property_detail_template">
+
+        <xpath expr="//h1" position="after">
+            <div class="text-end">
+                <t t-if="property.sale_mode == 'auction'">
+                    <div
+                        id="auction_timer"
+                        t-att-data-end-time="property.auction_end_time"/>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
