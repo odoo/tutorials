@@ -4,15 +4,36 @@
     <t t-name="awesome_owl.todo_item">
         <div class="d-flex gap-2 p-1 align-items-center" 
             t-att-style="props.todo.isCompleted ? 'text-decoration: line-through; color: #999;' : ''">
-            
             <input 
                 type="checkbox" 
                 t-att-checked="props.todo.isCompleted"
                 t-on-change="() => props.toggleState(props.todo.id)"
             />
-            
             <span t-esc="props.todo.id"/>
-            <span t-esc="props.todo.description"/>
+            <t t-if="!props.todo.isEditing">
+                <span t-esc="props.todo.description"/>
+                <button
+                    class="btn btn-primary btn-sm"
+                    t-on-click="() => props.editTodo(props.todo.id)"
+                >
+                    Edit Todo
+                </button>
+            </t>
+
+            <t t-else="">
+                <input
+                    type="text"
+                    t-att-value="props.todo.editText"
+                    t-on-input="(ev) => props.updateEditText(props.todo.id, ev.target.value)"
+                />
+                <button
+                    class="btn btn-success btn-sm"
+                    t-on-click="() => props.saveTodo(props.todo.id)"
+                >
+                    Save Todo
+                </button>
+            </t>
+            
             <i
                 class="fa fa-times text-danger" 
                 style="cursor: pointer;"

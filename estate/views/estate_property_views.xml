@@ -100,8 +100,13 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="0">
+            <kanban default_group_by="state" records_draggable="0">
                 <field name ="state"/>
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
+                <field name="tag_ids"/>
                 <templates>
                     <t t-name="card">
                         <div>

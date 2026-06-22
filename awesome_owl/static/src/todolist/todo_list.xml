@@ -8,9 +8,31 @@
                 t-on-keyup="addTodo"
                 t-ref="input"
             />
-            <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo" toggleState="toggleTodo" deleteTodo="deleteTodo"/>
+
+            <t t-if="todos.length">
+                <button
+                    class="btn btn-primary mb-3"
+                    t-on-click="markAllCompleted"
+                >
+                    Mark All Completed
+                </button>
+                <button
+                    class="btn btn-primary mb-3"
+                    t-on-click="clearAllTodo"
+                >
+                    Clear All Todo
+                </button>
             </t>
+
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo" toggleState="toggleTodo" deleteTodo="deleteTodo" editTodo="editTodo" saveTodo="saveTodo" updateEditText="updateEditText"/>
+            </t>
+            <div class="p-3">
+                <p>Total Todos: <t t-esc="totalTodos"/></p>
+                <p>Pending Todos: <t t-esc="pendingTodos"/></p>
+                <p>Completed Todos: <t t-esc="completedTodos"/></p>
+                <p>Deleted Todos: <t t-esc="deleteTodoCount"/></p>
+            </div>
         </div>
     </t>
 </templates>

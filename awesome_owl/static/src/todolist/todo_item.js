@@ -9,9 +9,14 @@ export class TodoItem extends Component {
                 id: Number,
                 description: String,
                 isCompleted: Boolean,
+                isEditing: Boolean,
+                editText: String,
             }
         },
         toggleState: Function,
         deleteTodo: Function,
+        editTodo: Function,
+        saveTodo: Function,
+        updateEditText: Function,
     };
 }
