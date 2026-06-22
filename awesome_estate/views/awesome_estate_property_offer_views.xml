@@ -21,6 +21,13 @@
         <field name="model">awesome.estate.property.offer</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_accept" string="Accept" type="object"
+                            invisible="status in ['accepted', 'refused']"/>
+                    <button name="action_refuse" string="Refuse" type="object"
+                            invisible="status in ['accepted', 'refused']"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="price"/>
