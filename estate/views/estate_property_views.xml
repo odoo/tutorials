@@ -20,6 +20,7 @@
                 <field name="state"/>
                 <field name="living_area"/>
                 <field name="property_type_id"/>
+                <field name="tag_ids"/>
             </list>
         </field>
     </record>
@@ -44,6 +45,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="tag_ids"/>
                         </group>
                     </group>
                     <notebook>

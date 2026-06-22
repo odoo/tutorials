@@ -1,7 +1,8 @@
-from odoo import fields, models 
+from odoo import fields, models
+
 
 class EstatePropertyType(models.Model):
-    _name= "estate.property.type"
-    _description= "Real Estate Property Types"
+    _name = "estate.property.type"
+    _description = "Real Estate Property Types"
 
-    name = fields.Char(string= "Name",required = True)
+    name = fields.Char(string="Name", required=True)

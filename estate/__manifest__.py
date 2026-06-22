@@ -1,5 +1,7 @@
 {
     'name': 'Real Estate',
+    'author': 'ritvik',
+    'license': 'LGPL-3',
     'depends': ['base'],
     'application': True,
     'data': [
