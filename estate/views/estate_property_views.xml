@@ -14,6 +14,7 @@
                 <field name="name" width="500"/>
                 <field name="property_type_id" width="100"/>
                 <field name="postcode" width="100"/>
+                <field name="tag_ids" widget="many2many_tags" width="100"/>
                 <field name="bedrooms" width="100"/>
                 <field name="living_area" width="100"/>
                 <field name="expected_price" width="100"/>
@@ -86,6 +87,9 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                <separator/>
+                <filter string="Has garden" name="has_garden" domain="[('garden','=',True)]"/>
+                <filter string="Has garage" name="has_garage" domain="[('garage','=',True)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" domain="[]" context="{'group_by': 'postcode'}"/>
                     <filter string="Property Type" name="property_type_id" domain="[]" context="{'group_by': 'property_type_id'}"/>
