@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_list_view_demo_1" model="estate.property">
+        <field name="name">ABC Ltd</field>
+        <field name="property_type_id" ref="estate_property_type_1"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_1')])]"/>
+        <field name="postcode">123345</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">135765</field>
+        <field name="expected_price">256000</field>
+        <field name="selling_price">2345678</field>
+        <field name="date_availability">2026-06-20</field>
+    </record>
+
+    <record id="estate_property_list_view_demo_2" model="estate.property">
+        <field name="name">XYZ Pvt Ltd</field>
+        <field name="property_type_id" ref="estate_property_type_2"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_1')])]"/>
+        <field name="postcode">7865445</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">100000</field>
+        <field name="expected_price">200000</field>
+        <field name="selling_price">500000</field>
+        <field name="date_availability">2026-09-30</field>
+    </record>
+
+    <record id="estate_property_list_view_demo_3" model="estate.property">
+        <field name="name">Umbrella Corp</field>
+        <field name="property_type_id" ref="estate_property_type_4"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('estate_property_tag_3')])]"/>
+        <field name="postcode">908765</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">100000</field>
+        <field name="expected_price">700000</field>
+        <field name="selling_price">800000</field>
+        <field name="date_availability">2026-09-30</field>
+    </record>
+</odoo>
