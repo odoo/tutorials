@@ -1,12 +1,12 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
+
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
@@ -32,20 +32,20 @@ class EstateProperty(models.Model):
         string="Best Offer", compute="_compute_best_offer")
     garden_orientation = fields.Selection(
         [
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('canceled', "Canceled"),
         ],
         required=True,
         copy=False,
@@ -58,7 +58,7 @@ class EstateProperty(models.Model):
     )
     salesperson_id = fields.Many2one(
         "res.users",
-        string="salesperson",
+        string="Salesperson",
         default=lambda self: self.env.user,
     )
     property_type_id = fields.Many2one(
@@ -73,10 +73,6 @@ class EstateProperty(models.Model):
         "estate.property.offer",
         "property_id",
         string="Offer",
-    )
-    property_type_id = fields.Many2one(
-        "estate.property.type",
-        string="Property Type",
     )
 
     @api.depends("living_area", "garden_area")
