@@ -12,4 +12,4 @@ class OwlPlayground(http.Controller):
 
     @http.route(["/counter"], type="http", auth="public")
     def show_counter(self):
-        return request.render("awesome_owl.counter_page")
+        return request.render("awesome_owl.counter_template")

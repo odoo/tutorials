@@ -1,5 +1,5 @@
-from odoo import fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
@@ -12,7 +12,11 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-
+    property_type = fields.Many2one("estate.property.type")
+    sales_person = fields.Many2one("res.users")
+    buyer = fields.Many2one("res.partner")
+    tag_ids = fields.Many2many("estate.property.tag")
+    offers = fields.One2many("estate.property.offer", "property_id", string="offers")
     date_availability = fields.Date(
         copy=False,
         default=_default_date_availability,
@@ -28,18 +32,18 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        [("North", "North"), ("South", "South"), ("East", "East"), ("West", "West")]
+        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
     state = fields.Selection(
         [
-            ("New", "New"),
-            ("Offer Recieved", "Offer Received"),
-            ("Offer Accepted", "Offer Accepted"),
-            ("Sold", "Sold"),
-            ("Cancelled", "Cancelled"),
+            ("new", "New"),
+            ("offer_recieved", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         required=True,
         copy=False,
-        default="New",
+        default="new",
     )
     active = fields.Boolean(default=True)

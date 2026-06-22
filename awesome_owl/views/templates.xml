@@ -19,7 +19,7 @@
 
         <!-- Counter Template -->
         <template
-            id="awesome_owl.counter_page"
+            id="awesome_owl.counter_template"
             name="Awesome T-Shirt thank you"
         >
             <html>
