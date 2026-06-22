@@ -5,10 +5,20 @@
         <div class="p-3">
             hello world
         </div>
-        <Counter/>
-        <Counter/>
-        <Card title="'test'" content="'test'"/>
-        <Card title="'Card 2'" content="'Content of card 2'"/>
+        <Counter onChange.bind="incrementSum"/>
+        <Counter onChange.bind="incrementSum"/>
+        <div class="mt-3 font-weight-bold">
+            Total Sum: <t t-esc="sum.value"/>
+        </div>
+        <Card title="'test'">   
+            <p class="card-text">test</p>
+            <div>description</div>
+        </Card>
+        <Card title="'Card 2'">
+            <p>Content of card 2</p>
+            <Counter onChange.bind="incrementSum"/>
+        </Card>
+        <TodoList/>
     </t>
 
 </templates>
