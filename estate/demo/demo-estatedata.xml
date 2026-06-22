@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Property Types-->
+    <record id="property_type_house" model="estate.property.type">
+        <field name="name">house</field>
+    </record>
+    <record id="property_type_appartment" model="estate.property.type">
+        <field name="name">appartment</field>
+    </record>
+    <record id="property_type_penthouse" model="estate.property.type">
+        <field name="name">penthouse</field>
+    </record>
+    <record id="property_type_villa" model="estate.property.type">
+        <field name="name">villa</field>
+    </record>
+    <record id="property_type_duplex" model="estate.property.type">
+        <field name="name">duplex</field>
+    </record> 
+    <record id="property_type_studio" model="estate.property.type">
+        <field name="name">studio</field>
+    </record>
+
+    <!--Property Tags-->
+    <record id="property_tags_cozy" model="estate.property.tag">
+        <field name="name">cozy</field>
+    </record>
+    <record id="property_tags_furnished" model="estate.property.tag">
+        <field name="name">furnished</field>
+    </record>
+    <record id="property_tags_unfurnished" model="estate.property.tag">
+        <field name="name">unfurnished</field>
+    </record>
+    <record id="property_tags_renovated" model="estate.property.tag">
+        <field name="name">renovated</field>
+    </record>
+    <record id="property_tags_new" model="estate.property.tag">
+        <field name="name">new</field>
+    </record>
+    <record id="property_tags_old" model="estate.property.tag">
+        <field name="name">new</field>
+    </record>
+    <!--Properties-->
+    <record id="estate_property_1" model="estate.property">
+        <field name="name">Rohtas Plumeria</field>
+        <field name="description">3bhk appts</field>
+        <field name="postcode">226010</field>
+        <field name="date_availability" eval="(Datetime.today() +relativedelta(months=3))"/>
+        <field name="expected_price">7500000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">1800</field>
+        <field name="facades">3</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_appartment"/>
+        <field name="tag_ids" eval="[(4,ref('property_tags_cozy'))]"/> 
+    </record>
+
+    <record id="estate_property_2" model="estate.property">
+        <field name="name">Gkb Grace</field>
+        <field name="description">3bhk appts</field>
+        <field name="postcode">336010</field>
+        <field name="date_availability" eval="(Datetime.today() +relativedelta(months=3))"/>
+        <field name="expected_price">5000000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">1600</field>
+        <field name="facades">3</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_penthouse"/>
+        <field name="tag_ids" eval="[(4,ref('property_tags_renovated'))]"/> 
+    </record>
+
+    <record id="estate_property_3" model="estate.property">
+        <field name="name">omaxe heights</field>
+        <field name="description">5bhk appts</field>
+        <field name="postcode">226010</field>
+        <field name="date_availability" eval="(Datetime.today() +relativedelta(months=3))"/>
+        <field name="expected_price">8500000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">2400</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_villa"/>
+        <field name="tag_ids" eval="[(4,ref('property_tags_furnished'))]"/> 
+    </record>
+
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">parsvanath planet</field>
+        <field name="description">2bhk appts</field>
+        <field name="postcode">226016</field>
+        <field name="date_availability" eval="(Datetime.today() +relativedelta(months=3))"/>
+        <field name="expected_price">4500000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">1400</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_villa"/>
+        <field name="tag_ids" eval="[(4,ref('property_tags_new'))]"/> 
+    </record>
+</odoo>
