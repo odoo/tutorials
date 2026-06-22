@@ -15,4 +15,7 @@
     <record id="estate_property_type_5" model="estate.property.type">
         <field name="name">Boat House</field>
     </record>
+    <record id="estate_property_type_6" model="estate.property.type">
+        <field name="name">Mansion</field>
+    </record>
 </odoo>
