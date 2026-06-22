@@ -44,7 +44,7 @@
         <field name="name">Rohtas Plumeria</field>
         <field name="description">3bhk appts</field>
         <field name="postcode">226010</field>
-        <field name="date_availability" eval="(Date.today() +relativedelta(months=3))"/>
+        <field name="date_availability" eval="(datetime.date.today() +relativedelta(months=3))"/>
         <field name="expected_price">7500000</field>
         <field name="selling_price">0</field>
         <field name="bedrooms">3</field>
@@ -60,7 +60,7 @@
         <field name="name">Gkb Grace</field>
         <field name="description">3bhk appts</field>
         <field name="postcode">336010</field>
-        <field name="date_availability" eval="(Date.today() +relativedelta(months=3))"/>
+        <field name="date_availability" eval="(datetime.date.today() +relativedelta(months=3))"/>
         <field name="expected_price">5000000</field>
         <field name="selling_price">0</field>
         <field name="bedrooms">3</field>
@@ -76,7 +76,7 @@
         <field name="name">omaxe heights</field>
         <field name="description">5bhk appts</field>
         <field name="postcode">226010</field>
-        <field name="date_availability" eval="(Date.today() +relativedelta(months=3))"/>
+        <field name="date_availability" eval="(datetime.date.today() +relativedelta(months=3))"/>
         <field name="expected_price">8500000</field>
         <field name="selling_price">0</field>
         <field name="bedrooms">5</field>
@@ -92,7 +92,7 @@
         <field name="name">parsvanath planet</field>
         <field name="description">2bhk appts</field>
         <field name="postcode">226016</field>
-        <field name="date_availability" eval="(Datetime.today() +relativedelta(months=3))"/>
+        <field name="date_availability" eval="(datetime.date.today() +relativedelta(months=3))"/>
         <field name="expected_price">4500000</field>
         <field name="selling_price">0</field>
         <field name="bedrooms">2</field>
