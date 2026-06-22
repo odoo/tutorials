@@ -7,10 +7,17 @@ class TaskManagerTask(models.Model):
     _inherit = ["mail.thread"]
     _description = "Task Manager"
 
+    def _get_default_deadline(self):
+        return fields.Datetime.add(fields.Datetime.today(), days=3)
+
     name = fields.Char(tracking=True, required=True)
     active = fields.Boolean(default=True)
     assigned_user = fields.Many2one("res.users", tracking=True)
-    deadline = fields.Datetime(tracking=True, required=True)
+    deadline = fields.Datetime(
+        tracking=True,
+        required=True,
+        default=lambda self: self._get_default_deadline(),
+    )
     status = fields.Selection(
         string="Status",
         selection=[
@@ -21,49 +28,49 @@ class TaskManagerTask(models.Model):
         default="new",
         tracking=True,
     )
-    tag_ids = fields.Many2many("task.manager.tags")
+    tag_ids = fields.Many2many(
+        "task.manager.tags",
+        compute="_compute_assigned_user",
+        store=True,
+    )
     days_remaining = fields.Integer(compute="_compute_days_remaining")
     count_of_assignes = fields.Integer(compute="_compute_count_of_assignes")
 
     @api.depends("deadline")
     def _compute_days_remaining(self):
-        for task_manager in self:
-            task_manager.days_remaining = (
-                task_manager.deadline - fields.Datetime.today()
-            ).days
+        for task in self:
+            task.days_remaining = (task.deadline - fields.Datetime.today()).days
 
     @api.depends("assigned_user")
     def _compute_count_of_assignes(self):
-        for task_manager in self:
-            task_manager.count_of_assignes = len(task_manager.assigned_user)
+        for task in self:
+            task.count_of_assignes = len(task.assigned_user)
 
-    @api.onchange("assigned_user")
-    def _onchange_assigned_user(self):
+    @api.depends("assigned_user")
+    def _compute_assigned_user(self):
         tag_name = "assigned"
+        tag = self.env["task.manager.tags"].search([("name", "=", tag_name)], limit=1)
+        if not tag:
+            tag = self.env["task.manager.tags"].create({"name": tag_name})
 
-        for task_manager in self:
-            if not task_manager.assigned_user:
-                assigned_tag = task_manager.env["task.manager.tags"].search(
-                    [("name", "=", tag_name)],
-                )
-                if assigned_tag:
-                    task_manager.tag_ids = [Command.unlink(assigned_tag.id)]
-                continue
-            if task_manager.tag_ids.filtered(lambda t: t.name == tag_name):
-                continue
-            assigned_tag = task_manager.env["task.manager.tags"].search(
-                [("name", "=", tag_name)]
-            )
-            if not assigned_tag:
-                assigned_tag = task_manager.env["task.manager.tags"].create(
-                    {"name": tag_name}
-                )
-            task_manager.tag_ids = [Command.link(assigned_tag.id)]
+        unlink_ids = []
+        link_ids = []
+
+        for task in self:
+            if not task.assigned_user and tag in task.tag_ids:
+                unlink_ids.append(task.id)
+            elif task.assigned_user and tag not in task.tag_ids:
+                link_ids.append(task.id)
+
+        if unlink_ids:
+            self.browse(unlink_ids).tag_ids = [Command.unlink(tag.id)]
+        if link_ids:
+            self.browse(link_ids).tag_ids = [Command.link(tag.id)]
 
     def write(self, vals):
         is_archiving = "active" in vals
-        for task_manager in self:
-            if task_manager.status == "done" and not is_archiving:
+        for task in self:
+            if task.status == "done" and not is_archiving:
                 raise UserError("Cannot update task's details in the Done state.")
 
         return super().write(vals)
@@ -73,13 +80,16 @@ class TaskManagerTask(models.Model):
             tasks = self.filtered(lambda t: t.status == "done" and t.active)
         else:
             tasks = self.env["task.manager"].search(
-                [("status", "=", "done"), ("active", "=", True)]
+                [
+                    ("status", "=", "done"),
+                    ("active", "=", True),
+                ],
             )
         if tasks:
             tasks.action_archive()
 
     def print_task_count(self):
-        task_count = self.env["task.manager"].search_count([("active", "=", True)])
+        task_count = self.env["task.manager"].search_count([])
         return {
             "effect": {
                 "fadeout": "slow",
@@ -98,6 +108,27 @@ class TaskManagerTask(models.Model):
 
     def _auto_archive(self):
         done_tasks = self.env["task.manager"].search(
-            [("status", "=", "done"), ("active", "=", True)],
+            [
+                ("status", "=", "done"),
+                ("active", "=", True),
+            ],
         )
         done_tasks.action_archive()
+
+    @api.autovacuum
+    def _gc_delete_archive_task(self):
+        old_archived_tasks = self.env["task.manager"].search(
+            [
+                ("active", "=", False),
+                (
+                    "create_date",
+                    "<",
+                    fields.Datetime.subtract(
+                        fields.Datetime.today(),
+                        days=31,
+                    ),
+                ),
+            ],
+        )
+        # breakpoint()
+        old_archived_tasks.unlink()
