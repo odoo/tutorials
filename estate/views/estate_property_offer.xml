@@ -14,6 +14,7 @@
       <field name="model">estate_property_offer_model</field>
       <field name="arch" type="xml">
         <list>
+          <field name="sequence" widget="handle"/>
           <field name="price"/>
           <field name="partner_id"/>
           <field name="property_id"/>
@@ -36,7 +37,7 @@
                 <field name="price"/>
               </group>
               <group>
-                <field name="status"/>
+                <field name="status" widget='statusbar'/>
               </group>
               <group>
                 <field name="partner_id"/>

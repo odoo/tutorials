@@ -1,9 +1,10 @@
 from odoo import api, models, fields, exceptions
 
 
-class EstatePropertyModel(models.Model):                              # Inheritence -> This class inherits from models.Model
+class EstatePropertyModel(models.Model):                    # Inheritence -> This class inherits from models.Model
     _name = "estate_property_model"                         # Name of the table in database
     _description = "Estate Property Model"                  # user-friendly name    
+    _order = "id desc"
 
     name = fields.Char(required=True)                       # VARCHAR & NOT NULL
     expected_price = fields.Float(required=True)            # NUMERIC & NOT NULL

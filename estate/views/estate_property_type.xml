@@ -38,6 +38,7 @@
                   <list>
                     <field name="name" />
                     <field name="expected_price" />
+                    <field name="property_status" />
                   </list>
                 </field>
               </page>

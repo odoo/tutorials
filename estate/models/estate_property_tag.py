@@ -2,6 +2,7 @@ from odoo import models, fields
 
 class EstatePropertyTag(models.Model):
     _name = "estate_property_tag_model"
+    _order = "name"
 
     name = fields.Char(required=True)
     property_ids = fields.Many2many(
