@@ -104,7 +104,7 @@
                 <filter 
                     name="available"
                     string="Available"
-                    domain="['|', ('state', '=', 'new'),('state','=','offer_received')]"
+                    domain="[('state', 'in' ,('new','offer_recieved')]"
                     />
                 <filter
                     name="groupby_postcode"

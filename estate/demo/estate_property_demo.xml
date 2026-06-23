@@ -1,45 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!--Property Types-->
-    <record id="property_type_house" model="estate.property.type">
-        <field name="name">house</field>
-    </record>
-    <record id="property_type_appartment" model="estate.property.type">
-        <field name="name">appartment</field>
-    </record>
-    <record id="property_type_penthouse" model="estate.property.type">
-        <field name="name">penthouse</field>
-    </record>
-    <record id="property_type_villa" model="estate.property.type">
-        <field name="name">villa</field>
-    </record>
-    <record id="property_type_duplex" model="estate.property.type">
-        <field name="name">duplex</field>
-    </record> 
-    <record id="property_type_studio" model="estate.property.type">
-        <field name="name">studio</field>
-    </record>
+        <!--Properties-->
 
-    <!--Property Tags-->
-    <record id="property_tags_cozy" model="estate.property.tag">
-        <field name="name">cozy</field>
-    </record>
-    <record id="property_tags_furnished" model="estate.property.tag">
-        <field name="name">furnished</field>
-    </record>
-    <record id="property_tags_unfurnished" model="estate.property.tag">
-        <field name="name">unfurnished</field>
-    </record>
-    <record id="property_tags_renovated" model="estate.property.tag">
-        <field name="name">renovated</field>
-    </record>
-    <record id="property_tags_new" model="estate.property.tag">
-        <field name="name">new</field>
-    </record>
-    <record id="property_tags_old_property" model="estate.property.tag">
-        <field name="name">old property</field>
-    </record>
-    <!--Properties-->
     <record id="estate_property_1" model="estate.property">
         <field name="name">Rohtas Plumeria</field>
         <field name="description">3bhk appts</field>
@@ -104,3 +66,4 @@
         <field name="tag_ids" eval="[(4,ref('property_tags_new'))]"/> 
     </record>
 </odoo>
+
