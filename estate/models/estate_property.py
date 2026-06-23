@@ -48,7 +48,6 @@ class EstateProperty(models.Model):
         # breakpoint()
         for record in self:
             record.total_area = record.living_area + record.garden_area
- 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user, string="Salesperson")
