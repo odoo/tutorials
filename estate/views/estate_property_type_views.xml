@@ -7,6 +7,7 @@
             <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
+                <field name="offer_count"/>
             </list>
         </field>
     </record>
@@ -17,9 +18,16 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <h1>
-                        <field name="name" />
-                    </h1>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate.estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money" string="Offers">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
+                    <group>
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </group>
                     <notebook>
                         <page name="Properties">
                             <field name="property_ids">
