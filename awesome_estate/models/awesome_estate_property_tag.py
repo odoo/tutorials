@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import _, fields, models
 
 
 class AwesomeEstatePropertyTag(models.Model):
@@ -7,3 +7,12 @@ class AwesomeEstatePropertyTag(models.Model):
     _order = 'name'
 
     name = fields.Char(required=True)
+    color = fields.Integer(string="Color")
+
+    # -----------------------------------------------------------------------
+    # SQL Constraints
+    # -----------------------------------------------------------------------
+    _check_tag_name_unique = models.Constraint(
+        'UNIQUE(name)',
+        _('The tag name must be unique.'),
+    )

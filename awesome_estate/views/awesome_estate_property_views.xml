@@ -17,7 +17,6 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="total_area"/>
-                <field name="squared_area"/>
                 <field name="garage"/>
                 <field name="garden"/>
                 <field name="state"/>
@@ -32,17 +31,26 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_cancel" string="Cancel" type="object"
-                            invisible="state in ['sold', 'cancelled']"/>
                     <button name="action_sold" string="Sold" type="object"
-                            invisible="state in ['sold', 'cancelled']"/>
+                            invisible="state in ['sold', 'canceled', 'offer_accepted']"/>
+                    <button name="action_sold" string="Sold" type="object"
+                            invisible="state not in ['offer_accepted']"
+                            class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state in ['sold', 'canceled']"/>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                           statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <field name="tag_ids" widget="many2many_tags"
+                               options="{'color_field': 'color'}"/>
+                    </div>
                     <group>
                         <group>
-                            <field name="name"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -53,27 +61,25 @@
                         <group>
                             <field name="buyer_id"/>
                             <field name="salesperson_id"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="total_area"/>
-                            <field name="squared_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                        </group>
-                    </group>
-                    <group>
-                        <group string="Garden">
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
-                        </group>
-                        <group string="Tags">
-                            <field name="tag_ids" widget="many2many_tags"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
-                            <field name="description"/>
+                            <group>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area"
+                                           invisible="not garden"/>
+                                    <field name="garden_orientation"
+                                           invisible="not garden"/>
+                                    <field name="total_area"/>
+                                </group>
+                            </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">

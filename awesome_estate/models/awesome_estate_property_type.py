@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import _, fields, models
 
 
 class AwesomeEstatePropertyType(models.Model):
@@ -7,3 +7,11 @@ class AwesomeEstatePropertyType(models.Model):
     _order = 'name'
 
     name = fields.Char(required=True)
+
+    # -----------------------------------------------------------------------
+    # SQL Constraints
+    # -----------------------------------------------------------------------
+    _check_type_name_unique = models.Constraint(
+        'UNIQUE(name)',
+        _('The property type name must be unique.'),
+    )
