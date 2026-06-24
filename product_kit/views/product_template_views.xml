@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_open_kit_lines" model="ir.actions.act_window">
+        <field name="name">Sub Products</field>
+        <field name="res_model">product.kit.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('product_tmpl_id', '=', active_id)]</field>
+        <field name="context">{'default_product_tmpl_id': active_id}</field>
+    </record>
+
+    <record id="product_kit_line_list_view" model="ir.ui.view">
+        <field name="name">product.kit.line.list</field>
+        <field name="model">product.kit.line</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="product_id"/>
+                <field name="quantity"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="view_product_template_kit_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.kit.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <div name="options" position="inside">
+                <span name="kit_option" class="d-inline-flex">
+                    <field name="is_kit"/>
+                    <label for="is_kit"/>
+                </span>
+            </div>
+
+            <div name="button_box" position="inside">
+                <button name="%(action_open_kit_lines)d" type="action"
+                        class="btn oe_stat_button btn-outline-secondary flex-grow-1 flex-lg-grow-0"
+                        invisible="not is_kit">
+                    <i class="o_button_icon fa fa-fw fa-cubes me-1"/>
+                    <span>Kit Components</span>
+                </button>
+            </div>
+
+            <xpath expr="//notebook/page[last()]" position="after">
+                <page string="Kit Components" name="kit_components"
+                      invisible="not is_kit">
+                    <field name="kit_product_ids"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_template_kit_search_inherit" model="ir.ui.view">
+        <field name="name">product.template.kit.search.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <filter name="filter_to_sell" position="after">
+                <filter string="Kit" name="is_kit" domain="[('is_kit', '=', True)]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
