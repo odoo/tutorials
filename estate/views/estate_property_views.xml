@@ -70,7 +70,7 @@
                         <page string ="Offers">
                             <field name="offer_id">
                                 <list string="Offers">
-                                    <field name="Price"/>
+                                    <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="status"/>
                                 </list>
