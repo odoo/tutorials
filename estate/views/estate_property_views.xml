@@ -67,6 +67,16 @@
                             </group>
                             </group>
                         </page>
+                        <page string ="Offers">
+                            <field name="offer_id">
+                                <list string="Offers">
+                                    <field name="Price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+
                         <page string= "Other Information">
                             <group>
                             <group>
