@@ -113,6 +113,14 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check_state(self):
+        for record in self:
+            if record.state not in ('new', 'canceled'):
+                raise UserError(
+                    _("Only New or Cancelled properties can be deleted"))
+        return True
+
     _check_expected_price = models.Constraint(
         "CHECK(expected_price>0)", "Expected price must be strictly positive"
     )

@@ -63,6 +63,22 @@ class EstatePropertyOffer(models.Model):
     _check_price = models.Constraint(
         'CHECK(price>0)', 'Price must be positive')
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            current_price = vals.get('price')
+            property_id = self.env['estate.property'].browse(
+                vals['property_id'])
+            for offer in property_id.offer_ids:
+                if current_price < offer.price:
+                    raise UserError(
+                        "The offer must be higher than the current highest offer.")
+        offers = super().create(vals_list)
+        for record in offers:
+            if record.property_id.state == 'new':
+                record.property_id.state = 'offer_received'
+        return offers
+
     def action_confirm(self):
         for offer in self.property_id.offer_ids:
             if self != offer and offer.status == 'accepted':
