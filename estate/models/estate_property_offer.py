@@ -92,3 +92,15 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = False
                 record.property_id.buyer_id = False
             record.status = "refused"
+
+    def _cron_automatic_refuse(self):
+        today = fields.Datetime.now()
+        offers = self.search([
+            ('status', "not in", ["accepted", "refused"]),
+        ])
+        for offer in offers:
+            expiry_date = offer.create_date + timedelta(days=offer.validity)
+            if expiry_date < today:
+                offer.write({
+                    'status': 'refused'
+                })
