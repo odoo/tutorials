@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+          <template id="expense.Playground" name="Expense Playground">
+            <html>
+                <head>
+                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                    <t t-call-assets="expense.assets_playground"/>
+                </head>
+                <body>
+                </body>
+            </html>
+          </template>
+    </data>
+</odoo>

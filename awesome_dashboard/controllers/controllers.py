@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import json
 import logging
 import random
 
@@ -34,3 +35,21 @@ class AwesomeDashboard(http.Controller):
             'total_amount': random.randint(100, 1000)
         }
 
+    @http.route('/awesome_dashboard/configuration', type='jsonrpc', auth='user')
+    def get_configuration(self):
+        config_key = f"awesome_dashboard.removed_item_ids.{request.env.user.id}"
+        raw_value = request.env['ir.config_parameter'].sudo().get_param(config_key, '[]')
+        try:
+            removed_item_ids = json.loads(raw_value)
+        except (TypeError, ValueError):
+            removed_item_ids = []
+        return {'removed_item_ids': removed_item_ids}
+
+    @http.route('/awesome_dashboard/configuration/set', type='jsonrpc', auth='user')
+    def set_configuration(self, removed_item_ids):
+        config_key = f"awesome_dashboard.removed_item_ids.{request.env.user.id}"
+        request.env['ir.config_parameter'].sudo().set_param(
+            config_key,
+            json.dumps(removed_item_ids or []),
+        )
+        return {'removed_item_ids': removed_item_ids or []}

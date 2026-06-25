@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="expense.Playground">
+        <div class="p-3">
+            <h2>Expense Tracker</h2>
+            <Expense/>
+        </div>
+    </t>
+</templates>

@@ -23,7 +23,8 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+            '/web/static/lib/Chart/Chart.js',
+            'awesome_dashboard/static/src/dashboard/**/*',
         ],
     },
     'license': 'AGPL-3'
