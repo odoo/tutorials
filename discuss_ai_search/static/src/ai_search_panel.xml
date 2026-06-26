@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="discuss_ai_search.AiSearchPanel">
+        <ActionPanel title="'Search with AI'" minWidth="250" initialWidth="350" icon="'fa fa-magic'">
+            <div class="o-discuss-AiSearchPanel d-flex flex-column gap-2">
+                <div class="d-flex align-items-stretch gap-2">
+                    <textarea 
+                        class="o-discuss-AiSearchPanel-input form-control"
+                        placeholder="Find the chat about quotation meeting"
+                        t-model="state.user_prompt"
+                    />
+                    <button class="o-discuss-AiSearchPanel-ask btn btn-primary" t-on-click="ask">
+                        Ask
+                    </button>
+                </div>
+                <button class="o-discuss-AiSearchPanel-summarize btn mt-1" t-on-click="summarize">
+                    Summarize this conversation
+                </button>
+                <div class="o-discuss-AiSearchPanel-response" t-if="state.answer">
+                    <t t-out="state.answer"/>
+                </div>
+                <t t-if="messages.length">
+                    <p class="o-discuss-AiSearchPanel-count text-muted fw-bolder text-uppercase small mb-0">
+                        <t t-esc="messages.length"/> message<t t-if="messages.length > 1">s</t> found
+                    </p>
+                    <MessageCardList messages="messages" mode="'search'" thread="props.thread"/>
+                </t>
+            </div>
+        </ActionPanel>
+    </t>
+</templates>
