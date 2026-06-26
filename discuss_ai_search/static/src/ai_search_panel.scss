@@ -1,0 +1,47 @@
+.o-discuss-AiSearchPanel {
+    &-input {
+        font-size: 13.5px;
+        border-color: #e5d4d4;
+
+        &:focus {
+            border-color: #a9425a;
+            box-shadow: 0 0 0 2px rgba(169, 66, 90, 0.12);
+        }
+    }
+
+    &-ask {
+        background-color: #a9425a;
+        color: #ffffff;
+        font-weight: 600;
+        border: none;
+
+        &:hover {
+            background-color: #8f3549;
+            color: #ffffff;
+        }
+    }
+
+    &-summarize {
+        background-color: #f9dfe2;
+        color: #7a2f3d;
+        font-weight: 500;
+        border: 1px solid #f0c4ca;
+
+        &:hover {
+            background-color: #f3cdd2;
+        }
+    }
+
+    &-response {
+        background-color: #fdf6f7;
+        border: 1px solid #f0c4ca;
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-size: 13.5px;
+        line-height: 1.5;
+
+        p:last-child, ul:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
