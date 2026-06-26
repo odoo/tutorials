@@ -60,7 +60,7 @@ class EstateProperty(models.Model):
         for record in self:
             price = record.offer_ids.mapped('price')
             record.best_price = max(price) if price else 0.0
-    
+
     @api.onchange('garden')
     def _on_change_garden(self):
         self.garden_area = 10
