@@ -1,7 +1,6 @@
 from datetime import timedelta
 
-from odoo import fields, models
-
+from odoo import api, fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -38,7 +37,7 @@ class EstateProperty(models.Model):
     )
     date_availability = fields.Date(
         copy=False,
-        default=_default_availability_date,
+        default=lambda self: fields.Datetime.now() + timedelta(days=90),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(
@@ -48,11 +47,17 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer(
         default=2,
     )
-    living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
+    living_area = fields.Integer()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    total_area = fields.Integer(
+        compute="_compute_total_area",
+    )
+    best_price = fields.Float(
+        compute="_compute_best_price",
+    )
     garden_orientation = fields.Selection([
         ('north', 'North'),
         ('south', 'South'),
@@ -74,3 +79,26 @@ class EstateProperty(models.Model):
         copy=False,
         default='new',
     )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area = (
+                property.living_area +
+                property.garden_area
+            )
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for property in self:
+            prices = property.offer_ids.mapped("price")
+            property.best_price = max(prices) if prices else 0.0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
