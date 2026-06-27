@@ -12,3 +12,5 @@ class EstatePropertyTag(models.Model):
         column2="estate_property_id",
         string="Properties"
     )
+
+    color = fields.Integer()

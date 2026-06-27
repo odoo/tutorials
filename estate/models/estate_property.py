@@ -18,8 +18,8 @@ class EstatePropertyModel(models.Model):                    # Inheritence -> Thi
 
     best_price = fields.Float(compute="_compute_best_offer_price", string="Best Accepted Offer")
 
-    sold = fields.Boolean()
-    cancelled = fields.Boolean()
+    sold = fields.Boolean(default="False")
+    cancelled = fields.Boolean(default="False")
     property_status = fields.Char(default="New", string="Property Status")
 
     @api.depends("living_area", "garden_area")
@@ -37,7 +37,7 @@ class EstatePropertyModel(models.Model):                    # Inheritence -> Thi
         relation="estate_property_tag_rel",
         column1="estate_property_id",
         column2="estate_property_tag_id",
-        string="Tag"
+        string="Tag",
     )
     property_offer_ids = fields.One2many(
         comodel_name="estate_property_offer_model", 

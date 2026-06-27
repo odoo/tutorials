@@ -13,7 +13,7 @@
       <field name="name">estate.property.tag.model.list</field>
       <field name="model">estate_property_tag_model</field>
       <field name="arch" type="xml">
-        <list>
+        <list editable="bottom">
           <field name="name"/>
           <field name="property_ids"/>
         </list>

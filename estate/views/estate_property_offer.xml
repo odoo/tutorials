@@ -18,8 +18,8 @@
           <field name="price"/>
           <field name="partner_id"/>
           <field name="property_id"/>
-          <button name="action_accept_offer" string="Accept" type="object" />
-          <button name="action_refuse_offer" string="Refuse" type="object" />
+          <button name="action_accept_offer" string="Accept" type="object" invisible="status == 'accepted' or status == 'refused' " />
+          <button name="action_refuse_offer" string="Refuse" type="object" invisible="status == 'accepted' or status == 'refused' " />
           <field name="status"/>
         </list>
       </field>
@@ -46,8 +46,16 @@
                 <field name="property_id"/>
               </group>
               <group>
-                <button name="action_accept_offer" string="Accept" type="object" />
-                <button name="action_refuse_offer" string="Refuse" type="object" />
+                <button 
+                name="action_accept_offer" 
+                class="btn-primary" 
+                icon="fa-check" 
+                type="object" invisible="status == 'accepted' or status == 'refused' " />
+                <button 
+                name="action_refuse_offer" 
+                class="btn-danger" 
+                icon="fa-times" 
+                type="object" invisible="status == 'accepted' or status == 'refused'" />
               </group>
             </group>
           </sheet>
