@@ -4,10 +4,13 @@
     <field name="name">estate.property.offer.list</field>
     <field name="model">estate.property.offer</field>
     <field name="arch" type="xml">
-      <list string="offers">
+      <list string="offers" editable="bottom">
         <field name="price" string="Price"/>
         <field name="partner_id" string="Partner"/>
+        <field name="create_date"/>
         <field name="status" string="Status"/>
+        <field name="validity"/>
+        <field name="date_deadline" string="Deadline"/>
       </list>
     </field>
   </record>

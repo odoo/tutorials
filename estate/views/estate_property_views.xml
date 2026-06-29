@@ -30,6 +30,7 @@
               <group>
                 <field name="expected_price" string="expected_price"/>
                 <field name="selling_price" string="Selling Price"/>
+                <field name="best_price"/>
               </group>
             </group>
           </div>
@@ -39,20 +40,21 @@
                 <group>
                   <field name="description" string="Description" placeholder="when duplicated,status and date are not copied"/>
                   <field name="bedrooms" string="Bedrooms"/>
-                  <field name="living_area" string="Living Area (sqm)"/>
                   <field name="facades" string="Facades"/>
-                  <field name="garage" string="Garage"/>
+                  <field name="garden" string="Garden"/>
+                  <field name="garden_orientation" string="Garden Orientation"/>
                 </group>
                 <group>
-                  <field name="garden" string="Garden"/>
+                  <field name="living_area" string="Living Area (sqm)"/>
                   <field name="garden_area" string="Garden Area (sqm)"/>
-                  <field name="garden_orientation" string="Garden Orientation"/>
+                  <field name="total_area"/>
                   <field name="state" string="State"/>
+                  <field name="garage" string="Garage"/>
                 </group>
               </group>
             </page>
             <page string="Offers">
-              <field name="offers" editable="bottom" context="{'tree_view_ref':'estate_property_offer_list'}"/>
+              <field name="offer_ids"/>
             </page>
             <page string="Other Info">
               <group>
