@@ -1,0 +1,22 @@
+{
+    'name': "Real Estate",
+    'version': "0.1.0",
+    'author': "keman-odoo",
+    'license': "LGPL-3",
+    'category': "Tutorials",
+    'depends': ['base', 'web'],
+    'summary': "manage properties, track buyers offers and handle property sales efficiently",
+    'sequence': "3",
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_property_visit_views.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_issue_views.xml',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag_views.xml',
+        'data/ir_cron.xml',
+        'views/estate_menus.xml',
+        'views/res_user_views.xml',
+    ],
+}
