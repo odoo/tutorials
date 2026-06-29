@@ -28,6 +28,12 @@ class AwesomeEstatePropertyOffer(models.Model):
         ondelete='cascade',
         index=True,
     )
+    property_type_id = fields.Many2one(
+        'awesome.estate.property.type',
+        string="Property Type",
+        related='property_id.property_type_id',
+        store=True,
+    )
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline",
@@ -40,9 +46,12 @@ class AwesomeEstatePropertyOffer(models.Model):
     # -----------------------------------------------------------------------
     _check_offer_price = models.Constraint(
         'CHECK (price > 0)',
-        _('The offer price must be strictly positive.'),
+        'The offer price must be strictly positive.',
     )
 
+    # -----------------------------------------------------------------------
+    # Computed Fields & Inverse
+    # -----------------------------------------------------------------------
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -113,7 +122,7 @@ class AwesomeEstatePropertyOffer(models.Model):
             if property_id:
                 property = self.env['awesome.estate.property'].browse(property_id)
                 if property.state == 'canceled':
-                    raise ValidationError(_("Cannot create offers on a canceled property."))
+                    raise UserError(_("Cannot create offers on a canceled property."))
             if property_id and new_price:
                 existing_offers = self.search([
                     ('property_id', '=', property_id),
@@ -122,7 +131,7 @@ class AwesomeEstatePropertyOffer(models.Model):
                     max_price = max(existing_offers.mapped('price'))
                     if new_price <= max_price:
                         raise ValidationError(
-                            _("Offer must be higher than the highest existing offer ($%.2f).") % max_price
+                            _("Offer must be higher than the highest existing offer ($%.2f).", max_price)
                         )
         offers = super().create(vals_list)
         for offer in offers:

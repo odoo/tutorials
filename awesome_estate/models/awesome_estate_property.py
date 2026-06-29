@@ -5,7 +5,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class AwesomeEstateProperty(models.Model):
     _name = 'awesome.estate.property'
-    _description = "Real Estate Property"
+    _description = 'Real Estate Property'
     _rec_name = 'name'
     _order = 'id desc'
 
@@ -91,23 +91,23 @@ class AwesomeEstateProperty(models.Model):
     # -----------------------------------------------------------------------
     _check_living_area = models.Constraint(
         'CHECK (living_area >= 0 AND living_area <= 100000)',
-        _('Living area must be between 0 and 100,000 sqm. Please enter a realistic value.'),
+        'Living area must be between 0 and 100,000 sqm. Please enter a realistic value.',
     )
     _check_garden_area = models.Constraint(
         'CHECK (garden_area >= 0 AND garden_area <= 100000)',
-        _('Garden area must be between 0 and 100,000 sqm. Please enter a realistic value.'),
+        'Garden area must be between 0 and 100,000 sqm. Please enter a realistic value.',
     )
     _check_expected_price = models.Constraint(
         'CHECK (expected_price > 0)',
-        _('Expected price must be greater than zero.'),
+        'Expected price must be greater than zero.',
     )
-    _check_selling_price = models.Constraint(
+    _check_selling_price_positive = models.Constraint(
         'CHECK (selling_price >= 0)',
-        _('The selling price must be positive.'),
+        'The selling price must be positive.',
     )
 
-    @api.constrains('expected_price', 'selling_price')
-    def _check_selling_price_vs_expected(self):
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and record.expected_price:
                 if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
@@ -129,6 +129,9 @@ class AwesomeEstateProperty(models.Model):
             record.best_price = max(
                 record.offer_ids.mapped('price'), default=0.0)
 
+    # -----------------------------------------------------------------------
+    # Onchange Methods
+    # -----------------------------------------------------------------------
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -138,6 +141,9 @@ class AwesomeEstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    # -----------------------------------------------------------------------
+    # Action Methods
+    # -----------------------------------------------------------------------
     def action_sold(self):
         self.ensure_one()
         if self.state == 'canceled':
@@ -154,6 +160,24 @@ class AwesomeEstateProperty(models.Model):
         self.state = 'canceled'
         return True
 
+    def action_reset(self):
+        """Reset sold or canceled property back to 'new' state."""
+        self.ensure_one()
+        if self.state not in ('sold', 'canceled'):
+            raise UserError(_("Only sold or canceled properties can be reset."))
+        was_sold = self.state == 'sold'
+        self.write({
+            'state': 'new',
+            'selling_price': 0.0,
+            'buyer_id': False,
+        })
+        if was_sold:
+            self.offer_ids.write({'status': False})
+        return True
+
+    # -----------------------------------------------------------------------
+    # Deletion Guard
+    # -----------------------------------------------------------------------
     @api.ondelete(at_uninstall=False)
     def _unlink_except_active_or_sold(self):
         if any(record.state not in ('new', 'canceled') for record in self):
