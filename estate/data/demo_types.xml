@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_demo_types" model="estate.property.type">
-        <field name="name">House</field> 
+        <field name="name">Residential</field> 
     </record>
 
     <record id="estate_demo_types1" model="estate.property.type">
-        <field name="name">Apartment</field> 
+        <field name="name">Commercial</field> 
     </record>
 
     <record id="estate_demo_types2" model="estate.property.type">
-        <field name="name">villa</field> 
+        <field name="name">Industrial</field> 
     </record>
 </odoo>

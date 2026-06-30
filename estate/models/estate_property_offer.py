@@ -8,6 +8,10 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
 
     price = fields.Float(string="Price")
+
+    _check_price = models.Constraint(
+        "CHECK(price > 0)", "An offer price must be strictly positive."
+    )
     status = fields.Selection(
         [
             ("accepted", "Accepted"),
@@ -48,3 +52,16 @@ class EstatePropertyOffer(models.Model):
     @api.onchange("date_deadline")
     def _onchange_date_deadline(self):
         self._inverse_date_deadline()
+
+    def action_accept(self):
+        for offer in self:
+            offer.status = "accepted"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.state = "offer_accepted"
+        return True
+
+    def action_reject(self):
+        for offer in self:
+            offer.status = "rejected"
+        return True

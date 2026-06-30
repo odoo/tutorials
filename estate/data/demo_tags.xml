@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_demo_tags" model="estate.property.tag">
+    <record id="estate_demo_tag_renovated" model="estate.property.tag">
         <field name="name">Renovated</field> 
     </record>
 
-    <record id="estate_demo_tags1" model="estate.property.tag">
+    <record id="estate_demo_tag_cozy" model="estate.property.tag">
         <field name="name">Cozy</field> 
     </record>
 
-    <record id="estate_demo_tags2" model="estate.property.tag">
+    <record id="estate_demo_tag_luxury" model="estate.property.tag">
         <field name="name">Luxury</field> 
+    </record>
+
+    <record id="estate_demo_tag_pool" model="estate.property.tag">
+        <field name="name">With Pool</field> 
+    </record>
+
+    <record id="estate_demo_tag_view" model="estate.property.tag">
+        <field name="name">Sea View</field> 
     </record>
 </odoo>

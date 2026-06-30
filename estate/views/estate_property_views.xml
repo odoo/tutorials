@@ -20,6 +20,7 @@
                 <field name="expected_price" width="100"/>
                 <field name="selling_price" width="100"/>
                 <field name="date_availability" width="100"/>
+                <field name="state" width="100"/>
             </list>
         </field>
     </record>
@@ -29,13 +30,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_sold" string="Sold" type="object" class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancel" type="object"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" placeholder="Property Name"/>
                     </h1>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>

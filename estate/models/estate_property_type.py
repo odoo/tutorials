@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -6,3 +6,5 @@ class EstatePropertyType(models.Model):
     _description = "Real Estate Property Type"
 
     name = fields.Char(string="Type", required=True)
+
+    _check_name = models.Constraint("UNIQUE(name)", "Type name must be unique")

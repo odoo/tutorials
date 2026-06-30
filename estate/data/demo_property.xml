@@ -15,7 +15,7 @@
         <field name="garden_orientation">south</field>
         <field name="active">True</field>
         <field name="property_type_id" ref="estate_demo_types1"/>
-        <field name="tag_ids" eval="[(6, 0, [ref('estate_demo_tags'), ref('estate_demo_tags1'), ref('estate_demo_tags2')])]"></field>
+        <field name="tag_ids" eval="[(6, 0, [ref('estate_demo_tag_cozy'), ref('estate_demo_tag_luxury')])]"></field>
     </record> 
 
     <record id="demo_property2" model="estate.property">
@@ -33,6 +33,6 @@
         <field name="garden_orientation">west</field>
         <field name="active">True</field>
         <field name="property_type_id" ref="estate_demo_types1"/>
-        <field name="tag_ids" eval="[(6, 0, [ref('estate_demo_tags')])]"></field>
+        <field name="tag_ids" eval="[(6, 0, [ref('estate_demo_tag_cozy')])]"></field>
     </record> 
 </odoo>

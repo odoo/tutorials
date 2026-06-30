@@ -1,8 +1,18 @@
-from odoo import fields, models
+from random import randint
+
+from odoo import api, fields, models
 
 
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Real Estate Property Tag"
 
+    def _default_color(self):
+        return randint(1, 11)
+
     name = fields.Char(string="Name", required=True)
+    color = fields.Integer(
+        string="Color Index", default=lambda self: self._default_color()
+    )
+
+    _check_name = models.Constraint("UNIQUE(name)", "Tag name must be unique")
