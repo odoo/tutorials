@@ -53,7 +53,6 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        compute="_compute_garden_orientation",
     )
     state = fields.Selection(
         [
@@ -66,7 +65,7 @@ class EstateProperty(models.Model):
     )
 
     best_price = fields.Float(compute="_compute_price")
-    total_area = fields.Float(compute="_compute_total", search="_search_best_price")
+    total_area = fields.Float(compute="_compute_total")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):

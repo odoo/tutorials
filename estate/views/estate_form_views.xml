@@ -80,7 +80,6 @@
                 <field name="facades" string="Facades" />
                 <filter name="state" string="Available"
                     domain="['|',('state','=','new'),('state','=','offer_recieved')]" />
-                <filter name="best_price" string="Best Price (&lt; 10,000)" domain="[('best_price','&lt;',10000)]"/>
                 <group>
                     <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}" />
                 </group>
