@@ -1,3 +1,4 @@
+from re import search
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
@@ -72,6 +73,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
+
     @api.depends('offer_ids.price')
     def _compute_price(self):
         for property in self:
@@ -88,4 +90,4 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = False
+            self.garden_orientation = False    
