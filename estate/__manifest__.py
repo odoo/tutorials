@@ -10,12 +10,11 @@
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_property_offer_views.xml",
+        "views/estate_offer_views.xml",
         "data/estate_property_type.xml",
         "data/estate_property_tag.xml",
-        "data/estate_property_demo.xml"
-
+        "data/estate_property_demo.xml",
     ],
     "author": "dheer",
     "license": "LGPL-3",
 }
-
