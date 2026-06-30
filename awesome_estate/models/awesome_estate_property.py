@@ -105,8 +105,16 @@ class AwesomeEstateProperty(models.Model):
         'CHECK (selling_price >= 0)',
         'The selling price must be positive.',
     )
+    _check_bedrooms = models.Constraint(
+        'CHECK (bedrooms >= 0)',
+        'Bedrooms cannot be negative.',
+    )
+    _check_facades = models.Constraint(
+        'CHECK (facades >= 0)',
+        'Facades cannot be negative.',
+    )
 
-    @api.constrains('selling_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and record.expected_price:
@@ -157,6 +165,8 @@ class AwesomeEstateProperty(models.Model):
         self.ensure_one()
         if self.state == 'sold':
             raise UserError(_("Sold properties cannot be canceled."))
+        if self.state == 'offer_accepted':
+            raise UserError(_("Cannot cancel a property with an accepted offer."))
         self.state = 'canceled'
         return True
 
