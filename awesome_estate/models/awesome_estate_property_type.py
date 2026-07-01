@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 
 class AwesomeEstatePropertyType(models.Model):
@@ -38,4 +38,6 @@ class AwesomeEstatePropertyType(models.Model):
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         for record in self:
-            record.offer_count = len(record.offer_ids)
+            record.offer_count = self.env['awesome.estate.property.offer'].search_count([
+                ('property_type_id', '=', record.id),
+            ])

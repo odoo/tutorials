@@ -41,6 +41,8 @@
                             class="oe_highlight"/>
                     <button name="action_cancel" string="Cancel" type="object"
                             invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_accept_best_offer" string="Accept Best" type="object"
+                            invisible="state in ['sold', 'canceled', 'offer_accepted']"/>
                     <button name="action_reset" string="Reset to New" type="object"
                             invisible="state not in ['sold', 'canceled']"/>
                     <field name="state" widget="statusbar"
@@ -144,7 +146,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <separator/>
                 <filter
                     name="available" string="Available"
@@ -154,6 +156,18 @@
                     name="best_price"
                     string="Best Price"
                     domain="[('best_price', '>', 1000)]"
+                />
+                <filter
+                    name="under_budget" string="Under Budget"
+                    domain="[('expected_price', '&lt;=', 500000)]"
+                />
+                <filter
+                    name="expensive" string="Expensive"
+                    domain="[('expected_price', '>', 1000000)]"
+                />
+                <filter
+                    name="one_bed_garage" string="1B+G"
+                    domain="[('bedrooms', '=', 1), ('garage', '=', True)]"
                 />
                 <filter
                     name="archived" string="Archived"
@@ -192,22 +206,5 @@
         <field name="view_mode">list,form</field>
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
-
-    <!-- Menus -->
-    <menuitem
-        id="awesome_estate_root_menu"
-        name="Real Estate"
-    />
-    <menuitem
-        id="awesome_estate_first_level_menu"
-        name="Properties"
-        parent="awesome_estate_root_menu"
-    />
-    <menuitem
-        id="awesome_estate_property_menu"
-        name="Properties"
-        parent="awesome_estate_first_level_menu"
-        action="awesome_estate_property_action"
-    />
 
 </odoo>

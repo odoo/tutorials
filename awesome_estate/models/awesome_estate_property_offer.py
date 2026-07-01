@@ -105,12 +105,28 @@ class AwesomeEstatePropertyOffer(models.Model):
         # Lightweight guard: block changing to a *different* status once set.
         # Prevents corrupting an accepted/refused offer via inline editable list.
         # Clearing to False is always allowed (resets from action_reset()).
-        if 'status' in vals and vals.get('status'):
+        # The 'force_refuse' context bypass allows property cancellation to work.
+        if 'status' in vals and vals.get('status') and not self.env.context.get('force_refuse'):
             for offer in self:
                 if offer.status and vals.get('status') != offer.status:
                     raise UserError(
                         _("This offer has already been accepted or refused.")
                     )
+                if vals['status'] == 'accepted':
+                    # Guard: property must be accept-able
+                    if offer.property_id.state in ('sold', 'canceled', 'offer_accepted'):
+                        raise UserError(
+                            _("Cannot accept offers on a property that is %s.", offer.property_id.state)
+                        )
+                    # Guard: no other accepted offer exists for this property
+                    existing_accepted = self.search([
+                        ('property_id', '=', offer.property_id.id),
+                        ('status', '=', 'accepted'),
+                        ('id', '!=', offer.id if offer.id else False),
+                    ])
+                    if existing_accepted:
+                        raise UserError(_("Another offer has already been accepted for this property."))
+                    self._accept_process(offer)
         return super().write(vals)
 
     @api.model_create_multi
@@ -121,10 +137,10 @@ class AwesomeEstatePropertyOffer(models.Model):
             if property_id:
                 property = self.env['awesome.estate.property'].browse(property_id)
                 if property.state in ('sold', 'canceled', 'offer_accepted'):
-                    raise UserError(
+                    raise ValidationError(
                         _("Cannot create offers on a property that is %s.", property.state)
                     )
-            if property_id and new_price:
+            if property_id and new_price > 0:
                 existing_offers = self.search([
                     ('property_id', '=', property_id),
                 ])
@@ -141,31 +157,38 @@ class AwesomeEstatePropertyOffer(models.Model):
         return offers
 
     # -----------------------------------------------------------------------
+    # Helper Methods
+    # -----------------------------------------------------------------------
+    def _accept_process(self, offer):
+        """Shared accept logic: update property, refuse other offers.
+
+        Called by both action_accept() and write() to ensure the same
+        business logic runs regardless of the entry path.
+        """
+        # Auto-refuse only the *other undecided* offers (skip already-processed)
+        other_offers = offer.property_id.offer_ids - offer
+        other_offers.filtered(lambda o: not o.status).write({'status': 'refused'})
+        # Update the property with the accepted offer details
+        offer.property_id.write({
+            'selling_price': offer.price,
+            'buyer_id': offer.partner_id.id,
+            'state': 'offer_accepted',
+        })
+
+    # -----------------------------------------------------------------------
     # Action Methods
     # -----------------------------------------------------------------------
     def action_accept(self):
+        """Accept this offer, delegating all logic and guards to write()."""
         self.ensure_one()
         if self.status:
             raise UserError(_("This offer has already been accepted or refused."))
-        if self.property_id.state in ('sold', 'canceled', 'offer_accepted'):
-            raise UserError(
-                _("Cannot accept offers on a property that is %s.", self.property_id.state)
-            )
-        # Auto-refuse only the *other undecided* offers (skip already-processed)
-        other_offers = self.property_id.offer_ids - self
-        other_offers.filtered(lambda o: not o.status).write({'status': 'refused'})
-        # Update the property with the accepted offer details
-        self.property_id.write({
-            'selling_price': self.price,
-            'buyer_id': self.partner_id.id,
-            'state': 'offer_accepted',
-        })
-        self.status = 'accepted'
+        self.with_context(accepting_offer=True).write({'status': 'accepted'})
         return True
 
     def action_refuse(self):
         self.ensure_one()
-        if self.status:
+        if self.status and not self.env.context.get('force_refuse'):
             raise UserError(_("This offer has already been accepted or refused."))
         self.status = 'refused'
         return True

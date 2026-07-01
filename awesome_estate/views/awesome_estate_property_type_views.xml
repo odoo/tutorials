@@ -17,8 +17,6 @@
         <field name="model">awesome.estate.property.type</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -60,10 +58,4 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem
-        id="awesome_estate_property_type_menu"
-        name="Property Types"
-        parent="awesome_estate_first_level_menu"
-        action="awesome_estate_property_type_action"
-    />
 </odoo>

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!-- Root menu: Real Estate -->
+    <menuitem
+        id="awesome_estate_root_menu"
+        name="Real Estate"
+        sequence="110">
+
+        <!-- Properties section -->
+        <menuitem
+            id="awesome_estate_properties_menu_section"
+            name="Properties"
+            sequence="10">
+
+            <menuitem
+                id="awesome_estate_property_menu"
+                name="Properties"
+                action="awesome_estate_property_action"
+                sequence="10"/>
+
+            <menuitem
+                id="awesome_estate_property_all_offer_menu"
+                name="Offers"
+                action="awesome_estate_property_all_offer_action"
+                sequence="20"/>
+
+        </menuitem>
+
+        <!-- Configuration section -->
+        <menuitem
+            id="awesome_estate_configuration_menu_section"
+            name="Configuration"
+            sequence="50">
+
+            <menuitem
+                id="awesome_estate_property_type_menu"
+                name="Property Types"
+                action="awesome_estate_property_type_action"
+                sequence="10"/>
+
+            <menuitem
+                id="awesome_estate_property_tag_menu"
+                name="Property Tags"
+                action="awesome_estate_property_tag_action"
+                sequence="20"/>
+
+        </menuitem>
+
+    </menuitem>
+
+</odoo>

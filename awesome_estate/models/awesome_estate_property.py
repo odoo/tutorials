@@ -18,7 +18,7 @@ class AwesomeEstateProperty(models.Model):
         default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
     )
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
@@ -116,12 +116,16 @@ class AwesomeEstateProperty(models.Model):
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
+        """Only validate selling price floor when set manually, not via offer accept."""
+        if self.env.context.get('accepting_offer'):
+            return
         for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2) and record.expected_price:
-                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
-                    raise ValidationError(
-                        _("The selling price cannot be lower than 90%% of the expected price.")
-                    )
+            if float_is_zero(record.selling_price, precision_digits=2) or not record.expected_price:
+                continue
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+                raise ValidationError(
+                    _("The selling price cannot be lower than 90%% of the expected price.")
+                )
 
     # -----------------------------------------------------------------------
     # Computed Fields
@@ -134,8 +138,8 @@ class AwesomeEstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(
-                record.offer_ids.mapped('price'), default=0.0)
+            prices = record.offer_ids.mapped('price')
+            record.best_price = max(prices) if prices else 0.0
 
     # -----------------------------------------------------------------------
     # Onchange Methods
@@ -158,6 +162,17 @@ class AwesomeEstateProperty(models.Model):
             raise UserError(_("Canceled properties cannot be sold."))
         if self.state == 'sold':
             raise UserError(_("Property is already sold."))
+        # Auto-fill selling_price and buyer_id from the accepted offer
+        if self.state == 'offer_accepted' and not self.selling_price:
+            accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
+            if accepted:
+                self.write({
+                    'selling_price': accepted[0].price,
+                    'buyer_id': accepted[0].partner_id.id,
+                })
+        # Guard: must have a selling price
+        if not self.selling_price:
+            raise UserError(_("Set a selling price before selling the property."))
         self.state = 'sold'
         return True
 
@@ -165,8 +180,17 @@ class AwesomeEstateProperty(models.Model):
         self.ensure_one()
         if self.state == 'sold':
             raise UserError(_("Sold properties cannot be canceled."))
-        if self.state == 'offer_accepted':
-            raise UserError(_("Cannot cancel a property with an accepted offer."))
+        if self.state == 'canceled':
+            raise UserError(_("Property is already canceled."))
+        # Refuse accepted offers via action_refuse() with force_refuse context
+        # to bypass the "already accepted" guard in the offer model.
+        accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
+        if accepted:
+            accepted.with_context(force_refuse=True).action_refuse()
+        # Refuse any remaining pending offers (status is falsy, so direct write works)
+        pending = self.offer_ids.filtered(lambda o: not o.status)
+        if pending:
+            pending.write({'status': 'refused'})
         self.state = 'canceled'
         return True
 
@@ -184,6 +208,19 @@ class AwesomeEstateProperty(models.Model):
         if was_sold:
             self.offer_ids.write({'status': False})
         return True
+
+    def action_accept_best_offer(self):
+        self.ensure_one()
+        if self.state in ('sold', 'canceled', 'offer_accepted'):
+            raise UserError(
+                _("Cannot accept offers on a property that is %s.", self.state)
+            )
+        best_offers = self.offer_ids.filtered(lambda o: o.price == self.best_price)
+        if not best_offers:
+            raise UserError(_("No offers available to accept."))
+        best_offers[0].action_accept()
+
+
 
     # -----------------------------------------------------------------------
     # Deletion Guard
