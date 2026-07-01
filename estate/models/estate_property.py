@@ -61,10 +61,10 @@ class EstateProperty(models.Model):
     @api.onchange('garden')
     def _on_change_garden(self):
         if self.garden:
-            self.garden_area=10
+            self.garden_area = 10
             self.garden_orientation = 'north'
         else:
-            self.garden_area=0
+            self.garden_area = 0
             self.garden_orientation = False
 
     @api.onchange('garage')
@@ -73,7 +73,6 @@ class EstateProperty(models.Model):
             self.garage_area = 10
         else:
             self.garage_area = 0
-    
 
     @api.depends('living_area', 'garden_area', 'garage_area')
     def _compute_total_area(self):
