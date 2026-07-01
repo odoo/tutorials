@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -19,7 +20,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.context_today(self) + relativedelta(months=3),
     )
     expected_price = fields.Float(
-        string="Expected Price", required=True, digits=(16, 4)
+        string="Expected Price", required=True, digits=(16, 2)
     )
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -49,6 +50,7 @@ class EstateProperty(models.Model):
         string="Status",
         copy=False,
         default="new",
+        readonly=True,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
@@ -69,6 +71,22 @@ class EstateProperty(models.Model):
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)", "A property selling price must be positive."
     )
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_price_difference(self):
+        for record in self:
+            if (
+                not float_is_zero(record.selling_price, precision_digits=2)
+                and float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_digits=2,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

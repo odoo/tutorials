@@ -53,6 +53,14 @@ class EstatePropertyOffer(models.Model):
     def _onchange_date_deadline(self):
         self._inverse_date_deadline()
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == "new":
+                offer.property_id.state = "offer_received"
+        return offers
+
     def action_accept(self):
         for offer in self:
             offer.status = "accepted"
