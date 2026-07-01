@@ -26,7 +26,7 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                    <button name="action_sold" type="object" string="SOLD" invisible="state in ('sold', 'canceled')" />
+                    <button name="action_sold" type="object" string="SOLD" class="btn-primary" invisible="state in ('sold', 'canceled')" />
                     <button name="action_cancel" type="object" string="CANCEL" invisible="state in ('sold', 'canceled')"/>
                     <field name="state" widget="statusbar" />
                 </header>
@@ -40,7 +40,6 @@
                                 options="{'color_field': 'color'}" />
                         </group>
                     </div>
-
                     <group>
                         <group>
                             <field name="property_type_id"
@@ -48,7 +47,6 @@
                             <field name="postcode" />
                             <field name="expected_price" />
                         </group>
-
                         <group>
                             <field name="date_availability" />
                             <field name="selling_price" />
@@ -68,15 +66,12 @@
                                 <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
                                 <field name="active" />
-                                <field name="state" />
                                 <field name="total_area" />
                             </group>
                         </page>
-
                         <page string="Offer">
                             <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'canceled')"/>
                         </page>
-
                         <page string="Other Info">
                             <group>
                                 <field name="buyer_id" />

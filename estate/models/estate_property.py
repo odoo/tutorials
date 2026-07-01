@@ -6,7 +6,6 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
-
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
@@ -75,6 +74,14 @@ class EstateProperty(models.Model):
         string="Offer",
     )
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price>0)", "Expected price must be strictly positive"
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price>0)", "Selling price must be positive"
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
@@ -120,14 +127,6 @@ class EstateProperty(models.Model):
                 raise UserError(
                     _("Only New or Cancelled properties can be deleted"))
         return True
-
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price>0)", "Expected price must be strictly positive"
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price>0)", "Selling price must be positive"
-    )
 
     def action_sold(self):
         for record in self:

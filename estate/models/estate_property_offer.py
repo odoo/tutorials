@@ -34,6 +34,9 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
 
+    _check_price = models.Constraint(
+        'CHECK(price>0)', 'Price must be positive')
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -60,9 +63,6 @@ class EstatePropertyOffer(models.Model):
                     )
                     record.validity = delta.days
 
-    _check_price = models.Constraint(
-        'CHECK(price>0)', 'Price must be positive')
-
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -71,19 +71,19 @@ class EstatePropertyOffer(models.Model):
                 vals['property_id'])
             for offer in property_id.offer_ids:
                 if current_price < offer.price:
-                    raise UserError(
-                        "The offer must be higher than the current highest offer.")
-        offers = super().create(vals_list)
-        for record in offers:
-            if record.property_id.state == 'new':
-                record.property_id.state = 'offer_received'
-        return offers
+                    raise UserError(_(
+                        "The offer must be higher than the current highest offer."))
+            if property_id.state == 'new':
+                property_id.state = 'offer_received'
+
+        return super().create(vals_list)
 
     def action_confirm(self):
         for offer in self.property_id.offer_ids:
             if self != offer and offer.status == 'accepted':
                 raise UserError(_("An offer is already accepted."))
         self.status = "accepted"
+        self.property_id.state = "offer_accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
         return True
