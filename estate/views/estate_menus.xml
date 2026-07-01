@@ -29,5 +29,18 @@
     id="estate_property_tag_menu"
     name="Property Tags"
     parent="estate_settings_menu"
-    action="estate_property_tag_action"/>
+    action="estate_property_tag_action"
+    />
+    <menuitem 
+    id="estate_property_offer_menu"
+    name="Property Offer"
+    parent="estate_settings_menu"
+    action="estate_property_offer_action"
+    />
+    <menuitem
+    id="estate_proeprty_new_menu"
+    name="Create Property"
+    parent="estate_first_level_menu"
+    action="estate_property_new_action"/>
+
 </odoo>
