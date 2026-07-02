@@ -10,12 +10,15 @@
 
     <record id="estate_property_tag_cozy" model="estate.property.tag">
         <field name="name">Cozy</field>
+        <field name="description">Cozy property tag</field>
     </record>
     <record id="estate_property_tag_cool" model="estate.property.tag">
         <field name="name">Cool</field>
+        <field name="description">Cool property tag</field>
     </record>
     <record id="estate_property_tag_nice" model="estate.property.tag">
         <field name="name">Nice</field>
+        <field name="description">Nice property tag</field>
     </record>
 
     <record id="estate_property_demo_1" model="estate.property">
