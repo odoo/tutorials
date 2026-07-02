@@ -220,8 +220,6 @@ class AwesomeEstateProperty(models.Model):
             raise UserError(_("No offers available to accept."))
         best_offers[0].action_accept()
 
-
-
     # -----------------------------------------------------------------------
     # Deletion Guard
     # -----------------------------------------------------------------------
