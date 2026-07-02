@@ -18,6 +18,8 @@
         <field name="arch" type="xml">
             <list string="Property Tags">
                 <field name="name"/>
+                <field name="color" widget="color_picker"/>
+                <field name="description"/>
             </list>
         </field>
     </record>
@@ -30,6 +32,8 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                        <field name="description"/>
                     </group>
                 </sheet>
             </form>

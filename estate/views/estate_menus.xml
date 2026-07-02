@@ -33,4 +33,17 @@
         action="estate_property_type_action"
         sequence="10"/>
 
+    <menuitem
+        id="estate_property_offers_menu"
+        name="Offers Type"
+        parent ="estate_property_menu_settings"
+        action="estate_property_offers_action"
+        />
+    <menuitem
+        id="estate_property_tag_menu"
+        name="Tag Types"
+        parent ="estate_property_menu_settings"
+        action="estate_property_tag_action"
+        />
+
 </odoo>

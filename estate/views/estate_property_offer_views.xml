@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <record id="estate_property_offers_action" model="ir.actions.act_window">
+        <field name="name">Offers Type</field>
+        <field name="res_model">estate.property.offer</field>
+    </record>
+
     <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom">
+                <field name="property_id"/>
                 <field name="partner_id"/>
                 <field name="price"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
                 <field name="status"/>
+                <field name="create_date"/>
             </list>
         </field>
     </record>
@@ -20,9 +29,13 @@
             <form string="Offer">
                 <sheet>
                     <group>
+                        <field name="property_id"/>
                         <field name="partner_id"/>
                         <field name="price"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
                         <field name="status"/>
+                        <field name="create_date"/>
                     </group>
                 </sheet>
             </form>

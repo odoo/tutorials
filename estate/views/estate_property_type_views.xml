@@ -18,6 +18,7 @@
         <field name="arch" type="xml">
             <list string="Property Types">
                 <field name="name"/>
+                <field name="code"/>
             </list>
         </field>
     </record>
@@ -29,7 +30,10 @@
             <form string="Property Type">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
