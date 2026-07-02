@@ -3,7 +3,7 @@
     <menuitem id="estate_property_menu"
         name="real estate"
         action="estate_property_action"
-        web_icon="estate,static/description/icon.png">
+        web_icon="estate,static/description/icon.webp">
         
         <menuitem
             name="Advertisements"

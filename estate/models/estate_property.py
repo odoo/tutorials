@@ -1,4 +1,3 @@
-from re import search
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
@@ -28,7 +27,7 @@ class EstateProperty(models.Model):
     )
     offer_ids = fields.One2many(
         "estate.property.offer",
-        'property_id',
+        "property_id",
         string="Offer",
     )
     name = fields.Char(required=True)
@@ -63,31 +62,37 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        required=True,
+        default="new",
+        group_expand="_read_group_stage_ids",
+        copy=False,
     )
+
+    @api.model
+    def _read_group_stage_ids(self, *args, **kwargs):
+        return ["new", "offer_received", "offer_accepted", "sold", "cancelled"]
 
     best_price = fields.Float(compute="_compute_price")
     total_area = fields.Float(compute="_compute_total")
 
-    @api.depends('living_area', 'garden_area')
+    @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-
-    @api.depends('offer_ids.price')
+    @api.depends("offer_ids.price")
     def _compute_price(self):
         for property in self:
             if property.offer_ids:
-                property.best_price = max(property.offer_ids.mapped('price'))
-                # property.best_price=max([offer.price for offer in property.offer_ids])
+                property.best_price = max(property.offer_ids.mapped("price"))
             else:
-                property.best_price = 0
+                property.best_price = 0.0
 
-    @api.onchange('garden')
+    @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = False    
+            self.garden_orientation = False
