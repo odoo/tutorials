@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Action -->
+    <record id="estate_property_offer_model_action" model="ir.actions.act_window">
+      <field name="name">Estate Property Offer</field>
+      <field name="res_model">estate_property_offer_model</field>
+      <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_estate_property_offer_model_list" model="ir.ui.view">
+      <field name="name">estate.property.offer.model.list</field>
+      <field name="model">estate_property_offer_model</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="sequence" widget="handle"/>
+          <field name="price"/>
+          <field name="partner_id"/>
+          <field name="property_id"/>
+          <button name="action_accept_offer" string="Accept" type="object" invisible="status == 'accepted' or status == 'refused' " />
+          <button name="action_refuse_offer" string="Refuse" type="object" invisible="status == 'accepted' or status == 'refused' " />
+          <field name="status"/>
+        </list>
+      </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_estate_property_offer_model_form" model="ir.ui.view">
+      <field name="name">estate.property.offer.model.form</field>
+      <field name="model">estate_property_offer_model</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="price"/>
+              </group>
+              <group>
+                <field name="status" widget='statusbar'/>
+              </group>
+              <group>
+                <field name="partner_id"/>
+              </group>
+              <group>
+                <field name="property_id"/>
+              </group>
+              <group>
+                <button 
+                name="action_accept_offer" 
+                class="btn-primary" 
+                icon="fa-check" 
+                type="object" invisible="status == 'accepted' or status == 'refused' " />
+                <button 
+                name="action_refuse_offer" 
+                class="btn-danger" 
+                icon="fa-times" 
+                type="object" invisible="status == 'accepted' or status == 'refused'" />
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_estate_property_offer_model_search" model="ir.ui.view">
+      <field name="name">estate.property.offer.model.search</field>
+      <field name="model">estate_property_offer_model</field>
+      <field name="arch" type="xml">
+        <search string="Search Offers">
+          <field name="price" string="Property Price"></field>
+          <field name="status" string="Property Status"></field>
+        </search>
+      </field>
+    </record>
+  </data>
+</odoo>
