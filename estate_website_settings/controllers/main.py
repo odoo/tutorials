@@ -35,7 +35,7 @@ class EstateController(http.Controller):
                 "status": status,
                 "min_price": min_price,
                 "max_price": max_price,
-                "states": request.env["estate.property"]._fields["state"].selection,
+                "states": request.env['estate.property']._fields["state"].selection,
             },
         )
 

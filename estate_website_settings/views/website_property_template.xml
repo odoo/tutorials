@@ -4,6 +4,48 @@
         <t t-call="website.layout">
             <div class="container mt-5">
                 <h1 class="mb-4">Estate Properties</h1>
+                <form action="/properties" method="get" class="d-flex flex-wrap align-items-end gap-3 mb-4">
+                    <div class="form-group">
+                        <label for="sale_mode">Sale Mode</label>
+                        <select name="sale_mode" id="sale_mode" class="form-select">
+                            <option value="" t-att-selected="not sale_mode">All</option>
+                            <option value="regular" t-att-selected="sale_mode == 'regular'">Regular</option>
+                            <option value="auction" t-att-selected="sale_mode == 'auction'">Auction</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="" t-att-selected="not status">All</option>
+                            <t t-foreach="states" t-as="state_item">
+                                <option t-att-value="state_item[0]"
+                                        t-att-selected="status == state_item[0]">
+                                    <t t-esc="state_item[1]"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min_price">Min Price</label>
+                        <input type="number" name="min_price" id="min_price"
+                            class="form-control" t-att-value="min_price" min="0" placeholder="0"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="max_price">Max Price</label>
+                        <input type="number" name="max_price" id="max_price"
+                            class="form-control" t-att-value="max_price" min="0"/>
+                    </div>
+
+                    <div class="form-group d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="/properties" class="btn btn-secondary">Clear</a>
+                    </div>
+
+                </form>
+
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 mb-4">
