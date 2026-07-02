@@ -39,5 +39,5 @@ class AwesomeEstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = self.env['awesome.estate.property.offer'].search_count([
-                ('property_type_id', '=', record.id),
+                ('property_type_id', 'in', record.ids),
             ])
