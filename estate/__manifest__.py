@@ -4,5 +4,6 @@
     "application": True,
     "author": "Prathamesh",
     "category": "Category",
-    "description": "",
+    "description": "This is the estateapp",
+    "license": "LGPL-3",
 }
