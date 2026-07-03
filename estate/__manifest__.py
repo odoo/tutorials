@@ -9,7 +9,9 @@
     "category": "Tutorials",
     "depends": ["base"],
     "license": "LGPL-3",
-    "data": [],
+    "data": [
+        "security/ir.model.access.csv",
+        ],
     "application": True,
     "installable": True,
 }
