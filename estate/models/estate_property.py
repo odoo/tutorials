@@ -1,42 +1,41 @@
+from datetime import timedelta
+
 from odoo import fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Real Estate Property"
+    _description = "Estate Property"
 
-    name = fields.Char(
-        string="Property Name",
-        required=True,
-        help="Name of the property",
-        index=True,
+    name = fields.Char(required=True)
+
+    description = fields.Text()
+
+    postcode = fields.Char()
+
+    date_availability = fields.Date(
+        copy=False,
+        default=lambda self: fields.Date.today() + timedelta(days=90),
     )
 
-    description = fields.Text(string="Description")
+    expected_price = fields.Float(required=True)
 
-    postcode = fields.Char(string="Postcode")
-
-    date_availability = fields.Date(string="Available From")
-
-    expected_price = fields.Float(
-        string="Expected Price",
-        required=True,
-        help="Expected selling price of the property",
+    selling_price = fields.Float(
+        readonly=True,
+        copy=False,
     )
 
-    selling_price = fields.Float(string="Selling Price")
+    bedrooms = fields.Integer(default=2)
 
-    bedrooms = fields.Integer(string="Bedrooms")
+    living_area = fields.Integer()
 
-    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer()
 
-    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean()
 
-    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean()
 
-    garden = fields.Boolean(string="Garden")
-
-    garden_area = fields.Integer(string="Garden Area (sqm)")
+    garden_area = fields.Integer()
 
     garden_orientation = fields.Selection(
         [
@@ -44,6 +43,20 @@ class EstateProperty(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
+        ]
+    )
+
+    active = fields.Boolean(default=True)
+
+    state = fields.Selection(
+        [
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
-        string="Garden Orientation",
+        required=True,
+        copy=False,
+        default="new",
     )
