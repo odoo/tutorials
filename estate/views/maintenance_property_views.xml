@@ -1,0 +1,71 @@
+<odoo>
+
+    <record id="maintenance_property_action" model="ir.actions.act_window">
+        <field name="name">Maintenance</field>
+        <field name="res_model">maintenance.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    
+    <record id="maintenance_property_list" model="ir.ui.view">
+        <field name="name">maintenance.property.list</field>
+        <field name="model">maintenance.property</field>
+        <field name="arch" type="xml">
+            <list string="Maintenance Requests">
+                <field name="title" />
+                <field name="prop_id" />
+                <field name="assigned" />
+                <field name="priority" />
+                <field name="stage" />
+            </list>
+        </field>
+    </record>
+
+    <record id="maintenance_property_form" model="ir.ui.view">
+        <field name="name">maintenance.property.form</field>
+        <field name="model">maintenance.property</field>
+        <field name="arch" type="xml">
+
+            <form string="maintenance property">
+                <header>
+                    <field name="stage" widget="statusbar"
+                        statusbar_visible="new,assigned,progress,complete" />
+                </header>
+
+                <header>
+                    <button type="object" name="mark_assigned" string="Mark as Assigned"/>
+                    <button type="object" name="mark_progress" string="Mark as Progress"/>
+                    <button type="object" name="mark_complete" string="Mark as Complete"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="title" placeholder="Broken Pipe" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="prop_id" />
+                            <field name="date" />
+                        </group>
+
+                        <group>
+                            <field name="assigned" />
+                            <field name="priority" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Costs">
+                            <group>
+                                <field name="estimated_cost" />
+                                <field name="actual_cost" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

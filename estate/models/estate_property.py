@@ -31,6 +31,11 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offer",
     )
+    maintenance_ids = fields.One2many(
+        "maintenance.property",
+        "prop_id",
+        String="Maintenance"
+    )
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
     description = fields.Text()
@@ -101,13 +106,15 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for property in self:
             if property.state == "sold":
-                raise UserError("A sold property cannot be cancelled.")
+                message = "A sold property cannot be cancelled."
+                raise UserError(message)
             property.state = "cancelled"
         return True
 
     def action_sold(self):
         for property in self:
             if property.state == "cancelled":
-                raise UserError("A cancelled property cannot be set as sold.")
+                message = "A cancelled property cannot be set as sold."
+                raise UserError(message)
             property.state = "sold"
         return True

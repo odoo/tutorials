@@ -26,6 +26,11 @@
             id="estate_property_tag"
             action="estate_property_tag_action" />
 
+            <menuitem 
+            name="Maintenance"
+            id="main_property"
+            action="maintenance_property_action" />
+
 
 
         </menuitem>
