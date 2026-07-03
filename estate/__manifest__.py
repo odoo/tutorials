@@ -5,4 +5,5 @@
     "application": True,
     "category": "Tutorials",
     "author": "Thakor Anish",
+    "license": "LGPL-3",
 }
