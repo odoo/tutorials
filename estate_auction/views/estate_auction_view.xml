@@ -6,6 +6,23 @@
         <field name="inherit_id" ref="estate.estate_property_view_form"/>
         <field name="arch" type="xml">
 
+            <xpath expr="//form/sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button
+                        name="action_view_invoices"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o">
+
+                        <field
+                            name="invoice_count"
+                            widget="statinfo"
+                            string="Invoices"/>
+
+                    </button>
+                </div>
+            </xpath>
+
             <xpath expr="//header/button[@name='action_sold']" position="before">
                 <button
                     name="action_start_auction"
@@ -40,6 +57,26 @@
                     </group>
                 </page>
             </xpath>
+        </field>
+    </record>
+    <record id="estate_property_view_kanban_auction" model="ir.ui.view">
+        <field name="name">estate.property.kanban.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="inside">
+                <field name="auction_state"/>
+            </xpath>
+
+            <xpath expr="//field[@name='name']" position="before">
+                <div class="d-flex justify-content-end mb-1">
+                    <span
+                        t-if="record.auction_state.raw_value == 'auction'"
+                        class="rounded-circle bg-success"
+                        style="width:16px; height:16px; display:inline-block;"/>
+                </div>
+            </xpath>
+
         </field>
     </record>
 </odoo>
