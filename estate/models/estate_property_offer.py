@@ -8,6 +8,13 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
 
+    # SQL Constraints
+    # Offer price must be strictly positive
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer Price must be strictly positive.',
+    )
+
     price = fields.Float()
     validity = fields.Integer(
         default=7,
@@ -54,11 +61,11 @@ class EstatePropertyOffer(models.Model):
             )
             if offer.date_deadline:
                 offer.validity = (
-                    offer.date_deadline - 
+                    offer.date_deadline -
                     create_date
                 ).days
 
-    # Accept the offer 
+    # Accept the offer
     def action_accept(self):
         for offer in self:
             # Check if another offer for this property has already been accpted

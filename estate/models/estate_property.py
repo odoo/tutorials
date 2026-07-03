@@ -8,6 +8,18 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
+    # SQL Constraints
+    # Expected price must be strictly positive
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.',
+    )
+    # Selling price must be positive
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive.',
+    )
+
     def _default_availability_date(self):
         return fields.Date.today() + timedelta(days=90)
 
@@ -36,6 +48,11 @@ class EstateProperty(models.Model):
         "estate.property.offer",
         "property_id",
         string="Offers",
+    )
+    maintenance_ids = fields.One2many(
+        "estate.property.maintenance",
+        "property_id",
+        string="Maintenance",
     )
     date_availability = fields.Date(
         copy=False,

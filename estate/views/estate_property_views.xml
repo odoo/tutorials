@@ -76,6 +76,9 @@
                                 <field name="buyer_id"/>
                             </group>
                         </page> 
+                        <page string="Maintenance">
+                            <field name="maintenance_ids"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
