@@ -8,6 +8,7 @@ from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True, default="Unknown")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -50,7 +51,6 @@ class EstateProperty(models.Model):
         string="Status",
         copy=False,
         default="new",
-        readonly=True,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(

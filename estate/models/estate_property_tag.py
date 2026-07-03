@@ -6,6 +6,7 @@ from odoo import fields, models
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Real Estate Property Tag"
+    _order = "name"
 
     def _default_color(self):
         return randint(1, 11)
