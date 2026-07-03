@@ -1,10 +1,10 @@
 {
-    "name":"Real Estate",
-    
-    "author":"Mrunmayee Gore",
-    "description":"TRAINING MODULE ",
-    "category":"tutorials"
-    "application
-
-
+    'name': 'Real Estate',
+    'version': '1.0',
+    'author': 'Mrunmayee',
+    'depends': ['base'],
+    'application': True,
+    'category': 'tutorials',
+    'installabe': True,
+    'license': 'LGPL-3',
 }
