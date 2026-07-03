@@ -6,4 +6,7 @@
     "category": "Category",
     "description": "This is the estateapp",
     "license": "LGPL-3",
+    "data": [
+        "security/ir.model.access.csv",
+    ],
 }
