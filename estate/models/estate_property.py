@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class TestModel(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
