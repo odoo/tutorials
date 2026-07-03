@@ -12,17 +12,11 @@ class EstateProperty(models.Model):
         index=True,
     )
 
-    description = fields.Text(
-        string="Description"
-    )
+    description = fields.Text(string="Description")
 
-    postcode = fields.Char(
-        string="Postcode"
-    )
+    postcode = fields.Char(string="Postcode")
 
-    date_availability = fields.Date(
-        string="Available From"
-    )
+    date_availability = fields.Date(string="Available From")
 
     expected_price = fields.Float(
         string="Expected Price",
@@ -30,33 +24,19 @@ class EstateProperty(models.Model):
         help="Expected selling price of the property",
     )
 
-    selling_price = fields.Float(
-        string="Selling Price"
-    )
+    selling_price = fields.Float(string="Selling Price")
 
-    bedrooms = fields.Integer(
-        string="Bedrooms"
-    )
+    bedrooms = fields.Integer(string="Bedrooms")
 
-    living_area = fields.Integer(
-        string="Living Area (sqm)"
-    )
+    living_area = fields.Integer(string="Living Area (sqm)")
 
-    facades = fields.Integer(
-        string="Facades"
-    )
+    facades = fields.Integer(string="Facades")
 
-    garage = fields.Boolean(
-        string="Garage"
-    )
+    garage = fields.Boolean(string="Garage")
 
-    garden = fields.Boolean(
-        string="Garden"
-    )
+    garden = fields.Boolean(string="Garden")
 
-    garden_area = fields.Integer(
-        string="Garden Area (sqm)"
-    )
+    garden_area = fields.Integer(string="Garden Area (sqm)")
 
     garden_orientation = fields.Selection(
         [
