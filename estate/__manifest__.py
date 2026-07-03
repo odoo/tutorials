@@ -6,5 +6,8 @@
     "category": "Tutorials",
     "depends": ["base"],
     "application": True,
-    "installable": True
+    "installable": True,
+    "data": [
+        "security/ir.model.access.csv",
+    ]
 }
