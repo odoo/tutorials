@@ -1,8 +1,8 @@
 {
-    "name":"estate",
-    "category":"",
-    "depends":[
-       "base",
+    "name": "estate",
+    "category": "",
+    "depends": [
+        "base",
     ],
-    "application":True,
+    "application": True,
 }
