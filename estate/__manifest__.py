@@ -1,8 +1,8 @@
 {
     "name": "Estate",
-    "category": "Sales/CRM",
-    "summary": "Track leads and close opportunities",
-    "website": "https://www.odoo.com/app/crm",
+    "category": "",
+    "summary": "",
+    "website": "",
     "application": True,
     "depends": ["base"],
     "author": "Kaushal Radadiya",
