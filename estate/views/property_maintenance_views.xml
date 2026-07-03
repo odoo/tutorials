@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="property_maintenance_action" model="ir.actions.act_window">
+        <field name="name">Property Maintenance</field>
+        <field name="res_model">property.maintenance</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+
+    <record id="property_maintenance_view_list" model="ir.ui.view">
+        <field name="name">property.maintenance.list</field>
+        <field name="model">property.maintenance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" width="500"/>
+                <field name="property_id" width="100"/>
+                <field name="partner_id" width="100"/>
+                <field name="date" width="100"/>
+                <field name="priority" width="100"/>
+                <field name="user_id" width="100"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="property_maintenance_view_form" model="ir.ui.view">
+        <field name="name">property.maintenance.form</field>
+        <field name="model">property.maintenance</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new_request,assign,work_in_progress,done" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Maintenance Title..."/>
+                    </h1>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="priority" widget="priority"/>
+                            <field name="property_id"/>
+                            <field name="partner_id"/>
+                            <field name="date"/>
+                        </group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="estimated_cost"/>
+                            <field name="actual_cost" invisible="state == 'new_request'"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

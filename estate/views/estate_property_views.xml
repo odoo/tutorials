@@ -77,6 +77,19 @@
                                 <field name="salesperson_id"/>
                             </group>
                         </page>
+                        <page string="Maintenance">
+                            <field name="property_maintenance_ids">
+                                <list create="False" edit="False"> 
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="date"/>
+                                    <field name="priority"/>
+                                    <field name="user_id"/>
+                                    <field name="actual_cost"/>
+                                    <field name="state"/>  
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

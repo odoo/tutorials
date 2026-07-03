@@ -47,6 +47,7 @@ class EstateProperty(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
+            ("maintenance", "Maintenance"),
         ],
         string="Status",
         copy=False,
@@ -63,6 +64,7 @@ class EstateProperty(models.Model):
         string="Total Area (sqm)", compute="_compute_total_area"
     )
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+    property_maintenance_ids = fields.One2many("property.maintenance", "property_id")
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
