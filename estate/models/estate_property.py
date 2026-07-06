@@ -62,6 +62,9 @@ class EstateProperty(models.Model):
     )
 
     sq_area = fields.Float(compute="_compute_computed_area")
+    maintenance_ids = fields.One2many(
+        'estate.property.maintenance', 'property_id', string="Maintenance"
+    )
 
     @api.onchange("state")
     def _onchange_state_validation(self):
@@ -106,13 +109,13 @@ class EstateProperty(models.Model):
             self.garden_area, self.garden_orientation = 0, False
 
     # safe for business logic
-    # @api.depends("garden")
-    # def _compute_garden_details(self):
-    #     for property in self:
-    #         if property.garden:
-    #             property.garden_area, property.garden_orientation = 10, 'north'
-    #         else:
-    #             property.garden_area, property.garden_orientation = 0, False
+    @api.depends("garden")
+    def _compute_garden_details(self):
+        for property in self:
+            if property.garden:
+                property.garden_area, property.garden_orientation = 10, 'north'
+            else:
+                property.garden_area, property.garden_orientation = 0, False
 
     def action_set_state_cancel(self):
         for record in self:

@@ -68,6 +68,9 @@
                 <field name="buyer" string="Buyer"/>
               </group>
             </page>
+            <page string="Maintenance">
+              <field name="maintenance_ids"/>
+            </page>
           </notebook>
         </sheet>
         <chatter/>

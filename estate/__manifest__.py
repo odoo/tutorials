@@ -11,6 +11,7 @@
         "views/estate_property_list_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
+        "views/estate_property_maintenance_views.xml",
         "views/estate_menuitem.xml",
         "views/estate_property_offer_views.xml",
         "data/estate_property_type.xml",
