@@ -18,7 +18,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + timedelta(days=90),
     )
 
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float()
 
     selling_price = fields.Float(
         readonly=True,
