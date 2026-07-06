@@ -1,6 +1,9 @@
 {
     "name": "Real Estate",
-    "depends": ["base"],
+    "depends": [
+        "base",
+        'mail',
+    ],
     "application": True,
     "data": [
         "security/ir.model.access.csv",
