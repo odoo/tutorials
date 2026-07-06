@@ -45,5 +45,12 @@
         parent ="estate_property_menu_settings"
         action="estate_property_tag_action"
         />
+     <menuitem
+        id="estate_property_maintenance_menu"
+        name="Maintenance"
+        parent="estate_property_menu_advertisements"
+        action="estate_property_maintenance_action"
+        sequence="20"/>
+
 
 </odoo>

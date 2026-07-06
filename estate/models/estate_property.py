@@ -53,6 +53,11 @@ class EstateProperty(models.Model):
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    maintenance_ids = fields.One2many(
+        "estate.property.maintenance",
+        "property_id",
+        string="Maintenance Requests",
+    )
 
     total_area = fields.Integer(
         string="Total Area (sqm)",

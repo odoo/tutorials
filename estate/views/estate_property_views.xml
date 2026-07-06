@@ -97,6 +97,21 @@
                                 </list>
                             </field>
                         </page>
+                        <page name="maintenance" string="Maintenance">
+                            <field name="maintenance_ids">
+                                <list string="Maintenance Requests">
+                                    <field name="name"/>
+                                    <field name="maintenance_type"/>
+                                    <field name="requester_id"/>
+                                    <field name="request_date"/>
+                                    <field name="technician_id"/>
+                                    <field name="estimated_cost"/>
+                                    <field name="tentative_cost"/>
+                                    <field name="final_cost"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
