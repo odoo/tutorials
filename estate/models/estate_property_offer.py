@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -39,6 +38,7 @@ class EstatePropertyOffer(models.Model):
         required=True,
     )
 
+    # Compute deadline date
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for offer in self:
@@ -52,6 +52,7 @@ class EstatePropertyOffer(models.Model):
                 timedelta(days=offer.validity)
             )
 
+    # Inverse date deadline
     def _inverse_date_deadline(self):
         for offer in self:
             create_date = (
@@ -91,6 +92,7 @@ class EstatePropertyOffer(models.Model):
             offer.status = "refused"
         return True
 
+    # Whenever a new offer is created for a property, if the property is still in the new state, automatically change its state to offer_received.
     @api.model_create_multi
     def create(self, vals_list):
         offers = super().create(vals_list)

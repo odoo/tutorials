@@ -1,7 +1,6 @@
 from datetime import timedelta
-
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -20,6 +19,21 @@ class EstateProperty(models.Model):
         'The selling price must be positive.',
     )
 
+    # Python Constraints
+    # Selling price cannot be lower than 90% of the expected price
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for property in self:
+            if property.selling_price == 0:
+                continue
+            minimum_price = property.expected_price * 0.9
+
+            if property.selling_price < minimum_price:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
+
+    # Availabity date should be 3 months later from today's date
     def _default_availability_date(self):
         return fields.Date.today() + timedelta(days=90)
 
@@ -100,6 +114,7 @@ class EstateProperty(models.Model):
         readonly=True,
     )
 
+    # Compute total area = living area + garden area
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for property in self:
@@ -108,12 +123,14 @@ class EstateProperty(models.Model):
                 property.garden_area
             )
 
+    # Compute best price
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for property in self:
             prices = property.offer_ids.mapped("price")
             property.best_price = max(prices) if prices else 0.0
 
+    # Set default values for garden orientation and garden area if garden is ticked
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:

@@ -1,7 +1,5 @@
 from datetime import timedelta
-
-from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo import fields, models
 
 
 class EstatePropertyMaintenance(models.Model):
@@ -47,7 +45,7 @@ class EstatePropertyMaintenance(models.Model):
         default="new",
         required=True,
     )
-
+    # When state is completed, complition date will be set automatically
     def write(self, vals):
         if "state" in vals:
             if vals["state"] == "completed":
