@@ -34,7 +34,7 @@ class EstateProperty(models.Model):
     maintenance_ids = fields.One2many(
         "maintenance.property",
         "prop_id",
-        String="Maintenance"
+        string="Maintenance"
     )
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
