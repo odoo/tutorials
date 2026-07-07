@@ -10,30 +10,21 @@
             id="estate_property_type_advertisements"
             action="estate_property_action"
             sequence="1" />
-
         <menuitem 
             name="settings"
-            id="estate_property_type_setting"> 
-
+            id="estate_property_type_setting">
             <menuitem 
-            name="Property Types"
-            id="estate_property_type"
-            action="estate_property_type_action" />
-
-             
+                name="Property Types"
+                id="estate_property_type"
+                action="estate_property_type_action" />
             <menuitem 
-            name="Property Tag"
-            id="estate_property_tag"
-            action="estate_property_tag_action" />
-
+                name="Property Tag"
+                id="estate_property_tag"
+                action="estate_property_tag_action" />
             <menuitem 
-            name="Maintenance"
-            id="main_property"
-            action="maintenance_property_action" />
-
-
-
+                name="Maintenance"
+                id="main_property"
+                action="maintenance_property_action" />
         </menuitem>
-
     </menuitem>
 </odoo>

@@ -73,7 +73,6 @@ class EstateProperty(models.Model):
         group_expand="_read_group_stage_ids",
         copy=False,
     )
-
     @api.model
     def _read_group_stage_ids(self, *args, **kwargs):
         return ["new", "offer_received", "offer_accepted", "sold", "cancelled"]
@@ -118,3 +117,4 @@ class EstateProperty(models.Model):
                 raise UserError(message)
             property.state = "sold"
         return True
+        
