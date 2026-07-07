@@ -7,16 +7,14 @@ class PropertyMaintenance(models.Model):
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
-    property_id = fields.Many2one("estate.property", string="Property")
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
     partner_id = fields.Many2one(
         "res.partner",
         string="Requested by",
         copy=False,
         default=lambda self: self.env.user.partner_id,
     )
-    date = fields.Date(
-        string="Date", default=lambda self: fields.Date.context_today(self)
-    )
+    date = fields.Date(string="Date", default=fields.Date.context_today)
     priority = fields.Selection(
         [
             ("0", "Normal"),

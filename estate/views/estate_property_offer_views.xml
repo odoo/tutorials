@@ -4,14 +4,14 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
+            <list string="Offers" editable="bottom" decoration-danger="status == 'rejected'" decoration-success="status == 'accepted'">
                 <field name="price" width="200"/>
                 <field name="partner_id" width="200"/>
                 <field name="date_deadline" width="200"/>
                 <field name="validity" width="200"/>
                 <button name="action_accept" type="object" title="Accept" icon="fa-check" invisible="status"/>
                 <button name="action_reject" type="object" title="Reject" icon="fa-times" invisible="status"/>
-                <field name="status" width="200"/>
+                <field name="status" column_invisible="True"/>
             </list>
         </field>
     </record>
