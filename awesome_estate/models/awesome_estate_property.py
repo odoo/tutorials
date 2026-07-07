@@ -10,20 +10,21 @@ class AwesomeEstateProperty(models.Model):
     _order = 'id desc'
 
     name = fields.Char(string="Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
+        default=lambda self: fields.Date.add(
+            fields.Date.context_today(self), months=3),
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", copy=False)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         [
@@ -32,7 +33,6 @@ class AwesomeEstateProperty(models.Model):
             ('east', "East"),
             ('west', "West"),
         ],
-        string="Garden Orientation",
     )
     property_type_id = fields.Many2one(
         'awesome.estate.property.type',
@@ -52,14 +52,12 @@ class AwesomeEstateProperty(models.Model):
     )
     tag_ids = fields.Many2many(
         'awesome.estate.property.tag',
-        string="Tags",
     )
     offer_ids = fields.One2many(
         'awesome.estate.property.offer',
         'property_id',
-        string="Offers",
     )
-    active = fields.Boolean(string="Active", default=True)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         [
             ('new', "New"),
@@ -85,33 +83,38 @@ class AwesomeEstateProperty(models.Model):
         store=True,
         help="Best offer received.",
     )
+    estate_maintenance_ids = fields.One2many(
+        'awesome.estate.property.maintenance',
+        'property_id',
+        string="Maintenance Requests",
+    )
 
     # -----------------------------------------------------------------------
     # SQL Constraints
     # -----------------------------------------------------------------------
     _check_living_area = models.Constraint(
         'CHECK (living_area >= 0 AND living_area <= 100000)',
-        'Living area must be between 0 and 100,000 sqm. Please enter a realistic value.',
+        "Living area must be between 0 and 100,000 sqm. Please enter a realistic value.",
     )
     _check_garden_area = models.Constraint(
         'CHECK (garden_area >= 0 AND garden_area <= 100000)',
-        'Garden area must be between 0 and 100,000 sqm. Please enter a realistic value.',
+        "Garden area must be between 0 and 100,000 sqm. Please enter a realistic value.",
     )
     _check_expected_price = models.Constraint(
         'CHECK (expected_price > 0)',
-        'Expected price must be greater than zero.',
+        "Expected price must be greater than zero.",
     )
     _check_selling_price_positive = models.Constraint(
         'CHECK (selling_price >= 0)',
-        'The selling price must be positive.',
+        "The selling price must be positive.",
     )
     _check_bedrooms = models.Constraint(
         'CHECK (bedrooms >= 0)',
-        'Bedrooms cannot be negative.',
+        "Bedrooms cannot be negative.",
     )
     _check_facades = models.Constraint(
         'CHECK (facades >= 0)',
-        'Facades cannot be negative.',
+        "Facades cannot be negative.",
     )
 
     @api.constrains('selling_price', 'expected_price')
@@ -124,7 +127,7 @@ class AwesomeEstateProperty(models.Model):
                 continue
             if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
                 raise ValidationError(
-                    _("The selling price cannot be lower than 90%% of the expected price.")
+                    _("The selling price cannot be lower than 90%% of the expected price."),
                 )
 
     # -----------------------------------------------------------------------
@@ -162,9 +165,13 @@ class AwesomeEstateProperty(models.Model):
             raise UserError(_("Canceled properties cannot be sold."))
         if self.state == 'sold':
             raise UserError(_("Property is already sold."))
-        # Auto-fill selling_price and buyer_id from the accepted offer
+        # Auto-fill selling_price and buyer_id from the accepted offer.
+        # Triple guard (action_accept guards, property state lock, create validation)
+        # ensures at most one accepted offer exists. [0] is defensive against race
+        # conditions — if somehow multiple exist, pick the first.
         if self.state == 'offer_accepted' and not self.selling_price:
-            accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
+            accepted = self.offer_ids.filtered(
+                lambda o: o.status == 'accepted')
             if accepted:
                 self.write({
                     'selling_price': accepted[0].price,
@@ -172,7 +179,8 @@ class AwesomeEstateProperty(models.Model):
                 })
         # Guard: must have a selling price
         if not self.selling_price:
-            raise UserError(_("Set a selling price before selling the property."))
+            raise UserError(
+                _("Set a selling price before selling the property."))
         self.state = 'sold'
         return True
 
@@ -182,12 +190,9 @@ class AwesomeEstateProperty(models.Model):
             raise UserError(_("Sold properties cannot be canceled."))
         if self.state == 'canceled':
             raise UserError(_("Property is already canceled."))
-        # Refuse accepted offers via action_refuse() with force_refuse context
-        # to bypass the "already accepted" guard in the offer model.
         accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
         if accepted:
-            accepted.with_context(force_refuse=True).action_refuse()
-        # Refuse any remaining pending offers (status is falsy, so direct write works)
+            accepted.write({'status': 'refused'})
         pending = self.offer_ids.filtered(lambda o: not o.status)
         if pending:
             pending.write({'status': 'refused'})
@@ -198,7 +203,8 @@ class AwesomeEstateProperty(models.Model):
         """Reset sold or canceled property back to 'new' state."""
         self.ensure_one()
         if self.state not in ('sold', 'canceled'):
-            raise UserError(_("Only sold or canceled properties can be reset."))
+            raise UserError(
+                _("Only sold or canceled properties can be reset."))
         was_sold = self.state == 'sold'
         self.write({
             'state': 'new',
@@ -213,9 +219,10 @@ class AwesomeEstateProperty(models.Model):
         self.ensure_one()
         if self.state in ('sold', 'canceled', 'offer_accepted'):
             raise UserError(
-                _("Cannot accept offers on a property that is %s.", self.state)
+                _("Cannot accept offers on a property that is %s.", self.state),
             )
-        best_offers = self.offer_ids.filtered(lambda o: o.price == self.best_price)
+        best_offers = self.offer_ids.filtered(
+            lambda o: o.price == self.best_price)
         if not best_offers:
             raise UserError(_("No offers available to accept."))
         best_offers[0].action_accept()
@@ -226,4 +233,5 @@ class AwesomeEstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_except_active_or_sold(self):
         if any(record.state not in ('new', 'canceled') for record in self):
-            raise UserError(_("You cannot delete a property with an active or sold status."))
+            raise UserError(
+                _("You cannot delete a property with an active or sold status."))

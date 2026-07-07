@@ -25,6 +25,12 @@
                 action="awesome_estate_property_all_offer_action"
                 sequence="20"/>
 
+            <menuitem
+                id="awesome_estate_maintenance_menu"
+                name="Maintenance"
+                action="awesome_estate_property_maintenance_action"
+                sequence="30"/>
+
         </menuitem>
 
         <!-- Configuration section -->

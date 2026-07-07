@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="awesome_estate_property_maintenance_action" model="ir.actions.act_window">
+        <field name="name">Maintenance Requests</field>
+        <field name="res_model">awesome.estate.property.maintenance</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new maintenance request
+            </p>
+            <p>
+                Track issues reported by tenants and manage technician assignments.
+            </p>
+        </field>
+    </record>
+
+    <record id="awesome_estate_property_maintenance_list_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.maintenance.list</field>
+        <field name="model">awesome.estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <list multi_edit="1"
+                  decoration-success="state == 'done'"
+                  decoration-danger="state == 'canceled'"
+                  decoration-bf="state == 'in_progress'"
+                  decoration-warning="state == 'assigned'">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="issue_type"/>
+                <field name="requester_id"/>
+                <field name="priority" widget="priority"/>
+                <field name="technician_id"/>
+                <field name="state" decoration-bf="1"/>
+                <field name="progress" widget="progressbar"/>
+                <field name="estimate_cost" widget="monetary"/>
+                <field name="actual_cost" widget="monetary"/>
+                <field name="request_date" optional="hide"/>
+                <field name="schedule_date" optional="hide"/>
+                <field name="close_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="awesome_estate_maintenance_form_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.maintenance.form</field>
+        <field name="model">awesome.estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Request">
+                <field name="company_id" invisible="1"/>
+                <field name="currency_id" invisible="1"/>
+                <header>
+                    <button name="action_assign" type="object" string="Assign"
+                            invisible="state != 'new'" class="btn-primary"/>
+                    <button name="action_start" type="object" string="Start Work"
+                            invisible="state != 'assigned'"/>
+                    <button name="action_done" type="object" string="Complete"
+                            invisible="state not in ('assigned', 'in_progress')" class="btn-success"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state not in ('new', 'assigned', 'in_progress', 'done')"/>
+                    <button name="action_reset" type="object" string="Reopen"
+                            invisible="state not in ('done', 'canceled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,assigned,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div invisible="state != 'canceled'">
+                        <span class="badge text-bg-warning float-end">Canceled</span>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" string="Request"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Leaking pipe in kitchen"/>
+                        </h1>
+                    </div>
+                    <div class="o_row">
+                        <field name="priority" widget="priority"/>
+                        <field name="progress" widget="progressbar"
+                               string="Progress" class="oe_inline"/>
+                    </div>
+                    <group>
+                        <group string="Details">
+                            <field name="property_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="issue_type"/>
+                            <field name="request_date" readonly="1"/>
+                            <field name="schedule_date"/>
+                            <field name="description"/>
+                        </group>
+                        <group string="People">
+                            <field name="requester_id"
+                                   options="{'no_create_edit': True, 'no_open': True}"/>
+                            <field name="is_tenant"/>
+                            <field name="technician_id"
+                                   domain="[('share', '=', False)]"/>
+                            <field name="close_date" readonly="1"
+                                   invisible="state != 'done'"
+                                   string="Completed On"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Subtasks" name="subtasks">
+                            <field name="subtask_ids" nolabel="1">
+                                <list editable="bottom" create="1" delete="1"
+                                      multi_edit="1"
+                                      decoration-success="state == 'done'"
+                                      decoration-muted="state == 'canceled'">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="technician_id"
+                                           domain="[('share', '=', False)]"/>
+                                    <field name="state"
+                                           decoration-bf="state == 'in_progress'"/>
+                                    <field name="planned_hours"/>
+                                    <field name="effective_hours"/>
+                                    <field name="cost" widget="monetary"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Costs" name="costs">
+                            <field name="cost_line_ids" nolabel="1">
+                                <list editable="bottom" create="1" delete="1">
+                                    <field name="name"/>
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="date"/>
+                                </list>
+                            </field>
+                            <div class="float-end">
+                                <group class="oe_subtotal_footer" name="costs_total">
+                                    <field name="estimate_cost" widget="monetary"
+                                           class="oe_subtotal_footer_separator"/>
+                                    <field name="actual_cost" widget="monetary"
+                                           class="oe_subtotal_footer_separator" decoration-bf="1"/>
+                                </group>
+                            </div>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="internal_notes" placeholder="Team-only notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="awesome_estate_property_maintenance_search_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.maintenance.search</field>
+        <field name="model">awesome.estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="issue_type"/>
+                <field name="technician_id"/>
+                <field name="requester_id"/>
+                <field name="priority"/>
+                <separator/>
+                <filter string="My Requests" name="my_requests"
+                        domain="[('requester_id', '=', uid)]"/>
+                <filter string="Assigned to Me" name="my_assigned"
+                        domain="[('technician_id', '=', uid)]"/>
+                <separator/>
+                <filter string="To Do" name="todo"
+                        domain="[('state', 'not in', ('done', 'canceled'))]"/>
+                <filter string="Done" name="done"
+                        domain="[('state', '=', 'done')]"/>
+                <filter string="Canceled" name="canceled"
+                        domain="[('state', '=', 'canceled')]"/>
+                <separator/>
+                <filter string="High Priority" name="high_priority"
+                        domain="[('priority', '=', '3')]"/>
+                <group>
+                    <filter string="Status" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Priority" name="group_priority"
+                            context="{'group_by': 'priority'}"/>
+                    <filter string="Technician" name="group_technician"
+                            context="{'group_by': 'technician_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

@@ -7,7 +7,7 @@ class AwesomeEstatePropertyType(models.Model):
     _order = 'sequence, name'
 
     name = fields.Char(required=True)
-    sequence = fields.Integer(string="Sequence", default=10)
+    sequence = fields.Integer(default=10)
     property_ids = fields.One2many(
         'awesome.estate.property',
         'property_type_id',
@@ -19,7 +19,6 @@ class AwesomeEstatePropertyType(models.Model):
         string="Offers",
     )
     offer_count = fields.Integer(
-        string="Offer Count",
         compute='_compute_offer_count',
         store=True,
     )

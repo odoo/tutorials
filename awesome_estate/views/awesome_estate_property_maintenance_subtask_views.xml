@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <record id="awesome_estate_property_maintenance_subtask_list_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.maintenance.subtask.list</field>
+        <field name="model">awesome.estate.property.maintenance.subtask</field>
+        <field name="arch" type="xml">
+            <list editable="top" multi_edit="1"
+                  decoration-success="state == 'done'"
+                  decoration-muted="state == 'canceled'">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="maintenance_id" optional="show"/>
+                <field name="technician_id"/>
+                <field name="state"/>
+                <field name="planned_hours"/>
+                <field name="effective_hours"/>
+                <field name="cost" widget="monetary"/>
+            </list>
+        </field>
+    </record>
+
+</odoo>
