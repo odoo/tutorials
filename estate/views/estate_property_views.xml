@@ -75,8 +75,9 @@
                 <field name="facades"/>
 
                 <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]" />
-
-                <group>
+                <filter name="expensive" string="Expensive" domain="[('expected_price', '>', 50000)]" />
+                <!-- <filter name="expensive" string="Expensive" domain="[('expected_price', '>', 500000)]"/> -->
+                <group >
                     <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}" />
 
                     <filter name="group_by_bedroom" string="Bedrooms" context="{'group_by': 'bedrooms'}" />
@@ -86,6 +87,8 @@
         </field>
 
     </record>
+
+    
 
 </odoo>
 
