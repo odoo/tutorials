@@ -6,17 +6,17 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate properties"
 
-    name = fields.Char(required=True, default="Unkown")
+    title = fields.Char(required=True, default="Unknown")
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     description = fields.Text()
-    postcode = fields.Char()
-    date_availability = fields.Date(
+    postcode = fields.Char("Postcode")
+    date_availability = fields.Date("Available From",
         default=lambda self: fields.Date.today() + relativedelta_proxy(months=3)
     )
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    expected_price = fields.Float("Expected Price", required=True)
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
