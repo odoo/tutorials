@@ -7,4 +7,7 @@
     "category": "tutorials",
     "installabe": True,
     "license": "LGPL-3",
+    "data": [
+        "security/ir.model.access.csv",
+    ],
 }
