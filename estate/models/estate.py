@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class Estate(models.Model):
@@ -8,6 +8,21 @@ class Estate(models.Model):
     # fields
     name = fields.Char(required=True)
     description = fields.Text()
-    date = fields.Datetime(readonly=True)
-
-    garden_area = fields.Selection(string="Type", selection=[("e", "w")])
+    postcode = fields.Char()
+    date_availability = fields.Date()
+    expected_price = fields.Float()
+    selling_price = fields.Float()
+    bedrooms = fields.Integer()
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        selection=[
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ]
+    )
