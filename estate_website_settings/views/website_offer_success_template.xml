@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="offer_success_template" name="Offer Success">
+        <t t-call="website.layout">
+            <div class="container py-5 text-center">
+                <h1>
+                    Congratulations!
+                </h1>
+                <p class="lead">
+                    Your offer has been successfully placed.
+                </p>
+                <p>
+                    We will notify you of the results as soon as the auction concludes.
+                </p>
+                <a href="/properties"
+                   class="btn btn-primary">
+                    Back to Properties
+                </a>
+            </div>
+        </t>
+    </template>
+</odoo>
