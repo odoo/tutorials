@@ -21,7 +21,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     active = fields.Boolean(default=True)
-    garden_area = fields.Boolean()
+    garden_area = fields.Integer("Garden Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East')],
     )
@@ -33,5 +33,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        required=True,
+        copy=False,
         default="new",
     )
