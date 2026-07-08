@@ -7,8 +7,19 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <!--Menu list (Top beside app's logo)-->
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
 
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tags</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!--Menu list (Top beside app's logo)-->
 
     <menuitem
             id="estate_menu_root"
@@ -21,13 +32,15 @@
             <menuitem
                     id="estate_property_menu_action"
                     action="estate_property_action"/>
-
         </menuitem>
-
+        <menuitem id="estate_property_second_menu" name="Settings">
+            <menuitem id="estate_property_type_menu" action="estate_property_type_action"/>
+            <menuitem id="estate_property_tags_menu" action="estate_property_tag_action"/>
+        </menuitem>
     </menuitem>
 
 
-    <!--List view-->
+    <!--List Property view-->
 
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -36,6 +49,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="bedrooms"/>
@@ -46,10 +60,10 @@
         </field>
     </record>
 
-    <!--custom form view-->
+    <!--custom Property form view-->
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="property">
@@ -58,6 +72,8 @@
                         <field name="name"/>
                         <field name="postcode"/>
                         <field name="date_availability"/>
+                        <field name="tag_ids" widget="many2many_tags"/>
+
                     </group>
                     <group>
                         <field name="expected_price"/>
@@ -73,12 +89,27 @@
                             <field name="facades"/>
                         </group>
                     </page>
+                    <page string="Offers">
+                        <field name="offer_ids">
+                            <list edit="true" editable="bottom">
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="status"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Other Info">
+                        <group>
+                            <field name="salesman_id"/>
+                            <field name="buyer_id"/>
+                        </group>
+                    </page>
                 </notebook>
             </form>
         </field>
     </record>
 
-    <!--custom search view-->
+    <!--custom Property search view-->
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -97,5 +128,62 @@
         </field>
     </record>
 
+    <!--Custom Property type list view-->
 
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+
+    </record>
+
+    <!--Custom Property Type Form View-->
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <group>
+                    <field name="name"/>
+                </group>
+
+
+            </form>
+        </field>
+    </record>
+    <!--Custom property offers list view-->
+
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offers.list</field>
+        <field name="model">estate.property.offers</field>
+        <field name="arch" type="xml">
+            <list string="Offers">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Offers -->
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offers.form</field>
+        <field name="model">estate.property.offers</field>
+        <field name="arch" type="xml">
+            <form string="Offer">
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>
