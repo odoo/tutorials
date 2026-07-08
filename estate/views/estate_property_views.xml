@@ -112,6 +112,18 @@
                                 <field name="salesperson_id" />
                             </group>
                         </page>  
+                        <page string="Maintenance status">
+                                <field name="issue_ids">
+                                    <list>
+                                        <field name="issue_type" />
+                                        <field name="description" />
+                                        <field name="priority" />
+                                        <field name="date" />
+                                        <field name="actual_cost" />
+                                        <field name="total_actual_cost"  readonly="1"/>
+                                    </list>
+                                </field>
+                        </page>  
                     </notebook>
                 </sheet>
             </form>

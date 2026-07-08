@@ -36,4 +36,10 @@
         parent="estate_property_type_menu"
         action="estate_property_tag_action"
     />
+    <menuitem
+        id="estate_property_maintenance_menu"
+        name="Property Maintenance"
+        parent="estate_property_type_menu"
+        action="estate_property_maintenance_action"
+    />
 </odoo>

@@ -73,6 +73,10 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offer",
     )
+    issue_ids = fields.One2many(
+        "estate.property.maintenance",
+        "property_id"
+    )
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price>0)", "Expected price must be strictly positive"
@@ -81,7 +85,7 @@ class EstateProperty(models.Model):
     _check_selling_price = models.Constraint(
         "CHECK(selling_price>0)", "Selling price must be positive"
     )
-
+    
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
