@@ -4,14 +4,32 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="price" />
-                <field name="partner_id" />
-                <field name="status" />
-                <field name="validity" />
-                <button name="action_accept" title="Accept" type="object" icon="fa-check" />
-                <button name="action_reject" title="Reject" type="object" icon="fa-times" />
-                <field name="date_deadline" />
+            <list
+                editable="bottom"
+                decoration-danger="status == 'rejected'"
+                decoration-success="status == 'accepted'"
+            >
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="validity"/>
+
+                <button
+                    name="action_accept"
+                    type="object"
+                    icon="fa-check"
+                    title="Accept"
+                    invisible="status != False"
+                />
+
+                <button
+                    name="action_reject"
+                    type="object"
+                    icon="fa-times"
+                    title="Reject"
+                    invisible="status != False"
+                />
+
+                <field name="date_deadline"/>
             </list>
         </field>
     </record>
@@ -23,16 +41,23 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="price" />
-                        <field name="partner_id" />
-                        <field name="property_id" />
-                        <field name="date_deadline" />
-                        <field name="status" />
-                        <field name="validity" />
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="property_id"/>
+                        <field name="validity"/>
+                        <field name="status"/>
+                        <field name="validity"/>
                     </group>
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="action_open_related_offers" model="ir.actions.act_window">
+        <field name="name">Estate Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("property_type_id", "=", active_id)]</field>
     </record>
 
 </odoo>
