@@ -8,8 +8,8 @@
         <field name="price" string="Price"/>
         <field name="partner_id" string="Partner"/>
         <field name="create_date"/>
-        <button name="action_accept" data-hotkey="s" string="accept" type="object" icon="fa-check" invisible="status=='accepted'"/>
-        <button name="action_refuse" string="refuse" type="object" icon="fa-times" invisible="status=='refused'"/>
+        <button name="action_accept" data-hotkey="s" string="accept" type="object" icon="fa-check"/>
+        <button name="action_refuse" string="refuse" type="object" icon="fa-times"/>
         <field name="status" string="Status"/>
         <field name="validity"/>
         <button name="action_make_validity_default" icon="fa-refresh" type="object"/>

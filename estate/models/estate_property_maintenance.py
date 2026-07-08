@@ -4,8 +4,8 @@ from odoo import fields, models
 class EstatePropertyMaintenance(models.Model):
     _name = "estate.property.maintenance"
     _description = "this is model for estate property maintenance"
-    name = fields.Char()
-    property_id = fields.Many2one('estate.property')
+    name = fields.Char(required=True)
+    property_id = fields.Many2one('estate.property', required=True)
     request_by_id = fields.Many2one("res.users")
     description = fields.Text()
     priority = fields.Selection(

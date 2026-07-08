@@ -9,6 +9,10 @@ class EstatePropertyOffer(models.Model):
     _description = "this model is for estate property offers"
 
     price = fields.Float()
+
+    _check_price = models.Constraint(
+        'CHECK(price>0)', 'Price of offer must be positive.'
+    )
     status = fields.Selection(
         [('accepted', "Accepted"), ('refused', "Refused")],
         copy=False,
@@ -35,17 +39,28 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for offer in self:
-            existing_accepted = offer.property_id.offer_ids.filtered(
-                lambda o: o.status == 'accepted'
+            property_record = offer.property_id
+
+            already_accepted = any(
+                existing_offer.status == "accepted"
+                and existing_offer.price == property_record.selling_price
+                for existing_offer in property_record.offer_ids
             )
-            if existing_accepted:
+
+            if already_accepted:
                 raise UserError(
-                    message="An offer has already been accepted for this property!"
+                    message="An offer has already been accepted for this property."
                 )
+
             offer.status = "accepted"
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer = offer.partner_id
-            offer.property_id.state = 'offer_accepted'
+            offer.property_id.write(
+                {
+                    "selling_price": offer.price,
+                    "buyer": offer.partner_id.id,
+                    "state": "offer_accepted",
+                }
+            )
+
         return True
 
     def action_refuse(self):
