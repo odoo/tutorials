@@ -6,3 +6,8 @@ class EstatePropertyType(models.Model):
     _description = "model for estate property types"
     name = fields.Char(required=True)
     # tag_ids = fields.One2many("estate.property.tag","property_type_id",string="Tags")
+
+    _name_uniq = models.Constraint(
+        'unique(name)',
+        "A property type name must be unique.",
+    )
