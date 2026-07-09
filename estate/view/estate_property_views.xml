@@ -34,6 +34,14 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
+                <filter name="group_by_bedrooms" string="Bedrooms" context="{'group_by':'bedrooms'}"/>
+                <filter name="filter" string="price" domain="[('expected_price', '>',5000)]"/>
+                <filter
+                        string="Bedrooms"
+                        name="bedrooms"
+                        domain="[('bedrooms', '=' , 2)]"/>
+
+
             </search>
         </field>
     </record>
@@ -44,15 +52,21 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+
+                    <h1>
+                        <field name="name"/>
+                    </h1>
                     <group>
                         <group>
-                            <field name="name"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+
                         </group>
+
 
                         <group>
                             <field name="bedrooms"/>
@@ -65,6 +79,7 @@
                             <field name="state"/>
                         </group>
                     </group>
+
                     <notebook>
 
                         <page string="Description">
