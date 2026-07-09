@@ -27,7 +27,7 @@
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Properties">
+            <form>
                 <sheet>
 
                     <group>
@@ -35,6 +35,7 @@
                             <field name="name"/>
                             <field name="expected_price"/>
                             <field name="bedrooms"/>
+                            <field name="property_type" />
                             <field name="living_area"/>
                             <field name="facades"/>
                         </group>
@@ -42,6 +43,7 @@
                         <group>
                             <field name="selling_price"/>
                             <field name="postcode"/>
+                            <field name="tag_id" widget="many2many_tags"/>
                             <field name="date_availability"/>
                             <field name="garden"/>
                             <field name="garden_area"/>
@@ -49,11 +51,31 @@
                         </group>
                     </group>
 
-                    <notebook>
-                        <page string="Description">
-                            <field name="description"/>
-                        </page>
-                    </notebook>
+                    <group >
+
+                        <notebook>
+
+                            <page string="Description">
+                                <group>
+
+                                    <field name="description"/>
+                                </group>
+                            </page>
+
+                            <page string="Other Info">
+
+                                <group >
+                                    <group>
+                                        <field name="seller_id"/>
+                                        <field name="buyer_id"/>
+                                    </group>
+                                </group>
+
+                            </page>
+
+
+                        </notebook>
+                    </group>
 
                 </sheet>
 
@@ -88,7 +110,7 @@
 
     </record>
 
-    
+
 
 </odoo>
 
