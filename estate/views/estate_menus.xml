@@ -42,5 +42,12 @@
     name="Create Property"
     parent="estate_first_level_menu"
     action="estate_property_new_action"/>
+    
+    <menuitem
+    id="estate_property_maintenance_menu"
+    name="Maintenance"
+    parent="estate.estate_settings_menu"
+    action="estate.estate_property_maintenance_action"
+    />
 
 </odoo>
