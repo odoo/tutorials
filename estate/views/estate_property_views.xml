@@ -10,7 +10,7 @@
     <menuitem id="estate_property_menu_action" name="Properties" parent="estate_first_level_menu"
               action="estate_property_action"/>
 
-    <!--    Task (Tree) View -->
+<!--    Task (Tree) View-->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -29,6 +29,7 @@
         </field>
     </record>
 
+<!--    Form View-->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -74,5 +75,22 @@
         </field>
     </record>
 
+<!--    Search Filter-->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+
+            <search string="SearchProperties">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="facades" string="Facades"/>
+            </search>
+
+        </field>
+    </record>
 
 </odoo>
