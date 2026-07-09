@@ -35,10 +35,12 @@
                     <group>
                         <field name="postcode" />
                         <field name="date_availability" />
+                        <field name="active" />
                     </group>
                     <group>
                         <field name="expected_price" />
                         <field name="selling_price" />
+                        <field name="state" />
                     </group>
                 </group>
                 <notebook>
