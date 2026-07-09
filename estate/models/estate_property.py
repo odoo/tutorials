@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -56,6 +57,21 @@ class EstateProperty(models.Model):
         "CHECK(selling_price IS NULL OR selling_price > 0)",
         "Selling price must be strictly positive when set.",
     )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_90_percent(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_rounding=0.01):
+                continue
+            minimum_price = property.expected_price * 0.90
+            if float_compare(
+                property.selling_price,
+                minimum_price,
+                precision_rounding=0.01,
+            ) < 0:
+                raise ValidationError(
+                "Selling price cannot be lower than 90% of the expected price."
+            )
 
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
