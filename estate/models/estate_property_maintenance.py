@@ -6,7 +6,7 @@ class EstatePropertyMaintenance(models.Model):
     _name = "estate.property.maintenance"
     _description = "Property Maintenance"
 
-    name = fields.Char(required=True, string="Property Maintenance")
+    name = fields.Char(required=True, string="Title")
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     maintenance_type = fields.Selection(
         selection=[
@@ -62,5 +62,7 @@ class EstatePropertyMaintenance(models.Model):
 
     def action_stop(self):
         for record in self:
+            if record.final_cost <= 0:
+                raise UserError("Please enter a valid final cost before completing the work.")
             record.state = "done"
         return True

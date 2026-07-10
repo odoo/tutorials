@@ -32,7 +32,7 @@
                 <field name="best_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
-                <field name="squre_area"/>
+                <field name="square_area"/>
             </list>
         </field>
     </record>
@@ -47,6 +47,8 @@
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
+
+
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -74,7 +76,7 @@
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="total_area"/>
-                                <field name="squre_area"/>
+                                <field name="square_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
@@ -145,7 +147,7 @@
 
                 <filter name="has_garage" string="Has Garage" domain="[('garage', '=', True)]"/>
                 <filter name="has_garden" string="Has Garden" domain="[('garden', '=', True)]"/>
-                <filter name="best_price" string="Best Price" domain="[('best_price', '>=', '10000')]"/>
+                <filter name="best_price" string="Best Price" domain="[('best_price', '>=', 10000)]"/>
 
                 <group>
                     <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>

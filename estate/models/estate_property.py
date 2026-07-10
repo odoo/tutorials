@@ -69,11 +69,11 @@ class EstateProperty(models.Model):
         string="Best Offer",
         compute="_compute_best_price",
         help="The highest offer received for this property",
-        store="true",
+        store=True,
     )
-    squre_area = fields.Integer(
-        string="Squre Area",
-        compute="_compute_total_squre",
+    square_area = fields.Integer(
+        string="Square Area",
+        compute="_compute_total_square",
     )
 
     @api.depends("living_area", "garden_area")
@@ -82,9 +82,9 @@ class EstateProperty(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("total_area")
-    def _compute_total_squre(self):
+    def _compute_total_square(self):
         for record in self:
-            record.squre_area = record.total_area * record.total_area
+            record.square_area = record.total_area * record.total_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -115,5 +115,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
+            if not record.buyer_id:
+                raise UserError("A property cannot be sold without an accepted offer (buyer).")
             record.state = "sold"
         return True
