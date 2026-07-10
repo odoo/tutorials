@@ -51,35 +51,56 @@
                         </group>
                     </group>
 
-                    <group >
 
-                        <notebook>
 
-                            <page string="Description">
+                    <notebook>
+
+                        <page string="Description">
+                            <group>
+
+                                <field name="description"/>
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+
+                            <group >
                                 <group>
-
-                                    <field name="description"/>
+                                    <field name="seller_id"/>
+                                    <field name="buyer_id"/>
                                 </group>
-                            </page>
+                            </group>
 
-                            <page string="Other Info">
+                        </page>
 
-                                <group >
-                                    <group>
-                                        <field name="seller_id"/>
-                                        <field name="buyer_id"/>
-                                    </group>
+                        <page name="Offers" string="Offers">
+                            <group >
+                                <group>
+                                    <field name="offer_ids"/>
+
                                 </group>
+                            </group>
+                        </page>
 
-                            </page>
 
+                    </notebook>
 
-                        </notebook>
-                    </group>
 
                 </sheet>
 
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+            </list>
         </field>
     </record>
 
