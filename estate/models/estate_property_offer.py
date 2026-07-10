@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -25,11 +26,17 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one(
         "estate.property", string="Property", required=True, ondelete="cascade"
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", store=True
+    )
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+    )
+    _check_validity = models.Constraint(
+        "CHECK(validity >= 0)", "Validity days cannot be negative!"
     )
 
     @api.depends("create_date", "validity")
@@ -64,6 +71,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for offer in self:
+            if "accepted" in offer.property_id.offer_ids.mapped("status"):
+                raise UserError("An offer has already been accepted")
             offer.status = "accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
