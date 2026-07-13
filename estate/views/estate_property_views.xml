@@ -43,6 +43,7 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
+                    <button name="action_accept_best_offer" type="object" string="Accept Best Offer" class="oe_highlight" invisible="state in ('sold', 'cancelled', 'offer_accepted')"/>
                     <button name="action_sold" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>

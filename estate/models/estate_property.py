@@ -119,3 +119,11 @@ class EstateProperty(models.Model):
                 raise UserError("A property cannot be sold without an accepted offer (buyer).")
             record.state = "sold"
         return True
+
+    def action_accept_best_offer(self):
+        for record in self:
+            if not record.offer_ids:
+                raise UserError("This property has no offers to accept.")
+            best_offer = max(record.offer_ids, key=lambda o: o.price)
+            best_offer.action_accept()
+        return True
