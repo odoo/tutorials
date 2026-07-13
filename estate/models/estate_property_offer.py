@@ -81,7 +81,6 @@ class EstatePropertyOffer(models.Model):
     def action_confirm(self):
         for offer in self.property_id.offer_ids:
             if self != offer and offer.status == 'accepted':
-                offer
                 raise UserError(_("An offer is already accepted."))
         self.status = "accepted"
         self.property_id.state = "offer_accepted"

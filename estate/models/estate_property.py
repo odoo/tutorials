@@ -85,7 +85,7 @@ class EstateProperty(models.Model):
     _check_selling_price = models.Constraint(
         "CHECK(selling_price>0)", "Selling price must be positive"
     )
-    
+
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
