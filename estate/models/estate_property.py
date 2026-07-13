@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one(
         "estate.property.type",
-        string="Poperty Type",
+        string="Property Type",
     )
     buyer_id = fields.Many2one(
         "res.partner",
@@ -69,9 +69,8 @@ class EstateProperty(models.Model):
                 minimum_price,
                 precision_rounding=0.01,
             ) < 0:
-                raise ValidationError(
-                "Selling price cannot be lower than 90% of the expected price."
-            )
+                error_msg = "Selling price cannot be lower than 90% of the expected price."
+                raise ValidationError(error_msg)
 
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
