@@ -32,7 +32,7 @@
                     </group>
                     <notebook>
                         <page string ="Description">
-                            
+
                             <field name="description"/>
                             <group>
                             <group>
@@ -57,7 +57,7 @@
                                     <field name="status"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
-                                </list> 
+                                </list>
                             </field>
                         </page>
 

@@ -1,16 +1,22 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _inherit = "[mail]"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3), string="Availability Date")
+    date_availability = fields.Date(
+        copy=False,
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
+        string="Availability Date",
+    )
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(readonly=True, copy=False, string="Selling Price")
     bedrooms = fields.Integer(default=2, string="Bedrooms")
@@ -34,7 +40,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new',
-        string="State"
+        string="State",
     )
     garden_orientation = fields.Selection(
         selection=[
@@ -43,16 +49,22 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
         ],
-        string="Garden Orientation"
+        string="Garden Orientation",
     )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user, string="Salesperson")
+    salesperson_id = fields.Many2one(
+        "res.users", default=lambda self: self.env.user, string="Salesperson"
+    )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    best_price = fields.Integer(string="Best price", compute="_compute_best_price", store="True")
-    maintenance_ids = fields.One2many("estate.property.maintenance",'property_id',string="maintenance_id")
+    best_price = fields.Integer(
+        string="Best price", compute="_compute_best_price", store="True"
+    )
+    maintenance_ids = fields.One2many(
+        "estate.property.maintenance", 'property_id', string="maintenance_id"
+    )
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -80,28 +92,38 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         # breakpoint()
         for record in self:
-            record.total_area = record.living_area + record.garden_area + record.garage_area
+            record.total_area = (
+                record.living_area + record.garden_area + record.garage_area
+            )
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError("sold property cannot be cancelled ")
-            record.state="cancelled"
+            record.state = "cancelled"
         return True
 
     def action_sold(self):
         for record in self:
-            if record.state =='cancelled':
+            if record.state == 'cancelled':
                 raise UserError("cancelled property cannot be sold")
-            record.state="sold"
+            record.state = "sold"
         return True
 
     def action_accept_best_price(self):
-        for record in self:
-            best_offer = record.offer_ids.filtered(lambda o: o.price == record.best_price)
-            record.selling_price = record.best_price
-            record.state = 'sold'
-            record.buyer_id = best_offer.partner_id
-            best_offer.status = 'Accepted'
-            (record.offer_ids - best_offer).write({'status': 'Refused'})
+        # for record in self:
+        #     best_offer = record.offer_ids.filtered(
+        #         lambda o: o.price == record.best_price
+        #     )
+        #     record.selling_price = record.best_price
+        #     record.state = 'sold'
+        #     record.buyer_id = best_offer.partner_id
+        #     best_offer.status = 'Accepted'
+        #     (record.offer_ids - best_offer).write({'status': 'Refused'})
 
+        best_offer = self.offer_ids.filtered(lambda o: o.price == self.best_price)
+        self.selling_price = self.best_price
+        self.state = 'sold'
+        self.buyer_id = best_offer.partner_id
+        best_offer.status = 'Accepted'
+        (self.offer_ids - best_offer).write({'status': 'Refused'})
