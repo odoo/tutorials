@@ -41,8 +41,16 @@ class EstatePropertyMaintenance(models.Model):
     def _check_scheduled_date(self):
         for record in self:
             if record.scheduled_date < record.inspection_date:
-                UserError("inspection date can not be before scheduled date")
+               raise UserError("scheduled date can not be before inspection date")
     
     responsible_id = fields.Many2one("res.users",string="responsible",default =lambda self:self.env.user)
     actual_cost = fields.Float(string="Actual Cost")
+    state = fields.Selection(
+        selection=[
+            ('new',"New"),
+            ('started',"Started"),
+            ('in_progress',"In Progress"),
+            ('completed',"Completed"),
+        ],string="state"
+    )
     

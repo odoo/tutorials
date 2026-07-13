@@ -52,7 +52,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Integer(string="Best price", compute="_compute_best_price", store="True")
-    maintenance_id = fields.One2many("estate.property.maintenance",'property_id',string="maintenance_id")
+    maintenance_ids = fields.One2many("estate.property.maintenance",'property_id',string="maintenance_id")
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -91,7 +91,7 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.state =='cancel':
+            if record.state =='cancelled':
                 raise UserError("cancelled property cannot be sold")
             record.state="sold"
         return True

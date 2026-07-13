@@ -9,15 +9,12 @@
         <field name="name">estate.property.maintenance.list </field>
         <field name="model">estate.property.maintenance</field>
         <field name="arch" type="xml">
-            <list string="maintenance">
+            <list string="maintenance" >
                 <field name = "title"/>
                 <field name = "description"/>
                 <field name = "maintenance_category"/>
-                <field
-                    name = "custom_category" 
-                    invisible="maintenance_category !='other'"
-                    required = "maintenance_category =='other'"
-                    />
+                <field name="custom_category" 
+                invisible="not maintenance_category or maintenance_category != 'other'"/>
                 <field name="property_id"/>
                 <field name="inspection_date"/>
                 <field name="expected_price"/>
@@ -25,6 +22,35 @@
                 <field name="responsible_id"/>
                 <field name="actual_cost"/>
             </list>
+        </field>
+    </record>
+
+    <record id ="estate_property_maintenance_form" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.form </field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="maintenance">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,started,in_progress,completed" options="{'clickable':'1'}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name = "title"/>
+                        <field name = "description"/>
+                        <field name = "maintenance_category"/>
+                        <field name="custom_category" 
+                        invisible="not maintenance_category or maintenance_category != 'other'"/>
+                    </group>
+                    <group>
+                        <field name="property_id"/>
+                        <field name="inspection_date"/>
+                        <field name="expected_price"/>
+                        <field name="scheduled_date"/>
+                        <field name="responsible_id"/>
+                        <field name="actual_cost"/>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>

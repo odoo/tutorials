@@ -102,8 +102,8 @@
                             </group>
                         </page>
                         <page string ="maintennace">
-                            <field name ="maintenance_id">
-                                <list string ="maintenance">
+                            <field name ="maintenance_ids">
+                                <list string ="maintenance" editable="top">
                                     <field name ="title"/>
                                     <field name="description"/>
                                     <field name="maintenance_category"/>

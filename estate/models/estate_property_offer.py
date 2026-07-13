@@ -30,7 +30,7 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            record.validity = record.base + timedelta(record.date_deadline)
+            record.validity = record.create_date + timedelta(record.date_deadline)
 
     def action_accept(self):
         if 'Accepted' in self.property_id.offer_ids.mapped('status'):
