@@ -22,7 +22,7 @@ class EstatePropertyType(models.Model):
     offer_ids = fields.One2many(
         "estate.property.offer",
         "property_type_id",
-        string="offers",
+        string="Offers",
     )
 
     offer_count = fields.Integer(

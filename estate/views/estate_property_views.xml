@@ -51,12 +51,14 @@
                         type="object"
                         string="Sold"
                         invisible="state in ('sold', 'cancelled')"
+                        
                     />
                     <button
                         name="action_cancel"
                         type="object"
                         string="Cancel"
                         invisible="state in ('sold', 'cancelled')"
+                        
                     />
                     <field
                         name="state"
@@ -172,7 +174,7 @@
                 <filter
                     name="state"
                     string="Available"
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_recieved')]"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"
                 />
 
                 <filter
@@ -183,5 +185,7 @@
             </search>
         </field>
     </record>
+
+    
 
 </odoo>

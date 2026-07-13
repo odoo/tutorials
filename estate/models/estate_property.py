@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
 
     date_available = fields.Date(
-        default=lambda self: fields.Date.today() + relativedelta(months=3)
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
 
     expected_price = fields.Float(required=True)
@@ -49,7 +49,7 @@ class EstateProperty(models.Model):
             ('south', "South"),
             ('east', "East"),
             ('west', "West"),
-        ]
+        ],
     )
 
     active = fields.Boolean(default=True)
@@ -96,7 +96,7 @@ class EstateProperty(models.Model):
     )
 
     best_offer = fields.Float(
-        string="Best offer",
+        string="Best Offer",
         compute="_compute_best_price",
     )
 
@@ -138,7 +138,7 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    "Selling price cannot be lower than 90% of expected price!"
+                    "Selling price cannot be lower than 90% of expected price!",
                 )
 
     @api.onchange("garden")
@@ -149,12 +149,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
-
-    @api.ondelete(at_uninstall=False)
-    def ondelete(self):
-        for record in self:
-            if record.state != "new" or record.state != "cancelled":
-                raise UserError("This property can't be deleted")
 
     def action_cancel(self):
         for record in self:
@@ -173,3 +167,9 @@ class EstateProperty(models.Model):
             record.state = "sold"
 
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def ondelete(self):
+        for record in self:
+            if record.state != "new" or record.state != "cancelled":
+                raise UserError("This property can't be deleted")

@@ -13,8 +13,8 @@ class EstatePropertyOffer(models.Model):
 
     status = fields.Selection(
         [
-            ('accepted', "Accepted"),
-            ('rejected', "Rejected"),
+            ("accepted", "Accepted"),
+            ("rejected", "Rejected"),
         ],
         copy=False,
     )
@@ -55,7 +55,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date:
                 record.date_deadline = record.create_date.date() + timedelta(
-                    days=record.validity
+                    days=record.validity,
                 )
 
     def _inverse_date_deadline(self):
@@ -66,6 +66,25 @@ class EstatePropertyOffer(models.Model):
                     record.validity = delta.days
             else:
                 record.validity = 7
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            current_price = vals.get('price')
+            property_record = self.env['estate.property'].browse(
+                vals['property_id'],
+            )
+
+            for record in property_record.offer_ids:
+                other_price = record.price
+
+                if current_price < other_price:
+                    raise UserError("This offer can't be created")
+
+            if property_record.state == "new":
+                property_record.state = "offer_received"
+
+        return super().create(vals_list)
 
     def action_accept(self):
         self.ensure_one()
