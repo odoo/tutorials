@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
@@ -25,6 +25,8 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
     garden_orientation = fields.Selection(
         [
             ("north", "North"),
@@ -50,3 +52,23 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(
         "estate.property.offers", "property_id", string="Offers"
     )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for realEstateProperty in self:
+            realEstateProperty.total_area = (
+                realEstateProperty.living_area + realEstateProperty.garden_area
+            )
+
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        self.best_price = max(self.offer_ids.mapped("price")) if self.offer_ids else 0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
