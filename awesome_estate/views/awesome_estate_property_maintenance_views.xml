@@ -46,7 +46,9 @@
         <field name="model">awesome.estate.property.maintenance</field>
         <field name="arch" type="xml">
             <form string="Maintenance Request">
+                <!-- company_id is required by the model but auto-set via default; hidden from UI -->
                 <field name="company_id" invisible="1"/>
+                <!-- currency_id is required for monetary fields; auto-set to INR via default -->
                 <field name="currency_id" invisible="1"/>
                 <header>
                     <button name="action_assign" type="object" string="Assign"

@@ -55,7 +55,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     )
     currency_id = fields.Many2one(
         'res.currency', string="Currency",
-        default=lambda self: self.env.ref('base.INR').id,
+        default=lambda self: self.env.company.currency_id.id,
         required=True,
     )
     estimate_cost = fields.Monetary(
@@ -122,7 +122,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
 
     @api.onchange('issue_type')
     def _onchange_issue_type(self):
-        """Auto-fill estimate_cost from issue type default if not manually set."""
+        """Auto-fill estimate_cost from issue type default whenever type changes."""
         ISSUE_TYPE_DEFAULT_COST = {
             'electricity': 1000.0,
             'plumbing': 1500.0,
@@ -133,7 +133,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
             'structural': 10000.0,
             'other': 1000.0,
         }
-        if self.issue_type and not self.estimate_cost:
+        if self.issue_type:
             self.estimate_cost = ISSUE_TYPE_DEFAULT_COST.get(self.issue_type, 1000.0)
 
     @api.onchange('technician_id')
@@ -149,7 +149,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
         for record in self:
             if record.state == 'assigned' and not record.technician_id:
                 raise ValidationError(
-                    _("An assigned maintenance request must have a technician.")
+                    _("An assigned maintenance request must have a technician."),
                 )
 
     def action_assign(self):
@@ -185,7 +185,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
             if pending:
                 raise UserError(
                     _("Complete all subtasks before marking this request as done. "
-                      "Pending: %s") % ', '.join(pending.mapped('name')))
+                      "Pending: %s", ', '.join(pending.mapped('name'))))
         self.write({
             'state': 'done',
             'close_date': fields.Date.today(),

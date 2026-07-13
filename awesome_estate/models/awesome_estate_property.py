@@ -38,17 +38,20 @@ class AwesomeEstateProperty(models.Model):
         'awesome.estate.property.type',
         string="Property Type",
         ondelete='restrict',
+        index=True,
     )
     buyer_id = fields.Many2one(
         'res.partner',
         string="Buyer",
         readonly=True,
         copy=False,
+        index=True,
     )
     salesperson_id = fields.Many2one(
         'res.users',
         string="Salesperson",
         default=lambda self: self.env.user,
+        index=True,
     )
     tag_ids = fields.Many2many(
         'awesome.estate.property.tag',
@@ -138,7 +141,7 @@ class AwesomeEstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offer_ids.price')
+    @api.depends('offer_ids', 'offer_ids.price')
     def _compute_best_price(self):
         for record in self:
             prices = record.offer_ids.mapped('price')
@@ -166,16 +169,13 @@ class AwesomeEstateProperty(models.Model):
         if self.state == 'sold':
             raise UserError(_("Property is already sold."))
         # Auto-fill selling_price and buyer_id from the accepted offer.
-        # Triple guard (action_accept guards, property state lock, create validation)
-        # ensures at most one accepted offer exists. [0] is defensive against race
-        # conditions — if somehow multiple exist, pick the first.
+        # The state machine guarantees at most one accepted offer exists.
         if self.state == 'offer_accepted' and not self.selling_price:
-            accepted = self.offer_ids.filtered(
-                lambda o: o.status == 'accepted')
+            accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
             if accepted:
                 self.write({
-                    'selling_price': accepted[0].price,
-                    'buyer_id': accepted[0].partner_id.id,
+                    'selling_price': accepted.price,
+                    'buyer_id': accepted.partner_id.id,
                 })
         # Guard: must have a selling price
         if not self.selling_price:
@@ -197,6 +197,9 @@ class AwesomeEstateProperty(models.Model):
         if pending:
             pending.write({'status': 'refused'})
         self.state = 'canceled'
+        # Odoo guideline: terminal "Canceled" state archives the record
+        # so it is hidden from default list views.
+        self.active = False
         return True
 
     def action_reset(self):
@@ -210,6 +213,7 @@ class AwesomeEstateProperty(models.Model):
             'state': 'new',
             'selling_price': 0.0,
             'buyer_id': False,
+            'active': True,
         })
         if was_sold:
             self.offer_ids.write({'status': False})

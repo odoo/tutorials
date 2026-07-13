@@ -16,7 +16,8 @@
                 <field name="create_date" optional="show"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <!-- Required for list decorations (decoration-success/bf/danger) and Accept/Refuse button visibility conditions -->
+                <!-- status is always invisible: used only for list decorations (decoration-success/bf/danger)
+                     and Accept/Refuse button visibility conditions -->
                 <field name="status" invisible="1"/>
                 <button name="action_accept" type="object" icon="fa-check" title="Accept"
                         invisible="status in ['accepted', 'refused']"/>
