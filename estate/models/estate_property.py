@@ -95,3 +95,13 @@ class EstateProperty(models.Model):
                 raise UserError("cancelled property cannot be sold")
             record.state="sold"
         return True
+
+    def action_accept_best_price(self):
+        for record in self:
+            best_offer = record.offer_ids.filtered(lambda o: o.price == record.best_price)
+            record.selling_price = record.best_price
+            record.state = 'sold'
+            record.buyer_id = best_offer.partner_id
+            best_offer.status = 'Accepted'
+            (record.offer_ids - best_offer).write({'status': 'Refused'})
+

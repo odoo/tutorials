@@ -33,6 +33,7 @@
                 <header>
                     <button name = "action_cancel" type="object" string="Cancel"/>
                     <button name = "action_sold" type="object" string="Sold"/>
+                    <button name = "action_accept_best_price" type = "object" string = "Accept Best Price"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -74,16 +75,17 @@
                         </page>
                         <page string ="Offers">
                             <field name="offer_ids">
-                                <list string="Offers">
+                                <list string="Offers" editable= "bottom">
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                     <field name="status"/>
                                     <button name="action_accept"  type="object" icon="fa-check"
-                                        invisible="status == 'Refused' "/>
+                                        invisible ="status"/> 
                                     <button name="action_refuse"  type="object" icon="fa-times"
-                                        invisible ="status == 'Accepted' " />
+                                        invisible ="status"/>
+                                    
                                 </list> 
                             </field>
                         </page>

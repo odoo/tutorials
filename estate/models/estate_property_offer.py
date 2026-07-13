@@ -35,9 +35,11 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         if 'Accepted' in self.property_id.offer_ids.mapped('status'):
             raise UserError("An offer has already been accepted for this property")
-        self.status ='Accepted'
+        self.status = 'Accepted'
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
+        (self.property_id.offer_ids - self).write({'status': 'Refused'})
+        
 
     def action_refuse(self):
         self.status = 'Refused'
