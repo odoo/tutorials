@@ -1,7 +1,15 @@
 <odoo>
+
 <record id="estate_action" model="ir.actions.act_window">
     <field name="name">Estate</field>
     <field name="res_model">estate</field>
+    <field name="view_mode">list,form</field>
+</record>
+
+<!-- for estate.type (action) -->
+<record id="estate_type_action" model="ir.actions.act_window">
+    <field name="name">Estate Types</field>
+    <field name="res_model">estate.type</field>
     <field name="view_mode">list,form</field>
 </record>
 
@@ -18,6 +26,7 @@
             <field name="selling_price" />
             <field name="date_availability" />
             <field name="state" />
+            <field name="estate_type_id" />
         </list>
     </field>
 </record>
@@ -33,9 +42,9 @@
                 </h1>
                 <group>
                     <group>
+                        <field name="estate_type_id" />
                         <field name="postcode" />
                         <field name="date_availability" />
-                        <field name="active" />
                     </group>
                     <group>
                         <field name="expected_price" />
@@ -73,6 +82,7 @@
             <field name="facades" />
             <field name="postcode" />
             <field name="expected_price" />
+            <field name="estate_type_id" />
             <filter
                     name="available"
                     string="Available"

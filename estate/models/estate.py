@@ -42,3 +42,4 @@ class Estate(models.Model):
         default="new",
     )
     active = fields.Boolean(default=True)
+    estate_type_id = fields.Many2one("estate.type", string="Estate Type")
