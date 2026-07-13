@@ -11,18 +11,14 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
-
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
-
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
@@ -32,9 +28,7 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation",
     )
-
     active = fields.Boolean(default=True)
-
     state = fields.Selection(
         selection=[
             ("new", "New"),
@@ -47,7 +41,6 @@ class EstateProperty(models.Model):
         default="new",
         required=True,
     )
-
     property_type = fields.Many2one("estate.property.type", string="Type")
     seller_id = fields.Many2one(
         "res.users",
