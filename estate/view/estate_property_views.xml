@@ -74,9 +74,10 @@
                             <field name="facades"/>
                             <field name="garage"/>
                             <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
                             <field name="state"/>
+                            <field name="garden_orientation"/>
+                            <field name="garden_area"/>
+                            <field name="total_area" readonly="True"/>
                         </group>
                     </group>
 
