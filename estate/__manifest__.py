@@ -1,5 +1,6 @@
 {
     "name": "Estate",
+    "version": "1.1",
     "category": "",
     "summary": "",
     "website": "",
