@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "real state property"
+    _order = "id desc"
 
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -144,4 +145,3 @@ class EstateProperty(models.Model):
                 raise UserError(message)
             property.state = "sold"
         return True
-        
