@@ -87,7 +87,6 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept(self):
-        self.ensure_one()
 
         for offer in self.property_id.offer_ids:
             if self != offer and offer.status == "accepted":
