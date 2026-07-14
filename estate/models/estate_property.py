@@ -2,12 +2,14 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_is_zero , float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _inherit = "[mail]"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -17,8 +19,25 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today() + relativedelta(months=3),
         string="Availability Date",
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True )
+    _check_expected_price = models.Constraint(
+        'CHECK( expected_price >=0 )',
+        'expected price cannot be less than 0 or in negative value '
+    )
     selling_price = fields.Float(readonly=True, copy=False, string="Selling Price")
+    _check_selling_price = models.Constraint(
+        'CHECK( selling_price >= 0 )',
+        'selling price cannot be lestt than 0 or in negative value '
+    )
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            if(
+                float_compare(record.selling_price, 0.90 *record.expected_price, precision_digits=2)
+            ): raise ValidationError("selling price cannot be less than 90% of expected price")
+
     bedrooms = fields.Integer(default=2, string="Bedrooms")
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
@@ -127,3 +146,11 @@ class EstateProperty(models.Model):
         self.buyer_id = best_offer.partner_id
         best_offer.status = 'Accepted'
         (self.offer_ids - best_offer).write({'status': 'Refused'})
+        return{
+            'effect':{
+                'fadeout':'slow',
+                'message':"nice job",
+                'image_url':'...',
+                'type':'rainbow_man'
+            }
+        }

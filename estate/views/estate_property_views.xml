@@ -125,6 +125,7 @@
                         Estate Module — Built by Ritvik @ Odoo IN Pvt. Ltd.
                     </div>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
