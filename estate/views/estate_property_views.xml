@@ -32,10 +32,13 @@
          <field name="name">estate.property_form</field>
          <field name="model">estate.property</field>
          <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Property Form">
                 <sheet>
                     <group>
                         <h1><field name="title"/></h1>
+                    </group>
+                    <group>
+                        <field name="tags_id" widget="many2many_tags"/>
                     </group>
                     <group>
                         <group>
@@ -61,6 +64,9 @@
                                 <field name="state"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <field name="seller_id"/>
@@ -71,35 +77,5 @@
                 </sheet>
             </form>
          </field>
-    </record>
-
-    <record id="estate.property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <search string="Searchbar">
-                <field name="title"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
-
-                <separator />
-                <filter
-                string="Available"
-                name="available"
-                domain="['|',
-                    ('state', '=', 'new'),
-                    ('state', '=', 'offer_received')
-                ]"/>
-
-                <separator />
-                <filter
-                    string="Postcode"
-                    name="group_by_postcode"
-                    context="{'group_by': 'postcode'}"/>
-            </search>
-        </field>
     </record>
 </odoo>
