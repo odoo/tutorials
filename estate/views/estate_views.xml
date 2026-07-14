@@ -23,7 +23,7 @@
     <field name="name">Estate List</field>
     <field name="model">estate</field>
     <field name="arch" type="xml">
-        <list>
+        <list editable="top">
             <field name="name" />
             <field name="postcode" />
             <field name="bedrooms" />
@@ -33,6 +33,7 @@
             <field name="date_availability" />
             <field name="state" />
             <field name="estate_type_id" />
+            <field name="total_area" />
         </list>
     </field>
 </record>
@@ -73,6 +74,7 @@
                             <field name="garden" />
                             <field name="garden_area" />
                             <field name="garden_orientation" />
+                            <field name="total_area" />
                         </group>
                     </page>
                     <page string="Offers">
