@@ -7,23 +7,25 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "this model is for estate property offers"
-
-    price = fields.Float()
+    # _order = "price desc"
 
     _check_price = models.Constraint(
-        'CHECK(price>0)', 'Price of offer must be positive.'
+        "CHECK(price>0)",
+        "Price of offer must be positive.",
     )
-    status = fields.Selection(
-        [('accepted', "Accepted"), ('refused', "Refused")],
-        copy=False,
-    )
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
-    validity = fields.Integer(default=7)
+
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
+    partner_id = fields.Many2one("res.partner", required=True)
+    price = fields.Float()
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
+    status = fields.Selection(
+        [('accepted', "Accepted"), ('refused', "Refused")],
+        copy=False,
+    )
+    validity = fields.Integer(default=7)
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -49,7 +51,7 @@ class EstatePropertyOffer(models.Model):
 
             if already_accepted:
                 raise UserError(
-                    message="An offer has already been accepted for this property."
+                    message="An offer has already been accepted for this property.",
                 )
 
             offer.status = "accepted"
@@ -58,38 +60,18 @@ class EstatePropertyOffer(models.Model):
                     "selling_price": offer.price,
                     "buyer": offer.partner_id.id,
                     "state": "offer_accepted",
-                }
+                },
             )
-
-        return True
-
-    def action_refuse(self):
-        for offer in self:
-            if offer.status == "accepted":
-                offer.status = "refused"
-                # message = "nothing but smilely"
-                # return {
-                #     'effect': {
-                #         'fadeout': 'slow',
-                #         'message': message,
-                #         'img_url': '/web/static/src/img/smile.svg',
-                #         'type': 'rainbow_man',
-                #     }
-                # }
-
-                # return {
-                #     'type': 'ir.actions.client',
-                #     'tag': 'display_notification',
-                #     'params': {
-                #         'title': 'Offer Refused',
-                #         'message': 'The offer has been successfully refused.',
-                #         'type': 'warning',
-                #         'sticky': False,
-                #     },
-                # }
+            refuse_ids = property_record.offer_ids.filtered(lambda o: not o.status)
+            refuse_ids.write({"status": "refused"})
         return True
 
     def action_make_validity_default(self):
         for offer in self:
             offer.validity = 7
+        return True
+
+    def action_refuse(self):
+        for offer in self:
+            offer.status = "refused"
         return True

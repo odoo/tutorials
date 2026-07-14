@@ -9,37 +9,24 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = "id desc"
 
     def _default_date_availability(self):
         return fields.Date.today() + relativedelta(months=3)
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
-    property_type = fields.Many2one("estate.property.type")
-    sales_person = fields.Many2one("res.users", default=lambda self: self.env.user)
+    active = fields.Boolean(default=True)
+    bedrooms = fields.Integer(default=2)
+    best_price = fields.Float(
+        compute="_compute_best_price",
+        search="_search_best_price",
+    )
     buyer = fields.Many2one("res.partner", copy=False)
-    tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="offers")
     date_availability = fields.Date(
         copy=False,
         default=_default_date_availability,
-        # default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
+    description = fields.Text(translate=True)
     expected_price = fields.Float(required=True, tracking=True)
-
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected price of property should be positive.',
-    )
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'Offer price of property should be positive.',
-    )
-
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -54,6 +41,19 @@ class EstateProperty(models.Model):
         store=True,
         readonly=False,
     )
+    living_area = fields.Integer()
+    maintenance_ids = fields.One2many(
+        "estate.property.maintenance",
+        "property_id",
+        string="Maintenance",
+    )
+    name = fields.Char(required=True, translate=True)
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="offers")
+    postcode = fields.Char()
+    property_type = fields.Many2one("estate.property.type")
+    sales_person = fields.Many2one("res.users", default=lambda self: self.env.user)
+    selling_price = fields.Float(readonly=True, copy=False)
+    sq_area = fields.Float(compute="_compute_computed_area")
     state = fields.Selection(
         [
             ('new', "New"),
@@ -66,15 +66,16 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    active = fields.Boolean(default=True)
+    tag_ids = fields.Many2many("estate.property.tag")
     total_area = fields.Integer(compute="_compute_total_area")
-    best_price = fields.Float(
-        compute="_compute_best_price", search="_search_best_price"
-    )
 
-    sq_area = fields.Float(compute="_compute_computed_area")
-    maintenance_ids = fields.One2many(
-        'estate.property.maintenance', 'property_id', string="Maintenance"
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price of property should be positive.",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "Offer price of property should be positive.",
     )
 
     @api.onchange("state")
@@ -106,25 +107,21 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for property in self:
-            # prices = [offer.price for offer in property.offer_ids]
             prices = property.offer_ids.mapped("price")
             property.best_price = max(prices) if prices else 0.0
 
-    # unsafe for business logic and  only works in form view and list
-    # (if editable) (triggered on user interaction)
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area, self.garden_orientation = 10, 'north'
+            self.garden_area, self.garden_orientation = 10, "north"
         else:
             self.garden_area, self.garden_orientation = 0, False
 
-    # safe for business logic
     @api.depends("garden")
     def _compute_garden_details(self):
         for property in self:
             if property.garden:
-                property.garden_area, property.garden_orientation = 10, 'north'
+                property.garden_area, property.garden_orientation = 10, "north"
             else:
                 property.garden_area, property.garden_orientation = 0, False
 
@@ -135,10 +132,17 @@ class EstateProperty(models.Model):
 
     def action_set_state_sold(self):
         for record in self:
-            if record.state == 'cancelled':
-                raise UserError(message='cancelled properties cannot be sold')
+            if record.state == "cancelled":
+                raise UserError(self.env._("cancelled properties cannot be sold"))
             record.state = "sold"
         return True
+
+    def action_set_best_price(self):
+        for property in self:
+            offer_id = property.offer_ids.filtered(
+                lambda o: o.price == property.best_price,
+            )
+            offer_id.action_accept()
 
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
@@ -153,5 +157,5 @@ class EstateProperty(models.Model):
                 == -1
             ):
                 raise ValidationError(
-                    message="The selling price cannot be lower than 90% of the expected price!"
+                    message="The selling price cannot be lower than 90% of the expected price!",
                 )
