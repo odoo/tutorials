@@ -34,9 +34,12 @@
                 <header>
                     <button name="action_sold" string="Sold" type="object" class="oe_highlight" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_cancel" string="Cancel" type="object" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_best_offer" string="Accept the Best Offer" type="object" class="oe_highlight" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
+                    <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger" invisible="state != 'cancelled'"/>
                     <h1>
                         <field name="name" placeholder="Property Name"/>
                     </h1>
@@ -92,6 +95,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -144,7 +148,7 @@
                 <filter string="Has garden" name="has_garden" domain="[('garden','=',True)]"/>
                 <filter string="Has garage" name="has_garage" domain="[('garage','=',True)]"/>
                 <group>
-                    <filter string="Postcode" name="postcode" domain="[]" context="{'group_by': 'postcode'}"/>
+                    <filter string="Postcode" name="group_by_postcode" domain="[]" context="{'group_by': 'postcode'}"/>
                     <filter string="Property Type" name="property_type_id" domain="[]" context="{'group_by': 'property_type_id'}"/>
                 </group>
             </search>

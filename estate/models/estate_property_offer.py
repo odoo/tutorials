@@ -63,11 +63,22 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            if offer.property_id.state == "new":
-                offer.property_id.state = "offer_received"
-        return offers
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            price = vals.get("price")
+            if property_id and price:
+                property_record = self.env["estate.property"].browse(property_id)
+                # Check if new price is lower than any existing offer
+                if property_record.offer_ids:
+                    max_offer = max(property_record.offer_ids.mapped("price"))
+                    if price < max_offer:
+                        raise UserError(f"The offer must be higher than {max_offer}")
+
+                # Update property state
+                if property_record.state == "new":
+                    property_record.state = "offer_received"
+
+        return super().create(vals_list)
 
     def action_accept(self):
         for offer in self:
@@ -77,6 +88,11 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.state = "offer_accepted"
+
+            for other_offer in offer.property_id.offer_ids:
+                if other_offer.id != offer.id:
+                    other_offer.status = "rejected"
+
         return True
 
     def action_reject(self):

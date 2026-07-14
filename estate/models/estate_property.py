@@ -10,6 +10,8 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
+    _inherit = ["mail.thread", "mail.activity.mixin"]
+
     name = fields.Char(string="Title", required=True, default="Unknown")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -111,6 +113,14 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    "You can only delete properties that are 'New' or 'Cancelled'."
+                )
+
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
@@ -123,4 +133,12 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("You can not cancel a sold property.")
             record.state = "cancelled"
+        return True
+
+    def action_best_offer(self):
+        for record in self:
+            if not record.offer_ids:
+                raise UserError("There are no offers to accept!")
+            best_offer = max(record.offer_ids, key=lambda offer: offer.price)
+            best_offer.action_accept()
         return True
