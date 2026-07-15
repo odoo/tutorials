@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -109,6 +110,10 @@ class EstateProperty(models.Model):
         "CHECK(selling_price >= 0)",
         "The selling price must be positive.",
     )
+    is_suspicious = fields.Boolean(
+        compute="_compute_is_suspicious",
+        store=False,
+    )
 
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
@@ -173,3 +178,28 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state != "new" or record.state != "cancelled":
                 raise UserError("This property can't be deleted")
+
+    @api.depends("offer_ids","offer_ids.partner_id", "offer_ids.create_date")
+    def _compute_is_suspicious(self):
+        now = fields.Datetime.now()
+        five_minutes_ago = now - timedelta(minutes=5)
+
+        Offer = self.env["estate.property.offer"]
+
+        for property_record in self:
+            property_record.is_suspicious = False
+
+            partners = property_record.offer_ids.mapped("partner_id")
+
+            for partner in partners:
+                offer_count = Offer.search_count(
+                    [
+                        ("partner_id", "=", partner.id),
+                        ("property_id", "=", property_record.id),
+                        ("create_date", ">=", five_minutes_ago),
+                    ]
+                )
+
+                if offer_count >= 2:
+                    property_record.is_suspicious = True
+                    break
