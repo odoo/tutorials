@@ -2,7 +2,7 @@
     'name': 'Real Estate',
     'author': 'Odoo S.A',
     'license': 'LGPL-3',
-    'depends': ['base' , 'mail'],
+    'depends': ['base', 'mail'],
     'application': True,
     'data': [
         'security/ir.model.access.csv',
