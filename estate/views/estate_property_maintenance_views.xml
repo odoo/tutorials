@@ -14,7 +14,7 @@
                 <field name="completion_date"/>
                 <field name="priority"/>
                 <field name="state"/>
-                <field name="actual_cost"/>
+                <field name="actual_cost" sum="Total"/>
             </list>
         </field>
     </record>
