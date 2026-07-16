@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hackathon_participant_tree" model="ir.ui.view">
+        <field name="name">hackathon.participant.tree</field>
+        <field name="model">hackathon.participant</field>
+        <field name="arch" type="xml">
+            <list string="Participants">
+                <field name="partner_id"/>
+                <field name="team_id"/>
+                <field name="session_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hackathon_participant_form" model="ir.ui.view">
+        <field name="name">hackathon.participant.form</field>
+        <field name="model">hackathon.participant</field>
+        <field name="arch" type="xml">
+            <form string="Participant">
+                <sheet>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="team_id"/>
+                        <field name="session_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hackathon_participant" model="ir.actions.act_window">
+        <field name="name">Participants</field>
+        <field name="res_model">hackathon.participant</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hackathon_participants_action" parent="menu_hackathon_participants" action="action_hackathon_participant"/>
+</odoo>

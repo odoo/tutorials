@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hackathon_session,hackathon.session,model_hackathon_session,,1,1,1,1
+access_hackathon_team,hackathon.team,model_hackathon_team,,1,1,1,1
+access_hackathon_participant,hackathon.participant,model_hackathon_participant,,1,1,1,1

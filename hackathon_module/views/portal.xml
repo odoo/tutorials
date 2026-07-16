@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="hackathon_dashboard_template" name="Hackathon Dashboard">
+        <t t-call="website.layout">
+            <div id="wrap" class="container mt-5 mb-5 o_hackathon_dashboard">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <h2>Hackathon Dashboard</h2>
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <h4>Name: <span t-esc="participant_name"/></h4>
+                                <h5>Team: <span t-esc="team_name"/></h5>
+                                <h3 class="text-danger mt-3" id="timerDisplay">08:00:00</h3>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <video id="webcamPreview" autoplay="autoplay" muted="muted" playsinline="playsinline" style="width: 100%; max-width: 600px; background: #000; border-radius: 8px; border: 2px solid #ccc;"></video>
+                        </div>
+
+                        <div>
+                            <button id="startBtn" class="btn btn-success btn-lg me-2">Start Hackathon</button>
+                            <button id="stopBtn" class="btn btn-danger btn-lg" disabled="disabled">Stop Hackathon</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

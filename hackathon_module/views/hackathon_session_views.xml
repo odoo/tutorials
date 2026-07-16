@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hackathon_session_tree" model="ir.ui.view">
+        <field name="name">hackathon.session.tree</field>
+        <field name="model">hackathon.session</field>
+        <field name="arch" type="xml">
+            <list string="Sessions">
+                <field name="name"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hackathon_session_form" model="ir.ui.view">
+        <field name="name">hackathon.session.form</field>
+        <field name="model">hackathon.session</field>
+        <field name="arch" type="xml">
+            <form string="Session">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="start_time"/>
+                        <field name="end_time"/>
+                        <field name="duration"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hackathon_session" model="ir.actions.act_window">
+        <field name="name">Sessions</field>
+        <field name="res_model">hackathon.session</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hackathon_sessions_action" parent="menu_hackathon_sessions" action="action_hackathon_session"/>
+</odoo>

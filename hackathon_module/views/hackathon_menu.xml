@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_hackathon_root" name="Hackathon" sequence="10"/>
+    <menuitem id="menu_hackathon_dashboard" name="Dashboard" parent="menu_hackathon_root" sequence="10"/>
+    <menuitem id="menu_hackathon_sessions" name="Sessions" parent="menu_hackathon_root" sequence="20"/>
+    <menuitem id="menu_hackathon_teams" name="Teams" parent="menu_hackathon_root" sequence="30"/>
+    <menuitem id="menu_hackathon_participants" name="Participants" parent="menu_hackathon_root" sequence="40"/>
+</odoo>
