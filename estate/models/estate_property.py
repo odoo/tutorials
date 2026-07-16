@@ -54,10 +54,11 @@ class EstateProperty(models.Model):
     sales_person = fields.Many2one("res.users", default=lambda self: self.env.user)
     selling_price = fields.Float(readonly=True, copy=False)
     sq_area = fields.Float(compute="_compute_computed_area")
+
     state = fields.Selection(
         [
             ('new', "New"),
-            ('offer_recieved', "Offer Received"),
+            ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
