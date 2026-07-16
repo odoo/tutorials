@@ -24,6 +24,21 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(string="Validity date", default=7)
+    is_spam = fields.Boolean(string="spam" , default=False , copy= False)
+
+    @api.constrains('partner_id')
+    def _check_spam(self):
+        for offer in self:
+            count = self.search_count([
+                ('partner_id', '=', offer.partner_id.id),
+                ('create_date', '>=', fields.Datetime.now()-timedelta(minutes=5)),
+            ])
+            if count > 5:
+                self.search([
+                    ('partner_id', '=', offer.partner_id.id),
+                    ('create_date', '>=', fields.Datetime.now()-timedelta(minutes=5)),
+                ]).write({'is_spam': True})
+
     date_deadline = fields.Date(
         string="Deadline date", compute="_compute_date_deadline"
     )

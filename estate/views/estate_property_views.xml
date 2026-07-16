@@ -75,7 +75,7 @@
                         </page>
                         <page string ="Offers">
                             <field name="offer_ids">
-                                <list string="Offers" editable= "bottom">
+                                <list string="Offers" editable= "bottom" decoration-danger= "is_spam == True">
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
@@ -85,6 +85,7 @@
                                         invisible ="status"/>
                                     <button name="action_refuse"  type="object" icon="fa-times"
                                         invisible ="status"/>
+                                    <field name= "is_spam"/>
 
                                 </list>
                             </field>
@@ -169,7 +170,7 @@
                 <templates>
                     <t t-name="card" >
                         <div t-attf-class="#{!selection_mode ? 'text-centre' : ''}">
-                            <i class="fa fa-building" role="img" aria-label="Enterprise"></i>
+                            <i class="fa fa-building" role="img" aria-label="Enterprise"/>
                             <field class="fw-bold fs-5" name="name"/>
                         </div>
                         <hr class="mt-50 mb-50"/>
