@@ -7,22 +7,22 @@
     </record>
 
     <record id="property_maintenance_view_list" model="ir.ui.view">
-        <field name="name">property.maintenance.list</field>
+        <field name="name">property.maintenance.view.list</field>
         <field name="model">property.maintenance</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" width="500"/>
-                <field name="property_id" width="100"/>
-                <field name="partner_id" width="100"/>
-                <field name="date" width="100"/>
-                <field name="priority" width="100"/>
-                <field name="user_id" width="100"/>
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="partner_id"/>
+                <field name="date"/>
+                <field name="priority"/>
+                <field name="user_id"/>
             </list>
         </field>
     </record>
 
     <record id="property_maintenance_view_form" model="ir.ui.view">
-        <field name="name">property.maintenance.form</field>
+        <field name="name">property.maintenance.view.form</field>
         <field name="model">property.maintenance</field>
         <field name="arch" type="xml">
             <form>
