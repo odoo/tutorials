@@ -45,8 +45,8 @@
         <field name="arch" type="xml">
             <form string="Description">
                <header>
-                    <button name="action_sold" type="object" string="Sold"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state == 'sold'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'cancelled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -57,7 +57,7 @@
                     </div>
                     
                     <group>
-                        <field name="tag_ids" widget="many2many_tags" />
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
                     <group>
                         <group>
