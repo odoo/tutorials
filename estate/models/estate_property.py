@@ -8,8 +8,8 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
-    name = fields.Char(required=True, string="Property Name")
-    description = fields.Text()
+    name = fields.Char(required=True, string="Property Name", translate=True)
+    description = fields.Text(translate=True)
     postcode = fields.Char()
     date_availability = fields.Date(
         default=lambda self: fields.Date.context_today(self) + relativedelta(months=3),
@@ -76,6 +76,15 @@ class EstateProperty(models.Model):
         compute="_compute_total_square",
     )
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "A property expected price must be positive",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "A property selling price must be positive",
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -116,7 +125,9 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
             if not record.buyer_id:
-                raise UserError("A property cannot be sold without an accepted offer (buyer).")
+                raise UserError(
+                    "A property cannot be sold without an accepted offer (buyer).",
+                )
             record.state = "sold"
         return True
 

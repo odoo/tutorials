@@ -6,7 +6,7 @@ class EstatePropertyMaintenance(models.Model):
     _name = "estate.property.maintenance"
     _description = "Property Maintenance"
 
-    name = fields.Char(required=True, string="Title")
+    name = fields.Char(required=True, string="Title", translate=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     maintenance_type = fields.Selection(
         selection=[
@@ -17,8 +17,8 @@ class EstatePropertyMaintenance(models.Model):
         ],
         string="Type",
     )
-    description = fields.Text(string="Description")
-    other_type = fields.Char(string="Other Details")
+    description = fields.Text(string="Description", translate=True)
+    other_type = fields.Char(string="Other Details", translate=True)
 
     requester_id = fields.Many2one(
         "res.users",

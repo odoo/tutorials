@@ -11,9 +11,11 @@ class EstatePropertyTag(models.Model):
     def _default_color(self):
         return randint(1, 11)
 
-    name = fields.Char(required=True)
-    description = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
+    description = fields.Char(required=True, translate=True)
     color = fields.Integer(
         string='Color Index',
         default=lambda self: self._default_color(),
     )
+
+    _unique_name = models.Constraint("UNIQUE(name)", "The name of the tag must be unique.")
