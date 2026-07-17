@@ -1,7 +1,9 @@
+import datetime
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.tools import SQL
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,11 +23,50 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     price = fields.Float()
     property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        related="property_id.property_type",
+        string="Property Type",
+    )
     status = fields.Selection(
         [('accepted', "Accepted"), ('refused', "Refused")],
         copy=False,
     )
+
     validity = fields.Integer(default=7)
+
+    security_status = fields.Selection(
+        [('suspicious', 'Suspicious')],
+        compute='_compute_security_status',
+    )
+
+    @api.depends('partner_id', 'create_date')
+    def _compute_security_status(self):
+        for offer in self:
+            offer.security_status = False
+
+            if not (offer.partner_id and offer.property_id and offer.create_date):
+                continue
+
+            offers_count = self.search_count(
+                [
+                    ('property_id', '=', offer.property_id.id),
+                    ('partner_id', '=', offer.partner_id.id),
+                    (
+                        'create_date',
+                        '>=',
+                        offer.create_date - datetime.timedelta(seconds=300),
+                    ),
+                    (
+                        'create_date',
+                        '<=',
+                        offer.create_date + datetime.timedelta(seconds=300),
+                    ),
+                ],
+            )
+
+            if offers_count > 2:
+                offer.security_status = 'suspicious'
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -43,16 +84,14 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             property_record = offer.property_id
 
-            already_accepted = any(
-                existing_offer.status == "accepted"
-                and existing_offer.price == property_record.selling_price
-                for existing_offer in property_record.offer_ids
+            already_accepted = property_record.offer_ids.filtered(
+                lambda o: (
+                    o.price == property_record.selling_price and o.status == 'accepted'
+                ),
             )
 
             if already_accepted:
-                raise UserError(
-                    message="An offer has already been accepted for this property.",
-                )
+                already_accepted.status = "refused"
 
             offer.status = "accepted"
             offer.property_id.write(
