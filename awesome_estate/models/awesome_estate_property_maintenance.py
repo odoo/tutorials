@@ -8,6 +8,9 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     _rec_name = 'name'
     _order = 'id desc'
 
+    # -----------------------------------------------------------------------
+    # Fields
+    # -----------------------------------------------------------------------
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     issue_type = fields.Selection(
@@ -96,11 +99,28 @@ class AwesomeEstatePropertyMaintenance(models.Model):
         ],
     )
 
+    # -----------------------------------------------------------------------
+    # SQL Constraints
+    # -----------------------------------------------------------------------
     _check_progress = models.Constraint(
         'CHECK(progress >= 0 AND progress <= 100)',
         "Progress must be between 0 and 100%.",
     )
 
+    # -----------------------------------------------------------------------
+    # Python Constraints
+    # -----------------------------------------------------------------------
+    @api.constrains('state', 'technician_id')
+    def _check_assigned_requires_technician(self):
+        for record in self:
+            if record.state == 'assigned' and not record.technician_id:
+                raise ValidationError(
+                    _("An assigned maintenance request must have a technician."),
+                )
+
+    # -----------------------------------------------------------------------
+    # Compute Methods
+    # -----------------------------------------------------------------------
     @api.depends('subtask_ids.cost', 'cost_line_ids.amount')
     def _compute_actual_cost(self):
         """Actual cost = sum of all subtask costs + general cost lines."""
@@ -120,6 +140,9 @@ class AwesomeEstatePropertyMaintenance(models.Model):
             done = len(record.subtask_ids.filtered(lambda s: s.state == 'done'))
             record.progress = int((done / total) * 100)
 
+    # -----------------------------------------------------------------------
+    # Onchange Methods
+    # -----------------------------------------------------------------------
     @api.onchange('issue_type')
     def _onchange_issue_type(self):
         """Auto-fill estimate_cost from issue type default whenever type changes."""
@@ -144,14 +167,21 @@ class AwesomeEstatePropertyMaintenance(models.Model):
         if not self.technician_id and self.state == 'assigned':
             self.state = 'new'
 
-    @api.constrains('state', 'technician_id')
-    def _check_assigned_has_technician(self):
+    # -----------------------------------------------------------------------
+    # CRUD Methods
+    # -----------------------------------------------------------------------
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_final(self):
+        """Prevent deletion of requests that are in progress or completed."""
         for record in self:
-            if record.state == 'assigned' and not record.technician_id:
-                raise ValidationError(
-                    _("An assigned maintenance request must have a technician."),
-                )
+            if record.state not in ('new', 'canceled'):
+                raise UserError(
+                    _("Cannot delete a maintenance request in '%s' state. "
+                      "Cancel it first.", record.state))
 
+    # -----------------------------------------------------------------------
+    # Action Methods
+    # -----------------------------------------------------------------------
     def action_assign(self):
         """Assign the technician and move to 'assigned' state."""
         self.ensure_one()
@@ -229,42 +259,3 @@ class AwesomeEstatePropertyMaintenance(models.Model):
             'close_date': False,
         })
         return True
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_not_final(self):
-        """Prevent deletion of requests that are in progress or completed."""
-        for record in self:
-            if record.state not in ('new', 'canceled'):
-                raise UserError(
-                    _("Cannot delete a maintenance request in '%s' state. "
-                      "Cancel it first.", record.state))
-
-
-class AwesomeEstatePropertyMaintenanceCost(models.Model):
-    _name = 'awesome.estate.property.maintenance.cost'
-    _description = 'Maintenance Cost Line'
-    _rec_name = 'name'
-    _order = 'date desc, id desc'
-
-    currency_id = fields.Many2one(
-        'res.currency',
-        related='maintenance_id.currency_id',
-        store=True,
-    )
-    maintenance_id = fields.Many2one(
-        'awesome.estate.property.maintenance',
-        string="Maintenance Request",
-        required=True,
-        ondelete='cascade',
-    )
-    name = fields.Char(string="Description", required=True)
-    amount = fields.Monetary(
-        string="Amount",
-        currency_field='currency_id',
-        required=True,
-    )
-    date = fields.Date(
-        string="Date",
-        required=True,
-        default=fields.Date.context_today,
-    )

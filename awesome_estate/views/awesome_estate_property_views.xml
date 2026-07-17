@@ -1,28 +1,43 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
 
-    <!-- List View -->
+    <!--
+        List view column policy (Odoo community pattern: CRM / Fleet / Sale):
+        - Always-on: identity + money + status (~6 columns) so no horizontal scroll
+        - optional="show": useful daily admin signals, user can hide
+        - optional="hide": detail fields live on the form; enable via column selector
+        Detail specs (bedrooms, areas, garage, garden, buyer) stay on form / Description tab.
+    -->
     <record id="awesome_estate_property_view_list" model="ir.ui.view">
         <field name="name">awesome.estate.property.list</field>
         <field name="model">awesome.estate.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state in ['offer_received', 'offer_accepted']"
                   decoration-bf="state == 'offer_accepted'"
-                  decoration-muted="state in ['sold', 'canceled']">
+                  decoration-muted="state in ['sold', 'canceled']"
+                  multi_edit="1">
                 <field name="name"/>
-                <field name="property_type_id"/>
+                <field name="property_type_id" optional="show"/>
+                <field name="postcode" optional="show"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="postcode"/>
-                <field name="buyer_id"/>
-                <field name="salesperson_id"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="total_area"/>
-                <field name="garage"/>
-                <field name="garden"/>
+                <field name="best_price" optional="show"/>
+                <field name="selling_price" optional="hide"/>
+                <field name="salesperson_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="buyer_id" optional="hide"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
+                         optional="hide"/>
+                <field name="bedrooms" optional="hide"/>
+                <field name="living_area" optional="hide"/>
+                <field name="total_area" optional="hide"/>
+                <field name="garage" optional="hide"/>
+                <field name="garden" optional="hide"/>
                 <field name="date_availability" optional="hide"/>
-                <field name="state"/>
+                <field name="state" widget="badge"
+                         decoration-info="state == 'new'"
+                         decoration-success="state in ['offer_received', 'offer_accepted', 'sold']"
+                         decoration-muted="state == 'canceled'"/>
+                <field name="suspicious_offer_count" string="Suspicious" optional="show"
+                         decoration-warning="suspicious_offer_count > 0"/>
             </list>
         </field>
     </record>
@@ -49,6 +64,17 @@
                            statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
+                    <!-- Derived review signal (compute count) — banner, not a toggle -->
+                    <field name="suspicious_offer_count" invisible="1"/>
+                    <div class="alert alert-warning d-flex align-items-center"
+                         invisible="suspicious_offer_count == 0" role="alert">
+                        <i class="fa fa-flag me-2" title="Suspicious offers"/>
+                        <span>
+                            <strong><field name="suspicious_offer_count"/></strong>
+                            offer(s) on this property need review (marked suspicious).
+                            Open the Offers tab and clear flags only when legitimate.
+                        </span>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -96,39 +122,65 @@
                                 <list editable="bottom"
                                       decoration-success="status == 'accepted'"
                                       decoration-bf="status == 'accepted'"
-                                      decoration-danger="status == 'refused'">
+                                      decoration-danger="status == 'refused'"
+                                      decoration-warning="is_suspicious">
                                     <field name="price" readonly="status != False"/>
                                     <field name="partner_id" readonly="status != False"/>
-                                    <field name="status" readonly="1"/>
-                                    <field name="validity"/>
-                                    <field name="date_deadline"/>
-                                    <button name="action_accept" string="Accept" type="object"
-                                            invisible="status in ['accepted', 'refused']"/>
-                                    <button name="action_refuse" string="Refuse" type="object"
-                                            invisible="status in ['accepted', 'refused']"/>
+                                    <field name="status" widget="badge" optional="show"
+                                             decoration-success="status == 'accepted'"
+                                             decoration-danger="status == 'refused'"/>
+                                    <field name="is_suspicious" column_invisible="1"/>
+                                    <field name="validity" optional="hide"/>
+                                    <field name="date_deadline" optional="show"/>
+                                    <button name="action_accept" type="object" icon="fa-check"
+                                            title="Accept"
+                                            invisible="status in ['accepted', 'refused'] or is_suspicious"/>
+                                    <button name="action_refuse" type="object" icon="fa-times"
+                                            title="Refuse"
+                                            invisible="status in ['accepted', 'refused'] or is_suspicious"/>
+                                    <button name="action_mark_suspicious" type="object" icon="fa-flag"
+                                            title="Mark as Suspicious"
+                                            invisible="is_suspicious"
+                                            confirm="Mark this offer as suspicious for review?"/>
+                                    <button name="action_clear_suspicious" type="object" icon="fa-flag-o"
+                                            class="text-warning" title="Clear Suspicious Flag"
+                                            invisible="not is_suspicious"
+                                            confirm="Clear the suspicious flag on this offer?"/>
                                 </list>
                                 <form>
                                     <header>
                                         <button name="action_accept" string="Accept" type="object"
-                                                invisible="status in ['accepted', 'refused']"/>
+                                                invisible="status in ['accepted', 'refused'] or is_suspicious"
+                                                class="btn-primary"/>
                                         <button name="action_refuse" string="Refuse" type="object"
-                                                invisible="status in ['accepted', 'refused']"/>
+                                                invisible="status in ['accepted', 'refused'] or is_suspicious"/>
+                                        <button name="action_mark_suspicious" string="Mark Suspicious"
+                                                type="object" invisible="is_suspicious"
+                                                confirm="Mark this offer as suspicious for review?"/>
+                                        <button name="action_clear_suspicious" string="Clear Suspicious Flag"
+                                                type="object" invisible="not is_suspicious"
+                                                confirm="Clear the suspicious flag on this offer?"/>
                                         <field name="status" widget="statusbar"/>
                                     </header>
                                     <sheet>
+                                        <div class="alert alert-warning" role="alert"
+                                             invisible="not is_suspicious">
+                                            <i class="fa fa-flag me-1"/> This offer is marked as suspicious.
+                                        </div>
                                         <group>
                                             <field name="price"/>
                                             <field name="partner_id"/>
                                             <field name="validity"/>
                                             <field name="date_deadline"/>
                                             <field name="status"/>
+                                            <field name="is_suspicious" invisible="1"/>
                                         </group>
                                     </sheet>
                                 </form>
                             </field>
                         </page>
                         <page string="Maintenance">
-                            <field name="estate_maintenance_ids"
+                            <field name="maintenance_ids"
                                    readonly="state in ('sold', 'canceled')">
                                 <list editable="bottom"
                                       decoration-success="state == 'done'"
@@ -136,13 +188,17 @@
                                       decoration-warning="state == 'assigned'"
                                       decoration-danger="state == 'canceled'">
                                     <field name="name"/>
-                                    <field name="issue_type"/>
+                                    <field name="issue_type" optional="show"/>
                                     <field name="priority" widget="priority"/>
-                                    <field name="technician_id"/>
-                                    <field name="state"/>
-                                    <field name="progress" widget="progressbar"/>
-                                    <field name="estimate_cost" widget="monetary"/>
-                                    <field name="actual_cost" widget="monetary"/>
+                                    <field name="technician_id" widget="many2one_avatar_user" optional="show"/>
+                                    <field name="state" widget="badge"
+                                             decoration-info="state == 'new'"
+                                             decoration-warning="state == 'assigned'"
+                                             decoration-success="state in ['in_progress', 'done']"
+                                             decoration-muted="state == 'canceled'"/>
+                                    <field name="progress" widget="progressbar" optional="hide"/>
+                                    <field name="estimate_cost" widget="monetary" optional="hide"/>
+                                    <field name="actual_cost" widget="monetary" optional="hide"/>
                                 </list>
                                 <form>
                                     <header>
@@ -181,11 +237,13 @@
                                                         <field name="sequence" widget="handle"/>
                                                         <field name="name"/>
                                                         <field name="technician_id"
-                                                               domain="[('share', '=', False)]"/>
-                                                        <field name="state"/>
-                                                        <field name="planned_hours"/>
-                                                        <field name="effective_hours"/>
-                                                        <field name="cost" widget="monetary"/>
+                                                               domain="[('share', '=', False)]"
+                                                               widget="many2one_avatar_user"
+                                                               optional="show"/>
+                                                        <field name="state" widget="badge" optional="show"/>
+                                                        <field name="planned_hours" optional="hide"/>
+                                                        <field name="effective_hours" optional="hide"/>
+                                                        <field name="cost" widget="monetary" optional="hide"/>
                                                     </list>
                                                 </field>
                                             </page>

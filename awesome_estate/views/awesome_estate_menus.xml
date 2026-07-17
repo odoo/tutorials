@@ -1,55 +1,64 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
 
-    <!-- Root menu: Real Estate -->
+    <!--
+        Menus for Real Estate User + Technician.
+        Admin sees all menus automatically (superuser).
+    -->
     <menuitem
-        id="awesome_estate_root_menu"
+        id="menu_awesome_estate_root"
         name="Real Estate"
-        sequence="110">
+        sequence="110"
+        groups="group_estate_user,group_estate_technician">
 
-        <!-- Properties section -->
         <menuitem
-            id="awesome_estate_properties_menu_section"
+            id="menu_awesome_estate_properties"
             name="Properties"
-            sequence="10">
+            sequence="10"
+            groups="group_estate_user,group_estate_technician">
 
             <menuitem
-                id="awesome_estate_property_menu"
+                id="menu_awesome_estate_property"
                 name="Properties"
                 action="awesome_estate_property_action"
-                sequence="10"/>
+                sequence="10"
+                groups="group_estate_user,group_estate_technician"/>
 
             <menuitem
-                id="awesome_estate_property_all_offer_menu"
+                id="menu_awesome_estate_property_offer"
                 name="Offers"
-                action="awesome_estate_property_all_offer_action"
-                sequence="20"/>
+                action="awesome_estate_property_offer_action_all"
+                sequence="20"
+                groups="group_estate_user"/>
 
             <menuitem
-                id="awesome_estate_maintenance_menu"
+                id="menu_awesome_estate_property_maintenance"
                 name="Maintenance"
                 action="awesome_estate_property_maintenance_action"
-                sequence="30"/>
+                sequence="30"
+                groups="group_estate_user,group_estate_technician"/>
 
         </menuitem>
 
-        <!-- Configuration section -->
         <menuitem
-            id="awesome_estate_configuration_menu_section"
+            id="menu_awesome_estate_configuration"
             name="Configuration"
-            sequence="50">
+            sequence="50"
+            groups="group_estate_user">
 
             <menuitem
-                id="awesome_estate_property_type_menu"
+                id="menu_awesome_estate_property_type"
                 name="Property Types"
                 action="awesome_estate_property_type_action"
-                sequence="10"/>
+                sequence="10"
+                groups="group_estate_user"/>
 
             <menuitem
-                id="awesome_estate_property_tag_menu"
+                id="menu_awesome_estate_property_tag"
                 name="Property Tags"
                 action="awesome_estate_property_tag_action"
-                sequence="20"/>
+                sequence="20"
+                groups="group_estate_user"/>
 
         </menuitem>
 

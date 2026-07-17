@@ -8,6 +8,9 @@ class AwesomeEstatePropertyMaintenanceSubtask(models.Model):
     _rec_name = 'name'
     _order = 'sequence, id'
 
+    # -----------------------------------------------------------------------
+    # Fields
+    # -----------------------------------------------------------------------
     maintenance_id = fields.Many2one(
         'awesome.estate.property.maintenance',
         string="Maintenance Request",
@@ -44,6 +47,9 @@ class AwesomeEstatePropertyMaintenanceSubtask(models.Model):
     )
     description = fields.Text(string="Work Notes")
 
+    # -----------------------------------------------------------------------
+    # Action Methods
+    # -----------------------------------------------------------------------
     def action_start(self):
         self.ensure_one()
         if self.state != 'pending':

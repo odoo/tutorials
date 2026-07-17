@@ -13,6 +13,9 @@ class AwesomeEstateProperty(models.Model):
     """
     _inherit = 'awesome.estate.property'
 
+    # -----------------------------------------------------------------------
+    # Fields
+    # -----------------------------------------------------------------------
     account_move_ids = fields.One2many(
         'account.move',
         'estate_property_id',
@@ -25,7 +28,7 @@ class AwesomeEstateProperty(models.Model):
     )
 
     # -----------------------------------------------------------------------
-    # Computed Fields
+    # Compute Methods
     # -----------------------------------------------------------------------
     @api.depends('account_move_ids')
     def _compute_invoice_count(self):
@@ -35,6 +38,41 @@ class AwesomeEstateProperty(models.Model):
     # -----------------------------------------------------------------------
     # Action Methods
     # -----------------------------------------------------------------------
+    def action_sold(self):
+        """Mark property as sold, then create a customer invoice.
+
+        Calls the original ``action_sold()`` first to perform the state
+        transition and all validations.  After the property is confirmed
+        as sold, an ``account.move`` (out_invoice) is created with two
+        lines: a 6% commission on the selling price and a flat $100
+        administrative fee.
+
+        The generated invoice is linked back to the property via the
+        ``estate_property_id`` field for bidirectional navigation.
+        """
+        # Step 1 — let the base module handle the state transition.
+        result = super().action_sold()
+
+        # Step 2 — build and create the customer invoice.
+        self.env['account.move'].create({
+            'partner_id': self.buyer_id.id,
+            'move_type': 'out_invoice',
+            'estate_property_id': self.id,
+            'invoice_line_ids': [
+                Command.create({
+                    'name': _("Commission (6%)"),
+                    'quantity': 1,
+                    'price_unit': self.selling_price * 0.06,
+                }),
+                Command.create({
+                    'name': _("Administrative Fees"),
+                    'quantity': 1,
+                    'price_unit': 100.00,
+                }),
+            ],
+        })
+        return result
+
     def action_open_invoice(self):
         """Open the invoice for this property.
 
@@ -63,38 +101,3 @@ class AwesomeEstateProperty(models.Model):
             'view_mode': 'list,form',
             'target': 'current',
         }
-
-    def action_sold(self):
-        """Mark property as sold, then create a customer invoice.
-
-        Calls the original ``action_sold()`` first to perform the state
-        transition and all validations.  After the property is confirmed
-        as sold, an ``account.move`` (out_invoice) is created with two
-        lines: a 6% commission on the selling price and a flat $100
-        administrative fee.
-
-        The generated invoice is linked back to the property via the
-        ``estate_property_id`` field for bidirectional navigation.
-        """
-        # Step 1 — let the base module handle the state transition.
-        result = super().action_sold()
-
-        # Step 2 — build and create the customer invoice.
-        self.env['account.move'].create({
-            'partner_id': self.buyer_id.id,
-            'move_type': 'out_invoice',
-            'estate_property_id': self.id,
-            'invoice_line_ids': [
-                Command.create({
-                    'name': _("Commission (6%%)"),
-                    'quantity': 1,
-                    'price_unit': self.selling_price * 0.06,
-                }),
-                Command.create({
-                    'name': _("Administrative Fees"),
-                    'quantity': 1,
-                    'price_unit': 100.00,
-                }),
-            ],
-        })
-        return result

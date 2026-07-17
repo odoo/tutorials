@@ -9,6 +9,9 @@ class AccountMove(models.Model):
     """
     _inherit = 'account.move'
 
+    # -----------------------------------------------------------------------
+    # Fields
+    # -----------------------------------------------------------------------
     estate_property_id = fields.Many2one(
         'awesome.estate.property',
         string="Property",

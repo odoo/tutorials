@@ -6,6 +6,9 @@ class AwesomeEstatePropertyType(models.Model):
     _description = 'Real Estate Property Type'
     _order = 'sequence, name'
 
+    # -----------------------------------------------------------------------
+    # Fields
+    # -----------------------------------------------------------------------
     name = fields.Char(required=True)
     sequence = fields.Integer(default=10)
     property_ids = fields.One2many(
@@ -32,11 +35,11 @@ class AwesomeEstatePropertyType(models.Model):
     )
 
     # -----------------------------------------------------------------------
-    # Computed Fields
+    # Compute Methods
     # -----------------------------------------------------------------------
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         for record in self:
-            record.offer_count = self.env['awesome.estate.property.offer'].search_count([
-                ('property_type_id', 'in', record.ids),
-            ])
+            # Per-record count (do not use record.ids inside the loop — that
+            # would attribute the whole batch total to every type).
+            record.offer_count = len(record.offer_ids)

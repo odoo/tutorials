@@ -9,6 +9,9 @@ class AwesomeEstateProperty(models.Model):
     _rec_name = 'name'
     _order = 'id desc'
 
+    # -----------------------------------------------------------------------
+    # Fields
+    # -----------------------------------------------------------------------
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -86,10 +89,15 @@ class AwesomeEstateProperty(models.Model):
         store=True,
         help="Best offer received.",
     )
-    estate_maintenance_ids = fields.One2many(
+    maintenance_ids = fields.One2many(
         'awesome.estate.property.maintenance',
         'property_id',
         string="Maintenance Requests",
+    )
+    suspicious_offer_count = fields.Integer(
+        string="Suspicious Offers",
+        compute='_compute_suspicious_offer_count',
+        help="Number of offers marked as suspicious on this property.",
     )
 
     # -----------------------------------------------------------------------
@@ -120,6 +128,9 @@ class AwesomeEstateProperty(models.Model):
         "Facades cannot be negative.",
     )
 
+    # -----------------------------------------------------------------------
+    # Python Constraints
+    # -----------------------------------------------------------------------
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         """Only validate selling price floor when set manually, not via offer accept."""
@@ -134,7 +145,7 @@ class AwesomeEstateProperty(models.Model):
                 )
 
     # -----------------------------------------------------------------------
-    # Computed Fields
+    # Compute Methods
     # -----------------------------------------------------------------------
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -146,6 +157,13 @@ class AwesomeEstateProperty(models.Model):
         for record in self:
             prices = record.offer_ids.mapped('price')
             record.best_price = max(prices) if prices else 0.0
+
+    @api.depends('offer_ids.is_suspicious')
+    def _compute_suspicious_offer_count(self):
+        for record in self:
+            record.suspicious_offer_count = len(
+                record.offer_ids.filtered('is_suspicious')
+            )
 
     # -----------------------------------------------------------------------
     # Onchange Methods
@@ -160,9 +178,28 @@ class AwesomeEstateProperty(models.Model):
             self.garden_orientation = False
 
     # -----------------------------------------------------------------------
+    # CRUD Methods
+    # -----------------------------------------------------------------------
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_canceled(self):
+        if any(record.state not in ('new', 'canceled') for record in self):
+            raise UserError(
+                _("You cannot delete a property with an active or sold status."))
+
+    # -----------------------------------------------------------------------
     # Action Methods
     # -----------------------------------------------------------------------
     def action_sold(self):
+        """Mark the property as sold.
+
+        Validates the property is not already cancelled or sold. Auto-fills
+        selling_price and buyer_id from the accepted offer if not set.
+        Requires a selling price to complete the sale.
+
+        Raises:
+            UserError: If property is in 'canceled' or 'sold' state.
+            UserError: If no selling price is set.
+        """
         self.ensure_one()
         if self.state == 'canceled':
             raise UserError(_("Canceled properties cannot be sold."))
@@ -185,6 +222,14 @@ class AwesomeEstateProperty(models.Model):
         return True
 
     def action_cancel(self):
+        """Cancel the property and refuse all pending offers.
+
+        Refuses any accepted offer and all pending offers, then marks the
+        property as canceled and archives it.
+
+        Raises:
+            UserError: If property is already sold or canceled.
+        """
         self.ensure_one()
         if self.state == 'sold':
             raise UserError(_("Sold properties cannot be canceled."))
@@ -195,7 +240,7 @@ class AwesomeEstateProperty(models.Model):
             accepted.write({'status': 'refused'})
         pending = self.offer_ids.filtered(lambda o: not o.status)
         if pending:
-            pending.write({'status': 'refused'})
+            pending.status = 'refused'
         self.state = 'canceled'
         # Odoo guideline: terminal "Canceled" state archives the record
         # so it is hidden from default list views.
@@ -220,6 +265,14 @@ class AwesomeEstateProperty(models.Model):
         return True
 
     def action_accept_best_offer(self):
+        """Accept the highest-priced pending offer in one click.
+
+        Finds the offer matching best_price and accepts it.
+
+        Raises:
+            UserError: If property is sold, canceled, or already has an accepted offer.
+            UserError: If no offers exist on this property.
+        """
         self.ensure_one()
         if self.state in ('sold', 'canceled', 'offer_accepted'):
             raise UserError(
@@ -230,12 +283,3 @@ class AwesomeEstateProperty(models.Model):
         if not best_offers:
             raise UserError(_("No offers available to accept."))
         best_offers[0].action_accept()
-
-    # -----------------------------------------------------------------------
-    # Deletion Guard
-    # -----------------------------------------------------------------------
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_active_or_sold(self):
-        if any(record.state not in ('new', 'canceled') for record in self):
-            raise UserError(
-                _("You cannot delete a property with an active or sold status."))

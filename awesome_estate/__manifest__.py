@@ -13,7 +13,11 @@ Supports the full property lifecycle: new, offer received, offer accepted, sold,
     'license': 'LGPL-3',
     'depends': ['base'],
     'data': [
+        'security/awesome_estate_security.xml',
         'security/ir.model.access.csv',
+        'data/awesome_estate_cron.xml',
+        # Sample data (updates on -u; no noupdate so names reseed)
+        'data/awesome_estate_demo.xml',
         'views/awesome_estate_property_views.xml',
         'views/awesome_estate_property_maintenance_views.xml',
         'views/awesome_estate_property_maintenance_subtask_views.xml',

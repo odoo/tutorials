@@ -7,6 +7,9 @@ class AwesomeEstatePropertyOffer(models.Model):
     _description = 'Real Estate Property Offer'
     _order = 'price desc, id desc'
 
+    # -----------------------------------------------------------------------
+    # Fields
+    # -----------------------------------------------------------------------
     price = fields.Float()
     status = fields.Selection(
         [
@@ -20,6 +23,7 @@ class AwesomeEstatePropertyOffer(models.Model):
         'res.partner',
         string="Partner",
         required=True,
+        index=True,
     )
     property_id = fields.Many2one(
         'awesome.estate.property',
@@ -34,11 +38,25 @@ class AwesomeEstatePropertyOffer(models.Model):
         related='property_id.property_type_id',
         store=True,
     )
-    validity = fields.Integer(string="Validity (days)", default=7)
+    validity = fields.Integer(
+        string="Validity (days)",
+        default=7,
+    )
+    # Bidirectional date link (tutorial Ch.8 / community compute+inverse pattern):
+    # - compute: validity days → absolute deadline date
+    # - inverse: user edits deadline → rewrite validity as day delta
     date_deadline = fields.Date(
         string="Deadline",
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
+        store=True,
+    )
+    is_suspicious = fields.Boolean(
+        string="Suspicious",
+        default=False,
+        copy=False,
+        help="Set automatically when the same partner places 2+ offers "
+             "within 5 minutes. Can also be set or cleared manually.",
     )
 
     # -----------------------------------------------------------------------
@@ -65,10 +83,15 @@ class AwesomeEstatePropertyOffer(models.Model):
                 )
 
     # -----------------------------------------------------------------------
-    # Computed Fields & Inverse
+    # Compute Methods
     # -----------------------------------------------------------------------
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
+        """deadline = create_date (or today) + validity days.
+
+        Before the record is saved, create_date is empty — fall back to today
+        so the form can still show a sensible deadline while typing.
+        """
         for record in self:
             if record.create_date:
                 record.date_deadline = fields.Date.add(
@@ -79,7 +102,21 @@ class AwesomeEstatePropertyOffer(models.Model):
                     fields.Date.today(), days=record.validity,
                 )
 
+    # -----------------------------------------------------------------------
+    # Inverse Methods
+    # -----------------------------------------------------------------------
     def _inverse_date_deadline(self):
+        """User edited deadline → store the matching validity day count.
+
+        inverse runs when a computed field is written from the UI/API.
+        We keep only one stored “source of truth” number (validity); the
+        absolute date is recomputed from create_date + validity next time.
+
+        Formula:
+            validity = (date_deadline - create_date).days
+        or, if the offer is not saved yet:
+            validity = (date_deadline - today).days
+        """
         for record in self:
             if record.date_deadline and record.create_date:
                 deadline = fields.Date.to_date(record.date_deadline)
@@ -107,10 +144,12 @@ class AwesomeEstatePropertyOffer(models.Model):
             property_id = vals.get('property_id')
             new_price = vals.get('price', 0)
             if property_id:
-                estate_property = self.env['awesome.estate.property'].browse(property_id)
+                estate_property = self.env['awesome.estate.property'].browse(
+                    property_id)
                 if estate_property.state in ('sold', 'canceled', 'offer_accepted'):
                     raise ValidationError(
-                        _("Cannot create offers on a property that is %s.", estate_property.state),
+                        _("Cannot create offers on a property that is %s.",
+                          estate_property.state),
                     )
             if property_id and new_price > 0:
                 existing_offers = self.search([
@@ -123,6 +162,7 @@ class AwesomeEstatePropertyOffer(models.Model):
                             _("Offer must be higher than the highest existing offer ($%.2f).", max_price),
                         )
         offers = super().create(vals_list)
+        offers._flag_duplicate_offers()
         for offer in offers:
             if offer.property_id.state == 'new':
                 offer.property_id.state = 'offer_received'
@@ -134,11 +174,18 @@ class AwesomeEstatePropertyOffer(models.Model):
     def action_accept(self):
         """Accept this offer: update property, refuse other pending offers."""
         self.ensure_one()
+        if self.is_suspicious:
+            raise UserError(
+                _("Cannot accept a suspicious offer. Clear the flag first "
+                  "if this offer is legitimate.")
+            )
         if self.status:
-            raise UserError(_("This offer has already been accepted or refused."))
+            raise UserError(
+                _("This offer has already been accepted or refused."))
         if self.property_id.state in ('sold', 'canceled', 'offer_accepted'):
             raise UserError(
-                _("Cannot accept offers on a property that is %s.", self.property_id.state),
+                _("Cannot accept offers on a property that is %s.",
+                  self.property_id.state),
             )
         existing_accepted = self.search([
             ('property_id', '=', self.property_id.id),
@@ -146,9 +193,11 @@ class AwesomeEstatePropertyOffer(models.Model):
             ('id', '!=', self.id),
         ])
         if existing_accepted:
-            raise UserError(_("Another offer has already been accepted for this property."))
+            raise UserError(
+                _("Another offer has already been accepted for this property."))
         other_offers = self.property_id.offer_ids - self
-        other_offers.filtered(lambda o: not o.status).write({'status': 'refused'})
+        other_offers.filtered(lambda o: not o.status).write(
+            {'status': 'refused'})
         self.property_id.with_context(accepting_offer=True).write({
             'selling_price': self.price,
             'buyer_id': self.partner_id.id,
@@ -160,6 +209,57 @@ class AwesomeEstatePropertyOffer(models.Model):
         """Refuse this offer. Only pending offers can be refused."""
         self.ensure_one()
         if self.status:
-            raise UserError(_("This offer has already been accepted or refused."))
+            raise UserError(
+                _("This offer has already been accepted or refused."))
         self.status = 'refused'
         return True
+
+    def action_mark_suspicious(self):
+        """Manually mark this offer as suspicious (review queue)."""
+        self.ensure_one()
+        if self.is_suspicious:
+            raise UserError(_("This offer is already marked as suspicious."))
+        self.is_suspicious = True
+        return True
+
+    def action_clear_suspicious(self):
+        """Clear the suspicious flag after review."""
+        self.ensure_one()
+        if not self.is_suspicious:
+            raise UserError(_("This offer is not marked as suspicious."))
+        self.is_suspicious = False
+        return True
+
+    # -----------------------------------------------------------------------
+    # Business / Helper Methods
+    # -----------------------------------------------------------------------
+    def _flag_duplicate_offers(self):
+        """Flag offers from the same partner within 5 minutes of each other."""
+        for offer in self:
+            if not offer.partner_id or not offer.create_date:
+                continue
+            before = fields.Datetime.add(offer.create_date, minutes=-5)
+            duplicates = self.search([
+                ('partner_id', '=', offer.partner_id.id),
+                ('create_date', '>=', before),
+                ('id', '!=', offer.id),
+            ])
+            if duplicates:
+                (offer | duplicates).write({'is_suspicious': True})
+
+    # -----------------------------------------------------------------------
+    # Cron Methods
+    # -----------------------------------------------------------------------
+    @api.model
+    def _cron_refuse_expired_offers(self):
+        """Daily cron: refuse offers past their deadline.
+
+        Only affects offers with a deadline date before today that are
+        still pending (no accepted/refused status set).
+        """
+        expired_offers = self.search([
+            ('date_deadline', '<', fields.Date.today()),
+            ('status', 'not in', ['accepted', 'refused']),
+        ])
+        if expired_offers:
+            expired_offers.status = 'refused'
