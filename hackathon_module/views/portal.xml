@@ -2,7 +2,7 @@
 <odoo>
     <template id="hackathon_dashboard_template" name="Hackathon Dashboard">
         <t t-call="website.layout">
-            <div id="wrap" class="container mt-5 mb-5 o_hackathon_dashboard">
+            <div id="wrap" class="container mt-5 mb-5 o_hackathon_dashboard" t-att-data-time-left="time_left">
                 <div class="row justify-content-center">
                     <div class="col-md-8 text-center">
                         <h2>Hackathon Dashboard</h2>
@@ -14,13 +14,27 @@
                             </div>
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-4 d-none">
                             <video id="webcamPreview" autoplay="autoplay" muted="muted" playsinline="playsinline" style="width: 100%; max-width: 600px; background: #000; border-radius: 8px; border: 2px solid #ccc;"></video>
                         </div>
+                    </div>
+                </div>
 
-                        <div>
-                            <button id="startBtn" class="btn btn-success btn-lg me-2">Start Hackathon</button>
-                            <button id="stopBtn" class="btn btn-danger btn-lg" disabled="disabled">Stop Hackathon</button>
+                <!-- Consent Modal -->
+                <div class="modal fade" id="consentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="consentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-warning">
+                                <h5 class="modal-title" id="consentModalLabel">Recording Consent Required</h5>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Important Notice:</strong></p>
+                                <p>During this hackathon, we will be recording your screen (video) and microphone (audio) to monitor the session and ensure fair play.</p>
+                                <p>By clicking "Allow &amp; Continue", you grant us permission to access your webcam and microphone. If you do not allow permissions, you will not be able to participate.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" id="acceptConsentBtn">I Understand &amp; Allow</button>
+                            </div>
                         </div>
                     </div>
                 </div>

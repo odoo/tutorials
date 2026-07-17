@@ -39,22 +39,24 @@ def _concat_chunks_to_webm(chunks, output_path):
 
 def _build_ffmpeg_cmd(input_path, output_path):
 
-    """Build an ffmpeg command that re-encodes one WebM into a 240p MP4.
+    """Build an ffmpeg command that re-encodes one WebM into a 360p MP4.
 
     Flags:
-      -b:v 100k       → ~360 MB per 8-hour session (predictable file size)
-      -preset ultrafast → fast encode at the expense of slightly larger file
-      scale=320:240    → 240p output (low quality)
-      -an              → no audio stream (video only)
-      +faststart       → MP4 index at front for streaming
+      -r 10           → Drop to 10 frames per second
+      -crf 30         → Slightly higher compression threshold
+      -preset fast    → Good balance of speed and compression
+      scale=640:360   → 360p output
+      -c:a aac -b:a 32k -ac 1 → Mono audio at 32kbps (saves massive space)
+      +faststart      → MP4 index at front for streaming
     """
 
     return [
         "ffmpeg", "-y",
         "-i", input_path,
-        "-vf", "scale=320:240",
-        "-c:v", "libx264", "-b:v", "100k", "-preset", "ultrafast",
-        "-an",
+        "-r", "10",
+        "-vf", "scale=640:360",
+        "-c:v", "libx264", "-crf", "30", "-preset", "fast",
+        "-c:a", "aac", "-b:a", "32k", "-ac", "1",
         "-movflags", "+faststart",
         output_path,
     ]
@@ -66,10 +68,18 @@ class HackathonController(http.Controller):
     def hackathon_dashboard(self, **kw):
         participant = request.env.user.partner_id
         participant_record = request.env['hackathon.participant'].search([('partner_id', '=', participant.id)], limit=1)
-        team_name = str(participant_record.team_id.name or '')
+        team = participant_record.team_id
+        session = team.session_id
+        
+        time_left = 0
+        if session and session.start_time and session.end_time:
+            delta = session.end_time - session.start_time
+            time_left = int(delta.total_seconds())
+
         values = {
             'participant_name': participant.name or '',
-            'team_name': team_name
+            'team_name': str(team.name or ''),
+            'time_left': time_left
         }
         return request.render('hackathon_module.hackathon_dashboard_template', values)
 
@@ -151,3 +161,20 @@ class HackathonController(http.Controller):
             'final_file': 'final.mp4',
             'path': final_mp4,
         })
+
+    @http.route(['/hackathon/status'], type='jsonrpc', auth="user", website=True)
+    def hackathon_status(self, **kw):
+        participant = request.env.user.partner_id
+        participant_record = request.env['hackathon.participant'].search([('partner_id', '=', participant.id)], limit=1)
+        
+        if not participant_record:
+            return {'status': 'draft', 'session_id': False}
+            
+        session = participant_record.team_id.session_id or participant_record.session_id
+        if not session:
+            return {'status': 'draft', 'session_id': False}
+        session_id = f"sess_{session.id}_{session.name}".replace(" ", "_")
+        return {
+            'status': session.state,
+            'session_id': session_id
+        }

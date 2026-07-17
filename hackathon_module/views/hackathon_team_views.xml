@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list string="Teams">
                 <field name="name"/>
+                <field name="session_id"/>
             </list>
         </field>
     </record>
@@ -18,11 +19,12 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="session_id"/>
                     </group>
                     <notebook>
                         <page string="Members">
                             <field name="participant_ids">
-                                <list>
+                                <list editable="bottom">
                                     <field name="partner_id"/>
                                     <field name="status"/>
                                 </list>

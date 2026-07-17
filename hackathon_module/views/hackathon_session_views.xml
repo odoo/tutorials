@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="view_hackathon_session_kanban" model="ir.ui.view">
+        <field name="name">hackathon.session.kanban</field>
+        <field name="model">hackathon.session</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="venue"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="o_kanban_record_top">
+                            <div class="o_kanban_record_headings">
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                            </div>
+                            <span class="badge rounded-pill text-bg-info"><field name="state"/></span>
+                        </div>
+                        <div class="o_kanban_record_body mt-2">
+                            <div t-if="record.venue.value"><i class="fa fa-map-marker" title="Venue"></i> <field name="venue"/></div>
+                            <div t-if="record.start_time.value"><i class="fa fa-clock-o" title="Start Time"></i> <field name="start_time"/></div>
+                            <div t-if="record.end_time.value"><i class="fa fa-clock-o" title="End Time"></i> <field name="end_time"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="view_hackathon_session_tree" model="ir.ui.view">
         <field name="name">hackathon.session.tree</field>
         <field name="model">hackathon.session</field>
         <field name="arch" type="xml">
             <list string="Sessions">
                 <field name="name"/>
+                <field name="venue"/>
                 <field name="start_time"/>
                 <field name="end_time"/>
                 <field name="state"/>
@@ -19,11 +49,19 @@
         <field name="arch" type="xml">
             <form string="Session">
                 <header>
+                    <button name="action_start" type="object" string="Start Hackathon" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_done" type="object" string="End Hackathon" invisible="state != 'in_progress'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_teams" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="team_count" widget="statinfo" string="Teams"/>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
+                        <field name="venue"/>
                         <field name="start_time"/>
                         <field name="end_time"/>
                         <field name="duration"/>
@@ -36,7 +74,7 @@
     <record id="action_hackathon_session" model="ir.actions.act_window">
         <field name="name">Sessions</field>
         <field name="res_model">hackathon.session</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
     </record>
 
     <menuitem id="menu_hackathon_sessions_action" parent="menu_hackathon_sessions" action="action_hackathon_session"/>
