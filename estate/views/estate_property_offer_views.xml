@@ -10,7 +10,8 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <list editable="bottom" decoration-danger="is_suspicious">
+                <field name="is_suspicious" readonly="1"/>
                 <field name="property_id"/>
                 <field name="partner_id"/>
                 <field name="price"/>
@@ -28,6 +29,8 @@
         <field name="arch" type="xml">
             <form string="Offer">
                 <sheet>
+                    <field name="is_suspicious" invisible="1"/>
+                    <widget name="web_ribbon" title="Suspicious" bg_color="text-bg-danger" invisible="not is_suspicious"/>
                     <group>
                         <field name="property_id"/>
                         <field name="partner_id"/>

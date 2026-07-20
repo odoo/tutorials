@@ -77,12 +77,12 @@ class EstateProperty(models.Model):
     )
 
     _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "A property expected price must be positive",
+        'CHECK(expected_price > 0)',
+        'A property expected price must be positive',
     )
     _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "A property selling price must be positive",
+        'CHECK(selling_price >= 0)',
+        'A property selling price must be positive',
     )
 
     @api.depends("living_area", "garden_area")

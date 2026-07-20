@@ -9,6 +9,10 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
 
     price = fields.Float(required=True)
+    is_suspicious = fields.Boolean(
+        string="Suspicious",
+        compute="_compute_is_suspicious",
+    )
     status = fields.Selection(
         selection=[
             ('accepted', 'Accepted'),
@@ -52,6 +56,38 @@ class EstatePropertyOffer(models.Model):
     @api.onchange("date_deadline")
     def _onchange_date_deadline(self):
         self._inverse_date_deadline()
+
+    @api.depends("create_date", "partner_id")
+    def _compute_is_suspicious(self):
+        partner_ids = self.mapped("partner_id.id")
+
+        datetimes = [r.create_date for r in self if r.create_date]
+        if not datetimes:
+            datetimes = [fields.Datetime.now()]
+
+        min_date = min(datetimes) - timedelta(minutes=5)
+        max_date = max(datetimes) + timedelta(minutes=5)
+
+        all_partner_offers = self.search([
+            ("partner_id", "in", partner_ids),
+            ("create_date", ">=", min_date),
+            ("create_date", "<=", max_date),
+        ])
+
+        for record in self:
+            if not record.partner_id or not record.create_date:
+                record.is_suspicious = False
+                continue
+
+            ref_time = record.create_date
+            limit_start = ref_time - timedelta(minutes=5)
+            limit_end = ref_time + timedelta(minutes=5)
+
+            recent_offers = all_partner_offers.filtered(
+                lambda o: o.partner_id == record.partner_id and limit_start <= o.create_date <= limit_end,
+            )
+
+            record.is_suspicious = len(recent_offers) > 2
 
     def action_accept(self):
         for record in self:

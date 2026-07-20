@@ -95,7 +95,8 @@
                         </page>
                         <page name="offers" string="Offers">
                             <field name="offer_ids">
-                                <list string="Offers" editable="bottom">
+                                <list string="Offers" editable="bottom" decoration-danger="is_suspicious">
+                                    <field name="is_suspicious" readonly="1"/>
                                     <field name="partner_id"/>
                                     <field name="price"/>
                                     <field name="validity"/>
