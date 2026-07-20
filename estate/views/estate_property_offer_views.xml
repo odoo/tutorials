@@ -5,8 +5,8 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Offers" editable="top">
-                <button name="action_accept" type="object" icon="fa-check" title="Accept"/>
-                <button name="action_refuse" type="object" icon="fa-times" title="Refuse"/>
+                <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status"/>
+                <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status"/>
                 <field name="price" string="Price"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="status" string="Status"/>

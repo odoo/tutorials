@@ -18,6 +18,7 @@
                 <field name="garden" string="Garden"/>
                 <field name="garden_area" string="Garden Area"/>
                 <field name="garden_orientation" string="Garden Orientation"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -85,7 +86,7 @@
                         </page>
 
                         <page string="Offers">
-                                <field name="offer_ids"/>
+                                <field name="offer_ids" readonly="state in ['offer_accepted','sold','cancelled']"/>
                         </page>
 
                         <page string="Maintenance">
