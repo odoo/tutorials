@@ -1,1 +1,1 @@
-from . import property, property_tag, property_type
+from . import property, property_offer, property_tag, property_type

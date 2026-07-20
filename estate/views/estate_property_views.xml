@@ -74,6 +74,9 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Offers" name="offers">
+                            <field name="offer_ids"/>
+                        </page>
                         <page string="Other Info" name="other">
                             <group>
                                 <group name="contacts">
@@ -83,6 +86,36 @@
                             </group>
                         </page>
                     </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offers_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="status" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offers_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <group>
+                        <group name="general">
+                            <field name="price" />
+                            <field name="partner_id" />
+                            <field name="status" />
+                        </group>
+                    </group>
                 </sheet>
             </form>
         </field>
