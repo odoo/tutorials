@@ -48,31 +48,6 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "Expected price must be strictly positive.",
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price IS NULL OR selling_price > 0)",
-        "Selling price must be strictly positive when set.",
-    )
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price_90_percent(self):
-        for property in self:
-            if float_is_zero(property.selling_price, precision_rounding=0.01):
-                continue
-            minimum_price = property.expected_price * 0.90
-            if float_compare(
-                property.selling_price,
-                minimum_price,
-                precision_rounding=0.01,
-            ) < 0:
-                error_msg = "Selling price cannot be lower than 90% of the expected price."
-                raise ValidationError(error_msg)
-
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -100,6 +75,30 @@ class EstateProperty(models.Model):
         group_expand="_read_group_stage_ids",
         copy=False,
     )
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "Expected price must be strictly positive.",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price IS NULL OR selling_price > 0)",
+        "Selling price must be strictly positive when set.",
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_90_percent(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_rounding=0.01):
+                continue
+            minimum_price = property.expected_price * 0.90
+            if float_compare(
+                property.selling_price,
+                minimum_price,
+                precision_rounding=0.01,
+            ) < 0:
+                error_msg = "Selling price cannot be lower than 90% of the expected price."
+                raise ValidationError(error_msg)
 
     @api.model
     def _read_group_stage_ids(self, *args, **kwargs):

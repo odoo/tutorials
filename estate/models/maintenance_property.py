@@ -1,4 +1,3 @@
-
 from odoo import fields, models
 
 
@@ -9,7 +8,6 @@ class EstateProperty(models.Model):
     title = fields.Char()
     prop_id = fields.Many2one('estate.property', required=True)
     description = fields.Char()
-
     priority = fields.Selection(
         [
             ("low", "Low"),
@@ -27,7 +25,6 @@ class EstateProperty(models.Model):
         string="Stage",
         default="new"
     )
-
     assigned = fields.Many2one("res.users", string="Assigned To", default=lambda self: self.env.user)
     estimated_cost = fields.Float(string="Estimated Cost")
     actual_cost = fields.Float(string="Actual Cost")

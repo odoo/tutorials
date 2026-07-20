@@ -1,29 +1,4 @@
 <odoo>
-   
-<!-- 
-    <record id="product.type_1" model="estate.property">
-        <field name="name">hover</field>
-    </record>
-    <record id="product.type_2" model="estate.property">
-        <field name="description">postcode</field>
-    </record>
-    <record id="product.type_3" model="estate.property">
-        <field name="expected_price">price</field>
-    </record>
-    <record id="product_type_4" model="estate.property">
-        <field name="selling_price">selling price</field>
-    </record>
-    <record id="product.type_5" model="estate.property">
-        <field name="bedrooms">Bedrooms</field>
-    </record>
-    <record id="product.type_6" model="estate.property">
-        <field name="facades">facades</field>
-    </record>
-
-    <record id="product.type_7" model="estate.property">
-        <field name="garden_area">area</field>
-    </record> -->
-
 
     <record id="estate_property_1" model="estate.property">
         <field name="name">Warranty</field>
@@ -39,7 +14,6 @@
         <field name="selection" ></field>
     </record>
 
-
     <record id="estate_property_2" model="estate.property">
         <field name="name">Warranty</field>
         <field name="description ">20.0</field>
@@ -53,7 +27,6 @@
         <field name="garage" />
     </record>
 
-
      <record id="estate_property_2" model="estate.property">
         <field name="name">Test</field>
         <field name="description ">Office Chair - Context View</field>
@@ -66,6 +39,5 @@
         <field name="facades">delivery</field>
         <field name="garage" />
     </record>
-
 
 </odoo>
