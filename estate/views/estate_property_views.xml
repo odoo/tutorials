@@ -29,7 +29,6 @@
             <form>
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
-                    <!-- state == "sold" or state == "canceled" -->
                     <button name="action_sold" type="object" string="SOLD"  invisible="state in ('sold', 'canceled')"/>
                     <button name="action_cancel" type="object" string="CANCEL" invisible="state in ('sold', 'canceled')"/>
                 </header>
@@ -41,8 +40,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -143,5 +142,4 @@
             {'search_default_available': 1}
         </field>
     </record>
-
 </odoo>

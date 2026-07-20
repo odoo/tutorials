@@ -33,6 +33,13 @@
     />
 
     <menuitem
+        id="estate_all_property_offers_menu_action"
+        name="All Offers"
+        parent="estate_settings_menu"
+        action="estate_property_offer_action_all"
+    />
+
+    <menuitem
         id="estate_property_menu_action"
         parent="estate_advertisements_menu"
         action="estate_property_action"

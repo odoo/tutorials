@@ -32,7 +32,7 @@
                         </button>
                     </div>
                     <group>
-                        <field name="name"/>    
+                        <field name="name"/>
                     </group>
                     <field name="property_ids">
                         <list>
