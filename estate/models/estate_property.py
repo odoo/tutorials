@@ -112,7 +112,7 @@ class EstateProperty(models.Model):
     )
     is_suspicious = fields.Boolean(
         compute="_compute_is_suspicious",
-        store=False,
+        store=True,
     )
 
     @api.depends("garden_area", "living_area")
@@ -179,7 +179,7 @@ class EstateProperty(models.Model):
             if record.state != "new" or record.state != "cancelled":
                 raise UserError("This property can't be deleted")
 
-    @api.depends("offer_ids","offer_ids.partner_id", "offer_ids.create_date")
+    @api.depends("offer_ids", "offer_ids.partner_id", "offer_ids.create_date")
     def _compute_is_suspicious(self):
         now = fields.Datetime.now()
         five_minutes_ago = now - timedelta(minutes=5)
@@ -194,7 +194,7 @@ class EstateProperty(models.Model):
             for partner in partners:
                 offer_count = Offer.search_count(
                     [
-                        ("partner_id", "=", partner.id),
+                        ("partner_id", "=", partner.id),        
                         ("property_id", "=", property_record.id),
                         ("create_date", ">=", five_minutes_ago),
                     ]

@@ -13,8 +13,8 @@ class EstatePropertyOffer(models.Model):
 
     status = fields.Selection(
         [
-            ("accepted", "Accepted"),
-            ("rejected", "Rejected"),
+            ('accepted', "Accepted"),
+            ('rejected', "Rejected"),
         ],
         copy=False,
     )
@@ -89,8 +89,9 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
 
         for offer in self.property_id.offer_ids:
-            if self != offer and offer.status == "accepted":
-                raise UserError("An offer is already accepted.")
+            if self != offer:
+                # raise UserError("An offer is already accepted.")
+                offer.status="rejected"
 
         self.status = "accepted"
         self.property_id.buyer_id = self.partner_id
@@ -104,3 +105,4 @@ class EstatePropertyOffer(models.Model):
             record.status = "rejected"
 
         return True
+        
