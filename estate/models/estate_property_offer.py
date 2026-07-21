@@ -9,7 +9,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
     _order = "price desc"
 
-    price = fields.Float(string="Price")
+    price = fields.Float()
 
     status = fields.Selection(
         [

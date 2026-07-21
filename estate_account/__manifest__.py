@@ -1,6 +1,6 @@
 {
     'name': 'Estate Accounting',
-    'depends' : ['estate', 'account'],
+    'depends': ['estate', 'account'],
     'application': True,
     'installable': True,
     'author': 'Odoo S.A.',
