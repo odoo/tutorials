@@ -40,8 +40,9 @@
                 <sheet>
                     <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
                     <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger" invisible="state != 'cancelled'"/>
-                    <widget name="web_ribbon" title="Under Maintenance" bg_color="text-bg-warning" invisible="maintenance_count == 0"/>
-                    
+                    <widget name="web_ribbon" title="Under Maintenance" bg_color="text-bg-warning" invisible="not has_active_maintenance"/>
+                    <!-- Needed for the web_ribbon visibility condition -->
+                    <field name="has_active_maintenance" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_maintenance" type="object" class="oe_stat_button" icon="fa-wrench">
                             <field name="maintenance_count" widget="statinfo" string="Maintenance"/>

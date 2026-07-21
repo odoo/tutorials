@@ -63,6 +63,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
     property_maintenance_ids = fields.One2many("property.maintenance", "property_id")
     maintenance_count = fields.Integer(compute="_compute_maintenance_count")
+    has_active_maintenance = fields.Boolean(compute="_compute_has_active_maintenance")
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
@@ -88,6 +89,15 @@ class EstateProperty(models.Model):
     def _compute_maintenance_count(self):
         for record in self:
             record.maintenance_count = len(record.property_maintenance_ids)
+
+    @api.depends("property_maintenance_ids.state")
+    def _compute_has_active_maintenance(self):
+        for record in self:
+            record.has_active_maintenance = False
+            for m in record.property_maintenance_ids:
+                if m.state != 'done':
+                    record.has_active_maintenance = True
+                    break
 
     @api.constrains("expected_price", "selling_price")
     def _check_price_difference(self):
