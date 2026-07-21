@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
 
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
