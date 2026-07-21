@@ -70,9 +70,9 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
-            current_price = vals.get('price')
-            property_record = self.env['estate.property'].browse(
-                vals['property_id'],
+            current_price = vals.get("price")
+            property_record = self.env["estate.property"].browse(
+                vals["property_id"],
             )
 
             for record in property_record.offer_ids:
@@ -91,7 +91,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self.property_id.offer_ids:
             if self != offer:
                 # raise UserError("An offer is already accepted.")
-                offer.status="rejected"
+                offer.status = "rejected"
 
         self.status = "accepted"
         self.property_id.buyer_id = self.partner_id
@@ -105,4 +105,3 @@ class EstatePropertyOffer(models.Model):
             record.status = "rejected"
 
         return True
-        

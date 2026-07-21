@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = ["mail.thread"]
 
     name = fields.Char(required=True)
 
@@ -66,6 +67,7 @@ class EstateProperty(models.Model):
         default="new",
         required=True,
         copy=False,
+        tracking=True,
     )
 
     buyer_id = fields.Many2one(
@@ -194,7 +196,7 @@ class EstateProperty(models.Model):
             for partner in partners:
                 offer_count = Offer.search_count(
                     [
-                        ("partner_id", "=", partner.id),        
+                        ("partner_id", "=", partner.id),
                         ("property_id", "=", property_record.id),
                         ("create_date", ">=", five_minutes_ago),
                     ]

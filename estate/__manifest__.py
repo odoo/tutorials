@@ -1,7 +1,7 @@
 {
     "name": "estate",
     "version": "1.0",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "category": "tutorials",
     "author": "sadeo-odoo",
     "license": "LGPL-3",
