@@ -29,7 +29,7 @@
         <field name="arch" type="xml">
             <form string="Offer">
                 <sheet>
-                    <field name="is_suspicious" invisible="1"/>
+                    <field name="is_suspicious" invisible="1"/> <!-- Required for ribbon widget -->
                     <widget name="web_ribbon" title="Suspicious" bg_color="text-bg-danger" invisible="not is_suspicious"/>
                     <group>
                         <field name="property_id"/>

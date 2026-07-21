@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         default=lambda self: fields.Date.context_today(self) + relativedelta(months=3),
     )
-    expected_price = fields.Float(required=True, copy=False, default=0.0)
+    expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
