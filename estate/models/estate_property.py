@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     _name = "realestate.estate.properties"
     _description = "Real estate properties"
 
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     name = fields.Char("Plan Name", required=True, translate=True)
     description = fields.Text("Notes")
     postcode = fields.Char("Postcode", required=True)
@@ -34,7 +34,7 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living area")
     facades = fields.Integer("Facades")
-    garages = fields.Boolean("Garages")
+    garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden area")
     garden_orientation = fields.Selection(
