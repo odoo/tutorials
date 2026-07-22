@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class Property(models.Model):
     _name = "estate.property"
     _description = "Properties of our managed estates"
+    _order = "id desc"
 
     _check_positive_amounts = models.Constraint(
         'CHECK ('
@@ -13,7 +14,7 @@ class Property(models.Model):
         ' AND garden_area >= 0'
         ')', 'Values must be positive!')
 
-    name = fields.Char(string='Name', default="Unknown", required=True)
+    name = fields.Char(string='Title', default="Unknown", required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection(required=True, default='new', copy=False, selection=[
         ('new', 'New')
@@ -31,7 +32,7 @@ class Property(models.Model):
     description = fields.Text(string='description')
     postcode = fields.Char(string='postcode')
     date_availability = fields.Date(string='Available from', default=lambda _: fields.Date.add(fields.Date.today(), months=3), copy=False)
-    expected_price = fields.Float(string='expected price', required=True)
+    expected_price = fields.Float(string='Expected price', required=True)
     selling_price = fields.Float(string='selling price', readonly=True, copy=False)
     bedrooms = fields.Integer(string='# bedrooms', default=2)
     living_area = fields.Integer(string='living area size')
@@ -92,11 +93,12 @@ class Property(models.Model):
             if float_compare(property.selling_price, 0.9 * property.expected_price, 2) == -1:
                 raise exceptions.ValidationError(_("The accepted price is less than 90% of the expected price!"))
 
-    def confirm_sale(self):
+    def confirm_offer(self):
         for property in self:
             accepted_offer = property.offer_ids.filtered(lambda r: r.status == 'accepted')
             accepted_offer.ensure_one()
             property.selling_price = accepted_offer.price
             property.buyer = accepted_offer.partner_id
+            property.state = 'offer_accepted'
             # Refuse all other offers
             (property.offer_ids - accepted_offer).action_cancel()

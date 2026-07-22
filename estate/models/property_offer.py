@@ -8,6 +8,7 @@ from odoo.exceptions import UserError, ValidationError
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Bids for a property"
+    _order = "price desc"
 
     _check_positive_amounts = models.Constraint('CHECK(price >= 0)')
 
@@ -17,6 +18,7 @@ class PropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Validity of offer", default=7)
     date_deadline = fields.Date(string="Offer expiry", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
@@ -49,7 +51,7 @@ class PropertyOffer(models.Model):
                 raise UserError(_("Offer is already refused!"))
             #
             record.status = 'accepted'
-            record.property_id.confirm_sale()
+            record.property_id.confirm_offer()
         return True
 
     def action_cancel(self):
