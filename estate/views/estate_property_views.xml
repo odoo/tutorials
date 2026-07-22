@@ -30,6 +30,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                </header>
+
                 <sheet>
                     <h1>
                         <field name="name" placeholder="Title"/>
@@ -79,6 +85,8 @@
                                     <field name="partner_id"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
+                                    <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status"/>
                                     <field name="status"/>
                                 </list>
                             </field>
