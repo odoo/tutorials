@@ -74,6 +74,7 @@ class EstateProperty(models.Model):
         default="new",
         group_expand="_read_group_stage_ids",
         copy=False,
+        invisible=True
     )
 
     _check_expected_price = models.Constraint(
