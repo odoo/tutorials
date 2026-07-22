@@ -1,7 +1,10 @@
 {
     'name': 'Real Estate',
+    'application': True,
     'depends': [
         'base'
     ],
-    'application': True,
+    'data': [
+        'data/ir.model.access.csv'
+    ]
 }
