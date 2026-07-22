@@ -10,7 +10,7 @@ class Estate(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
 
-    exprected_price = fields.Float(string="Exprected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", copy=False, readonly=True)
 
     expected_date = fields.Date(
