@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../odoo"
+		}
+	],
+	"settings": {
+		"python.languageServer": "None",
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Odoo onboarding",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "${workspaceFolder:odoo}/odoo-bin",
+				"args": [
+					"--addons-path=addons/,../enterprise,../tutorials/",
+					"-d", "19.0-onboarding", "-u", "estate"
+				],
+				"cwd": "${workspaceFolder:odoo}",
+				"console": "integratedTerminal"
+			}
+		]
+	}
+}
