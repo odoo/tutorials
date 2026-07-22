@@ -1,6 +1,6 @@
 {  # pyright: ignore[reportUnusedExpression]
     "name": "estate",
-    "depends": ["base_setup"],
+    "depends": ["base"],
     "author": "Havit",
     "license": "LGPL-3",
     "data": [
