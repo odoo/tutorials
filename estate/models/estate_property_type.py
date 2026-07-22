@@ -31,6 +31,6 @@ class EstatePropertyType(models.Model):
         for prop_type in self:
             prop_type.offer_count = self.env['estate.property.offer'].search_count(
                 [
-                    ('property_type_id', '=', prop_type.id),
+                    ('property_type_id', '=', prop_type.ids),
                 ],
             )

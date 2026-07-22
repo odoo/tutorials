@@ -1,9 +1,8 @@
-import datetime
-
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.tools import SQL
+from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -40,33 +39,30 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_security_status',
     )
 
-    @api.depends('partner_id', 'create_date')
+    @api.depends("create_date", "partner_id")
     def _compute_security_status(self):
-        for offer in self:
-            offer.security_status = False
+        self.security_status = False
+        valid_records = self.filtered(lambda r: r.id and r.partner_id and r.create_date)
+        if not valid_records:
+            return
 
-            if not (offer.partner_id and offer.property_id and offer.create_date):
-                continue
+        query = """
+           SELECT o1.id
+           FROM estate_property_offer o1
+           JOIN estate_property_offer o2 ON o1.partner_id = o2.partner_id
+               AND o1.property_id = o2.property_id
+               AND o2.create_date >= o1.create_date - INTERVAL '300 seconds'
+               AND o2.create_date <= o1.create_date + INTERVAL '300 seconds'
+           WHERE o1.id IN %s
+           GROUP BY o1.id
+           HAVING COUNT(o2.id) > 2
+        """
 
-            offers_count = self.search_count(
-                [
-                    ('property_id', '=', offer.property_id.id),
-                    ('partner_id', '=', offer.partner_id.id),
-                    (
-                        'create_date',
-                        '>=',
-                        offer.create_date - datetime.timedelta(seconds=300),
-                    ),
-                    (
-                        'create_date',
-                        '<=',
-                        offer.create_date + datetime.timedelta(seconds=300),
-                    ),
-                ],
-            )
+        self.env.cr.execute(query, (tuple(valid_records.ids),))
+        suspicious_ids = [row[0] for row in self.env.cr.fetchall()]
 
-            if offers_count > 2:
-                offer.security_status = 'suspicious'
+        if suspicious_ids:
+            self.browse(suspicious_ids).write({"security_status": "suspicious"})
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -114,3 +110,29 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        props = tuple(
+            val.get('property_id') for val in vals_list if val.get('property_id')
+        )
+        res_group = self.env['estate.property.offer']._read_group(
+            domain=[('property_id', 'in', props)],
+            groupby=['property_id'],
+            aggregates=['price:max'],
+        )
+        max_offers = {prop.id: max_price for prop, max_price in res_group}
+
+        for val in vals_list:
+            prop_id = val.get('property_id')
+            price = val.get('price', 0.0)
+            max_offer = max_offers.get(prop_id, 0.0)
+
+            if float_compare(price, max_offer, precision_rounding=0.01) <= 0:
+                raise UserError(f"The offer must be higher than {max_offer:.2f}")
+
+            max_offers[prop_id] = price
+
+        offers = super().create(vals_list)
+        offers.property_id.write({'state': 'offer_received'})
+        return offers
