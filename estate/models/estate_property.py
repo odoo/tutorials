@@ -2,7 +2,7 @@ from odoo import fields, models
 from datetime import timedelta
 
 
-class Estate(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Module"
 
