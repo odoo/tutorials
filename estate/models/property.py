@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, exceptions, fields, models
 
 
 class Property(models.Model):
@@ -59,3 +59,28 @@ class Property(models.Model):
         for record in self:
             record.garden_area = 10 if record.garden else 0
             record.garden_orientation = 'north' if record.garden else None
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError(_("Cancelled properties cannot be sold!"))
+            #
+            record.state = "sold"
+        return True
+
+    def action_cancelled(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError(_("Sold properties cannot be cancelled!"))
+            #
+            record.state = "cancelled"
+        return True
+
+    def confirm_sale(self):
+        for property in self:
+            accepted_offer = property.offer_ids.filtered(lambda r: r.status == 'accepted')
+            accepted_offer.ensure_one()
+            property.selling_price = accepted_offer.price
+            property.buyer = accepted_offer.partner_id
+            # Refuse all other offers
+            (property.offer_ids - accepted_offer).action_cancel()

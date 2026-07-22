@@ -1,7 +1,8 @@
 import datetime as dt
 from math import floor
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class PropertyOffer(models.Model):
@@ -31,3 +32,28 @@ class PropertyOffer(models.Model):
                 difference = raw_difference.total_seconds()
                 if difference > 0:
                     record.validity = floor(difference / dt.timedelta(days=1).total_seconds())
+
+    @api.constrains('status')
+    def _check_maximum_one_offer_accepted(self):
+        for record in self:
+            peer_offers = record.property_id.offer_ids
+            accepted_peers = peer_offers.filtered(lambda r: r.status == 'accepted')
+            if len(accepted_peers) > 1:
+                raise ValidationError(_("A single offer can be accepted at a time!"))
+
+    def action_confirm(self):
+        for record in self:
+            if record.status == "refused":
+                raise UserError(_("Offer is already refused!"))
+            #
+            record.status = 'accepted'
+            record.property_id.confirm_sale()
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.status == "accepted":
+                raise UserError(_("Offer is already accepted!"))
+            #
+            record.status = "refused"
+        return True
