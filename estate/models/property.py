@@ -25,7 +25,7 @@ class Property(models.Model):
     ])
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one('res.users', string="Salesman", default=lambda self: self.env.user)
-    buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
+    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
 
@@ -98,7 +98,7 @@ class Property(models.Model):
             accepted_offer = property.offer_ids.filtered(lambda r: r.status == 'accepted')
             accepted_offer.ensure_one()
             property.selling_price = accepted_offer.price
-            property.buyer = accepted_offer.partner_id
+            property.buyer_id = accepted_offer.partner_id
             property.state = 'offer_accepted'
             # Refuse all other offers
             (property.offer_ids - accepted_offer).action_cancel()

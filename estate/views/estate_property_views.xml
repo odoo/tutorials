@@ -100,8 +100,8 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" invisible="state in ['offer_accepted', 'sold', 'cancelled']"/>
-                    <button name="action_cancelled" type="object" string="Cancel" invisible="state in ['offer_accepted', 'sold', 'cancelled']"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_cancelled" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
@@ -148,7 +148,7 @@
                             <group>
                                 <group name="contacts">
                                     <field name="salesman_id" string="Salesman"/>
-                                    <field name="buyer" string="Buyer"/>
+                                    <field name="buyer_id" string="Buyer"/>
                                 </group>
                             </group>
                         </page>
