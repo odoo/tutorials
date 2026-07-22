@@ -1,9 +1,17 @@
 from odoo import _, api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Properties of our managed estates"
+
+    _check_positive_amounts = models.Constraint(
+        'CHECK ('
+        'expected_price >= 0 AND selling_price >= 0'
+        ' AND living_area >= 0 AND facades >= 0'
+        ' AND garden_area >= 0'
+        ')', 'Values must be positive!')
 
     name = fields.Char(string='Name', default="Unknown", required=True)
     active = fields.Boolean(default=True)
@@ -75,6 +83,14 @@ class Property(models.Model):
             #
             record.state = "cancelled"
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, 2):
+                return
+            if float_compare(property.selling_price, 0.9 * property.expected_price, 2) == -1:
+                raise exceptions.ValidationError(_("The accepted price is less than 90% of the expected price!"))
 
     def confirm_sale(self):
         for property in self:

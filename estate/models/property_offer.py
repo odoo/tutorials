@@ -9,6 +9,8 @@ class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Bids for a property"
 
+    _check_positive_amounts = models.Constraint('CHECK(price >= 0)')
+
     price = fields.Float(string="Price")
     status = fields.Selection(string="Status", copy=False
         , selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
