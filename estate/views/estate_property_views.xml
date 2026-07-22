@@ -147,7 +147,7 @@
                         <page string="Other Info" name="other">
                             <group>
                                 <group name="contacts">
-                                    <field name="salesman" string="Salesman"/>
+                                    <field name="salesman_id" string="Salesman"/>
                                     <field name="buyer" string="Buyer"/>
                                 </group>
                             </group>
@@ -167,9 +167,8 @@
                 decoration-success="status in ['accepted']">
                 <field name="price" />
                 <field name="partner_id" />
-                <button name="action_confirm" string="Confirm" type="object" icon="fa-check"/>
-                <button name="action_cancel" string="Cancel" type="object" icon="fa-times"/>
-                <field name="status" invisible="True" />
+                <button name="action_confirm" string="Confirm" type="object" icon="fa-check" invisible="status"/>
+                <button name="action_cancel" string="Cancel" type="object" icon="fa-times" invisible="status"/>
             </list>
         </field>
     </record>

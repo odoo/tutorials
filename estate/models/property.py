@@ -24,7 +24,7 @@ class Property(models.Model):
         , ('cancelled', 'Cancelled'),
     ])
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    salesman = fields.Many2one('res.users', string="Salesman", default=lambda self: self.env.user)
+    salesman_id = fields.Many2one('res.users', string="Salesman", default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
@@ -102,3 +102,14 @@ class Property(models.Model):
             property.state = 'offer_accepted'
             # Refuse all other offers
             (property.offer_ids - accepted_offer).action_cancel()
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_draft(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.ValidationError(_("Only properties in state New or Cancelled can be deleted!"))
+
+    def _set_offer_received(self):
+        self.ensure_one()
+        if self.state == 'new':
+            self.state = 'offer_received'

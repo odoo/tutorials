@@ -12,7 +12,7 @@ class PropertyOffer(models.Model):
 
     _check_positive_amounts = models.Constraint('CHECK(price >= 0)')
 
-    price = fields.Float(string="Price")
+    price = fields.Float(string="Price", required=True)
     status = fields.Selection(string="Status", copy=False
         , selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
 
@@ -36,6 +36,20 @@ class PropertyOffer(models.Model):
                 difference = raw_difference.total_seconds()
                 if difference > 0:
                     record.validity = floor(difference / dt.timedelta(days=1).total_seconds())
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Precondition: price and property_id are required fields
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            property.ensure_one()
+            # Hook-approach (for composability)
+            property._set_offer_received()
+            max_peer_offer_price = max(property.offer_ids.mapped('price'), default=None)
+            if max_peer_offer_price and max_peer_offer_price > vals['price']:
+                raise UserError(_("New offer price must be higher than those of pre-existing offers!"))
+        #
+        return super().create(vals_list)
 
     @api.constrains('status')
     def _check_maximum_one_offer_accepted(self):
