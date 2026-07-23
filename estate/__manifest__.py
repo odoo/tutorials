@@ -1,5 +1,7 @@
 {
     "name": "Real Estate",
+    "author": "Jean (jebou)",
+    "license": "LGPL-3",
     "application": True,
     "depends": ["base"],
     "data": [
