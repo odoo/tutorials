@@ -11,6 +11,7 @@
             <Counter/>
         </div>
 
+        <!-- <Card title="'First card'" content="'hi hi'" extra="'error'"/> -->
         <Card title="'First card'" content="'hi hi'"/>
         <Card title="'Second card'" content="'hi hello'"/>
     </t>
