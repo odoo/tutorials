@@ -30,4 +30,23 @@ export class TodoList extends Component {
             event.target.value = '';
         }
     }
+
+    toggleState(id, newState) {
+        let todo = this.todos.find((el) => el.id == id);
+        if(todo === undefined) {
+            return;
+        }
+
+        todo.isCompleted = newState;
+    }
+
+    removeTodo(id) {
+        const index = this.todos.findIndex((el) => el.id ===id);
+        if(index < 0) {
+            return;
+        }
+
+        // Inplace manipulation
+        this.todos.splice(index, 1);
+    }
 }
