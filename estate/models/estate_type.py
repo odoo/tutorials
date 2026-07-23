@@ -5,3 +5,4 @@ class EstateType(models.Model):
     _description = "Estate Type"
 
     name = fields.Char(string="Type", required=True)
+    _name_idx = models.UniqueIndex('(name)', 'Another record already exists with the same name!')

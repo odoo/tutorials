@@ -5,3 +5,5 @@ class PropertyTag(models.Model):
     _description = "Estate Tag"
 
     name = fields.Char(string="Tag")
+
+    _name_idx = models.UniqueIndex('(name)', 'Another record already exists with the same name!')

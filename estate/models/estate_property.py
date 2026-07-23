@@ -1,10 +1,21 @@
 from odoo import fields, models, api, exceptions
+from odoo.tools import float_utils
 from datetime import timedelta
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Module"
+
+
+    _check_positif_expected_price = models.Constraint(
+        'CHECK(expected_price >= 0)',
+        'The expected price must be positive'
+    )
+    _check_positif_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive'
+    )
 
     # Base Fields
 
@@ -59,6 +70,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
 
 
+
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
         for record in self:
@@ -82,6 +94,16 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
         # return {'warning': {'title': "Test warning", 'message': "foo", 'type': 'notification'},}
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_price_expectation(self):
+        for record in self:
+            if float_utils.float_is_zero(record.selling_price, 0):
+                return True
+            if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
+                raise exceptions.ValidationError("Selling price can't be smaller than 90% of the expected price")
+        return True
+
 
     def action_sold_adv(self):
         for advertisements in self:
