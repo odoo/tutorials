@@ -17,6 +17,7 @@
                         <field name="name" />
                     </h1>
                     <group>
+                        <field name="property_tag_ids" widget="many2many_tags" class="mb16" />
                         <group>
                             <field name="postcode" />
                             <field name="date_availability" />
@@ -36,6 +37,16 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="property_tag_ids" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="sale_rep_id" />
                             </group>
                         </page>
                     </notebook>
@@ -77,7 +88,7 @@
                 <filter string="Available properties" name="available"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" />
                 <group>
-                    <filter string="Group be postcode" name="postcode"
+                    <filter string="Group by postcode" name="postcode"
                         context="{'group_by': 'postcode'}" />
                 </group>
             </search>

@@ -7,6 +7,8 @@
         <menuitem id="settings_menu" name="Settings">
             <menuitem id="estate_settings_property_type_action_id"
                 action="estate_settings_property_type_action" />
+            <menuitem id="estate_settings_property_tag_action_id"
+                action="estate_settings_property_tag_action" />
         </menuitem>
     </menuitem>
 </odoo>
