@@ -14,7 +14,13 @@
         <Layout 
             className="'o_dashboard h-100'"
             display="{controlPanel: {}}"
-        />
+        >
+            <div class="d-flex flex-wrap">
+                <DashboardItem>Card 1</DashboardItem>
+                <DashboardItem size="8">Long schlong</DashboardItem>
+                <DashboardItem size="2">TWOOOooooo</DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
