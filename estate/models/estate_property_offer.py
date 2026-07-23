@@ -8,6 +8,7 @@ class PropertyOffer(models.Model):
     # Attributes
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     # Fields
     price = fields.Float(string="Price")
@@ -22,6 +23,14 @@ class PropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
+
+    # Relational Fields
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
 
     # Computed Fields
     date_deadline = fields.Date(
