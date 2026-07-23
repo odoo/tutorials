@@ -61,25 +61,22 @@ class PropertyOffer(models.Model):
     # CRUD Methods
     @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            offer.property_id.state = "offer_received"
-        return offers
+        for vals in vals_list:
+            property_id = self.env["estate.property"].browse(vals["property_id"])
+            property_id._check_new_offer_price(vals["price"])
+            property_id.state = "offer_received"
+        return super().create(vals_list)
 
     # Action Methods
     def action_accept(self):
         for record in self:
-            if record.property_id.buyer_id:
-                raise UserError("An offer has already been accepted for this property.")
+            record.property_id._accept_offer(record.partner_id, record.price)
             record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
-            record.property_id.state = "offer_accepted"
         return True
 
     def action_refuse(self):
         for record in self:
             if record.status == "accepted":
-                raise UserError("An accepted offer cannot be refused.")
+                raise UserError(self.env._("An accepted offer cannot be refused."))
             record.status = "refused"
         return True
