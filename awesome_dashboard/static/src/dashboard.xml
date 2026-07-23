@@ -16,9 +16,10 @@
             display="{controlPanel: {}}"
         >
             <div class="d-flex flex-wrap">
-                <DashboardItem>Card 1</DashboardItem>
-                <DashboardItem size="8">Long schlong</DashboardItem>
-                <DashboardItem size="2">TWOOOooooo</DashboardItem>
+                <DashboardItem size="2">Number of new orders this month: <t t-esc="stats.nb_new_orders"/></DashboardItem>
+                <DashboardItem size="2">Total orders: <t t-esc="stats.total_amount"/></DashboardItem>
+                <DashboardItem size="2">Average amount of t-shirt by order: <t t-esc="stats.average_quantity"/></DashboardItem>
+                <DashboardItem size="2">Average time order goes from NEW to SENT/CANCELLED: <t t-esc="stats.average_time"/></DashboardItem>                
             </div>
         </Layout>
     </t>
