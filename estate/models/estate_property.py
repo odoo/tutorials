@@ -5,7 +5,7 @@ from odoo import fields, models
 
 
 class EstateProperty(models.Model):
-    _name = "realestate.estate.properties"
+    _name = "realestate.properties"
     _description = "Real estate properties"
 
     active = fields.Boolean(default=True)
@@ -45,3 +45,6 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
+    buyer_id = fields.Many2one("res.partner", string="Partner")
+    sale_rep_id = fields.Many2one("res.users")
+    property_type_id = fields.Many2one("realestate.properties.type")
