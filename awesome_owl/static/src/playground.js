@@ -8,10 +8,10 @@ export class Playground extends Component {
     static components = { Counter, Card };
 
     setup() {
-        this.state = useState({ value: 0 });
+        this.state = useState({ sum: 2 });
     }
 
-    increment() {
-        this.state.value++;
+    incrementSum() {
+        this.state.sum++;
     }
 }

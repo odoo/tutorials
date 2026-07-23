@@ -4,12 +4,11 @@
     <t t-name="awesome_owl.playground">
         <span>Hello World</span>
         <div>
-            <p>Counter: <t t-esc="state.value"/></p>
-            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>            
         </div>
-        <div>
-            <Counter/>
-        </div>
+        <div>The sum is: <t t-out="state.sum"/></div>
 
         <!-- <Card title="'First card'" content="'hi hi'" extra="'error'"/> -->
         <Card title="'First card'" content="'hi hi'"/>
