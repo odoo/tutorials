@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-estate.access_realestate_estate_properties,access_realestate_estate_properties,estate.model_realestate_estate_properties,base.group_user,1,1,1,1
+estate.access_realestate_properties,access_realestate_properties,estate.model_realestate_properties,base.group_user,1,1,1,1
+estate.access_realestate_properties_type,access_realestate_properties_type,estate.model_realestate_properties_type,base.group_user,1,1,1,1
