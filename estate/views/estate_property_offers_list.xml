@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- the root elements of the data file -->
+<odoo>
+    <record id="estate_property_offer_form" model="ir.ui.view">
+        <field name="name">realestate.property.form</field>
+        <field name="model">realestate.properties.offer</field>
+        <field name="arch" type="xml">
+            <form string="Custom description form">
+                <sheet>
+                    <group>
+                        <field name="price" />
+                        <field name="partner_id" />
+                        <field name="status" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+
+    </record>
+    <record id="estate_property_type_views_list" model="ir.ui.view">
+        <field name="name">realestate.property.type.list</field>
+        <field name="model">realestate.properties.offer</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="status" />
+            </list>
+        </field>
+    </record>
+
+</odoo>
