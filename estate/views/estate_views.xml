@@ -4,11 +4,13 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="garage"/>
-                <field name="selling_price"/>
+                <field string="Title" name="name" width="14%"/>
+                <field name="postcode" width="14%"/>
+                <field name="bedrooms" width="14%"/>
+                <field name="living_area" width="14%"/>
+                <field name="expected_price" width="14%"/>
+                <field name="selling_price" width="14%"/>
+                <field name="date_availability" width="14%"/>
             </list>
         </field>
     </record>
@@ -21,34 +23,52 @@
             <form string="Test_Form">
                 <sheet>
                     <group>
-                        <group>
+                        <h1>
                             <field name="name"/>
+                        </h1>
+                    </group>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <separator/>
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
-                        </group>
-                        <group>
-                            <field name="garage"/>
-                        </group>
-                        <group>
-                            <field name="bedrooms"/>
-                        </group> 
-                        <group>
-                            <field name="garden_orientation"/>
-                        </group>
-                        <group>
-                            <field name="state"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
-                            <field name="description"/>
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="type_id"/>
+                            </group>
                         </page>
-                        <page string="Test 2">
-                            <field name="description"/>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids">
+                                    <list>
+                                        <field name="price"/>
+                                        <field name="status"/>
+                                        <field name="partner_id"/>
+                                    </list>
+                                </field>
+                            </group>
                         </page>
-                        <page string="Test 3">
-                            <field name="description"/>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
