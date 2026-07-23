@@ -2,6 +2,15 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
+        <div class="o_control_panel_main_buttons d-flex gap-1 d-empty-none d-print-none">
+            <button type="button" class="btn btn-primary" t-on-click.stop="openCustomers">
+                Customers
+            </button>
+            <button type="button" class="btn btn-primary" t-on-click.stop="openLeads">
+                Leads
+            </button>
+        </div>
+
         <Layout 
             className="'o_dashboard h-100'"
             display="{controlPanel: {}}"
