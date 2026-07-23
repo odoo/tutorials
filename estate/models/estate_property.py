@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from datetime import timedelta
 
 
@@ -82,3 +82,31 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
         # return {'warning': {'title': "Test warning", 'message': "foo", 'type': 'notification'},}
+
+    def action_sold_adv(self):
+        for advertisements in self:
+            if advertisements.state == "cancelled":
+                raise exceptions.UserError("Can't sold an canceled advertise")
+            advertisements.state = "sold"
+        return True
+
+    def action_cancel_adv(self):
+        for advertisements in self:
+            if advertisements.state == "sold":
+                raise exceptions.UserError("Can't cancel an sold advertise")
+            advertisements.state = "cancelled"
+        return True
+
+    def accept_offer(self):
+        for adrivertise in self:
+            # offer = [offer for offer in adrivertise.proterty_offer_ids if offer.status == 'accepted' ][0]
+            accepted_offer = list()
+            for offer in adrivertise.proterty_offer_ids:
+                if accepted_offer: offer.status = "refused"
+                elif offer.status == 'accepted': accepted_offer.append(offer)
+                else: offer.status = 'refused'
+
+            accepted_offer = accepted_offer[0]
+            adrivertise.buyer_id = accepted_offer.partner_id
+            adrivertise.selling_price = accepted_offer.price
+            adrivertise.state = 'offer_accepted'

@@ -30,6 +30,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="New Estate">
+                <header>
+                    <button name="action_sold_adv" type="object" string="Sold"/>
+                    <button name="action_cancel_adv" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" placeholder="e.g New House"/>
@@ -47,6 +51,7 @@
                         </group>
                         <group>
                             <field name="property_type_id"/>
+                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -61,7 +66,6 @@
                                     <field name="garden"/>
                                     <field name="garden_area" string="Garden Area (sqm)"/>
                                     <field name="garden_orientation"/>
-                                    <field name="state"/>
                                     <field name="total_area"/>
                                 </group>
                             </group>
@@ -74,6 +78,8 @@
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                     <field name="status"/>
+                                    <button name="action_accepte_offer" type="object" icon="fa-check" string="accepte"/>
+                                    <button name="action_refuse_offer" type="object" icon="fa-times" string="refuse"/>
                                 </list>
                             </field>
                         </page>

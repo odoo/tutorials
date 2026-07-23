@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from datetime import timedelta
 
 class EstateOffer(models.Model):
@@ -28,3 +28,18 @@ class EstateOffer(models.Model):
     def _inverse_validity(self):
         for offer in self:
             offer.validity = (offer.date_deadline - fields.Date.today()).days
+
+    def action_accepte_offer(self):
+        for offer in self:
+            if offer.status =="refused":
+                raise exceptions.UserError("Can't accept an refused offer")
+            offer.status = "accepted"
+            offer.property_id.accept_offer()
+        return True
+
+    def action_refuse_offer(self):
+        for offer in self:
+            if offer.status == "accepted":
+                raise exceptions.UserError("Can't refuse an accepted offer")
+            offer.status = "refused"
+        return True
