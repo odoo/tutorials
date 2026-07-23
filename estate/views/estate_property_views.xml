@@ -10,14 +10,14 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" multi_edit="1">
                 <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="postcode" optional ="show"/>
+                <field name="bedrooms" optional="show"/>
+                <field name="living_area" optional="hide"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>             
+                <field name="selling_price" optional="hide"/>
+                <field name="date_availability" optional="show"/>             
             </list>
         </field>
     </record>
