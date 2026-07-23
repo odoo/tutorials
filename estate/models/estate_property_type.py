@@ -25,6 +25,7 @@ class PropertyType(models.Model):
     )
 
     # Compute Methods
+    # TODO: FIND A WAY TO DO A SINGLE COUNT QUERY !!!!!!!!!!!!!!
     @api.depends("offer_ids")
     def _compute_offer_count(self):
         for record in self:

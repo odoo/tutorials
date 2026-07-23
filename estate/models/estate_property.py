@@ -46,6 +46,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        index=True,
     )
     active = fields.Boolean(default=True)
 
@@ -63,7 +64,7 @@ class EstateProperty(models.Model):
         string="Total Area (sqm)", compute="_compute_total_area"
     )
     best_price = fields.Float(
-        string="Best Offer", compute="_compute_best_price"
+        string="Best Offer", compute="_compute_best_price", store=True
     )
 
     # SQL Constraints
@@ -85,7 +86,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
+            record.best_price = record.offer_ids[0].price if record.offer_ids else 0.0
 
     # Onchange Methods
     @api.onchange("garden")
@@ -108,9 +109,8 @@ class EstateProperty(models.Model):
     # Helper Methods
     def _check_new_offer_price(self, price):
         self.ensure_one()
-        for offer in self.offer_ids:
-            if price <= offer.price:
-                raise UserError(self.env._("The offer amount must be strictly higher than existing offers."))
+        if self.offer_ids and price <= self.offer_ids[0].price:
+            raise UserError(self.env._("The offer amount must be strictly higher than existing offers."))
 
     def _accept_offer(self, buyer, price):
         self.ensure_one()
@@ -131,15 +131,15 @@ class EstateProperty(models.Model):
 
     # Action Methods
     def action_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError(self.env._("A sold property cannot be cancelled."))
-            record.state = "cancelled"
+        if self.filtered(lambda record: record.state == "sold"):
+            raise UserError(self.env._("A sold property cannot be cancelled."))
+        self.write({"state": "cancelled"})
         return True
 
     def action_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError(self.env._("A cancelled property cannot be sold."))
-            record.state = "sold"
+        if self.filtered(lambda record: record.state == "cancelled"):
+            raise UserError(self.env._("A cancelled property cannot be sold."))
+        if self.filtered(lambda prop: prop.state != "offer_accepted"):
+            raise UserError(self.env._("A property can only be sold if an offer has been accepted."))
+        self.write({"state": "sold"})
         return True

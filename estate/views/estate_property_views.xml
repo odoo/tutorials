@@ -55,11 +55,6 @@
                             <field name="selling_price"/>
                         </group>
                     </group>
-                    <group>
-                        <group>
-                            <field name="active"/>
-                        </group>
-                    </group>
 
                     <notebook>
 

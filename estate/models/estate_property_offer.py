@@ -61,22 +61,27 @@ class PropertyOffer(models.Model):
     # CRUD Methods
     @api.model_create_multi
     def create(self, vals_list):
+        property_ids = list({vals["property_id"] for vals in vals_list})
+        properties = self.env["estate.property"].browse(property_ids)
         for vals in vals_list:
-            property_id = self.env["estate.property"].browse(vals["property_id"])
-            property_id._check_new_offer_price(vals["price"])
-            property_id.state = "offer_received"
+            property_rec = properties.filtered(lambda property: property.id == vals["property_id"])
+            property_rec._check_new_offer_price(vals["price"])
+        properties.write({"state": "offer_received"})
         return super().create(vals_list)
 
     # Action Methods
     def action_accept(self):
+        if self.filtered(lambda offer: offer.status in ('accepted', 'refused')):
+            raise UserError(self.env._("You can only accept pending offers."))
         for record in self:
             record.property_id._accept_offer(record.partner_id, record.price)
-            record.status = "accepted"
+            other_offers = record.property_id.offer_ids - record
+            other_offers.write({"status": "refused"})
+        self.write({"status": "accepted"})
         return True
 
     def action_refuse(self):
-        for record in self:
-            if record.status == "accepted":
-                raise UserError(self.env._("An accepted offer cannot be refused."))
-            record.status = "refused"
+        if self.filtered(lambda offer: offer.status == "accepted"):
+            raise UserError(self.env._("An accepted offer cannot be refused."))
+        self.write({"status": "refused"})
         return True
