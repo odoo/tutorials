@@ -5,9 +5,11 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Offers">
-                <field name="price" width="33%"/>
-                <field name="partner_id" string="Type" width="34%"/>
-                <field name="status" width="33%"/>
+                <field name="price" width="20%"/>
+                <field name="partner_id" string="Type" width="20%"/>
+                <field name="validity" width="20%"/>
+                <field name="date_deadline" string="Deadline" width="20%"/>
+                <field name="status" width="20%"/>
             </list>
         </field>
     </record>
