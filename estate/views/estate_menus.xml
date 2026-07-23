@@ -22,4 +22,5 @@
         name="Property Tags"
         parent="estate_menu_settings"
         action="estate_property_tag_action"/>
+
 </odoo>

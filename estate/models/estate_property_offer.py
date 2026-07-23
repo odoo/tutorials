@@ -5,9 +5,11 @@ from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
+    # Attributes
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
 
+    # Fields
     price = fields.Float(string="Price")
     status = fields.Selection(
         selection=[
@@ -15,18 +17,26 @@ class PropertyOffer(models.Model):
             ("refused", "Refused"),
         ],
         string="Status",
-        copy=False
+        copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-
     validity = fields.Integer(string="Validity (days)", default=7)
+
+    # Computed Fields
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
 
+    # SQL Constraints
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive.",
+    )
+
+    # Compute / Inverse Methods
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -39,6 +49,7 @@ class PropertyOffer(models.Model):
             if record.date_deadline:
                 record.validity = (record.date_deadline - date).days
 
+    # CRUD Methods
     @api.model_create_multi
     def create(self, vals_list):
         offers = super().create(vals_list)
@@ -46,6 +57,7 @@ class PropertyOffer(models.Model):
             offer.property_id.state = "offer_received"
         return offers
 
+    # Action Methods
     def action_accept(self):
         for record in self:
             if record.property_id.buyer_id:
