@@ -6,6 +6,10 @@
             <list string="offers">
                 <field name="price" />
                 <field name="partner_id" />
+                <button name="accept" string="Accept" type="object"
+                    icon="fa-check" />
+                <button name="refuse" string="Refuse" type="object"
+                    icon="fa-close" />
                 <field name="status" />
             </list>
         </field>
