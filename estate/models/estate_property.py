@@ -40,7 +40,7 @@ class EstateProperty(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
-        ]
+        ],
     )
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     property_type_id = fields.Many2one("estate.property.type")
@@ -62,10 +62,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _best_price(self):
         for record in self:
-            if len(best := self.mapped("offer_ids.price")) < 1:
-                record.best_price = 0
-                continue
-            record.best_price = max(best)
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.depends("living_area", "garden_area")
     def _total_area(self):
