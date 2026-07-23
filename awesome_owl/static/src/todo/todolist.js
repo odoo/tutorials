@@ -1,5 +1,6 @@
 import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todoitem";
+import { useAutoFocus } from "../utils";
 
 export class TodoList extends Component {
     static template = "awesome_owl.todolist";
@@ -12,6 +13,7 @@ export class TodoList extends Component {
         //     { id: 5, description: "WAKE UP", isCompleted: true },
         // ]);
         this.todos = useState([]);
+        useAutoFocus("list_input");
     }
 
     addTodo(event) {

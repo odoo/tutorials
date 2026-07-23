@@ -3,7 +3,8 @@
 
     <t t-name="awesome_owl.todolist">
         <div>
-            <input type="text" 
+            <input type="text"
+            t-ref="list_input"
             t-on-keyup="addTodo"
             placeholder="Add a todo"/>
         </div>
