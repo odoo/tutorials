@@ -9,7 +9,7 @@ class Property(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        default=lambda self: fields.Date.add(fields.Date.today(), months=3), 
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
         copy=False
     )
     expected_price = fields.Float(required=True)
@@ -33,3 +33,6 @@ class Property(models.Model):
         copy=False,
         default='new'
     )
+    property_type_id=fields.Many2one("estate.property.type", string="Property Type")
+    salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
+    buyer = fields.Many2one("res.partner", copy=False)
