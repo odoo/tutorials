@@ -33,6 +33,9 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
                         <group>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode"/>
