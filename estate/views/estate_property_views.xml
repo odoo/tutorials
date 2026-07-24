@@ -12,6 +12,10 @@
         <field name="model">realestate.properties</field>
         <field name="arch" type="xml">
             <form string="Custom description form">
+                <header>
+                    <button name="sold_action_btn" type="object" string="Property sold" />
+                    <button name="cancelled_action_btn" type="object" string="Property cancelled" />
+                </header>
                 <sheet>
                     <h1 class="oe_title mb32">
                         <field name="name" />
@@ -19,6 +23,7 @@
                     <group>
                         <field name="property_tag_ids" widget="many2many_tags" class="mb16" />
                         <group>
+                            <field name="state" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
