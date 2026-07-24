@@ -5,11 +5,13 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Offers">
-                <field name="price" width="20%"/>
-                <field name="partner_id" string="Type" width="20%"/>
-                <field name="validity" width="20%"/>
-                <field name="date_deadline" string="Deadline" width="20%"/>
-                <field name="status" width="20%"/>
+                <field name="price" width="17%"/>
+                <field name="partner_id" string="Partner" width="17%"/>
+                <field name="validity" width="17%"/>
+                <field name="date_deadline" string="Deadline" width="17%"/>
+                <button name="action_accept_offer" type="object" icon="fa-check" width="7.5%"/>
+                <button name="action_refuse_offer" type="object" icon="fa-times" width="7.5%"/>
+                <field name="status" width="17%"/>
             </list>
         </field>
     </record>

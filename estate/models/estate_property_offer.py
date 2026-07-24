@@ -22,3 +22,22 @@ class PropertyOffer(models.Model):
         for record in self:
             create_date = record.create_date if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - fields.Date.to_date(create_date)).days
+
+    def action_accept_offer(self):
+        self.ensure_one()
+
+        self.status = 'accepted'
+
+        other_offers = self.property_id.offer_ids - self
+        other_offers.write({'status': 'refused'})
+
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id
+
+        return True
+
+    def action_refuse_offer(self):
+        self.ensure_one()
+        self.status = 'refused'
+
+        return True
