@@ -87,11 +87,7 @@ class AwesomeEstatePropertyOffer(models.Model):
     # -----------------------------------------------------------------------
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
-        """deadline = create_date (or today) + validity days.
-
-        Before the record is saved, create_date is empty — fall back to today
-        so the form can still show a sensible deadline while typing.
-        """
+        """Deadline = creation date + validity days."""
         for record in self:
             if record.create_date:
                 record.date_deadline = fields.Date.add(
@@ -106,17 +102,7 @@ class AwesomeEstatePropertyOffer(models.Model):
     # Inverse Methods
     # -----------------------------------------------------------------------
     def _inverse_date_deadline(self):
-        """User edited deadline → store the matching validity day count.
-
-        inverse runs when a computed field is written from the UI/API.
-        We keep only one stored “source of truth” number (validity); the
-        absolute date is recomputed from create_date + validity next time.
-
-        Formula:
-            validity = (date_deadline - create_date).days
-        or, if the offer is not saved yet:
-            validity = (date_deadline - today).days
-        """
+        """User edited deadline → recompute validity."""
         for record in self:
             if record.date_deadline and record.create_date:
                 deadline = fields.Date.to_date(record.date_deadline)
@@ -129,7 +115,7 @@ class AwesomeEstatePropertyOffer(models.Model):
             elif record.date_deadline:
                 deadline = fields.Date.to_date(record.date_deadline)
                 today = fields.Date.today()
-                if deadline <= today:
+                if deadline < today:
                     raise ValidationError(
                         _("The deadline date must be after today."),
                     )
@@ -215,16 +201,24 @@ class AwesomeEstatePropertyOffer(models.Model):
         return True
 
     def action_mark_suspicious(self):
-        """Manually mark this offer as suspicious (review queue)."""
+        """Manually mark this offer as suspicious."""
         self.ensure_one()
+        if self.status:
+            raise UserError(
+                _("Cannot mark a %s offer as suspicious.", self.status)
+            )
         if self.is_suspicious:
             raise UserError(_("This offer is already marked as suspicious."))
         self.is_suspicious = True
         return True
 
     def action_clear_suspicious(self):
-        """Clear the suspicious flag after review."""
+        """Clear the suspicious flag."""
         self.ensure_one()
+        if self.status:
+            raise UserError(
+                _("Cannot clear the suspicious flag on a %s offer.", self.status)
+            )
         if not self.is_suspicious:
             raise UserError(_("This offer is not marked as suspicious."))
         self.is_suspicious = False
@@ -262,4 +256,5 @@ class AwesomeEstatePropertyOffer(models.Model):
             ('status', 'not in', ['accepted', 'refused']),
         ])
         if expired_offers:
-            expired_offers.status = 'refused'
+            expired_offers.write({'status': 'refused'})
+        return True

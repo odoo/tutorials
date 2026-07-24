@@ -7,16 +7,19 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     _description = 'Property Maintenance Request'
     _rec_name = 'name'
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _mail_post_access = 'read'
 
     # -----------------------------------------------------------------------
     # Fields
     # -----------------------------------------------------------------------
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(string="Title", required=True, tracking=1)
     description = fields.Text()
     issue_type = fields.Selection(
         string="Issue Type",
         default='other',
         required=True,
+        tracking=1,
         selection=[
             ('electricity', "Electricity"),
             ('plumbing', "Plumbing"),
@@ -40,11 +43,13 @@ class AwesomeEstatePropertyMaintenance(models.Model):
         'res.users', string="Technician",
         domain="[('share', '=', False)]",
         index='btree_not_null',
+        tracking=1,
     )
     priority = fields.Selection(
         string="Priority",
         default='2',
         required=True,
+        tracking=1,
         selection=[
             ('0', "Very Low"),
             ('1', "Low"),
@@ -63,10 +68,12 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     )
     estimate_cost = fields.Monetary(
         string="Estimated Cost", currency_field='currency_id',
+        tracking=10,
     )
     actual_cost = fields.Monetary(
         string="Actual Cost", currency_field='currency_id',
         compute='_compute_actual_cost', store=True,
+        tracking=20,
     )
     cost_line_ids = fields.One2many(
         'awesome.estate.property.maintenance.cost',
@@ -90,6 +97,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     state = fields.Selection(
         string="Status",
         default='new', required=True, copy=False,
+        tracking=50,
         selection=[
             ('new', "New"),
             ('assigned', "Assigned"),
@@ -131,13 +139,19 @@ class AwesomeEstatePropertyMaintenance(models.Model):
 
     @api.depends('subtask_ids.state')
     def _compute_progress(self):
-        """Progress % = (completed subtasks / total subtasks) * 100."""
+        """Progress % = (done subtasks / active subtasks) * 100.
+
+        Canceled subtasks are excluded from both numerator and denominator
+        so they do not distort the progress bar.
+        """
         for record in self:
-            total = len(record.subtask_ids)
+            active = record.subtask_ids.filtered(
+                lambda s: s.state != 'canceled')
+            total = len(active)
             if not total:
                 record.progress = 0
                 continue
-            done = len(record.subtask_ids.filtered(lambda s: s.state == 'done'))
+            done = len(active.filtered(lambda s: s.state == 'done'))
             record.progress = int((done / total) * 100)
 
     # -----------------------------------------------------------------------
@@ -145,7 +159,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     # -----------------------------------------------------------------------
     @api.onchange('issue_type')
     def _onchange_issue_type(self):
-        """Auto-fill estimate_cost from issue type default whenever type changes."""
+        """Auto-fill estimate cost from issue type."""
         ISSUE_TYPE_DEFAULT_COST = {
             'electricity': 1000.0,
             'plumbing': 1500.0,
@@ -170,6 +184,19 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     # -----------------------------------------------------------------------
     # CRUD Methods
     # -----------------------------------------------------------------------
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Prevent creating maintenance requests on sold or canceled properties."""
+        for vals in vals_list:
+            if vals.get('property_id'):
+                property = self.env['awesome.estate.property'].browse(vals['property_id'])
+                if property.state in ('sold', 'canceled'):
+                    raise UserError(_(
+                        "Cannot create maintenance requests on %s properties.",
+                        property.state,
+                    ))
+        return super().create(vals_list)
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_not_final(self):
         """Prevent deletion of requests that are in progress or completed."""
@@ -258,4 +285,24 @@ class AwesomeEstatePropertyMaintenance(models.Model):
             'progress': 0,
             'close_date': False,
         })
+        return True
+
+    # -----------------------------------------------------------------------
+    # Cron Methods
+    # -----------------------------------------------------------------------
+    @api.model
+    def _cron_escalate_overdue_maintenance(self):
+        """Daily cron: warn on maintenance requests past their scheduled date."""
+        overdue = self.search([
+            ('state', 'in', ('assigned', 'in_progress')),
+            ('schedule_date', '<', fields.Datetime.now()),
+        ])
+        for record in overdue:
+            record.message_post(
+                body=_(
+                    "This maintenance request is overdue (scheduled for %s). "
+                    "Please take appropriate action.",
+                    record.schedule_date,
+                )
+            )
         return True

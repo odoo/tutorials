@@ -40,6 +40,4 @@ class AwesomeEstatePropertyType(models.Model):
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         for record in self:
-            # Per-record count (do not use record.ids inside the loop — that
-            # would attribute the whole batch total to every type).
             record.offer_count = len(record.offer_ids)

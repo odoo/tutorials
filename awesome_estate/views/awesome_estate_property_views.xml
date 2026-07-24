@@ -1,13 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
 
-    <!--
-        List view column policy (Odoo community pattern: CRM / Fleet / Sale):
-        - Always-on: identity + money + status (~6 columns) so no horizontal scroll
-        - optional="show": useful daily admin signals, user can hide
-        - optional="hide": detail fields live on the form; enable via column selector
-        Detail specs (bedrooms, areas, garage, garden, buyer) stay on form / Description tab.
-    -->
     <record id="awesome_estate_property_view_list" model="ir.ui.view">
         <field name="name">awesome.estate.property.list</field>
         <field name="model">awesome.estate.property</field>
@@ -64,7 +57,6 @@
                            statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
-                    <!-- Derived review signal (compute count) — banner, not a toggle -->
                     <field name="suspicious_offer_count" invisible="1"/>
                     <div class="alert alert-warning d-flex align-items-center"
                          invisible="suspicious_offer_count == 0" role="alert">
@@ -140,11 +132,11 @@
                                             invisible="status in ['accepted', 'refused'] or is_suspicious"/>
                                     <button name="action_mark_suspicious" type="object" icon="fa-flag"
                                             title="Mark as Suspicious"
-                                            invisible="is_suspicious"
+                                            invisible="is_suspicious or status in ('accepted', 'refused')"
                                             confirm="Mark this offer as suspicious for review?"/>
                                     <button name="action_clear_suspicious" type="object" icon="fa-flag-o"
                                             class="text-warning" title="Clear Suspicious Flag"
-                                            invisible="not is_suspicious"
+                                            invisible="not is_suspicious or status in ('accepted', 'refused')"
                                             confirm="Clear the suspicious flag on this offer?"/>
                                 </list>
                                 <form>
@@ -154,12 +146,12 @@
                                                 class="btn-primary"/>
                                         <button name="action_refuse" string="Refuse" type="object"
                                                 invisible="status in ['accepted', 'refused'] or is_suspicious"/>
-                                        <button name="action_mark_suspicious" string="Mark Suspicious"
-                                                type="object" invisible="is_suspicious"
-                                                confirm="Mark this offer as suspicious for review?"/>
-                                        <button name="action_clear_suspicious" string="Clear Suspicious Flag"
-                                                type="object" invisible="not is_suspicious"
-                                                confirm="Clear the suspicious flag on this offer?"/>
+                                    <button name="action_mark_suspicious" string="Mark Suspicious"
+                                            type="object" invisible="is_suspicious or status in ('accepted', 'refused')"
+                                            confirm="Mark this offer as suspicious for review?"/>
+                                    <button name="action_clear_suspicious" string="Clear Suspicious Flag"
+                                            type="object" invisible="not is_suspicious or status in ('accepted', 'refused')"
+                                            confirm="Clear the suspicious flag on this offer?"/>
                                         <field name="status" widget="statusbar"/>
                                     </header>
                                     <sheet>
@@ -234,16 +226,16 @@
                                             <page string="Subtasks">
                                                 <field name="subtask_ids" nolabel="1">
                                                     <list editable="bottom" create="1" delete="1">
-                                                        <field name="sequence" widget="handle"/>
-                                                        <field name="name"/>
-                                                        <field name="technician_id"
-                                                               domain="[('share', '=', False)]"
-                                                               widget="many2one_avatar_user"
-                                                               optional="show"/>
-                                                        <field name="state" widget="badge" optional="show"/>
-                                                        <field name="planned_hours" optional="hide"/>
-                                                        <field name="effective_hours" optional="hide"/>
-                                                        <field name="cost" widget="monetary" optional="hide"/>
+                                                <field name="sequence" widget="handle"/>
+                                                <field name="name"/>
+                                                <field name="technician_id"
+                                                       domain="[('share', '=', False)]"
+                                                       widget="many2one_avatar_user"
+                                                       optional="show"/>
+                                                <field name="state" optional="show"/>
+                                                <field name="planned_hours" optional="hide"/>
+                                                <field name="effective_hours" optional="hide"/>
+                                                <field name="cost" widget="monetary" optional="hide"/>
                                                     </list>
                                                 </field>
                                             </page>
@@ -270,6 +262,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter reload_on_post="True"/>
             </form>
         </field>
     </record>

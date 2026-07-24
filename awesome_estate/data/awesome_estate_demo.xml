@@ -330,7 +330,7 @@
     <record id="offer_refused" model="awesome.estate.property.offer">
         <field name="property_id" ref="property_multi_offer"/>
         <field name="partner_id" ref="partner_buyer1"/>
-        <field name="price">1800000</field>
+        <field name="price">2000000</field>
         <field name="validity">7</field>
         <field name="status">refused</field>
     </record>

@@ -1,20 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
 
-    <!--
-        Suspicious flag UI — Odoo review-flag pattern (mail blacklist style),
-        NOT settings toggles (boolean_toggle is for publish/active/etc.).
-
-        Keep:
-          - decoration-warning on rows
-          - header / row action buttons (Mark / Clear)
-          - alert banner when flagged
-          - is_suspicious as invisible field for domains / invisible attrs
-          - search filters
-        Drop:
-          - boolean_toggle (settings flip UX — wrong for a review flag)
-    -->
-
     <!-- List View -->
     <record id="awesome_estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">awesome.estate.property.offer.list</field>
@@ -31,7 +17,6 @@
                 <field name="create_date" optional="hide"/>
                 <field name="validity" optional="hide"/>
                 <field name="date_deadline" optional="show"/>
-                <!-- Needed for decoration / button invisible; not a free-edit settings column -->
                 <field name="is_suspicious" column_invisible="1"/>
                 <field name="status" widget="badge" optional="show"
                          decoration-success="status == 'accepted'"
@@ -42,11 +27,11 @@
                 <button name="action_refuse" type="object" icon="fa-times" title="Refuse"
                         invisible="status in ['accepted', 'refused'] or is_suspicious"/>
                 <button name="action_mark_suspicious" type="object" icon="fa-flag"
-                        title="Mark as Suspicious" invisible="is_suspicious"
+                        title="Mark as Suspicious" invisible="is_suspicious or status in ('accepted', 'refused')"
                         confirm="Mark this offer as suspicious for review?"/>
                 <button name="action_clear_suspicious" type="object" icon="fa-flag-o"
                         class="text-warning" title="Clear Suspicious Flag"
-                        invisible="not is_suspicious"
+                        invisible="not is_suspicious or status in ('accepted', 'refused')"
                         confirm="Clear the suspicious flag on this offer?"/>
             </list>
         </field>
@@ -86,7 +71,7 @@
         </field>
     </record>
 
-    <!-- Form View — mail blacklist style: actions + banner, field not a settings switch -->
+    <!-- Form View -->
     <record id="awesome_estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">awesome.estate.property.offer.form</field>
         <field name="model">awesome.estate.property.offer</field>
@@ -99,15 +84,14 @@
                     <button name="action_refuse" string="Refuse" type="object"
                             invisible="status in ['accepted', 'refused'] or is_suspicious"/>
                     <button name="action_mark_suspicious" string="Mark Suspicious" type="object"
-                            invisible="is_suspicious"
+                            invisible="is_suspicious or status in ('accepted', 'refused')"
                             confirm="Mark this offer as suspicious for review?"/>
                     <button name="action_clear_suspicious" string="Clear Suspicious Flag" type="object"
-                            invisible="not is_suspicious"
+                            invisible="not is_suspicious or status in ('accepted', 'refused')"
                             confirm="Clear the suspicious flag on this offer?"/>
                     <field name="status" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <!-- Like stock/account warning alerts: state, not a toggle -->
                     <div class="alert alert-warning d-flex align-items-center"
                          invisible="not is_suspicious" role="alert">
                         <i class="fa fa-flag me-2" title="Suspicious"/>
@@ -120,7 +104,6 @@
                     <group>
                         <group string="Offer Details">
                             <field name="price"/>
-                            <!-- Blacklist pattern: icon next to identity when flagged -->
                             <label for="partner_id"/>
                             <div class="o_row">
                                 <i class="fa fa-flag text-warning" role="img"
@@ -138,7 +121,6 @@
                             <field name="status" widget="badge"
                                      decoration-success="status == 'accepted'"
                                      decoration-danger="status == 'refused'"/>
-                            <!-- Loaded for modifiers; not edited as a settings flip -->
                             <field name="is_suspicious" invisible="1"/>
                         </group>
                     </group>

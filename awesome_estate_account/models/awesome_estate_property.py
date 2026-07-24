@@ -4,13 +4,6 @@ from odoo.fields import Command
 
 
 class AwesomeEstateProperty(models.Model):
-    """Add accounting integration to the estate property model.
-
-    This inheritance adds:
-    - A One2many link to invoices generated from this property
-    - A computed invoice count field for stat buttons
-    - An action method to open the related invoice
-    """
     _inherit = 'awesome.estate.property'
 
     # -----------------------------------------------------------------------
@@ -39,21 +32,8 @@ class AwesomeEstateProperty(models.Model):
     # Action Methods
     # -----------------------------------------------------------------------
     def action_sold(self):
-        """Mark property as sold, then create a customer invoice.
-
-        Calls the original ``action_sold()`` first to perform the state
-        transition and all validations.  After the property is confirmed
-        as sold, an ``account.move`` (out_invoice) is created with two
-        lines: a 6% commission on the selling price and a flat $100
-        administrative fee.
-
-        The generated invoice is linked back to the property via the
-        ``estate_property_id`` field for bidirectional navigation.
-        """
-        # Step 1 — let the base module handle the state transition.
+        """Mark property as sold, then create a customer invoice."""
         result = super().action_sold()
-
-        # Step 2 — build and create the customer invoice.
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
@@ -73,13 +53,18 @@ class AwesomeEstateProperty(models.Model):
         })
         return result
 
-    def action_open_invoice(self):
-        """Open the invoice for this property.
+    def action_reset(self):
+        """Reset property and cancel all existing invoices."""
+        for invoice in self.account_move_ids:
+            if invoice.state == 'draft':
+                invoice.button_cancel()
+            elif invoice.state in ('posted', 'paid'):
+                invoice.button_draft()
+                invoice.button_cancel()
+        return super().action_reset()
 
-        If exactly one invoice exists, it opens that invoice's form view.
-        If multiple invoices exist (e.g., from repeated sales), it opens
-        a filtered list view.
-        """
+    def action_open_invoice(self):
+        """Open the invoice for this property."""
         self.ensure_one()
         invoices = self.account_move_ids
         if not invoices:

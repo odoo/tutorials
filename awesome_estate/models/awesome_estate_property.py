@@ -8,11 +8,13 @@ class AwesomeEstateProperty(models.Model):
     _description = 'Real Estate Property'
     _rec_name = 'name'
     _order = 'id desc'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _mail_post_access = 'read'
 
     # -----------------------------------------------------------------------
     # Fields
     # -----------------------------------------------------------------------
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(string="Title", required=True, tracking=1)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -20,9 +22,10 @@ class AwesomeEstateProperty(models.Model):
         copy=False,
         default=lambda self: fields.Date.add(
             fields.Date.context_today(self), months=3),
+        tracking=1,
     )
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(copy=False)
+    expected_price = fields.Float(required=True, tracking=10)
+    selling_price = fields.Float(copy=False, tracking=20)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
@@ -49,12 +52,14 @@ class AwesomeEstateProperty(models.Model):
         readonly=True,
         copy=False,
         index=True,
+        tracking=1,
     )
     salesperson_id = fields.Many2one(
         'res.users',
         string="Salesperson",
         default=lambda self: self.env.user,
         index=True,
+        tracking=1,
     )
     tag_ids = fields.Many2many(
         'awesome.estate.property.tag',
@@ -76,6 +81,7 @@ class AwesomeEstateProperty(models.Model):
         required=True,
         copy=False,
         default='new',
+        tracking=50,
     )
     total_area = fields.Integer(
         string="Total Area (sqm)",
@@ -154,8 +160,10 @@ class AwesomeEstateProperty(models.Model):
 
     @api.depends('offer_ids', 'offer_ids.price')
     def _compute_best_price(self):
+        """Best price among pending (non-refused, non-accepted) offers only."""
         for record in self:
-            prices = record.offer_ids.mapped('price')
+            pending = record.offer_ids.filtered(lambda o: not o.status)
+            prices = pending.mapped('price')
             record.best_price = max(prices) if prices else 0.0
 
     @api.depends('offer_ids.is_suspicious')
@@ -190,23 +198,19 @@ class AwesomeEstateProperty(models.Model):
     # Action Methods
     # -----------------------------------------------------------------------
     def action_sold(self):
-        """Mark the property as sold.
-
-        Validates the property is not already cancelled or sold. Auto-fills
-        selling_price and buyer_id from the accepted offer if not set.
-        Requires a selling price to complete the sale.
-
-        Raises:
-            UserError: If property is in 'canceled' or 'sold' state.
-            UserError: If no selling price is set.
-        """
+        """Mark the property as sold."""
         self.ensure_one()
         if self.state == 'canceled':
             raise UserError(_("Canceled properties cannot be sold."))
         if self.state == 'sold':
             raise UserError(_("Property is already sold."))
-        # Auto-fill selling_price and buyer_id from the accepted offer.
-        # The state machine guarantees at most one accepted offer exists.
+        open_maint = self.maintenance_ids.filtered(
+            lambda m: m.state not in ('done', 'canceled'))
+        if open_maint:
+            raise UserError(_(
+                "Cannot sell a property with open maintenance requests. "
+                "Complete or cancel them first."
+            ))
         if self.state == 'offer_accepted' and not self.selling_price:
             accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
             if accepted:
@@ -214,7 +218,6 @@ class AwesomeEstateProperty(models.Model):
                     'selling_price': accepted.price,
                     'buyer_id': accepted.partner_id.id,
                 })
-        # Guard: must have a selling price
         if not self.selling_price:
             raise UserError(
                 _("Set a selling price before selling the property."))
@@ -222,57 +225,54 @@ class AwesomeEstateProperty(models.Model):
         return True
 
     def action_cancel(self):
-        """Cancel the property and refuse all pending offers.
-
-        Refuses any accepted offer and all pending offers, then marks the
-        property as canceled and archives it.
-
-        Raises:
-            UserError: If property is already sold or canceled.
-        """
+        """Cancel the property and refuse all pending offers."""
         self.ensure_one()
         if self.state == 'sold':
             raise UserError(_("Sold properties cannot be canceled."))
         if self.state == 'canceled':
             raise UserError(_("Property is already canceled."))
-        accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
-        if accepted:
-            accepted.write({'status': 'refused'})
+        open_maint = self.maintenance_ids.filtered(
+            lambda m: m.state not in ('done', 'canceled'))
+        if open_maint:
+            raise UserError(_(
+                "Cannot cancel a property with open maintenance requests. "
+                "Complete or cancel them first."
+            ))
         pending = self.offer_ids.filtered(lambda o: not o.status)
         if pending:
             pending.status = 'refused'
+        accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
+        if accepted:
+            self.message_post(
+                body=_(
+                    "Property '%s' was cancelled. The accepted offer "
+                    "from %s for %.2f is no longer valid.",
+                    self.display_name,
+                    accepted.partner_id.display_name,
+                    accepted.price,
+                )
+            )
         self.state = 'canceled'
-        # Odoo guideline: terminal "Canceled" state archives the record
-        # so it is hidden from default list views.
         self.active = False
         return True
 
     def action_reset(self):
-        """Reset sold or canceled property back to 'new' state."""
+        """Reset sold or canceled property back to 'new' and reopen all offers."""
         self.ensure_one()
         if self.state not in ('sold', 'canceled'):
             raise UserError(
                 _("Only sold or canceled properties can be reset."))
-        was_sold = self.state == 'sold'
         self.write({
             'state': 'new',
             'selling_price': 0.0,
             'buyer_id': False,
             'active': True,
         })
-        if was_sold:
-            self.offer_ids.write({'status': False})
+        self.offer_ids.write({'status': False})
         return True
 
     def action_accept_best_offer(self):
-        """Accept the highest-priced pending offer in one click.
-
-        Finds the offer matching best_price and accepts it.
-
-        Raises:
-            UserError: If property is sold, canceled, or already has an accepted offer.
-            UserError: If no offers exist on this property.
-        """
+        """Accept the highest-priced pending offer in one click."""
         self.ensure_one()
         if self.state in ('sold', 'canceled', 'offer_accepted'):
             raise UserError(
@@ -283,3 +283,65 @@ class AwesomeEstateProperty(models.Model):
         if not best_offers:
             raise UserError(_("No offers available to accept."))
         best_offers[0].action_accept()
+
+    # -----------------------------------------------------------------------
+    # Cron Methods
+    # -----------------------------------------------------------------------
+    @api.model
+    def _cron_archive_stale_properties(self):
+        """Weekly cron: auto-cancel properties with no activity for 90+ days."""
+        limit_date = fields.Date.add(fields.Date.today(), days=-90)
+        stale_new = self.search([
+            ('state', '=', 'new'),
+            ('offer_ids', '=', False),
+            ('create_date', '<', fields.Datetime.to_datetime(limit_date)),
+        ])
+        for record in stale_new:
+            record.message_post(
+                body=_(
+                    "This property has been automatically archived because it "
+                    "received no offers for 90 days."
+                )
+            )
+            record.write({'active': False, 'state': 'canceled'})
+        # Properties stuck in 'offer_received' where all offers are final
+        # (refused/accepted, none pending).
+        stale_received = self.search([
+            ('state', '=', 'offer_received'),
+            ('create_date', '<', fields.Datetime.to_datetime(limit_date)),
+        ])
+        for record in stale_received:
+            pending = record.offer_ids.filtered(lambda o: not o.status)
+            if not pending:
+                record.message_post(
+                    body=_(
+                        "This property has been automatically archived because "
+                        "all its offers are final and none are pending."
+                    )
+                )
+                record.write({'active': False, 'state': 'canceled'})
+        return True
+
+    @api.model
+    def _cron_remind_expiring_offers(self):
+        """Daily cron: notify salesperson 1 day before an offer's deadline expires."""
+        tomorrow = fields.Date.add(fields.Date.today(), days=1)
+        near_expiry = self.env['awesome.estate.property.offer'].search([
+            ('date_deadline', '=', tomorrow),
+            ('status', 'not in', ['accepted', 'refused']),
+        ])
+        for offer in near_expiry:
+            offer.property_id.activity_schedule(
+                'mail.mail_activity_data_todo',
+                summary=_("Offer deadline expires tomorrow — %(price).0f from %(partner)s",
+                          price=offer.price, partner=offer.partner_id.name),
+                user_id=offer.property_id.salesperson_id.id or self.env.user.id,
+                note=_(
+                    "Offer #%(id)d for %(price).0f from %(partner)s "
+                    "on property '%(property)s' expires on %(deadline)s.",
+                    id=offer.id, price=offer.price, partner=offer.partner_id.display_name,
+                    property=offer.property_id.display_name,
+                    deadline=offer.date_deadline,
+                ),
+            )
+        return True
