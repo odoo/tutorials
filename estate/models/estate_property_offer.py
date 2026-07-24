@@ -3,7 +3,6 @@ from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
-
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "It is estate property offer"
@@ -82,6 +81,7 @@ class EstatePropertyOffer(models.Model):
                     raise UserError("This offer can't be created")
 
             if property_record.state == "new":
+                # breakpoint()
                 property_record.state = "offer_received"
 
         return super().create(vals_list)
