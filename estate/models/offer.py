@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class Offer(models.Model):
@@ -40,3 +41,18 @@ class Offer(models.Model):
         for offer in self:
             date_diff = offer.date_deadline - (offer.create_date.date())
             offer.validity = date_diff.days
+
+    def action_accept_offer(self):
+        # check if there is no other accepted offers
+        if "accepted" in self.property_id.offer_ids.mapped("status"):
+            raise UserError("Only one offer can be accepted for a given property!")
+
+        # update status, selling price, buyer
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+
+    def action_refuse_offer(self):
+        self.status = "refused"
+        self.property_id.selling_price = 0
+        self.property_id.buyer_id = None
