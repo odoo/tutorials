@@ -4,6 +4,7 @@ from odoo import api, fields, models
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
@@ -38,6 +39,8 @@ class PropertyOffer(models.Model):
 
         self.property_id.selling_price = self.price
         self.property_id.buyer = self.partner_id
+
+        self.property_id.state = 'offer accepted'
 
         return True
 
