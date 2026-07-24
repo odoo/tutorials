@@ -13,7 +13,7 @@
                 <field name="expected_price" widget="monetary"/>
                 <field name="selling_price" widget="monetary"/>
                 <field name="date_availability" string="Available" optional="show"/>
-                <field name="state" invisible="1"/>
+                <field name="state" invisible="1"/><!-- Required for evaluating list row decorations -->
             </list>
         </field>
     </record>
