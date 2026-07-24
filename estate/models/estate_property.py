@@ -1,5 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.orm.utils import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -28,7 +30,15 @@ class EstateProperty(models.Model):
         default=fields.Date.add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float(required=True)
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price >= 0)",
+        "Le prix doit être strictement positif",
+    )
     selling_price = fields.Float(readonly=True, copy=False)
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "Le prix doit être strictement positif",
+    )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer()
@@ -69,6 +79,20 @@ class EstateProperty(models.Model):
     def _total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
+
+    @api.depends("selling_price", "expected_price")
+    @api.constrains("selling_price")
+    def _onchange_constrains_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 3) and float_compare(
+                (record.selling_price / record.expected_price) * 100,
+                90.00,
+                3,
+            ):
+                e = "selling price should be at least 90 percent of the expected price"
+                raise ValidationError(
+                    e,
+                )
 
     def cancel(self):
         if self.state == "sold":
