@@ -12,10 +12,12 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statistics = useService("statistics");
-        this.stats = useState({});
+        this.stats = this.statistics.onUpdate;
 
         onWillStart(async () => {
             const result = await this.statistics.loadStatistics();
+            // WARN; Perform immediate/synchronous update of state because sub-components
+            // logic isn't safeguarded against undefined values.
             for (const [key, value] of Object.entries(result)) {
                 this.stats[key] = value;
             }
