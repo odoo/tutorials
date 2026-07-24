@@ -31,14 +31,14 @@
                             <field name="name"/>
                             <field name="expected_price"/>
                             <field name="bedrooms"/>
-                            <field name="property_type" />
+                            <field name="property_type_id" />
                             <field name="living_area"/>
                             <field name="facades"/>
                         </group>
                         <group>
                             <field name="selling_price"/>
                             <field name="postcode"/>
-                            <field name="tag_id" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="date_availability"/>
                             <field name="garden"/>
                             <field name="garden_area"/>
@@ -80,6 +80,21 @@
                 <field name="partner_id"/>
                 <field name="status"/>
             </list>
+        </field>
+    </record>
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
     <record id="estate_property_view_search" model="ir.ui.view">
