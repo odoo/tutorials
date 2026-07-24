@@ -5,6 +5,7 @@ import { Layout } from "@web/search/layout";
 
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { PieChart } from "./pie_chart";
+import { items } from "./dashboard_item/dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -12,15 +13,16 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useService("statistics");
-        this.stats = this.statistics.onUpdate;
+        this.statService = useService("statistics");
+        this.statistics = this.statService.onUpdate;
+        this.items = items;
 
         onWillStart(async () => {
-            const result = await this.statistics.loadStatistics();
+            const result = await this.statService.loadStatistics();
             // WARN; Perform immediate/synchronous update of state because sub-components
             // logic isn't safeguarded against undefined values.
             for (const [key, value] of Object.entries(result)) {
-                this.stats[key] = value;
+                this.statistics[key] = value;
             }
         });
     }
