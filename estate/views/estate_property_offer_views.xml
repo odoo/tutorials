@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
-    <!-- 1. Action -->
+    <!-- Actions -->
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- 2. List View -->
+    <!-- List View -->
     <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
@@ -24,5 +23,4 @@
             </list>
         </field>
     </record>
-
 </odoo>
