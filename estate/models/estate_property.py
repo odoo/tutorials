@@ -1,5 +1,4 @@
 from odoo import models, fields
-from odoo.tools.rendering_tools import relativedelta_proxy
 
 
 class EstateProperty(models.Model):
@@ -11,7 +10,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char("Postcode")
     date_availability = fields.Date("Available From",
-        default=lambda self: fields.Date.today() + relativedelta_proxy(months=3)
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
