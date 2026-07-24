@@ -1,7 +1,9 @@
+import { registry } from "@web/core/registry";
+
 import { NumberCard } from "./number_card";
 import { PieChartCard } from "./pie_chart_card";
 
-export const items = [
+const items = [
     {
         id: "average_quantity",
         description: "Average amount of t-shirt",
@@ -57,4 +59,9 @@ export const items = [
             values: data.orders_by_size,
         })
     }
-]
+];
+
+const dashboard_registry = registry.category("awesome_dashboard");
+items.forEach(element => {
+    dashboard_registry.add(element.description, element);
+});
