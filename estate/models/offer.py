@@ -31,6 +31,11 @@ class Offer(models.Model):
         inverse="_inverse_deadline",
     )
 
+    _positive_offer_price = models.Constraint(
+        "CHECK(price > 0)",
+        "Offer price should be strictly positive",
+    )
+
     @api.depends("validity")
     def _compute_deadline(self):
         for offer in self:
