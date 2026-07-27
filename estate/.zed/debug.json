@@ -1,0 +1,17 @@
+[
+  {
+    "label": "Debug Odoo: rd-demo",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "python": "/home/odoo/odoo19/community/.venv/bin/python",
+    "program": "/home/odoo/odoo19/community/odoo-bin",
+    "cwd": "/home/odoo/odoo19/community",
+    "args": [
+      "--addons-path=addons,../enterprise/,../tutorials/",
+      "-d",
+      "rd-demo",
+      "-u",
+      "estate"
+    ]
+  }
+]
