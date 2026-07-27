@@ -26,11 +26,15 @@ class EstatePropertyOffer(models.Model):
     )
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             property_id = vals.get("property_id")
             price = vals.get("price", 0)
+
+            if not property_id:
+                continue
+
             if self.env["estate.property.offer"].search_count(
                 [
                     ("property_id", "=", property_id),
