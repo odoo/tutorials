@@ -2,6 +2,8 @@
     'name': 'Estate',
     'depends':  ['base'],
     'application': True,
+    'author': 'toher',
+    'license': 'LGPL-3',
 
     'data': [
         'security/ir.model.access.csv',
