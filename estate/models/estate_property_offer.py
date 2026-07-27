@@ -1,4 +1,6 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class PropertyOffer(models.Model):
@@ -21,13 +23,18 @@ class PropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
 
-        for offer in offers:
-            if offer.property_id.state == 'new':
-                offer.property_id.state = 'offer received'
+            if property.offer_ids:
+                max_offer = max(property.mapped("offer_ids.price"))
+                if float_compare(vals["price"], max_offer, precision_digits=2) <= 0:
+                    raise UserError(f"The offer must be strictly higher than {max_offer:.2f}")
 
-        return offers
+            property.state = 'offer received'
+
+        return super().create(vals_list)
+
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):

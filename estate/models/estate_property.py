@@ -79,6 +79,12 @@ class Property(models.Model):
         self.garden_area = None
         self.garden_orientation = None
 
+    @api.ondelete(at_uninstall=False)
+    def _check_state(self):
+        for record in self:
+            if record.state == "new" or record.state == "cancelled":
+                raise UserError(self.env._("Can't delete a new or cancelled property."))
+
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
