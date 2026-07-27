@@ -72,7 +72,7 @@ class Property(models.Model):
     def _onchange_garden(self):
         for record in self:
             record.garden_area = 10 if record.garden else 0
-            record.garden_orientation = 'north' if record.garden else None
+            record.garden_orientation = 'north' if record.garden else False
 
     def action_sold(self):
         for record in self:
