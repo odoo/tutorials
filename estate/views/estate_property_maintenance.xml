@@ -5,7 +5,7 @@
         <field name="res_model">estate.property.maintenance</field>
         <field name="view_mode">list,form</field>
     </record>
-    <record id ="estate_property_maintenance" model="ir.ui.view">
+    <record id="estate_property_maintenance" model="ir.ui.view">
         <field name="name">estate.property.maintenance.list </field>
         <field name="model">estate.property.maintenance</field>
         <field name="arch" type="xml">
@@ -25,7 +25,7 @@
         </field>
     </record>
 
-    <record id ="estate_property_maintenance_form" model="ir.ui.view">
+    <record id="estate_property_maintenance_form" model="ir.ui.view">
         <field name="name">estate.property.maintenance.form </field>
         <field name="model">estate.property.maintenance</field>
         <field name="arch" type="xml">
@@ -35,9 +35,9 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name = "title"/>
-                        <field name = "description"/>
-                        <field name = "maintenance_category"/>
+                        <field name="title"/>
+                        <field name="description"/>
+                        <field name="maintenance_category"/>
                         <field name="custom_category" 
                         invisible="not maintenance_category or maintenance_category != 'other'"/>
                     </group>

@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import _,api, fields, models
+from odoo import _, api, fields, models, Command
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_is_zero
@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -22,13 +23,11 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(string="Expected Price", required=True)
     _check_expected_price = models.Constraint(
         'CHECK( expected_price >=0 )',
-        'expected price cannot be less than 0 or in negative value '
-    )
+        'expected price cannot be less than 0 or in negative value ')
     selling_price = fields.Float(readonly=True, copy=False, string="Selling Price")
     _check_selling_price = models.Constraint(
         'CHECK( selling_price >= 0 )',
-        'selling price cannot be lestt than 0 or in negative value '
-    )
+        'selling price cannot be less than 0 or in negative value ')
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -38,7 +37,7 @@ class EstateProperty(models.Model):
             if (
                 record.selling_price < 0.90 * record.expected_price
             ):
-                raise ValidationError("selling price cannot be less than 90% of expected price")
+                raise ValidationError(_("selling price cannot be less than 90% of expected price"))
 
     bedrooms = fields.Integer(default=2, string="Bedrooms")
     living_area = fields.Integer(string="Living Area")
@@ -81,7 +80,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Integer(
-        string="Best price", compute="_compute_best_price", store="True"
+        string="Best price", compute="_compute_best_price", store=True
     )
     maintenance_ids = fields.One2many(
         "estate.property.maintenance", 'property_id', string="maintenance_id"
@@ -120,7 +119,7 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("sold property cannot be cancelled ")
+                raise UserError(_("sold property cannot be cancelled"))
             record.state = "cancelled"
         return True
 
@@ -141,7 +140,7 @@ class EstateProperty(models.Model):
         #     record.buyer_id = best_offer.partner_id
         #     best_offer.status = 'Accepted'
         #     (record.offer_ids - best_offer).write({'status': 'Refused'})
-
+        self.ensure_one()
         best_offer = self.offer_ids.filtered(lambda o: o.price == self.best_price)
         self.selling_price = self.best_price
         self.state = 'sold'
@@ -156,3 +155,27 @@ class EstateProperty(models.Model):
                 'type': 'rainbow_man',
             }
         }
+    selling_date = fields.Date(string="date of sale", compute="_compute_selling_date", store=True)
+
+    @api.depends('state')
+    def _compute_selling_date(self):
+        quick_sale_tag = self.env['estate.property.tag'].search([('name', '=', 'quick sell')])
+        for record in self:
+            if record.state == 'sold':
+                record.selling_date = fields.Date.today()
+                if quick_sale_tag and record.create_date:
+                    days_to_sell = (fields.Date.today() - record.create_date.date()).days
+                    if days_to_sell <= 2:
+                        record.tag_ids = [Command.link(quick_sale_tag.id)]
+
+    @api.onchange('expected_price')
+    def _onchange_expected_price(self):
+        high_value_tag = self.env['estate.property.tag'].search(
+            [('name', '=', 'high value')])
+        # breakpoint()
+        low_value_tag = self.env['estate.property.tag'].search(
+             [('name', '=', 'low value')])
+        if self.expected_price > 1000000:
+            self.tag_ids = [Command.link(high_value_tag.id)]
+        if self.expected_price < 1000000:
+            self.tag_ids = [Command.link(low_value_tag.id)]

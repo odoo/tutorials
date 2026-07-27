@@ -10,7 +10,9 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string ="offers" decoration-danger = "is_spam == True">
+            <list string ="offers" decoration-warning = "is_spam == True"
+                decoration-danger="status=='rejected'"
+                decoration-success="status=='accepted'">
                 <field name="price"/>
                 <field name="status"/>
                 <field name="partner_id"/>
@@ -44,6 +46,7 @@
                         </group>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -54,7 +57,7 @@
             <kanban>
                 <templates>
                     <t t-name="card" >
-                        <div t-attf-class="#{!selection_mode ? 'text-centre' : ''}">
+                        <div t-att-class="!selection_mode ? 'text-centre' : ''">
                             <i class="fa fa-building" role="img" aria-label="Enterprise"></i>
                             <field class="fw-bold fs-5" name="property_id"/>
                         </div>
