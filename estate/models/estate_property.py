@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Table for property test tutoriel"
+    _order = "id desc"
 
     name = fields.Char("Title", required=True, default="Unknown")
     active = fields.Boolean(default=True)
@@ -58,7 +59,7 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", copy=False, readonly=True)
     tags_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_total_area", readonly=True)
     best_price = fields.Float(compute="_best_price", readonly=True, string="Best Offer")
 
@@ -84,10 +85,14 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _onchange_constrains_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, 3) and float_compare(
-                (record.selling_price / record.expected_price) * 100,
-                90.00,
-                3,
+            if (
+                not float_is_zero(record.selling_price, 3)
+                and float_compare(
+                    record.expected_price * 0.90,
+                    record.selling_price,
+                    3,
+                )
+                > 0
             ):
                 e = "selling price should be at least 90 percent of the expected price"
                 raise ValidationError(

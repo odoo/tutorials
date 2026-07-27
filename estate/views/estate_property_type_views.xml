@@ -10,8 +10,46 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Channel">
+                <field name="sequence" widget="handle" />
                 <field name="name" />
+                <field name="offer_ids" />
+                <field name="offer_count" />
             </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form.view</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <div class="oe_button_box" name="button_box">
+                    <button
+                        string="Offers"
+                        class="oe_stat_button"
+                        type="action"
+                        name="%(estate_property_offers_action)d"
+                    />
+                </div>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" class="mb16" />
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" />
+                                    <field name="state" string="Status" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>

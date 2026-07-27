@@ -4,6 +4,7 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Table for offers of a property"
+    _order = "price desc"
 
     price = fields.Float("Price")
     _check_price = models.Constraint(
@@ -22,6 +23,7 @@ class EstatePropertyOffer(models.Model):
         compute="_date_deadline",
         inverse="_set_date_deadline",
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     @api.depends("create_date", "validity")
     def _date_deadline(self):
