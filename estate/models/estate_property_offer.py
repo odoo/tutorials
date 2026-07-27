@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -42,6 +43,20 @@ class EstatePropertyOffer(models.Model):
             create_date = offer.create_date.date() or fields.Date.today()
             if offer.date_deadline and create_date:
                 offer.validity = (offer.date_deadline - create_date).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            current_price = vals.get('price')
+            property_id = self.env['estate.property'].browse(
+                vals['property_id'])
+            for offer in property_id.offer_ids:
+                if current_price < offer.price:
+                    raise UserError(_(
+                        "The offer must be higher than the current highest offer."))
+            if property_id.state == 'new':
+                property_id.state = 'offer_received'
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:

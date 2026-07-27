@@ -74,7 +74,6 @@ class EstateProperty(models.Model):
         default="new",
         group_expand="_read_group_stage_ids",
         copy=False,
-        invisible=True
     )
 
     _check_expected_price = models.Constraint(
@@ -129,6 +128,13 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check_state(self):
+        for property in self:
+            if property.state not in ("new", "cancelled"):
+                raise UserError(
+                    "Only new or cancelled properties can be deleted.")
 
     def action_cancel(self):
         for property in self:
