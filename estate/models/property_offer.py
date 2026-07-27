@@ -37,14 +37,14 @@ class PropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        property_ids = self.env["estate.property"].browse(vals["property_id"] for vals in vals_list)
         # Precondition: price and property_id are required fields
         for vals in vals_list:
-            property = self.env["estate.property"].browse(vals["property_id"])
+            property = property_ids.filtered(lambda p: p.id == vals["property_id"])
             property.ensure_one()
             # Hook-approach (for composability)
             property._set_offer_received()
-            max_peer_offer_price = max(property.offer_ids.mapped('price'), default=None)
-            if max_peer_offer_price and max_peer_offer_price > vals['price']:
+            if property.best_price and property.best_price > vals['price']:
                 raise UserError(_("New offer price must be higher than those of pre-existing offers!"))
 
         return super().create(vals_list)
