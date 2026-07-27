@@ -7,12 +7,16 @@ class Property(models.Model):
     _description = "Properties of our managed estates"
     _order = "id desc"
 
+    _check_positive_expected_price = models.Constraint(
+        'CHECK (expected_price >= 0)', 'Expected price must be positive!')
+    _check_positive_selling_price = models.Constraint(
+        'CHECK (selling_price >= 0)', 'Selling price must be positive!')
+    _check_positive_living_area = models.Constraint(
+        'CHECK (living_area >= 0)', 'Living area must be positive!')
     _check_positive_amounts = models.Constraint(
-        'CHECK ('
-        'expected_price >= 0 AND selling_price >= 0'
-        ' AND living_area >= 0 AND facades >= 0'
-        ' AND garden_area >= 0'
-        ')', 'Values must be positive!')
+        'CHECK (facades >= 0)', 'Number of facades must be positive!')
+    _check_positive_garden_area = models.Constraint(
+        'CHECK (garden_area >= 0)', 'Garden area must be positive!')
 
     name = fields.Char(string='Title', default="Unknown", required=True)
     active = fields.Boolean(default=True)

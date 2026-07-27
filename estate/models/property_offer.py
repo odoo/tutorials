@@ -10,7 +10,7 @@ class PropertyOffer(models.Model):
     _description = "Bids for a property"
     _order = "price desc"
 
-    _check_positive_amounts = models.Constraint('CHECK(price >= 0)')
+    _check_positive_price = models.Constraint('CHECK(price >= 0)', 'Price has to be positive')
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(string="Status", copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
