@@ -18,7 +18,7 @@ class Property(models.Model):
     _check_positive_garden_area = models.Constraint(
         'CHECK (garden_area >= 0)', 'Garden area must be positive!')
 
-    name = fields.Char(string='Title', default="Unknown", required=True)
+    name = fields.Char(string='Title', required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection(required=True, default='new', copy=False, selection=[
         ('new', 'New'),
