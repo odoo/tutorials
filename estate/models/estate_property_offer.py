@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -62,36 +63,38 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        temp_best_prices = {}
+
         for vals in vals_list:
-            property_id = vals.get("property_id")
-            price = vals.get("price")
-            if property_id and price:
-                property_record = self.env["estate.property"].browse(property_id)
-                # Check if new price is lower than any existing offer
-                if property_record.offer_ids:
-                    max_offer = max(property_record.offer_ids.mapped("price"))
-                    if price < max_offer:
-                        raise UserError(_("The offer must be higher than %s", max_offer))
+            property_id = vals.get('property_id')
+            price = vals.get('price', 0.0)
+            if not property_id:
+                continue
+            property_rec = self.env['estate.property'].browse(property_id)
+            current_best = temp_best_prices.get(property_id, property_rec.best_price)
+            if float_compare(price, current_best, precision_rounding=0.01) <= 0:
+                raise UserError(_("The offer must be higher than %s", current_best))
+            temp_best_prices[property_id] = price
 
-                # Update property state
-                if property_record.state == "new":
-                    property_record.state = "offer_received"
+        offers = super().create(vals_list)
 
-        return super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.write({'state': 'offer_received'})
+        return offers
 
     def action_accept(self):
-        for offer in self:
-            if "accepted" in offer.property_id.offer_ids.mapped("status"):
-                raise UserError(_("An offer has already been accepted"))
-            offer.status = "accepted"
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.state = "offer_accepted"
-
-            for other_offer in offer.property_id.offer_ids:
-                if other_offer.id != offer.id:
-                    other_offer.status = "rejected"
-
+        self.ensure_one()
+        if "accepted" in self.property_id.offer_ids.mapped("status"):
+            raise UserError(_("You cannot accept more than one offer."))
+        self.status = "accepted"
+        other_offers = self.property_id.offer_ids - self
+        other_offers.write({"status": "rejected"})
+        self.property_id.write({
+            "selling_price": self.price,
+            "state": "offer_accepted",
+            "buyer_id": self.partner_id.id,
+        })
         return True
 
     def action_reject(self):

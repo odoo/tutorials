@@ -5,7 +5,6 @@
         <field name="expected_price">700000</field>
         <field name="description">near sg highway</field>
         <field name="postcode">123456</field>
-        <field name="expected_price">123456</field>
         <field name="bedrooms">3</field>
         <field name="living_area">180</field>
         <field name="facades">2</field>
@@ -20,10 +19,9 @@
 
     <record id="demo_property2" model="estate.property">
         <field name="name">Flat in surat</field>
-        <field name="expected_price">500000</field>
+        <field name="expected_price">300000</field>
         <field name="description">near station</field>
         <field name="postcode">543210</field>
-        <field name="expected_price">123456</field>
         <field name="bedrooms">3</field>
         <field name="living_area">180</field>
         <field name="facades">2</field>

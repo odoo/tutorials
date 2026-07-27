@@ -17,6 +17,7 @@
                 <field name="date"/>
                 <field name="priority"/>
                 <field name="user_id"/>
+                <field name="state" optional="hide"/>
             </list>
         </field>
     </record>

@@ -85,10 +85,11 @@ class EstateProperty(models.Model):
                 max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
             )
 
-    @api.depends("property_maintenance_ids")
+    @api.depends("property_maintenance_ids.state")
     def _compute_maintenance_count(self):
         for record in self:
-            record.maintenance_count = len(record.property_maintenance_ids)
+            active_maintenance = record.property_maintenance_ids.filtered(lambda m: m.state != "done")
+            record.maintenance_count = len(active_maintenance)
 
     @api.depends("property_maintenance_ids.state")
     def _compute_has_active_maintenance(self):
@@ -150,7 +151,7 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if not self.offer_ids:
             raise UserError(_("There are no offers to accept!"))
-        best_offer = max(self.offer_ids, key=lambda offer: offer.price)
+        best_offer = max(self.offer_ids, key=lambda o: o.price)
         best_offer.action_accept()
         return True
 

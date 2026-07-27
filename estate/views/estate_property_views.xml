@@ -111,10 +111,10 @@
     </record>
 
     <record id="estate_property_view_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban.view</field>
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state">
+            <kanban default_group_by="property_type_id">
                 <field name="state"/>
                 <progressbar field="state" colors='{"sold": "success", "cancelled": "danger", "new": "info", "offer_received": "warning", "offer_accepted": "success"}'/>
                 <templates>
@@ -130,7 +130,7 @@
                         <div t-if="record.state.raw_value == 'offer_received'">
                             Best Offer: <field name="best_price"/>
                         </div>          
-                        <div t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold'">
+                        <div t-if="record.state.raw_value == 'offer_accepted'">
                             Selling Price: <field name="selling_price"/>
                         </div>
                         <div class="mt4">

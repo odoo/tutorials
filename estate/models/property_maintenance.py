@@ -3,7 +3,7 @@ from odoo import fields, models
 
 class PropertyMaintenance(models.Model):
     _name = "property.maintenance"
-    _description = "proeprty under repair"
+    _description = "Property under repair"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
