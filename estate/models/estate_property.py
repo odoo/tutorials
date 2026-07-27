@@ -67,7 +67,12 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    tag_ids = fields.Many2many("estate.property.tag")
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+        compute="_compute_dynamic_tags",
+        store=True,
+        readonly=False,
+    )
     total_area = fields.Integer(compute="_compute_total_area")
 
     _check_expected_price = models.Constraint(
@@ -78,6 +83,38 @@ class EstateProperty(models.Model):
         "CHECK(selling_price >= 0)",
         "Offer price of property should be positive.",
     )
+
+    @api.depends('expected_price', 'state', 'offer_ids')
+    def _compute_dynamic_tags(self):
+        self.ensure_one()
+
+        now = fields.Datetime.now()
+
+        create_date = self.create_date or now
+
+        dynamic_tags = self.env['estate.property.tag'].search(
+            [('name', 'in', ('high value', 'quick sell', 'low interest'))],
+        )
+
+        def gettag(str):
+            tag = dynamic_tags.filtered(lambda t: t.name == str)
+            if not tag:
+                tag = self.env['estate.property.tag'].create([{'name': str}])
+            return tag
+
+        if self._origin:
+            self.tag_ids |= gettag('low interest')
+
+        if self.expected_price > 2_00_000:
+            self.tag_ids |= gettag("high value")
+
+        if (create_date + relativedelta(days=10)) <= now and self.state == 'sold':
+            self.tag_ids |= gettag("quick sell")
+
+        if len(self.offer_ids) <= 2:
+            self.tag_ids |= gettag("low interest")
+        else:
+            self.tag_ids -= gettag("low interest")
 
     @api.onchange("state")
     def _onchange_state_validation(self):
