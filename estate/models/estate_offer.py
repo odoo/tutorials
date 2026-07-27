@@ -28,6 +28,16 @@ class EstateOffer(models.Model):
 
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            property.set_offer_received()
+            max_price = max(property.proterty_offer_ids.mapped('price'), default=None)
+            if max_price and max_price > vals['price']:
+                raise exceptions.UserError("New offer can't be lower than an other offer")
+            return super().create(vals_list)
+
 
     @api.depends("validity")
     def _compute_dead_line(self):

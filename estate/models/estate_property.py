@@ -81,10 +81,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             prices = record.proterty_offer_ids.mapped('price')
-            if not prices:
-                record.best_price = 0
-            else:
-                record.best_price = max(prices)
+            record.best_price = max(prices, default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -104,6 +101,12 @@ class EstateProperty(models.Model):
             if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
                 raise exceptions.ValidationError("Selling price can't be smaller than 90% of the expected price")
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def delete(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise exceptions.UserError(f"Can't delete an advertise in {record.state} state")
 
 
     def action_sold_adv(self):
@@ -133,3 +136,7 @@ class EstateProperty(models.Model):
             adrivertise.buyer_id = accepted_offer.partner_id
             adrivertise.selling_price = accepted_offer.price
             adrivertise.state = 'offer_accepted'
+
+    def set_offer_received(self):
+        for record in self:
+            record.state = "offer_recieved"
