@@ -29,21 +29,25 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
-            if not (
-                property_rec := self.env["estate.property"].browse(vals["property_id"])
+            property_id = vals.get("property_id")
+            price = vals.get("price", 0)
+            if self.env["estate.property.offer"].search_count(
+                [
+                    ("property_id", "=", property_id),
+                    (
+                        "price",
+                        ">",
+                        price,
+                    ),
+                ],
             ):
-                continue
-
-            existing_prices = property_rec.offer_ids.mapped("price")
-
-            if any(price > vals.get("price", 0) for price in existing_prices):
                 raise UserError(
                     self.env._(
                         "You cannot create a offer with a lower price than a existing one for this property",
                     ),
                 )
 
-            property_rec.state = "offer received"
+            self.env["estate.property"].browse(property_id).state = "offer received"
         return super().create(vals_list)
 
     @api.depends("create_date", "validity")
