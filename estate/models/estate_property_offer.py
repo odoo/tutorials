@@ -1,6 +1,4 @@
-from datetime import date, datetime, timedelta
-from dateutil.relativedelta import relativedelta
-
+from datetime import datetime, timedelta
 
 from odoo import api, _, exceptions, fields, models
 
@@ -10,6 +8,11 @@ class EstatePropertyOffer(models.Model):
     _description = "Real estate property offer"
 
     price = fields.Float("Price", required=True)
+    _check_selling_price = models.Constraint(
+        "CHECK(price > 0)",
+        _("The price should be strictly positive"),
+    )
+
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
         copy=False,
@@ -46,11 +49,14 @@ class EstatePropertyOffer(models.Model):
             if offer.property_id.buyer_id:
                 raise exceptions.UserError(_("One offer has already been accepted."))
             offer.status = "accepted"
+            offer.property_id.state = "offer accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
 
     def action_cancel(self):
         for offer in self:
             offer.status = "refused"
+            if offer.property_id.state == "offer accepted":
+                offer.property_id.state = "new"
             offer.property_id.selling_price = 0
             offer.property_id.buyer_id = None
