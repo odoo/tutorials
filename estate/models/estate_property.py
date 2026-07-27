@@ -2,6 +2,8 @@ from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, _, exceptions, fields, models
+from odoo.orm.utils import ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -18,6 +20,20 @@ class EstateProperty(models.Model):
         default=date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float("Expected price", required=True)
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        _("The expected price should be strictly positive"),
+    )
+    selling_price = fields.Float(
+        "Selling price",
+        copy=False,
+        readonly=True,
+        compute="_compute_selling_price",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        _("The selling price should be strictly positive"),
+    )
     state = fields.Selection(
         [
             ("new", "New"),
@@ -30,7 +46,6 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
     )
-    selling_price = fields.Float("Selling price", copy=False, readonly=True)
     bedrooms = fields.Integer("Bedrooms", default=2)
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
@@ -70,6 +85,13 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"))
 
+    @api.depends("offer_ids")
+    def _compute_selling_price(self):
+        for record in self:
+            record.selling_price = max(
+                o.price if o.status == "accepted" else 0 for o in record.offer_ids
+            )
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -91,3 +113,17 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise exceptions.UserError(_("Sold properties cannot be cancelled"))
             record.state = "cancelled"
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_offer_acceptable_price(self):
+        for record in self:
+            if (
+                record.state == "offer accepted"
+                and float_compare(record.selling_price, record.expected_price * 0.9, 3)
+                <= 0
+            ):
+                raise ValidationError(
+                    _(
+                        "The selling price should be greater than 90% of the expected price",
+                    ),
+                )
