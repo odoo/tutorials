@@ -72,13 +72,13 @@
                                 Expected price:
                                 <field name="expected_price"/>
                             </div>
-                            <t t-if="record.state == 'offer_received'">
+                            <t t-if="record.state.raw_value == 'offer_received'">
                                 <div>
                                     Best offer:
                                     <field name="best_price" />
                                 </div>
                             </t>
-                            <t t-if="record.state == 'offer_accepted'">
+                            <t t-if="record.state.raw_value == 'offer_accepted'">
                                 <div>
                                     Selling price:
                                     <field name="selling_price" />
