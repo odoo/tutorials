@@ -9,7 +9,7 @@
         <field name="name">estate.list.view</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="offer_ids" />
@@ -22,7 +22,7 @@
         <field name="name">estate.property.type.form.view</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form>
                 <div class="oe_button_box" name="button_box">
                     <button
                         string="Offers"

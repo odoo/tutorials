@@ -1,6 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.orm.utils import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -79,7 +78,8 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
             return
-        self.garden_orientation = self.garden_area = None
+        self.garden_orientation = False
+        self.garden_area = 0
 
     @api.depends("offer_ids.price")
     def _best_price(self):
@@ -91,8 +91,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends("selling_price", "expected_price")
-    @api.constrains("selling_price")
+    @api.constrains("selling_price", "expected_price")
     def _onchange_constrains_selling_price(self):
         for record in self:
             if (
@@ -110,12 +109,12 @@ class EstateProperty(models.Model):
                     ),
                 )
 
-    def cancel(self):
+    def action_cancel(self):
         if self.state == "sold":
             raise UserError(self.env._("A sold property cannot be cancelled"))
         self.state = "cancelled"
 
-    def sold(self):
+    def action_sold(self):
         if self.state == "cancelled":
             raise UserError(self.env._("A cancelled property cannot be sold"))
         self.state = "sold"

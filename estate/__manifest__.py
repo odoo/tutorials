@@ -1,6 +1,6 @@
 {
     "name": "Real Estate",
-    "author": "Jean (jebou)",
+    "author": "Odoo S.A.",
     "license": "LGPL-3",
     "application": True,
     "depends": ["base"],

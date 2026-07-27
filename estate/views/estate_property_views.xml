@@ -10,7 +10,7 @@
         <field name="name">estate.list.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel"
+            <list
                 decoration-success="state in ('offer received', 'offer accepted')"
                 decoration-bf="state=='offer accepted'"
                 decoration-muted="state=='sold'">
@@ -29,7 +29,7 @@
         <field name="name">estate.property.search.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Tests">
+            <search>
                 <field name="name" />
                 <field name="last_seen" />
                 <field name="living_area" string="Living Area"
@@ -49,11 +49,11 @@
         <field name="name">estate.form.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form>
                 <header>
-                    <button name="sold" type="object" string="Sold"
+                    <button name="action_sold" type="object" string="Sold"
                         invisible="state not in ('offer received', 'offer accepted', 'new')" />
-                    <button name="cancel" type="object" string="Cancel"
+                    <button name="action_cancel" type="object" string="Cancel"
                         invisible="state not in ('offer received', 'offer accepted', 'new')" />
                     <field name="state" widget="statusbar" />
                 </header>

@@ -10,13 +10,13 @@
         <field name="name">estate.property.offer.list.view</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="offers" editable="top" decoration-danger="status=='refused'"
+            <list editable="top" decoration-danger="status=='refused'"
                 decoration-success="status=='accepted'">
                 <field name="price" />
                 <field name="partner_id" />
-                <button name="accept" string="Accept" type="object"
+                <button name="action_accept" string="Accept" type="object"
                     icon="fa-check" invisible="status in ('accepted', 'refused')" />
-                <button name="refuse" string="Refuse" type="object"
+                <button name="action_refuse" string="Refuse" type="object"
                     icon="fa-close" invisible="status in ('accepted', 'refused')" />
                 <field name="status" />
                 <field name="property_type_id" />
