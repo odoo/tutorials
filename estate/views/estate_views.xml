@@ -16,14 +16,14 @@
 <record id="estate_tag_action" model="ir.actions.act_window">
     <field name="name">Estate Tags</field>
     <field name="res_model">estate.tag</field>
-    <field name="view_mode">list,form</field>
+
 </record>
 
 <record id="estate_list_view" model="ir.ui.view">
     <field name="name">Estate List</field>
     <field name="model">estate</field>
     <field name="arch" type="xml">
-        <list editable="top">
+        <list>
             <field name="name" />
             <field name="postcode" />
             <field name="bedrooms" />
@@ -60,7 +60,7 @@
                     <group>
                         <field name="expected_price" />
                         <field name="selling_price" />
-                        <field name="state" />
+                        <field name="best_offer" />
                     </group>
                 </group>
                 <notebook>
