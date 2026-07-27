@@ -1,7 +1,7 @@
 {
-    'name': "Real Estate",
+    'name': 'Real Estate',
     'depends': ['base'],
-    'author': 'bepro',
+    'author': 'Odoo S.A.',
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',

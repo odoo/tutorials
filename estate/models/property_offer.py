@@ -13,8 +13,7 @@ class PropertyOffer(models.Model):
     _check_positive_amounts = models.Constraint('CHECK(price >= 0)')
 
     price = fields.Float(string="Price", required=True)
-    status = fields.Selection(string="Status", copy=False
-        , selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
+    status = fields.Selection(string="Status", copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
 
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
@@ -48,7 +47,7 @@ class PropertyOffer(models.Model):
             max_peer_offer_price = max(property.offer_ids.mapped('price'), default=None)
             if max_peer_offer_price and max_peer_offer_price > vals['price']:
                 raise UserError(_("New offer price must be higher than those of pre-existing offers!"))
-        #
+
         return super().create(vals_list)
 
     @api.constrains('status')
@@ -63,7 +62,7 @@ class PropertyOffer(models.Model):
         for record in self:
             if record.status == "refused":
                 raise UserError(_("Offer is already refused!"))
-            #
+
             record.status = 'accepted'
             record.property_id.confirm_offer()
         return True
@@ -72,6 +71,6 @@ class PropertyOffer(models.Model):
         for record in self:
             if record.status == "accepted":
                 raise UserError(_("Offer is already accepted!"))
-            #
+
             record.status = "refused"
         return True

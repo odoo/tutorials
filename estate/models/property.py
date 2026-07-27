@@ -17,11 +17,11 @@ class Property(models.Model):
     name = fields.Char(string='Title', default="Unknown", required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection(required=True, default='new', copy=False, selection=[
-        ('new', 'New')
-        , ('offer_received', 'Offer Received')
-        , ('offer_accepted', 'Offer Accepted')
-        , ('sold', 'Sold')
-        , ('cancelled', 'Cancelled'),
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled'),
     ])
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one('res.users', string="Salesman", default=lambda self: self.env.user)
@@ -42,10 +42,11 @@ class Property(models.Model):
     garden_area = fields.Integer(string='garden area size')
     garden_orientation = fields.Selection(string='garden orientation',
     selection=[
-        ('north', 'North')
-        , ('south', 'South')
-        , ('east', 'East')
-        , ('west', 'West')])
+        ('north', 'North'),
+        ('south', 'South'),
+        ('east', 'East'),
+        ('west', 'West'),
+    ])
 
     total_area = fields.Float(string="Total area", compute="_compute_total_area")
     best_price = fields.Float(string="Best offer", compute="_compute_best_price")
@@ -73,7 +74,7 @@ class Property(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise exceptions.UserError(_("Cancelled properties cannot be sold!"))
-            #
+
             record.state = "sold"
         return True
 
