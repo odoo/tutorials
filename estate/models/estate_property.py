@@ -67,7 +67,7 @@ class EstateProperty(models.Model):
     def _ondelete(self):
         for record in self:
             if record.state in ("new", "cancelled"):
-                raise ValueError(
+                raise UserError(
                     self.env._(
                         "You cannot delete a entry with a 'New' or 'Canceled' status.",
                     ),

@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -24,6 +25,26 @@ class EstatePropertyOffer(models.Model):
         inverse="_set_date_deadline",
     )
     property_type_id = fields.Many2one(related="property_id.property_type_id")
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not (
+                property_rec := self.env["estate.property"].browse(vals["property_id"])
+            ):
+                continue
+
+            existing_prices = property_rec.offer_ids.mapped("price")
+
+            if any(price > vals.get("price", 0) for price in existing_prices):
+                raise UserError(
+                    self.env._(
+                        "You cannot create a offer with a lower price than a existing one for this property",
+                    ),
+                )
+
+            property_rec.state = "offer received"
+        return super().create(vals_list)
 
     @api.depends("create_date", "validity")
     def _date_deadline(self):
