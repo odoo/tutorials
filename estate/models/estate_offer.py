@@ -4,6 +4,7 @@ from datetime import timedelta
 class EstateOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -24,6 +25,8 @@ class EstateOffer(models.Model):
         'CHECK(price > 0)',
         'The price must be positive'
     )
+
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
 
     @api.depends("validity")
