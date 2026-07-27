@@ -17,7 +17,8 @@
                 <field name="living_area" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price" optional="hide"/>
-                <field name="date_availability" optional="show"/>             
+                <field name="date_availability" optional="show"/>
+                <field name="property_type_id" optional="hide"/>             
             </list>
         </field>
     </record>
@@ -33,6 +34,7 @@
                     </group>
                      <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -72,6 +74,7 @@
                 <field name="expected_price"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 
                 <filter string="Available" name="available" domain="[('state','in',('new','offer_received'))]"/>
 
