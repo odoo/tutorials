@@ -51,8 +51,10 @@ class PropertyOffer(models.Model):
 
     @api.constrains('status')
     def _check_maximum_one_offer_accepted(self):
-        for record in self:
-            peer_offers = record.property_id.offer_ids
+        accepted_offers = self.filtered(lambda r: r.status == "accepted")
+        properties = accepted_offers.mapped('property_id')
+        for property in properties:
+            peer_offers = property.offer_ids
             accepted_peers = peer_offers.filtered(lambda r: r.status == 'accepted')
             if len(accepted_peers) > 1:
                 raise ValidationError(_("A single offer can be accepted at a time!"))
