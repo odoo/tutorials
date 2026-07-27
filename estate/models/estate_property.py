@@ -128,9 +128,12 @@ class EstateProperty(models.Model):
             # offer = [offer for offer in adrivertise.proterty_offer_ids if offer.status == 'accepted' ][0]
             accepted_offer = list()
             for offer in adrivertise.proterty_offer_ids:
-                if accepted_offer: offer.status = "refused"
-                elif offer.status == 'accepted': accepted_offer.append(offer)
-                else: offer.status = 'refused'
+                if accepted_offer:
+                    offer.status = "refused"
+                elif offer.status == 'accepted':
+                    accepted_offer.append(offer)
+                else:
+                    offer.status = 'refused'
 
             accepted_offer = accepted_offer[0]
             adrivertise.buyer_id = accepted_offer.partner_id
