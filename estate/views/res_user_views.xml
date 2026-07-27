@@ -8,9 +8,6 @@
             <xpath expr="//notebook/page[@name='preferences']" position="after">
                 <page string="Real Estate Properties" name="estate_properties">
                     <field name="property_ids" readonly="True"/>
-                    <group>
-                        <group></group>
-                    </group>
                 </page>
             </xpath>
         </field>
