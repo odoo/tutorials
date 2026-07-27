@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -40,7 +40,7 @@ class EstatePropertyMaintenance(models.Model):
     def _check_scheduled_date(self):
         for record in self:
             if record.scheduled_date < record.inspection_date:
-                raise UserError("scheduled date can not be before inspection date")
+                raise UserError(_("scheduled date can not be before inspection date"))
 
     responsible_id = fields.Many2one(
         "res.users", string="responsible", default=lambda self: self.env.user
