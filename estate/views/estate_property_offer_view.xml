@@ -4,15 +4,22 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
+            <list decoration-success="status=='accepted'"
+                  decoration-danger="status=='refused'" string="Offers" editable="bottom">
                 <field name="price" width="17%"/>
                 <field name="partner_id" string="Partner" width="17%"/>
                 <field name="validity" width="17%"/>
                 <field name="date_deadline" string="Deadline" width="17%"/>
-                <button name="action_accept_offer" type="object" icon="fa-check" width="7.5%"/>
-                <button name="action_refuse_offer" type="object" icon="fa-times" width="7.5%"/>
-                <field name="status" width="17%"/>
+                <button name="action_accept_offer" type="object" icon="fa-check" width="7.5%" invisible="status"/>
+                <button name="action_refuse_offer" type="object" icon="fa-times" width="7.5%" invisible="status"/>
             </list>
         </field>
+    </record>
+
+     <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>

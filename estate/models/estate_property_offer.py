@@ -12,11 +12,22 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", store=True)
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',
         'An offer price must be strictly positive',
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer received'
+
+        return offers
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
