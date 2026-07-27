@@ -33,12 +33,12 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(required=True)
     _check_expected_price = models.Constraint(
         "CHECK(expected_price >= 0)",
-        "Le prix doit être strictement positif",
+        "The price should be strictly positive",
     )
     selling_price = fields.Float(readonly=True, copy=False)
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)",
-        "Le prix doit être strictement positif",
+        "The price should be strictly positive",
     )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer("Living Area (sqm)")
@@ -62,6 +62,16 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_total_area", readonly=True)
     best_price = fields.Float(compute="_best_price", readonly=True, string="Best Offer")
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete(self):
+        for record in self:
+            if record.state in ("new", "cancelled"):
+                raise ValueError(
+                    self.env._(
+                        "You cannot delete a entry with a 'New' or 'Canceled' status.",
+                    ),
+                )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -94,19 +104,18 @@ class EstateProperty(models.Model):
                 )
                 > 0
             ):
-                e = "selling price should be at least 90 percent of the expected price"
                 raise ValidationError(
-                    e,
+                    self.env._(
+                        "selling price should be at least 90 percent of the expected price",
+                    ),
                 )
 
     def cancel(self):
         if self.state == "sold":
-            e = "A sold property cannot be cancelled"
-            raise UserError(e)
+            raise UserError(self.env._("A sold property cannot be cancelled"))
         self.state = "cancelled"
 
     def sold(self):
         if self.state == "cancelled":
-            e = "A cancelled property cannot be sold"
-            raise UserError(e)
+            raise UserError(self.env._("A cancelled property cannot be sold"))
         self.state = "sold"
