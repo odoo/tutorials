@@ -7,12 +7,6 @@
         <field name="context">{'search_default_available': True}</field>
     </record>
 
-    <record id="estate_properties_types_view" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
     <record id="estate_properties_tags_view" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tag</field>
@@ -24,17 +18,6 @@
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[('property_type_id', '=', active_id)]</field>
-    </record>
-
-    <record id="estate_property_type_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.types.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list string="Property Types">
-                <field name="sequence" widget="handle"/>
-                <field name="name" string="Name"/>
-            </list>
-        </field>
     </record>
 
     <record id="estate_properties_view_tree" model="ir.ui.view">
@@ -91,43 +74,6 @@
                     </t>
                 </templates>
             </kanban>
-        </field>
-    </record>
-
-    <record id="estate_property_types_view_form" model="ir.ui.view">
-        <field name="name">estate.property.types.form</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <form string="Estate Property Type">
-                <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button name="%(estate.estate_properties_offers_view)d" type="action" class="oe_stat_button" invisible="not offer_count">
-                            <field name="offer_count" string="Offers" widget="statinfo"/>
-                        </button>
-                    </div>
-                    <div class="oe_title">
-                        <div class="oe_edit_only">
-                            <label for="name"/>
-                        </div>
-                        <h1 class="mb32">
-                            <field name="name" class="mb16"/>
-                        </h1>
-                    </div>
-                    <notebook>
-                            <page string="Properties" name="properties">
-                                <group>
-                                    <field name="property_ids">
-                                        <list>
-                                            <field name="name"/>
-                                            <field name="expected_price"/>
-                                            <field name="state"/>
-                                        </list>
-                                    </field>
-                                </group>
-                            </page>
-                    </notebook>
-                </sheet>
-            </form>
         </field>
     </record>
 
