@@ -86,7 +86,7 @@ class Property(models.Model):
         for record in self:
             if record.state == "sold":
                 raise exceptions.UserError(_("Sold properties cannot be cancelled!"))
-            #
+
             record.state = "cancelled"
         return True
 
