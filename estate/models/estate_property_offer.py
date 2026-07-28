@@ -52,8 +52,8 @@ class EstatePropertyOffer(models.Model):
                 vals['property_id'])
             for offer in property_id.offer_ids:
                 if current_price < offer.price:
-                    raise UserError(_(
-                        "The offer must be higher than the current highest offer."))
+                    error_msg = f"The offer must be higher than the current highest offer {offer.price}."
+                    raise UserError(error_msg)
             if property_id.state == 'new':
                 property_id.state = 'offer_received'
         return super().create(vals_list)
