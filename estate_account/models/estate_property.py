@@ -1,8 +1,8 @@
-from odoo import models, Command
+from odoo import Command, models
+
 
 class InheritedEstateProperty(models.Model):
     _inherit = "estate.property"
-
 
     def action_sold_adv(self):
         self._create_property_invoice()

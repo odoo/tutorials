@@ -1,5 +1,7 @@
-from odoo import fields, models, api, exceptions
 from datetime import timedelta
+
+from odoo import api, exceptions, fields, models
+
 
 class EstateOffer(models.Model):
     _name = "estate.property.offer"
@@ -20,7 +22,6 @@ class EstateOffer(models.Model):
     validity = fields.Integer(string="Validity", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_dead_line", inverse="_inverse_validity")
 
-
     _check_positif_price = models.Constraint(
         'CHECK(price > 0)',
         'The price must be positive'
@@ -38,7 +39,6 @@ class EstateOffer(models.Model):
                 raise exceptions.UserError("New offer can't be lower than an other offer")
             return super().create(vals_list)
 
-
     @api.depends("validity")
     def _compute_dead_line(self):
         for offer in self:
@@ -50,7 +50,7 @@ class EstateOffer(models.Model):
 
     def action_accepte_offer(self):
         for offer in self:
-            if offer.status =="refused":
+            if offer.status == "refused":
                 raise exceptions.UserError("Can't accept an refused offer")
             offer.status = "accepted"
             offer.property_id.accept_offer()

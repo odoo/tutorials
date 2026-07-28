@@ -1,13 +1,14 @@
-from odoo import fields, models, api, exceptions
-from odoo.tools import float_utils
 from datetime import timedelta
+
+from odoo.tools import float_utils
+
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Module"
     _order = "id desc"
-
 
     _check_positif_expected_price = models.Constraint(
         'CHECK(expected_price >= 0)',
@@ -19,7 +20,6 @@ class EstateProperty(models.Model):
     )
 
     # Base Fields
-
     name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -70,8 +70,6 @@ class EstateProperty(models.Model):
     proterty_offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     active = fields.Boolean(default=True)
 
-
-
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
         for record in self:
@@ -108,7 +106,6 @@ class EstateProperty(models.Model):
             if record.state not in ["new", "cancelled"]:
                 raise exceptions.UserError(f"Can't delete an advertise in {record.state} state")
 
-
     def action_sold_adv(self):
         for advertisements in self:
             if advertisements.state == "cancelled":
@@ -125,8 +122,7 @@ class EstateProperty(models.Model):
 
     def accept_offer(self):
         for adrivertise in self:
-            # offer = [offer for offer in adrivertise.proterty_offer_ids if offer.status == 'accepted' ][0]
-            accepted_offer = list()
+            accepted_offer = []
             for offer in adrivertise.proterty_offer_ids:
                 if accepted_offer:
                     offer.status = "refused"
