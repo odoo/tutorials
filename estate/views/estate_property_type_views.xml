@@ -6,39 +6,50 @@
         <field name="res_model">realestate.properties.type</field>
         <field name="view_mode">list,form</field>
     </record>
+
     <record id="estate_property_type_custom_view" model="ir.ui.view">
-        <field name="name">realestate.property.form</field>
+        <field name="name">realestate.property.type.form</field>
         <field name="model">realestate.properties.type</field>
         <field name="arch" type="xml">
             <form string="Custom description form">
+                <header>
+                    <button name="%(estate_property_offer_action)d"
+                        type="action"
+                        class="btn btn-secondary ms-auto d-flex align-items-center gap-1">
+                        <i class="fa fa-money me-1" />
+                        <span>Offers:</span>
+                        <field name="offer_count" />
+                    </button>
+                </header>
+
                 <sheet>
-                    <h1 class="oe_title mb32">
+                    <h1 class="mb32">
                         <field name="name" />
                     </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_list_id" nolabel="1">
+                                <list class="text-wrap">
+                                    <field name="name" />
+                                    <field name="expected_price" width="240px" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
-
     </record>
+
     <record id="estate_property_type_views_list" model="ir.ui.view">
         <field name="name">realestate.property.type.list</field>
         <field name="model">realestate.properties.type</field>
         <field name="arch" type="xml">
             <list string="Channel">
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </list>
         </field>
     </record>
-    <record id="estate_property_type_views_filter" model="ir.ui.view">
-        <field name="name">realestate.property.type.filter</field>
-        <field name="model">realestate.properties.type</field>
-        <field name="arch" type="xml">
-            <search string="Filter string">
-                <field name="name" />
-                <filter string="Group by name" name="name"
-                    context="{'group_by': 'name'}" />
-            </search>
-        </field>
-    </record>
-
 </odoo>

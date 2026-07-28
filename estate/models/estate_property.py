@@ -1,17 +1,18 @@
-from datetime import date, datetime, time
+from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, _, exceptions, fields, models
 from odoo.orm.utils import ValidationError
-from odoo.tools import float_compare, float_is_zero
+from odoo.tools import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "realestate.properties"
     _description = "Real estate properties"
+    _order = "id desc"
 
     active = fields.Boolean(default=True)
-    name = fields.Char("Plan Name", required=True, translate=True)
+    name = fields.Char("Title", required=True, translate=True)
     description = fields.Text("Notes")
     postcode = fields.Char("Postcode", required=True)
     date_availability = fields.Date(
@@ -19,7 +20,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=date.today() + relativedelta(months=3),
     )
-    expected_price = fields.Float("Expected price", required=True)
+    expected_price = fields.Float("Expected Price", required=True)
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
         _("The expected price should be strictly positive"),
@@ -42,8 +43,8 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        required=True,
         default="new",
+        required=True,
         copy=False,
     )
     bedrooms = fields.Integer("Bedrooms", default=2)
@@ -83,14 +84,20 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped("price"))
+            prices = record.offer_ids.mapped("price")
+            record.best_offer = max(prices, default=0)
 
     @api.depends("offer_ids")
     def _compute_selling_price(self):
         for record in self:
-            record.selling_price = max(
-                o.price if o.status == "accepted" else 0 for o in record.offer_ids
-            )
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")
+            record.selling_price = accepted_offer.price if accepted_offer else 0.0
+
+    @api.onchange("offer_ids")
+    def _onchange_offer(self):
+        for record in self:
+            if record.state == "new" and len(record.offer_ids) > 0:
+                record.state = "offer received"
 
     @api.onchange("garden")
     def _onchange_garden(self):
