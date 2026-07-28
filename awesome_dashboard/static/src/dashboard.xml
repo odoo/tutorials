@@ -7,14 +7,30 @@
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
 
-            <div class="p-3 d-flex flex-wrap">
+            <div class="p-3 d-flex flex-wrap gap-3">
                 <DashboardItem>
-                    <h5 class="card-title">Card 1</h5>
-                    <p class="card-text">First item content.</p>
+                    <div class="h6 text-muted">Average amount of t-shirt by order this month</div>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.average_quantity"/>
                 </DashboardItem>
+
                 <DashboardItem size="2">
-                    <h5 class="card-title">Card 2</h5>
-                    <p class="card-text">Second item content.</p>
+                    <div class="h6 text-muted">Average time for an order to go from 'new' to 'sent' or 'cancelled'</div>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.average_time"/>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="h6 text-muted">Number of new orders this month</div>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.nb_new_orders"/>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="h6 text-muted">Number of cancelled orders this month</div>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.nb_cancelled_orders"/>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="h6 text-muted">Total amount of new orders this month</div>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.total_amount"/>
                 </DashboardItem>
             </div>
         </Layout>

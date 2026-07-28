@@ -1,7 +1,8 @@
-import { Component, useSubEnv } from "@odoo/owl";
+import { Component, useSubEnv, onWillStart, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
+import { rpc } from "@web/core/network/rpc";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 
 export class AwesomeDashboard extends Component {
@@ -18,9 +19,12 @@ export class AwesomeDashboard extends Component {
         });
 
         this.action = useService("action");
-        this.display = {
-            controlPanel: {},
-        };
+        this.display = { controlPanel: {} };
+
+        this.stats = useState({ data: {} });
+        onWillStart(async () => {
+            this.stats.data = await rpc("/awesome_dashboard/statistics");
+        });
     }
 
     openCustomers() {
