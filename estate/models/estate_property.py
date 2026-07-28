@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -114,27 +115,35 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("A sold property cannot be cancelled.")
-            record.state = "cancelled"
+        self.ensure_one()
+        if self.state == "sold":
+            raise UserError("A sold property cannot be cancelled.")
+        self.state = "cancelled"
         return True
 
     def action_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("A cancelled property cannot be set as sold.")
-            if not record.buyer_id:
-                raise UserError(
-                    "A property cannot be sold without an accepted offer (buyer).",
-                )
-            record.state = "sold"
+        self.ensure_one()
+        if self.state == "cancelled":
+            raise UserError("A cancelled property cannot be set as sold.")
+        if not self.buyer_id:
+            raise UserError(
+                "A property cannot be sold without an accepted offer (buyer).",
+            )
+        self.state = "sold"
         return True
 
     def action_accept_best_offer(self):
-        for record in self:
-            if not record.offer_ids:
-                raise UserError("This property has no offers to accept.")
-            best_offer = max(record.offer_ids, key=lambda o: o.price)
-            best_offer.action_accept()
+        self.ensure_one()
+        if not self.offer_ids:
+            raise UserError("This property has no offers to accept.")
+        best_offer = max(self.offer_ids, key=lambda o: o.price)
+        best_offer.action_accept()
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price_difference(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_rounding=0.01):
+                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=0.01) < 0:
+                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+

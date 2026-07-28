@@ -2,21 +2,22 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.profiler import Profiler
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
 
-    price = fields.Float()
+    price = fields.Float(required=True)
     is_suspicious = fields.Boolean(
         string="Suspicious",
         compute="_compute_is_suspicious",
     )
     status = fields.Selection(
         selection=[
-            ('accepted', 'Accepted'),
-            ('rejected', 'Rejected'),
+            ('accepted', "Accepted"),
+            ('rejected', "Rejected"),
         ],
         copy=False,
         string="Status",
@@ -90,20 +91,30 @@ class EstatePropertyOffer(models.Model):
             record.is_suspicious = len(recent) > 2
 
     def action_accept(self):
-        for record in self:
-            if record.property_id.state in ("sold", "cancelled"):
+        test_offer = self.env['estate.property.offer'].search([('status', '=', 'non_existent_status')], limit=1)
+        breakpoint()
+        with Profiler(
+            db=None,
+            log=True,
+            description="testing"
+        ):
+            self.ensure_one()
+            if self.property_id.state in ("sold", "cancelled"):
                 raise UserError("You cannot accept an offer for a sold or cancelled property.")
-            if any(offer.status == "accepted" for offer in record.property_id.offer_ids):
+            if self.property_id.buyer_id:
                 raise UserError("An offer has already been accepted for this property.")
-            record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
-            record.property_id.state = "offer_accepted"
-            other_offers = record.property_id.offer_ids - record
-            other_offers.write({'status': 'rejected'})
-        return True
+            self.status = "accepted"
+            self.property_id.write({
+                'buyer_id': self.partner_id.id,
+                'selling_price': self.price,
+                'state': 'offer_accepted',
+            })
+            other_offers = self.property_id.offer_ids - self
+            other_offers.status = 'rejected'
+            return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = "rejected"
+        self.ensure_one()
+        self.status = "rejected"
         return True
+

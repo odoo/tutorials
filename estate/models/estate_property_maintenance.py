@@ -49,20 +49,20 @@ class EstatePropertyMaintenance(models.Model):
     )
 
     def action_assign(self):
-        for record in self:
-            if not record.technician_id:
-                raise UserError("Please select a technician first.")
-            record.state = "assigned"
+        self.ensure_one()
+        if not self.technician_id:
+            raise UserError("Please select a technician first.")
+        self.state = "assigned"
         return True
 
     def action_start(self):
-        for record in self:
-            record.state = "started"
+        self.ensure_one()
+        self.state = "started"
         return True
 
     def action_stop(self):
-        for record in self:
-            if record.final_cost <= 0:
-                raise UserError("Please enter a valid final cost before completing the work.")
-            record.state = "done"
+        self.ensure_one()
+        if self.final_cost <= 0:
+            raise UserError("Please enter a valid final cost before completing the work.")
+        self.state = "done"
         return True
