@@ -5,6 +5,7 @@
         <field name="name">Property</field>
         <field name="res_model">realestate.properties</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_property_custom_view" model="ir.ui.view">
@@ -13,17 +14,23 @@
         <field name="arch" type="xml">
             <form string="Custom description form">
                 <header>
-                    <button name="sold_action_btn" type="object" string="Property sold" />
-                    <button name="cancelled_action_btn" type="object" string="Property cancelled" />
+                    <button name="sold_action_btn" type="object" string="Property sold"
+                        invisible="state == 'sold'" />
+                    <button name="cancelled_action_btn" type="object" string="Property cancelled"
+                        invisible="state == 'sold'" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer received,offer accepted,sold" />
                 </header>
                 <sheet>
                     <h1 class="oe_title mb32">
                         <field name="name" />
                     </h1>
                     <group>
-                        <field name="property_tag_ids" widget="many2many_tags" class="mb16" />
+                        <field name="property_tag_ids" class="mb16" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
                         <group>
-                            <field name="state" />
+                            <field name="property_type_id"
+                                options="{'no_create': True, 'no_open': True}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -41,14 +48,14 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
-                                <field name="property_tag_ids" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" />
+                            <field name="offer_ids"
+                                readonly="state in ('offer accepted', 'sold', 'cancelled')" />
                         </page>
                         <page string="Other info">
                             <group>
@@ -61,21 +68,23 @@
                 </sheet>
             </form>
         </field>
-
     </record>
 
     <record id="estate_property_views_list" model="ir.ui.view">
         <field name="name">realestate.property.list</field>
         <field name="model">realestate.properties</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel"
+                decoration-success="state in ('offer received', 'offer accepted')"
+                decoration-bf="state == 'offer accepted'"
+                decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -89,7 +98,8 @@
                 <field name="bedrooms" />
                 <field name="facades" />
                 <field name="postcode" />
-                <field name="living_area" />
+                <field name="living_area"
+                    filter_domain="[('living_area', '&gt;=', self)]" />
                 <field name="expected_price" />
                 <separator />
                 <filter string="Available properties" name="available"

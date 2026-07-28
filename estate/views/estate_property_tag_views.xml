@@ -6,8 +6,9 @@
         <field name="res_model">realestate.properties.tag</field>
         <field name="view_mode">list,form</field>
     </record>
-    <record id="estate_property_type_custom_view" model="ir.ui.view">
-        <field name="name">realestate.property.form</field>
+
+    <record id="estate_property_tag_custom_view" model="ir.ui.view">
+        <field name="name">realestate.property.tag.form</field>
         <field name="model">realestate.properties.tag</field>
         <field name="arch" type="xml">
             <form string="Custom description form">
@@ -20,17 +21,19 @@
         </field>
 
     </record>
-    <record id="estate_property_type_views_list" model="ir.ui.view">
-        <field name="name">realestate.property.type.list</field>
+
+    <record id="estate_property_tag_views_list" model="ir.ui.view">
+        <field name="name">realestate.property.tag.list</field>
         <field name="model">realestate.properties.tag</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel" editable="bottom">
                 <field name="name" />
             </list>
         </field>
     </record>
-    <record id="estate_property_type_views_filter" model="ir.ui.view">
-        <field name="name">realestate.property.type.filter</field>
+
+    <record id="estate_property_tag_views_filter" model="ir.ui.view">
+        <field name="name">realestate.property.tag.filter</field>
         <field name="model">realestate.properties.tag</field>
         <field name="arch" type="xml">
             <search string="Filter string">

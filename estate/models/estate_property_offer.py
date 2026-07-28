@@ -6,6 +6,7 @@ from odoo import api, _, exceptions, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "realestate.properties.offer"
     _description = "Real estate property offer"
+    _order = "price desc"
 
     price = fields.Float("Price", required=True)
     _check_selling_price = models.Constraint(
@@ -29,6 +30,11 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("realestate.properties", required=True)
+    property_type_id = fields.Many2one(
+        "realestate.properties.type",
+        related="property_id.property_type_id",
+        store=True,
+    )
 
     @api.depends("validity")
     def _computed_date_deadline(self):
@@ -44,7 +50,7 @@ class EstatePropertyOffer(models.Model):
             create_date = offer.create_date if offer.create_date else datetime.today()
             offer.validity = (offer.date_deadline - create_date.date()).days
 
-    def action_confirm(self):
+    def action_accept(self):
         for offer in self:
             if offer.property_id.buyer_id:
                 raise exceptions.UserError(_("One offer has already been accepted."))
@@ -53,7 +59,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
 
-    def action_cancel(self):
+    def action_refuse(self):
         for offer in self:
             offer.status = "refused"
             if offer.property_id.state == "offer accepted":
