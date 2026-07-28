@@ -9,6 +9,6 @@ class ResUsers(models.Model):
         "salesperson_id",
         string="Properties",
         domain=[
-            ("state", "not in", ["sold", "canceled"])
+            ("state", "not in", ["sold", "cancelled"])
         ],
     )

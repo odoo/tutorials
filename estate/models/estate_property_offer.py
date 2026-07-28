@@ -9,11 +9,6 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
     _order = "price desc"
 
-    _check_offer_price = models.Constraint(
-        'CHECK(price > 0)',
-        'Offer Price must be strictly positive.',
-    )
-
     price = fields.Float()
     validity = fields.Integer(
         default=7,
@@ -41,6 +36,10 @@ class EstatePropertyOffer(models.Model):
         "estate.property.type",
         related="property_id.property_type_id",
         store=True,
+    )
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer Price must be strictly positive.',
     )
 
     @api.depends("create_date", "validity")
@@ -72,12 +71,15 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property = self.env["estate.property"].browse(vals["property_id"])
-            for offer in property.offer_ids:
-                if vals["price"] < offer.price:
-                    raise UserError(
-                        "The offer must be higher than existing offers."
-                    )
+            property_id = vals.get("property_id")
+            price = vals.get("price")
+            if property_id and price:
+                property = self.env["estate.property"].browse(property_id)
+                for offer in property.offer_ids:
+                    if price < offer.price:
+                        raise UserError(
+                            "The offer must be higher than existing offers."
+                        )
         offers = super().create(vals_list)
         for offer in offers:
             if offer.property_id.state == "new":

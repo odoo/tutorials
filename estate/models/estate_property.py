@@ -9,15 +9,6 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected price must be strictly positive.',
-    )
-    _check_positive_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'The selling price must be positive.',
-    )
-
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -93,6 +84,14 @@ class EstateProperty(models.Model):
         copy=False,
         default='new',
     )
+    _check_expected_price = models.Constraint(
+            'CHECK(expected_price > 0)',
+            'The expected price must be strictly positive.',
+        )
+    _check_positive_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive.',
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -142,6 +141,10 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "Cancelled properties cannot be sold."
                 )
+            if property.state != "offer_accepted":
+                raise UserError(
+                    "A property can only be sold after an offer has been accepted."
+                )
             property.state = "sold"
         return True
 
@@ -151,5 +154,5 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "Sold properties cannot be cancelled."
                 )
-            property.state = "cancelled"    
+            property.state = "cancelled"
         return True

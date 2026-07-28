@@ -6,11 +6,6 @@ class EstatePropertyType(models.Model):
     _description = "Real Estate Property Type"
     _order = "sequence, name"
 
-    _unique_property_type = models.Constraint(
-        'UNIQUE(name)',
-        'The property type must be unique',
-    )
-
     name = fields.Char(required=True)
     property_ids = fields.One2many(
         "estate.property",
@@ -25,6 +20,10 @@ class EstatePropertyType(models.Model):
     )
     offer_count = fields.Integer(
         compute="_compute_offer_count"
+    )
+    _unique_property_type = models.Constraint(
+        'UNIQUE(name)',
+        'The property type must be unique',
     )
 
     @api.depends("offer_ids")
