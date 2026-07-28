@@ -59,8 +59,12 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", copy=False, readonly=True)
     tags_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Integer(compute="_total_area", readonly=True)
-    best_price = fields.Float(compute="_best_price", readonly=True, string="Best Offer")
+    total_area = fields.Integer(compute="_compute_total_area", readonly=True)
+    best_price = fields.Float(
+        compute="_compute_best_price",
+        readonly=True,
+        string="Best Offer",
+    )
 
     @api.ondelete(at_uninstall=False)
     def _ondelete(self):
@@ -82,17 +86,17 @@ class EstateProperty(models.Model):
         self.garden_area = 0
 
     @api.depends("offer_ids.price")
-    def _best_price(self):
+    def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.depends("living_area", "garden_area")
-    def _total_area(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
     @api.constrains("selling_price", "expected_price")
-    def _onchange_constrains_selling_price(self):
+    def _constrain_selling_price(self):
         for record in self:
             if (
                 not float_is_zero(record.selling_price, 3)

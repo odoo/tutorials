@@ -1,12 +1,12 @@
 <odoo>
-    <record id="estate_property_types_action" model="ir.actions.act_window">
-        <field name="name">Property types</field>
+    <record id="estate_property_type_action_view" model="ir.actions.act_window">
+        <field name="name">estate.property.type.main.action</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_type_list_view" model="ir.ui.view">
-        <field name="name">estate.list.view</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list>
@@ -18,8 +18,8 @@
         </field>
     </record>
 
-    <record id="estate_property_type_form_view" model="ir.ui.view">
-        <field name="name">estate.property.type.form.view</field>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
@@ -28,7 +28,7 @@
                         string="Offers"
                         class="oe_stat_button"
                         type="action"
-                        name="%(estate_property_offers_action)d"
+                        name="%(estate_property_offer_action_view)d"
                     />
                 </div>
                 <sheet>
