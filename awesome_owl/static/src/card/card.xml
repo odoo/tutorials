@@ -5,7 +5,7 @@
         <div class="m-3 p-3 border rounded align-items-center gap-3">
             <h5><t t-esc="props.title"/></h5>
             <div>
-                <t t-esc="props.content"/>
+                <t t-out="props.content"/>
             </div>
         </div>
     </t>
