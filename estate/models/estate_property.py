@@ -96,8 +96,9 @@ class EstateProperty(models.Model):
     @api.onchange("offer_ids")
     def _onchange_offer(self):
         for record in self:
-            if record.state == "new" and len(record.offer_ids) > 0:
-                record.state = "offer received"
+            # in case of a delete
+            if len(record.offer_ids) == 0:
+                record.state = "new"
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -111,14 +112,14 @@ class EstateProperty(models.Model):
     def sold_action_btn(self):
         for record in self:
             if record.state == "cancelled":
-                raise exceptions.UserError(_("Cancelled properties cannot be sold"))
+                raise exceptions.UserError(_("Cancelled properties cannot be sold."))
 
             record.state = "sold"
 
     def cancelled_action_btn(self):
         for record in self:
             if record.state == "sold":
-                raise exceptions.UserError(_("Sold properties cannot be cancelled"))
+                raise exceptions.UserError(_("Sold properties cannot be cancelled."))
             record.state = "cancelled"
 
     @api.constrains("expected_price", "selling_price")
@@ -131,6 +132,14 @@ class EstateProperty(models.Model):
             ):
                 raise ValidationError(
                     _(
-                        "The selling price should be greater than 90% of the expected price",
+                        "The selling price should be greater than 90% of the expected price.",
                     ),
+                )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_state_is_new_or_cancelled(self):
+        for record in self:
+            if record.state in ("new", "cancelled"):
+                raise exceptions.UserError(
+                    _("Property that is either new or cancelled, can't be deleted."),
                 )
