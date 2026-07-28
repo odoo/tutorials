@@ -3,5 +3,5 @@ from . import (
     estate_property_offer,
     estate_property_tag,
     estate_property_type,
-    inherited_res_users,
+    res_users,
 )
