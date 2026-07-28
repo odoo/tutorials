@@ -107,7 +107,7 @@
                                 <field name="garden" />
                                 <field
                                     name="garden_area"
-                                    invisible="garden == False"
+                                    invisible="not garden"
                                 />
                                 <field
                                     name="garden_orientation"
