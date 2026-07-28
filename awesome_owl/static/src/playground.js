@@ -8,4 +8,12 @@ export class Playground extends Component {
 
     value1 = "<div>content 1</div>"
     value2 = markup("<div>content 2</div>")
+
+    setup() {
+        this.sum = useState({ value: 0 });
+    }
+
+    incrementSum() {
+        this.sum.value++;
+    }
 }
