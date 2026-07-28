@@ -18,7 +18,8 @@
                 <field name="expected_price"/>
                 <field name="selling_price" optional="hide"/>
                 <field name="date_availability" optional="show"/>
-                <field name="property_type_id" optional="hide"/>             
+                <field name="property_type_id" optional="hide"/> 
+                <field name="tags_id" widget="many2many_tags" optional="hide"/>            
             </list>
         </field>
     </record>
@@ -31,6 +32,9 @@
                 <sheet>
                     <group>
                         <h1><field name="name"/></h1>
+                    </group>
+                    <group>
+                        <field name="tags_id" widget="many2many_tags"/>
                     </group>
                      <group>
                         <group>
