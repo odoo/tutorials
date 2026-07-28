@@ -10,27 +10,27 @@
             <div class="p-3 d-flex flex-wrap gap-3">
                 <DashboardItem>
                     <div class="h6 text-muted">Average amount of t-shirt by order this month</div>
-                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.average_quantity"/>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.average_quantity"/>
                 </DashboardItem>
 
                 <DashboardItem size="2">
                     <div class="h6 text-muted">Average time for an order to go from 'new' to 'sent' or 'cancelled'</div>
-                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.average_time"/>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.average_time"/>
                 </DashboardItem>
 
                 <DashboardItem>
                     <div class="h6 text-muted">Number of new orders this month</div>
-                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.nb_new_orders"/>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.nb_new_orders"/>
                 </DashboardItem>
 
                 <DashboardItem>
                     <div class="h6 text-muted">Number of cancelled orders this month</div>
-                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.nb_cancelled_orders"/>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.nb_cancelled_orders"/>
                 </DashboardItem>
 
                 <DashboardItem>
                     <div class="h6 text-muted">Total amount of new orders this month</div>
-                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.data.total_amount"/>
+                    <div class="fs-1 fw-bold text-success text-center" t-esc="stats.total_amount"/>
                 </DashboardItem>
             </div>
         </Layout>
