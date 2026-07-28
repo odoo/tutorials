@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -17,7 +18,7 @@ class EstateProperty(models.Model):
     )
     postcode = fields.Char()
     date_availability = fields.Date(copy=False)
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True, default=15.6)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -48,6 +49,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        readonly=True,
     )
     offer_ids = fields.One2many(
         "estate.property.offers", "property_id", string="Offers"
@@ -72,3 +74,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def set_sold(self):
+        if self.state == "cancelled":
+            raise UserError("Cancelled Properties Cannot be Sold")
+        else:
+            self.state = "sold"
+        return True
+
+    def set_cancel(self):
+        if self.state == "sold":
+            raise UserError("Sold Properties cannot be Cancelled")
+        else:
+            self.state = "cancelled"
+        return True
