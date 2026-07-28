@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from odoo import api, _, exceptions, fields, models
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -66,3 +67,23 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.state = "new"
             offer.property_id.selling_price = 0
             offer.property_id.buyer_id = None
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("property_id"):
+                property_record = self.env["realestate.properties"].browse(
+                    vals["property_id"],
+                )
+                offer_price = vals.get("price", 0.0)
+                if (
+                    property_record.best_offer
+                    and float_compare(offer_price, property_record.best_offer, 2) < 0
+                ):
+                    raise exceptions.UserError(
+                        _("New offer should be better than current best offer (%.2f).")
+                        % property_record.best_offer,
+                    )
+                if property_record.state == "new":
+                    property_record.state = "offer received"
+        return super().create(vals_list)
