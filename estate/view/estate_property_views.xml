@@ -40,8 +40,6 @@
                         string="Bedrooms"
                         name="bedrooms"
                         domain="[('bedrooms', '=' , 2)]"/>
-
-
             </search>
         </field>
     </record>
@@ -51,6 +49,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold" string="sold" class="btn-primary" type="object"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
 
                     <h1>

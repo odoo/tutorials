@@ -19,7 +19,8 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="deadline"/>
-
+                <button name="action_confirm" string="Confirm" type="object" icon="fa-check"/>
+                <button name="action_cancel" string="Cancel" type="object" icon="fa-times"/>
                 <field name="status"/>
             </list>
         </field>
@@ -39,7 +40,7 @@
                         <field name="validity"/>
                         <field name="deadline"/>
 
-                        <field name="status"/>
+                        <field name="status" readonly="True"/>
                     </group>
                 </sheet>
             </form>

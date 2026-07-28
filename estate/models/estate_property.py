@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -14,6 +15,24 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled property cannot be sold.")
+
+            record.state = "sold"
+
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold property cannot be cancelled.")
+
+            record.state = "cancelled"
+
+        return True
 
     best_price = fields.Float(
         string="Best Offer",

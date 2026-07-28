@@ -8,6 +8,16 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float()
 
+    def action_confirm(self):
+        for record in self:
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+
+    def action_cancel(self):
+        for record in self:
+            record.status = "refused"
+
     status = fields.Selection(
         [
             ("accepted", "Accepted"),
