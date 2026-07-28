@@ -9,7 +9,7 @@
                     <Counter onChange.bind="incrementSum"/>
                 </div>
                 <div class="justify-content-center d-flex">
-                    The sum is: <t t-esc="state.sum"/>
+                    The sum is: <t t-out="state.sum"/>
                 </div>
             </Card>
 
