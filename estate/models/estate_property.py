@@ -5,7 +5,6 @@ class EstateProperties(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties"
     name = fields.Char(required=True)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -27,6 +26,13 @@ class EstateProperties(models.Model):
             ("west", "West"),
         ]
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    sales_person = fields.Many2one(
+        "res.users", string="Sales Person", default=lambda self: self.env.user
+    )
+    buyer = fields.Many2one("res.users", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
