@@ -15,6 +15,16 @@
 
         </menuitem>
 
+        <menuitem
+            id="estate_property_type_menu"
+            name="Settings">
+
+            <menuitem
+                id="estate_property_type_menu_action"
+                action="estate_property_type_action"/>
+
+        </menuitem>
+
     </menuitem>
     
 
