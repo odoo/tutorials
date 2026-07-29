@@ -3,7 +3,7 @@ from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "realestate.properties.offer"
+    _name = "estate.property.offer"
     _description = "Real estate property offer"
     _order = "price desc"
 
@@ -28,9 +28,9 @@ class EstatePropertyOffer(models.Model):
         readonly=False,
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("realestate.properties", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(
-        "realestate.properties.type",
+        "estate.property.type",
         related="property_id.property_type_id",
         store=True,
     )
@@ -73,7 +73,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get("property_id"):
-                property_record = self.env["realestate.properties"].browse(
+                property_record = self.env["estate.property"].browse(
                     vals["property_id"],
                 )
                 offer_price = vals.get("price", 0.0)

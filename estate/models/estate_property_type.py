@@ -2,7 +2,7 @@ from odoo import _, api, fields, models
 
 
 class EstatePropertyType(models.Model):
-    _name = "realestate.properties.type"
+    _name = "estate.property.type"
     _description = "Real estate property type"
     _order = "sequence, name"
 
@@ -13,8 +13,8 @@ class EstatePropertyType(models.Model):
     )
 
     sequence = fields.Integer("Sequence")
-    property_list_id = fields.One2many("realestate.properties", "property_type_id")
-    offer_ids = fields.One2many("realestate.properties.offer", "property_type_id")
+    property_list_id = fields.One2many("estate.property", "property_type_id")
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id")
     offer_count = fields.Integer("Offers", compute="_compute_offers_count")
 
     @api.depends("offer_ids")

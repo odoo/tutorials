@@ -2,14 +2,14 @@
 <odoo>
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
-        <field name="res_model">realestate.properties.offer</field>
+        <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
     <record id="estate_property_offer_form" model="ir.ui.view">
-        <field name="name">realestate.property.offer.form</field>
-        <field name="model">realestate.properties.offer</field>
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Custom description form">
                 <sheet>
@@ -25,8 +25,8 @@
     </record>
 
     <record id="estate_property_offer_views_list" model="ir.ui.view">
-        <field name="name">realestate.property.offer.list</field>
-        <field name="model">realestate.properties.offer</field>
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Channel" editable="bottom" decoration-danger="status == 'refused'"
                 decoration-success="status == 'accepted'">
