@@ -1,6 +1,3 @@
-from datetime import date
-from dateutil.relativedelta import relativedelta
-
 from odoo import api, _, exceptions, fields, models
 from odoo.orm.utils import ValidationError
 from odoo.tools import float_compare
@@ -18,7 +15,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         "Availability date",
         copy=False,
-        default=lambda _: date.today() + relativedelta(months=3),
+        default=lambda _: fields.Date.add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float("Expected Price", required=True)
     _check_expected_price = models.Constraint(
