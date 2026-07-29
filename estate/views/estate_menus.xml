@@ -23,8 +23,7 @@
     <menuitem
         id="estate_configuration_menu"
         name="Settings"
-        parent="estate_menu_root"
-        sequence="100"/>
+        parent="estate_menu_root"/>
 
     <!-- Property Types -->
     <menuitem
