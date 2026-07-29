@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
         string="Expected Date",
         required=True,
         copy=False,
-        default=(fields.Date.today() + timedelta(days=90)),
+        default=lambda _: (fields.Date.today() + timedelta(days=90)),
     )
     bedroom = fields.Integer(string="Number of Bedroom", default=2)
     living_area = fields.Integer(string="Living area (square metter)")
