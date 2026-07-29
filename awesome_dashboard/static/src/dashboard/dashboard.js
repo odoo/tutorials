@@ -21,7 +21,7 @@ export class AwesomeDashboard extends Component {
         this.display = { controlPanel: {} };
         this.action = useService("action");
         this.stats = useState(useService("awesome_dashboard.statistics"));
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomers() {
