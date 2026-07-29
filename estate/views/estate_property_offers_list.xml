@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- the root elements of the data file -->
 <odoo>
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
@@ -23,8 +22,8 @@
                 </sheet>
             </form>
         </field>
-
     </record>
+
     <record id="estate_property_offer_views_list" model="ir.ui.view">
         <field name="name">realestate.property.offer.list</field>
         <field name="model">realestate.properties.offer</field>

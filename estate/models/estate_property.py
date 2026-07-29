@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     active = fields.Boolean(default=True)
-    name = fields.Char("Title", required=True, translate=True)
+    name = fields.Char("Title", required=True)
     description = fields.Text("Notes")
     postcode = fields.Char("Postcode", required=True)
     date_availability = fields.Date(
@@ -26,7 +26,6 @@ class EstateProperty(models.Model):
         "Selling price",
         copy=False,
         readonly=True,
-        compute="_compute_selling_price",
     )
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)",
@@ -35,8 +34,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         [
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -84,12 +83,6 @@ class EstateProperty(models.Model):
             prices = record.offer_ids.mapped("price")
             record.best_offer = max(prices, default=0)
 
-    @api.depends("offer_ids")
-    def _compute_selling_price(self):
-        for record in self:
-            accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")
-            record.selling_price = accepted_offer.price if accepted_offer else 0.0
-
     @api.onchange("offer_ids")
     def _onchange_offer(self):
         for record in self:
@@ -122,7 +115,7 @@ class EstateProperty(models.Model):
     def _check_offer_acceptable_price(self):
         for record in self:
             if (
-                record.state == "offer accepted"
+                record.state == "offer_accepted"
                 and float_compare(record.selling_price, record.expected_price * 0.9, 3)
                 <= 0
             ):
