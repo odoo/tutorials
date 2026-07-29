@@ -11,6 +11,13 @@ export class AwesomeDashboard extends Component {
     static props = { "*": true };
 
     setup() {
+        useSubEnv({
+            config: {
+                ...this.env.config,
+                breadcrumbs: [{ name: "Dashboard" }],
+            },
+        });
+
         this.display = { controlPanel: {} };
         this.action = useService("action");
         this.stats = useState(useService("awesome_dashboard.statistics"));
@@ -33,4 +40,4 @@ export class AwesomeDashboard extends Component {
     }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
