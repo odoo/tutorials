@@ -76,7 +76,10 @@ class Offer(models.Model):
         for record in vals_list:
             property = self.env["estate_property"].browse(record["property_id"])
             max_offer_price = max(property.offer_ids.mapped("price"), default=0)
-            if self.price < max_offer_price:
+            print(
+                f"max_offer_price: {max_offer_price}, new offer price: {record['price']}",
+            )
+            if record["price"] < max_offer_price:
                 raise UserError(
                     "Cannot create an offer with price lower than an existing offer",
                 )
