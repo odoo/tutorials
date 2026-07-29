@@ -8,11 +8,17 @@ class PropertyType(models.Model):
 
     name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many(
-        string="Properties", comodel_name="estate_property", inverse_name="type_id"
+        string="Properties",
+        comodel_name="estate_property",
+        inverse_name="type_id",
     )
     sequence = fields.Integer(string="Sequence", default=1)
 
-    offer_ids = fields.One2many(string="Property type offers", comodel_name="estate_property_offer", inverse_name="property_type_id")
+    offer_ids = fields.One2many(
+        string="Property type offers",
+        comodel_name="estate_property_offer",
+        inverse_name="property_type_id",
+    )
     offer_count = fields.Integer(string="Offers count", compute="_compute_offers_count")
 
     _unique_name = models.Constraint(

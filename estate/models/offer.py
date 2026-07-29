@@ -63,6 +63,7 @@ class Offer(models.Model):
         self.status = "accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
 
     def action_refuse_offer(self):
         self.status = "refused"
@@ -77,7 +78,7 @@ class Offer(models.Model):
             max_offer_price = max(property.offer_ids.mapped("price"), default=0)
             if self.price < max_offer_price:
                 raise UserError(
-                    "Cannot create an offer with price lower than an existing offer"
+                    "Cannot create an offer with price lower than an existing offer",
                 )
 
         # update state and save to the database
