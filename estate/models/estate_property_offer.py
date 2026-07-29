@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 from odoo import api, _, exceptions, fields, models
 from odoo.tools import float_compare
 
@@ -40,16 +38,17 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _computed_date_deadline(self):
         for offer in self:
-            create_date = offer.create_date if offer.create_date else datetime.today()
+            create_date = fields.Date.to_date(offer.create_date) or fields.Date.today()
             if offer.validity:
-                offer.date_deadline = create_date + timedelta(
+                offer.date_deadline = fields.Date.add(
+                    create_date,
                     days=offer.validity,
                 )
 
     def _inverse_validity_period(self):
         for offer in self:
-            create_date = offer.create_date if offer.create_date else datetime.today()
-            offer.validity = (offer.date_deadline - create_date.date()).days
+            create_date = fields.Date.to_date(offer.create_date) or fields.Date.today()
+            offer.validity = (offer.date_deadline - create_date).days
 
     def action_accept(self):
         for offer in self:
