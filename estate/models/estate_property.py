@@ -18,7 +18,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         "Availability date",
         copy=False,
-        default=date.today() + relativedelta(months=3),
+        default=lambda _: date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float("Expected Price", required=True)
     _check_expected_price = models.Constraint(
@@ -109,14 +109,13 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    def sold_action_btn(self):
+    def action_sold_btn(self):
         for record in self:
             if record.state == "cancelled":
                 raise exceptions.UserError(_("Cancelled properties cannot be sold."))
-
             record.state = "sold"
 
-    def cancelled_action_btn(self):
+    def action_cancelled_btn(self):
         for record in self:
             if record.state == "sold":
                 raise exceptions.UserError(_("Sold properties cannot be cancelled."))
