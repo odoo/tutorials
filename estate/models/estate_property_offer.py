@@ -35,7 +35,7 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
 
-    @api.depends("validity")
+    @api.depends("create_date", "validity")
     def _computed_date_deadline(self):
         for offer in self:
             create_date = fields.Date.to_date(offer.create_date) or fields.Date.today()
@@ -55,14 +55,16 @@ class EstatePropertyOffer(models.Model):
             if offer.property_id.buyer_id:
                 raise exceptions.UserError(_("One offer has already been accepted."))
             offer.status = "accepted"
-            offer.property_id.state = "offer accepted"
+            offer.property_id.state = "offer_accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
 
     def action_refuse(self):
         for offer in self:
             offer.status = "refused"
-            if offer.property_id.state == "offer accepted":
+            if offer.property_id.state == "offer_received" and any(
+                s != "refused" for s in offer.mapped("status")
+            ):
                 offer.property_id.state = "new"
             offer.property_id.selling_price = 0
             offer.property_id.buyer_id = None
@@ -84,5 +86,5 @@ class EstatePropertyOffer(models.Model):
                         % property_record.best_offer,
                     )
                 if property_record.state == "new":
-                    property_record.state = "offer received"
+                    property_record.state = "offer_received"
         return super().create(vals_list)

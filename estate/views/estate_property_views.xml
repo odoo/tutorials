@@ -18,7 +18,7 @@
                     <button name="action_cancelled_btn" type="object" string="Property cancelled"
                         invisible="state == 'sold'" />
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer received,offer accepted,sold" />
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <h1 class="oe_title mb32">
@@ -54,7 +54,7 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state in ('offer accepted', 'sold', 'cancelled')" />
+                                readonly="state in ('offer_accepted', 'sold', 'cancelled')" />
                         </page>
                         <page string="Other info">
                             <group>
@@ -74,8 +74,8 @@
         <field name="model">realestate.properties</field>
         <field name="arch" type="xml">
             <list string="Channel"
-                decoration-success="state in ('offer received', 'offer accepted')"
-                decoration-bf="state == 'offer accepted'"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="postcode" />
@@ -102,7 +102,7 @@
                 <field name="expected_price" />
                 <separator />
                 <filter string="Available properties" name="available"
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" />
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <group>
                     <filter string="Group by postcode" name="postcode"
                         context="{'group_by': 'postcode'}" />
@@ -116,11 +116,12 @@
         <field name="model">realestate.properties</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="false">
+                <field name="state" />
                 <templates>
                     <t t-name="card">
                         <div>
                             <b>
-                                <field name="state" />
+                                <field name="name" />
                             </b>
                         </div>
                         <div>
@@ -128,7 +129,7 @@
                             <field name="expected_price" />
                         </div>
                         <div>
-                            <t t-if="record.state.raw_value == 'offer accepted'">
+                            <t t-if="record.state.raw_value == 'offer_accepted'">
                                 <span>Best offer price: </span>
                                 <field name="best_offer" />
                             </t>
