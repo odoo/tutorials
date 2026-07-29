@@ -2,7 +2,7 @@ from odoo import Command, models
 
 
 class PropertyAccount(models.Model):
-    _inherit = "realestate.properties"
+    _inherit = "estate.property"
 
     def action_sold_btn(self):
         for record in self:
@@ -21,7 +21,7 @@ class PropertyAccount(models.Model):
                                 "name": "6% fee",
                                 "quantity": 1,
                                 "price_unit": record.selling_price * 0.06,
-                            }
+                            },
                         ),
                         Command.create(
                             {

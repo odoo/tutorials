@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-estate.access_realestate_properties,access_realestate_properties,estate.model_realestate_properties,base.group_user,1,1,1,1
-estate.access_realestate_properties_type,access_realestate_properties_type,estate.model_realestate_properties_type,base.group_user,1,1,1,1
-estate.access_realestate_properties_tag,access_realestate_properties_tag,estate.model_realestate_properties_tag,base.group_user,1,1,1,1
-estate.access_realestate_properties_offer,access_realestate_properties_offer,estate.model_realestate_properties_offer,base.group_user,1,1,1,1
-estate.access_users,access_realestate_users,estate.model_res_users,base.group_user,1,1,1,1
+access_estate_properties,estate.property,model_estate_property,base.group_user,1,1,1,1
+access_estate_properties_type,estate.property.type,model_estate_property_type,base.group_user,1,1,1,1
+access_estate_properties_tag,estate.property_tag,model_estate_property_tag,base.group_user,1,1,1,1
+access_estate_properties_offer,estate.property.offer,model_estate_property_offer,base.group_user,1,1,1,1
+access_estate_res_users,estate.res.users,model_res_users,base.group_user,1,1,1,1
