@@ -5,6 +5,7 @@ import { useAutofocus } from "../utils";
 export class TodoList extends Component {
     static template = 'awesome_owl.todoList';
     static components = { TodoItem };
+    static props = {};
 
     setup() {
         this.todos = useState([]);
@@ -25,5 +26,11 @@ export class TodoList extends Component {
         this.todos.push({id: this.id++, description: value, isCompleted: false});
 
         ev.target.value = "";
+    }
+
+    toggleTodo(id) {
+        const todo = this.todos.find((t) => t.id === id);
+        if (todo)
+            todo.isCompleted = !todo.isCompleted;
     }
 }
