@@ -37,7 +37,7 @@ class EstateOffer(models.Model):
             max_price = max(property.proterty_offer_ids.mapped('price'), default=None)
             if max_price and max_price > vals['price']:
                 raise exceptions.UserError("New offer can't be lower than an other offer")
-            return super().create(vals_list)
+        return super().create(vals_list)
 
     @api.depends("validity")
     def _compute_dead_line(self):
