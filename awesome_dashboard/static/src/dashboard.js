@@ -4,10 +4,11 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { rpc } from "@web/core/network/rpc";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
+import { PieChart } from "./pie_chart/pie_chart";
 
 export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
     static props = { "*": true };
 
     setup() {
@@ -20,11 +21,12 @@ export class AwesomeDashboard extends Component {
 
         this.action = useService("action");
         this.display = { controlPanel: {} };
-        const statisticService = useService("awesome_dashboard.statistics");
+        this.statisticsService = useService("awesome_dashboard.statistics");
 
         this.stats = useState({ data: {} });
         onWillStart(async () => {
-            this.stats = await statisticService.loadStatistics();
+            const result = await this.statisticsService.loadStatistics();
+            this.stats.data = result || {};
         });
     }
 
