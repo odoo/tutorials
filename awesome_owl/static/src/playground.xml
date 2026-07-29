@@ -9,8 +9,6 @@
         <div>
             Total count : <t t-esc="sum.value"/>
         </div>
-        <Card title="'card 1'" content="'content of card 1'"/>
-        <Card title="'card 2'" content="this.content"/>
+        <TodoList/>
     </t>
-
 </templates>

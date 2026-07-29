@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_item">
+        <Card title="props.todo.description" content="props.todo.description" isCrossedOut="props.todo.isCompleted"/>
+    </t>
+</templates>

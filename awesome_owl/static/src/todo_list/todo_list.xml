@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <t t-foreach="todos" t-as="todo" t-key="todo">
+            <TodoItem todo="todo" />
+        </t>
+    </t>
+</templates>
