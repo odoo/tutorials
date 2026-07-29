@@ -102,7 +102,6 @@ class Property(models.Model):
             record.state = "cancelled"
         return True
 
-
     def confirm_offer(self):
         for property in self:
             accepted_offer = property.offer_ids.filtered(lambda r: r.status == 'accepted')

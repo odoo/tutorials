@@ -17,7 +17,7 @@ class PropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(string="Validity of offer", default=7)
     date_deadline = fields.Date(string="Offer expiry", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    
+
     _check_positive_price = models.Constraint('CHECK(price >= 0)', 'Price has to be positive')
 
     @api.depends("create_date", "validity")
