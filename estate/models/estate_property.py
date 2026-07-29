@@ -86,35 +86,36 @@ class EstateProperty(models.Model):
 
     @api.depends('expected_price', 'state', 'offer_ids')
     def _compute_dynamic_tags(self):
-        self.ensure_one()
-
         now = fields.Datetime.now()
 
-        create_date = self.create_date or now
-
-        dynamic_tags = self.env['estate.property.tag'].search(
-            [('name', 'in', ('high value', 'quick sell', 'low interest'))],
+        tag_names = ['high value', 'quick sell', 'low interest']
+        existing_tags = self.env['estate.property.tag'].search(
+            [('name', 'in', tag_names)],
         )
 
-        def gettag(str):
-            tag = dynamic_tags.filtered(lambda t: t.name == str)
-            if not tag:
-                tag = self.env['estate.property.tag'].create([{'name': str}])
-            return tag
+        tags_dict = {tag.name: tag for tag in existing_tags}
+        for name in tag_names:
+            if name not in tags_dict:
+                tags_dict[name] = self.env['estate.property.tag'].create({'name': name})
 
-        if self._origin:
-            self.tag_ids |= gettag('low interest')
+        for record in self:
+            create_date = record.create_date or now
 
-        if self.expected_price > 2_00_000:
-            self.tag_ids |= gettag("high value")
+            new_tags = self.env['estate.property.tag']
 
-        if (create_date + relativedelta(days=10)) <= now and self.state == 'sold':
-            self.tag_ids |= gettag("quick sell")
+            if record._origin:
+                new_tags |= tags_dict['low interest']
 
-        if len(self.offer_ids) <= 2:
-            self.tag_ids |= gettag("low interest")
-        else:
-            self.tag_ids -= gettag("low interest")
+            if record.expected_price > 2_00_000:
+                new_tags |= tags_dict['high value']
+
+            if (create_date + relativedelta(days=10)) <= now and record.state == 'sold':
+                new_tags |= tags_dict['quick sell']
+
+            if len(record.offer_ids) <= 2:
+                new_tags |= tags_dict['low interest']
+
+            record.tag_ids |= new_tags
 
     @api.onchange("state")
     def _onchange_state_validation(self):
