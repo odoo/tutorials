@@ -49,5 +49,12 @@
         parent="estate.estate_settings_menu"
         action="estate.estate_property_maintenance_action"
     />
+    <menuitem
+        id="estate_property_visits_menu"
+        name="Visits"
+        parent="estate_settings_menu"
+        action="estate_property_visits_action"
+        sequence="30"
+    />
 
 </odoo>

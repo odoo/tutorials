@@ -72,19 +72,24 @@ class EstateProperty(models.Model):
         string="Garden Orientation",
     )
 
+    visit_ids = fields.One2many("estate.property.visits", "property_id", string="Visits")
+    visit_count = fields.Integer(string="Visit Count", compute="_compute_visits")
+
+    @api.depends("visit_ids")
+    def _compute_visits(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
+
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
-        "res.users", default=lambda self: self.env.user, string="Salesperson"
-    )
+        "res.users", default=lambda self: self.env.user, string="Salesperson")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Integer(
-        string="Best price", compute="_compute_best_price", store=True
-    )
+        string="Best price", compute="_compute_best_price", store=True)
     maintenance_ids = fields.One2many(
-        "estate.property.maintenance", 'property_id', string="maintenance_id"
-    )
+        "estate.property.maintenance", 'property_id', string="maintenance_id")
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -153,7 +158,7 @@ class EstateProperty(models.Model):
                 'message': "nice job",
                 'image_url': '...',
                 'type': 'rainbow_man',
-            }
+            },
         }
     selling_date = fields.Date(string="date of sale", compute="_compute_selling_date", store=True)
 
