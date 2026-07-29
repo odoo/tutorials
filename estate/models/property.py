@@ -7,17 +7,6 @@ class Property(models.Model):
     _description = "Properties of our managed estates"
     _order = "id desc"
 
-    _check_positive_expected_price = models.Constraint(
-        'CHECK (expected_price >= 0)', 'Expected price must be positive!')
-    _check_positive_selling_price = models.Constraint(
-        'CHECK (selling_price >= 0)', 'Selling price must be positive!')
-    _check_positive_living_area = models.Constraint(
-        'CHECK (living_area >= 0)', 'Living area must be positive!')
-    _check_positive_amounts = models.Constraint(
-        'CHECK (facades >= 0)', 'Number of facades must be positive!')
-    _check_positive_garden_area = models.Constraint(
-        'CHECK (garden_area >= 0)', 'Garden area must be positive!')
-
     name = fields.Char(string='Title', required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection(required=True, default='new', copy=False, selection=[
@@ -32,7 +21,6 @@ class Property(models.Model):
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-
     description = fields.Text(string='description')
     postcode = fields.Char(string='postcode')
     date_availability = fields.Date(string='Available from', default=lambda _: fields.Date.add(fields.Date.today(), months=3), copy=False)
@@ -51,9 +39,19 @@ class Property(models.Model):
         ('east', 'East'),
         ('west', 'West'),
     ])
-
     total_area = fields.Float(string="Total area", compute="_compute_total_area")
     best_price = fields.Float(string="Best offer", compute="_compute_best_price")
+
+    _check_positive_expected_price = models.Constraint(
+        'CHECK (expected_price >= 0)', 'Expected price must be positive!')
+    _check_positive_selling_price = models.Constraint(
+        'CHECK (selling_price >= 0)', 'Selling price must be positive!')
+    _check_positive_living_area = models.Constraint(
+        'CHECK (living_area >= 0)', 'Living area must be positive!')
+    _check_positive_amounts = models.Constraint(
+        'CHECK (facades >= 0)', 'Number of facades must be positive!')
+    _check_positive_garden_area = models.Constraint(
+        'CHECK (garden_area >= 0)', 'Garden area must be positive!')
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -68,11 +66,25 @@ class Property(models.Model):
             else:
                 record.best_price = 0
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, 2):
+                return
+            if float_compare(property.selling_price, 0.9 * property.expected_price, 2) == -1:
+                raise exceptions.ValidationError(_("The accepted price is less than 90% of the expected price!"))
+
     @api.onchange("garden")
     def _onchange_garden(self):
         for record in self:
             record.garden_area = 10 if record.garden else 0
             record.garden_orientation = 'north' if record.garden else False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_draft(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.ValidationError(_("Only properties in state New or Cancelled can be deleted!"))
 
     def action_sold(self):
         for record in self:
@@ -90,13 +102,6 @@ class Property(models.Model):
             record.state = "cancelled"
         return True
 
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for property in self:
-            if float_is_zero(property.selling_price, 2):
-                return
-            if float_compare(property.selling_price, 0.9 * property.expected_price, 2) == -1:
-                raise exceptions.ValidationError(_("The accepted price is less than 90% of the expected price!"))
 
     def confirm_offer(self):
         for property in self:
@@ -107,12 +112,6 @@ class Property(models.Model):
             property.state = 'offer_accepted'
             # Refuse all other offers
             (property.offer_ids - accepted_offer).action_cancel()
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_draft(self):
-        for record in self:
-            if record.state not in ['new', 'cancelled']:
-                raise exceptions.ValidationError(_("Only properties in state New or Cancelled can be deleted!"))
 
     def _set_offer_received(self):
         self.ensure_one()

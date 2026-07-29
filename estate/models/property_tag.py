@@ -6,7 +6,7 @@ class PropertyTag(models.Model):
     _description = "Tag assigned to property"
     _order = "name"
 
-    _name_idx = models.UniqueIndex('(name)', 'Another record already exists with the same name!')
-
     name = fields.Char(string='Name', required=True)
     color = fields.Integer(string='Color')
+
+    _name_idx = models.UniqueIndex('(name)', 'Another record already exists with the same name!')
