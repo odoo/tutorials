@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="ir_cron_reject_expired_offers" model="ir.cron">
+        <field name="name">Reject Expired Property Offers</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_reject_expired_offers()</field>
+        <field name="active" eval="True"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+    </record>
+
+</odoo>

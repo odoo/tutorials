@@ -3,53 +3,49 @@ from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
+    _name = 'estate.property.offer'
     _description = "It is estate property offer"
-    _order = "price desc"
+    _order = 'price desc'
 
     price = fields.Float()
-
     status = fields.Selection(
         [
-            ('accepted', "Accepted"),
-            ('rejected', "Rejected"),
+            ('accepted', 'Accepted'),
+            ('rejected', 'Rejected'),
         ],
         copy=False,
     )
-
     partner_id = fields.Many2one(
-        "res.partner",
+        'res.partner',
         required=True,
     )
-
     property_id = fields.Many2one(
-        "estate.property",
+        'estate.property',
         required=True,
     )
-
     validity = fields.Integer(
-        string="Days",
+        string='Days',
         default=7,
     )
-
     date_deadline = fields.Date(
         string="Deadline Date",
-        compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline",
+        compute='_compute_date_deadline',
+        inverse='_inverse_date_deadline',
+        store=True,
     )
-
     property_type_id = fields.Many2one(
-        related="property_id.property_type_id",
+        related='property_id.property_type_id',
         store=True,
     )
 
     _check_price = models.Constraint(
-        "CHECK(price > 0)",
-        "The Price should be Positive",
+        'CHECK(price > 0)',
+        'The Price should be Positive',
     )
 
-    @api.depends("create_date", "validity")
+    @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
@@ -69,39 +65,51 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
-            current_price = vals.get("price")
-            property_record = self.env["estate.property"].browse(
-                vals["property_id"],
+            current_price = vals.get('price')
+            property_record = self.env['estate.property'].browse(
+                vals['property_id'],
             )
 
             for record in property_record.offer_ids:
                 other_price = record.price
-
                 if current_price < other_price:
-                    raise UserError("This offer can't be created")
+                    raise UserError("This offer can\'t be created")
 
-            if property_record.state == "new":
-                # breakpoint()
-                property_record.state = "offer_received"
+            if property_record.state == 'new':
+                property_record.state = 'offer_received'
 
         return super().create(vals_list)
 
     def action_accept(self):
-
+        self.ensure_one()
         for offer in self.property_id.offer_ids:
             if self != offer:
-                # raise UserError("An offer is already accepted.")
-                offer.status = "rejected"
+                offer.status = 'rejected'
 
-        self.status = "accepted"
-        self.property_id.buyer_id = self.partner_id
-        self.property_id.selling_price = self.price
-        self.property_id.state = "offer_accepted"
+        self.status = 'accepted'
+        self.property_id.write({
+            'buyer_id': self.partner_id.id,
+            'selling_price': self.price,
+            'state': 'offer_accepted',
+        })
 
         return True
 
     def action_reject(self):
-        for record in self:
-            record.status = "rejected"
-
+        self.ensure_one()
+        self.status = 'rejected'
         return True
+
+    def _cron_reject_expired_offers(self):
+        today = fields.Date.today()
+        offers = self.search(
+            [
+                ('status', '=', False),
+                ('date_deadline', '<', today),
+            ]
+        )
+        offers.write(
+            {
+                'status': 'rejected',
+            }
+        )

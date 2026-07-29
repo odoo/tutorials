@@ -66,6 +66,17 @@
                 </header>
 
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="%(estate.action_open_related_visits)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-money"
+                            string="Visitors">
+                            <field name="visit_count" widget="statinfo" />
+                        </button>
+                    </div>
+
                     <div>
                         <h1>
                             <field name="name" />
@@ -121,6 +132,7 @@
                                     name="property_type_id"
                                     options="{'no_create': true}"
                                 />
+
                                 <field name="buyer_id" />
                                 <field name="salesperson_id" />
                                 <field name="total" />
@@ -145,9 +157,9 @@
                             />
                         </page>
                     </notebook>
-                    
+
                 </sheet>
-                <chatter/>
+                <chatter />
             </form>
         </field>
     </record>
@@ -238,6 +250,5 @@
             </kanban>
         </field>
     </record>
-
 
 </odoo>

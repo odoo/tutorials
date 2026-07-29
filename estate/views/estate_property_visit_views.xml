@@ -1,0 +1,77 @@
+<odoo>
+
+    <record id="estate_property_visit_action" model="ir.actions.act_window">
+        <field name="name">Property Visits</field>
+        <field name="res_model">estate.property.visit</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_visit_list_view" model="ir.ui.view">
+        <field name="name">Estate.properties.visit.list</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <list
+                string="Properties Visits"
+            >
+                <field name="customer_id" />
+                <field
+                    name="date_visit"
+                />
+                <field name="salesperson_id" />
+                <field name="property_id" />
+                <field name="status" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_visit_form_view" model="ir.ui.view">
+        <field name="name">estate.property.visit.form</field>
+        <field name="model">estate.property.visit</field>
+        <field name="arch" type="xml">
+            <form string="Form_view">
+                <header>
+
+                    <button
+                        name="action_start_visit"
+                        type="object"
+                        string="Start"
+                    />
+                    <button
+                        name="action_complete_visit"
+                        type="object"
+                        string="Complete"
+                    />
+                    <field
+                        name="status"
+                        widget="statusbar"
+                        options="{'clickable': True}"
+                    />
+                </header>
+
+                <sheet>
+
+                    <div>
+                        <h1>
+                            <field name="customer_id" />
+                        </h1>
+                        <group>
+                            <field name="date_visit" readonly="status == 'visit_completed'"/>
+                            <field name="salesperson_id" />
+                            <field name="property_id" />
+                        </group>
+
+                        <br />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_related_visits" model="ir.actions.act_window">
+        <field name="name">Estate Property Visits</field>
+        <field name="res_model">estate.property.visit</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("property_id", "=", active_id)]</field>
+    </record>
+
+</odoo>

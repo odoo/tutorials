@@ -1,6 +1,5 @@
 <odoo>
 
-    <!-- LIST VIEW -->
     <record id="estate_property_type_list_view" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
@@ -14,7 +13,6 @@
         </field>
     </record>
 
-    <!-- FORM VIEW -->
     <record id="estate_property_type_form_view" model="ir.ui.view">
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
@@ -58,7 +56,6 @@
         </field>
     </record>
 
-    <!-- ACTION -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
