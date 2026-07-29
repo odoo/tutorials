@@ -68,3 +68,18 @@ class Offer(models.Model):
         self.status = "refused"
         self.property_id.selling_price = 0
         self.property_id.buyer_id = None
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        # check before saving if the offer price >= existing offer prices
+        for record in vals_list:
+            property = self.env["estate_property"].browse(record["property_id"])
+            max_offer_price = max(property.offer_ids.mapped("price"), default=0)
+            if self.price < max_offer_price:
+                raise UserError(
+                    "Cannot create an offer with price lower than an existing offer"
+                )
+
+        # update state and save to the database
+        property.state = "offer_received"
+        return super().create(vals_list)
