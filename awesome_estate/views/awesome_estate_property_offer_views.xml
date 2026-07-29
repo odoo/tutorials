@@ -17,11 +17,10 @@
                 <field name="create_date" optional="hide"/>
                 <field name="validity" optional="hide"/>
                 <field name="date_deadline" optional="show"/>
-                <field name="is_suspicious" column_invisible="1"/>
                 <field name="status" widget="badge" optional="show"
                          decoration-success="status == 'accepted'"
                          decoration-danger="status == 'refused'"/>
-                <field name="status" column_invisible="1"/>
+                <field name="is_suspicious" column_invisible="1"/>
                 <button name="action_accept" type="object" icon="fa-check" title="Accept"
                         invisible="status in ['accepted', 'refused'] or is_suspicious"/>
                 <button name="action_refuse" type="object" icon="fa-times" title="Refuse"

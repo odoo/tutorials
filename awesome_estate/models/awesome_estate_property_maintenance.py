@@ -9,6 +9,7 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     _order = 'id desc'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _mail_post_access = 'read'
+    _check_company_auto = True
 
     # -----------------------------------------------------------------------
     # Fields
@@ -186,15 +187,21 @@ class AwesomeEstatePropertyMaintenance(models.Model):
     # -----------------------------------------------------------------------
     @api.model_create_multi
     def create(self, vals_list):
-        """Prevent creating maintenance requests on sold or canceled properties."""
-        for vals in vals_list:
-            if vals.get('property_id'):
-                property = self.env['awesome.estate.property'].browse(vals['property_id'])
-                if property.state in ('sold', 'canceled'):
-                    raise UserError(_(
-                        "Cannot create maintenance requests on %s properties.",
-                        property.state,
-                    ))
+        """Prevent creating maintenance requests on sold or canceled properties.
+
+        Skip validation during module data loading (demo/seed data) to allow
+        XML data files to seed records correctly.  This follows the established
+        pattern from enterprise/account_3way_match.
+        """
+        if not self.env.context.get('module'):
+            for vals in vals_list:
+                if vals.get('property_id'):
+                    property = self.env['awesome.estate.property'].browse(vals['property_id'])
+                    if property.state in ('sold', 'canceled'):
+                        raise UserError(_(
+                            "Cannot create maintenance requests on %s properties.",
+                            property.state,
+                        ))
         return super().create(vals_list)
 
     @api.ondelete(at_uninstall=False)

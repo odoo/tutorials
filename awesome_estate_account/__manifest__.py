@@ -18,5 +18,5 @@ a 6% commission line and administrative fees.
     ],
     'application': False,
     'installable': True,
-    'auto_install': False,
+    'auto_install': True,
 }

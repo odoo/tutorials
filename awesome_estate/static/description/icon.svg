@@ -1,0 +1,25 @@
+<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Awesome Estate icon">
+  <!-- Tower - golden yellow -->
+  <rect x="8" y="4" width="34" height="44" rx="2.5" fill="#FBB945"/>
+
+  <!-- Tower facade - rose/pink -->
+  <rect x="11" y="7" width="28" height="41" rx="2" fill="#FC868B"/>
+
+  <!-- Crown - dark purple -->
+  <rect x="10" y="1" width="30" height="6" rx="1.5" fill="#712258"/>
+
+  <!-- Floor 4 - paired windows -->
+  <rect x="16" y="10" width="5" height="6" rx="0.5" fill="#fff"/>
+  <rect x="29" y="10" width="5" height="6" rx="0.5" fill="#fff"/>
+
+  <!-- Floor 3 - paired windows -->
+  <rect x="16" y="20" width="5" height="6" rx="0.5" fill="#fff"/>
+  <rect x="29" y="20" width="5" height="6" rx="0.5" fill="#fff"/>
+
+  <!-- Floor 2 - paired windows -->
+  <rect x="16" y="30" width="5" height="6" rx="0.5" fill="#fff"/>
+  <rect x="29" y="30" width="5" height="6" rx="0.5" fill="#fff"/>
+
+  <!-- Entrance - warm orange -->
+  <rect x="19" y="41" width="12" height="7" rx="1.5" fill="#F86126"/>
+</svg>

@@ -341,7 +341,6 @@
         <field name="partner_id" ref="partner_buyer_dup"/>
         <field name="price">290000</field>
         <field name="validity">7</field>
-        <field name="is_suspicious" eval="False"/>
     </record>
 
     <!-- ================================================================ -->
@@ -455,7 +454,7 @@
     </record>
 
     <!-- Canceled ticket on sold property -->
-    <record id="maint_canceled" model="awesome.estate.property.maintenance">
+    <!-- <record id="maint_canceled" model="awesome.estate.property.maintenance">
         <field name="name">Paint touch-up</field>
         <field name="property_id" ref="property_sold"/>
         <field name="issue_type">painting</field>
@@ -467,7 +466,7 @@
         <field name="company_id" ref="base.main_company"/>
         <field name="state">canceled</field>
         <field name="close_date" eval="DateTime.now().strftime('%Y-%m-%d')"/>
-    </record>
+    </record> -->
 
     <!-- Unassigned new ticket (assign in UI) -->
     <record id="maint_new" model="awesome.estate.property.maintenance">

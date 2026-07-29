@@ -9,6 +9,7 @@
         id="menu_awesome_estate_root"
         name="Real Estate"
         sequence="110"
+        web_icon="awesome_estate,static/description/icon.svg"
         groups="group_estate_user,group_estate_technician">
 
         <menuitem
@@ -37,6 +38,13 @@
                 action="awesome_estate_property_maintenance_action"
                 sequence="30"
                 groups="group_estate_user,group_estate_technician"/>
+
+            <menuitem
+                id="menu_awesome_estate_property_visit"
+                name="Visits"
+                action="awesome_estate_property_visit_action"
+                sequence="40"
+                groups="group_estate_user"/>
 
         </menuitem>
 

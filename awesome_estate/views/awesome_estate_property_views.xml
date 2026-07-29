@@ -5,10 +5,7 @@
         <field name="name">awesome.estate.property.list</field>
         <field name="model">awesome.estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-success="state in ['offer_received', 'offer_accepted']"
-                  decoration-bf="state == 'offer_accepted'"
-                  decoration-muted="state in ['sold', 'canceled']"
-                  multi_edit="1">
+            <list decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state in ['sold', 'canceled']" multi_edit="1">
                 <field name="name"/>
                 <field name="property_type_id" optional="show"/>
                 <field name="postcode" optional="show"/>
@@ -17,20 +14,15 @@
                 <field name="selling_price" optional="hide"/>
                 <field name="salesperson_id" widget="many2one_avatar_user" optional="show"/>
                 <field name="buyer_id" optional="hide"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
-                         optional="hide"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="hide"/>
                 <field name="bedrooms" optional="hide"/>
                 <field name="living_area" optional="hide"/>
                 <field name="total_area" optional="hide"/>
                 <field name="garage" optional="hide"/>
                 <field name="garden" optional="hide"/>
                 <field name="date_availability" optional="hide"/>
-                <field name="state" widget="badge"
-                         decoration-info="state == 'new'"
-                         decoration-success="state in ['offer_received', 'offer_accepted', 'sold']"
-                         decoration-muted="state == 'canceled'"/>
-                <field name="suspicious_offer_count" string="Suspicious" optional="show"
-                         decoration-warning="suspicious_offer_count > 0"/>
+                <field name="state" widget="badge" decoration-info="state == 'new'" decoration-success="state in ['offer_received', 'offer_accepted', 'sold']" decoration-muted="state == 'canceled'"/>
+                <field name="suspicious_offer_count" string="Suspicious" optional="show" decoration-warning="suspicious_offer_count > 0"/>
             </list>
         </field>
     </record>
@@ -42,43 +34,38 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sold" string="Sold" type="object"
-                            invisible="state in ['sold', 'canceled', 'offer_accepted']"/>
-                    <button name="action_sold" string="Sold" type="object"
-                            invisible="state not in ['offer_accepted']"
-                            class="oe_highlight"/>
-                    <button name="action_cancel" string="Cancel" type="object"
-                            invisible="state in ['sold', 'canceled']"/>
-                    <button name="action_accept_best_offer" string="Accept Best" type="object"
-                            invisible="state in ['sold', 'canceled', 'offer_accepted']"/>
-                    <button name="action_reset" string="Reset to New" type="object"
-                            invisible="state not in ['sold', 'canceled']"/>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
+                    <button name="action_sold" string="Sold" type="object" invisible="state in ['sold', 'canceled', 'offer_accepted']"/>
+                    <button name="action_sold" string="Sold" type="object" invisible="state not in ['offer_accepted']" class="oe_highlight"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_accept_best_offer" string="Accept Best" type="object" invisible="state in ['sold', 'canceled', 'offer_accepted']"/>
+                    <button name="action_reset" string="Reset to New" type="object" invisible="state not in ['sold', 'canceled']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
                     <field name="suspicious_offer_count" invisible="1"/>
-                    <div class="alert alert-warning d-flex align-items-center"
-                         invisible="suspicious_offer_count == 0" role="alert">
+                    <div class="alert alert-warning d-flex align-items-center" invisible="suspicious_offer_count == 0" role="alert">
                         <i class="fa fa-flag me-2" title="Suspicious offers"/>
                         <span>
-                            <strong><field name="suspicious_offer_count"/></strong>
+                            <strong>
+                                <field name="suspicious_offer_count"/>
+                            </strong>
                             offer(s) on this property need review (marked suspicious).
                             Open the Offers tab and clear flags only when legitimate.
                         </span>
                     </div>
                     <div class="oe_title">
+                        <div class="oe_avatar">
+                            <field name="image_1920" widget="image" class="oe_avatar"/>
+                        </div>
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags"
-                               options="{'color_field': 'color'}"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <div class="oe_button_box" name="button_box"/>
                     <group>
                         <group>
-                            <field name="property_type_id"
-                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="expected_price"/>
@@ -100,64 +87,38 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"
-                                           invisible="not garden"/>
-                                    <field name="garden_orientation"
-                                           invisible="not garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"
-                                   readonly="state in ('sold', 'canceled', 'offer_accepted')">
-                                <list editable="bottom"
-                                      decoration-success="status == 'accepted'"
-                                      decoration-bf="status == 'accepted'"
-                                      decoration-danger="status == 'refused'"
-                                      decoration-warning="is_suspicious">
+                            <field name="offer_ids" readonly="state in ('sold', 'canceled', 'offer_accepted')">
+                                <list editable="bottom" decoration-success="status == 'accepted'" decoration-bf="status == 'accepted'" decoration-danger="status == 'refused'" decoration-warning="is_suspicious">
                                     <field name="price" readonly="status != False"/>
                                     <field name="partner_id" readonly="status != False"/>
-                                    <field name="status" widget="badge" optional="show"
-                                             decoration-success="status == 'accepted'"
-                                             decoration-danger="status == 'refused'"/>
+                                    <field name="status" widget="badge" optional="show" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'"/>
                                     <field name="is_suspicious" column_invisible="1"/>
                                     <field name="validity" optional="hide"/>
                                     <field name="date_deadline" optional="show"/>
-                                    <button name="action_accept" type="object" icon="fa-check"
-                                            title="Accept"
-                                            invisible="status in ['accepted', 'refused'] or is_suspicious"/>
-                                    <button name="action_refuse" type="object" icon="fa-times"
-                                            title="Refuse"
-                                            invisible="status in ['accepted', 'refused'] or is_suspicious"/>
-                                    <button name="action_mark_suspicious" type="object" icon="fa-flag"
-                                            title="Mark as Suspicious"
-                                            invisible="is_suspicious or status in ('accepted', 'refused')"
-                                            confirm="Mark this offer as suspicious for review?"/>
-                                    <button name="action_clear_suspicious" type="object" icon="fa-flag-o"
-                                            class="text-warning" title="Clear Suspicious Flag"
-                                            invisible="not is_suspicious or status in ('accepted', 'refused')"
-                                            confirm="Clear the suspicious flag on this offer?"/>
+                                    <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status in ['accepted', 'refused'] or is_suspicious"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status in ['accepted', 'refused'] or is_suspicious"/>
+                                    <button name="action_mark_suspicious" type="object" icon="fa-flag" title="Mark as Suspicious" invisible="is_suspicious or status in ('accepted', 'refused')" confirm="Mark this offer as suspicious for review?"/>
+                                    <button name="action_clear_suspicious" type="object" icon="fa-flag-o" class="text-warning" title="Clear Suspicious Flag" invisible="not is_suspicious or status in ('accepted', 'refused')" confirm="Clear the suspicious flag on this offer?"/>
                                 </list>
                                 <form>
                                     <header>
-                                        <button name="action_accept" string="Accept" type="object"
-                                                invisible="status in ['accepted', 'refused'] or is_suspicious"
-                                                class="btn-primary"/>
-                                        <button name="action_refuse" string="Refuse" type="object"
-                                                invisible="status in ['accepted', 'refused'] or is_suspicious"/>
-                                    <button name="action_mark_suspicious" string="Mark Suspicious"
-                                            type="object" invisible="is_suspicious or status in ('accepted', 'refused')"
-                                            confirm="Mark this offer as suspicious for review?"/>
-                                    <button name="action_clear_suspicious" string="Clear Suspicious Flag"
-                                            type="object" invisible="not is_suspicious or status in ('accepted', 'refused')"
-                                            confirm="Clear the suspicious flag on this offer?"/>
+                                        <button name="action_accept" string="Accept" type="object" invisible="status in ['accepted', 'refused'] or is_suspicious" class="btn-primary"/>
+                                        <button name="action_refuse" string="Refuse" type="object" invisible="status in ['accepted', 'refused'] or is_suspicious"/>
+                                        <button name="action_mark_suspicious" string="Mark Suspicious" type="object" invisible="is_suspicious or status in ('accepted', 'refused')" confirm="Mark this offer as suspicious for review?"/>
+                                        <button name="action_clear_suspicious" string="Clear Suspicious Flag" type="object" invisible="not is_suspicious or status in ('accepted', 'refused')" confirm="Clear the suspicious flag on this offer?"/>
                                         <field name="status" widget="statusbar"/>
                                     </header>
                                     <sheet>
-                                        <div class="alert alert-warning" role="alert"
-                                             invisible="not is_suspicious">
-                                            <i class="fa fa-flag me-1"/> This offer is marked as suspicious.
+                                        <div class="alert alert-warning" role="alert" invisible="not is_suspicious">
+                                            <i class="fa fa-flag me-1"/>
+ This offer is marked as suspicious.
                                         </div>
                                         <group>
                                             <field name="price"/>
@@ -172,40 +133,25 @@
                             </field>
                         </page>
                         <page string="Maintenance">
-                            <field name="maintenance_ids"
-                                   readonly="state in ('sold', 'canceled')">
-                                <list editable="bottom"
-                                      decoration-success="state == 'done'"
-                                      decoration-bf="state == 'in_progress'"
-                                      decoration-warning="state == 'assigned'"
-                                      decoration-danger="state == 'canceled'">
+                            <field name="maintenance_ids" readonly="state in ('sold', 'canceled')">
+                                <list editable="bottom" decoration-success="state == 'done'" decoration-bf="state == 'in_progress'" decoration-warning="state == 'assigned'" decoration-danger="state == 'canceled'">
                                     <field name="name"/>
                                     <field name="issue_type" optional="show"/>
                                     <field name="priority" widget="priority"/>
                                     <field name="technician_id" widget="many2one_avatar_user" optional="show"/>
-                                    <field name="state" widget="badge"
-                                             decoration-info="state == 'new'"
-                                             decoration-warning="state == 'assigned'"
-                                             decoration-success="state in ['in_progress', 'done']"
-                                             decoration-muted="state == 'canceled'"/>
+                                    <field name="state" widget="badge" decoration-info="state == 'new'" decoration-warning="state == 'assigned'" decoration-success="state in ['in_progress', 'done']" decoration-muted="state == 'canceled'"/>
                                     <field name="progress" widget="progressbar" optional="hide"/>
                                     <field name="estimate_cost" widget="monetary" optional="hide"/>
                                     <field name="actual_cost" widget="monetary" optional="hide"/>
                                 </list>
                                 <form>
                                     <header>
-                                        <button name="action_assign" type="object" string="Assign"
-                                                invisible="state != 'new'"/>
-                                        <button name="action_start" type="object" string="Start Work"
-                                                invisible="state != 'assigned'"/>
-                                        <button name="action_done" type="object" string="Complete"
-                                                invisible="state not in ('assigned', 'in_progress')" class="btn-success"/>
-                                        <button name="action_cancel" type="object" string="Cancel"
-                                                invisible="state not in ('new', 'assigned', 'in_progress', 'done')"/>
-                                        <button name="action_reset" type="object" string="Reopen"
-                                                invisible="state not in ('done', 'canceled')"/>
-                                        <field name="state" widget="statusbar"
-                                               statusbar_visible="new,assigned,in_progress,done"/>
+                                        <button name="action_assign" type="object" string="Assign" invisible="state != 'new'"/>
+                                        <button name="action_start" type="object" string="Start Work" invisible="state != 'assigned'"/>
+                                        <button name="action_done" type="object" string="Complete" invisible="state not in ('assigned', 'in_progress')" class="btn-success"/>
+                                        <button name="action_cancel" type="object" string="Cancel" invisible="state not in ('new', 'assigned', 'in_progress', 'done')"/>
+                                        <button name="action_reset" type="object" string="Reopen" invisible="state not in ('done', 'canceled')"/>
+                                        <field name="state" widget="statusbar" statusbar_visible="new,assigned,in_progress,done"/>
                                     </header>
                                     <sheet>
                                         <group>
@@ -226,16 +172,13 @@
                                             <page string="Subtasks">
                                                 <field name="subtask_ids" nolabel="1">
                                                     <list editable="bottom" create="1" delete="1">
-                                                <field name="sequence" widget="handle"/>
-                                                <field name="name"/>
-                                                <field name="technician_id"
-                                                       domain="[('share', '=', False)]"
-                                                       widget="many2one_avatar_user"
-                                                       optional="show"/>
-                                                <field name="state" optional="show"/>
-                                                <field name="planned_hours" optional="hide"/>
-                                                <field name="effective_hours" optional="hide"/>
-                                                <field name="cost" widget="monetary" optional="hide"/>
+                                                        <field name="sequence" widget="handle"/>
+                                                        <field name="name"/>
+                                                        <field name="technician_id" domain="[('share', '=', False)]" widget="many2one_avatar_user" optional="show"/>
+                                                        <field name="state" optional="show"/>
+                                                        <field name="planned_hours" optional="hide"/>
+                                                        <field name="effective_hours" optional="hide"/>
+                                                        <field name="cost" widget="monetary" optional="hide"/>
                                                     </list>
                                                 </field>
                                             </page>
@@ -283,44 +226,16 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <separator/>
-                <filter
-                    name="available" string="Available"
-                    domain="[('state', 'in', ['new', 'offer_received'])]"
-                />
-                <filter
-                    name="best_price"
-                    string="Best Price"
-                    domain="[('best_price', '>', 1000)]"
-                />
-                <filter
-                    name="under_budget" string="Under Budget"
-                    domain="[('expected_price', '&lt;=', 500000)]"
-                />
-                <filter
-                    name="expensive" string="Expensive"
-                    domain="[('expected_price', '>', 1000000)]"
-                />
-                <filter
-                    name="one_bed_garage" string="1B+G"
-                    domain="[('bedrooms', '=', 1), ('garage', '=', True)]"
-                />
-                <filter
-                    name="archived" string="Archived"
-                    domain="[('active', '=', False)]"
-                />
+                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]" />
+                <filter name="best_price" string="Best Price" domain="[('best_price', '>', 1000)]" />
+                <filter name="under_budget" string="Under Budget" domain="[('expected_price', '&lt;=', 500000)]" />
+                <filter name="expensive" string="Expensive" domain="[('expected_price', '>', 1000000)]" />
+                <filter name="one_bed_garage" string="1B+G" domain="[('bedrooms', '=', 1), ('garage', '=', True)]" />
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]" />
                 <group name="groupby">
-                    <filter
-                        name="groupby_postcode" string="Postcode"
-                        context="{'group_by': 'postcode'}"
-                    />
-                    <filter
-                        name="groupby_type" string="Type"
-                        context="{'group_by': 'property_type_id'}"
-                    />
-                    <filter
-                        name="groupby_salesperson" string="Salesperson"
-                        context="{'group_by': 'salesperson_id'}"
-                    />
+                    <filter name="groupby_postcode" string="Postcode" context="{'group_by': 'postcode'}" />
+                    <filter name="groupby_type" string="Type" context="{'group_by': 'property_type_id'}" />
+                    <filter name="groupby_salesperson" string="Salesperson" context="{'group_by': 'salesperson_id'}" />
                 </group>
             </search>
         </field>

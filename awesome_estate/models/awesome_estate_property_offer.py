@@ -126,27 +126,35 @@ class AwesomeEstatePropertyOffer(models.Model):
     # -----------------------------------------------------------------------
     @api.model_create_multi
     def create(self, vals_list):
-        for vals in vals_list:
-            property_id = vals.get('property_id')
-            new_price = vals.get('price', 0)
-            if property_id:
-                estate_property = self.env['awesome.estate.property'].browse(
-                    property_id)
-                if estate_property.state in ('sold', 'canceled', 'offer_accepted'):
-                    raise ValidationError(
-                        _("Cannot create offers on a property that is %s.",
-                          estate_property.state),
-                    )
-            if property_id and new_price > 0:
-                existing_offers = self.search([
-                    ('property_id', '=', property_id),
-                ])
-                if existing_offers:
-                    max_price = max(existing_offers.mapped('price'))
-                    if new_price <= max_price:
+        """Create property offers.
+
+        Skip property state and price escalation guards during module data
+        loading (demo/seed data) so that XML data files can seed records
+        without hitting business-rule validations.  This follows the
+        established pattern from enterprise/account_3way_match.
+        """
+        if not self.env.context.get('module'):
+            for vals in vals_list:
+                property_id = vals.get('property_id')
+                new_price = vals.get('price', 0)
+                if property_id:
+                    estate_property = self.env['awesome.estate.property'].browse(
+                        property_id)
+                    if estate_property.state in ('sold', 'canceled', 'offer_accepted'):
                         raise ValidationError(
-                            _("Offer must be higher than the highest existing offer ($%.2f).", max_price),
+                            _("Cannot create offers on a property that is %s.",
+                              estate_property.state),
                         )
+                if property_id and new_price > 0:
+                    existing_offers = self.search([
+                        ('property_id', '=', property_id),
+                    ])
+                    if existing_offers:
+                        max_price = max(existing_offers.mapped('price'))
+                        if new_price <= max_price:
+                            raise ValidationError(
+                                _("Offer must be higher than the highest existing offer ($%.2f).", max_price),
+                            )
         offers = super().create(vals_list)
         offers._flag_duplicate_offers()
         for offer in offers:
@@ -228,13 +236,14 @@ class AwesomeEstatePropertyOffer(models.Model):
     # Business / Helper Methods
     # -----------------------------------------------------------------------
     def _flag_duplicate_offers(self):
-        """Flag offers from the same partner within 5 minutes of each other."""
+        """Flag offers from the same partner on the same property within 5 minutes."""
         for offer in self:
-            if not offer.partner_id or not offer.create_date:
+            if not offer.partner_id or not offer.property_id or not offer.create_date:
                 continue
             before = fields.Datetime.add(offer.create_date, minutes=-5)
             duplicates = self.search([
                 ('partner_id', '=', offer.partner_id.id),
+                ('property_id', '=', offer.property_id.id),
                 ('create_date', '>=', before),
                 ('id', '!=', offer.id),
             ])

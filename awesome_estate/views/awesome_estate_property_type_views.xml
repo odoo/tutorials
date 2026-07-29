@@ -5,7 +5,7 @@
         <field name="name">awesome.estate.property.type.list</field>
         <field name="model">awesome.estate.property.type</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom" open_form_view="True">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>

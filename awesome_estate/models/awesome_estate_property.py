@@ -15,13 +15,18 @@ class AwesomeEstateProperty(models.Model):
     # Fields
     # -----------------------------------------------------------------------
     name = fields.Char(string="Title", required=True, tracking=1)
+    image_1920 = fields.Image(
+        "Property Image",
+        max_width=1920,
+        max_height=1920,
+        help="Upload a photo of the property. Images are automatically resized to 1920px.",
+    )
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default=lambda self: fields.Date.add(
-            fields.Date.context_today(self), months=3),
+        default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
         tracking=1,
     )
     expected_price = fields.Float(required=True, tracking=10)
@@ -43,7 +48,7 @@ class AwesomeEstateProperty(models.Model):
     property_type_id = fields.Many2one(
         'awesome.estate.property.type',
         string="Property Type",
-        ondelete='restrict',
+        ondelete='set null',
         index=True,
     )
     buyer_id = fields.Many2one(
@@ -51,6 +56,7 @@ class AwesomeEstateProperty(models.Model):
         string="Buyer",
         readonly=True,
         copy=False,
+        ondelete='set null',
         index=True,
         tracking=1,
     )
@@ -58,6 +64,7 @@ class AwesomeEstateProperty(models.Model):
         'res.users',
         string="Salesperson",
         default=lambda self: self.env.user,
+        ondelete='set null',
         index=True,
         tracking=1,
     )
@@ -106,6 +113,11 @@ class AwesomeEstateProperty(models.Model):
         help="Number of offers marked as suspicious on this property.",
     )
 
+    visit_ids = fields.One2many(
+        'awesome.estate.property.visit', 'property_id', string="Visits"
+    )
+    visit_count = fields.Integer(string="Visit Count", compute='_compute_visit_count')
+
     # -----------------------------------------------------------------------
     # SQL Constraints
     # -----------------------------------------------------------------------
@@ -143,11 +155,23 @@ class AwesomeEstateProperty(models.Model):
         if self.env.context.get('accepting_offer'):
             return
         for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2) or not record.expected_price:
+            if (
+                float_is_zero(record.selling_price, precision_digits=2)
+                or not record.expected_price
+            ):
                 continue
-            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+            if (
+                float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_digits=2,
+                )
+                == -1
+            ):
                 raise ValidationError(
-                    _("The selling price cannot be lower than 90%% of the expected price."),
+                    _(
+                        "The selling price cannot be lower than 90%% of the expected price."
+                    ),
                 )
 
     # -----------------------------------------------------------------------
@@ -158,7 +182,7 @@ class AwesomeEstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offer_ids', 'offer_ids.price')
+    @api.depends('offer_ids', 'offer_ids.price', 'offer_ids.status')
     def _compute_best_price(self):
         """Best price among pending (non-refused, non-accepted) offers only."""
         for record in self:
@@ -172,6 +196,25 @@ class AwesomeEstateProperty(models.Model):
             record.suspicious_offer_count = len(
                 record.offer_ids.filtered('is_suspicious')
             )
+
+    @api.depends('visit_ids')
+    def _compute_visit_count(self):
+        for prop in self:
+            prop.visit_count = len(prop.visit_ids)
+
+    def action_view_visits(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _("Visits"),
+            'res_model': 'awesome.estate.property.visit',
+            'view_mode': 'calendar,list,form',
+            'domain': [('property_id', '=', self.id)],
+            'context': {
+                'default_property_id': self.id,
+                'default_agent_id': self.salesperson_id.id if self.salesperson_id else self.env.user.id,
+            },
+        }
 
     # -----------------------------------------------------------------------
     # Onchange Methods
@@ -192,7 +235,8 @@ class AwesomeEstateProperty(models.Model):
     def _unlink_if_not_canceled(self):
         if any(record.state not in ('new', 'canceled') for record in self):
             raise UserError(
-                _("You cannot delete a property with an active or sold status."))
+                _("You cannot delete a property with an active or sold status.")
+            )
 
     # -----------------------------------------------------------------------
     # Action Methods
@@ -205,22 +249,26 @@ class AwesomeEstateProperty(models.Model):
         if self.state == 'sold':
             raise UserError(_("Property is already sold."))
         open_maint = self.maintenance_ids.filtered(
-            lambda m: m.state not in ('done', 'canceled'))
+            lambda m: m.state not in ('done', 'canceled')
+        )
         if open_maint:
-            raise UserError(_(
-                "Cannot sell a property with open maintenance requests. "
-                "Complete or cancel them first."
-            ))
+            raise UserError(
+                _(
+                    "Cannot sell a property with open maintenance requests. "
+                    "Complete or cancel them first."
+                )
+            )
         if self.state == 'offer_accepted' and not self.selling_price:
             accepted = self.offer_ids.filtered(lambda o: o.status == 'accepted')
             if accepted:
-                self.write({
-                    'selling_price': accepted.price,
-                    'buyer_id': accepted.partner_id.id,
-                })
+                self.write(
+                    {
+                        'selling_price': accepted.price,
+                        'buyer_id': accepted.partner_id.id,
+                    }
+                )
         if not self.selling_price:
-            raise UserError(
-                _("Set a selling price before selling the property."))
+            raise UserError(_("Set a selling price before selling the property."))
         self.state = 'sold'
         return True
 
@@ -232,12 +280,15 @@ class AwesomeEstateProperty(models.Model):
         if self.state == 'canceled':
             raise UserError(_("Property is already canceled."))
         open_maint = self.maintenance_ids.filtered(
-            lambda m: m.state not in ('done', 'canceled'))
+            lambda m: m.state not in ('done', 'canceled')
+        )
         if open_maint:
-            raise UserError(_(
-                "Cannot cancel a property with open maintenance requests. "
-                "Complete or cancel them first."
-            ))
+            raise UserError(
+                _(
+                    "Cannot cancel a property with open maintenance requests. "
+                    "Complete or cancel them first."
+                )
+            )
         pending = self.offer_ids.filtered(lambda o: not o.status)
         if pending:
             pending.status = 'refused'
@@ -260,14 +311,15 @@ class AwesomeEstateProperty(models.Model):
         """Reset sold or canceled property back to 'new' and reopen all offers."""
         self.ensure_one()
         if self.state not in ('sold', 'canceled'):
-            raise UserError(
-                _("Only sold or canceled properties can be reset."))
-        self.write({
-            'state': 'new',
-            'selling_price': 0.0,
-            'buyer_id': False,
-            'active': True,
-        })
+            raise UserError(_("Only sold or canceled properties can be reset."))
+        self.write(
+            {
+                'state': 'new',
+                'selling_price': 0.0,
+                'buyer_id': False,
+                'active': True,
+            }
+        )
         self.offer_ids.write({'status': False})
         return True
 
@@ -278,8 +330,7 @@ class AwesomeEstateProperty(models.Model):
             raise UserError(
                 _("Cannot accept offers on a property that is %s.", self.state),
             )
-        best_offers = self.offer_ids.filtered(
-            lambda o: o.price == self.best_price)
+        best_offers = self.offer_ids.filtered(lambda o: o.price == self.best_price)
         if not best_offers:
             raise UserError(_("No offers available to accept."))
         best_offers[0].action_accept()
@@ -291,11 +342,13 @@ class AwesomeEstateProperty(models.Model):
     def _cron_archive_stale_properties(self):
         """Weekly cron: auto-cancel properties with no activity for 90+ days."""
         limit_date = fields.Date.add(fields.Date.today(), days=-90)
-        stale_new = self.search([
-            ('state', '=', 'new'),
-            ('offer_ids', '=', False),
-            ('create_date', '<', fields.Datetime.to_datetime(limit_date)),
-        ])
+        stale_new = self.search(
+            [
+                ('state', '=', 'new'),
+                ('offer_ids', '=', False),
+                ('create_date', '<', fields.Datetime.to_datetime(limit_date)),
+            ]
+        )
         for record in stale_new:
             record.message_post(
                 body=_(
@@ -304,12 +357,12 @@ class AwesomeEstateProperty(models.Model):
                 )
             )
             record.write({'active': False, 'state': 'canceled'})
-        # Properties stuck in 'offer_received' where all offers are final
-        # (refused/accepted, none pending).
-        stale_received = self.search([
-            ('state', '=', 'offer_received'),
-            ('create_date', '<', fields.Datetime.to_datetime(limit_date)),
-        ])
+        stale_received = self.search(
+            [
+                ('state', '=', 'offer_received'),
+                ('create_date', '<', fields.Datetime.to_datetime(limit_date)),
+            ]
+        )
         for record in stale_received:
             pending = record.offer_ids.filtered(lambda o: not o.status)
             if not pending:
@@ -326,20 +379,27 @@ class AwesomeEstateProperty(models.Model):
     def _cron_remind_expiring_offers(self):
         """Daily cron: notify salesperson 1 day before an offer's deadline expires."""
         tomorrow = fields.Date.add(fields.Date.today(), days=1)
-        near_expiry = self.env['awesome.estate.property.offer'].search([
-            ('date_deadline', '=', tomorrow),
-            ('status', 'not in', ['accepted', 'refused']),
-        ])
+        near_expiry = self.env['awesome.estate.property.offer'].search(
+            [
+                ('date_deadline', '=', tomorrow),
+                ('status', 'not in', ['accepted', 'refused']),
+            ]
+        )
         for offer in near_expiry:
             offer.property_id.activity_schedule(
                 'mail.mail_activity_data_todo',
-                summary=_("Offer deadline expires tomorrow — %(price).0f from %(partner)s",
-                          price=offer.price, partner=offer.partner_id.name),
+                summary=_(
+                    "Offer deadline expires tomorrow — %(price).0f from %(partner)s",
+                    price=offer.price,
+                    partner=offer.partner_id.name,
+                ),
                 user_id=offer.property_id.salesperson_id.id or self.env.user.id,
                 note=_(
                     "Offer #%(id)d for %(price).0f from %(partner)s "
                     "on property '%(property)s' expires on %(deadline)s.",
-                    id=offer.id, price=offer.price, partner=offer.partner_id.display_name,
+                    id=offer.id,
+                    price=offer.price,
+                    partner=offer.partner_id.display_name,
                     property=offer.property_id.display_name,
                     deadline=offer.date_deadline,
                 ),
