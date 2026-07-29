@@ -60,5 +60,5 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(
                 record.offer_ids.mapped("price"),
-                default = 0
+                default=0
             )
