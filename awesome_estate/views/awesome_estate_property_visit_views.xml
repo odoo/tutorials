@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!-- ==================== ACTION ==================== -->
+    <record id="awesome_estate_property_visit_action" model="ir.actions.act_window">
+        <field name="name">Property Visits</field>
+        <field name="res_model">awesome.estate.property.visit</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="help" type="html">
+            <p>Schedule and manage property visits.</p>
+            <p>Each visit is linked to a property, a customer (prospective buyer),
+            and an agent (salesperson).</p>
+            <p>Use <b>Today's Visits</b> and <b>My Visits</b> filters for quick access.</p>
+        </field>
+    </record>
+
+    <!-- ==================== CALENDAR VIEW ==================== -->
+    <record id="awesome_estate_property_visit_calendar_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.visit.calendar</field>
+        <field name="model">awesome.estate.property.visit</field>
+        <field name="arch" type="xml">
+            <calendar string="Property Visits"
+                      date_start="visit_time_start"
+                      date_stop="visit_time_end"
+                      color="property_id">
+                <field name="customer_id"/>
+                <field name="agent_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ==================== TREE / LIST VIEW ==================== -->
+    <record id="awesome_estate_property_visit_list_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.visit.list</field>
+        <field name="model">awesome.estate.property.visit</field>
+        <field name="arch" type="xml">
+            <list string="Visits"
+                  decoration-success="state == 'completed'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-bf="state == 'scheduled'">
+                <field name="property_id" optional="show"/>
+                <field name="customer_id" optional="show"/>
+                <field name="agent_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="visit_time_start" optional="show"/>
+                <field name="visit_time_end" optional="show"/>
+                <field name="duration" optional="hide" widget="float_time" string="Duration"/>
+                <field name="rating" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'scheduled'"
+                       decoration-success="state == 'completed'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ==================== FORM VIEW (clickable statusbar = no buttons needed) ==================== -->
+    <record id="awesome_estate_property_visit_form_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.visit.form</field>
+        <field name="model">awesome.estate.property.visit</field>
+        <field name="arch" type="xml">
+            <form string="Property Visit">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="scheduled,completed,cancelled"
+                           options="{'clickable': True}"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box"/>
+                    <group>
+                        <group>
+                            <field name="property_id"
+                                   options="{'no_create': True, 'no_open': True}"/>
+                            <field name="customer_id"/>
+                            <field name="agent_id" widget="many2one_avatar_user"
+                                   domain="[('share', '=', False)]"/>
+                        </group>
+                        <group>
+                            <field name="visit_time_start"/>
+                            <field name="visit_time_end"/>
+                            <field name="duration" widget="float_time"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="rating" placeholder="Rate this visit..."/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ==================== SEARCH VIEW (filters for is_today, is_mine) ==================== -->
+    <record id="awesome_estate_property_visit_search_view" model="ir.ui.view">
+        <field name="name">awesome.estate.property.visit.search</field>
+        <field name="model">awesome.estate.property.visit</field>
+        <field name="arch" type="xml">
+            <search string="Search Visits">
+                <field name="property_id"/>
+                <field name="customer_id"/>
+                <field name="agent_id"/>
+
+                <separator/>
+                <filter name="is_today" string="Today's Visits"
+                        domain="[('is_today', '=', True)]"
+                        help="Show only visits scheduled for today."/>
+                <filter name="is_mine" string="My Visits"
+                        domain="[('is_mine', '=', True)]"
+                        help="Show only visits where you are the agent."/>
+                <separator/>
+                <filter name="state_scheduled" string="Scheduled"
+                        domain="[('state', '=', 'scheduled')]"/>
+                <filter name="state_completed" string="Completed"
+                        domain="[('state', '=', 'completed')]"/>
+                <filter name="state_cancelled" string="Cancelled"
+                        domain="[('state', '=', 'cancelled')]"/>
+
+                <group name="groupby">
+                    <filter name="groupby_agent"
+                            string="Agent"
+                            context="{'group_by': 'agent_id'}"/>
+                    <filter name="groupby_property"
+                            string="Property"
+                            context="{'group_by': 'property_id'}"/>
+                    <filter name="groupby_customer"
+                            string="Customer"
+                            context="{'group_by': 'customer_id'}"/>
+                    <filter name="groupby_state"
+                            string="Status"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="groupby_rating"
+                            string="Rating"
+                            context="{'group_by': 'rating'}"/>
+                    <filter name="groupby_date"
+                            string="Visit Date"
+                            context="{'group_by': 'visit_time_start:date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

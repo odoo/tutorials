@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!-- Inject Visits page into Property form notebook + stat button in button_box -->
+    <record id="awesome_estate_property_view_form_visit_inherit" model="ir.ui.view">
+        <field name="name">awesome.estate.property.form.visit.inherit</field>
+        <field name="model">awesome.estate.property</field>
+        <field name="inherit_id" ref="awesome_estate.awesome_estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Stat button in button_box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_visits" type="object"
+                        class="oe_stat_button" icon="fa-calendar"
+                        invisible="state in ['sold', 'canceled']">
+                    <field name="visit_count" widget="statinfo" string="Visits"/>
+                </button>
+            </xpath>
+
+            <!-- Visits page in notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Visits" name="visits">
+                    <field name="visit_ids" nolabel="1">
+                        <list decoration-success="state == 'completed'"
+                              decoration-muted="state == 'cancelled'"
+                              decoration-bf="state == 'scheduled'">
+                            <field name="customer_id"/>
+                            <field name="agent_id" widget="many2one_avatar_user"/>
+                            <field name="visit_time_start"/>
+                            <field name="visit_time_end"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="rating"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================ -->
+        <!-- CRON 1: Refuse expired offers (existing, kept as-is)         -->
+        <!-- ============================================================ -->
+        <record id="ir_actions_server_awesome_estate_refuse_expired_offers" model="ir.actions.server">
+            <field name="name">Auto-Refuse Expired Property Offers</field>
+            <field name="model_id" ref="model_awesome_estate_property_offer"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_refuse_expired_offers()</field>
+            <field name="usage">ir_cron</field>
+        </record>
+        <record id="ir_cron_awesome_estate_refuse_expired_offers" model="ir.cron">
+            <field name="ir_actions_server_id" ref="ir_actions_server_awesome_estate_refuse_expired_offers"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- CRON 2: Archive stale properties (weekly)                    -->
+        <!-- ============================================================ -->
+        <record id="ir_actions_server_awesome_estate_archive_stale" model="ir.actions.server">
+            <field name="name">Auto-Archive Stale Properties</field>
+            <field name="model_id" ref="model_awesome_estate_property"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_archive_stale_properties()</field>
+            <field name="usage">ir_cron</field>
+        </record>
+        <record id="ir_cron_awesome_estate_archive_stale" model="ir.cron">
+            <field name="ir_actions_server_id" ref="ir_actions_server_awesome_estate_archive_stale"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">weeks</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(days=7)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="priority">5</field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- CRON 3: Offer expiry reminder (daily)                        -->
+        <!-- ============================================================ -->
+        <record id="ir_actions_server_awesome_estate_remind_expiring" model="ir.actions.server">
+            <field name="name">Remind Expiring Offers (24h warning)</field>
+            <field name="model_id" ref="model_awesome_estate_property"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_remind_expiring_offers()</field>
+            <field name="usage">ir_cron</field>
+        </record>
+        <record id="ir_cron_awesome_estate_remind_expiring" model="ir.cron">
+            <field name="ir_actions_server_id" ref="ir_actions_server_awesome_estate_remind_expiring"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(hours=6)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- CRON 4: Maintenance escalation (daily)                       -->
+        <!-- ============================================================ -->
+        <record id="ir_actions_server_awesome_estate_escalate_maintenance" model="ir.actions.server">
+            <field name="name">Escalate Overdue Maintenance Requests</field>
+            <field name="model_id" ref="model_awesome_estate_property_maintenance"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_escalate_overdue_maintenance()</field>
+            <field name="usage">ir_cron</field>
+        </record>
+        <record id="ir_cron_awesome_estate_escalate_maintenance" model="ir.cron">
+            <field name="ir_actions_server_id" ref="ir_actions_server_awesome_estate_escalate_maintenance"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall" eval="(DateTime.now() + timedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+
+    </data>
+</odoo>

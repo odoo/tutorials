@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+    <!--
+        Menus for Real Estate User + Technician.
+        Admin sees all menus automatically (superuser).
+    -->
+    <menuitem
+        id="menu_awesome_estate_root"
+        name="Real Estate"
+        sequence="110"
+        web_icon="awesome_estate,static/description/icon.svg"
+        groups="group_estate_user,group_estate_technician">
+
+        <menuitem
+            id="menu_awesome_estate_properties"
+            name="Properties"
+            sequence="10"
+            groups="group_estate_user,group_estate_technician">
+
+            <menuitem
+                id="menu_awesome_estate_property"
+                name="Properties"
+                action="awesome_estate_property_action"
+                sequence="10"
+                groups="group_estate_user,group_estate_technician"/>
+
+            <menuitem
+                id="menu_awesome_estate_property_offer"
+                name="Offers"
+                action="awesome_estate_property_offer_action_all"
+                sequence="20"
+                groups="group_estate_user"/>
+
+            <menuitem
+                id="menu_awesome_estate_property_maintenance"
+                name="Maintenance"
+                action="awesome_estate_property_maintenance_action"
+                sequence="30"
+                groups="group_estate_user,group_estate_technician"/>
+
+            <menuitem
+                id="menu_awesome_estate_property_visit"
+                name="Visits"
+                action="awesome_estate_property_visit_action"
+                sequence="40"
+                groups="group_estate_user"/>
+
+        </menuitem>
+
+        <menuitem
+            id="menu_awesome_estate_configuration"
+            name="Configuration"
+            sequence="50"
+            groups="group_estate_user">
+
+            <menuitem
+                id="menu_awesome_estate_property_type"
+                name="Property Types"
+                action="awesome_estate_property_type_action"
+                sequence="10"
+                groups="group_estate_user"/>
+
+            <menuitem
+                id="menu_awesome_estate_property_tag"
+                name="Property Tags"
+                action="awesome_estate_property_tag_action"
+                sequence="20"
+                groups="group_estate_user"/>
+
+        </menuitem>
+
+    </menuitem>
+
+</odoo>
