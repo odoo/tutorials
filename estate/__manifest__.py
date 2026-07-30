@@ -1,6 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.9",
+    "author": "odoo",
     "depends": [
         "base",
     ],
@@ -14,4 +15,5 @@
         "security/ir.model.access.csv",
     ],
     "application": True,
+    "license": "LGPL-3",
 }

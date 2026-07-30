@@ -7,7 +7,7 @@ class UserProperties(models.Model):
     property_ids = fields.One2many(
         comodel_name="estate.property",
         inverse_name="sale_rep_id",
-        string="Properties",
+        string="Estate Properties",
         domain=[
             (
                 "state",
