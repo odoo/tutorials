@@ -11,6 +11,9 @@
                 <span>The sum is: <t t-esc="sum.value"/></span>
             </div>
             <TodoList/>
+            <Card title="'New Card'">
+                <Counter/>
+            </Card>
         </div>
     </t>
 
