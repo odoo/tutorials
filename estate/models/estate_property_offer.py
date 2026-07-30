@@ -8,11 +8,6 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float("Price", required=True)
-    _check_selling_price = models.Constraint(
-        "CHECK(price > 0)",
-        _("The price should be strictly positive"),
-    )
-
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
         copy=False,
@@ -35,6 +30,11 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
 
+    _check_selling_price = models.Constraint(
+        "CHECK(price > 0)",
+        _("The price should be strictly positive"),
+    )
+
     @api.depends("create_date", "validity")
     def _computed_date_deadline(self):
         for offer in self:
@@ -49,25 +49,6 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             create_date = fields.Date.to_date(offer.create_date) or fields.Date.today()
             offer.validity = (offer.date_deadline - create_date).days
-
-    def action_accept(self):
-        for offer in self:
-            if offer.property_id.buyer_id:
-                raise exceptions.UserError(_("One offer has already been accepted."))
-            offer.status = "accepted"
-            offer.property_id.state = "offer_accepted"
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
-
-    def action_refuse(self):
-        for offer in self:
-            offer.status = "refused"
-            if offer.property_id.state == "offer_received" and any(
-                s != "refused" for s in offer.mapped("status")
-            ):
-                offer.property_id.state = "new"
-            offer.property_id.selling_price = 0
-            offer.property_id.buyer_id = None
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -88,3 +69,22 @@ class EstatePropertyOffer(models.Model):
                 if property_record.state == "new":
                     property_record.state = "offer_received"
         return super().create(vals_list)
+
+    def action_accept(self):
+        for offer in self:
+            if offer.property_id.buyer_id:
+                raise exceptions.UserError(_("One offer has already been accepted."))
+            offer.status = "accepted"
+            offer.property_id.state = "offer_accepted"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+
+    def action_refuse(self):
+        for offer in self:
+            offer.status = "refused"
+            if offer.property_id.state == "offer_received" and any(
+                s != "refused" for s in offer.mapped("status")
+            ):
+                offer.property_id.state = "new"
+            offer.property_id.selling_price = 0
+            offer.property_id.buyer_id = None

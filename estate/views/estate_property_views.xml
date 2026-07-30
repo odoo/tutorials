@@ -7,16 +7,16 @@
         <field name="context">{'search_default_available': True}</field>
     </record>
 
-    <record id="estate_property_custom_view" model="ir.ui.view">
+    <record id="estate_property_view" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Custom description form">
                 <header>
                     <button name="action_sold_btn" type="object" string="Property sold"
-                        invisible="state == 'sold'" />
+                        invisible="state in ('sold', 'cancelled')" />
                     <button name="action_cancelled_btn" type="object" string="Property cancelled"
-                        invisible="state == 'sold'" />
+                        invisible="state in ('sold', 'cancelled')" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
@@ -69,7 +69,7 @@
         </field>
     </record>
 
-    <record id="estate_property_views_list" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -88,7 +88,7 @@
         </field>
     </record>
 
-    <record id="estate_property_views_filter" model="ir.ui.view">
+    <record id="estate_property_filter" model="ir.ui.view">
         <field name="name">estate.property.filter</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -111,7 +111,7 @@
         </field>
     </record>
 
-    <record id="estate_property_views_kanban" model="ir.ui.view">
+    <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
