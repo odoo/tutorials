@@ -6,12 +6,21 @@
                 <button class="btn btn-primary me-2" t-on-click="openCustomers">
                     Customers
                 </button>
-                <button class="btn btn-primary me-2" t-on-click="openLeads">
+                <button class="btn btn-secondary" t-on-click="openLeads">
                     Leads
                 </button>
             </t>
-            <div class="p-3">
-                Hello Dashboard
+
+            <div class="p-3 d-flex flex-wrap gap-3">
+                <DashboardItem>
+                    <h5 class="card-title">Card 1</h5>
+                    <p class="card-text">This item defaults to size 1 (18rem width).</p>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    <h5 class="card-title">Card 2</h5>
+                    <p class="card-text">This item has size 2 (36rem width).</p>
+                </DashboardItem>
             </div>
         </Layout>
     </t>
