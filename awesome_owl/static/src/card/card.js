@@ -5,19 +5,20 @@ export class Card extends Component {
     static props = {
         id: Number,
         title: String,
-        content: String,
         isCrossedOut: Boolean,
         toggleState: {
             Function, optional: true
         },
         removeTodo: {
             Function, optional: true
-        }
+        },
+        slots: Object
     }
 
     setup() {
         this.state = useState({
-            isCrossed: this.props.isCrossedOut
+            isCrossed: this.props.isCrossedOut,
+            isOpen: false
         })
     }
 
@@ -28,5 +29,9 @@ export class Card extends Component {
 
     removeTodo(event) {
         this.props.removeTodo(this.props.id);
+    }
+
+    toggleCard(event) {
+        this.state.isOpen = !this.state.isOpen
     }
 }

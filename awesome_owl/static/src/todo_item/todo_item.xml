@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
-        <Card id="props.todo.id" title="props.todo.description" content="props.todo.description" isCrossedOut="props.todo.isCompleted" 
-        removeTodo.bind="removeTodo" toggleState.bind="toggleState"/>
+        <Card id="props.todo.id" title="props.todo.description" isCrossedOut="props.todo.isCompleted" 
+        removeTodo.bind="removeTodo" toggleState.bind="toggleState">
+            <t t-esc="props.todo.description" /> 
+        </Card>
     </t>
 </templates>
