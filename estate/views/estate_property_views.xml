@@ -13,7 +13,7 @@
                 <field name="facades"/>
                 <field name="property_type_id" string="Property Type"/>
 
-                <filter string="Available" name="available" domain="[('state', 'in', ('new','offer received'))]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ('new','offer_received'))]"/>
 
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
@@ -30,7 +30,7 @@
                 <header>
                     <button name="action_sold_property" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_cancel_property" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -43,7 +43,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id" string="Property Type"/>
+                            <field name="property_type_id" string="Property Type" options="{'no_create': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -68,12 +68,12 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ('sold', 'cancelled', 'offer accepted')"/>
+                            <field name="offer_ids" readonly="state in ('sold', 'cancelled', 'offer_accepted')"/>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesman"/>
-                                <field name="buyer"/>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -86,11 +86,11 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-success="state in ('offer received', 'offer accepted')"
-                  decoration-bf="state=='offer accepted'"
+            <list decoration-success="state in ('offer_received', 'offer_accepted')"
+                  decoration-bf="state=='offer_accepted'"
                   decoration-muted="state=='sold'" string="Properties">
                 <field name="name" string="Title" width="15%"/>
-                <field name="property_type_id" options="{'no_create': True}" string="Type" width="10%"/>
+                <field name="property_type_id" string="Type" width="10%"/>
                 <field name="postcode" width="15%"/>
                 <field name="bedrooms" width="10%"/>
                 <field name="living_area" width="12%"/>
@@ -117,11 +117,11 @@
                                 <span>Expected Price: </span>
                                 <field name="expected_price"/>
                             </div>
-                            <div t-if="record.state.raw_value == 'offer received'">
+                            <div t-if="record.state.raw_value == 'offer_received'">
                                 <span>Best Offer: </span>
                                 <field name="best_price"/>
                             </div>
-                            <div t-if="record.state.raw_value == 'offer accepted'">
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
                                 <span>Selling Price: </span>
                                 <field name="selling_price"/>
                             </div>
