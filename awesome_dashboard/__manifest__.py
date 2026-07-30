@@ -10,7 +10,7 @@
         Starting module for "Discover the JS framework, chapter 2: Build a dashboard"
     """,
 
-    'author': "Odoo",
+    'author': "Odoo S.A.",
     'website': "https://www.odoo.com/",
     'category': 'Tutorials',
     'version': '0.1',
@@ -24,6 +24,9 @@
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',
+        ],
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard/**/*',
         ],
     },
     'license': 'AGPL-3'
