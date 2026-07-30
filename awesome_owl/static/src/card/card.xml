@@ -2,9 +2,18 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.card">
-        <div class="m-3 p-3 border rounded align-items-center gap-3">
-            <h5><t t-esc="props.title"/></h5>
-            <div>
+        <div class="m-3 p-3 border rounded">
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm btn-light border-0 fs-6 p-0 px-1"
+                        t-on-click="toggleCard">
+                    <t t-esc="state.isOpen ? '▼' : '▶'"/>
+                </button>
+                <h5 class="m-0">
+                    <t t-esc="props.title"/>
+                </h5>
+            </div>
+
+            <div t-if="state.isOpen" class="mt-3">
                 <t t-slot="default"/>
             </div>
         </div>
