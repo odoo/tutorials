@@ -3,10 +3,12 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title" t-att-class="{'text-muted text-decoration-line-through': props.isCrossedOut}"><t t-esc="props.title"/></h5>
+                <input type="checkbox" t-on-click="toggleState"/>
+                <h5 class="card-title" t-att-class="{'text-muted text-decoration-line-through': state.isCrossed}"><t t-esc="props.title"/></h5>
                 <p class="card-text">
-                <t t-out="props.content"/>
+                    <t t-out="props.content"/>
                 </p>
+                <span class="fa fa-remove" t-on-click="removeTodo"/>
             </div>
         </div>  
     </t>
