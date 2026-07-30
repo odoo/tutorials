@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Estate(models.Model):
-    _name = "estate_property"
+    _name = "estate.estate"
     _description = "Real Estate"
     _order = "id desc"
 
@@ -51,7 +51,7 @@ class Estate(models.Model):
     )
     type_id = fields.Many2one(
         string="Property Type",
-        comodel_name="estate_property_type",
+        comodel_name="estate.type",
     )
     salesman_id = fields.Many2one(
         string="Salesman",
@@ -59,10 +59,10 @@ class Estate(models.Model):
         default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False)
-    tag_ids = fields.Many2many(string="Tags", comodel_name="estate_property_tag")
+    tag_ids = fields.Many2many(string="Tags", comodel_name="estate.tag")
     offer_ids = fields.One2many(
         string="Offers",
-        comodel_name="estate_property_offer",
+        comodel_name="estate.offer",
         inverse_name="property_id",
     )
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
@@ -97,18 +97,14 @@ class Estate(models.Model):
     def action_sell_property(self):
         for property in self:
             if property.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold")
+                raise UserError(self.env._("Cancelled properties cannot be sold"))
             property.state = "sold"
-
-        return True
 
     def action_cancel_property(self):
         for property in self:
             if property.state == "sold":
-                raise UserError("Sold properties cannot be cancelled")
+                raise UserError(self.env._("Sold properties cannot be cancelled"))
             property.state = "cancelled"
-
-        return True
 
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price_limit(self):
@@ -120,11 +116,15 @@ class Estate(models.Model):
                     == -1
                 ):
                     raise ValidationError(
-                        "The selling price should not be less than 90% of the expected price of the property",
+                        self.env._(
+                            "The selling price should not be less than 90% of the expected price of the property"
+                        ),
                     )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for state in self.mapped("state"):
             if state not in ["new", "cancelled"]:
-                raise UserError("New or cancelled estates only can be deleted")
+                raise UserError(
+                    self.env._("New or cancelled estates only can be deleted")
+                )

@@ -6,7 +6,7 @@ class Users(models.Model):
 
     property_ids = fields.One2many(
         string="Properities",
-        comodel_name="estate_property",
+        comodel_name="estate.estate",
         inverse_name="salesman_id",
         domain=[("state", "in", ["new", "offer_received"])],
     )

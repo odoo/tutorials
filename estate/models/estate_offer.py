@@ -4,8 +4,8 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
-class Offer(models.Model):
-    _name = "estate_property_offer"
+class EstateOFfer(models.Model):
+    _name = "estate.offer"
     _description = "Offer made to some estate (property)"
     _order = "price desc"
 
@@ -17,7 +17,7 @@ class Offer(models.Model):
     )
     property_id = fields.Many2one(
         string="Property",
-        comodel_name="estate_property",
+        comodel_name="estate.estate",
         required=True,
     )
     partner_id = fields.Many2one(
@@ -33,7 +33,7 @@ class Offer(models.Model):
     )
     property_type_id = fields.Many2one(
         string="Property Type",
-        comodel_name="estate_property_type",
+        comodel_name="estate.type",
         related="property_id.type_id",
         store=True,
     )
@@ -43,7 +43,7 @@ class Offer(models.Model):
         "Offer price should be strictly positive",
     )
 
-    @api.depends("validity")
+    @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for offer in self:
             curr_date = offer.create_date if offer.create_date else fields.Date.today()
@@ -57,7 +57,9 @@ class Offer(models.Model):
     def action_accept_offer(self):
         # check if there is no other accepted offers
         if "accepted" in self.property_id.offer_ids.mapped("status"):
-            raise UserError("Only one offer can be accepted for a given property!")
+            raise UserError(
+                self.env._("Only one offer can be accepted for a given property!")
+            )
 
         # update status, selling price, buyer
         self.status = "accepted"
@@ -67,23 +69,20 @@ class Offer(models.Model):
 
     def action_refuse_offer(self):
         self.status = "refused"
-        self.property_id.selling_price = 0
-        self.property_id.buyer_id = None
 
     @api.model_create_multi
     def create(self, vals_list):
         # check before saving if the offer price >= existing offer prices
         for record in vals_list:
-            property = self.env["estate_property"].browse(record["property_id"])
+            property = self.env["estate.estate"].browse(record["property_id"])
             max_offer_price = max(property.offer_ids.mapped("price"), default=0)
-            print(
-                f"max_offer_price: {max_offer_price}, new offer price: {record['price']}",
-            )
             if record["price"] < max_offer_price:
                 raise UserError(
-                    "Cannot create an offer with price lower than an existing offer",
+                    self.env._(
+                        "Cannot create an offer with price lower than an existing offer"
+                    ),
                 )
 
-        # update state and save to the database
-        property.state = "offer_received"
+            # update state and save to the database
+            property.state = "offer_received"
         return super().create(vals_list)

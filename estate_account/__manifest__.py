@@ -2,7 +2,7 @@
     "name": "Estate Account Link",
     "version": "1.0.0",
     "depends": ["estate", "account"],
-    "author": "Amr (amgom)",
+    "author": "Odoo S.A.",
     "license": "LGPL-3",
     "category": "Real Estate",
     "summary": "Link module between Real Estate and Invoicing",

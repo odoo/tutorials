@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 
 
 class Estate(models.Model):
-    _inherit = "estate_property"
+    _inherit = "estate.estate"
 
     def action_sell_property(self):
         res = super().action_sell_property()
@@ -11,7 +11,9 @@ class Estate(models.Model):
         journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
         if not journal:
             raise UserError(
-                "Please configure an accounting sales journal before selling a property."
+                self.env._(
+                    "Please configure an accounting sales journal before selling a property."
+                ),
             )
 
         for property in self:
@@ -21,7 +23,9 @@ class Estate(models.Model):
                 or not property.selling_price
             ):
                 raise UserError(
-                    "To sell a property, it must be in 'sold' state, have a buyer and a selling price.",
+                    self.env._(
+                        "To sell a property, it must be in 'sold' state, have a buyer and a selling price."
+                    ),
                 )
 
             commission_line = (

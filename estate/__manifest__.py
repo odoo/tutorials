@@ -2,7 +2,7 @@
     "name": "Real Estate",
     "version": "1.0.0",
     "depends": ["base"],
-    "author": "Amr (amgom)",
+    "author": "Odoo S.A.",
     "license": "LGPL-3",
     "category": "Real Estate",
     "description": """
