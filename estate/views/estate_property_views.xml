@@ -20,6 +20,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -35,11 +36,11 @@
                         <h1>
                             <field name="name"/>
                         </h1>
-                    </div>
-                    <group>
                         <group>
                             <field name="tag_ids" widget="many2many_tags"/>
                         </group>
+                    </div>                    
+                    <group>  
                         <group>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
@@ -48,6 +49,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price" readonly="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -61,14 +63,17 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids">
                                 <list>
                                     <field name="price"/>
-                                    <field name="status"/>
                                     <field name="partner_id"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                    <field name="status"/>
                                 </list>
                             </field>
                         </page>
