@@ -9,9 +9,14 @@ export class TodoItem extends Component {
             shape: {id: Number, description: String, isCompleted: Boolean},
         },
         toggleState: Function,
+        removeTodo: Function,
     };
 
     onChange() {
         this.props.toggleState(this.props.todo.id);
+    }
+
+    onClick() {
+        this.props.removeTodo(this.props.todo.id);
     }
 }

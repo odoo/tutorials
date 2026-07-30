@@ -8,7 +8,9 @@
                    t-ref='todo'
                    t-on-keyup='addTodo'/>
             <t t-foreach='todos' t-as='todo' t-key='todo.id'>
-                <TodoItem todo='todo' toggleState.bind='toggleTodo'/>
+                <TodoItem todo='todo'
+                          toggleState.bind='toggleTodo'
+                          removeTodo.bind='removeTodo'/>
             </t>
         </div>
     </t>
