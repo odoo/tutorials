@@ -7,15 +7,15 @@ class EstatePropertyType(models.Model):
     _order = "sequence, name"
 
     name = fields.Char("Property type", required=True)
+    sequence = fields.Integer("Sequence")
+    offer_count = fields.Integer("Offers", compute="_compute_offers_count")
+    property_list_id = fields.One2many("estate.property", "property_type_id")
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id")
+
     _unique_name = models.Constraint(
         "UNIQUE(name)",
         _("Property name already exists. Property names must be unique."),
     )
-
-    sequence = fields.Integer("Sequence")
-    property_list_id = fields.One2many("estate.property", "property_type_id")
-    offer_ids = fields.One2many("estate.property.offer", "property_type_id")
-    offer_count = fields.Integer("Offers", compute="_compute_offers_count")
 
     @api.depends("offer_ids")
     def _compute_offers_count(self):

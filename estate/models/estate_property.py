@@ -18,18 +18,10 @@ class EstateProperty(models.Model):
         default=lambda _: fields.Date.add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float("Expected Price", required=True)
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        _("The expected price should be strictly positive"),
-    )
     selling_price = fields.Float(
         "Selling price",
         copy=False,
         readonly=True,
-    )
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        _("The selling price should be strictly positive"),
     )
     state = fields.Selection(
         [
@@ -72,6 +64,16 @@ class EstateProperty(models.Model):
         "property_id",
     )
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        _("The expected price should be strictly positive"),
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        _("The selling price should be strictly positive"),
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -99,18 +101,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    def action_sold_btn(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise exceptions.UserError(_("Cancelled properties cannot be sold."))
-            record.state = "sold"
-
-    def action_cancelled_btn(self):
-        for record in self:
-            if record.state == "sold":
-                raise exceptions.UserError(_("Sold properties cannot be cancelled."))
-            record.state = "cancelled"
-
     @api.constrains("expected_price", "selling_price")
     def _check_offer_acceptable_price(self):
         for record in self:
@@ -132,3 +122,15 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError(
                     _("Property that is either new or cancelled, can't be deleted."),
                 )
+
+    def action_sold_btn(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise exceptions.UserError(_("Cancelled properties cannot be sold."))
+            record.state = "sold"
+
+    def action_cancelled_btn(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError(_("Sold properties cannot be cancelled."))
+            record.state = "cancelled"
