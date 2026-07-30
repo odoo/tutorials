@@ -34,6 +34,7 @@
                             <field name="property_type_id" />
                             <field name="living_area"/>
                             <field name="facades"/>
+                            <field name="best_price" readonly="1"/>
                             <!-- <field name="total_area" readonly="1"/> -->
                             <field name="total_area"/>
                         </group>

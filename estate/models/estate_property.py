@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     seller_id = fields.Many2one(
         "res.users",
-        string="Salesperson",
+        string="Sales Person",
         default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -60,3 +60,10 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
