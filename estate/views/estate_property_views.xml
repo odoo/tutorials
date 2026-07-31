@@ -10,6 +10,7 @@
                 <list string="Properties">
                     <field name="name"/>
                     <field name="property_type_id"/>
+                    <field name="tag_ids"/>
                     <field name="postcode"/>
                     <field name="bedrooms"/>
                     <field name="living_area"/>
@@ -38,6 +39,7 @@
                         
                         <group>
                             <field name="property_type_id"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
