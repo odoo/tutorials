@@ -117,7 +117,7 @@ class Estate(models.Model):
                 ):
                     raise ValidationError(
                         self.env._(
-                            "The selling price should not be less than 90% of the expected price of the property"
+                            "The selling price should not be less than 90% of the expected price of the property",
                         ),
                     )
 
@@ -126,5 +126,5 @@ class Estate(models.Model):
         for state in self.mapped("state"):
             if state not in ["new", "cancelled"]:
                 raise UserError(
-                    self.env._("New or cancelled estates only can be deleted")
+                    self.env._("New or cancelled estates only can be deleted"),
                 )

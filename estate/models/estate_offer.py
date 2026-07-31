@@ -58,7 +58,7 @@ class EstateOFfer(models.Model):
         # check if there is no other accepted offers
         if "accepted" in self.property_id.offer_ids.mapped("status"):
             raise UserError(
-                self.env._("Only one offer can be accepted for a given property!")
+                self.env._("Only one offer can be accepted for a given property!"),
             )
 
         # update status, selling price, buyer
@@ -79,7 +79,7 @@ class EstateOFfer(models.Model):
             if record["price"] < max_offer_price:
                 raise UserError(
                     self.env._(
-                        "Cannot create an offer with price lower than an existing offer"
+                        "Cannot create an offer with price lower than an existing offer",
                     ),
                 )
 

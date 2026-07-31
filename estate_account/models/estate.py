@@ -12,7 +12,7 @@ class Estate(models.Model):
         if not journal:
             raise UserError(
                 self.env._(
-                    "Please configure an accounting sales journal before selling a property."
+                    "Please configure an accounting sales journal before selling a property.",
                 ),
             )
 
@@ -24,7 +24,7 @@ class Estate(models.Model):
             ):
                 raise UserError(
                     self.env._(
-                        "To sell a property, it must be in 'sold' state, have a buyer and a selling price."
+                        "To sell a property, it must be in 'sold' state, have a buyer and a selling price.",
                     ),
                 )
 
