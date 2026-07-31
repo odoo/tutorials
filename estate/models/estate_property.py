@@ -90,7 +90,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
-        # return {'warning': {'title': "Test warning", 'message': "foo", 'type': 'notification'},}
+
     @api.constrains("selling_price", "expected_price")
     def _check_price_expectation(self):
         for record in self:
