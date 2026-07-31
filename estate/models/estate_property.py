@@ -11,8 +11,8 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     _check_positif_expected_price = models.Constraint(
-        'CHECK(expected_price >= 0)',
-        'The expected price must be positive'
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive'
     )
     _check_positif_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)',
@@ -42,7 +42,7 @@ class EstateProperty(models.Model):
         string="Garden's orientation",
         selection=[
             ("north", "North"),
-            ("sud", "Sud"),
+            ("south", "South"),
             ("east", " East"),
             ("west", "West"),
         ],
@@ -52,12 +52,13 @@ class EstateProperty(models.Model):
         string="Estate's state",
         selection=[
             ("new", "New"),
-            ("offer_recieved", "Offer Received"),
+            ("offer_received", "Offer Received"),
             ("offer_accepted", " Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
         default="new",
+        copy=False
     )
     salesman_id = fields.Many2one(
         "res.users",
@@ -78,8 +79,8 @@ class EstateProperty(models.Model):
     @api.depends('proterty_offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            prices = record.proterty_offer_ids.mapped('price')
-            record.best_price = max(prices, default=0)
+            all_prices = record.proterty_offer_ids.mapped('price')
+            record.best_price = all_prices[0] if all_prices else 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -90,52 +91,43 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
         # return {'warning': {'title': "Test warning", 'message': "foo", 'type': 'notification'},}
-
     @api.constrains("selling_price", "expected_price")
     def _check_price_expectation(self):
         for record in self:
-            if float_utils.float_is_zero(record.selling_price, 0):
+            if float_utils.float_is_zero(record.selling_price, 2):
                 return True
             if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
-                raise exceptions.ValidationError("Selling price can't be smaller than 90% of the expected price")
+                raise exceptions.ValidationError(self.env._("Selling price can't be smaller than 90% of the expected price"))
         return True
 
     @api.ondelete(at_uninstall=False)
     def delete(self):
         for record in self:
-            if record.state not in ["new", "cancelled"]:
-                raise exceptions.UserError(f"Can't delete an advertise in {record.state} state")
+            if record.state not in {"new", "cancelled"}:
+                raise exceptions.UserError(self.env._(f"Can't delete an advertise in {record.state} state"))
 
     def action_sold_adv(self):
         for advertisements in self:
             if advertisements.state == "cancelled":
-                raise exceptions.UserError("Can't sold an canceled advertise")
+                raise exceptions.UserError(self.env._("Can't sold an canceled advertise"))
             advertisements.state = "sold"
         return True
 
     def action_cancel_adv(self):
         for advertisements in self:
             if advertisements.state == "sold":
-                raise exceptions.UserError("Can't cancel an sold advertise")
+                raise exceptions.UserError(self.env._("Can't cancel an sold advertise"))
             advertisements.state = "cancelled"
         return True
 
     def accept_offer(self):
-        for adrivertise in self:
-            accepted_offer = []
-            for offer in adrivertise.proterty_offer_ids:
-                if accepted_offer:
-                    offer.status = "refused"
-                elif offer.status == 'accepted':
-                    accepted_offer.append(offer)
-                else:
-                    offer.status = 'refused'
-
-            accepted_offer = accepted_offer[0]
-            adrivertise.buyer_id = accepted_offer.partner_id
-            adrivertise.selling_price = accepted_offer.price
-            adrivertise.state = 'offer_accepted'
+        for advertise in self:
+            accepted_offer = advertise.proterty_offer_ids.filtered(lambda r: r.status == 'accepted')
+            advertise.buyer_id = accepted_offer.partner_id
+            advertise.selling_price = accepted_offer.price
+            advertise.state = 'offer_accepted'
+            (advertise.proterty_offer_ids - accepted_offer).action_refuse_offer()
 
     def set_offer_received(self):
-        for record in self:
-            record.state = "offer_recieved"
+        for advertise in self:
+            advertise.state = "offer_received"

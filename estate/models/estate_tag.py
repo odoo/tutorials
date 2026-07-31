@@ -6,7 +6,10 @@ class PropertyTag(models.Model):
     _description = "Estate Tag"
     _order = "name"
 
-    name = fields.Char(string="Tag")
+    _check_unique_name = models.Constraint(
+        'UNIQUE(name)',
+        "Another tag already exists with the same name!"
+    )
 
-    _name_idx = models.UniqueIndex('(name)', 'Another record already exists with the same name!')
-    color = fields.Integer(string="Color")
+    name = fields.Char(string="Tag")
+    color = fields.Integer()

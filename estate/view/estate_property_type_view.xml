@@ -25,12 +25,14 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Estate Property Type">
-                <header>
-                    <button type="action" name="%(estate.estate_properties_offers_view)d" string="Offer" class="oe_stat_button" invisible="not offer_count"/>
-                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(estate_property_offers_action)d" class="oe_stat_button" invisible="not offer_count" icon="fa-money">
+                            <field name="offer_count" string="Offers" widget="statinfo"/>
+                        </button>
+                    </div>
                     <h1>
-                        <field name="name" placeholder="e.g House"/>
+                        <field name="name" placeholder="e.g. House"/>
                     </h1>
                     <notebook>
                         <page string="Properties" name="properties">

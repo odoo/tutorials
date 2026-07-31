@@ -1,21 +1,25 @@
 from datetime import timedelta
 
-from odoo import api, exceptions, fields, models
+from odoo.exceptions import UserError
+
+from odoo import api, fields, models
 
 
-class EstateOffer(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer"
     _order = "price desc"
 
-    price = fields.Float(string="Price")
+    price = fields.Float()
     status = fields.Selection(
         string="Status",
         selection=[
             ("accepted", "Accepted"),
-            ("refused", "Refused")
+            ("refused", "Refused"),
+            ("new", "New")
         ],
-        copy=False
+        copy=False,
+        default="new"
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
@@ -34,9 +38,10 @@ class EstateOffer(models.Model):
         for vals in vals_list:
             property = self.env["estate.property"].browse(vals["property_id"])
             property.set_offer_received()
-            max_price = max(property.proterty_offer_ids.mapped('price'), default=None)
-            if max_price and max_price > vals['price']:
-                raise exceptions.UserError("New offer can't be lower than an other offer")
+            all_prices = property.proterty_offer_ids.mapped('price')
+            max_price = all_prices[0] if all_prices else 0
+            if max_price and max_price >= vals['price']:
+                raise UserError(self.env._("New offer can't be lower than an other offer"))
         return super().create(vals_list)
 
     @api.depends("validity")
@@ -46,12 +51,13 @@ class EstateOffer(models.Model):
 
     def _inverse_validity(self):
         for offer in self:
-            offer.validity = (offer.date_deadline - fields.Date.today()).days
+            difference = (offer.create_date.date() - fields.Date.today())
+            offer.validity = difference.days
 
-    def action_accepte_offer(self):
+    def action_accept_offer(self):
         for offer in self:
             if offer.status == "refused":
-                raise exceptions.UserError("Can't accept an refused offer")
+                raise UserError(self.env._("Can't accept an refused offer"))
             offer.status = "accepted"
             offer.property_id.accept_offer()
         return True
@@ -59,6 +65,6 @@ class EstateOffer(models.Model):
     def action_refuse_offer(self):
         for offer in self:
             if offer.status == "accepted":
-                raise exceptions.UserError("Can't refuse an accepted offer")
+                raise UserError(self.env._("Can't refuse an accepted offer"))
             offer.status = "refused"
         return True
