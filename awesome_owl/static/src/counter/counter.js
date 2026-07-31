@@ -8,6 +8,8 @@ export class Counter extends Component {
         </div>
     `;
 
+    static props = {};
+
     setup() {
         this.state = useState({ value: 0 });
     }

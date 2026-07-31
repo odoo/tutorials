@@ -8,6 +8,8 @@ export class Playground extends Component {
 
     static components = { Card, Counter };
 
+    static props = {};
+
     get htmlContent() {
         return markup("<strong>This is bold</strong>");
     }
