@@ -1,8 +1,69 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
-    </t>
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-always-buttons">
+                <button class="btn btn-primary me-2" t-on-click="openCustomers">
+                    Customers
+                </button>
+                <button class="btn btn-primary me-2" t-on-click="openLeads">
+                    Leads
+                </button>
+            </t>
 
+            <div class="d-flex flex-wrap gap-3 p-3">
+
+                <DashboardItem>
+                    <div class="text-center p-2">
+                        <div class="fs-2 fw-bold text-primary">
+                            <t t-esc="statistics.nb_new_orders"/>
+                        </div>
+                        <div class="text-muted">Number of new orders this month</div>
+                    </div>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="text-center p-2">
+                        <div class="fs-2 fw-bold text-success">
+                            <t t-esc="statistics.total_amount"/>
+                        </div>
+                        <div class="text-muted">Total amount of new orders this month</div>
+                    </div>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="text-center p-2">
+                        <div class="fs-2 fw-bold text-info">
+                            <t t-esc="statistics.average_quantity"/>
+                        </div>
+                        <div class="text-muted">Average amount of t-shirt by order this month</div>
+                    </div>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="text-center p-2">
+                        <div class="fs-2 fw-bold text-danger">
+                            <t t-esc="statistics.nb_cancelled_orders"/>
+                        </div>
+                        <div class="text-muted">Number of cancelled orders this month</div>
+                    </div>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <div class="text-center p-2">
+                        <div class="fs-2 fw-bold text-warning">
+                            <t t-esc="statistics.average_time"/>
+                        </div>
+                        <div class="text-muted">Average time from 'new' to 'sent' or 'cancelled'</div>
+                    </div>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    Shirt orders by size
+                    <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+                </DashboardItem>
+
+            </div>
+        </Layout>
+    </t>
 </templates>
