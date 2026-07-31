@@ -64,3 +64,8 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date and record.deadline:
                 record.validity = (record.deadline - record.create_date.date()).days
+
+    _sql_constraints = models.Constraint(
+        "CHECK(price>0)",
+        "Offer price must be strictly positive.",
+    )
