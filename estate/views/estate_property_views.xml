@@ -19,7 +19,8 @@
                 <field name="selling_price" optional="hide"/>
                 <field name="date_availability" optional="show"/>
                 <field name="property_type_id" optional="hide"/> 
-                <field name="tags_id" widget="many2many_tags" optional="hide"/>            
+                <field name="tags_id" widget="many2many_tags" optional="hide"/>
+                <field name="total_area" optional="hide"/>        
             </list>
         </field>
     </record>
@@ -59,6 +60,7 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
+                                <field name="total_area"/>
                             </group> 
                         </page>
                         <page string="Offers">
