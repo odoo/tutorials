@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <menuitem id="estate_menu_root" name="Real estate">
         <menuitem id="advertisement_menu" name="Advertisement">

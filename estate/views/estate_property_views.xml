@@ -7,7 +7,7 @@
         <field name="context">{'search_default_available': True}</field>
     </record>
 
-    <record id="estate_property_view" model="ir.ui.view">
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -146,5 +146,4 @@
             </kanban>
         </field>
     </record>
-
 </odoo>

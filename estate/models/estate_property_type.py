@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -14,7 +14,7 @@ class EstatePropertyType(models.Model):
 
     _unique_name = models.Constraint(
         "UNIQUE(name)",
-        _("Property name already exists. Property names must be unique."),
+        "Property name already exists. Property names must be unique.",
     )
 
     @api.depends("offer_ids")

@@ -1,4 +1,4 @@
-from odoo import _, fields, models
+from odoo import fields, models
 
 
 class EstatePropertyTag(models.Model):
@@ -11,5 +11,5 @@ class EstatePropertyTag(models.Model):
 
     _unique_name = models.Constraint(
         "UNIQUE(name)",
-        _("Tage name already exists. Tag names must be unique."),
+        "Tage name already exists. Tag names must be unique.",
     )

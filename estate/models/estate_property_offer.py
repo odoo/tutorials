@@ -1,4 +1,4 @@
-from odoo import api, _, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 from odoo.tools import float_compare
 
 
@@ -32,7 +32,7 @@ class EstatePropertyOffer(models.Model):
 
     _check_selling_price = models.Constraint(
         "CHECK(price > 0)",
-        _("The price should be strictly positive"),
+        "The price should be strictly positive",
     )
 
     @api.depends("create_date", "validity")
@@ -63,8 +63,11 @@ class EstatePropertyOffer(models.Model):
                     and float_compare(offer_price, property_record.best_offer, 2) < 0
                 ):
                     raise exceptions.UserError(
-                        _("New offer should be better than current best offer (%.2f).")
-                        % property_record.best_offer,
+                        self.env._(
+                            "New offer (%(offer_price).2f) must be higher than the current best offer (%(best_offer).2f).",
+                            offer_price=offer_price,
+                            best_offer=property_record.best_offer,
+                        ),
                     )
                 if property_record.state == "new":
                     property_record.state = "offer_received"
@@ -73,7 +76,9 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for offer in self:
             if offer.property_id.buyer_id:
-                raise exceptions.UserError(_("One offer has already been accepted."))
+                raise exceptions.UserError(
+                    self.env._("One offer has already been accepted."),
+                )
             offer.status = "accepted"
             offer.property_id.state = "offer_accepted"
             offer.property_id.selling_price = offer.price
@@ -82,9 +87,7 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for offer in self:
             offer.status = "refused"
-            if offer.property_id.state == "offer_received" and any(
-                s != "refused" for s in offer.mapped("status")
+            if offer.property_id.state == "offer_received" and all(
+                s == "refused" for s in offer.property_id.offer_ids.mapped("status")
             ):
                 offer.property_id.state = "new"
-            offer.property_id.selling_price = 0
-            offer.property_id.buyer_id = None
