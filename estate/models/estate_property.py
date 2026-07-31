@@ -62,3 +62,12 @@ class EstateProperty(models.Model):
                 record.offer_ids.mapped("price"),
                 default=0
             )
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_orientation = "north"
+            self.garden_area = 10
+        else:
+            self.garden_orientation = ""
+            self.garden_area = 0
