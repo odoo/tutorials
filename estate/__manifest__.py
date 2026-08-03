@@ -1,5 +1,1 @@
-{
-    'name' :"Real Estate",
-    'depends':['base'],
-    'application': True,
-}
+{"name": "Real Estate", "depends": ["base"], "application": True}
