@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name ="name"> Properties </field>
+        <field name ="name"> Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -18,9 +18,10 @@
                 <field name="expected_price"/>
                 <field name="selling_price" optional="hide"/>
                 <field name="date_availability" optional="show"/>
-                <field name="property_type_id" optional="hide"/> 
+                <field name="property_type_id" optional="hide"/>
                 <field name="tags_id" widget="many2many_tags" optional="hide"/>
-                <field name="total_area" optional="hide"/>        
+                <field name="total_area" optional="hide"/>
+                <field name="best_price" optional="hide"/>      
             </list>
         </field>
     </record>
@@ -45,6 +46,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
