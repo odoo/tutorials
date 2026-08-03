@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
+from odoo.tools.profiler import Profiler
 
 
 class EstatePropertyOffer(models.Model):
@@ -42,21 +43,23 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "partner_id")
     def _compute_security_status(self):
         self.security_status = False
-        valid_records = self.filtered(lambda r: r.id and r.partner_id and r.create_date)
+        valid_records = self.filtered(
+            lambda r: r.id and r.partner_id and r.create_date,
+        )
         if not valid_records:
             return
 
         query = """
-           SELECT o1.id
-           FROM estate_property_offer o1
-           JOIN estate_property_offer o2 ON o1.partner_id = o2.partner_id
-               AND o1.property_id = o2.property_id
-               AND o2.create_date >= o1.create_date - INTERVAL '300 seconds'
-               AND o2.create_date <= o1.create_date + INTERVAL '300 seconds'
-           WHERE o1.id IN %s
-           GROUP BY o1.id
-           HAVING COUNT(o2.id) > 2
-        """
+                SELECT o1.id
+                FROM estate_property_offer o1
+                JOIN estate_property_offer o2 ON o1.partner_id = o2.partner_id
+                    AND o1.property_id = o2.property_id
+                    AND o2.create_date >= o1.create_date - INTERVAL '300 seconds'
+                    AND o2.create_date <= o1.create_date + INTERVAL '300 seconds'
+                WHERE o1.id IN %s
+                GROUP BY o1.id
+                HAVING COUNT(o2.id) > 2
+                """
 
         self.env.cr.execute(query, (tuple(valid_records.ids),))
         suspicious_ids = [row[0] for row in self.env.cr.fetchall()]

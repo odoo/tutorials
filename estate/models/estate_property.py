@@ -49,6 +49,22 @@ class EstateProperty(models.Model):
     )
     name = fields.Char(required=True, translate=True)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="offers")
+    booking_ids = fields.One2many(
+        "estate.property.booking",
+        "property_id",
+        string="booking",
+    )
+    bookings_count = fields.Integer(compute="_compute_bookings_count")
+
+    @api.depends("booking_ids")
+    def _compute_bookings_count(self):
+        for booking in self:
+            booking.bookings_count = self.env['estate.property.booking'].search_count(
+                [
+                    ('property_id', '=', booking.ids),
+                ],
+            )
+
     postcode = fields.Char()
     property_type = fields.Many2one("estate.property.type")
     sales_person = fields.Many2one("res.users", default=lambda self: self.env.user)
