@@ -6,7 +6,6 @@ class EstateProperty(models.Model):
     _description = "Estate Property"
 
     name = fields.Char("Property name ", required=True, translate=True)
-    _description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date()
     expected_price = fields.Float(required=True)
