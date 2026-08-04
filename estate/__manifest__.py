@@ -1,1 +1,8 @@
-{"name": "Real Estate", "depends": ["base"], "application": True}
+{
+    "name": "Real Estate",
+    "depends": ["base"],
+    "application": True,
+    "author": "Aditya Maurya",
+    "license": "LGPL-3",
+    "category": "Real Estate",
+}
