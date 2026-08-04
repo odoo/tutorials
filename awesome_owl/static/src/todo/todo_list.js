@@ -8,7 +8,9 @@ export class TodoList extends Component {
     setup() {
         this.todos = useState([]);
         this.nextId = 1;
+
         this.inputRef = useRef("input");
+
 
         onMounted(() => {
             this.inputRef.el.focus();
@@ -22,10 +24,31 @@ export class TodoList extends Component {
             this.todos.push({
                 id: this.nextId++,
                 description: description,
-                // isCompleted: false,
+                isCompleted: false,
             });
 
             ev.target.value = "";
         }
     }
+
+    toggleState(id){
+        const todo=this.todos.find(
+            todo=>todo.id===id
+        );
+
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted;
+        }
+    }
+
+    removeTodo(id) {
+        const index = this.todos.findIndex(
+            todo => todo.id === id
+        );
+
+        if (index >= 0) {
+            this.todos.splice(index, 1);
+        }
+    }
+
 }

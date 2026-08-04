@@ -5,7 +5,17 @@ export class TodoItem extends Component {
 
     static props = {
         todo: Object,
+        toggleState:Function,
+        removeTodo:Function,
     };
 
+    toggleTodo() {
+        // debugger
+        this.props.toggleState(this.props.todo.id);
+        
+    }
+    removeItem() {
+        this.props.removeTodo(this.props.todo.id);
+    }
+
 }
-    
