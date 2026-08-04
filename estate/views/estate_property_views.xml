@@ -94,8 +94,14 @@
                 <field name="property_type_id"/>
                 
                 <filter string="Available" name="available" domain="[('state','in',('new','offer_received'))]"/>
+                <filter string="Sold" name="sold" domain="[('state','=','sold')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state','=','cancelled')]"/>
+                <filter string="Has Garden" name="has_garden" domain="[('garden','=',True)]"/>
+                <filter string="Has Garage" name="has_garage" domain="[('garage','=',True)]"/>
 
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                <filter string="Property Type" name="property_type" context="{'group_by':'property_type_id'}"/>
+                <filter string="salesperson" name="salesperson" context="{'group_by':'salesperson_id'}"/>
 
             </search>
         </field>
