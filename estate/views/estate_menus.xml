@@ -2,18 +2,18 @@
 <odoo>
 
     <!-- List View -->
-   <record id="view_estate_property_list" model="ir.ui.view">
-    <field name="name">estate.property.list</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <list>
-            <field name="name"/>
-            <field name="expected_price"/>
-            <field name="selling_price"/>
-            <field name="state"/>
-        </list>
-    </field>
-	</record>
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
     <!-- Form View -->
     <record id="view_estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
@@ -75,8 +75,8 @@
 
     <!-- Menu -->
     <menuitem id="estate_root_menu"
-	    name="Real Estate"
-	    web_icon="estate,static/description/icon.png"/>
+              name="Real Estate"
+              web_icon="estate,static/description/icon.png"/>
 
     <menuitem id="estate_property_menu"
               name="Properties"
