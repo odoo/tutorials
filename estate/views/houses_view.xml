@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_house_list" model="ir.ui.view">
+        <field name="name">estate.house.list</field>
+        <field name="model">estate.house</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="address"/>
+                <field name="house_url" widget='image' />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_house_form" model="ir.ui.view">
+        <field name="name">estate.house.form</field>
+        <field name="model">estate.house</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="address"/>
+                        <field name="house_url"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_house" model="ir.actions.act_window">
+        <field name="name">Houses</field>
+        <field name="res_model">estate.house</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+ <!-- Root Menu -->
+    <menuitem
+        id="estate_menu_root"
+        name="Real Estate By Smit Patel"
+        sequence="10"
+        web_icon="estate,static/description/icon.png"/>
+
+    <!-- Child Menu -->
+    <menuitem
+        id="estate_houses_menu"
+        name="My Estates"
+        parent="estate_menu_root"
+        action="action_house"
+        sequence="1"
+        />  
+</odoo>
