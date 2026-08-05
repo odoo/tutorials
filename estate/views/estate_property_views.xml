@@ -99,13 +99,11 @@
                 <filter
                     string="Available"
                     name="available"
-                    domain="[('state','in',['new','offer_received'])]"/>
-
+                    domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <filter
                     string="Postcode"
                     name="group_postcode"
-                    context="{'group_by':'postcode'}"/>
-
+                    context="{'group_by': 'postcode'}"/>
             </search>
         </field>
     </record>

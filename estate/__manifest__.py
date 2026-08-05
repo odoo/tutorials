@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "author": "Mrunmayee",
+    "author": "Odoo S.A.",
     "depends": ["base"],
     "application": True,
     "category": "tutorials",
