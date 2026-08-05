@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Awesome Dashboard",
+    'name': "Awesome Dashboard1",
 
     'summary': """
         Starting module for "Discover the JS framework, chapter 2: Build a dashboard"

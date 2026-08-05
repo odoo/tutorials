@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="estate_property_action" model="ir.actions.act_window">
+    <field name="name">Proprety</field>
+    <field name="res_model">estate.property</field>
+    <field name="view_mode">list,form</field> <!-- By default list and form view mode is given even if we remove this view mode from the code we will still get the list and form view -->
+</record>
+<menuitem id="estate_property_menuroot" name="Real Estate"/> <!-- it is to show in the dashboard-->
+<menuitem id="estate_menu_property" parent="estate_property_menuroot" name="Properties" action="estate_property_action" />
+<!-- <menuitems id="estate_property_menuroot" name="Real Estate"/>  -->
+</odoo>
