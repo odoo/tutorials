@@ -119,4 +119,3 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         self.status = "rejected"
         return True
-
