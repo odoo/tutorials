@@ -9,7 +9,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list default_order="name asc">
                 <field name="name"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
