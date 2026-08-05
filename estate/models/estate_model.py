@@ -5,11 +5,11 @@ class EstatePropertyModel(models.Model):
     _name = "estate.property"
     _description = "This is a Estate property model containing all the data associated with housing."
 
-    name = fields.Char()
+    name = fields.Char(required=True, index=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date()
-    expected_price = fields.Float()
+    expected_price = fields.Float(required=True)
     selling_price = fields.Float()
     bedrooms = fields.Integer()
     living_rooms = fields.Integer()

@@ -36,19 +36,9 @@
     </record>
 
 
- <!-- Root Menu -->
-    <menuitem
-        id="estate_menu_root"
-        name="Real Estate By Smit Patel"
-        sequence="10"
-        web_icon="estate,static/description/icon.png"/>
+    <!-- Root Menu -->
+    <menuitem id="estate_menu_root" name="Real Estate By Smit Patel" sequence="10" web_icon="estate,static/description/icon.png"/>
 
     <!-- Child Menu -->
-    <menuitem
-        id="estate_houses_menu"
-        name="My Estates"
-        parent="estate_menu_root"
-        action="action_house"
-        sequence="1"
-        />  
+    <menuitem id="estate_houses_menu" name="My Estates" parent="estate_menu_root" action="action_house" sequence="1" />
 </odoo>
