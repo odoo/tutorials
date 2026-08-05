@@ -13,7 +13,7 @@
     ],
     'installable': True,
     'application': True,
-    'author': 'Disha Shah(SHADI)',
+    'author': 'Odoo S.A.',
     'description': """Training module for real estate""",
     'license': 'LGPL-3',
 }
