@@ -137,18 +137,19 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         self.ensure_one()
         if self.state == "sold":
-            raise UserError("A sold property cannot be cancelled.")
+            msg = "A sold property cannot be cancelled."
+            raise UserError(msg)
         self.state = "cancelled"
         return True
 
     def action_sold(self):
         self.ensure_one()
         if self.state == "cancelled":
-            raise UserError("A cancelled property cannot be set as sold.")
+            msg = "A cancelled property cannot be set as sold."
+            raise UserError(msg)
         if not self.buyer_id:
-            raise UserError(
-                "A property cannot be sold without an accepted offer (buyer).",
-            )
+            msg = "A property cannot be sold without an accepted offer (buyer)."
+            raise UserError(msg)
         self.selling_date = fields.Date.today()
         self.state = "sold"
         if (self.selling_date - self.create_date.date()).days <= 2:
@@ -164,7 +165,8 @@ class EstateProperty(models.Model):
     def action_accept_best_offer(self):
         self.ensure_one()
         if not self.offer_ids:
-            raise UserError("This property has no offers to accept.")
+            msg = "This property has no offers to accept."
+            raise UserError(msg)
         best_offer = max(self.offer_ids, key=lambda o: o.price)
         best_offer.action_accept()
         return True
@@ -174,4 +176,5 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, precision_rounding=0.01):
                 if float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=0.01) < 0:
-                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+                    msg = "The selling price cannot be lower than 90% of the expected price."
+                    raise ValidationError(msg)

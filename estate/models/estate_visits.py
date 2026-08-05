@@ -61,5 +61,5 @@ class EstateVisit(models.Model):
             ]
             if record.search_count(domain) > 0:
                 raise ValidationError(
-                    "This customer already has a visit scheduled for this property."
+                    message="This customer already has a visit scheduled for this property.",
                 )

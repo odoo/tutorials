@@ -61,7 +61,8 @@ class EstatePropertyMaintenance(models.Model):
     def action_assign(self):
         self.ensure_one()
         if not self.technician_id:
-            raise UserError("Please select a technician first.")
+            msg = "Please select a technician first."
+            raise UserError(msg)
         self.state = "assigned"
         return True
 
@@ -73,6 +74,7 @@ class EstatePropertyMaintenance(models.Model):
     def action_stop(self):
         self.ensure_one()
         if self.final_cost <= 0:
-            raise UserError("Please enter a valid final cost before completing the work.")
+            msg = "Please enter a valid final cost before completing the work."
+            raise UserError(msg)
         self.state = "done"
         return True

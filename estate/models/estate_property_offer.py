@@ -62,7 +62,7 @@ class EstatePropertyOffer(models.Model):
     def _compute_is_suspicious(self):
         partner_ids = self.partner_id.ids
         datetimes = [r.create_date for r in self if r.create_date] or [
-            fields.Datetime.now()
+            fields.Datetime.now(),
         ]
         min_date = min(datetimes) - timedelta(minutes=5)
         max_date = max(datetimes) + timedelta(minutes=5)
@@ -72,7 +72,7 @@ class EstatePropertyOffer(models.Model):
                 ("partner_id", "in", partner_ids),
                 ("create_date", ">=", min_date),
                 ("create_date", "<=", max_date),
-            ]
+            ],
         )
 
         for record in self:
@@ -102,9 +102,11 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         self.ensure_one()
         if self.property_id.state in ("sold", "cancelled"):
-            raise UserError("You cannot accept an offer for a sold or cancelled property.")
+            msg = "You cannot accept an offer for a sold or cancelled property."
+            raise UserError(msg)
         if self.property_id.buyer_id:
-            raise UserError("An offer has already been accepted for this property.")
+            msg = "An offer has already been accepted for this property."
+            raise UserError(msg)
         self.status = "accepted"
         self.property_id.write({
             'buyer_id': self.partner_id.id,
