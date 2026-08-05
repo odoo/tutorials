@@ -2,12 +2,13 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools.profiler import Profiler
+
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     is_suspicious = fields.Boolean(
@@ -90,28 +91,30 @@ class EstatePropertyOffer(models.Model):
             )
             record.is_suspicious = len(recent) > 2
 
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            if vals.get("property_id"):
+                property = self.env["estate.property"].browse(vals["property_id"])
+                if property.state not in ("offer_accepted", "sold", "cancelled"):
+                    property.state = "offer_received"
+        return super().create(vals_list)
+
     def action_accept(self):
-        test_offer = self.env['estate.property.offer'].search([('status', '=', 'non_existent_status')], limit=1)
-        breakpoint()
-        with Profiler(
-            db=None,
-            log=True,
-            description="testing"
-        ):
-            self.ensure_one()
-            if self.property_id.state in ("sold", "cancelled"):
-                raise UserError("You cannot accept an offer for a sold or cancelled property.")
-            if self.property_id.buyer_id:
-                raise UserError("An offer has already been accepted for this property.")
-            self.status = "accepted"
-            self.property_id.write({
-                'buyer_id': self.partner_id.id,
-                'selling_price': self.price,
-                'state': 'offer_accepted',
-            })
-            other_offers = self.property_id.offer_ids - self
-            other_offers.status = 'rejected'
-            return True
+        self.ensure_one()
+        if self.property_id.state in ("sold", "cancelled"):
+            raise UserError("You cannot accept an offer for a sold or cancelled property.")
+        if self.property_id.buyer_id:
+            raise UserError("An offer has already been accepted for this property.")
+        self.status = "accepted"
+        self.property_id.write({
+            'buyer_id': self.partner_id.id,
+            'selling_price': self.price,
+            'state': 'offer_accepted',
+        })
+        other_offers = self.property_id.offer_ids - self
+        other_offers.status = 'rejected'
+        return True
 
     def action_refuse(self):
         self.ensure_one()

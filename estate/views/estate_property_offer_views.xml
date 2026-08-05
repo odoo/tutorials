@@ -10,14 +10,16 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom" decoration-danger="is_suspicious">
+            <list editable="bottom" 
+                  decoration-danger="status in ('refused', 'rejected') or is_suspicious" 
+                  decoration-success="status == 'accepted'">
                 <field name="is_suspicious" readonly="1"/>
                 <field name="property_id"/>
                 <field name="partner_id"/>
                 <field name="price"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <field name="status"/>
+                <field name="status" column_invisible="1"/><!-- Required for list decoration -->
                 <field name="create_date"/>
             </list>
         </field>

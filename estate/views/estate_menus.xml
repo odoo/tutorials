@@ -52,5 +52,13 @@
         action="estate_property_maintenance_action"
         sequence="20"/>
 
+    <menuitem
+        id="estate_visit_menu"
+        name="Visits"
+        parent="estate_property_menu_advertisements"
+        action="estate_visit_action"
+        sequence="25"/>
+
+
 
 </odoo>

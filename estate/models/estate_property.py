@@ -8,6 +8,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
+
 
     name = fields.Char(required=True, string="Property Name", translate=True)
     description = fields.Text(translate=True)
@@ -17,6 +19,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
+    selling_date = fields.Date()
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -60,6 +63,8 @@ class EstateProperty(models.Model):
         "property_id",
         string="Maintenance Requests",
     )
+    visit_ids = fields.One2many("estate.visit","property_id",string="Visits")
+    visit_count = fields.Integer(string="Visit Count",compute="_compute_visit_count")
 
     total_area = fields.Integer(
         string="Total Area (sqm)",
@@ -104,6 +109,21 @@ class EstateProperty(models.Model):
                 record.best_price = max(prices)
             else:
                 record.best_price = 0.0
+    @api.depends("visit_ids")
+    def _compute_visit_count(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
+
+    def action_view_visits(self):
+        self.ensure_one()
+        return {
+            "name": "Visits",
+            "type": "ir.actions.act_window",
+            "res_model": "estate.visit",
+            "view_mode": "list,form",
+            "domain": [("property_id", "=", self.id)],
+            "context": {"default_property_id": self.id},
+        }
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -129,7 +149,16 @@ class EstateProperty(models.Model):
             raise UserError(
                 "A property cannot be sold without an accepted offer (buyer).",
             )
+        self.selling_date = fields.Date.today()
         self.state = "sold"
+        if (self.selling_date - self.create_date.date()).days <= 2:
+            tag = self.env['estate.property.tag'].search([('name', '=', 'quick sell')], limit=1)
+            if not tag:
+                tag = self.env['estate.property.tag'].create({
+                    'name': 'quick sell',
+                    'description': 'Quick sell property tag',
+                })
+            self.tag_ids = self.tag_ids | tag  
         return True
 
     def action_accept_best_offer(self):
