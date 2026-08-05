@@ -4,7 +4,6 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
-
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
@@ -92,7 +91,7 @@ class EstatePropertyOffer(models.Model):
             record.is_suspicious = len(recent) > 2
 
     @api.model_create_multi
-    def create(self,vals_list):
+    def create(self, vals_list):
         for vals in vals_list:
             if vals.get("property_id"):
                 property = self.env["estate.property"].browse(vals["property_id"])

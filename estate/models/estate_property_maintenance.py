@@ -1,12 +1,10 @@
-from odoo import fields, models, api
+from odoo import fields, models
 from odoo.exceptions import UserError
 
 
 class EstatePropertyMaintenance(models.Model):
     _name = "estate.property.maintenance"
     _description = "Property Maintenance"
-
-
 
     name = fields.Char(required=True, string="Title", translate=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
@@ -40,13 +38,12 @@ class EstatePropertyMaintenance(models.Model):
     priority = fields.Selection(
         selection=[
             ('0', "test"),
-            ('1','Low'),
+            ('1', 'Low'),
             ('2', "Medium"),
             ('3', "High"),
         ],
         default="1",
         string="Priority",
-        
     )
     state = fields.Selection(
         selection=[

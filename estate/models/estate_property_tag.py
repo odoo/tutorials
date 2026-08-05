@@ -9,7 +9,6 @@ class EstatePropertyTag(models.Model):
     _rec_name = 'name'
     _order = "name"
 
-
     def _default_color(self):
         return randint(1, 11)
 

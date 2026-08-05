@@ -10,7 +10,6 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
-
     name = fields.Char(required=True, string="Property Name", translate=True)
     description = fields.Text(translate=True)
     postcode = fields.Char()
@@ -63,8 +62,8 @@ class EstateProperty(models.Model):
         "property_id",
         string="Maintenance Requests",
     )
-    visit_ids = fields.One2many("estate.visit","property_id",string="Visits")
-    visit_count = fields.Integer(string="Visit Count",compute="_compute_visit_count")
+    visit_ids = fields.One2many("estate.visit", "property_id", string="Visits")
+    visit_count = fields.Integer(string="Visit Count", compute="_compute_visit_count")
 
     total_area = fields.Integer(
         string="Total Area (sqm)",
@@ -109,6 +108,7 @@ class EstateProperty(models.Model):
                 record.best_price = max(prices)
             else:
                 record.best_price = 0.0
+
     @api.depends("visit_ids")
     def _compute_visit_count(self):
         for record in self:
@@ -158,7 +158,7 @@ class EstateProperty(models.Model):
                     'name': 'quick sell',
                     'description': 'Quick sell property tag',
                 })
-            self.tag_ids = self.tag_ids | tag  
+            self.tag_ids = self.tag_ids | tag
         return True
 
     def action_accept_best_offer(self):
