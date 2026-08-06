@@ -1,11 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<record id="estate_property_action" model="ir.actions.act_window">
-    <field name="name">Proprety</field>
-    <field name="res_model">estate.property</field>
-    <field name="view_mode">list,form</field> <!-- By default list and form view mode is given even if we remove this view mode from the code we will still get the list and form view -->
-</record>
-<menuitem id="estate_property_menuroot" name="Real Estate"/> <!-- it is to show in the dashboard-->
-<menuitem id="estate_menu_property" parent="estate_property_menuroot" name="Properties" action="estate_property_action" />
-<!-- <menuitems id="estate_property_menuroot" name="Real Estate"/>  -->
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <!-- Header with Statusbar -->
+                <!-- <header>
+                    <field name="name"/>
+                </header> -->
+
+                <sheet>
+                    <!-- Status Ribbons -->
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    
+                    <!-- Title Section -->
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Modern Villa with Garden"/>
+                        </h1>
+                    </div>
+
+                    <!-- Key Metrics / Core Info Grid -->
+                    <group>
+                        <group string="Pricing &amp; Availability">
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <!-- <field name="state"/> -->
+                        </group>
+                        <group string="Property Specs">
+                            <field name="bedrooms"/>
+                            <field name="living_area" string="Living Area (m²)"/>
+                            <field name="facades"/>
+                            <field name="garage"/>
+                        </group>
+                    </group>
+
+                    <!-- Tabbed Notebook Section -->
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Add property features, neighborhood details, etc."/>
+                        </page>
+
+                        <page string="Garden Details" name="garden_details">
+                            <group>
+                                <group>
+                                    <field name="garden"/>
+                                    <!-- Fields appear dynamically when 'garden' is checked -->
+                                    <field name="garden_area" string="Garden Area (m²)" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Settings" name="settings">
+                            <group>
+                                <field name="active"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_wizard_views" model = "ir.ui.view">
+        <field name="name">estate property wizard</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form >
+                <group>
+                    <field name="name" />
+                    <field name="postcode" />
+                    <field name="expected_price" />
+                </group>
+
+                <footer>
+                    <button name="action_confirm" type="object" string="Save" class="btn-primary" />
+                    <button string="Cancel" special="cancel" class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="estate_property_views" model = "ir.ui.view">
+        <field name="name">estate property views</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="description" />
+                <field name="date_availability" />
+            </list>
+        </field>
+    </record>
+    
 </odoo>

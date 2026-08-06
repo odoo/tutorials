@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class TestModel(models.Model):
@@ -17,11 +17,24 @@ class TestModel(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection([
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West'),
-    ],
-    string="Direction",
-    default='north')
+    garden_orientation = fields.Selection(
+        [
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ],
+        string="Direction",
+        default="north",
+    )
+    active = fields.Boolean("active", default=True)
+
+    def action_confirm(self):
+        print("button is clicked")
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Properties",
+            "res_model": "estate.property",
+            "view_mode": "form",
+            "target": "current",
+        }
