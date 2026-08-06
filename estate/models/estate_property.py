@@ -43,6 +43,7 @@ class TestModel(models.Model):
     )
 
     active = fields.Boolean(default=True)
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user.id)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tags_id = fields.Many2many("estate.property.tag", string="Tag")
