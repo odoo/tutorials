@@ -4,7 +4,37 @@
    <field name="name">Properties</field>
    <field name="res_model">estate.property</field>
     <field name="view_mode">list,form</field>
+    <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new properties
+          </p><p>
+            Create property advertisements to track availability, expected prices, and manage incoming offers.
+          </p>
+    </field>
+
 </record>
 
+<record id="estate_property_views" model = "ir.ui.view">
+        <field name="name">estate property views</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string = "properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="state"/>
+                <field name="living_area"/>
+
+            </list>
+        </field>
+</record>
+
+<record id="estate_property_action_2" model="ir.actions.act_url">
+   <!-- <field name="name">estate property url</field> -->
+    <field name="url">https://odoo.com</field>
+</record>
 
 </odoo>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<menuitem id="estate_menu_root" name="Real Estate"/>
+<menuitem id="estate_menu_root" name="Real Estate" web_icon="estate,static/description/icon.png"/>
 
 <menuitem id="estate_menu_property"
           parent="estate_menu_root" 
@@ -12,6 +12,9 @@
           parent="estate_menu_property"
           action="estate_property_action"/>
 
-         
+<menuitem id="estate_property_url" 
+          name="Property Quick View" 
+        action="estate_property_action_2" 
+          parent="estate_menu_root"/> <!--action is required to create menu option  -->
 
 </odoo>
