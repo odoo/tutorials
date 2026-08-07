@@ -10,7 +10,7 @@
                 <list string="Properties">
                     <field name="name"/>
                     <field name="property_type_id"/>
-                    <field name="tag_ids"/>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <field name="postcode"/>
                     <field name="bedrooms"/>
                     <field name="living_area"/>
@@ -66,11 +66,14 @@
                                 <field name="state"/>
                             </group>
                         </page>
-                        <page string="Sales">
+                        <page string="Other Info">
                             <group>
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                     </notebook>
 
