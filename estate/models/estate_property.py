@@ -20,21 +20,21 @@ class TestModel(models.Model):
 
     garden_orientation = fields.Selection(
         selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ],
         string="Garden Orientation",
     )
 
     state = fields.Selection(
         selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         required=True,
         copy=False,
@@ -46,4 +46,4 @@ class TestModel(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tags_id = fields.Many2many("estate.property.tag", string="Tag")
+    tag_id = fields.Many2many("estate.property.tag", string="Property Tag")
