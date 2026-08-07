@@ -52,6 +52,7 @@
                         <field name="status" />
                     </group>
                     <group>
+                        <field name="property_type_id" />
                         <field name="tags_id" widget="many2many_tags"/>
                     </group>
                     <group>
