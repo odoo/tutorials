@@ -25,6 +25,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+            <group>
+                <button string="Sold" name="action_sold" type="object" class="btn-primary"/>
+                <button string="Canceled" name="action_cancel" type="object"/>
+                <field name="state" widget="statusbar"/>
+            </group>
                 <sheet>
                     <group>
                         <group>
