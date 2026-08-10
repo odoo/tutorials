@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hansil>
+	<record id="estate_property_model_action" model="ir.actions.act_window">
+    		<field name="name">All Properties</field>
+    		<field name="res_model">estate.property.model</field>
+    		<field name="view_mode">list,form</field>
+	</record>
+<!--	<menuitem id="menu_root" name="Real Estate">-->
+<!--		<menuitem id="first_level_menu" name="Properties" action="estate_property_model_action">-->
+<!--			<menuitem id="estate_model_menu_action" ></menuitem>-->
+<!--		</menuitem>-->
+<!--	</menuitem>-->
+	<menuitem id="menu_root" name="Real Estate"></menuitem>
+	<menuitem id="first_level_menu" name="Properties" parent="menu_root"></menuitem>
+	<menuitem id="estate_model_menu_action" parent="first_level_menu" action="estate_property_model_action"></menuitem>
+</hansil>

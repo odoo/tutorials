@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from odoo import fields, models
 
 
@@ -8,15 +10,15 @@ class EstatePropertyModel(models.Model):
 
     name = fields.Char('Property Name', required=True, translate=True)
     description = fields.Text('Property Description', required=True)
-    date_availability = fields.Date()
+    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.today() + timedelta(days=3))
     postcode = fields.Char('Postal Code')
-    selling_price = fields.Float('Selling Price')
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False, default=1000000)
     expected_price = fields.Float('Expected Price', required=True)
-    bedrooms = fields.Integer('No. of Bedrooms')
+    bedrooms = fields.Integer('No of. Bedrooms', default=2)
     living_area = fields.Integer('Living Area')
     facades = fields.Integer('Facades')
-    garage = fields.Boolean('Active', default=True)
-    garden = fields.Boolean('Active', default=False)
+    garage = fields.Boolean('Garage', default=False)
+    garden = fields.Boolean('Garden', default=False)
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(
         selection=[
@@ -27,4 +29,18 @@ class EstatePropertyModel(models.Model):
         string='Gender',
         default='male'
     )
-    sold = fields.Boolean('Active', default=True)
+    sold = fields.Boolean('Sold', default=False)
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ],
+        string='State',
+        deafult='new',
+        required=True,
+        copy=False
+    )
