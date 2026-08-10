@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class TestModel(models.Model):
+class EstateModel(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
@@ -25,7 +25,7 @@ class TestModel(models.Model):
             ('east', "East"),
             ('west', "West"),
         ],
-        string="Garden Orientation",
+        string="Garden Orientation"
     )
 
     state = fields.Selection(
@@ -39,7 +39,7 @@ class TestModel(models.Model):
         required=True,
         copy=False,
         default="new",
-        string="Status",
+        string="Status"
     )
 
     active = fields.Boolean(default=True)
@@ -47,3 +47,4 @@ class TestModel(models.Model):
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_id = fields.Many2many("estate.property.tag", string="Property Tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")

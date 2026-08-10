@@ -37,13 +37,9 @@
                             <field name="name" placeholder="Enter Property Name"/>
                         </h2>
                     </div>
-                    <group>
-                        <group>
-                            <h6>
-                                <field name='tag_id' widget='many2many_tags' placeholder="Enter Tags"/>
-                            </h6>
-                        </group>
-                    </group>
+                    <h6>
+                        <field name='tag_id' widget='many2many_tags' placeholder="Enter Tags"/>
+                    </h6>
 
                     <group>
                         <group>
