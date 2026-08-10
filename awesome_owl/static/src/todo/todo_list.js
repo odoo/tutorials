@@ -11,7 +11,6 @@ export class TodoList extends Component {
 
         this.inputRef = useRef("input");
 
-
         onMounted(() => {
             this.inputRef.el.focus();
         });
@@ -31,9 +30,9 @@ export class TodoList extends Component {
         }
     }
 
-    toggleState(id){
-        const todo=this.todos.find(
-            todo=>todo.id===id
+    toggleState(id) {
+        const todo = this.todos.find(
+            todo => todo.id === id
         );
 
         if (todo) {

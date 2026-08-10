@@ -10,12 +10,9 @@ export class TodoItem extends Component {
     };
 
     toggleTodo() {
-        // debugger
         this.props.toggleState(this.props.todo.id);
-        
     }
     removeItem() {
         this.props.removeTodo(this.props.todo.id);
     }
-
 }
