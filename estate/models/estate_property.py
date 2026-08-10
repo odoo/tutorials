@@ -62,6 +62,7 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
+
         for record in self:
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped("price"))
@@ -80,3 +81,20 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.onchange("expected_price")
+    def _onchange_expected_price(self):
+        if (
+            self.expected_price
+            and self.best_price
+            and self.expected_price < self.best_price
+        ):
+            return {
+                "warning": {
+                    "title": "Price Warning",
+                    "message": (
+                        "The expected price is lower than the current best offer"
+                    ),
+                    "type": "notification",
+                }
+            }
