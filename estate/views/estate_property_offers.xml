@@ -12,7 +12,6 @@
                 <field name="status"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-
                 <field name="status"/>
 
             </list>

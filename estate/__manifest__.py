@@ -5,7 +5,7 @@
         "base",
     ],
     "application": True,
-    "author": "Ansh Chamriya",
+    "author": "Odoo S.A.",
     "license": "LGPL-3",
     "data": [
         "security/ir.model.access.csv",

@@ -5,16 +5,17 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "name"
 
     name = fields.Char(required=True, default="Unknown")
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     description = fields.Text()
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
     salesman_id = fields.Many2one(
-        "res.partner", string="Salesman", default=lambda self: self.env.user.id
+        "res.users", string="Salesman", default=lambda self: self.env.user.id
     )
     buyer_id = fields.Many2one(
-        "res.users", string="Buyer", default=lambda self: self.env.user.id, copy=False
+        "res.partner", string="Buyer", default=lambda self: self.env.user.id, copy=False
     )
     postcode = fields.Char()
     date_availability = fields.Date(copy=False)
@@ -30,21 +31,21 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
     garden_orientation = fields.Selection(
         [
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ],
         string="Garden Orientation",
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         required=True,
         copy=False,
@@ -61,6 +62,11 @@ class EstateProperty(models.Model):
             realEstateProperty.total_area = (
                 realEstateProperty.living_area + realEstateProperty.garden_area
             )
+
+    # @api.onchange("living_area", "garden_area")
+    # def _compute_total_area(self):
+    #     for record in self:
+    #         record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
