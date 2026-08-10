@@ -2,11 +2,11 @@
 <odoo>
 
     <!-- List View -->
-    <record id="estate_property_view_list" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view" >
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" default_order="name, postcode asc">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
