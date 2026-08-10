@@ -66,6 +66,15 @@
                                 <field name="state"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <group>
