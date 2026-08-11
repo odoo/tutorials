@@ -30,7 +30,9 @@ class EstatePropertyOffer(models.Model):
 
     def accept_offer(self):
         for record in self:
-            accepted_offer = record.property_id.offer_ids.filtered(
+            estate_property = record.property_id
+
+            accepted_offer = estate_property.offer_ids.filtered(
                 lambda offer: offer.status == "accepted"
             )
 
@@ -40,3 +42,7 @@ class EstatePropertyOffer(models.Model):
                 )
 
             record.status = "accepted"
+
+            estate_property.buyer_id = record.partner_id
+            estate_property.selling_price = record.price
+            estate_property.seller_id = self.env.user

@@ -86,8 +86,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="seller_id"/>
-                                <field name="buyer_id"/>
+                                <field name="seller_id" readonly="1" force_save="1" />
+                                <field name="buyer_id" readonly="1" force_save="1" />
                             </group>
                         </page>
                     </notebook>
