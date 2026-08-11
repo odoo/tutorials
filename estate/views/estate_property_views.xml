@@ -25,11 +25,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
-            <group>
-                <button string="Sold" name="action_sold" type="object" class="btn-primary"/>
-                <button string="Canceled" name="action_cancel" type="object"/>
-                <field name="state" widget="statusbar"/>
-            </group>
+                <header>
+                    <button string="Sold" name="action_sold" type="object" class="btn-primary"/>
+                    <button string="Cancel" name="action_cancel" type="object"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -44,7 +43,7 @@
                             <field name="total_area"/>
                         </group>
                         <group>
-                            <field name="selling_price"/>
+                            <field name="selling_price" readonly="1"/>
                             <field name="postcode"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="date_availability"/>
@@ -79,7 +78,7 @@
             </form>
         </field>
     </record>
-    
+
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
