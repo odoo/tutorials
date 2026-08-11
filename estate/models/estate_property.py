@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -98,3 +99,15 @@ class EstateProperty(models.Model):
                     "type": "notification",
                 }
             }
+
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("sold properties cannot be cancelled")
+            record.state = "cancelled"
+
+    def action_sold_property(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("cancelled properties cannot be sold")
+            record.state = "sold"
