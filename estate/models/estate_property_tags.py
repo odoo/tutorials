@@ -6,3 +6,10 @@ class EstatePropertyTags(models.Model):
     _description = "Estate Property Tags"
 
     name = fields.Char(string="Name", required=True)
+    property_id = fields.Many2one(
+        comodel_name="estate.property",
+        string="Property",
+    )
+    _check_tag_name = models.Constraint(
+        "UNIQUE(name)", "Property tag name must be unique."
+    )

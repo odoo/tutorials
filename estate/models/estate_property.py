@@ -31,21 +31,21 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
     garden_orientation = fields.Selection(
         [
-            ('north', "North"),
-            ('south', "South"),
-            ('east', "East"),
-            ('west', "West"),
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
         ],
         string="Garden Orientation",
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ('new', "New"),
-            ('offer_received', "Offer Received"),
-            ('offer_accepted', "Offer Accepted"),
-            ('sold', "Sold"),
-            ('cancelled', "Cancelled"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         required=True,
         copy=False,
@@ -54,6 +54,12 @@ class EstateProperty(models.Model):
     )
     offer_ids = fields.One2many(
         "estate.property.offers", "property_id", string="Offers"
+    )
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)", "Expected price must be positive."
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)", "Property selling price must be positive."
     )
 
     @api.depends("living_area", "garden_area")
