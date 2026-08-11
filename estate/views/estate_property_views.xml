@@ -22,8 +22,11 @@
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="%(estate_property_active_booking_action)d" type="action" class="oe_stat_button" icon="fa-calendar">
-                            <field name="bookings_count" widget="statinfo" string="bookings"/>
+                        <button name="%(estate.estate_property_active_visits_action)d" type="action" class="oe_stat_button" icon="fa-calendar">
+                            <field name="visits_count" widget="statinfo" string="Visits"/>
+                        </button>
+                        <button name="%(estate.estate_property_active_booking_action)d" type="action" class="oe_stat_button" icon="fa-book">
+                            <field name="bookings_count" widget="statinfo" string="Bookings"/>
                         </button>
                     </div>
                     <div class="oe_title mb-2">
@@ -71,7 +74,10 @@
                         <page string="Offers">
                             <field name="offer_ids" readonly="state not in ['new','offer_received']"/>
                         </page>
-                        <page string="booking">
+                        <page string="Visits">
+                            <field name="visit_ids"/>
+                        </page>
+                        <page string="Bookings">
                             <field name="booking_ids"/>
                         </page>
                         <page string="Other Info">
@@ -108,6 +114,40 @@
                     <filter name="group_postcode" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="state"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
+                <templates>
+                    <t t-name="card">
+                        <strong class="text-primary fs-10">
+                            <field name="name"/>
+                        </strong>
+                        <div class="mt-2">
+                            <strong>Expected Price: </strong>
+                            <field name="expected_price"/>
+                        </div>
+                        <div invisible="best_price == 0" class="text-success">
+                            <strong>Best Price: </strong>
+                            <field name="best_price"/>
+                        </div>
+                        <div invisible="state not in ['offer_accepted', 'sold']" class="text-info">
+                            <strong>Selling Price: </strong>
+                            <field name="selling_price"/>
+                        </div>
+                        <div class="mt-2">
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 

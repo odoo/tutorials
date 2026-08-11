@@ -49,21 +49,29 @@ class EstateProperty(models.Model):
     )
     name = fields.Char(required=True, translate=True)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="offers")
+    visit_ids = fields.One2many(
+        "estate.property.visits",
+        "property_id",
+        string="Visits",
+    )
+    visits_count = fields.Integer(compute="_compute_visits_count")
+
+    @api.depends("visit_ids")
+    def _compute_visits_count(self):
+        for prop in self:
+            prop.visits_count = len(prop.visit_ids)
+
     booking_ids = fields.One2many(
         "estate.property.booking",
         "property_id",
-        string="booking",
+        string="Bookings",
     )
     bookings_count = fields.Integer(compute="_compute_bookings_count")
 
     @api.depends("booking_ids")
     def _compute_bookings_count(self):
-        for booking in self:
-            booking.bookings_count = self.env['estate.property.booking'].search_count(
-                [
-                    ('property_id', '=', booking.ids),
-                ],
-            )
+        for prop in self:
+            prop.bookings_count = len(prop.booking_ids)
 
     postcode = fields.Char()
     property_type = fields.Many2one("estate.property.type")
@@ -189,6 +197,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError(self.env._("cancelled properties cannot be sold"))
+            booking = self.env["estate.property.booking"].search(
+                [("property_id", "=", record.id), ("state", "=", "active")],
+                limit=1,
+            )
+            if not booking or booking.payment_status != 'paid':
+                raise UserError(self.env._("Amount is not fully paid on active booking!"))
             record.state = "sold"
         return True
 

@@ -2,11 +2,12 @@
 <odoo>
     <menuitem name="Real Estate" id="estate_property_menu" sequence="1" web_icon="estate,static/description/icon.png">
         <menuitem id="estate_menu_advertisement" name="Advertisements" action="estate_property_action" sequence="9"/>
-        <menuitem id="estate_menu_maintenance" name="Maintenance" action="estate_property_maintenance_action" sequence="10"/>
-        <menuitem id="estate_menu_settings" name="settings" sequence="11">
+        <menuitem id="estate_menu_maintenance" name="Maintenance" action="estate_property_maintenance_action" sequence="11"/>
+        <menuitem id="estate_menu_settings" name="settings" sequence="12">
             <menuitem id="estate_property_types" name="Property Types" action="estate_property_type_action" sequence="11"/>
             <menuitem id="estate_property_tag" name="Property Tags" action="estate_property_tag_action" sequence="12"/>
             <menuitem id="estate_property_booking" name="Property Booking" action="estate_property_booking_action" sequence="10"/>
+            <menuitem id="estate_property_visits" name="Property Visits" action="estate_property_visits_action" sequence="13"/>
         </menuitem>
     </menuitem>
 </odoo>

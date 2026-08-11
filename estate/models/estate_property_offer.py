@@ -3,7 +3,6 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
-from odoo.tools.profiler import Profiler
 
 
 class EstatePropertyOffer(models.Model):
@@ -39,6 +38,15 @@ class EstatePropertyOffer(models.Model):
         [('suspicious', 'Suspicious')],
         compute='_compute_security_status',
     )
+
+    @api.depends("price", "partner_id.name")
+    def _compute_display_name(self):
+        for offer in self:
+            partner_name = offer.partner_id.name if offer.partner_id else ""
+            if partner_name:
+                offer.display_name = f"${offer.price:,.2f} ({partner_name})"
+            else:
+                offer.display_name = f"${offer.price:,.2f}"
 
     @api.depends("create_date", "partner_id")
     def _compute_security_status(self):
@@ -102,6 +110,21 @@ class EstatePropertyOffer(models.Model):
             )
             refuse_ids = property_record.offer_ids.filtered(lambda o: not o.status)
             refuse_ids.write({"status": "refused"})
+
+            existing_active_booking = self.env["estate.property.booking"].search(
+                [
+                    ("property_id", "=", property_record.id),
+                    ("state", "=", "active"),
+                ],
+                limit=1,
+            )
+            if not existing_active_booking:
+                self.env["estate.property.booking"].create(
+                    {
+                        "property_id": property_record.id,
+                        "state": "active",
+                    },
+                )
         return True
 
     def action_make_validity_default(self):
