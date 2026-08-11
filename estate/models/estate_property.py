@@ -1,12 +1,14 @@
 from datetime import timedelta
 
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "name asc"
 
     name = fields.Char(required=True)
     total_area = fields.Integer(compute="_compute_total_area")
@@ -141,3 +143,22 @@ class EstateProperty(models.Model):
         "CHECK(expected_price > 0)",
         "A property expected price must be strictly positive",
     )
+
+    @api.constrains("selling_price", "expected_price")
+    def check_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+            minimum_price = record.expected_price * 0.9
+
+            if (
+                float_compare(
+                    record.selling_price,
+                    minimum_price,
+                    precision_rounding=0.01,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    " the selling price cannot be lower than 90% of the expected price"
+                )
