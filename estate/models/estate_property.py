@@ -56,11 +56,8 @@ class EstateModel(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    best_offer = fields.Integer(compute="_compute_best_offer", string="Best Offer")
+    best_offer = fields.Integer(compute="_compute_best_offer", string="Best Offer", default=0)
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):
-        if self.offer_ids:
-            self.best_offer = max(self.offer_ids.mapped("price"))
-        else:
-            self.best_offer = 0
+        self.best_offer = max(self.offer_ids.mapped("price"))
