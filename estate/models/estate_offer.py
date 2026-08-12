@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class EstateOffer(models.Model):
@@ -28,7 +28,15 @@ class EstateOffer(models.Model):
     def action_accept(self):
         for record in self:
             record.status = 'accepted'
+            record.property_id.write({
+                'buyer_id': record.partner_id.id,
+                'selling_price': record.price,
+            })
+
+        return True
 
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
+
+        return True
