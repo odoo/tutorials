@@ -47,9 +47,10 @@
             <form string="Properties">
                 <header>
                     <button name="action_accept_best_offer" type="object" string="Accept Best Offer" class="oe_highlight" invisible="state in ('sold', 'cancelled', 'offer_accepted')"/>
+                    <button name="%(action_create_property_booking)d" type="action" string="Create Booking" class="oe_highlight" invisible="state != 'offer_accepted'"/>
                     <button name="action_sold" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,booked,sold"/>
                 </header>
 
 
@@ -57,6 +58,9 @@
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_visits" type="object" class="oe_stat_button" icon="fa-calendar">
                             <field name="visit_count" widget="statinfo" string="Visits"/>
+                        </button>
+                        <button name="action_view_bookings" type="object" class="oe_stat_button" icon="fa-book">
+                            <field name="booking_count" widget="statinfo" string="Bookings"/>
                         </button>
                     </div>
                     <div class="oe_title">
@@ -142,6 +146,21 @@
                                     <field name="rating"/>
                                     <field name="state"/>
                                     <field name="feedback"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="bookings" string="Bookings">
+                            <field name="booking_ids">
+                                <list string="Bookings">
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="booking_date"/>
+                                    <field name="expiry_date"/>
+                                    <field name="total_amount"/>
+                                    <field name="deposit_paid"/>
+                                    <field name="remaining_amount"/>
+                                    <field name="payment_status" widget="badge"/>
+                                    <field name="state" widget="badge"/>
                                 </list>
                             </field>
                         </page>

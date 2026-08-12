@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_booking_action" model="ir.actions.act_window">
+        <field name="name">Property Bookings</field>
+        <field name="res_model">estate.property.booking</field>
+        <field name="view_mode">list,form,kanban,calendar</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new property booking!
+            </p>
+            <p>
+                Manage property booking deposits, payment status, and installment history.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_create_property_booking" model="ir.actions.act_window">
+        <field name="name">Create Booking</field>
+        <field name="res_model">estate.property.booking</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'default_property_id': active_id}</field>
+    </record>
+
+    <record id="estate_property_booking_view_list" model="ir.ui.view">
+        <field name="name">estate.property.booking.view.list</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <list string="Property Bookings"
+                  decoration-success="state == 'confirmed'"
+                  decoration-info="state == 'pending'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-danger="state == 'expired'">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="partner_id"/>
+                <field name="salesperson_id" optional="hide"/>
+                <field name="booking_date"/>
+                <field name="expiry_date"/>
+                <field name="total_amount"/>
+                <field name="min_deposit_amount" optional="hide"/>
+                <field name="deposit_paid"/>
+                <field name="remaining_amount"/>
+                <field name="payment_status" widget="badge"
+                       decoration-danger="payment_status == 'unpaid'"
+                       decoration-warning="payment_status == 'partial'"
+                       decoration-info="payment_status == 'deposit_paid'"
+                       decoration-success="payment_status == 'paid'"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'pending'"
+                       decoration-success="state == 'confirmed'"
+                       decoration-muted="state == 'cancelled'"
+                       decoration-danger="state == 'expired'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_booking_view_form" model="ir.ui.view">
+        <field name="name">estate.property.booking.view.form</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <form string="Property Booking">
+                <header>
+                    <button name="action_confirm_booking" type="object" string="Confirm Booking" class="oe_highlight" invisible="state in ('confirmed', 'cancelled', 'expired')"/>
+                    <button name="action_expire_booking" type="object" string="Mark as Expired" invisible="state in ('confirmed', 'cancelled', 'expired')"/>
+                    <button name="action_cancel_booking" type="object" string="Cancel Booking" invisible="state in ('cancelled', 'expired')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,pending,confirmed,expired,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Booking Details">
+                            <field name="property_id" readonly="state in ('confirmed', 'cancelled')"/>
+                            <field name="partner_id" readonly="state in ('confirmed', 'cancelled')"/>
+                            <field name="salesperson_id"/>
+                            <field name="booking_date"/>
+                            <field name="expiry_date"/>
+                        </group>
+                        <group string="Financial Info">
+                            <field name="total_amount"/>
+                            <field name="min_deposit_amount"/>
+                            <field name="deposit_paid"/>
+                            <field name="remaining_amount"/>
+                            <field name="payment_status" widget="badge"
+                                   decoration-danger="payment_status == 'unpaid'"
+                                   decoration-warning="payment_status == 'partial'"
+                                   decoration-info="payment_status == 'deposit_paid'"
+                                   decoration-success="payment_status == 'paid'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="payment_lines" string="Payment Transactions">
+                            <field name="payment_line_ids">
+                                <list string="Payment Lines" editable="bottom">
+                                    <field name="payment_date"/>
+                                    <field name="amount"/>
+                                    <field name="payment_method"/>
+                                    <field name="transaction_ref"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes" placeholder="Additional details or conditions..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_booking_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.booking.view.kanban</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="partner_id"/>
+                <field name="total_amount"/>
+                <field name="deposit_paid"/>
+                <field name="payment_status"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                <div>
+                                    <span>Property: </span><field name="property_id"/>
+                                </div>
+                                <div>
+                                    <span>Customer: </span><field name="partner_id"/>
+                                </div>
+                                <div>
+                                    <span>Total: </span><field name="total_amount"/>
+                                </div>
+                                <div>
+                                    <span>Paid: </span><field name="deposit_paid"/>
+                                </div>
+                                <div class="mt-2">
+                                    <field name="payment_status" widget="badge"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="estate_property_booking_view_calendar" model="ir.ui.view">
+        <field name="name">estate.property.booking.view.calendar</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <calendar string="Property Bookings" date_start="booking_date" color="property_id">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="estate_property_booking_view_search" model="ir.ui.view">
+        <field name="name">estate.property.booking.view.search</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <search string="Property Bookings">
+                <field name="name"/>
+                <field name="property_id"/>
+                <field name="partner_id"/>
+                <field name="salesperson_id"/>
+
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="pending" string="Pending Payment" domain="[('state', '=', 'pending')]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="expired" string="Expired" domain="[('state', '=', 'expired')]"/>
+                <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+
+                <separator/>
+
+                <filter name="unpaid" string="Unpaid" domain="[('payment_status', '=', 'unpaid')]"/>
+                <filter name="deposit_paid" string="Deposit Paid" domain="[('payment_status', '=', 'deposit_paid')]"/>
+                <filter name="fully_paid" string="Fully Paid" domain="[('payment_status', '=', 'paid')]"/>
+
+                <group>
+                    <filter name="group_by_property" string="Property" context="{'group_by': 'property_id'}"/>
+                    <filter name="group_by_partner" string="Customer" context="{'group_by': 'partner_id'}"/>
+                    <filter name="group_by_payment_status" string="Payment Status" context="{'group_by': 'payment_status'}"/>
+                    <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

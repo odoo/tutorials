@@ -4,3 +4,5 @@ from . import estate_property_type
 from . import estate_property_offer
 from . import estate_property_maintenance
 from . import estate_visits
+from . import estate_property_booking
+from . import estate_booking_payment_line

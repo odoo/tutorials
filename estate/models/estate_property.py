@@ -40,6 +40,7 @@ class EstateProperty(models.Model):
             ('new', "New"),
             ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
+            ('booked', "Booked"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
@@ -64,6 +65,9 @@ class EstateProperty(models.Model):
     )
     visit_ids = fields.One2many("estate.visit", "property_id", string="Visits")
     visit_count = fields.Integer(string="Visit Count", compute="_compute_visit_count")
+
+    booking_ids = fields.One2many("estate.property.booking", "property_id", string="Bookings")
+    booking_count = fields.Integer(string="Booking Count", compute="_compute_booking_count")
 
     total_area = fields.Integer(
         string="Total Area (sqm)",
@@ -114,12 +118,28 @@ class EstateProperty(models.Model):
         for record in self:
             record.visit_count = len(record.visit_ids)
 
+    @api.depends("booking_ids")
+    def _compute_booking_count(self):
+        for record in self:
+            record.booking_count = len(record.booking_ids)
+
     def action_view_visits(self):
         self.ensure_one()
         return {
             "name": "Visits",
             "type": "ir.actions.act_window",
             "res_model": "estate.visit",
+            "view_mode": "list,form",
+            "domain": [("property_id", "=", self.id)],
+            "context": {"default_property_id": self.id},
+        }
+
+    def action_view_bookings(self):
+        self.ensure_one()
+        return {
+            "name": "Bookings",
+            "type": "ir.actions.act_window",
+            "res_model": "estate.property.booking",
             "view_mode": "list,form",
             "domain": [("property_id", "=", self.id)],
             "context": {"default_property_id": self.id},
