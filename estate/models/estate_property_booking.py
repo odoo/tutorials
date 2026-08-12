@@ -100,7 +100,7 @@ class EstatePropertyBooking(models.Model):
                     ("id", "!=", rec.id),
                     ("state", "in", ("pending", "confirmed")),
                 ]
-                if self.search_count(domain) > 0:
+                if rec.search_count(domain) > 0:
                     raise ValidationError(_("Active booking already exists for this property."))
 
     @api.onchange("property_id")
