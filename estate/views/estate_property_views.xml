@@ -69,7 +69,6 @@
                                 </group>
 
                                 <group>
-                                    <field name="garage"/>
                                     <field name="garden"/>
                                     <field name="garden_area"
                                            string="Garden Area (sqm)"/>
