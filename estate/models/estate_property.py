@@ -10,8 +10,8 @@ class EstateModel(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date()
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -56,8 +56,8 @@ class EstateModel(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    best_offer = fields.Integer(compute="_compute_best_offer", string="Best Offer", default=0)
+    best_offer = fields.Integer(compute="_compute_best_offer", string="Best Offer")
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):
-        self.best_offer = max(self.offer_ids.mapped("price"))
+        self.best_offer = max(self.offer_ids.mapped("price")) if self.offer_ids else 0
