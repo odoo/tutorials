@@ -69,7 +69,7 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="active"/>
-                                <field name="total_area" />
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -79,8 +79,8 @@
                                     <field name="partner_id" default="0"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
-                                    <button name="action_accept" type="object" icon="fa-check"/>
-                                    <button name="action_refuse" type="object" icon="fa-times"/>
+                                    <button name="action_accept" type="object" icon="fa-check" title="Accept"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse"/>
                                     <field name="status"/>
                                 </list>
                             </field>
