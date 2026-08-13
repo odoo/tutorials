@@ -9,12 +9,10 @@
     <menuitem id="estate_property_menu1"
               name="Setting"
               parent="estate_menu_root"/>
-
     <menuitem id="estate_property_menu_action"
               name="Properties"
               parent="estate_property_menu"
               action="estate_property_action"/>
-
     <menuitem
             id="estate_property_type_menu"
             name="Property Types"
@@ -26,6 +24,4 @@
             parent="estate_property_menu1"
             action="estate_property_tag_action"
     />
-
-
 </odoo>

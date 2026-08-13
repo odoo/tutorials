@@ -4,7 +4,7 @@
     "depends": ["base"],
     "application": True,
     "category": "Tutorials",
-    "author": "Thakor Anish",
+    "author": "Odoo S.A",
     "license": "LGPL-3",
     "data": [
         "security/ir.model.access.csv",
