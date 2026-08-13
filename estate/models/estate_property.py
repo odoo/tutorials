@@ -1,5 +1,6 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -11,11 +12,9 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     description = fields.Text()
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
-    salesman_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user.id
-    )
+    salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user.id)
     buyer_id = fields.Many2one(
-        "res.partner", string="Buyer", default=lambda self: self.env.user.id, copy=False
+        "res.partner", default=lambda self: self.env.user.id, copy=False
     )
     postcode = fields.Char()
     date_availability = fields.Date(copy=False)
@@ -62,6 +61,13 @@ class EstateProperty(models.Model):
         "CHECK(selling_price > 0)", "Property selling price must be positive."
     )
 
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        if float_compare(self.selling_price, (self.expected_price * 0.9), 2) == -1:
+            raise ValidationError(
+                "Selling Price must not be less than 90% of expected price."
+            )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for realEstateProperty in self:
@@ -77,6 +83,23 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids")
     def _compute_best_price(self):
         self.best_price = max(self.offer_ids.mapped("price")) if self.offer_ids else 0
+
+    # @api.depends("offer_ids")
+    # def _compute_best_price(self):
+    # if self.offer_ids:
+    #     price_list=[]
+    #         price_list.append(offer.price)
+    #     for i in range(len(price_list)):
+    #         for j in range(len(price_list)):
+    #             if price_list[i]>=price_list[j]:
+    #                 self.best_price= price_list[i]
+    # else:
+    #     self.best_price=0
+    # self.best_price = 0
+    # if self.offer_ids:
+    #     for offer in self.offer_ids:
+    #         if offer.price > self.best_price:
+    #             self.best_price = offer.price
 
     @api.onchange("garden")
     def _onchange_garden(self):
