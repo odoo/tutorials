@@ -9,7 +9,6 @@ class EstateProperty(models.Model):
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     description = fields.Text()
     postcode = fields.Char("Postcode")
-    status = fields.Char("Status", readonly=True, default="New")
     date_availability = fields.Date("Available From",
         default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
@@ -75,14 +74,14 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         for record in self:
-            if record.status == "Cancelled":
+            if record.state == "cancelled":
                 raise exceptions.UserError("Cancelled properties cannot be sold")
             record.status = "Sold"
         return True
 
     def action_cancel_property(self):
         for record in self:
-            if record.status == "Sold":
+            if record.state == "sold":
                 raise exceptions.UserError("Sold properties cannot be cancelled")
             record.status = "Cancelled"
         return True
