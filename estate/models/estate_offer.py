@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import models, fields, api, exceptions
+from odoo import api, fields, models
 
 
 class EstateOffer(models.Model):
