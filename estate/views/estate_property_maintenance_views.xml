@@ -29,6 +29,7 @@
                 </header>
                 <sheet>
                     <group>
+                        <field name="property_id"/>
                         <field name="title"/>
                         <field name="problem"/>
                         <field name="technician_id"/>

@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -39,6 +40,11 @@ class EstateProperty(models.Model):
         "estate.property.maintenance",
         "property_id",
         string="Maintenance",
+    )
+    booking_ids = fields.One2many(
+        "estate.property.booking",
+        "property_id",
+        string="Start Booking",
     )
     date_availability = fields.Date(
         copy=False,
@@ -101,10 +107,13 @@ class EstateProperty(models.Model):
                 property.garden_area
             )
 
-    @api.depends("offer_ids.price")
+    @api.depends("offer_ids.price", "offer_ids.status")
     def _compute_best_price(self):
         for property in self:
-            prices = property.offer_ids.mapped("price")
+            valid_offers = property.offer_ids.filtered(
+                lambda offer: offer.status != "refused"
+            )
+            prices = valid_offers.mapped("price")
             property.best_price = max(prices) if prices else 0.0
 
     @api.constrains("selling_price", "expected_price")
@@ -156,3 +165,25 @@ class EstateProperty(models.Model):
                 )
             property.state = "cancelled"
         return True
+
+    def action_open_booking(self):
+        self.ensure_one()
+        booking = self.env["estate.property.booking"].search(
+            [
+                ("property_id", "=", self.id),
+                ("state", "!=", "cancelled"),
+            ],
+            limit=1,
+        )
+        if not booking:
+            booking = self.env["estate.property.booking"].create({
+                "property_id": self.id,
+            })
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Booking",
+            "res_model": "estate.property.booking",
+            "view_mode": "form",
+            "res_id": booking.id,
+            "target": "current",
+        }

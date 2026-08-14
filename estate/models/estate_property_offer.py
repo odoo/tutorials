@@ -1,4 +1,5 @@
 from datetime import timedelta
+import time
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -8,6 +9,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
     _order = "price desc"
+    _rec_name = "property_id"
 
     price = fields.Float()
     validity = fields.Integer(

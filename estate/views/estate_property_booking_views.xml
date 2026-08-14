@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_booking_list_view" model="ir.ui.view">
+        <field name="name">estate.property.booking.list</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="property_id"/>
+                <field name="buyer_id"/>
+                <field name="total_amount"/>
+                <field name="paid_amount"/>
+                <field name="balance_amount"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+    <record id="estate_property_booking_form_view" model="ir.ui.view">
+        <field name="name">estate.property.booking.form</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <form string="Start Booking">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                    <button name="action_confirm_booking" type="object" string="Confirm Booking" invisible="state != 'draft'"/>
+                    <button name="action_cancel_booking" type="object" string="Cancel Booking" invisible="state in ('confirmed', 'cancelled')"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Booking Confirmed" bg_color="text-bg-primary" invisible="state != 'confirmed'"/>
+                    <group>
+                        <group>
+                            <field name="property_id" readonly="state == 'confirmed'"/>
+                            <field name="buyer_id" readonly="1"/>
+                            <field name="booking_reference"/>
+                        </group>
+                        <group>
+                            <field name="total_amount" readonly="1"/>
+                            <field name="paid_amount" readonly="1"/>
+                            <field name="balance_amount" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payments">
+                            <field name="payment_ids" readonly="state == 'confirmed'">
+                                <list editable="bottom">
+                                    <field name="payment_date"/>
+                                    <field name="payment_type"/>
+                                    <field name="amount"/>
+                                    <field name="remarks"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Remarks">
+                            <field name="remarks"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+</odoo>
