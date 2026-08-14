@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class estate_property_offer(models.Model):
@@ -32,7 +33,30 @@ class estate_property_offer(models.Model):
             ).days
 
     def action_accepted_offer(self):
+        exists_accepted_offer = self.env["estate.property.offer"].search(
+            [
+                ("property_id", "=", self.property_id.id),
+                ("status", "=", "accepted"),
+                ("id", "!=", self.id),
+            ]
+        )
+        if exists_accepted_offer:
+            raise UserError("Only one offer can be accepted for a given property")
+
+        property = self.property_id
+        property.buyer_id = self.partner_id
+        property.selling_price = self.price
         self.status = "accepted"
 
+        other_offers = self.env["estate.property.offer"].search(
+            [("property_id", "=", property.id), ("id", "!=", self.id)]
+        )
+        other_offers.status = "refused"
+
     def action_refused_offer(self):
+        if self.status == "accepted":
+            property = self.property_id
+            property.buyer_id = False
+            property.selling_price = 0.0
+
         self.status = "refused"
