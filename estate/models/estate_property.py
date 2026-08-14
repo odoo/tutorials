@@ -60,4 +60,14 @@ class EstateModel(models.Model):
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):
-        self.best_offer = max(self.offer_ids.mapped("price")) if self.offer_ids else 0
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''

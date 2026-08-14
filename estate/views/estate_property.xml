@@ -16,10 +16,11 @@
                 <field name='tag_id' widget='many2many_tags'/>
                 <field name='postcode' string="Postcode"/>
                 <field name='bedrooms' string="Bedrooms"/>
-                <field name="living_area"/>
+                <field name='living_area'/>
                 <field name='garden_area'/>
                 <field name='total_area'/>
                 <field name='expected_price' string="Expected Price"/>
+                <field name='best_offer'/>
                 <field name='selling_price' string="Selling Price"/>
                 <field name='date_availability' string="Available From"/>
                 <field name='state' string="State"/>
@@ -64,9 +65,9 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="living_area"/>
-                                <field name="garden_area"/>
+                                <field name="garden_area" readonly="not garden"/>
                                 <field name="total_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_orientation" readonly="not garden"/>
                                 <field name="state"/>
                             </group>
                         </page>
