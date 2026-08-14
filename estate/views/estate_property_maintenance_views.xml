@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_maintenance_list_view" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.list</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="title"/>
+                <field name="problem"/>
+                <field name="technician_id"/>
+                <field name="requested_by"/>
+                <field name="assigned_date"/>
+                <field name="completion_date"/>
+                <field name="priority"/>
+                <field name="state"/>
+                <field name="actual_cost" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_maintenance_form_view" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.form</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,started,in_progress,completed" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="property_id"/>
+                        <field name="title"/>
+                        <field name="problem"/>
+                        <field name="technician_id"/>
+                        <field name="requested_by"/>
+                        <field name="estimated_cost"/>
+                        <field name="actual_cost"/>
+                        <field name="assigned_date"/>
+                        <field name="completion_date"/>
+                        <field name="priority"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
