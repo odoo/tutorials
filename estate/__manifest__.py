@@ -9,6 +9,9 @@
     'application': True,
     'installable': True,
     # data files always loaded at installation
-    'data': [],
+    'data': [
+        'data/estate.csv',
+    ],
+    'license': 'LGPL-3',
     # data files containing optionally loaded demonstration data
 }
