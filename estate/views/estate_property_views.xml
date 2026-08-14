@@ -30,32 +30,43 @@
                     <button string="Cancel" name="action_cancel" type="object"/>
                 </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Villa or House"/>
+                        </h1>
+                    </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
                         <group>
-                            <field name="name"/>
-                            <field name="expected_price"/>
-                            <field name="bedrooms"/>
-                            <field name="property_type_id" />
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="best_price" readonly="1"/>
-                            <!-- <field name="total_area" readonly="1"/> -->
-                            <field name="total_area"/>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="expected_price"/>
+                            <field name="best_price" readonly="1"/>
                             <field name="selling_price" readonly="1"/>
-                            <field name="postcode"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="date_availability"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
                                 <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area" readonly="1"/>
+                            </group>
+                        </page>
+                        <page name="Offers" string="Offers">
+                            <group >
+                                <group>
+                                    <field name="offer_ids"/>
+                                </group>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -63,13 +74,6 @@
                                 <group>
                                     <field name="seller_id"/>
                                     <field name="buyer_id"/>
-                                </group>
-                            </group>
-                        </page>
-                        <page name="Offers" string="Offers">
-                            <group >
-                                <group>
-                                    <field name="offer_ids"/>
                                 </group>
                             </group>
                         </page>
