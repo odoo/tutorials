@@ -6,8 +6,10 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         res = super().action_sold()
+        invoice_vals_list = []
+
         for prop in self:
-            self.env['account.move'].create({
+            invoice_vals_list.append({
                 'partner_id': prop.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
@@ -23,4 +25,7 @@ class EstateProperty(models.Model):
                     }),
                 ]
             })
+
+        if invoice_vals_list:
+            self.env['account.move'].create(invoice_vals_list)
         return res

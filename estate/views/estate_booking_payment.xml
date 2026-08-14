@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_booking_payment_action" model="ir.actions.act_window">
+        <field name="name">Register Payment</field>
+        <field name="res_model">estate.booking.payment</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="estate_booking_payment_view_form" model="ir.ui.view">
+        <field name="name">estate.booking.payment.view.form</field>
+        <field name="model">estate.booking.payment</field>
+        <field name="arch" type="xml">
+            <form string="Register Payment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="booking_id" readonly="1" force_save="1"/>
+                            <field name="payment_date"/>
+                        </group>
+                        <group>
+                            <field name="amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="remarks" placeholder="Enter payment remarks..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -20,9 +20,7 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one(
-        "estate.property", required=True, ondelete="cascade"
-    )
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
     property_type_id = fields.Many2one(
         "estate.property.type", related="property_id.property_type_id", store=True
     )
@@ -66,11 +64,11 @@ class EstatePropertyOffer(models.Model):
         temp_best_prices = {}
 
         for vals in vals_list:
-            property_id = vals.get('property_id')
-            price = vals.get('price', 0.0)
+            property_id = vals.get("property_id")
+            price = vals.get("price", 0.0)
             if not property_id:
                 continue
-            property_rec = self.env['estate.property'].browse(property_id)
+            property_rec = self.env["estate.property"].browse(property_id)
             current_best = temp_best_prices.get(property_id, property_rec.best_price)
             if float_compare(price, current_best, precision_rounding=0.01) <= 0:
                 raise UserError(_("The offer must be higher than %s", current_best))
@@ -78,9 +76,12 @@ class EstatePropertyOffer(models.Model):
 
         offers = super().create(vals_list)
 
-        for offer in offers:
-            if offer.property_id.state == 'new':
-                offer.property_id.write({'state': 'offer_received'})
+        properties_to_update = offers.mapped("property_id").filtered(
+            lambda p: p.state == "new"
+        )
+        if properties_to_update:
+            properties_to_update.write({"state": "offer_received"})
+
         return offers
 
     def action_accept(self):
@@ -90,14 +91,25 @@ class EstatePropertyOffer(models.Model):
         self.status = "accepted"
         other_offers = self.property_id.offer_ids - self
         other_offers.write({"status": "rejected"})
-        self.property_id.write({
-            "selling_price": self.price,
-            "state": "offer_accepted",
-            "buyer_id": self.partner_id.id,
-        })
+        self.property_id.write(
+            {
+                "selling_price": self.price,
+                "state": "pending_booking",
+                "buyer_id": self.partner_id.id,
+            }
+        )
+
+        seller_partner = self.property_id.salesperson_id.partner_id
+
+        self.env["estate.booking"].create(
+            {
+                "property_id": self.property_id.id,
+                "buyer_id": self.partner_id.id,
+                "seller_id": seller_partner.id,
+                "final_price": self.price,
+            }
+        )
         return True
 
     def action_reject(self):
-        for offer in self:
-            offer.status = "rejected"
-        return True
+        return self.write({"status": "rejected"})

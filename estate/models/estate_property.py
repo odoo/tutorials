@@ -31,25 +31,27 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         [
-            ('north', "North"),
-            ('south', "South"),
-            ('east', "East"),
-            ('west', "West"),
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
         ],
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ('new', "New"),
-            ('offer_received', "Offer Received"),
-            ('offer_accepted', "Offer Accepted"),
-            ('sold', "Sold"),
-            ('cancelled', "Cancelled"),
-            ('maintenance', "Maintenance"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("pending_booking", "Pending Booking Payment"),
+            ("booked", "Booked"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         string="Status",
         copy=False,
         default="new",
+        tracking=True,
     )
     buyer_id = fields.Many2one("res.partner", copy=False)
     salesperson_id = fields.Many2one(
@@ -62,8 +64,8 @@ class EstateProperty(models.Model):
     )
     best_price = fields.Float(compute="_compute_best_price")
     property_maintenance_ids = fields.One2many("property.maintenance", "property_id")
-    maintenance_count = fields.Integer(compute="_compute_maintenance_count")
-    has_active_maintenance = fields.Boolean(compute="_compute_has_active_maintenance")
+    maintenance_count = fields.Integer(compute="_compute_maintenance_stats")
+    has_active_maintenance = fields.Boolean(compute="_compute_maintenance_stats")
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
@@ -86,19 +88,13 @@ class EstateProperty(models.Model):
             )
 
     @api.depends("property_maintenance_ids.state")
-    def _compute_maintenance_count(self):
+    def _compute_maintenance_stats(self):
         for record in self:
-            active_maintenance = record.property_maintenance_ids.filtered(lambda m: m.state != "done")
+            active_maintenance = record.property_maintenance_ids.filtered(
+                lambda m: m.state != "done"
+            )
             record.maintenance_count = len(active_maintenance)
-
-    @api.depends("property_maintenance_ids.state")
-    def _compute_has_active_maintenance(self):
-        for record in self:
-            record.has_active_maintenance = False
-            for m in record.property_maintenance_ids:
-                if m.state != 'done':
-                    record.has_active_maintenance = True
-                    break
+            record.has_active_maintenance = record.maintenance_count > 0
 
     @api.constrains("expected_price", "selling_price")
     def _check_price_difference(self):
@@ -112,9 +108,11 @@ class EstateProperty(models.Model):
                 )
                 < 0
             ):
-                raise ValidationError(_(
-                    "The selling price cannot be lower than 90% of the expected price."
-                ))
+                raise ValidationError(
+                    _(
+                        "The selling price cannot be lower than 90% of the expected price."
+                    )
+                )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -129,9 +127,9 @@ class EstateProperty(models.Model):
     def _unlink_if_new_or_cancelled(self):
         for record in self:
             if record.state not in ("new", "cancelled"):
-                raise UserError(_(
-                    "You can only delete properties that are 'New' or 'Cancelled'."
-                ))
+                raise UserError(
+                    _("You can only delete properties that are 'New' or 'Cancelled'.")
+                )
 
     def action_sold(self):
         self.ensure_one()
@@ -164,4 +162,30 @@ class EstateProperty(models.Model):
             "res_model": "property.maintenance",
             "domain": [("property_id", "=", self.id)],
             "context": {"default_property_id": self.id},
+        }
+
+    def action_view_booking(self):
+        self.ensure_one()
+        booking = self.env["estate.booking"].search(
+            [
+                ("property_id", "=", self.id),
+                ("buyer_id", "=", self.buyer_id.id),
+                ("booking_status", "!=", "cancelled"),
+            ]
+        )
+
+        if not booking:
+            booking = self.env["estate.booking"].search(
+                [("property_id", "=", self.id)], order="id desc", limit=1
+            )
+
+        if not booking:
+            raise UserError(_("No booking has been created for this property yet."))
+
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "estate.booking",
+            "res_id": booking.id,
+            "view_mode": "form",
+            "target": "current",
         }

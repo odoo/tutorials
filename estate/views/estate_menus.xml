@@ -16,6 +16,18 @@
         name="Properties"
         parent="estate_property_menu_advertisement"
         action="estate_property_action"/>
+    
+    <menuitem
+        id="estate_property_offer_menu_all"
+        name="Offers"
+        parent="estate_property_menu_advertisement"
+        action="estate_property_offer_action_all"/>
+
+    <menuitem
+        id="estate_property_menu_bookings"
+        name="Bookings"
+        parent="estate_property_menu_advertisement"
+        action="estate_booking_action"/>
 
     <menuitem
         id="estate_property_menu_settings"

@@ -32,9 +32,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sold" string="Sold" type="object" class="oe_highlight" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_cancel" string="Cancel" type="object" invisible="state in ('sold', 'cancelled')"/>
-                    <button name="action_best_offer" string="Accept the Best Offer" type="object" class="oe_highlight" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_best_offer" string="Accept the Best Offer" type="object" class="oe_highlight" invisible="state not in ('new', 'offer_received')"/>
+                    <button name="action_view_booking" string="View Booking" type="object" class="oe_highlight" invisible="state not in ('offer_accepted','pending_booking', 'booked', 'sold')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -82,7 +82,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
+                            <field name="offer_ids" readonly="state not in ('new', 'offer_received')"/>
                         </page>
                         <page string="Other info">
                             <group>

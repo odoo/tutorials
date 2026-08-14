@@ -32,10 +32,10 @@ class PropertyMaintenance(models.Model):
     actual_cost = fields.Float()
     state = fields.Selection(
         [
-            ('new_request', "New Request"),
-            ('assign', "Assign"),
-            ('work_in_progress', "Work In Progress"),
-            ('done', "Done"),
+            ("new_request", "New Request"),
+            ("assign", "Assign"),
+            ("work_in_progress", "Work In Progress"),
+            ("done", "Done"),
         ],
-        default='new_request',
+        default="new_request",
     )
