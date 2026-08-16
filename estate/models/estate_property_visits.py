@@ -1,5 +1,7 @@
 from odoo import _,fields, models, api
 from odoo.exceptions import ValidationError
+from datetime import timedelta
+import logging
 
 
 class EstatePropertyVisits(models.Model):
@@ -7,9 +9,9 @@ class EstatePropertyVisits(models.Model):
     _description = "Real Estate Visits"
     _order = "create_date desc"
 
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True, copy=True)
     agent = fields.Many2one("res.users", string="agents", related="property_id.salesperson_id", store=True, readonly=True)
-    customer = fields.Many2one("res.partner", string="Customer", copy=False, required=True)
+    customer = fields.Many2one("res.partner", string="Customer", copy=True, required=True)
     visit_date = fields.Date(string="Date of visit", required=True)
     status_of_visit = fields.Selection(
         selection=[
@@ -22,13 +24,13 @@ class EstatePropertyVisits(models.Model):
     )
     rating = fields.Selection(
         selection=[
+            ('0', "_"),
             ('1', "*"),
             ('2', "**"),
             ('3', "***"),
             ('4', "****"),
             ('5', "*****"),
-        ],string="Rate your visit",
-    )
+        ], string="Rating", index=True, tracking=True)
     time_slot = fields.Selection(
         selection=[
             ('9-10', "9 am - 10 am"),
@@ -67,7 +69,17 @@ class EstatePropertyVisits(models.Model):
             if existing:
                 raise ValidationError(_("the customer has already visited the property"))
 
-    # @api.onchange("propert_id")
-    # def _onchange_property_id(self):
-    #     if self.property_id:
-    #         self.agent == self.property_id.user_id
+    @api.onchange("propert_id")
+    def _onchange_property_id(self):
+        if self.property_id:
+            self.agent == self.property_id.user_id
+
+
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = "new"
+
+    # def action_send_reminder(self):
+    #     for record in self:
+    #         if record.status_of_visit == 'scheduled':
+    #             if record.visit_date >= fields.Datetime.now() and record.visit_date <= fields.Datetime.now() + timedelta(hours=24):

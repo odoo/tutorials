@@ -47,6 +47,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     active = fields.Boolean(default=True, string="Active")
+    booking_ids = fields.One2many("estate.property.booking", "property_id", string="Bookings")
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
 
     state = fields.Selection(
@@ -148,7 +149,7 @@ class EstateProperty(models.Model):
         self.ensure_one()
         best_offer = self.offer_ids.filtered(lambda o: o.price == self.best_price)
         self.selling_price = self.best_price
-        self.state = 'sold'
+        self.state = 'offer_accepted'
         self.buyer_id = best_offer.partner_id
         best_offer.status = 'Accepted'
         (self.offer_ids - best_offer).write({'status': 'Refused'})
@@ -180,7 +181,13 @@ class EstateProperty(models.Model):
         # breakpoint()
         low_value_tag = self.env['estate.property.tag'].search(
              [('name', '=', 'low value')])
-        if self.expected_price > 1000000:
+        if self.expected_price >= 1000000:
             self.tag_ids = [Command.link(high_value_tag.id)]
-        if self.expected_price < 1000000:
+        if self.expected_price < 1000000 and self.expected_price > 5000:
             self.tag_ids = [Command.link(low_value_tag.id)]
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for properties in self:
+            if properties.state not in ("new", "cancelled"):
+                raise ValidationError(_("cannot delete properties which are new or cancelled"))

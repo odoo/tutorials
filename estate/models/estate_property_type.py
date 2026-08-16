@@ -15,7 +15,7 @@ class EstatePropertyType(models.Model):
     sequence = fields.Integer(string="Sequence")
     color = fields.Integer()
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offer Ids")
-    offer_count = fields.Integer(string="offer count", computed="_compute_offer_count")
+    offer_count = fields.Integer(string="offer count", compute="_compute_offer_count")
 
     @api.depends('offer_ids')
     def _compute_offer_count(self):

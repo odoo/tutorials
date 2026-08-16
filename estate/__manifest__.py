@@ -13,11 +13,14 @@
         'views/estate_property_offer_views.xml',
         'views/estate_property_maintenance.xml',
         'views/estate_property_visits_views.xml',
+        'views/estate_property_booking.xml',
+        'views/estate_property_payments.xml',
         'views/estate_menus.xml',
     ],
     'demo': [
         'demo/estate_property_type_demo.xml',
         'demo/estate_property_tag_demo.xml',
         'demo/estate_property_demo.xml',
+        'demo/estate_mail_template.xml',
     ],
 }

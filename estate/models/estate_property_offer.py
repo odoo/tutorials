@@ -23,7 +23,7 @@ class EstatePropertyOffer(models.Model):
         string="Status",
         copy=False,
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type Id", store=True)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type Id", store=True, related="property_id.property_type_id")
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(string="Validity date", default=7)
@@ -69,11 +69,36 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         self.status = 'Refused'
 
+    def action_create_booking(self):
+        # self.ensure_one()
+        booking = self.env['estate.property.booking'].search([
+        ('property_id', '=', self.property_id.id),
+        ], limit=1)
+        if not booking:
+            booking = self.env['estate.property.booking'].create({
+            'property_id': self.property_id.id,
+            'customer_id': self.partner_id.id,
+            'offer_id': self.id,
+        })
+        return {
+        'type': 'ir.actions.act_window',
+        'res_model': 'estate.property.booking',
+        'view_mode': 'form',
+        'res_id': booking.id,
+        'target': 'current',
+        }
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get('property_id') and vals.get('price'):
                 property = self.env['estate.property'].browse(vals['property_id'])
+                if vals.get('price') < max(property.offer_ids.mapped('price'), default=0):
+                    raise UserError(_("an offer lower than the max offer's price cannot be accepted"))
                 if property.state == 'new':
                     property.state = 'offer_received'
         return super().create(vals_list)
+
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = record.property_id.name

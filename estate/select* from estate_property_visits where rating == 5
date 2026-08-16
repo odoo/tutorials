@@ -1,0 +1,45 @@
+                                            Table "public.estate_property"
+       Column       |            Type             | Collation | Nullable |                   Default                   
+--------------------+-----------------------------+-----------+----------+---------------------------------------------
+ id                 | integer                     |           | not null | nextval('estate_property_id_seq'::regclass)
+ bedrooms           | integer                     |           |          | 
+ living_area        | integer                     |           |          | 
+ facades            | integer                     |           |          | 
+ garage_area        | integer                     |           |          | 
+ garden_area        | integer                     |           |          | 
+ property_type_id   | integer                     |           |          | 
+ buyer_id           | integer                     |           |          | 
+ salesperson_id     | integer                     |           |          | 
+ best_price         | integer                     |           |          | 
+ create_uid         | integer                     |           |          | 
+ write_uid          | integer                     |           |          | 
+ name               | character varying           |           | not null | 
+ postcode           | character varying           |           |          | 
+ state              | character varying           |           | not null | 
+ garden_orientation | character varying           |           |          | 
+ date_availability  | date                        |           |          | 
+ description        | text                        |           |          | 
+ garage             | boolean                     |           |          | 
+ garden             | boolean                     |           |          | 
+ active             | boolean                     |           |          | 
+ create_date        | timestamp without time zone |           |          | 
+ write_date         | timestamp without time zone |           |          | 
+ expected_price     | double precision            |           | not null | 
+ selling_price      | double precision            |           |          | 
+ selling_date       | date                        |           |          | 
+Indexes:
+    "estate_property_pkey" PRIMARY KEY, btree (id)
+Check constraints:
+    "estate_property_check_expected_price" CHECK (expected_price >= 0::double precision)
+Foreign-key constraints:
+    "estate_property_buyer_id_fkey" FOREIGN KEY (buyer_id) REFERENCES res_partner(id) ON DELETE SET NULL
+    "estate_property_create_uid_fkey" FOREIGN KEY (create_uid) REFERENCES res_users(id) ON DELETE SET NULL
+    "estate_property_property_type_id_fkey" FOREIGN KEY (property_type_id) REFERENCES estate_property_type(id) ON DELETE SET NULL
+    "estate_property_salesperson_id_fkey" FOREIGN KEY (salesperson_id) REFERENCES res_users(id) ON DELETE SET NULL
+    "estate_property_write_uid_fkey" FOREIGN KEY (write_uid) REFERENCES res_users(id) ON DELETE SET NULL
+Referenced by:
+    TABLE "estate_property_estate_property_tag_rel" CONSTRAINT "estate_property_estate_property_tag_rel_estate_property_id_fkey" FOREIGN KEY (estate_property_id) REFERENCES estate_property(id) ON DELETE CASCADE
+    TABLE "estate_property_maintenance" CONSTRAINT "estate_property_maintenance_property_id_fkey" FOREIGN KEY (property_id) REFERENCES estate_property(id) ON DELETE RESTRICT
+    TABLE "estate_property_offer" CONSTRAINT "estate_property_offer_property_id_fkey" FOREIGN KEY (property_id) REFERENCES estate_property(id) ON DELETE RESTRICT
+    TABLE "estate_property_visits" CONSTRAINT "estate_property_visits_property_id_fkey" FOREIGN KEY (property_id) REFERENCES estate_property(id) ON DELETE RESTRICT
+

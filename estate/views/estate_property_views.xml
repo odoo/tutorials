@@ -42,12 +42,21 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="%(estate.estate_property_visits_action_property)d"
+                                
                                 type="action"
                                 icon="fa-calendar">
                                 <field name="visit_count" widget="statinfo" string="Visits"/>
                         </button>
-
                     </div>
+                    <!-- <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="%(estate.estate_property_offer_action_type)d"
+                            type="action"
+                            icon="fa-calendar">
+                            <field name="offer_count" widget="statinfo"/>
+
+                        </button> 
+
+                    </div> -->
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -94,16 +103,16 @@
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                     <field name="status"/>
-                                    <button name="action_accept"  type="object" icon="fa-check"
+                                    <button name="action_accept"  type="object" icon="fa-check" string="accept"
                                         invisible ="status"/>
-                                    <button name="action_refuse"  type="object" icon="fa-times"
+                                    <button name="action_refuse"  type="object" icon="fa-times" string="refuse"
                                         invisible ="status"/>
                                     <field name= "is_spam"/>
-
+                                    <button name ="action_create_booking"  type="object" string="Create Booking" icon="fa-money"
+                                        invisible= "status !='Accepted'"/>
                                 </list>
                             </field>
                         </page>
-
                         <page string= "Other Information">
                             <group>
                             <group>

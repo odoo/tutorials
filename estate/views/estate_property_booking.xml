@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_property_booking_action" model="ir.actions.act_window">
+        <field name="name">Property Booking</field>
+        <field name="res_model">estate.property.booking</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record id="estate_property_booking_form" model="ir.ui.view">
+        <field name="name">estate.property.booking.form</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div>
+                        <h1>
+                            <field name="property_id"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="booking_amount"/>
+                            <field name="booking_date"/>
+                        </group>
+                        <group>
+                            <field name="remaining_amount"/>
+                            <field name="deadline"/>
+                            <field name="state"/>
+                            <field name="payment_type"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payments">
+                            <field name="payment_ids">
+                                <list string="Payments">
+                                    <field name="amount"/>
+                                    <field name="payment_date"/>
+                                    <field name="payment_method"/>
+                                    <field name="status"/>
+                                    <field name="installment_no"/>
+                                    <field name="remarks"/>
+                                    <field name="due_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+
+
+    </record>
+</odoo>
