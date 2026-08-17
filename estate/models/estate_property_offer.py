@@ -31,3 +31,13 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def offer_accepted(self):
+        for record in self:
+            record.status = 'accepted'
+        return True
+
+    def offer_refused(self):
+        for record in self:
+            record.status = 'refused'
+        return True
