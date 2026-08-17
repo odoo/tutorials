@@ -1,16 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?>
-<hansil>
-	<record id="estate_property_model_action" model="ir.actions.act_window">
-    		<field name="name">All Properties</field>
-    		<field name="res_model">estate.property.model</field>
-    		<field name="view_mode">list,form</field>
-	</record>
-<!--	<menuitem id="menu_root" name="Real Estate">-->
-<!--		<menuitem id="first_level_menu" name="Properties" action="estate_property_model_action">-->
-<!--			<menuitem id="estate_model_menu_action" ></menuitem>-->
-<!--		</menuitem>-->
-<!--	</menuitem>-->
-	<menuitem id="menu_root" name="Real Estate"></menuitem>
-	<menuitem id="first_level_menu" name="Properties" parent="menu_root"></menuitem>
-	<menuitem id="estate_model_menu_action" parent="first_level_menu" action="estate_property_model_action"></menuitem>
-</hansil>
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+    <record id="view_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property.model</field>
+        <field name="arch" type="xml">
+            <list string="property_list_view">
+                <field name="name"></field>
+                <field name="description"></field>
+                <field name="selling_price"></field>
+                <field name="date_availability"></field>
+            </list>
+        </field>
+    </record>
+    <record id="new_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property.model</field>
+        <field name="arch" type="xml">
+            <form string="ADD">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,sold"></field>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"></field>
+                            <field name="date_availability"></field>
+                            <field name="selling_price"></field>
+                        </group>
+                        <group>
+                            <field name="postcode"></field>
+                            <field name="bedrooms"></field>
+                            <field name="living_area"></field>
+                        </group>
+                        <group>
+                            <field name="facades"></field>
+                            <field name="garage"></field>
+                            <field name="garden"></field>
+                        </group>
+                        <group>
+                            <field name="garden_area"></field>
+                            <field name="garden_orientation"></field>
+                            <field name="sold"></field>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="description">
+                            <field name="description"></field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="estate_property_model_action" model="ir.actions.act_window">
+        <field name="name">All Properties</field>
+        <field name="res_model">estate.property.model</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <!--	<menuitem id="menu_root" name="Real Estate">-->
+    <!--		<menuitem id="first_level_menu" name="Properties" action="estate_property_model_action">-->
+    <!--			<menuitem id="estate_model_menu_action" ></menuitem>-->
+    <!--		</menuitem>-->
+    <!--	</menuitem>-->
+</odoo>

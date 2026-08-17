@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from odoo import fields, models
 
 
