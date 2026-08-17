@@ -33,7 +33,8 @@ class estate_property_offer(models.Model):
             ).days
 
     def action_accepted_offer(self):
-        exists_accepted_offer = self.env["estate.property.offer"].search(
+        offer_model = self.env["estate.property.offer"]
+        exists_accepted_offer = offer_model.search(
             [
                 ("property_id", "=", self.property_id.id),
                 ("status", "=", "accepted"),
@@ -48,10 +49,23 @@ class estate_property_offer(models.Model):
         property.selling_price = self.price
         self.status = "accepted"
 
-        other_offers = self.env["estate.property.offer"].search(
+        other_offers = offer_model.search(
             [("property_id", "=", property.id), ("id", "!=", self.id)]
         )
         other_offers.status = "refused"
+
+        if self.price < property.best_price:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "type": "warning",
+                    "message": (
+                        "The offer being accepted is lower than the property's current best offer"
+                    ),
+                    "next": {"type": "ir.actions.act_window_close"},
+                },
+            }
 
     def action_refused_offer(self):
         if self.status == "accepted":
