@@ -30,7 +30,7 @@ class EstatePropertyMaintenance(models.Model):
             self.custom_category = False
 
     property_id = fields.Many2one(
-        'estate.property', required=True, string="propert name"
+        'estate.property', required=True, string="propert name",
     )
     inspection_date = fields.Date(string="Date Of Inspection", required=True)
     expected_price = fields.Float(string="Expected Cost")
@@ -43,7 +43,7 @@ class EstatePropertyMaintenance(models.Model):
                 raise UserError(_("scheduled date can not be before inspection date"))
 
     responsible_id = fields.Many2one(
-        "res.users", string="responsible", default=lambda self: self.env.user
+        "res.users", string="responsible", default=lambda self: self.env.user,
     )
     actual_cost = fields.Float(string="Actual Cost")
     state = fields.Selection(
