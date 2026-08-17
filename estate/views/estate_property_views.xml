@@ -7,10 +7,10 @@
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">Properties</field>
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list>
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
@@ -59,6 +59,21 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+            </search>
         </field>
     </record>
 </odoo>
