@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="estate_property_demo_1" model="estate.property">
+        <field name="name">Luxury Villa</field>
+        <field name="description">
+            Spacious luxury villa with a private swimming pool, landscaped garden, and modern interiors.
+        </field>
+        <field name="postcode">560001</field>
+        <field name="date_availability">2026-09-15</field>
+        <field name="expected_price">1250000.00</field>
+        <field name="selling_price">0.00</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">320</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">180</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">o_received</field>
+    </record>
+
+    <record id="estate_property_demo_2" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="description">
+            Elegant apartment located in the city center with a balcony and dedicated parking.
+        </field>
+        <field name="postcode">110001</field>
+        <field name="date_availability">2026-10-01</field>
+        <field name="expected_price">480000.00</field>
+        <field name="selling_price">0.00</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">95</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">new</field>
+    </record>
+
+    <record id="estate_property_demo_3" model="estate.property">
+        <field name="name">Cozy Country Cottage</field>
+        <field name="description">
+            Charming countryside cottage surrounded by greenery, ideal for a peaceful family lifestyle.
+        </field>
+        <field name="postcode">411001</field>
+        <field name="date_availability">2026-08-20</field>
+        <field name="expected_price">650000.00</field>
+        <field name="selling_price">0.00</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">170</field>
+        <field name="facades">3</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">250</field>
+        <field name="garden_orientation">east</field>
+        <field name="state">sold</field>
+    </record>
+
+</odoo>

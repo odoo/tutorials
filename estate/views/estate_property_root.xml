@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="estate_menu_root" name="Realest Estate" sequence="10" web_icon="estate,static/description/icon.png" />
+
+    <!-- Estate Menu -->
+    <menuitem id="estate_menu_estates" name="My Estates" parent="estate_menu_root" sequence="1" action="action_estate"/>
+
+    <!-- Settings Menu -->
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" sequence="2" action="action_estate_setting" active="True"/>
+
+</odoo>
