@@ -62,14 +62,12 @@ class EstateProperty(models.Model):
             if record.state == "canceled":
                 raise UserError("A canceled property cannot be sold.")
             record.state = "sold"
-        return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("A sold property cannot be canceled.")
             record.state = "canceled"
-        return True
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
