@@ -47,10 +47,17 @@
             <form string="Form_view" edit="1">
                 <header>
                     <button
+                        name="action_open_booking_wizard"
+                        type="object"
+                        string="Book Property"
+                        class="btn-primary"
+                        invisible="state != 'offer_accepted'"
+                    />
+                    <button
                         name="action_sold"
                         type="object"
                         string="Sold"
-                        invisible="state in ('sold', 'cancelled')"
+                        invisible="state in ('sold', 'cancelled','new','offer_received')"
                     />
                     <button
                         name="action_cancel"
@@ -61,8 +68,9 @@
                     <field
                         name="state"
                         widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold"
+                        statusbar_visible="new,offer_received,offer_accepted,booked,sold"
                     />
+
                 </header>
 
                 <sheet>
@@ -74,6 +82,19 @@
                             icon="fa-money"
                             string="Visitors">
                             <field name="visit_count" widget="statinfo" />
+                        </button>
+                        <button
+                            name="action_view_booking"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-book"
+                            string="Bookings">
+
+                            <field
+                                name="booking_count"
+                                widget="statinfo"
+                                string="Bookings" />
+
                         </button>
                     </div>
 
@@ -140,6 +161,7 @@
                                     name="tag_ids"
                                     widget="many2many_tags"
                                 />
+                                <field name="booking_cost" />
                             </group>
                         </page>
 

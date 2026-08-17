@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="seq_estate_booking" model="ir.sequence">
+        <field name="name">Estate Booking</field>
+        <field name="code">estate.booking.sequence</field>
+        <field name="prefix">BOOK</field>
+        <field name="padding">5</field>
+    </record>
+
+</odoo>

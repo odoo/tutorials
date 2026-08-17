@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_payment_list" model="ir.ui.view">
+        <field name="name">estate.payment.list</field>
+        <field name="model">estate.payment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="booking_id" />
+                <field name="property_id" />
+                <field name="partner_id" />
+                <field name="payment_type" />
+                <field name="amount" />
+                <field name="payment_method" />
+                <field name="payment_date" />
+                <field name="state" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_payment_form" model="ir.ui.view">
+        <field name="name">estate.payment.form</field>
+        <field name="model">estate.payment</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_confirm_payment"
+                        type="object"
+                        string="Confirm Payment"
+                        class="btn-primary"
+                        invisible="state != 'draft'"
+                    />
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,paid,cancel"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="booking_id" />
+                            <field name="property_id" readonly="1" />
+                            <field name="partner_id" readonly="1" />
+                            <field name="payment_type" />
+                        </group>
+                        <group>
+                            <field name="amount" />
+                            <field name="payment_method" />
+                            <field name="payment_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_estate_payment" model="ir.actions.act_window">
+        <field name="name">Payments</field>
+        <field name="res_model">estate.payment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

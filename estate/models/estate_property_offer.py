@@ -39,6 +39,10 @@ class EstatePropertyOffer(models.Model):
         related='property_id.property_type_id',
         store=True,
     )
+    property_state = fields.Selection(
+        related='property_id.state',
+        store=True,
+    )
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',

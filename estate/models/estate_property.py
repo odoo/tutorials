@@ -1,7 +1,7 @@
-from dateutil.relativedelta import relativedelta
 from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -22,6 +22,12 @@ class EstateProperty(models.Model):
     selling_price = fields.Float(
         readonly=True,
         copy=False,
+        store=True,
+    )
+    booking_cost = fields.Float(
+        readonly=True,
+        copy=False,
+        compute='_compute_booking_cost',
     )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -46,6 +52,7 @@ class EstateProperty(models.Model):
             ('new', "New"),
             ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
+            ('booked', "Booked"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
@@ -94,6 +101,19 @@ class EstateProperty(models.Model):
     is_suspicious = fields.Boolean(
         compute='_compute_is_suspicious',
         store=True,
+    )
+    booking_id = fields.Many2one(
+        'estate.property.booking',
+        string="Current Booking",
+        copy=False,
+    )
+    booking_ids = fields.One2many(
+        'estate.property.booking',
+        'property_id',
+        string="Bookings",
+    )
+    booking_count = fields.Integer(
+        compute='_compute_booking_count',
     )
 
     _check_expected_price = models.Constraint(
@@ -145,6 +165,16 @@ class EstateProperty(models.Model):
                     property_record.is_suspicious = True
                     break
 
+    @api.depends('selling_price')
+    def _compute_booking_cost(self):
+        for record in self:
+            record.booking_cost = 0.10 * record.selling_price
+
+    @api.depends('booking_ids')
+    def _compute_booking_count(self):
+        for property in self:
+            property.booking_count = len(property.booking_ids)
+
     @api.constrains('selling_price', 'expected_price')
     def _check_seling_price(self):
         for record in self:
@@ -160,7 +190,7 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    "Selling price cannot be lower than 90% of expected price!",
+                    _("Selling price cannot be lower than 90% of expected price!")
                 )
 
     @api.onchange('garden')
@@ -182,6 +212,8 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if self.state == 'sold':
             raise UserError("A sold property cannot be cancelled")
+        if self.state == 'booked' and self.booking_id:
+            raise UserError("Cancel the active booking before cancelling this property.")
 
         self.state = 'cancelled'
         return True
@@ -191,5 +223,58 @@ class EstateProperty(models.Model):
         if self.state == 'cancelled':
             raise UserError("A cancelled property can't be sold")
 
+        if self.state == 'booked' and self.booking_id:
+            remaining_paid = self.booking_id.payment_ids.filtered(
+                lambda p: p.payment_type == 'remaining' and p.state == 'paid'
+            )
+            if not remaining_paid:
+                raise UserError("Pay the remaining amount before selling this property.")
+
         self.state = 'sold'
+
+        if self.buyer_id and self.buyer_id.email:
+            template = self.env.ref('estate.email_template_estate_property_sold')
+            template.send_mail(self.id, force_send=True)
+
         return True
+
+    def action_open_booking_wizard(self):
+        self.ensure_one()
+        if self.state != 'offer_accepted':
+            raise UserError("Only accepted offers can be booked.")
+        if not self.buyer_id:
+            raise UserError("No buyer found.")
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': "Book Property",
+            'res_model': 'estate.booking.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_property_id': self.id,
+                'default_partner_id': self.buyer_id.id,
+                'default_sold_price': self.selling_price,
+            },
+        }
+
+    def action_view_booking(self):
+        self.ensure_one()
+        if len(self.booking_ids) == 1:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': "Booking",
+                'res_model': 'estate.property.booking',
+                'view_mode': 'form',
+                'res_id': self.booking_ids.id,
+                'target': 'current',
+            }
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': "Bookings",
+            'res_model': 'estate.property.booking',
+            'view_mode': 'list,form',
+            'domain': [('property_id', '=', self.id)],
+            'target': 'current',
+        }

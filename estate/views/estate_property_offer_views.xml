@@ -9,28 +9,26 @@
                 decoration-danger="status == 'rejected'"
                 decoration-success="status == 'accepted'"
             >
-                <field name="price"/>
-                <field name="partner_id"/>
-                <field name="validity"/>
-
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="validity" />
                 <button
                     name="action_accept"
                     type="object"
                     icon="fa-check"
                     title="Accept"
-                    invisible="status != False"
+                    invisible="status != False or property_state in ['sold', 'cancelled']"
                 />
-
                 <button
                     name="action_reject"
                     type="object"
                     icon="fa-times"
                     title="Reject"
-                    invisible="status != False"
+                    invisible="status != False or property_state in ['sold', 'cancelled']"
                 />
-
                 <field name="date_deadline"/>
             </list>
+
         </field>
     </record>
 
@@ -41,12 +39,12 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="price"/>
-                        <field name="partner_id"/>
-                        <field name="property_id"/>
-                        <field name="validity"/>
-                        <field name="status"/>
-                        <field name="validity"/>
+                        <field name="price" />
+                        <field name="partner_id" />
+                        <field name="property_id" />
+                        <field name="validity" />
+                        <field name="status" />
+                        <field name="validity" />
                     </group>
                 </sheet>
             </form>
