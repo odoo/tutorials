@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Estate",
+
+    'summary': """
+        Tutorial module for estate management
+    """,
+
+    'description': """
+        Tutorial module for estate management
+    """,
+
+    'author': "Odoo",
+    'website': "https://www.odoo.com",
+
+    # Categories can be used to filter modules in modules listing
+    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
+    # for the full list
+    'category': 'Tutorials',
+    'version': '0.1',
+
+    # any module necessary for this one to work correctly
+    'depends': [],
+    'application': True,
+    'installable': True,
+    'data': [
+    ],
+    'assets': {
+    },
+    'license': 'AGPL-3'
+}
