@@ -5,4 +5,5 @@
     "author": "Arturo Yepez",
     "depends": ["base"],
     "application": True,
+    "installable": True,
 }
