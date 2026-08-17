@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -31,3 +32,17 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def offer_accepted(self):
+        if 'accepted' in self.property_id.offer_ids.mapped('status'):
+            raise UserError("You cannot accept more than 1 offer for a single Property")
+        for record in self:
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+        return True
+
+    def offer_refused(self):
+        for record in self:
+            record.status = 'refused'
+        return True

@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstateModel(models.Model):
@@ -37,6 +38,7 @@ class EstateModel(models.Model):
             ('cancelled', "Cancelled"),
         ],
         required=True,
+        readonly=True,
         copy=False,
         default="new",
         string="Status"
@@ -58,7 +60,7 @@ class EstateModel(models.Model):
 
     best_offer = fields.Integer(compute="_compute_best_offer", string="Best Offer")
 
-    @api.depends('offer_ids')
+    @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"), default=0)
@@ -71,3 +73,17 @@ class EstateModel(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def set_sold(self):
+        if self.state == 'cancelled':
+            raise UserError("Cancelled Property cannot be Sold")
+        else:
+            self.state = 'sold'
+        return True
+
+    def set_cancelled(self):
+        if self.state == 'sold':
+            raise UserError("Sold Property cannot be Cancelled")
+        else:
+            self.state = 'cancelled'
+        return True
