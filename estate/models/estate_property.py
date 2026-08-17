@@ -1,4 +1,5 @@
 from odoo import fields, models
+from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -9,12 +10,24 @@ class EstateProperty(models.Model):
     name = fields.Char('Property Name', required=True, translate=True)
     description = fields.Text('Description', translate=True)
     postcode = fields.Char('Post Code', required=True)
-    date_availability = fields.Date('Availability Date', required=True)
+    date_availability = fields.Date(
+        'Availability Date', 
+        required=True, 
+        copy=False,
+        default=fields.Date.today() + relativedelta(months=3)
+    )
 
     expected_price = fields.Float('Expected Price')
-    selling_price = fields.Float('Selling Price')
+    selling_price = fields.Float(
+        'Selling Price', 
+        readonly=True, 
+        copy=False
+    )
 
-    bedrooms = fields.Integer('# Bedrooms')
+    bedrooms = fields.Integer(
+        '# Bedrooms', 
+        default=2
+    )
     facades = fields.Integer('# Facades')
 
     garage = fields.Boolean('Garage')
@@ -30,4 +43,20 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
         ] 
+    )
+
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(
+        string='State',
+        selection=[
+            ('new', 'New'),
+            ('offer', 'Offer'),
+            ('received', 'Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ],
+        default="new",
+        copy=False,
+        required=True
     )
