@@ -4,9 +4,15 @@
     'version': '0.1',
     'sequence': 99,
     'summary': 'Estate Management',
-    'depends': ['base', 'web'],
+    'depends': [
+        'base',
+        'web'
+    ],
     'installable': True,
     'application': True,
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'author': 'Odoo S.A.',
     'license': 'LGPL-3',
 }
