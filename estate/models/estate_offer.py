@@ -1,6 +1,7 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.date_utils import add
+from odoo.tools.float_utils import float_compare
 
 
 class EstateOffer(models.Model):
@@ -22,6 +23,12 @@ class EstateOffer(models.Model):
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
 
+    # Constraints
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "Offer price must be stricly positive",
+    )
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -38,6 +45,14 @@ class EstateOffer(models.Model):
 
     def set_status_accepted(self):
         for record in self:
+            if (
+                float_compare(record.price, record.property_id.expected_price * 0.9, 2)
+                == -1
+            ):
+                raise ValidationError(
+                    "Offer has to be at least 90% of the expected price"
+                )
+
             for offer in self.property_id.offer_ids:
                 if offer.status == "accepted":
                     raise UserError("Only one offer can be accepted")
