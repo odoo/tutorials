@@ -155,8 +155,9 @@
                         <group>
                             <field name="price" required="True" />
                             <field name="partner_id" placeholder="Select a Partner" required="True" />
+                            <field name="validity" />
+                            <field name="date_deadline" />
                             <field name="status" required="True" />
-
                         </group>
                     </sheet>
                 </form>
@@ -169,7 +170,9 @@
             <field name="arch" type="xml">
                 <list string="Offers">
                     <field name="price"/>
-                    <field name="partner_id"/>
+                    <field name="partner_id" width="150px"/>
+                    <field name="validity" width="100px"/>
+                    <field name="date_deadline" width="130px" />
                     <field name="status"/>
                 </list>
             </field>
