@@ -20,7 +20,7 @@
                     name="action_offer_accept"
                     string="Accept"
                     icon="fa-check"
-                    invisible="property.state in ('offer_accepted', 'sold', 'cancelled')"
+                    invisible="property_state in ('offer_accepted', 'sold', 'cancelled')"
                     type="object"
                 />
                 <button 
