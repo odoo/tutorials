@@ -35,6 +35,7 @@ class EstateProperty(models.Model):
         required=True,
     )
     property_type_id = fields.Many2one("estate.property.type", string='Type')
+    property_tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     # Other Info
     salesperson_id = fields.Many2one(
         comodel_name='res.users',

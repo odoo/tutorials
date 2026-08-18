@@ -29,6 +29,7 @@
                     <sheet>
                         <div class="oe_title mt-2">
                             <h1><field name="name" placeholder="Title" required="True" /></h1>
+                            <field name="property_tag_ids" placeholder="Add a tag" widget="many2many_tags" />
                             <group class="mt-4">
                                 <group>
                                     <field name="property_type_id"/>
@@ -110,8 +111,31 @@
         </record>
 
         <record id="estate_property_type_action" model="ir.actions.act_window">
-            <field name="name">Property type</field>
+            <field name="name">Property Type</field>
             <field name="res_model">estate.property.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+
+         <!-- PROPERTY TAGS VIEWS -->
+
+        <record id="estate_property_tags_view_form" model="ir.ui.view">
+            <field name="name">estate.property.tag.form</field>
+            <field name="model">estate.property.tag</field>
+            <field name="arch" type="xml">
+                <form string="Property Tag">
+                    <sheet>
+                        <group>
+                            <field name="name" placeholder="Tag Name" required="True" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="estate_property_tags_action" model="ir.actions.act_window">
+            <field name="name">Property Tags</field>
+            <field name="res_model">estate.property.tag</field>
             <field name="view_mode">list,form</field>
         </record>
     </data>
