@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -24,6 +24,7 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
+            ("n/a", "N/A"),
             ("north", "North"),
             ("east", "East"),
             ("south", "South"),
@@ -63,3 +64,25 @@ class EstateProperty(models.Model):
         string="Tags",
         comodel_name="estate.property.tag",
     )
+
+    # Computed
+    total_area = fields.Float("Total Area", compute="_compute_total_area")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    best_price = fields.Float("Best Price", compute="_find_best_price")
+
+    @api.depends("offer_ids.price")
+    def _find_best_price(self):
+        for record in self:
+            prices = record.offer_ids.mapped("price")
+            record.best_price = max(prices) if prices else 0.0
+
+    # On change
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = "north" if self.garden else "n/a"
