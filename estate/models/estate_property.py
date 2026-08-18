@@ -2,7 +2,7 @@ from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
 class TestModel(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "test estate model"
 
     name = fields.Char(required=True)
