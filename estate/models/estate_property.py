@@ -11,10 +11,10 @@ class EstateProperty(models.Model):
     DEFAULT_BEDROOM_COUNT = 2
     DEFAULT_AVAILABILITY_DATE = fields.Date.today() + relativedelta(months=3)
 
-    name = fields.Char(required=True)
+    name = fields.Char(string='Title', required=True)
     description = fields.Text()
     active = fields.Boolean()
-    date_availability = fields.Date(copy=False, default=DEFAULT_AVAILABILITY_DATE)
+    date_availability = fields.Date(string='Available From', copy=False, default=DEFAULT_AVAILABILITY_DATE)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     state = fields.Selection(
@@ -32,7 +32,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string='Garden Area (sqm)')
     garden_orientation = fields.Selection(
         selection=[
             ('north', 'North'),
@@ -41,7 +41,7 @@ class EstateProperty(models.Model):
             ('west', 'West'),
         ],
     )
-    living_area = fields.Integer()
+    living_area = fields.Integer(string='Living Area (sqm)')
     postcode = fields.Char()
 
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
