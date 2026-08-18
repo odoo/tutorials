@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<odoo>
+    <!-- Estate Property List -->
+    <record id="estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <list string="Properties">
+                    <field name="name" string="Title" class="text-center" width="50px"/>
+                    <field name="postcode" string="Postcode" class="text-center" width="50px"/>
+                    <field name="bedrooms" string="Bedrooms" class="text-center" width="50px"/>
+                    <field name="living_area" string="Living Area (sqm)" class="text-center" width="50px"/>
+                    <field name="expected_price" string="Expected Price" class="text-center" width="50px"/>
+                    <field name="selling_price" string="Selling Price" class="text-center" width="50px"/>
+                    <field name="date_availability" string="Available From" class="text-center" width="50px"/>
+                </list>
+            </field>
+    </record>
+
+
+    <!-- Estate Property Form -->
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <div class="oe_title">
+                            <h1 class="mb32">
+                                <field name="name" class="mb16"/>
+                            </h1>
+                            <field name="active" invisible="1"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="postcode" string="Postcode"/>
+                        <field name="expected_price" string="Expected Price"/>
+                        <field name="date_availability" string="Available From"/>
+                        <field name="selling_price" string="Selling Price"/>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" string="Description"/>
+                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades" string="Facades"/>
+                                <field name="garage" string="Garage"/>
+                                <field name="garden" string="Garden"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                                <field name="garden_orientation" string="Garden Orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Estate Property Search -->
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                    <group>
+                        <field name="name" string="Title"/>
+                        <field name="postcode" string="Postcode"/>
+                        <field name="expected_price" string="Expected Price"/>
+                        <field name="bedrooms" string="Bedrooms"/>
+                        <field name="living_area" string="Living Area (sqm)"/>
+                        <field name="selling_price" string="Selling Price"/>
+                        <field name="facades" string="Facades"/>
+                    </group>
+                    <group>
+                        <!-- ISSUE HERE can't find the way to set the domain to be >= today date  -->
+                        <!-- <filter 
+                            name="date_availability" string="Available" domain="[('date_availability', '&gt=;', 'today')]"
+                        /> -->
+                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                        <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer_received'])]" />
+                    </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>
