@@ -98,7 +98,7 @@
                 <field name="facades"/>
 
                 <!-- Filters and groups -->
-                <filter name="available_properties" string="Available Properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter name="available_properties" string="Available Properties" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <filter name="postcode_grouping" string="Postcode" context="{'group_by': 'postcode'}"/>
                 <filter name="property_type_grouping" string="Property Type" context="{'group_by': 'property_type_id'}"/>
             </search>

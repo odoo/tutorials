@@ -2,7 +2,6 @@
     "name": "Estate",
     "version": "1.0",
     "summary": "Estate Management",
-    "author": "Arturo Yepez",
     "depends": ["base"],
     "application": True,
     "installable": True,
@@ -14,5 +13,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_menus.xml',
-    ]
+    ],
+    "author": "Arturo Yepez",
+    "license": 'LGPL-3',
 }
