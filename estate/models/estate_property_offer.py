@@ -1,5 +1,7 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -16,6 +18,8 @@ class EstatePropertyOffer(models.Model):
             ('refused', 'Refused'),
         ]
     )
+    # Pretty sure I shouldn't be doing this but I couldn't find another way
+    property_state = fields.Selection(related="property_id.state")
 
     validity = fields.Integer(
         "Validity (days)",
@@ -38,3 +42,21 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             delta = offer.date_deadline - fields.Date.today()
             offer.validity = delta.days
+
+    def action_offer_accept(self):
+        for offer in self: 
+            if offer.property_state in ('offer_accepted', 'sold', 'cancelled'):
+                raise UserError("You can not accept more offers for this property")
+
+            offer.status = "accepted"
+            offer.property_id.state = "offer_accepted"
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+        
+        return True
+
+    def action_offer_refuse(self):
+        for offer in self:
+            offer.status = "refused"
+
+        return True

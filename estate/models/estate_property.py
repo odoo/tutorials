@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -72,7 +73,8 @@ class EstateProperty(models.Model):
         ],
         default="new",
         copy=False,
-        required=True
+        required=True,
+        readonly=True,
     )
 
     total_area = fields.Integer(
@@ -100,3 +102,23 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else 0
         # Nasty magic string. I should turn the option into a variable and then reference it
         self.garden_orientation = "north" if self.garden else None
+
+    def action_sold(self):
+        for property in self:
+            if property.state == "cancelled":
+                raise UserError("You can not sell a cancelled property")
+    
+            property.state = "sold"
+
+        return True
+        
+
+    def action_cancel(self):
+        for property in self:
+            if property.state == "sold":
+                raise UserError("You can not cancell a sold property")
+    
+            property.state = "cancelled"
+
+        return True
+
