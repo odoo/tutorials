@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate Property</field>
+        <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -13,6 +13,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name" width="200"/>
+                <field name="property_type_id" width="100"/>
                 <field name="postcode" width="100"/>
                 <field name="bedrooms" />
                 <field name="living_area" />
@@ -35,10 +36,12 @@
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                     </div>
+                    <field name="tag_ids" widget="many2many_tags"/>
 
                     <!-- Top Section -->
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -61,6 +64,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="user_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -86,6 +98,7 @@
                 <!-- Filters and groups -->
                 <filter name="available_properties" string="Available Properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="postcode_grouping" string="Postcode" context="{'group_by': 'postcode'}"/>
+                <filter name="property_type_grouping" string="Property Type" context="{'group_by': 'property_type_id'}"/>
                 <!-- <group> -->
                 <!-- </group> -->
             </search>
