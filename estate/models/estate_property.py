@@ -16,6 +16,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=fields.Date.today() + relativedelta(months=3)
     )
+    type_id = fields.Many2one("estate.property.type", string="Type", required=True)
 
     expected_price = fields.Float('Expected Price')
     selling_price = fields.Float(
