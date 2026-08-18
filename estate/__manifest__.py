@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
-
 {
-    'name': 'Real Estate',
-    'version': '0.1',
-    'depends': [
-        'base',
+    "name": "Real Estate",
+    "version": "0.1",
+    "depends": [
+        "base",
     ],
-    'data': [
-        'security/ir.model.access.csv',
-        'views/estate_property_views.xml',
-        'views/estate_menus.xml',
+    "data": [
+        "security/ir.model.access.csv",
+        "views/estate_property_views.xml",
+        "views/estate_menus.xml",
     ],
-    'installable': True,
-    'application': True,
-    'author': 'emtal',
-    'license': 'LGPL-3',
+    "installable": True,
+    "application": True,
+    "author": "emtal",
+    "license": "LGPL-3",
 }
