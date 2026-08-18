@@ -1,10 +1,103 @@
 <?xml version="1.0" ?>
 <odoo>
-    <data>
-        <record id="estate_property_action" model="ir.actions.act_window">
-            <field name="name">Estate Property</field>
-            <field name="res_model">estate.property</field>
-            <field name="view_mode">list,form</field>
-        </record>
-    </data>
+    <!-- Estate Property List -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+     <!-- Estate Property List -->
+    <record id="estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name" class="text-center" width="50px"/>
+                <field name="postcode" class="text-center" width="50px"/>
+                <field name="bedrooms" class="text-center" width="50px"/>
+                <field name="living_area" class="text-center" width="50px"/>
+                <field name="expected_price" class="text-center" width="50px"/>
+                <field name="selling_price" class="text-center" width="50px"/>
+                <field name="date_availability" class="text-center" width="50px"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Estate Property Form -->
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <div class="oe_title">
+                            <h1 class="mb32">
+                                <field name="name" class="mb16"/>
+                            </h1>
+                            <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="postcode"/>
+                        <field name="property_type_id"/>
+                        <field name="expected_price"/>
+                        <field name="date_availability"/>
+                        <field name="selling_price"/>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Estate Property Search -->
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <group>
+                    <field name="name"/>
+                    <field name="postcode"/>
+                    <field name="expected_price"/>
+                    <field name="bedrooms"/>
+                    <field name="living_area"/>
+                    <field name="selling_price"/>
+                    <field name="facades"/>
+                </group>
+                <group>
+                    <!-- ISSUE HERE can't find the way to set the domain to be >= today date  -->
+                    <!-- <filter 
+                        name="date_availability" string="Available" domain="[('date_availability', '&gt=;', 'today')]"
+                    /> -->
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer_received'])]" />
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
