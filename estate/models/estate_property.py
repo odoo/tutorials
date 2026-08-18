@@ -42,3 +42,24 @@ class EstateProperty(models.Model):
         default="new",
     )
     active = fields.Boolean("Active", default=True)
+
+    # Many2one references
+    type_id = fields.Many2one(comodel_name="estate.property.type")
+    buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner")
+    salesperson_id = fields.Many2one(
+        string="Salesperson",
+        comodel_name="res.users",
+        default=lambda self: self.env.user,
+    )
+
+    # One2many references
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+    )
+
+    # Many2many references
+    tag_ids = fields.Many2many(
+        string="Tags",
+        comodel_name="estate.property.tag",
+    )
