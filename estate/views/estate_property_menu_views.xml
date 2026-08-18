@@ -5,7 +5,6 @@
     <menuitem id="estate_property_menu_root" name="Estate Property">
         <menuitem id="estate_property_first_level_menu" name="Estate Properties">
             <menuitem id="estate_property_model_menu_action" action="estate_property_action"/>
-            <!--<menuitem id="estate_property_offer_model_menu_action" action="estate_property_offer_action"/>-->
         </menuitem>
         <menuitem id="estate_property_settings_menu" name="Settings">
             <menuitem id="estate_property_type_model_menu_action" action="estate_property_type_action"/>
