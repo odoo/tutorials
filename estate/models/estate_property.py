@@ -39,6 +39,7 @@ class EstateProperty(models.Model):
     property_offer_ids = fields.One2many('estate.property.offer', inverse_name="property_id", string='Offers', copy=False)
     # Computed Field
     total_area = fields.Integer('Total area (sqm)', compute='_compute_total_area', readonly=True, copy=False)
+    best_price = fields.Float('Best offer', compute='_compute_best_price', readonly=True, copy=False)
     # Other Info
     salesperson_id = fields.Many2one(
         comodel_name='res.users',
@@ -54,3 +55,11 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends("property_offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            if record.property_offer_ids:
+                record.best_price = max(record.property_offer_ids.mapped('price'))
+            else:
+                record.best_price = 0
