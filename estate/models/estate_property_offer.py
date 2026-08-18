@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -31,6 +32,7 @@ class EstatePropertyOffer(models.Model):
         required=True
     )
 
+    # Methods
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:

@@ -7,7 +7,7 @@
     </record>
 
     <!-- Main List View -->
-    <record id="estate_property_main_view" model="ir.ui.view">
+    <record id="estate_property_view" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -26,7 +26,7 @@
 
 
     <!-- Main Form View -->
-     <record id="estate_property_form_view" model="ir.ui.view">
+     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -84,7 +84,7 @@
      </record>
 
      <!-- Custom search parameters -->
-      <record id="estate_property_search_view" model="ir.ui.view">
+      <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -101,8 +101,6 @@
                 <filter name="available_properties" string="Available Properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="postcode_grouping" string="Postcode" context="{'group_by': 'postcode'}"/>
                 <filter name="property_type_grouping" string="Property Type" context="{'group_by': 'property_type_id'}"/>
-                <!-- <group> -->
-                <!-- </group> -->
             </search>
         </field>
       </record>

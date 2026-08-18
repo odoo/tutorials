@@ -1,5 +1,6 @@
-from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+
+from odoo import fields, models, api
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -41,8 +42,6 @@ class EstateProperty(models.Model):
         default="new",
         copy=False
     )
-
-    # Relational fields
     property_type_id = fields.Many2one(
         string="Property Type",
         comodel_name="estate.property.type"
@@ -66,8 +65,6 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.offer",
         inverse_name="property_id"
     )
-
-    # Computed fields
     total_area = fields.Integer(
         string="Total Area (sqm)",
         compute="_compute_total_area",
@@ -78,8 +75,6 @@ class EstateProperty(models.Model):
         compute="_compute_best_price",
         readonly=True
     )
-
-    # Reserved fields
     active = fields.Boolean(default=True)
 
     # Methods
