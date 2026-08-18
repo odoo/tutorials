@@ -95,3 +95,8 @@ class EstateProperty(models.Model):
         for property in self:
             property.best_price = max(property.offer_ids.mapped("price"), default=0)
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        self.garden_area = 10 if self.garden else 0
+        # Nasty magic string. I should turn the option into a variable and then reference it
+        self.garden_orientation = "north" if self.garden else None
