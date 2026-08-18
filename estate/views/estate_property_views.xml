@@ -73,6 +73,18 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+
+                <filter 
+                    string="Available" 
+                    name="available" 
+                    domain="[('state', 'in', ['new', 'offer'])]"
+                />
+
+                <filter
+                    string="Postcode"
+                    name="group_by_postcode"
+                    context="{'group_by': 'postcode'}"
+                />
             </search>
         </field>
     </record>
