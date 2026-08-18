@@ -30,11 +30,12 @@
                             <h1 class="mb32">
                                 <field name="name" class="mb16"/>
                             </h1>
-                            <field name="active" invisible="1"/>
+                            <field name="tag_ids" widget="many2many_tags" string=""/>
                         </div>
                     </group>
                     <group>
                         <field name="postcode" string="Postcode"/>
+                        <field name="property_type_id" string="Property Type"/>
                         <field name="expected_price" string="Expected Price"/>
                         <field name="date_availability" string="Available From"/>
                         <field name="selling_price" string="Selling Price"/>
@@ -51,6 +52,15 @@
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" string="Salesman"/>
+                                <field name="buyer_id" string="Buyer"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                     </notebook>
                 </sheet>
