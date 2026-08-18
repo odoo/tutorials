@@ -43,6 +43,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button type="object" name="set_state_cancel" string="Cancel" />
+                    <button type="object" name="set_state_sold" string="Sold" />
+                </header>
                 <sheet>
                     <group class="mb-5">
                         <field name="name" string="" required="True" placeholder="My new house" class="fs-1" />
@@ -50,13 +54,14 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state" readonly="True" />
                             <field name="property_type_id" string="Property Type" />
                             <field name="postcode" />
                             <field name="date_availability" string="Available From" />
                         </group>
                         <group>
                             <field name="expected_price" required="True" />
-                                <field name="best_price" />
+                            <field name="best_price" />
                             <field name="selling_price" />
                         </group>
                     </group>
