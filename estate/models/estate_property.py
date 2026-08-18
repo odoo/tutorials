@@ -35,6 +35,17 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area", compute="_compute_total_surface")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
 
+    #==========constraints===================
+    _check_positive_expected_price = models.Constraint("CHECK (expected_price > 0)", "expected price should be bigger than 0")
+    _check_positive_selling_price = models.Constraint("CHECK (selling_price > 0)", "expected price should be bigger than 0")
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_enough_selling_price(self):
+        for record in self:
+            offer_made = "accepted" in record.offer_ids.mapped("status")
+            price_good_enough = record.selling_price > 0.9 * record.expected_price
+            if not price_good_enough and offer_made:
+                raise exceptions.ValidationError("selling price is too low for the expected price")
 
     #==========computed fields===============
     @api.depends('garden_area', 'living_area')
@@ -45,7 +56,10 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids')
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped("price"))
+            if not record.offer_ids:
+                record.best_offer = 0
+            else:
+                record.best_offer = max(record.offer_ids.mapped("price"))
 
     #============onchage fields==============
     @api.onchange("garden")
