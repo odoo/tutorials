@@ -60,7 +60,7 @@ class EstateModel(models.Model):
 
     best_offer = fields.Integer(compute="_compute_best_offer", string="Best Offer")
 
-    @api.depends('offer_ids')
+    @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"), default=0)
