@@ -22,7 +22,11 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Tests">
+            <list string="Properties">
+            <header>
+                <button type="action" name="%(estate.property_tag_action)d" string="Property Tags" />
+                <button type="action" name="%(estate.property_type_action)d" string="Property Types"/>
+            </header>
                 <field name="title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
