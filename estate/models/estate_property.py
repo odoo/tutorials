@@ -2,11 +2,10 @@ from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    # _order = ... ?
-
 
     name = fields.Char('Property Name', required=True, translate=True)
     description = fields.Text('Description', translate=True)
@@ -17,7 +16,6 @@ class EstateProperty(models.Model):
         copy=False,
         default=fields.Date.today() + relativedelta(months=3)
     )
-    
     type_id = fields.Many2one("estate.property.type", string="Type", required=True)
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -31,23 +29,19 @@ class EstateProperty(models.Model):
         string="Buyer",
         copy=False
     )
-
     expected_price = fields.Float('Expected Price')
     selling_price = fields.Float(
         'Selling Price', 
         readonly=True, 
         copy=False
     )
-
     bedrooms = fields.Integer(
         '# Bedrooms', 
         default=2
     )
     facades = fields.Integer('# Facades')
-
     garage = fields.Boolean('Garage')
     garden = fields.Boolean('Garden')
-
     living_area = fields.Integer('Living Area mt²')
     garden_area = fields.Integer('Garden mt²')
     garden_orientation = fields.Selection(
@@ -59,7 +53,6 @@ class EstateProperty(models.Model):
             ('west', 'West'),
         ] 
     )
-
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         string='State',
@@ -76,12 +69,10 @@ class EstateProperty(models.Model):
         required=True,
         readonly=True,
     )
-
     total_area = fields.Integer(
         "Total Area m²",
         compute="_compute_total_area",
     )
-
     best_price = fields.Float(
         "Best Price",
         compute="_compute_best_price",
@@ -121,4 +112,3 @@ class EstateProperty(models.Model):
             property.state = "cancelled"
 
         return True
-
