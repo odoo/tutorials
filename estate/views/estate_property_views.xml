@@ -1,40 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<record id="estate_property_action" model="ir.actions.act_window">
-   <field name="name">Properties</field>
-   <field name="res_model">estate.property</field>
+
+  <!-- action -->
+  <record id="estate_property_form_action" model="ir.actions.act_window">
+    <field name="name">Properties</field>
+    <field name="res_model">estate.property</field>
     <field name="view_mode">list,form</field>
     <field name="help" type="html">
-          <p class="o_view_nocontent_smiling_face">
-            Create a new properties
-          </p><p>
+      <p class="o_view_nocontent_smiling_face">
+            Create a new properties!
+      </p>
+      <p>
             Create property advertisements to track availability, expected prices, and manage incoming offers.
-          </p>
+      </p>
     </field>
 
-</record>
+  </record>
+  
+  <record id="estate_property_type_form" model="ir.actions.act_window">
+    <field name="name">Properties Type</field>
+    <field name="res_model">estate.property.type</field>
+    <field name="view_mode">list,form</field>
+  </record>
 
-<record id="estate_property_views" model = "ir.ui.view">
-        <field name="name">estate property views</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <list string = "properties">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability" optional="hide"/>
-                <field name="state"/>
-                <field name="living_area"/>
+  <!-- Views -->
+  <record id="estate_property_view_list" model="ir.ui.view">
+    <field name="name">estate.property.list</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+ 
+      <list string="Properties">
+        <field name="name" class="fw-bold"/>
+        <field name="property_type_id"/>
+        <field name="postcode"/>
+        <field name="expected_price"/>
+        <field name="state" widget="badge"/>
+      </list>
+    </field>
+  </record>
 
-            </list>
-        </field>
-</record>
-
-<record id="estate_property_action_2" model="ir.actions.act_url">
-   <!-- <field name="name">estate property url</field> -->
-    <field name="url">https://odoo.com</field>
-</record>
-
-</odoo>
+  <record id="estate_property_view_form" model="ir.ui.view">
+    <field name="name">estate.property.form</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <form string="Property">
+        <sheet>
+          <div class="oe_title">
+          <label for="name"/>
+            <h1>
+              <field name="name" placeholder="e.g. Modern Villa with Garden"/>
+            </h1>
+          </div>
+          <group>
+            <group string="Pricing &amp; Availability">
+              <field name="postcode"/>
+              <field name="date_availability"/>
+              <field name="property_type_id"/>
+              <field name="expected_price"/>
+              <field name="selling_price"/>
+              <field name="state"/>
+            </group>
+            <group string="Property Specs">
+              <field name="bedrooms"/>
+              <field name="living_area" string="Living Area (m²)"/>
+              <field name="facades"/>
+              <field name="garage"/>
+            </group>
+          </group>
+          <notebook>
+            <page string="Description" name="description">
+              <field name="description" placeholder="Add property features, neighborhood details, etc."/>
+            </page>
+            <page string="Garden Details" name="garden_details">
+              <group>
+                <group>
+                  <field name="garden"/>
+                  <field name="garden_area" string="Garden Area (m²)" />
+                  <field name="garden_orientation" />
+                </group>
+              </group>
+            </page>
+            <page string="Settings" name="settings">
+              <group>
+                <field name="active"/>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+ 
+  <record id="estate_property_search" model="ir.ui.view">
+    <field name="name">estate.property.search</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <search string="Properties Search">
+        <field name="name"/>
+        <field name="postcode"/>
+        <filter name="Postcode" context="{'group_by' : 'postcode'}"/>
+        <filter name="Status" domain="['|',('state','=','new'),('state','=','offer_received')]"/>
+      </search>
+    </field>
+  </record>
+  </odoo>

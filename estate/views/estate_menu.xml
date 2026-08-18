@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<menuitem id="estate_menu_root" name="Real Estate" web_icon="estate,static/description/icon.png"/>
+    <menuitem id="estate_menu_root" name="Real Estate" web_icon="estate,static/description/icon.png"/>
 
-<menuitem id="estate_menu_property"
-          parent="estate_menu_root" 
-          name="Advertisement" 
-          />
+    <menuitem id="estate_menu_property" parent="estate_menu_root" name="Advertisement" />
 
-<menuitem id="estate_menu_advertisement"
-          name="Properties"
-          parent="estate_menu_property"
-          action="estate_property_action"/>
+    <menuitem id="estate_menu_advertisement" name="Properties" parent="estate_menu_property" action="estate_property_form_action" />
 
-<menuitem id="estate_property_url" 
-          name="Property Quick View" 
-        action="estate_property_action_2" 
-          parent="estate_menu_root"/> <!--action is required to create menu option  -->
+    <menuitem id="estate_property_setting" name="Settings" parent="estate_menu_root" />
+
+  <menuitem id="estate_property_type" name="Property Type" parent="estate_property_setting" action="estate_property_type_form"/>
 
 </odoo>
