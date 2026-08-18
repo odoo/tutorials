@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "Estate property"
+    _order = "id desc"
 
     name = fields.Char("Property Name", required=True)
     description = fields.Text("Description")
@@ -56,10 +57,7 @@ class EstateProperty(models.Model):
     )
 
     def _no_accepted_offer(self):
-        for offer in self.offers:
-            if offer.state == "accepted":
-                return False
-        return True
+        return all(offer.state != "accepted" for offer in self.offers)
 
     @api.constrains("selling_price")
     def _check_selling_price(self):
