@@ -103,7 +103,6 @@ class EstateProperty(models.Model):
 
         return True
         
-
     def action_cancel(self):
         for property in self:
             if property.state == "sold":
@@ -112,3 +111,13 @@ class EstateProperty(models.Model):
             property.state = "cancelled"
 
         return True
+
+    _exp_price_positive = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The Property expected price must be strictly positive'
+    )
+
+    _sell_price_positive = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The Property selling price must be positive'
+    )
