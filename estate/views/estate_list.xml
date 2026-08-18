@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_view_search" model="ir.ui.view">
+        <field name="name">Search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Delivery Carrier">
+                <field name="name" string="Estate" />
+                <field name="selling_price"/>
+                <separator/>
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]"/>
+                <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_view_tree" model="ir.ui.view">
+        <field name="name">Properties</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="estate">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
+            </list>
+        </field>
+    </record>
+</odoo>
