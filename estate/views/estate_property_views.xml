@@ -34,14 +34,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sell_property" string="Sold" type="object"/>
+                    <button name="action_cancel_property" string="Cancel" type="object"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <field name="tags" widget="many2many_tags"/>
-                    <br/>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="type"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
