@@ -146,6 +146,23 @@
 
         <!-- PROPERTY OFFERS VIEWS -->
 
+        <record id="estate_property_offers_view_form" model="ir.ui.view">
+            <field name="name">estate.property.offer.form</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <form string="Property Offer">
+                    <sheet>
+                        <group>
+                            <field name="price" required="True" />
+                            <field name="partner_id" placeholder="Select a Partner" required="True" />
+                            <field name="status" required="True" />
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
         <record id="estate_property_offers_view_list" model="ir.ui.view">
             <field name="name">estate.property.offer.list</field>
             <field name="model">estate.property.offer</field>
