@@ -1,10 +1,17 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from dateutil.relativedelta import relativedelta
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
 
     price = fields.Float(string="Offer Price")
+    validity = fields.Integer(string="Validity (days)", default=7)
+    date_deadline = fields.Date(
+        string="Deadline",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline"
+    )
     status = fields.Selection(
         string="Status",
         selection=[
@@ -23,3 +30,12 @@ class EstatePropertyOffer(models.Model):
         comodel_name="estate.property",
         required=True
     )
+
+    @api.depends("validity")
+    def _compute_date_deadline(self):
+        for record in self:
+            record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline - fields.Date.today()).days
