@@ -31,6 +31,7 @@
                             <h1><field name="name" placeholder="Title" required="True" /></h1>
                             <group class="mt-4">
                                 <group>
+                                    <field name="property_type_id"/>
                                     <field name="postcode" />
                                     <field name="date_availability" />
                                 </group>
@@ -54,7 +55,6 @@
                                     <field name="garden_orientation" />
                                     <field name="active"/>
                                     <field name="status"/>
-                                    <field name="property_type_id"/>
                                 </group>
                             </page>
                             <page string="Other Info">
