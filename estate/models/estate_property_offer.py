@@ -55,8 +55,12 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
+            # If an offer is already accepted we can't accept another one
+            record.property_id.ensure_no_accepted_offers(error_message="An offer was already accepted")
+
             record.status = "accepted"
             record.property_id.selling_price = self.price
+            record.property_id.buyer_id = self.partner_id
 
         return True
 

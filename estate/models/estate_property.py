@@ -89,6 +89,13 @@ class EstateProperty(models.Model):
             msg = error_message or f'Action not allowed for status: {self.status}'
             raise exceptions.UserError(msg)
 
+    def ensure_no_accepted_offers(self, error_message=None):
+        if not self.property_offer_ids:
+            return
+
+        if "accepted" in self.property_offer_ids.mapped("status"):
+            msg = error_message or 'Action not allowed'
+            raise exceptions.UserError(msg)
 
     # ACTIONS
     def action_set_status_cancelled(self):
