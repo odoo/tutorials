@@ -11,6 +11,7 @@ class EstatePropertyOffer(models.Model):
         string='Status',
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
         copy=False,
+        readonly=True,
     )
     partner_id = fields.Many2one(
         comodel_name='res.partner',
@@ -48,3 +49,19 @@ class EstatePropertyOffer(models.Model):
     def _get_date_or_today(datetime_to_evaluate):
         """ Returns the date part of a given datetime if present, otherwise returns today's date """
         return datetime_to_evaluate.date() if datetime_to_evaluate else date.today()
+
+
+    # ACTIONS
+
+    def action_accept_offer(self):
+        for record in self:
+            record.status = "accepted"
+            record.property_id.selling_price = self.price
+
+        return True
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
+
+        return True
