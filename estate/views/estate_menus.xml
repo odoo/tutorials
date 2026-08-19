@@ -42,4 +42,11 @@
         parent="estate_property_type_menu"
         action="estate_property_maintenance_action"
     />
+    <menuitem
+        id="estate_property_booking_menu"
+        name="Bookings"
+        parent="estate_property_type_menu"
+        action="estate_property_booking_action"
+    />
+
 </odoo>

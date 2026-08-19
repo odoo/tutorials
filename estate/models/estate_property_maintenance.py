@@ -11,7 +11,6 @@ class EstatePropertyMaintenance(models.Model):
         string="Property",
         required=True
     )
-
     issue_type = fields.Selection(
         [
             ('waterleakage', 'Water leakage'),
@@ -40,7 +39,7 @@ class EstatePropertyMaintenance(models.Model):
         ],
         default='new'
     )
-    date = fields.Date(default=fields.Date.today())
+    date = fields.Date(default=lambda self: fields.Date.today())
     estimated_cost = fields.Integer(compute="_compute_estimated_cost")
     actual_cost = fields.Integer()
     technician = fields.Many2one(

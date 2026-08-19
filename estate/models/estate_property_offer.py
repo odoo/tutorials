@@ -75,17 +75,21 @@ class EstatePropertyOffer(models.Model):
                         "The offer must be higher than the current highest offer."))
             if property_id.state == 'new':
                 property_id.state = 'offer_received'
-
         return super().create(vals_list)
 
     def action_confirm(self):
-        for offer in self.property_id.offer_ids:
-            if self != offer and offer.status == 'accepted':
-                raise UserError(_("An offer is already accepted."))
+        other_offers = self.property_id.offer_ids - self
+        other_offers.status = "refused"
         self.status = "accepted"
-        self.property_id.state = "offer_accepted"
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
+
+        self.property_id.write({
+            'state': 'offer_accepted',
+            'selling_price': self.price,
+            'buyer_id': self.partner_id
+        })
+        # self.property_id.state = "offer_accepted"
+        # self.property_id.selling_price = self.price
+        # self.property_id.buyer_id = self.partner_id
         return True
 
     def action_refuse(self):

@@ -1,0 +1,42 @@
+<odoo>
+    <record id="estate_property_payment_form_view" model="ir.ui.view">
+        <field name="name">estate.property.payment.form</field>
+        <field name="model">estate.property.payment</field>
+        <field name="arch" type="xml">
+
+            <form string="Property Payment">
+                <header>
+                    <button
+                        name="action_pay"
+                        type="object"
+                        string="Pay"
+                        class="btn-primary"
+                        invisible="payment_state == 'paid'"
+                    />
+                    <field
+                        name="payment_state"
+                        widget="statusbar"
+                        statusbar_visible="draft,paid"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Property Details">
+                            <field name="property_id" />
+                            <field name="seller_id" />
+                            <field name="buyer_id" />
+                            <field name="booking_id" />
+                        </group>
+
+                        <group string="Payment Details">
+                            <field name="booking_amount" />
+                            <field name="remaining_amount" />
+                            <field name="payment_mode" />
+                            <field name="payment_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,81 @@
+<odoo>
+    <record id="estate_property_booking_list_view" model="ir.ui.view">
+        <field name="name">estate.property.booking.list</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="booking_state == 'cancel'">
+                <field name="name" />
+                <field name="property_id" />
+                <field name="buyer_id" />
+                <field name="booking_date" />
+                <field name="booking_state" />
+                <field name="booking_amount" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_booking_form_view" model="ir.ui.view">
+        <field name="name">estate.property.booking.form</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <form string="Property Booking">
+                <header invisible="context.get('from_booking_sold')">
+                    <button
+                        name="action_pay_remaining"
+                        type="object"
+                        string="Pay Remaining Amount"
+                        class="btn-primary"
+                        invisible="booking_state in ('cancel', 'paid') "
+                    />
+                    <button
+                        name="action_cancel"
+                        type="object"
+                        string="Cancel Booking"
+                        class="btn-secondary"
+                        invisible="booking_state in ('paid', 'cancel') "
+                    />
+                    <field
+                        name="booking_state"
+                        widget="statusbar"
+                        statusbar_visible="draft,booked,paid,cancel"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="property_id" />
+                            <field name="seller_id" />
+                            <field name="buyer_id" />
+                            <field name="booking_amount" />
+                        </group>
+                        <group>
+                            <field name="booking_date" />
+                            <field name="booking_expiry" />
+                            <field name="payment_mode" />
+                            <field name="remaining_amount" />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        name="action_pay_booking"
+                        type="object"
+                        string="Pay Booking Amount"
+                        class="btn-primary"
+                    />
+                    <button
+                        string="Cancel"
+                        special="cancel"
+                        class="btn-secondary"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_booking_action" model="ir.actions.act_window">
+        <field name="name">Property Bookings</field>
+        <field name="res_model">estate.property.booking</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

@@ -43,6 +43,7 @@ class EstateProperty(models.Model):
             ('new', "New"),
             ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
+            ('booked', 'Booked'),
             ('sold', "Sold"),
             ('canceled', "Canceled"),
         ],
@@ -77,12 +78,19 @@ class EstateProperty(models.Model):
         "estate.property.maintenance",
         "property_id"
     )
+    booking_ids = fields.One2many(
+        "estate.property.booking",
+        "property_id"
+    )
+    booking_count = fields.Integer(
+        compute="_compute_booking_count",
+    )
 
-    _check_expected_price = models.Constraint(
+    _check_expected_price_constraint = models.Constraint(
         "CHECK(expected_price>0)", "Expected price must be strictly positive"
     )
 
-    _check_selling_price = models.Constraint(
+    _check_selling_price_constraint = models.Constraint(
         "CHECK(selling_price>0)", "Selling price must be positive"
     )
 
@@ -90,6 +98,11 @@ class EstateProperty(models.Model):
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends("booking_ids")
+    def _compute_booking_count(self):
+        for property in self:
+            property.booking_count = len(property.booking_ids)
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
@@ -136,6 +149,9 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "canceled":
                 raise UserError(_("Canceled Property cannot be sold"))
+            if record.state != "booked":
+                raise UserError(
+                    _("Property cannot be sold without its booking"))
             record.state = "sold"
         return True
 
@@ -145,3 +161,42 @@ class EstateProperty(models.Model):
                 raise UserError(_("Sold Property cannot be canceled"))
             record.state = "canceled"
         return True
+
+    def action_view_booking(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Bookings",
+            "res_model": "estate.property.booking",
+            "view_mode": "list,form",
+            "domain": [
+                ("property_id", "=", self.id)
+
+            ],
+            "target": "current",
+        }
+
+    def booking_sold(self):
+        self.ensure_one()
+        if self.state == "booked":
+            raise UserError(
+                _("This property already has an active booking.")
+            )
+
+        if self.state in ("sold", "canceled"):
+            raise UserError(
+                _("A sold or canceled property cannot be booked.")
+            )
+        booking_wizard_action = {
+            'type': 'ir.actions.act_window',
+            'res_model': 'estate.property.booking',
+            'view_mode': 'form',
+            'views': [(False, 'form')],
+            'target': 'new',
+            'context': {
+                "default_property_id": self.id,
+                "default_buyer_id": self.buyer_id.id,
+                "from_booking_sold": True,
+            }
+        }
+        return booking_wizard_action
