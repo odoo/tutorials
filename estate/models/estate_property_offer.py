@@ -66,3 +66,25 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'The offer price must be strictly positive'
     )
+
+    @api.model_create_multi
+    def create(self, values):
+        # Get the biggest offers for the properties
+        prop_max_offer = {}
+        for v in values:
+            pid = v['property_id']
+            prop_max_offer[pid] = max(prop_max_offer.get(pid, 0), v['price'])
+
+        # Get the properties that the offers reference
+        properties = self.env['estate.property'].browse(prop_max_offer.keys())
+
+        for prop in properties:
+            # Check if the offer is higher than the best one
+            best_existing = max(prop.offer_ids.mapped('price'), default=0)
+            if prop_max_offer[prop.id] < best_existing:
+                raise UserError("You can not offer less than the biggest offer")
+
+            if prop.state == 'new':
+                prop.state = 'offer'
+
+        return super().create(values)
