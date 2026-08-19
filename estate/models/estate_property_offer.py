@@ -1,10 +1,6 @@
 from odoo import models, fields, api, exceptions
 from datetime import timedelta
 
-import logging
-
-_logger = logging.getLogger(__name__)
-
 
 class EstatePropertyOffer(models.Model):
 
@@ -16,6 +12,7 @@ class EstatePropertyOffer(models.Model):
     state = fields.Selection(copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     partner = fields.Many2one(string="Buyer", comodel_name="res.partner", required=True)
     property = fields.Many2one(comodel_name="estate.property", required=True)
+    property_type = fields.Many2one(related="property.type", store=True)
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date("Offer Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
@@ -48,6 +45,7 @@ class EstatePropertyOffer(models.Model):
 
         self.property.buyer = self.partner
         self.property.selling_price = self.price
+        self.property.state = "offer_accepted"
 
         return True
 
