@@ -7,6 +7,13 @@
     <field name="view_mode">list,form</field>
   </record>
 
+  <record id="estate_property_action" model="ir.actions.act_window">
+    <field name="name">Properties</field>
+    <field name="res_model">estate.property</field>
+    <field name="view_mode">list,form</field>
+    <field name="context">{'search_default_available_properties': True}</field>
+  </record>
+
   <record id="estate_property_view_list" model="ir.ui.view">
     <field name="name">estate.property.list</field>
     <field name="model">estate.property</field>
@@ -49,7 +56,7 @@
           <field
             name="state"
             widget="statusbar"
-            statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"
+            statusbar_visible="new,offer_received,offer_accepted,sold,canceled"
           />
         </header>
 
@@ -142,12 +149,5 @@
         </group>
       </search>
     </field>
-  </record>
-
-  <record id="estate_property_action" model="ir.actions.act_window">
-    <field name="name">Properties</field>
-    <field name="res_model">estate.property</field>
-    <field name="view_mode">list,form</field>
-    <field name="context">{'search_default_available_properties': True}</field>
   </record>
 </odoo>

@@ -52,9 +52,9 @@ class EstatePropertyOffer(models.Model):
 
     def action_confirm_offer(self):
         for offer in self:
-            # Check property have already been sold or cancelled
-            if offer.property_id.state in ["sold", "cancelled"]:
-                raise UserError("This property has already been sold or cancelled!")
+            # Check property have already been sold or canceled
+            if offer.property_id.state in ["sold", "canceled"]:
+                raise UserError("This property has already been sold or canceled!")
 
             # Any accepted offer?
             if any(o.status == "accepted" for o in offer.property_id.offer_ids):
@@ -71,3 +71,19 @@ class EstatePropertyOffer(models.Model):
             offer.status = "refused"
 
     _check_price = models.Constraint("CHECK(price >= 0)", "Offer price must be >= 0!")
+
+    # Model decorators
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_rec = self.env["estate.property"].browse(vals["property_id"])
+
+            for offer in property_rec.offer_ids:
+                if vals.get("price", 0) <= offer.price:
+                    raise UserError(
+                        "The offer amount must be strictly higher than existing offers."
+                    )
+
+            property_rec.state = "offer_received"
+
+        return super().create(vals_list)

@@ -39,7 +39,7 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ("canceled", "Canceled"),
         ],
         default="new",
         copy=False,
@@ -90,9 +90,9 @@ class EstateProperty(models.Model):
 
     def action_property_sold(self):
         for record in self:
-            if record.state == "cancelled":
+            if record.state == "canceled":
                 raise UserError(
-                    "This property has already been cancelled. It can not be sold!"
+                    "This property has already been canceled. It can not be sold!"
                 )
             elif record.state == "sold":
                 raise UserError(
@@ -105,20 +105,20 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "sold":
                 raise UserError(
-                    "This property has already been sold. It can not be cancelled!"
+                    "This property has already been sold. It can not be canceled!"
                 )
-            elif record.state == "cancelled":
+            elif record.state == "canceled":
                 raise UserError(
-                    "This property has already been cancelled. It can not be cancelled again!"
+                    "This property has already been canceled. It can not be canceled again!"
                 )
             else:
-                record.state = "cancelled"
+                record.state = "canceled"
 
     # Constraints
     _check_expected_price = models.Constraint(
         "CHECK(expected_price >= 0)", "Expected price must be >= 0!"
     )
-    _check_selling_price = models.Constraint(
+    _check_selling_price_positive = models.Constraint(
         "CHECK(selling_price >= 0)", "Selling price must be >= 0!"
     )
 
@@ -138,4 +138,13 @@ class EstateProperty(models.Model):
             ):
                 raise UserError(
                     "Selling price cannot be lower than 90% of the expected price!"
+                )
+
+    # Model decorators
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion_if_not_new_or_canceled(self):
+        for record in self:
+            if record.state not in ("new", "canceled"):
+                raise UserError(
+                    "You cannot delete a property unless its state is 'New' or 'Canceled'."
                 )

@@ -26,14 +26,14 @@
           string="Confirm"
           type="object"
           icon="fa-check"
-          invisible="status != None"
+          invisible="status"
         />
         <button
           name="action_refuse_offer"
-          string="Confirm"
+          string="Refuse"
           type="object"
           icon="fa-times"
-          invisible="status != None"
+          invisible="status"
         />
         <field name="status" />
       </list>
