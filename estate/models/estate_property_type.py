@@ -7,9 +7,7 @@ class EstatePropertyType(models.Model):
     _order = "name"
 
     name = fields.Char("Type Name", required=True)
-    sequence = fields.Integer(
-        "Sequence", default=1, help="Used to order stages. Lower is better."
-    )
+    sequence = fields.Integer(default=1, help="Used to order stages. Lower is better.")
 
     # One2many relations
     property_ids = fields.One2many(
@@ -22,10 +20,7 @@ class EstatePropertyType(models.Model):
     )
 
     # Computed
-    offer_count = fields.Integer(
-        string="Offer Count",
-        compute="_compute_offer_count",
-    )
+    offer_count = fields.Integer(compute="_compute_offer_count")
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):

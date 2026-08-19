@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.tools.translate import _
 from odoo.exceptions import UserError
 
 
@@ -54,11 +55,11 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             # Check property have already been sold or canceled
             if offer.property_id.state in ["sold", "canceled"]:
-                raise UserError("This property has already been sold or canceled!")
+                raise UserError(_("This property has already been sold or canceled!"))
 
             # Any accepted offer?
             if any(o.status == "accepted" for o in offer.property_id.offer_ids):
-                raise UserError("An offer have already been accepted!")
+                raise UserError(_("An offer have already been accepted!"))
 
             # Accept offer
             offer.status = "accepted"
@@ -81,7 +82,9 @@ class EstatePropertyOffer(models.Model):
             for offer in property_rec.offer_ids:
                 if vals.get("price", 0) <= offer.price:
                     raise UserError(
-                        "The offer amount must be strictly higher than existing offers."
+                        _(
+                            "The offer amount must be strictly higher than existing offers."
+                        )
                     )
 
             property_rec.state = "offer_received"

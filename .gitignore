@@ -130,3 +130,4 @@ dmypy.json
 
 # dprint formatter config file
 estate/dprint.json
+estate_account/dprint.json
