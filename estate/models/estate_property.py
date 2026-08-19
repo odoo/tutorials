@@ -1,7 +1,6 @@
-
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -11,7 +10,7 @@ class EstateProperty(models.Model):
     DEFAULT_BEDROOM_COUNT = 2
     DEFAULT_AVAILABILITY_DATE = fields.Date.today() + relativedelta(months=3)
 
-    name = fields.Char(string='Title', required=True)
+    name = fields.Char(string='Title', required=True, default='New Property')
     description = fields.Text()
     active = fields.Boolean()
     date_availability = fields.Date(string='Available From', copy=False, default=DEFAULT_AVAILABILITY_DATE)
@@ -42,6 +41,7 @@ class EstateProperty(models.Model):
         ],
     )
     living_area = fields.Integer(string='Living Area (sqm)')
+    total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
     postcode = fields.Char()
 
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
@@ -51,3 +51,23 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    best_price = fields.Float(string='Best Offer', compute='_compute_best_price')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
