@@ -87,7 +87,7 @@
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Properties">
+                <list string="Properties" decoration-success="status in ['offer_received', 'offer_accepted']" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'">
                     <field name="name" width="100px"/>
                     <field name="property_type_id" width="50px"/>
                     <field name="postcode" width="60px"/>
@@ -95,7 +95,7 @@
                     <field name="living_area"/>
                     <field name="expected_price"/>
                     <field name="selling_price"/>
-                    <field name="date_availability"/>
+                    <field name="date_availability" optional="hide"/>
                 </list>
             </field>
         </record>
@@ -153,18 +153,13 @@
 
 
          <!-- PROPERTY TAGS VIEWS -->
-
-        <record id="estate_property_tags_view_form" model="ir.ui.view">
-            <field name="name">estate.property.tag.form</field>
+        <record id="estate_property_tags_view_list" model="ir.ui.view">
+            <field name="name">estate.property.tag.list</field>
             <field name="model">estate.property.tag</field>
             <field name="arch" type="xml">
-                <form string="Property Tag">
-                    <sheet>
-                        <group>
-                            <field name="name" placeholder="Tag Name" required="True" />
-                        </group>
-                    </sheet>
-                </form>
+                <list string="Tag list" editable="bottom">
+                    <field name="name" required="True"/>
+                </list>
             </field>
         </record>
 
@@ -198,14 +193,13 @@
             <field name="name">estate.property.offer.list</field>
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
-                <list string="Offers">
+                <list string="Offers" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                     <field name="price"/>
                     <field name="partner_id" width="150px"/>
                     <field name="validity" width="100px"/>
                     <field name="date_deadline" width="130px" />
                     <button name="action_accept_offer" title="Accept" invisible="status" type="object" icon="fa-check"/>
                     <button name="action_refuse_offer" title="Refuse" invisible="status" type="object" icon="fa-times"/>
-                    <field name="status"/>
                 </list>
             </field>
         </record>
