@@ -92,9 +92,14 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else 0
-        # Nasty magic string. I should turn the option into a variable and then reference it
-        self.garden_orientation = "north" if self.garden else None
+        if self.garden:
+            self.garden_area = 10
+            # Nasty magic string. I should turn the option into a variable and then reference it
+            self.garden_orientation = "north"
+            return
+
+        self.garden_area = 0
+        self.garden_orientation = None
 
     def action_sold(self):
         for property in self:
