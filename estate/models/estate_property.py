@@ -1,5 +1,5 @@
 from odoo import fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.orm.models import api
 from odoo.tools.date_utils import add
 
@@ -130,3 +130,13 @@ class EstateProperty(models.Model):
             record.state = "sold"
 
         return True
+
+    # Overwrites
+
+    @api.ondelete(at_uninstall=False)
+    def onDelete(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise ValidationError(
+                    "Only properties in the state new or cancelled can be deleted"
+                )

@@ -16,7 +16,7 @@
             <field name="selling_price" />
             <field string="Living Area (sqm)" name="living_area" filter_domain="[('living_area', '>=', self)]" />
             <separator />
-            <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]"/> 
+            <filter string="Available" name="available" domain="[('state', 'not in', ('sold', 'cancelled'))]"/> 
             <group> 
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/> 
             </group> 

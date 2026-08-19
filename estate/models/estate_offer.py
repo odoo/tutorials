@@ -82,3 +82,14 @@ class EstateOffer(models.Model):
             record.status = "refused"
 
         return True
+
+    # Overwrites
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            if property.state == "new":
+                property.state = "received"
+
+        super().create(vals_list)
