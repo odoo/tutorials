@@ -4,11 +4,12 @@ from odoo import Command, models
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def set_state_sold(self):
-        result = super().set_state_sold()
+    def action_state_sold(self):
+        result = super().action_state_sold()
+        invoices = []
 
         for record in self:
-            invoice = self.env["account.move"].create(
+            invoices.append(
                 {
                     "partner_id": record.buyer_id.id,
                     "move_type": "out_invoice",
@@ -30,6 +31,8 @@ class EstateProperty(models.Model):
                     ],
                 }
             )
-            invoice.action_post()
+
+        invoice = self.env["account.move"].create(invoices)
+        invoice.action_post()
 
         return result

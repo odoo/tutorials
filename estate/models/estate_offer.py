@@ -43,44 +43,47 @@ class EstateOffer(models.Model):
                 days=+record.validity,
             )
 
+    @api.onchange("date_deadline")
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days
 
     # Actions
 
-    def set_status_accepted(self):
-        for record in self:
-            if record.status == "accepted" or record.status == "refused":
-                raise UserError(
-                    "The state of an offer cannot be changed once it is set"
-                )
+    def action_status_accepted(self):
+        self.ensure_one()
 
-            if (
-                float_compare(record.price, record.property_id.expected_price * 0.9, 2)
-                == -1
-            ):
-                raise ValidationError(
-                    "Offer has to be at least 90% of the expected price"
-                )
+        if self.status in ("accepted", "refused"):
+            raise UserError("The state of an offer cannot be changed once it is set")
 
-            for offer in self.property_id.offer_ids:
-                if offer.status == "accepted":
-                    raise UserError("Only one offer can be accepted")
+        if float_compare(self.price, self.property_id.expected_price * 0.9, 2) == -1:
+            raise ValidationError("Offer has to be at least 90% of the expected price")
 
-            record.status = "accepted"
+        if any(
+            self.property_id.offer_ids.filtered(
+                lambda offer: offer.status == "accepted"
+            )
+        ):
+            raise UserError("Only one offer can be accepted")
+
+        self.property_id.state = "accepted"
+        self.status = "accepted"
+
+        for offer in self.property_id.offer_ids:
+            if offer.id == self.id:
+                continue
+
+            offer.status = "refused"
 
         return True
 
-    def set_status_refused(self):
-        for record in self:
-            if record.status == "accepted" or record.status == "refused":
-                raise UserError(
-                    "The state of an offer cannot be changed once it is set"
-                )
+    def action_status_refused(self):
+        self.ensure_one()
 
-            record.status = "refused"
+        if self.status in ["accepted", "refused"]:
+            raise UserError("The state of an offer cannot be changed once it is set")
 
+        self.status = "refused"
         return True
 
     # Overwrites
@@ -89,7 +92,10 @@ class EstateOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env["estate.property"].browse(vals["property_id"])
+            if property.state == "sold":
+                raise UserError("No offer can be made for a sold property")
+
             if property.state == "new":
                 property.state = "received"
 
-        super().create(vals_list)
+        return super().create(vals_list)

@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_type_action" model="ir.actions.act_window">
+    <record id="estate_type_action_view" model="ir.actions.act_window">
         <field name="name">Types</field>
         <field name="res_model">estate.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_type_list" model="ir.ui.view">
-        <field name="name">Type</field>
+    <record id="estate_type_view_list" model="ir.ui.view">
+        <field name="name">estate.type.view.list</field>
         <field name="model">estate.type</field>
         <field name="arch" type="xml">
             <list>
@@ -17,14 +17,14 @@
         </field>
     </record>
 
-    <record id="estate_type_form" model="ir.ui.view">
-        <field name="name">Type</field>
+    <record id="estate_type_view_form" model="ir.ui.view">
+        <field name="name">estate.type.view.form</field>
         <field name="model">estate.type</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" type="action" name="%(estate_offer_action)d" icon="fa-money">
+                        <button class="oe_stat_button" type="action" name="%(estate_offer_action_view)d" icon="fa-money">
                             <div class="o_form_field o_stat_info">
                                 <span class="o_stat_text">Offers</span>
                                 <span class="o_stat_value">

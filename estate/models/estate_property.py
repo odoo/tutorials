@@ -73,7 +73,7 @@ class EstateProperty(models.Model):
     )
 
     # Computations
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.status")
     def _compute_selling_price(self):
         for record in self:
             record.selling_price = 0
@@ -82,7 +82,7 @@ class EstateProperty(models.Model):
                     record.selling_price = offer.price
                     break
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.status")
     def _compute_buyer_id(self):
         for record in self:
             record.buyer_id = None
@@ -100,16 +100,22 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             # Fallback to 0 if no records are present
-            record.best_price = max(record.offer_ids.mapped("price") + [0])
+            record.best_price = max(record.offer_ids.mapped("price") or [0])
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else None
-        self.garden_orientation = "north" if self.garden else None
+        self.ensure_one()
+
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     # Actions
 
-    def set_state_cancel(self):
+    def action_state_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled")
@@ -117,18 +123,25 @@ class EstateProperty(models.Model):
                 raise UserError("A cancelled property cannot be cancelled again")
 
             record.state = "cancelled"
-
         return True
 
-    def set_state_sold(self):
+    def action_state_sold(self):
         for record in self:
+            accepted_offer = False
+            for offer in record.offer_ids:
+                if offer.status == "accepted":
+                    accepted_offer = True
+                    break
+
+            if not accepted_offer:
+                raise UserError("A property cannot be sold if no offer is accepted")
+
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold")
             if record.state == "sold":
                 raise UserError("A sold property cannot be sold again")
 
             record.state = "sold"
-
         return True
 
     # Overwrites

@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_tag_action" model="ir.actions.act_window">
+    <record id="estate_tag_action_view" model="ir.actions.act_window">
         <field name="name">Tags</field>
         <field name="res_model">estate.tag</field>
         <field name="view_mode">list</field>
     </record>
 
-    <record id="estate_tag_list" model="ir.ui.view">
-        <field name="name">Type</field>
+    <record id="estate_tag_view_list" model="ir.ui.view">
+        <field name="name">estate.tag.view.list</field>
         <field name="model">estate.tag</field>
         <field name="arch" type="xml">
             <list editable="top">
