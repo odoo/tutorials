@@ -6,7 +6,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
 
-    price = fields.Float(string="Offer Price")
+    price = fields.Float(string="Offer Price", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline",
@@ -30,6 +30,11 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         comodel_name="estate.property",
         required=True
+    )
+
+    _check_positive_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer prices must be a positive amount.'
     )
 
     # Methods
