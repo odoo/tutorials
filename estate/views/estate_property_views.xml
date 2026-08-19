@@ -33,6 +33,7 @@
                         <button name="action_set_status_sold" string="Sold"
                             type="object" data-hotkey="w" title="Mark as sold"
                             invisible="status == 'sold'"/>
+                        <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': 1}"/>
                     </header>
                     <sheet>
                         <div class="oe_title mt-2">
@@ -40,10 +41,9 @@
                             <field name="property_tag_ids" placeholder="Add a tag" widget="many2many_tags" />
                             <group class="mt-4">
                                 <group>
-                                    <field name="status"/>
                                     <field name="property_type_id"/>
                                     <field name="postcode" />
-                                    <field name="date_availability" />
+                                    <field name="date_availability"/>
                                 </group>
                                 <group>
                                     <field name="expected_price" required="True" />
