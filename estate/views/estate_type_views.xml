@@ -5,4 +5,49 @@
         <field name="res_model">estate.type</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <record id="estate_type_list" model="ir.ui.view">
+        <field name="name">Type</field>
+        <field name="model">estate.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_type_form" model="ir.ui.view">
+        <field name="name">Type</field>
+        <field name="model">estate.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action" name="%(estate_offer_action)d" icon="fa-money">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_text">Offers</span>
+                                <span class="o_stat_value">
+                                    <field name="offer_count" widget='monetary'/>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <field name="name" string="" required="True" placeholder="House" class="mb-5 fs-1" />
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>

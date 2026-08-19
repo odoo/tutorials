@@ -1,13 +1,13 @@
 from odoo import fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 from odoo.orm.models import api
 from odoo.tools.date_utils import add
-from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "An estate property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(
-        copy=False, readonly=True, compute="_compute_selling_price", store=True
+        copy=False, readonly=True, compute="_compute_selling_price"
     )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -113,6 +113,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled")
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be cancelled again")
 
             record.state = "cancelled"
 
@@ -122,6 +124,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold")
+            if record.state == "sold":
+                raise UserError("A sold property cannot be sold again")
 
             record.state = "sold"
 

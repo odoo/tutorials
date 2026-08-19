@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare
 class EstateOffer(models.Model):
     _name = "estate.offer"
     _description = "An estate offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -21,6 +22,11 @@ class EstateOffer(models.Model):
     # Computed fields
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+    )
+
+    # Related fields
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
     )
 
     # Constraints
@@ -45,6 +51,11 @@ class EstateOffer(models.Model):
 
     def set_status_accepted(self):
         for record in self:
+            if record.status == "accepted" or record.status == "refused":
+                raise UserError(
+                    "The state of an offer cannot be changed once it is set"
+                )
+
             if (
                 float_compare(record.price, record.property_id.expected_price * 0.9, 2)
                 == -1
@@ -63,6 +74,11 @@ class EstateOffer(models.Model):
 
     def set_status_refused(self):
         for record in self:
+            if record.status == "accepted" or record.status == "refused":
+                raise UserError(
+                    "The state of an offer cannot be changed once it is set"
+                )
+
             record.status = "refused"
 
         return True
