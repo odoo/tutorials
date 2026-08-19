@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -16,6 +16,10 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True
     )
     validity = fields.Integer(default=7)
+
+    _positive_price = models.Constraint(
+        "CHECK(price > 0)", "The price of an offer cannot be negative."
+    )
 
     @api.depends("validity")
     def _compute_date_deadline(self):
