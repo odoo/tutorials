@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char('Property Name', required=True, translate=True)
     description = fields.Text('Description', translate=True)
@@ -91,9 +92,14 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else 0
-        # Nasty magic string. I should turn the option into a variable and then reference it
-        self.garden_orientation = "north" if self.garden else None
+        if self.garden:
+            self.garden_area = 10
+            # Nasty magic string. I should turn the option into a variable and then reference it
+            self.garden_orientation = "north"
+            return
+
+        self.garden_area = 0
+        self.garden_orientation = None
 
     def action_sold(self):
         for property in self:

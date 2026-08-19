@@ -10,7 +10,11 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                decoration-success="state in ('offer', 'offer_accepted')"
+                decoration-muted="state == 'sold'"
+                decoration-bf="state == 'offer_accepted'"
+            >
                 <field name="type_id" />
                 <field name="name" />
                 <field name="postcode" />
@@ -18,7 +22,7 @@
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="1" />
                 <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
@@ -30,8 +34,27 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sold" string="Sold" type="object" invisible="state in ('sold', 'cancelled')" />
-                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('sold', 'cancelled')" />
+                    <button 
+                        name="action_sold"
+                        string="Sold"
+                        type="object"
+                        invisible="state in ('offer_accepted', 'sold', 'cancelled')" 
+                    />
+                    <button 
+                        name="action_sold"
+                        string="Sold"
+                        type="object"
+                        invisible="state != 'offer_accepted'"
+                        class="btn-primary"
+                    />
+
+                    <button 
+                        name="action_cancel"
+                        string="Cancel"
+                        type="object"
+                        invisible="state in ('sold', 'cancelled')"
+                    />
+
                     <field name="state" widget="statusbar" statusbar_visible="new,received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -39,11 +62,11 @@
                         <h1>
                             <field name="name" />
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" class="mb-3"/>
+                        <field name="tag_ids" widget="many2many_tags" class="mb-3" options="{'color_field': 'color'}" />
                     </div>
                     <group>
                         <group>
-                            <field name="type_id" />
+                            <field name="type_id" options="{'no_create': 0}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -62,13 +85,13 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" />
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')" />
                         </page>
                         <page string="Other Info">
                             <group>
