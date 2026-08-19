@@ -4,6 +4,8 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate model"
+    _order = "id desc"
+
     name = fields.Char(required=True)
     salesman_id = fields.Many2one("res.partner", string="Salesman")
     buyer_id = fields.Many2one("res.users", default=lambda self: self.env.user, string="Buyer")
@@ -15,7 +17,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
-        selection=[("new", "New"), ("offer received", "Offer Received"), ("offer accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled","Cancelled")]
+        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled","Cancelled")]
     )
     description = fields.Text()
     postcode = fields.Char()
@@ -86,3 +88,6 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
+
+    
+
