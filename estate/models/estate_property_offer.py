@@ -63,8 +63,8 @@ class EstatePropertyOffer(models.Model):
             record.property_id.ensure_no_accepted_offers(error_message="An offer was already accepted")
 
             record.status = "accepted"
-            record.property_id.selling_price = self.price
-            record.property_id.buyer_id = self.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
 
         return True
 
