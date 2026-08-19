@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class EstateProperty(models.Model):
@@ -73,3 +73,34 @@ class EstateProperty(models.Model):
 
         self.garden_area = None
         self.garden_orientation = None
+
+    def ensure_status_is_not(self, statuses, error_message=None):
+        """ Ensures that the status is not equal or included in statuses """
+        if not statuses:
+            return
+
+        if isinstance(statuses, str):
+            statuses = [statuses]
+
+        if not isinstance(statuses, (list, tuple, set)):
+            raise TypeError('statuses must be a string, list, tuple, or set')
+
+        if self.status in statuses:
+            msg = error_message or f'Action not allowed for status: {self.status}'
+            raise exceptions.UserError(msg)
+
+
+    # ACTIONS
+    def action_set_status_cancelled(self):
+        for record in self:
+            record.ensure_status_is_not("sold", error_message="You cannot cancel a sold property")
+            record.status = "cancelled"
+
+        return True
+
+    def action_set_status_sold(self):
+        for record in self:
+            record.ensure_status_is_not("cancelled", error_message="You cannot sell a cancelled property")
+            record.status = "sold"
+
+        return True
