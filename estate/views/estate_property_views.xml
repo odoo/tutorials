@@ -31,8 +31,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sold" string="Mark as Sold" type="object" class="btn-primary"/>
+                    <button name="action_cancel" string="Cancel" type="object"/>
+                </header>
                 <sheet>
-                    <!-- Property Title -->
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                     </div>
@@ -73,8 +76,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="partner_id"/>
                                 <field name="user_id"/>
+                                <field name="partner_id"/>
                             </group>
                         </page>
                     </notebook>

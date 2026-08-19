@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -49,7 +50,8 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one(
         string="Buyer",
         comodel_name="res.partner",
-        copy=False
+        copy=False,
+        readonly=True
     )
     user_id = fields.Many2one(
         string="Salesman",
@@ -99,3 +101,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold(self):
+        self.ensure_one()
+
+        if self.state == "cancelled":
+            raise UserError("Cancelled properties cannot be sold.")
+        
+        self.state = "sold"
+
+    def action_cancel(self):
+        self.ensure_one()
+
+        if self.state == "sold":
+            raise UserError("Sold properties cannot be cancelled.")
+        
+        self.state = "cancelled"
