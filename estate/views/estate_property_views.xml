@@ -11,6 +11,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties" multi_edit="1">
+                <header>
+                    <button type="action" name="%(estate_property_tag_action)d" string="property tag"/>
+                    <button type="action" name="%(estate_property_type_action)d" string="property type"/>
+                </header>
                 <field name="name"/>
                 <field name="postcode" optional ="show"/>
                 <field name="bedrooms" optional="show"/>
