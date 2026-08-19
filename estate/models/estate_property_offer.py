@@ -15,6 +15,8 @@ class EstatePropertyOffer(models.Model):
         [
             ("accepted", "Accepted"),
             ("refused", "Refused"),
+            ("sold", "Sold"),
+            ("cancel", "Cancelled")
         ],
         copy=False,
     )
@@ -45,3 +47,25 @@ class EstatePropertyOffer(models.Model):
             )
             if record.date_deadline:
                 record.validity = (record.date_deadline - create_date).days
+
+        
+    def action_refuse(self):
+        for record in self:
+           record.status = "refused"
+
+        return True
+
+    def action_accept(self):
+        for record in self:
+          record.status = "accepted"
+
+          record.property_id.buyer_id = record.partner_id
+          record.property_id.selling_price = record.price
+
+        return True
+
+
+
+
+
+        
