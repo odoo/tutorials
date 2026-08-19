@@ -49,6 +49,7 @@ class EstateProperty(models.Model):
         comodel_name='res.partner',
         string='Buyer',
         copy=False,
+        readonly=True,
     )
 
     @api.depends("living_area", "garden_area")
