@@ -118,6 +118,17 @@
                         <div class="oe_title mt-2">
                             <h1><field name="name" placeholder="Name" required="True" /></h1>
                         </div>
+                        <notebook>
+                            <page string="Properties">
+                                <field name="property_id">
+                                    <list create="False" delete="False">
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
