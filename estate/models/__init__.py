@@ -6,3 +6,4 @@ from . import estate_property_maintenance
 from . import estate_property_visits
 from . import estate_property_booking
 from . import estate_property_payments
+from . import res_user

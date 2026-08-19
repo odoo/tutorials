@@ -32,12 +32,12 @@ class EstatePropertyOffer(models.Model):
     @api.constrains('partner_id')
     def _check_spam(self):
         for offer in self:
-            count = self.search_count([
+            count = offer.search_count([
                 ('partner_id', '=', offer.partner_id.id),
                 ('create_date', '>=', fields.Datetime.now() - timedelta(minutes=5)),
             ])
             if count > 5:
-                self.search([
+                offer.search([
                     ('partner_id', '=', offer.partner_id.id),
                     ('create_date', '>=', fields.Datetime.now() - timedelta(minutes=5)),
                 ]).write({'is_spam': True})

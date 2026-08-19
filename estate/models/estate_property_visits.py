@@ -1,7 +1,5 @@
-from odoo import _,fields, models, api
+from odoo import _, fields, models, api
 from odoo.exceptions import ValidationError
-from datetime import timedelta
-import logging
 
 
 class EstatePropertyVisits(models.Model):
@@ -30,7 +28,7 @@ class EstatePropertyVisits(models.Model):
             ('3', "***"),
             ('4', "****"),
             ('5', "*****"),
-        ], string="Rating", index=True, tracking=True)
+        ], string="Rating", index=True)
     time_slot = fields.Selection(
         selection=[
             ('9-10', "9 am - 10 am"),
@@ -73,7 +71,6 @@ class EstatePropertyVisits(models.Model):
     def _onchange_property_id(self):
         if self.property_id:
             self.agent == self.property_id.user_id
-
 
     def _compute_display_name(self):
         for record in self:

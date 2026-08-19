@@ -11,7 +11,7 @@ class EstatePropertyBooking(models.Model):
     property_id = fields.Many2one("estate.property", string="property", required=True, copy=True, readonly=True)
     customer_id = fields.Many2one("res.partner", string="Customer", required=True)
     payment_ids = fields.One2many("estate.property.payments", "booking_id", string="payment")
-    booking_amount = fields.Float(string="Booking Amount", compute="_compute_booking_amount")
+    booking_amount = fields.Float(string="Booking Amount", compute="_compute_booking_amount", store=True)
     booking_date = fields.Date(string="Booking Date", default=fields.Date.today)
     remaining_amount = fields.Float(string="total amount left", compute="_compute_remaining_amount")
     offer_id = fields.Many2one("estate.property.offer", string="offer")

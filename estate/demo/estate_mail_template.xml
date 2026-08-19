@@ -8,8 +8,8 @@
         <div style="margin: 0px; padding: 0px">
             <p style="margin: 0px; padding: 0px; font-size: 13px;">
                 Dear <t t-out="object.customer_id.name"/><br/>
-                your booking <t t-out="object.property_id.name"/>has been confirmed<br/>
-                total amount : <t t-out="object.remaining_amount"/>has been paid
+                your booking <t t-out="object.property_id.name"/> has been confirmed<br/>
+                total amount : <t t-out="object.offer_id.price"/> has been paid
             </p>
         </div>
         </field>

@@ -91,6 +91,7 @@ class EstateProperty(models.Model):
         string="Best price", compute="_compute_best_price", store=True)
     maintenance_ids = fields.One2many(
         "estate.property.maintenance", 'property_id', string="maintenance_id")
+    offer_count = fields.Integer(related="property_type_id.offer_count")
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):

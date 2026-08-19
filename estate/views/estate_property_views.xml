@@ -42,13 +42,12 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="%(estate.estate_property_visits_action_property)d"
-                                
                                 type="action"
                                 icon="fa-calendar">
                                 <field name="visit_count" widget="statinfo" string="Visits"/>
                         </button>
                     </div>
-                    <!-- <div class="oe_button_box" name="button_box">
+                    <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="%(estate.estate_property_offer_action_type)d"
                             type="action"
                             icon="fa-calendar">
@@ -56,7 +55,7 @@
 
                         </button> 
 
-                    </div> -->
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>

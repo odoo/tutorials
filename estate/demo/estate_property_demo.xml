@@ -66,4 +66,3 @@
         <field name="tag_ids" eval="[(4,ref('property_tags_new'))]"/> 
     </record>
 </odoo>
-

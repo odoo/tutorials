@@ -37,13 +37,15 @@ class EstatePropertyPayments(models.Model):
     )
     remarks = fields.Text(string="Remarks")
 
-    @api.constrains('amount')
+    @api.constrains('amount', 'status')
     def _check_amount_paid(self):
         for record in self:
             if record.amount <= 0:
                 raise UserError(_("amount of a payment cannot be 0 "))
-            if record.amount > record.booking_id.remaining_amount:
-                raise UserError(_("amount of a payment cannot be more than remaining amount"))
+            if record.status == 'paid':
+                balance_before = record.booking_id.remaining_amount + record.amount
+                if record.amount > balance_before:
+                    raise UserError(_("amount cant be more than remaining amount"))
 
     @api.onchange('payment_type')
     def _check_payment_type(self):
