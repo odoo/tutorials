@@ -4,8 +4,10 @@ from odoo import models, fields
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = 'Estate Property Type'
+    _order = 'sequence, name'
 
     name = fields.Char('Name', required=True, translate=True)
+    sequence = fields.Integer('Sequence', default=1, help="Used for ordering purposes")
     property_id = fields.One2many('estate.property', 'property_type_id', string='Property')
 
     _name_uniq = models.Constraint(
