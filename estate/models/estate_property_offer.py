@@ -35,6 +35,11 @@ class EstatePropertyOffer(models.Model):
         inverse='_inverse_date_deadline',
     )
 
+    _check_price = models.Constraint(
+        'check(price > 0)',
+        'The offer price must be a positive amount and cannot be zero!',
+    )
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -49,7 +54,6 @@ class EstatePropertyOffer(models.Model):
     def _get_date_or_today(datetime_to_evaluate):
         """ Returns the date part of a given datetime if present, otherwise returns today's date """
         return datetime_to_evaluate.date() if datetime_to_evaluate else date.today()
-
 
     # ACTIONS
 
