@@ -51,3 +51,14 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             for property in record.property_id:
                 record.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        for to_create in vals:
+            property = self.env["estate.property"].browse(to_create["property_id"])
+            new_bid = to_create["price"]
+            for offer in property.offer_ids:
+                if offer.price > new_bid:
+                    raise exceptions.UserError("can't bid lower than the highest bid")
+            property.state = "offer_received"
+        return super().create(vals)

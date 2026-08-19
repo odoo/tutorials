@@ -89,5 +89,11 @@ class EstateProperty(models.Model):
                 record.state = "cancelled"
         return True
 
+    @api.ondelete(at_uninstall=False)
+    def ondelete(self, vals):
+        for property in self:
+            if property.state in ("new", "cancelled"):
+                raise exceptions.UserError("cannot delete new or cancelled record")
+        return super().ondelete()
     
 
