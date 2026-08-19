@@ -21,6 +21,7 @@ class EstatePropertyOffer(models.Model):
     )
     # Pretty sure I shouldn't be doing this but I couldn't find another way
     property_state = fields.Selection(related="property_id.state")
+    property_type_id = fields.Many2one(related="property_id.type_id", store=True)
     validity = fields.Integer(
         "Validity (days)",
         default=7,
