@@ -35,6 +35,8 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
     )
+    # Related Field
+    property_type_id = fields.Many2one(related='property_id.property_type_id', string='Property Type', store=True)
 
     _check_price = models.Constraint(
         'check(price > 0)',
@@ -73,4 +75,8 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
 
+        return True
+
+
+    def action_open_offers(self):
         return True
