@@ -39,7 +39,7 @@
             <form string="Estate Property">
                 <header>
                     <button name="action_sold" string="Mark as Sold" type="object" class="btn-primary" invisible="state != 'offer_received'"/>
-                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('offer_accepted', 'sold')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ('offer_accepted', 'sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
