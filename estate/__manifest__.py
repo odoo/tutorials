@@ -14,6 +14,6 @@
     ],
     "installable": True,
     "application": True,
-    "author": "emtal",
+    "author": "Odoo S.A.",
     "license": "LGPL-3",
 }
