@@ -69,22 +69,21 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, values):
-        # Get the biggest offers for the properties
-        prop_max_offer = {}
+        # Get the lowest new offer per property
+        prop_min_offer = {}
         for v in values:
             pid = v['property_id']
-            prop_max_offer[pid] = max(prop_max_offer.get(pid, 0), v['price'])
+            prop_min_offer[pid] = min(prop_min_offer.get(pid, float('inf')), v.get('price', 0))
 
-        # Get the properties that the offers reference
-        properties = self.env['estate.property'].browse(prop_max_offer.keys())
+        # Browse the properties referenced by the new offers
+        properties = self.env['estate.property'].browse(prop_min_offer.keys())
 
         for prop in properties:
-            # Check if the offer is higher than the best one
+            # No new offer may be lower than the best existing one
             best_existing = max(prop.offer_ids.mapped('price'), default=0)
-            if prop_max_offer[prop.id] < best_existing:
+            if prop_min_offer[prop.id] < best_existing:
                 raise UserError("You can not offer less than the biggest offer")
 
-            if prop.state == 'new':
-                prop.state = 'offer'
+        properties.filtered(lambda p: p.state == 'new').state = 'offer'
 
         return super().create(values)
