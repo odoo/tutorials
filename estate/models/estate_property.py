@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -38,15 +39,16 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancel", "Cancelled"),
+            ("cancelled", "Cancelled"),
         ],
         default="new",
+        copy=False,
     )
     active = fields.Boolean("Active", default=True)
 
     # Many2one references
     type_id = fields.Many2one(comodel_name="estate.property.type")
-    buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner")
+    buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False)
     salesperson_id = fields.Many2one(
         string="Salesperson",
         comodel_name="res.users",
@@ -86,3 +88,29 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "north" if self.garden else "n/a"
+
+    def action_property_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError(
+                    "This property has already been cancelled. It can not be sold!"
+                )
+            elif record.state == "sold":
+                raise UserError(
+                    "This property has already been sold. It can not be sold again!"
+                )
+            else:
+                record.state = "sold"
+
+    def action_property_canceled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(
+                    "This property has already been sold. It can not be cancelled!"
+                )
+            elif record.state == "cancelled":
+                raise UserError(
+                    "This property has already been cancelled. It can not be cancelled again!"
+                )
+            else:
+                record.state = "cancelled"
