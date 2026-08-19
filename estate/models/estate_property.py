@@ -90,3 +90,13 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = False
                 record.garden_orientation = False
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "The selling price must be strictly positive.",
+    )
