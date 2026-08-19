@@ -49,6 +49,14 @@ class EstateProperty(models.Model):
         "Best Price",
         compute="_compute_best_price"
     )
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be greater than zero (0)',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The selling price must be greater than zero (0)',
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -76,12 +84,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise exceptions.UserError("Cancelled properties cannot be sold")
-            record.status = "Sold"
+            record.state = "sold"
         return True
 
     def action_cancel_property(self):
         for record in self:
             if record.state == "sold":
                 raise exceptions.UserError("Sold properties cannot be cancelled")
-            record.status = "Cancelled"
+            record.state = "cancelled"
         return True
