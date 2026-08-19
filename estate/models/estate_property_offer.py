@@ -54,3 +54,11 @@ class EstatePropertyOffer(models.Model):
             # We could forbid refusing accepted offers
             offer.state = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property'])
+            if property.state == 'new':
+                property.state = 'offer_received'
+        return super().create(vals_list)
