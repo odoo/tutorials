@@ -5,6 +5,7 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Offer Price", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
@@ -30,6 +31,11 @@ class EstatePropertyOffer(models.Model):
         string="Property",
         comodel_name="estate.property",
         required=True
+    )
+    property_type_id = fields.Many2one(
+        string="Property Type",
+        related="property_id.property_type_id",
+        store=True
     )
 
     _check_positive_price = models.Constraint(
