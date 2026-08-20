@@ -25,7 +25,7 @@
                 <field name="expected_price" class="text-center" width="50px"/>
                 <field name="selling_price" class="text-center" width="50px"/>
                 <field name="date_availability" class="text-center" width="50px" optional="hide"/>
-                <field name="state" column_invisible="True"/>
+                <field name="state" column_invisible="True"/> <!-- Used by list decorations -->
             </list>
         </field>
     </record>
