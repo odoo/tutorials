@@ -56,6 +56,7 @@ class EstateProperty(models.Model):
         "CHECK(selling_price >= 0)",
         "The selling price of a property cannot be negative.",
     )
+    _order = "id desc"
 
     @api.constrains("selling_price")
     def _check_selling_price(self):

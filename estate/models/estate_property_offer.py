@@ -12,6 +12,9 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True
     )
@@ -20,6 +23,7 @@ class EstatePropertyOffer(models.Model):
     _positive_price = models.Constraint(
         "CHECK(price > 0)", "The price of an offer cannot be negative."
     )
+    _order = "price desc"
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -48,7 +52,6 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
-            record.property_id.state = "offer_accepted"
 
     def action_refuse_offer(self):
         for record in self:
