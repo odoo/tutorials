@@ -1,5 +1,9 @@
 from datetime import date, timedelta
+from typing import Self
+
 from odoo import models, fields, api
+from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -43,6 +47,20 @@ class EstatePropertyOffer(models.Model):
         'The offer price must be a positive amount and cannot be zero!',
     )
 
+    @api.model
+    def create(self, vals) -> Self:
+        for val in vals:
+            # set the correct state
+            estate_property = self.env['estate.property'].browse(val['property_id'])
+            estate_property.status = 'offer_received'
+
+            # offers should be higher than the ones we already have
+            current_prices = estate_property.property_offer_ids.mapped('price')
+            if float_compare(val['price'], min(current_prices), precision_digits=2) < 0:
+                raise UserError(f"The offer {val['price']} cannot be lower than the other offers.")
+
+        return super().create(vals)
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -52,11 +70,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             create_date_or_today = self._get_date_or_today(record.create_date)
             record.validity = (record.date_deadline - create_date_or_today).days
-
-    @staticmethod
-    def _get_date_or_today(datetime_to_evaluate):
-        """ Returns the date part of a given datetime if present, otherwise returns today's date """
-        return datetime_to_evaluate.date() if datetime_to_evaluate else date.today()
 
     # ACTIONS
 
@@ -77,6 +90,7 @@ class EstatePropertyOffer(models.Model):
 
         return True
 
-
-    def action_open_offers(self):
-        return True
+    @staticmethod
+    def _get_date_or_today(datetime_to_evaluate):
+        """ Returns the date part of a given datetime if present, otherwise returns today's date """
+        return datetime_to_evaluate.date() if datetime_to_evaluate else date.today()

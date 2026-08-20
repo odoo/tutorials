@@ -63,6 +63,11 @@ class EstateProperty(models.Model):
         'The selling price must be a positive amount!',
     )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        if any(not record.status in ['new', 'cancelled'] for record in self):
+            raise exceptions.UserError(f"Can't delete property with status different from NEW or CANCELLED.")
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
