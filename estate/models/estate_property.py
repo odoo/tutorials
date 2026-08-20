@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property Model'
+    _order = 'id desc'
 
     DEFAULT_BEDROOM_COUNT = 2
     DEFAULT_AVAILABILITY_DATE = fields.Date.today() + relativedelta(months=3)
