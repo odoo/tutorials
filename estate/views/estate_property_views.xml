@@ -16,6 +16,7 @@
                     <field name="facades" />
                     <field name="property_type_id" />
                     <filter string="Available" name="available" domain="[('status', 'in', ['new','offer_received'])]" />
+                    <filter string="Not Active" name="not_active" domain="[('active', '=', 'False')]" />
                     <filter string="Postcode" name="postcode"  context="{'group_by': 'postcode'}" />
                 </search>
             </field>
