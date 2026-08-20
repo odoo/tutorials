@@ -8,9 +8,6 @@ class EstateProperty(models.Model):
 
     # ACTIONS
 
-    def action_set_status_cancelled(self):
-        return super().action_set_status_cancelled()
-
     def action_set_status_sold(self):
         result = super().action_set_status_sold()
 
