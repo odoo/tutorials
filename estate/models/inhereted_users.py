@@ -7,3 +7,4 @@ class InheritedModel(models.Model):
         "estate.property", 
         "salesman_id",
         domain=[("state", "in", ["new", "offer_received"])])
+    

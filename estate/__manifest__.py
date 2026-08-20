@@ -10,8 +10,6 @@
         'views/users_extra_views.xml',
         'data/estate_menus.xml'
     ],
-    'views': [
-        
-    ],
     'application':True
 }
+
