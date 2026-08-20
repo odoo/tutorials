@@ -1,5 +1,5 @@
 
-from odoo import Command, models
+from odoo import Command, _, models
 from odoo.exceptions import ValidationError
 
 
@@ -16,11 +16,11 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if not self.offer_ids:
-            raise ValidationError("No offers found for this property.")
+            raise ValidationError(_("No offers found for this property."))
 
         accepted_offer = self.offer_ids.filtered(lambda o: o.status == "accepted")
         if not accepted_offer:
-            raise ValidationError("No accepted offer found for this property.")
+            raise ValidationError(_("No accepted offer found for this property."))
 
         self.env['account.move'].create({
             'move_type': 'out_invoice',
@@ -39,4 +39,4 @@ class EstateProperty(models.Model):
             ],
         })
 
-        return super(EstateProperty, self).action_sold()
+        return super().action_sold()
