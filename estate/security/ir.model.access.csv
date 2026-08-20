@@ -4,3 +4,5 @@ access_estate_property_type,estate.property.type,model_estate_property_type,base
 access_estate_property_tag,estate.property.tag,model_estate_property_tag,base.group_user,1,1,1,1
 access_estate_property_offer,estate.property.offer,model_estate_property_offer,base.group_user,1,1,1,1
 access_maintenance_property,maintenance.property,model_maintenance_property,base.group_user,1,1,1,1
+access_estate_property_booking,estate.property.booking,model_estate_property_booking,base.group_user,1,1,1,1
+access_estate_property_payment,estate.property.payment,model_estate_property_payment,base.group_user,1,1,1,1

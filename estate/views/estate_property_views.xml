@@ -9,17 +9,19 @@
     <record id="estate_list_property" model="ir.ui.view">
         <field name="name">estate</field>
         <field name="model">estate.property</field>
-        
+
         <field name="arch" type="xml">
-            <list string="Estatic Lines" decoration-success="state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'" >
-                <field name="description" string="Description"/>
-                <field name="bedrooms" string="Living Area"/>
-                <field name="facades" string="Facades"/>
-                <field name="garage" string="Garages"/>
-                <field name="garden" string="Garden"/>
-                <field name="garden_area" string="Garden Area"/>
-                <field name="garden_orientation" string="Garden Orientation"/>
-                <field name="date_availability" optional="hide"/>
+            <list string="Estatic Lines" decoration-success="state == 'offer_accepted'"
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" optional="hide" />
+                <field name="property_type_id" />
+                <field name="tag_ids" widget="many2many_tags" />
             </list>
         </field>
     </record>
@@ -29,29 +31,25 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="0">
-                <field name="state"/>
+                <field name="state" />
                 <templates>
                     <t t-name="card">
-                        <div> 
+                        <div>
                             <strong>
-                                <field name="name"/>
+                                <field name="name" />
                             </strong>
-                            <div>
-                                Expected Price:
-                                <field name="expected_price"/>
+                            <div> Expected Price: <field name="expected_price" />
                             </div>
-                            <t t-if="record.state.raw_value == 'offer_received'">
-                                Best Price:
-                                <field name="best_price"/>
+                            <t t-if="record.state.raw_value == 'offer_received'"> Best Price: <field
+                                    name="best_price" />
                             </t>
-                            <t t-if="record.state.raw_value == 'offer_accepted'">
-                                Selling Price:
-                                <field name="selling_price"/>
+                            <t t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                    name="selling_price" />
                             </t>
                             <div class="mt-2">
-                                <field name="tag_ids"/>
+                                <field name="tag_ids" />
                             </div>
-                        </div>    
+                        </div>
                     </t>
                 </templates>
             </kanban>
@@ -63,55 +61,68 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Description">
-               <header>
-                    <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state == 'sold'"/>
-                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'cancelled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="btn-primary"
+                        invisible="state != 'offer_accepted'" />
+                    <button name="action_cancel" type="object" string="Cancel"
+                        invisible="state == 'cancelled'" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,booked,sold" />
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_booking" type="object" class="oe_stat_button"
+                            icon="fa-book">
+                            <field name="booking_count" widget="statinfo" string="Bookings" />
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="e.g.Downtown Apartment"/>
+                            <field name="name" placeholder="e.g.Downtown Apartment" />
                         </h1>
                     </div>
                     <group>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="tag_ids" widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="property_type_id"
+                                options="{'no_create': True, 'no_open': True}" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                            <field name="best_price"/>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                            <field name="best_price" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" placeholder="when duplicated, status and date are not copied"/>
-                                <field name="bedrooms"/>
+                                <field name="description"
+                                    placeholder="when duplicated, status and date are not copied" />
+                                <field name="bedrooms" />
                                 <field name="living_area" />
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" invisible="garden == False"/>
-                                <field name="garden_orientation" invisible="garden == False"/>
-                                <field name="total_area"/>
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" invisible="garden == False" />
+                                <field name="garden_orientation" invisible="garden == False" />
+                                <field name="total_area" />
                             </group>
                         </page>
 
                         <page string="Offers">
-                                <field name="offer_ids" readonly="state in ['offer_accepted','sold','cancelled']"/>
+                            <field name="offer_ids"
+                                readonly="state in ['offer_accepted','sold','cancelled']" />
                         </page>
 
                         <page string="Maintenance">
-                                <field name="maintenance_ids"/>
+                            <field name="maintenance_ids" />
                         </page>
-                        
+
                         <page string="Other">
                             <group>
                                 <field name="description"
@@ -128,6 +139,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>
@@ -140,7 +152,8 @@
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />
                 <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]" />
+                <field name="living_area" string="Living Area (sqm)"
+                    filter_domain="[('living_area', '>=', self)]" />
                 <field name="facades" string="Facades" />
                 <filter name="state" string="Available"
                     domain="['|',('state','=','new'),('state','=','offer_recieved')]" />

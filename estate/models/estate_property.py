@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "real state property"
     _order = "id desc"
+    _inherit = ["mail.thread"]
 
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -67,6 +68,7 @@ class EstateProperty(models.Model):
             ("new", "New"),
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
+            ("booked", "Booked"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -102,10 +104,17 @@ class EstateProperty(models.Model):
 
     @api.model
     def _read_group_stage_ids(self, *args, **kwargs):
-        return ["new", "offer_received", "offer_accepted", "sold", "cancelled"]
+        return ["new", "offer_received", "offer_accepted", "booked", "sold", "cancelled"]
 
     best_price = fields.Float(compute="_compute_price")
     total_area = fields.Float(compute="_compute_total")
+    booking_count = fields.Integer(compute="_compute_booking_count")
+
+    def _compute_booking_count(self):
+        for record in self:
+            record.booking_count = self.env['estate.property.booking'].search_count([
+                ('property_id', '=', record.id)
+            ])
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -133,8 +142,8 @@ class EstateProperty(models.Model):
     def _unlink_check_state(self):
         for property in self:
             if property.state not in ("new", "cancelled"):
-                raise UserError(
-                    "Only new or cancelled properties can be deleted.")
+                error_msg = "Only new or cancelled properties can be deleted."
+                raise UserError(error_msg)
 
     def action_cancel(self):
         for property in self:
@@ -151,3 +160,15 @@ class EstateProperty(models.Model):
                 raise UserError(message)
             property.state = "sold"
         return True
+
+    def action_view_booking(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Bookings",
+            "res_model": "estate.property.booking",
+            "domain": [("property_id", "=", self.id)],
+            "context": {"default_property_id": self.id},
+            "view_mode": "list,form",
+            "target": "current",
+        }

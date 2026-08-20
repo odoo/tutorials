@@ -1,7 +1,6 @@
-from datetime import timedelta
-
-from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo import api, fields, models
+from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
@@ -64,6 +63,11 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.state = "offer_accepted"
+
+            self.env['estate.property.booking'].create({
+                'property_id': record.property_id.id,
+                'buyer_id': record.partner_id.id,
+            })
         return True
 
     def action_refuse(self):
