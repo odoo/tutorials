@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -17,7 +18,7 @@ class EstatePropertyOffer(models.Model):
         selection=[
             ('accepted', 'Accepted'),
             ('refused', 'Refused'),
-        ]
+        ],
     )
     # Pretty sure I shouldn't be doing this but I couldn't find another way
     property_state = fields.Selection(related="property_id.state")
@@ -31,7 +32,7 @@ class EstatePropertyOffer(models.Model):
         "Deadline",
         required=True,
         compute="_compute_deadline",
-        inverse="_inverse_deadline"
+        inverse="_inverse_deadline",
     )
 
     @api.depends("validity")
@@ -45,7 +46,7 @@ class EstatePropertyOffer(models.Model):
             offer.validity = delta.days
 
     def action_offer_accept(self):
-        for offer in self: 
+        for offer in self:
             if offer.property_state in ('offer_accepted', 'sold', 'cancelled'):
                 raise UserError("You can not accept more offers for this property")
 
@@ -53,7 +54,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.state = "offer_accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
-        
+
         return True
 
     def action_offer_refuse(self):
@@ -64,7 +65,7 @@ class EstatePropertyOffer(models.Model):
 
     _price_positive = models.Constraint(
         'CHECK(price > 0)',
-        'The offer price must be strictly positive'
+        'The offer price must be strictly positive',
     )
 
     @api.model_create_multi

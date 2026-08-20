@@ -2,7 +2,7 @@
     'name': 'Real Estate',
     'version': '0.0',
     'depends': [
-        'base'
+        'base',
     ],
     'data': [
         'security/ir.model.access.csv',

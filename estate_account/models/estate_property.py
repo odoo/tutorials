@@ -6,7 +6,7 @@ class InheritedModel(models.Model):
 
     def action_sold(self):
         for property in self:
-            move = self.env['account.move'].create({
+            self.env['account.move'].create({
                 'partner_id': property.buyer_id.id,
                 'move_type': 'out_invoice',
                 'line_ids': [

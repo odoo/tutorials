@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -13,33 +14,33 @@ class EstateProperty(models.Model):
     description = fields.Text('Description', translate=True)
     postcode = fields.Char('Post Code', required=True)
     date_availability = fields.Date(
-        'Availability Date', 
-        required=True, 
+        'Availability Date',
+        required=True,
         copy=False,
-        default=fields.Date.today() + relativedelta(months=3)
+        default=fields.Date.today() + relativedelta(months=3),
     )
     type_id = fields.Many2one("estate.property.type", string="Type", required=True)
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     salesperson_id = fields.Many2one(
         "res.users",
-        string="Salesperson", 
-        default=lambda self: self.env.user
+        string="Salesperson",
+        default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one(
-        "res.partner", 
+        "res.partner",
         string="Buyer",
-        copy=False
+        copy=False,
     )
     expected_price = fields.Float('Expected Price')
     selling_price = fields.Float(
-        'Selling Price', 
-        readonly=True, 
-        copy=False
+        'Selling Price',
+        readonly=True,
+        copy=False,
     )
     bedrooms = fields.Integer(
-        '# Bedrooms', 
-        default=2
+        '# Bedrooms',
+        default=2,
     )
     facades = fields.Integer('# Facades')
     garage = fields.Boolean('Garage')
@@ -53,7 +54,7 @@ class EstateProperty(models.Model):
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West'),
-        ] 
+        ],
     )
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
@@ -69,7 +70,7 @@ class EstateProperty(models.Model):
         copy=False,
         required=True,
         readonly=True,
-        #group_expand=True
+        # group_expand=True
     )
     total_area = fields.Integer(
         "Total Area m²",
@@ -105,35 +106,36 @@ class EstateProperty(models.Model):
         for property in self:
             if property.state == "cancelled":
                 raise UserError("You can not sell a cancelled property")
-    
+
             property.state = "sold"
 
         return True
-        
+
     def action_cancel(self):
         for property in self:
             if property.state == "sold":
                 raise UserError("You can not cancel a sold property")
-    
+
             property.state = "cancelled"
 
         return True
 
     _exp_price_positive = models.Constraint(
         'CHECK(expected_price > 0)',
-        'The property expected price must be strictly positive'
+        'The property expected price must be strictly positive',
     )
 
     _sell_price_positive = models.Constraint(
         'CHECK(selling_price >= 0)',
-        'The property selling price must be positive'
+        'The property selling price must be positive',
     )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for property in self:
-            if float_is_zero(property.selling_price, precision_digits=2): continue
-            
+            if float_is_zero(property.selling_price, precision_digits=2):
+                continue
+
             limit = 0.9 * property.expected_price
             if float_compare(property.selling_price, limit, precision_digits=2) == -1:
                 raise ValidationError("The property selling price must be at least 90% of the expected price")

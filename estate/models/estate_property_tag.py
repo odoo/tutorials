@@ -11,5 +11,5 @@ class EstatePropertyTag(models.Model):
 
     _uniq_name = models.Constraint(
         'UNIQUE(name)',
-        'The tag name must be unique'
+        'The tag name must be unique',
     )
