@@ -1,7 +1,6 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.tools.translate import _
 from odoo.exceptions import UserError
 
 
@@ -52,20 +51,26 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - base_date).days
 
     def action_confirm_offer(self):
-        for offer in self:
-            # Check property have already been sold or canceled
-            if offer.property_id.state in ["sold", "canceled"]:
-                raise UserError(_("This property has already been sold or canceled!"))
+        self.ensure_one()
+        # Check property have already been sold or canceled
+        if self.property_id.state in ["sold", "canceled"]:
+            raise UserError(
+                self.env._("This property has already been sold or canceled!")
+            )
 
-            # Any accepted offer?
-            if any(o.status == "accepted" for o in offer.property_id.offer_ids):
-                raise UserError(_("An offer have already been accepted!"))
+        # Any accepted offer?
+        if any(o.status == "accepted" for o in self.property_id.offer_ids):
+            raise UserError(self.env._("An offer have already been accepted!"))
 
-            # Accept offer
-            offer.status = "accepted"
-            offer.property_id.state = "offer_accepted"
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
+        # Accept offer
+        self.status = "accepted"
+        self.property_id.write(
+            {
+                "state": "offer_accepted",
+                "selling_price": self.price,
+                "buyer_id": self.partner_id.id,
+            }
+        )
 
     def action_refuse_offer(self):
         for offer in self:
@@ -82,7 +87,7 @@ class EstatePropertyOffer(models.Model):
             for offer in property_rec.offer_ids:
                 if vals.get("price", 0) <= offer.price:
                     raise UserError(
-                        _(
+                        self.env._(
                             "The offer amount must be strictly higher than existing offers."
                         )
                     )

@@ -127,7 +127,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# dprint formatter config file
-estate/dprint.json
-estate_account/dprint.json

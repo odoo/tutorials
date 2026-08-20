@@ -158,7 +158,7 @@
         <field
           name="living_area"
           string="Min Living Area"
-          filter_domain="[('living_area', '>=', self)]"
+          filter_domain="[('living_area', '&gt;=', self)]"
         />
         <field name="facades" />
 

@@ -63,8 +63,8 @@ class EstateProperty(models.Model):
 
     # Many2many references
     tag_ids = fields.Many2many(
-        string="Tags",
         comodel_name="estate.property.tag",
+        string="Tags",
     )
 
     # Computed
@@ -86,21 +86,25 @@ class EstateProperty(models.Model):
     # On change
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = "north" if self.garden else "n/a"
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = "n/a"
 
     def action_property_sold(self):
-        for record in self:
-            if record.state == "canceled":
-                raise UserError(
-                    _("This property has already been canceled. It can not be sold!")
-                )
-            elif record.state == "sold":
-                raise UserError(
-                    _("This property has already been sold. It can not be sold again!")
-                )
-            else:
-                record.state = "sold"
+        self.ensure_one()
+        if self.state == "canceled":
+            raise UserError(
+                _("This property has already been canceled. It can not be sold!")
+            )
+        elif self.state == "sold":
+            raise UserError(
+                _("This property has already been sold. It can not be sold again!")
+            )
+        else:
+            self.state = "sold"
 
     def action_property_canceled(self):
         for record in self:
