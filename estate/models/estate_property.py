@@ -1,9 +1,17 @@
 from odoo import fields, models
 
-
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesperson_id = fields.Many2one('res.users', string='Saleswoman', default=lambda self: self.env.user)
+
+    tag_ids = fields.Many2many('estate.property.tag', string='Property Tags')
+
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -22,7 +30,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('Garden area (m²)')
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-        help="garden orientation in respect to main compass directions")
+        help="Garden orientation in respect to main compass directions")
     active = fields.Boolean(default=True)
     state = fields.Selection(
             selection=[
