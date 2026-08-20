@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -60,3 +61,22 @@ class EstatePropertyOffer(models.Model):
                     "You cannot refuse an offer that has already been accepted."
                 )
             record.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            estate_property = self.env["estate.property"].browse(val["property_id"])
+            estate_property.status = "offer_received"
+
+            previous_offers_prices = estate_property.property_offer_ids.mapped("price")
+            if (
+                float_compare(
+                    val["price"], min(previous_offers_prices), precision_digits=2
+                )
+                < 0
+            ):
+                raise UserError(
+                    f"The offer {val['price']} cannot be lower than the other offers."
+                )
+
+        return super().create(vals)
