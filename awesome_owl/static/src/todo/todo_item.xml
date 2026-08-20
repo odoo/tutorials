@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="p-1" t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}">
+            <bf><t t-esc="props.id"/>. </bf>
+            <t t-esc="props.description"/>
+        </div>
+    </t>
+
+</templates>
