@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Estate Property Tag"
@@ -10,5 +11,5 @@ class EstatePropertyTag(models.Model):
 
     _unique_name = models.Constraint(
         'UNIQUE(name)',
-        'Tag name must be unique.'
+        'Tag name must be unique.',
     )

@@ -1,8 +1,9 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, api
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -13,8 +14,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        string="Available From", 
-        default=lambda _ : fields.Date.today() + relativedelta(months=3)
+        string="Available From",
+        default=lambda _: fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -40,54 +41,54 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled")
+            ("cancelled", "Cancelled"),
         ],
         default="new",
-        copy=False
+        copy=False,
     )
     property_type_id = fields.Many2one(
         string="Property Type",
-        comodel_name="estate.property.type"
+        comodel_name="estate.property.type",
     )
     partner_id = fields.Many2one(
         string="Buyer",
         comodel_name="res.partner",
         copy=False,
-        readonly=True
+        readonly=True,
     )
     user_id = fields.Many2one(
         string="Salesman",
         comodel_name="res.users",
-        default=lambda self: self.env.user
+        default=lambda self: self.env.user,
     )
     tag_ids = fields.Many2many(
         string="Property Tags",
-        comodel_name="estate.property.tag"
+        comodel_name="estate.property.tag",
     )
     offer_ids = fields.One2many(
         string="Offers",
         comodel_name="estate.property.offer",
-        inverse_name="property_id"
+        inverse_name="property_id",
     )
     total_area = fields.Integer(
         string="Total Area (sqm)",
         compute="_compute_total_area",
-        readonly=True
+        readonly=True,
     )
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price",
-        readonly=True
+        readonly=True,
     )
     active = fields.Boolean(default=True)
 
     _check_positive_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
-        'Expected price must be a positive amount.'
+        'Expected price must be a positive amount.',
     )
     _check_positive_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)',
-        'Selling price must be a positive amount.'
+        'Selling price must be a positive amount.',
     )
 
     # Methods
@@ -124,29 +125,29 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if record.selling_price and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
-                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+                raise ValidationError(_("Selling price cannot be lower than 90% of the expected price."))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_not_new_or_cancelled(self):
         for record in self:
             if record.state not in ("new", "cancelled"):
-                raise ValidationError("Only new or cancelled properties can be deleted.")
+                raise ValidationError(_("Only new or cancelled properties can be deleted."))
 
     def action_sold(self):
         self.ensure_one()
 
         if self.state == "cancelled":
-            raise UserError("Cancelled properties cannot be sold.")
+            raise UserError(_("Cancelled properties cannot be sold."))
 
         if self.state != "offer_accepted":
-            raise UserError("Only accepted offers can be sold.")
-        
+            raise UserError(_("Only accepted offers can be sold."))
+
         self.state = "sold"
 
     def action_cancel(self):
         self.ensure_one()
 
         if self.state == "sold":
-            raise UserError("Sold properties cannot be cancelled.")
-        
+            raise UserError(_("Sold properties cannot be cancelled."))
+
         self.state = "cancelled"

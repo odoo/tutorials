@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
@@ -12,35 +13,35 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline"
+        inverse="_inverse_date_deadline",
     )
     status = fields.Selection(
         string="Status",
         selection=[
             ("accepted", "Accepted"),
-            ("refused", "Refused")
+            ("refused", "Refused"),
         ],
-        copy=False
+        copy=False,
     )
     partner_id = fields.Many2one(
         string="Buyer",
         comodel_name="res.partner",
-        required=True
+        required=True,
     )
     property_id = fields.Many2one(
         string="Property",
         comodel_name="estate.property",
-        required=True
+        required=True,
     )
     property_type_id = fields.Many2one(
         string="Property Type",
         related="property_id.property_type_id",
-        store=True
+        store=True,
     )
 
     _check_positive_price = models.Constraint(
         'CHECK(price > 0)',
-        'Offer prices must be a positive amount.'
+        'Offer prices must be a positive amount.',
     )
 
     # Methods
@@ -63,7 +64,7 @@ class EstatePropertyOffer(models.Model):
             # Refuse other offers for the same property
             other_offers = self.search([
                 ("property_id", "=", record.property_id.id),
-                ("id", "!=", record.id)
+                ("id", "!=", record.id),
             ])
             other_offers.write({"status": "refused"})
 

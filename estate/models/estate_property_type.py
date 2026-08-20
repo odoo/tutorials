@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
@@ -10,16 +11,16 @@ class EstatePropertyType(models.Model):
     property_ids = fields.One2many(
         string="Properties",
         comodel_name="estate.property",
-        inverse_name="property_type_id"
+        inverse_name="property_type_id",
     )
     offer_ids = fields.One2many(
         string="Offers",
         comodel_name="estate.property.offer",
-        inverse_name="property_type_id"
+        inverse_name="property_type_id",
     )
     offer_count = fields.Integer(
         string="Number of Offers",
-        compute="_compute_offer_count"
+        compute="_compute_offer_count",
     )
 
     # Methods
