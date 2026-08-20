@@ -2,13 +2,13 @@
 <odoo>
 
     <!-- Tutorial action  -->
-    <record id="estate_property_type_action" model="ir.actions.act_window">
+    <record id="estate_property_type_action_view" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-              This is a simple window action test.
+              Create estate property types to view them here !
           </p>
         </field>
     </record>
@@ -21,7 +21,7 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" type="action"
-                            name="%(estate_property_offer_action)d" icon="fa-bars"
+                            name="%(estate_property_offer_action_view)d" icon="fa-bars"
                         >
                             <div class="o_stat_info">
                                 <span class="o_stat_value">
@@ -38,7 +38,7 @@
                     </h1>
                     <notebook>
                         <page string="Properties">
-                            <field name="properties">
+                            <field name="property_ids">
                                 <list create="false" delete="false">
                                     <field name="name"/>
                                     <field name="expected_price"/>

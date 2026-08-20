@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="estate_property_offer_action" model="ir.actions.act_window">
+    <record id="estate_property_offer_action_view" model="ir.actions.act_window">
         <field name="name">Estate Property Offer</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form,search</field>
-        <field name="domain">[('property_type', '=', active_id)]</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
-              This is a simple window action test.
+              Create estate property offers to view them here !
           </p>
         </field>
     </record>
@@ -22,13 +22,12 @@
                 decoration-danger="state=='refused'"
             >
                 <field name="price"/>
-                <field name="partner"/>
+                <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <field name="property_type"/>
+                <field name="property_type_id"/>
                 <button name="action_accept_offer" string="Accept" type="object" icon="fa-check" invisible="state"/>
                 <button name="action_refuse_offer" string="Refuse" type="object" icon="fa-times" invisible="state"/>
-                <field name="state" column_invisible="True"/>
             </list>
         </field>
     </record>
@@ -41,7 +40,7 @@
                 <sheet>
                     <group>
                         <field name="price"/>
-                        <field name="partner"/>
+                        <field name="partner_id"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
                         <field name="state"/>

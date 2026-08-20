@@ -9,8 +9,8 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char("Property Type Name", required=True)
     sequence = fields.Integer(default=1, help="Used to order stages. Lower is ranked higher.")
-    properties = fields.One2many(comodel_name="estate.property", inverse_name="type")
-    offers = fields.One2many(related="properties.offers", inverse_name="property_type")
+    property_ids = fields.One2many(comodel_name="estate.property", inverse_name="type_id")
+    offer_ids = fields.One2many(related="property_ids.offer_ids", inverse_name="property_type_id")
 
     offer_count = fields.Integer(compute="_compute_offer_count")
 
@@ -19,7 +19,7 @@ class EstatePropertyType(models.Model):
         'A property type with the same name already exists.',
     )
 
-    @api.depends("properties.offers")
+    @api.depends("property_ids.offer_ids")
     def _compute_offer_count(self):
         for type in self:
-            type.offer_count = sum(len(property.offers) for property in type.properties)
+            type.offer_count = self.env['estate.property.offer'].search_count([('property_id', 'in', type.property_ids.ids)])

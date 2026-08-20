@@ -1,5 +1,7 @@
-from odoo import models, fields, api, exceptions
 from dateutil.relativedelta import relativedelta
+
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero, float_compare
 
 
@@ -32,19 +34,13 @@ class EstateProperty(models.Model):
         default='new',
         required=True,
         copy=False)
-
     active = fields.Boolean(default=True)
-
-    type = fields.Many2one(comodel_name="estate.property.type")
-    buyer = fields.Many2one(comodel_name="res.partner", copy=False)
-    seller = fields.Many2one(string="Salesperson", comodel_name="res.users", default=lambda self: self.env.user)
-
-    tags = fields.Many2many(comodel_name="estate.property.tag")
-
-    offers = fields.One2many(comodel_name="estate.property.offer", inverse_name="property")
-
+    type_id = fields.Many2one(string="Type", comodel_name="estate.property.type")
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    seller_id = fields.Many2one(string="Salesperson", comodel_name="res.users", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many(string="Tags", comodel_name="estate.property.tag")
+    offer_ids = fields.One2many(string="Offers", comodel_name="estate.property.offer", inverse_name="property_id")
     total_area = fields.Integer(compute="_compute_total_area")
-
     best_price = fields.Float("Best offer price", compute="_compute_best_price")
 
     _expected_price_strictly_positive = models.Constraint(
@@ -57,7 +53,8 @@ class EstateProperty(models.Model):
     )
 
     def _no_accepted_offer(self):
-        return all(offer.state != "accepted" for offer in self.offers)
+        self.ensure_one()
+        return all(offer.state != "accepted" for offer in self.offer_ids)
 
     @api.constrains("selling_price")
     def _check_selling_price(self):
@@ -67,7 +64,7 @@ class EstateProperty(models.Model):
                 return
 
             if float_compare(property.selling_price, property.expected_price * 0.9, 2) == -1:
-                raise exceptions.ValidationError(
+                raise ValidationError(
                     "Selling price must be at least 90% of expected price. Update expected price to accept offer."
                 )
 
@@ -76,14 +73,14 @@ class EstateProperty(models.Model):
         for property in self:
             property.total_area = property.living_area + property.garden_area
 
-    @api.depends("offers")
+    @api.depends("offer_ids")
     def _compute_best_price(self):
         for property in self:
-            if not property.offers:
+            if not property.offer_ids:
                 property.best_price = 0
                 continue
-            best_offer = max(property.offers, key=lambda offer: offer.price)
-            property.best_price = best_offer.price
+            best_offer_price = max(property.offer_ids.mapped('price'))
+            property.best_price = best_offer_price
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -98,19 +95,26 @@ class EstateProperty(models.Model):
     def action_cancel_property(self):
         for property in self:
             if property.state == "sold":
-                raise exceptions.UserError("Sold properties cannot be cancelled")
+                raise UserError("Sold properties cannot be cancelled")
             property.state = "cancelled"
         return True
 
     def action_sell_property(self):
         for property in self:
             if property.state == "cancelled":
-                raise exceptions.UserError("Cancelled properties cannot be sold")
+                raise UserError("Cancelled properties cannot be sold")
+
+            if not property.offer_ids:
+                raise UserError("Cannot sell property with no offer")
+
+            if property._no_accepted_offer():
+                raise UserError("Cannot sell property with no accepted offer")
+
             property.state = "sold"
         return True
 
     @api.ondelete(at_uninstall=False)
     def _unlink_only_new_cancelled(self):
         for property in self:
-            if property.state != 'new' and property.state != 'cancelled':
-                raise exceptions.UserError("You can only delete new or cancelled properties")
+            if property.state not in ('new', 'cancelled'):
+                raise UserError("You can only delete new or cancelled properties")

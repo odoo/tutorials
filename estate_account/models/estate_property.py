@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
 
         for record in self:
             vals = {
-                'partner_id': record.buyer.id,
+                'partner_id': record.buyer_id.id,
                 'move_type': 'out_invoice',
                 'line_ids': [
                     Command.create({
@@ -27,8 +27,6 @@ class EstateProperty(models.Model):
                 ]
             }
             vals_list.append(vals)
-
-        print(vals_list)
 
         self.env['account.move'].create(vals_list)
 
