@@ -98,3 +98,9 @@ class EstateProperty(models.Model):
         for record in self:
             if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
                 raise UserError(SELLING_PRICE_MUST_BE_AT_LEAST_90_PERCENT_OF_EXPECTED_PRICE)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_canceled(self):
+        YOU_CANNOT_DELETE_A_PROPERTY_THAT_IS_NOT_NEW_OR_CANCELED = 'You cannot delete a property that is not new or canceled'
+        if any(record.state not in ('new', 'canceled') for record in self):
+            raise UserError(YOU_CANNOT_DELETE_A_PROPERTY_THAT_IS_NOT_NEW_OR_CANCELED)

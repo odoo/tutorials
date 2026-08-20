@@ -60,3 +60,11 @@ class EstatePropertyOffer(models.Model):
         if self.status == 'accepted':
             raise UserError(CANNOT_REFUSE_ACCEPTED_OFFER)
         self.status = 'refused'
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            property_id.state = 'offer_received'
+
+        return super().create(vals_list)

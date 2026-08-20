@@ -18,6 +18,7 @@
                   decoration-bf="state == 'offer_accepted'"
                   decoration-muted="state == 'sold'">
                 <field name="name" class="text-center" width="50px"/>
+                <field name="property_type_id" class="text-center" width="50px"/>
                 <field name="postcode" class="text-center" width="50px"/>
                 <field name="bedrooms" class="text-center" width="50px"/>
                 <field name="living_area" class="text-center" width="50px"/>
