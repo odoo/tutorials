@@ -81,7 +81,7 @@ class EstateProperty(models.Model):
         for property in self:
             if not property.offers:
                 property.best_price = 0
-                return
+                continue
             best_offer = max(property.offers, key=lambda offer: offer.price)
             property.best_price = best_offer.price
 
