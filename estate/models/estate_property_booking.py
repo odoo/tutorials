@@ -91,19 +91,25 @@ class EstatePropertyBooking(models.Model):
 
     @api.constrains("property_id", "state")
     def _check_unique_active_booking(self):
-        for record in self:
-            if record.state == "active" and record.property_id:
-                active_count = self.search_count(
-                    [
-                        ("property_id", "=", record.property_id.id),
-                        ("state", "=", "active"),
-                        ("id", "!=", record.id),
-                    ],
+        active_records = self.filtered(lambda r: r.state == "active" and r.property_id)
+        if not active_records:
+            return
+
+        active_bookings = self.search(
+            [
+                ("property_id", "in", active_records.mapped("property_id").ids),
+                ("state", "=", "active"),
+            ],
+        )
+
+        for property_id in active_records.mapped("property_id"):
+            if (
+                len(active_bookings.filtered(lambda b: b.property_id == property_id))
+                > 1
+            ):
+                raise ValidationError(
+                    message="A property can only have one active booking at a time.",
                 )
-                if active_count > 0:
-                    raise ValidationError(
-                        message="A property can only have one active booking at a time.",
-                    )
 
     @api.depends("expired_date", "payment_status", "total_paid", "amount")
     def _compute_state(self):
@@ -132,13 +138,17 @@ class EstatePropertyBooking(models.Model):
         for record in self:
             if record.expired_date:
                 days = (record.expired_date - today).days
-                record.days_to_expiry = days
+                record.days_to_expiry = max(0, days)
                 record.is_expired = (
-                    record.expired_date < today and record.total_paid < record.amount
+                    record.expired_date < today
+                    and record.total_paid < record.amount
+                    and record.state != 'cancelled'
                 )
                 record.is_near_expiry = (
-                    today <= record.expired_date <= warning_window
-                ) and record.total_paid < record.amount
+                    (today <= record.expired_date <= warning_window)
+                    and record.total_paid < record.amount
+                    and record.state != 'cancelled'
+                )
             else:
                 record.days_to_expiry = 0
                 record.is_expired = False
@@ -229,14 +239,21 @@ class EstatePropertyBooking(models.Model):
                 raise UserError(
                     message="Payment must be completely paid before confirming the sale.",
                 )
+            if not record.buyer_id.email:
+                raise UserError(
+                    message="The buyer on this booking does not have an email address set! Please update their contact card.",
+                )
             if record.property_id:
                 record.property_id.state = "sold"
                 template = self.env.ref(
                     "estate.email_template_property_sold",
-                    raise_if_not_found=False,
                 )
                 if template:
-                    template.send_mail(record.property_id.id, force_send=True)
+                    template.send_mail(
+                        record.property_id.id,
+                        force_send=True,
+                        email_values={'email_to': record.buyer_id.email},
+                    )
         return True
 
     invoice_ids = fields.Many2many(

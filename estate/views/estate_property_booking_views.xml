@@ -38,7 +38,7 @@
         <field name="arch" type="xml">
             <form string="Property Booking">
                 <header>
-                    <field name="property_state" invisible="1"/><!-- property_state is invisible because it is only used for button visibility conditions -->
+                    <field name="property_state" invisible="1"/><!-- Hidden fields used for conditional UI -->k
                     <button name="action_confirm_sale" type="object" string="Confirm Sale &amp; Send Email" class="btn-primary" invisible="payment_status != 'paid' or property_state == 'sold'"/>
                     <button name="action_set_active" type="object" string="Activate" class="btn-primary" invisible="state == 'active'"/>
                     <button name="action_set_cancelled" type="object" string="Cancel" invisible="state in ('cancelled', 'sold') or property_state == 'sold'"/>
@@ -56,12 +56,12 @@
                             <field name="name"/>
                         </h1>
                     </div>
-                    <field name="is_near_expiry" invisible="1"/><!-- Hidden field used for conditional logic -->
-                    <field name="is_expired" invisible="1"/><!-- Hidden field used for conditional logic -->
-                    <div class="alert alert-warning text-center fw-bold mb-3" role="alert" invisible="not is_near_expiry">
+                    <field name="is_near_expiry" invisible="1"/><!-- Hidden fields used for conditional UI -->
+                    <field name="is_expired" invisible="1"/><!-- Hidden fields used for conditional UI -->
+                    <div class="alert alert-warning text-center fw-bold mb-3" role="alert" invisible="is_near_expiry == False">
                         Warning: This booking is approaching its expiration date!
                     </div>
-                    <div class="alert alert-danger text-center fw-bold mb-3" role="alert" invisible="not is_expired">
+                    <div class="alert alert-danger text-center fw-bold mb-3" role="alert" invisible="is_expired == False">
                         Alert: This booking has EXPIRED!
                     </div>
                     <group>
@@ -69,7 +69,7 @@
                             <field name="property_id" domain="[('state', '=', 'offer_accepted')]"/>
                             <field name="create_date"/>
                             <field name="expired_date"/>
-                            <field name="days_to_expiry"/>
+                            <field name="days_to_expiry" invisible="payment_status != 'unpaid'"/>
                         </group>
                         <group string="Accepted Offer Details">
                             <field name="offer_id"/>

@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     def _default_date_availability(self):
         return fields.Date.today() + relativedelta(months=3)
 
-    active = fields.Boolean(default=True)
+    active = fields.Boolean("Active", default=True)
     bedrooms = fields.Integer(default=2)
     best_price = fields.Float(
         compute="_compute_best_price",
@@ -202,7 +202,9 @@ class EstateProperty(models.Model):
                 limit=1,
             )
             if not booking or booking.payment_status != 'paid':
-                raise UserError(self.env._("Amount is not fully paid on active booking!"))
+                raise UserError(
+                    self.env._("Amount is not fully paid on active booking!"),
+                )
             record.state = "sold"
         return True
 
