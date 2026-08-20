@@ -130,13 +130,16 @@ class EstateProperty(models.Model):
     def _unlink_if_not_new_or_cancelled(self):
         for record in self:
             if record.state not in ("new", "cancelled"):
-                raise UserError("Only new or cancelled properties can be deleted.")
+                raise ValidationError("Only new or cancelled properties can be deleted.")
 
     def action_sold(self):
         self.ensure_one()
 
         if self.state == "cancelled":
             raise UserError("Cancelled properties cannot be sold.")
+
+        if self.state != "offer_accepted":
+            raise UserError("Only accepted offers can be sold.")
         
         self.state = "sold"
 
