@@ -56,7 +56,7 @@ class EstatePropertyOffer(models.Model):
 
             # offers should be higher than the ones we already have
             current_prices = estate_property.property_offer_ids.mapped('price')
-            if float_compare(val['price'], min(current_prices), precision_digits=2) < 0:
+            if current_prices and float_compare(val['price'], min(current_prices), precision_digits=2) < 0:
                 raise UserError(f"The offer {val['price']} cannot be lower than the other offers.")
 
         return super().create(vals)
