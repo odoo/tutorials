@@ -24,14 +24,14 @@
                     name="action_offer_accept"
                     string="Accept"
                     icon="fa-check"
-                    invisible="property_state in ('offer_accepted', 'sold', 'cancelled')"
+                    invisible="status"
                     type="object"
                 />
                 <button 
                     name="action_offer_refuse"
                     string="Refuse"
                     icon="fa-times"
-                    invisible="status in ('accepted', 'refused')"
+                    invisible="status"
                     type="object"
                 />
             </list>

@@ -1,4 +1,4 @@
-from odoo import fields, models 
+from odoo import fields, models
 
 
 class ResUser(models.Model):
@@ -6,5 +6,5 @@ class ResUser(models.Model):
 
     property_ids = fields.One2many(
         "estate.property", "salesperson_id",
-        domain="[('state', 'in', ['new', 'offer_received'])]"
+        domain="[('state', 'in', ['new', 'offer_received'])]",
     )

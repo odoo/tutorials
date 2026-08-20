@@ -4,7 +4,7 @@
     'depends': [
         'base',
         'estate',
-        'account'
+        'account',
     ],
     'data': [
     ],
