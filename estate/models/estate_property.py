@@ -60,8 +60,7 @@ class EstateProperty(models.Model):
         string='State',
         selection=[
             ('new', 'New'),
-            ('offer', 'Offer'),
-            ('received', 'Received'),
+            ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),

@@ -12,7 +12,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list
-                decoration-success="state in ('offer', 'offer_accepted')"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
                 decoration-muted="state == 'sold'"
                 decoration-bf="state == 'offer_accepted'"
             >
@@ -56,7 +56,7 @@
                         invisible="state in ('sold', 'cancelled')"
                     />
 
-                    <field name="state" widget="statusbar" statusbar_visible="new,received,offer_accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -121,7 +121,7 @@
                 <filter 
                     string="Available" 
                     name="available" 
-                    domain="[('state', 'in', ['new', 'offer'])]"
+                    domain="[('state', 'in', ['new', 'offer_received'])]"
                 />
 
                 <filter
@@ -149,7 +149,7 @@
                                 Expected Price:
                                 <field name="expected_price"/>
                             </div>
-                            <div class="text-muted" t-if="['offer', 'received'].includes(record.state.raw_value)">
+                            <div class="text-muted" t-if="['offer_received'].includes(record.state.raw_value)">
                                 Best Offer:
                                 <field name="best_price"/>
                             </div>

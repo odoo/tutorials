@@ -84,6 +84,6 @@ class EstatePropertyOffer(models.Model):
             if prop_min_offer[prop.id] < best_existing:
                 raise UserError("You can not offer less than the biggest offer")
 
-        properties.filtered(lambda p: p.state == 'new').state = 'offer'
+        properties.filtered(lambda p: p.state == 'new').state = 'offer_received'
 
         return super().create(values)
