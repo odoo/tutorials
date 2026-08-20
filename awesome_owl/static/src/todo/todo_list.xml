@@ -7,6 +7,7 @@
                 <TodoItem id="i.id" description="i.description" isCompleted="i.isCompleted"/>
             </t>
         </div>
+        <input type="text" placeholder="Add a todo" t-on-keyup="addTodo"/>
     </t>
 
 </templates>
