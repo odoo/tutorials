@@ -103,6 +103,9 @@ class EstateProperty(models.Model):
         self.garden_orientation = None
 
     def action_sold(self):
+        if not self.selling_price:
+            raise UserError("You can not sell a property without accepted offers")
+
         for property in self:
             if property.state == "cancelled":
                 raise UserError("You can not sell a cancelled property")
