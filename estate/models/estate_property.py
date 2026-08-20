@@ -70,6 +70,7 @@ class EstateProperty(models.Model):
         copy=False,
         required=True,
         readonly=True,
+        #group_expand=True
     )
     total_area = fields.Integer(
         "Total Area m²",
