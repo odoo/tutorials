@@ -100,8 +100,8 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
             return
 
-        self.garden_area = None
-        self.garden_orientation = None
+        self.garden_area = 0
+        self.garden_orientation = False
 
     def ensure_status_is_not(self, statuses, error_message=None):
         """ Ensures that the status is not equal or included in statuses """
@@ -118,13 +118,21 @@ class EstateProperty(models.Model):
             msg = error_message or f'Action not allowed for status: {self.status}'
             raise exceptions.UserError(msg)
 
-    def ensure_no_accepted_offers(self, error_message=None):
-        if not self.property_offer_ids:
-            return
-
-        if "accepted" in self.property_offer_ids.mapped("status"):
+    def _check_or_raise(self, condition, error_message=None):
+        if not condition:
             msg = error_message or 'Action not allowed'
             raise exceptions.UserError(msg)
+
+    def ensure_no_accepted_offers(self, error_message=None):
+        has_no_accepted = not any(offer.status == "accepted" for offer in self.property_offer_ids)
+        self._check_or_raise(has_no_accepted, error_message=error_message)
+
+    def ensure_any_offers_with_status(self, status, error_message=None):
+        if not status:
+            raise ValueError('Status is required')
+
+        has_at_least_one = any(offer.status == status for offer in self.property_offer_ids)
+        self._check_or_raise(has_at_least_one, error_message=error_message)
 
     # ACTIONS
 
@@ -138,6 +146,8 @@ class EstateProperty(models.Model):
     def action_set_status_sold(self):
         for record in self:
             record.ensure_status_is_not("cancelled", error_message="You cannot sell a cancelled property")
+            record.ensure_any_offers_with_status("accepted", error_message="You cannot sell with no accepted offers")
+
             record.status = "sold"
 
         return True

@@ -50,8 +50,11 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals) -> Self:
         for val in vals:
-            # set the correct state
             estate_property = self.env['estate.property'].browse(val['property_id'])
+
+            estate_property.ensure_status_is_not("sold", error_message="You cannot add an offer to a sold property.")
+
+            # set the correct state
             estate_property.status = 'offer_received'
 
             # offers should be higher than the ones we already have
