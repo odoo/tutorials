@@ -3,12 +3,12 @@ from odoo.exceptions import UserError
 from odoo.tests import tagged, Form
 
 
-@tagged('estate','post_install', '-at_install')
+@tagged('estate', 'post_install', '-at_install')
 class EstatePropertyTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstatePropertyTestCase, cls).setUpClass()
+        super().setUpClass()
 
         # Create property type
         cls.p_types = cls.env['estate.property.type'].create([
@@ -28,7 +28,7 @@ class EstatePropertyTestCase(TransactionCase):
                 'name': 'Test Property',
                 'expected_price': 123,
                 'status': 'new',
-                'property_type_id' : cls.p_types[0].id,
+                'property_type_id': cls.p_types[0].id,
                 'property_tag_ids': cls.p_tags.mapped('id')
             }
         ])
@@ -40,7 +40,7 @@ class EstatePropertyTestCase(TransactionCase):
 
     def test_total_area(self):
         """Test that the total area is well computed"""
-        property_0 =self.properties[0]
+        property_0 = self.properties[0]
 
         property_0.living_area = 20
 
@@ -88,7 +88,7 @@ class EstatePropertyTestCase(TransactionCase):
         property_form = Form(self.env['estate.property'])
 
         property_form.garden = True
-        #Fields should be visible and filled with default values
+        # Fields should be visible and filled with default values
         self.assertEqual(property_form._get_modifier('garden_area', 'invisible'), False)
         self.assertEqual(property_form._get_modifier('garden_orientation', 'invisible'), False)
         self.assertEqual(property_form.garden_area, 10)
