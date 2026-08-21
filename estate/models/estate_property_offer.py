@@ -66,17 +66,14 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         for val in vals:
             estate_property = self.env["estate.property"].browse(val["property_id"])
-            estate_property.status = "offer_received"
-
-            previous_offers_prices = estate_property.property_offer_ids.mapped("price")
-            if (
-                float_compare(
-                    val["price"], min(previous_offers_prices), precision_digits=2
-                )
-                < 0
-            ):
-                raise UserError(
-                    f"The offer {val['price']} cannot be lower than the other offers."
-                )
+            estate_property.state = "offer_received"
+            existing_prices = estate_property.offer_ids.mapped("price")
+            
+            if existing_prices:
+                min_price = min(existing_prices)
+                if float_compare(val["price"], min_price, precision_digits=2) < 0:
+                    raise UserError(
+                        f"The offer {val['price']} cannot be lower than the other offers."
+                    )
 
         return super().create(vals)
