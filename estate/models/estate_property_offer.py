@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -35,3 +36,15 @@ class EstatePropertyOffer(models.Model):
             if record.create_date:
                 record.validity = (record.date_deadline - record.create_date.date()).days
 
+    def action_accept_offer(self):
+        for record in self:
+            if any(o.status == 'accepted' for o in record.property_id.offer_ids):
+                raise UserError(_("One does not simply accept multiple offers on the property"))
+
+            record.status = 'accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = 'refused'

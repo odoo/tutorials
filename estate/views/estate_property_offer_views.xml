@@ -56,6 +56,10 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Estate Property Offer Form">
+                <header>
+                    <button name="action_accept_offer" type="object" string="Accept" title="Mark property as sold"/>
+                    <button name="action_refuse_offer" type="object" string="Refuse" title="Cancel this property"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="price"/>
