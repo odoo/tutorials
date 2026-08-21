@@ -26,11 +26,13 @@ class EstatePropertyOffer(models.Model):
     )
     _order = "price desc"
 
-    @api.depends("validity")
+    @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
             base_date = (
-                record.create_date.date() if record.create_date else fields.Date.today()
+                fields.Date.to_date(record.create_date)
+                if record.create_date
+                else fields.Date.today()
             )
             record.date_deadline = fields.Date.add(base_date, days=record.validity)
 
@@ -40,7 +42,9 @@ class EstatePropertyOffer(models.Model):
             if not record.date_deadline:
                 continue
             base_date = (
-                record.create_date.date() if record.create_date else fields.Date.today()
+                fields.Date.to_date(record.create_date)
+                if record.create_date
+                else fields.Date.today()
             )
             record.validity = (record.date_deadline - base_date).days
 
@@ -51,6 +55,7 @@ class EstatePropertyOffer(models.Model):
                     "You can only accept offers for properties that are new or have received offers."
                 )
             record.status = "accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
 
@@ -62,18 +67,23 @@ class EstatePropertyOffer(models.Model):
                 )
             record.status = "refused"
 
-    @api.model
-    def create(self, vals):
-        for val in vals:
-            estate_property = self.env["estate.property"].browse(val["property_id"])
-            estate_property.state = "offer_received"
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            estate_property = self.env["estate.property"].browse(
+                vals.get("property_id")
+            )
             existing_prices = estate_property.offer_ids.mapped("price")
-            
+
             if existing_prices:
                 min_price = min(existing_prices)
-                if float_compare(val["price"], min_price, precision_digits=2) < 0:
+                if (
+                    float_compare(vals.get("price", 0.0), min_price, precision_digits=2)
+                    < 0
+                ):
                     raise UserError(
-                        f"The offer {val['price']} cannot be lower than the other offers."
+                        f"The offer {vals.get('price', 0.0)} cannot be lower than the other offers."
                     )
+            estate_property.state = "offer_received"
 
-        return super().create(vals)
+        return super().create(vals_list)

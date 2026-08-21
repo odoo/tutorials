@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -12,7 +13,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
+        copy=False,
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -24,7 +26,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     active = fields.Boolean(default=True)
     garden_orientation = fields.Selection(
-        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
+        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
     )
     state = fields.Selection(
         required=True,
@@ -40,7 +42,9 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -72,7 +76,7 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise UserError(
-                    "The selling price cannot be less than 90% of the expected price."
+                    "The selling price cannot be less than 90% of the expected price.",
                 )
 
     @api.depends("living_area", "garden_area")
@@ -110,7 +114,7 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _delete_if_new_or_canceled(self):
         for record in self:
-            if record.state in ["new", "canceled"]:
+            if record.state not in ["new", "canceled"]:
                 raise UserError(
-                    "You cannot delete a new or cancelled property."
+                    "You can only delete new or cancelled properties.",
                 )
