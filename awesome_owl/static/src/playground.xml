@@ -2,8 +2,12 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="border d-inline-flex p-3 m-4">
+            <div class="p-3 align-self-center">
+                <p style="margin: 0;">hello world</p>
+            </div>
+            <Counter />
+            <Counter />
         </div>
     </t>
 
