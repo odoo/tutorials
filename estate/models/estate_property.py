@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -41,4 +41,37 @@ class EstateProperty(models.Model):
                 ('cancelled', 'Cancelled')],
             default='new',
             help="State of the estate property")
-        
+
+    total_area = fields.Integer(
+            'Total area (m²)',
+            compute='_compute_total_area',
+            help='Total area of the estate defined as a sum of living and garden area')
+
+    best_price = fields.Float(
+            'Best Offer',
+            compute='_compute_best_price',
+            help='Best offer from the availale offers or zero')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        if len(self.offer_ids) == 0:
+            for record in self:
+                record.best_price = 0.0
+        else:
+            for record in self:
+                record.best_price = min([offer.price for offer in record.offer_ids])
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = None
