@@ -2,12 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="border d-inline-flex p-3 m-4">
-            <div class="p-3 align-self-center">
-                <p style="margin: 0;">hello world</p>
-            </div>
-            <Counter />
-            <Counter />
+        <div class="border d-inline-flex m-4">
+            <Card title="'card 1'" body="'content of card 1'"/>
+            <Card title="'card 2'" body="'content of card 2'"/>
         </div>
     </t>
 
