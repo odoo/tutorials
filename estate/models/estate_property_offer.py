@@ -5,6 +5,7 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -32,6 +33,11 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         store=True,
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        store=True,
+    )
 
     _check_offer_price = models.Constraint(
         "CHECK(price>0)",
@@ -56,6 +62,11 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
+            record.property_id.state = "offer_accepted"
+
+        for offer in record.property_id.offer_ids:
+            if offer.status != "accepted":
+                offer.status = "refused"
 
     def action_cancel(self):
         for record in self:
