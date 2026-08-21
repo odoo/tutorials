@@ -1,5 +1,6 @@
 {
     'name': 'real state',
+    'description':'This is my first module estate',
     'version': '1.0',
     'depends': ['base'],
     'data': [
