@@ -8,6 +8,8 @@
                 <header>
                     <button class="oe_stat_button" type="action" name="%(estate.estate_property_offers_action)d" icon="fa-money" string="Offers"/>
                 </header>
+
+                <field name="name"/>
                 <sheet>
                     <notebook>
                         <page string="Properties">

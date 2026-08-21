@@ -81,7 +81,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = "False"
+            self.garden_orientation = False
 
     # ==========button functions==============
     def action_property_sold(self):
