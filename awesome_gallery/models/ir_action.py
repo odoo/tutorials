@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from odoo import fields, models
 
 
@@ -7,4 +6,4 @@ class ActWindowView(models.Model):
 
     view_mode = fields.Selection(selection_add=[
         ('gallery', "Awesome Gallery")
-    ],  ondelete={'gallery': 'cascade'})
+    ], ondelete={'gallery': 'cascade'})

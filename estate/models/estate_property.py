@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _order = "name"
+    _order = "id desc"
 
     name = fields.Char(required=True, default="Unknown")
     property_type_id = fields.Many2one("estate.property.type", string="Type")
@@ -46,10 +46,8 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        required=True,
         copy=False,
         default="new",
-        readonly=True,
     )
     offer_ids = fields.One2many(
         "estate.property.offers", "property_id", string="Offers"
