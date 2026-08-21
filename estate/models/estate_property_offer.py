@@ -52,6 +52,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_confirm_offer(self):
         self.ensure_one()
+
         # Check property have already been sold or canceled
         if self.property_id.state in ["sold", "canceled"]:
             raise UserError(
@@ -83,6 +84,13 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_rec = self.env["estate.property"].browse(vals["property_id"])
+
+            if property_rec.state in ["sold", "canceled"]:
+                raise UserError(
+                    self.env._(
+                        "Can't create an offer for an already sold/canceled property!"
+                    )
+                )
 
             for offer in property_rec.offer_ids:
                 if vals.get("price", 0) <= offer.price:

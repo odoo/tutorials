@@ -1,5 +1,4 @@
 from odoo import api, fields, models
-from odoo.tools.translate import _
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -97,12 +96,18 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if self.state == "canceled":
             raise UserError(
-                _("This property has already been canceled. It can not be sold!")
+                self.env._(
+                    "This property has already been canceled. It can not be sold!"
+                )
             )
         elif self.state == "sold":
             raise UserError(
-                _("This property has already been sold. It can not be sold again!")
+                self.env._(
+                    "This property has already been sold. It can not be sold again!"
+                )
             )
+        elif not self.offer_ids:
+            raise UserError(self.env._("There is no offer with this property."))
         else:
             self.state = "sold"
 
@@ -110,11 +115,13 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "sold":
                 raise UserError(
-                    _("This property has already been sold. It can not be canceled!")
+                    self.env._(
+                        "This property has already been sold. It can not be canceled!"
+                    )
                 )
             elif record.state == "canceled":
                 raise UserError(
-                    _(
+                    self.env._(
                         "This property has already been canceled. It can not be canceled again!"
                     )
                 )
@@ -144,7 +151,9 @@ class EstateProperty(models.Model):
                 == 1
             ):
                 raise UserError(
-                    _("Selling price cannot be lower than 90% of the expected price!")
+                    self.env._(
+                        "Selling price cannot be lower than 90% of the expected price!"
+                    )
                 )
 
     # Model decorators
@@ -153,7 +162,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ("new", "canceled"):
                 raise UserError(
-                    _(
+                    self.env._(
                         "You cannot delete a property unless its state is 'New' or 'Canceled'."
                     )
                 )
