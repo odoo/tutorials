@@ -42,6 +42,11 @@
                             <field name="garden_orientation"></field>
                             <field name="sold"></field>
                         </group>
+                        <group>
+                            <field name="expected_price"></field>
+                            <field name="active"></field>
+                            <field name="state"></field>
+                        </group>
                     </group>
                     <notebook>
                         <page string="description">
