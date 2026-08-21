@@ -114,13 +114,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.onchange("offer_ids")
-    def _onchange_offer_received_state(self):
-        if self.offer_ids:
-            self.state = "offer_received"
-        else:
-            self.state = "new"
-
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
@@ -135,6 +128,9 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         self.ensure_one()
+
+        if not self.offer_ids:
+            raise ValidationError(_("Properties without offers can't be sold"))
 
         if self.state == "cancelled":
             raise UserError(_("Cancelled properties cannot be sold."))

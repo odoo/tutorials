@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -53,6 +54,18 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals.get("property_id"))
+
+            if property and property.state in ("sold", "offer_accepted"):
+                raise ValidationError(_("Can't create an offer for properties that are sold or with an accepted offer"))
+
+            property.state = "offer_received"
+
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:
