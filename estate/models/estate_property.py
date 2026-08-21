@@ -56,6 +56,14 @@ class EstateProperty(models.Model):
     )
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price >= 0) ", "Expected Price cannot be negative "
+    )
+    _check_property_values = models.Constraint(
+        "CHECK(living_area >=0 AND garden_area >=0 AND bedrooms >=0 AND facades >=0)",
+        "Property Description values must be positive",
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -110,5 +118,7 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError("cancelled properties cannot be sold")
             if record.selling_price == 0:
-                raise UserError("Set the selling price by accepting an offer before selling the property")
+                raise UserError(
+                    "Set the selling price by accepting an offer before selling the property"
+                )
             record.state = "sold"
