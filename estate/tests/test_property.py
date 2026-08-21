@@ -1,11 +1,7 @@
-from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
-from odoo.tests import tagged
+from odoo.tests import tagged, Form
+from odoo.tests.common import TransactionCase
 
-# === NO ===
-# Create an offer for a sold property
-# Sell a property with no accepted offers on it
-# === NO ===
 
 # The CI will run these tests after all the modules are installed,
 # not right after installing the one defining it.
@@ -15,7 +11,7 @@ class EstateTestCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         # add env on cls and many other things
-        super(EstateTestCase, cls).setUpClass()
+        super().setUpClass()
 
         # create the data for each tests. By doing it in the setUpClass instead
         # of in a setUp or in each test case, we reduce the testing time and
@@ -28,14 +24,19 @@ class EstateTestCase(TransactionCase):
                 'postcode': '1000',
                 'type_id': cls.property_type.id,
                 'expected_price': 100000,
+                'garden': True,
                 'garden_area': 10,
+                'garden_orientation': 'north',
+
             },
             {
                 'name': 'Property B',
                 'postcode': '2000',
                 'type_id': cls.property_type.id,
                 'expected_price': 200000,
+                'garden': True,
                 'garden_area': 30,
+                'garden_orientation': 'north',
             },
         ])
 
@@ -61,3 +62,11 @@ class EstateTestCase(TransactionCase):
                 'partner_id': self.buyer.id,
                 'price': property.expected_price * 2,
             })
+
+    def test_garden_uncheck_reset(self):
+        prop = self.properties[0]
+        with Form(prop) as p:
+            p.garden = True
+            p.garden = False
+
+        self.assertEqual(prop.garden_area, 0) 
