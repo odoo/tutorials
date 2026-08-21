@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "estate type model"
@@ -17,4 +18,3 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for property_type_record in self:
             property_type_record.offer_count = len(property_type_record.offer_ids)
-

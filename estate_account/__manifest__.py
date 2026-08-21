@@ -3,13 +3,13 @@
     'depends': [
         'base',
         'estate',
-        'account'
+        'account',
     ],
     'data': [
 
     ],
     'views': [
-        
+
     ],
-    'application':False
+    'application': False,
 }

@@ -15,7 +15,7 @@ class EstatePropertyOffer(models.Model):
             copy=False,
             selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         )
-    partner_id = fields.Many2one("res.users", required=True)
+    partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
     date_deadline = fields.Datetime(string="Deadline", compute="compute_deadline", inverse="_inverse_deadline")
     validity = fields.Integer(string="validity", default=7)
@@ -57,9 +57,15 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         for to_create in vals:
             property = self.env["estate.property"].browse(to_create["property_id"])
+            # If the property is already sold we can't add it
+            if property.state == "sold":
+                no_create_on_sold = "no create on already sold property"
+                raise exceptions.UserError(no_create_on_sold)
+
+            # Set a minimum bidding limit
             new_bid = to_create["price"]
             for offer in property.offer_ids:
-                if offer.price > new_bid:
+                if offer.price > float(new_bid):
                     cant_bit_lower_exception = "can't bid lower than the highest bid"
                     raise exceptions.UserError(cant_bit_lower_exception)
             property.state = "offer_received"

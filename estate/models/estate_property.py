@@ -52,6 +52,13 @@ class EstateProperty(models.Model):
                 to_low_user_error = "selling price is too low for the expected price"
                 raise exceptions.ValidationError(to_low_user_error)
 
+    @api.constrains("state")
+    def _no_sell_without_offer(self):
+        for record in self:
+            if record.state == "sold" and "accepted" not in record.offer_ids.mapped("status"):
+                only_sold_if_accepted = "can only sell a property with an accepted offer"
+                raise exceptions.UserError(only_sold_if_accepted)
+
     # ==========computed fields===============
     @api.depends('garden_area', 'living_area')
     def _compute_total_surface(self):
@@ -73,8 +80,8 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
-            self.garden_area = False
-            self.garden_orientation = False
+            self.garden_area = 0
+            self.garden_orientation = "False"
 
     # ==========button functions==============
     def action_property_sold(self):

@@ -8,8 +8,7 @@
         'views/estate_property_views.xml',
         'views/estate_property_settings_views.xml',
         'views/users_extra_views.xml',
-        'data/estate_menus.xml'
+        'data/estate_menus.xml',
     ],
-    'application':True
+    'application': True,
 }
-
