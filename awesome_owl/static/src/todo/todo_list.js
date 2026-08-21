@@ -6,17 +6,24 @@ export class TodoList extends Component {
   static template = "awesome_owl.todo_list";
   static components = { TodoItem };
 
-  state = useState({ items: [], count: 0 });
+
+  setup() {
+    this.state = useState({ items: [], count: 0 });
+    useAutoFocus("todo-input");
+    this.toggleItemState = this.toggleItemState.bind(this);
+  }
 
   addTodo(ev) {
     if (ev.key === "Enter" && ev.target.value.trim() !== ""){
       this.state.items.push({ 'id': this.state.count++, 'description': ev.target.value, 'isCompleted': false });
-      ev.target.value = ""
+      ev.target.value = "";
     }
   }
 
-  setup() {
-    useAutoFocus("todo-input")
+  toggleItemState(id) {
+    const item = this.state.items.find(item => item.id == id);
+    item['isCompleted'] = !item['isCompleted'];
   }
+
 
 }
