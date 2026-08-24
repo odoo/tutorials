@@ -1,4 +1,5 @@
 from odoo import models, fields, api, exceptions
+from odoo.tools import float_utils
 
 
 class EstateProperty(models.Model):
@@ -50,11 +51,11 @@ class EstateProperty(models.Model):
         compute="_compute_best_price"
     )
     _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
+        'CHECK(expected_price >= 0)',
         'The expected price must be greater than zero (0)',
     )
     _check_selling_price = models.Constraint(
-        'CHECK(selling_price > 0)',
+        'CHECK(selling_price >= 0)',
         'The selling price must be greater than zero (0)',
     )
 
@@ -93,3 +94,13 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Sold properties cannot be cancelled")
             record.state = "cancelled"
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_constraint(self):
+        for record in self:
+            if float_utils.float_compare(
+                    record.selling_price, record.expected_price * 0.9, precision_digits=2
+            ) < 0:
+                raise exceptions.UserError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
