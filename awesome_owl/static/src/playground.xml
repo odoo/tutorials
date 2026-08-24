@@ -2,12 +2,16 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="border d-inline-flex m-4">
-            <Card title="'card 1'" body="'content of card 1'"/>
-            <Card title="'card 2'">
-                <div><b>Content 2</b></div>
-            </Card>
+        <div class="border d-inline-flex flex-column m-4">
+            <div class="d-flex flex-row">
+                <t t-foreach="Array.from({ length: state.counters_num }, (_, i) => i)" t-as="i" t-key="i">
+                    <Counter initialValue="1" onRegister="(instance) => this.registerCounter(i, instance)" />
+                </t>
+            </div>
+
+            <div class="mt-2 p-2">The sum is: <span t-esc="sum"></span></div>
         </div>
+
     </t>
 
 </templates>
