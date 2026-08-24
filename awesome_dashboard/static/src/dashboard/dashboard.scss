@@ -1,3 +1,11 @@
 .o_dashboard {
     background-color: gray;
 }
+
+@media (max-width: 768px) {
+    .o_dashboard .card {
+        display: block !important;
+        // override the inline width set by DashboardItem
+        width: auto !important;
+    }
+}
