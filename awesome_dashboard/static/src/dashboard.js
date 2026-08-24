@@ -4,10 +4,11 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard-item/dashboard-item";
 import { DashboardNumberItem } from "./dashboard-number-item/dashboard-number-item";
+import { PieChart } from "./pie-chart/pie-chart";
 
 class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
-  static components = { Layout, DashboardItem, DashboardNumberItem };
+  static components = { Layout, DashboardItem, DashboardNumberItem, PieChart };
 
   setup() {
     this.action = useService("action");
