@@ -5,6 +5,10 @@
         <div class="p-3">
             hello world
         </div>
+        <div class="d-flex align-items-center p-3 gap-1">
+            <p class="m-0">Value: <t t-esc="counter.value"/></p>
+            <button t-on-click="increment">Increase</button>
+        </div>
     </t>
 
 </templates>
