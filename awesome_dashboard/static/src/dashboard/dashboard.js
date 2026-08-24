@@ -1,12 +1,11 @@
-import { Component, xml, onWillStart } from "@odoo/owl";
+import { Component, xml } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
-import { loadJS } from "@web/core/assets";
 
 import { DashboardItem } from "./dashboard_item";
-import { PieChart } from "../piechart/piechart";
+import "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = xml`
@@ -15,34 +14,21 @@ class AwesomeDashboard extends Component {
             <button t-on-click="gotoLeads" class="btn btn-primary">Leads</button>
         </div>
         <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
-            <t t-foreach="stats" t-as="s" t-key="s.key">
-                <DashboardItem title="s.title" size="s.size">
-                    <t t-esc="state[s.key]"/>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
                 </DashboardItem>
             </t>
-            <DashboardItem title="'Shirt orders by size'" size="2">
-                <PieChart data="state.orders_by_size"/>
-            </DashboardItem>
         </Layout>
     `;
 
-    static components = { Layout, DashboardItem, PieChart }
+    static components = { Layout, DashboardItem }
 
     setup() {
         this.action = useService("action")
-        this.state = useService("awesome_dashboard.statistics")
-
-        this.stats = [
-            { title: "Average amount of t-shirt by order this month", key: "average_quantity", size: 1.5 },
-            { title: "Average time for an order to go from 'new' to 'sent' or 'cancelled'", key: "average_time", size: 2 },
-            { title: "Number of new orders this month", key: "nb_new_orders", size: 1 },
-            { title: "Number of cancelled orders this month", key: "nb_cancelled_orders", size: 1.5 },
-            { title: "Total amount of new orders this month", key: "total_amount", size: 1.5 },
-        ]
-        
-        onWillStart(async () => {
-            await loadJS("/web/static/lib/Chart/Chart.js")
-        })
+        this.statistics = useService("awesome_dashboard.statistics")
+        this.items = registry.category("awesome_dashboard").getAll()
     }
 
     gotoCustomers() {
@@ -57,7 +43,7 @@ class AwesomeDashboard extends Component {
             views: [[false, 'list'], [false, 'form']],
         })
     }
-    
+
 }
 
 registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

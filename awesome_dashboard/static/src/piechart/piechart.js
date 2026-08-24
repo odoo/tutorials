@@ -1,4 +1,6 @@
-import { Component, xml, onMounted, onWillUnmount, useRef } from "@odoo/owl";
+import { Component, xml, onMounted, onWillStart, onWillUnmount, useRef } from "@odoo/owl";
+
+import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
     static props = {
@@ -13,6 +15,8 @@ export class PieChart extends Component {
 
     setup() {
         this.canvasRef = useRef("canvas");
+
+        onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
 
         onMounted(() => {
             this.chart = new Chart(this.canvasRef.el, {
