@@ -13,6 +13,27 @@
             <DashboardItem size="2">
                 hi but bigger ?
             </DashboardItem>
+
+            <DashboardNumberItem
+                description="'Number of new orders this month'"
+                number="result.nb_new_orders"
+            />
+            <DashboardNumberItem
+                description="'Total amount of new orders this month'"
+                number="result.total_amount"
+            />
+            <DashboardNumberItem
+                description="'Average amount of t-shirt by order this month'"
+                number="result.average_quantity"
+            />
+            <DashboardNumberItem
+                description="'Number of cancelled orders this month'"
+                number="result.nb_cancelled_orders"
+            />
+            <DashboardNumberItem
+                description="'Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’'"
+                number="result.average_time"
+            />
         </Layout>
     </t>
 
