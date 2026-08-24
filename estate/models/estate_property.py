@@ -19,10 +19,8 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(string='Available From', copy=False, default=DEFAULT_AVAILABILITY_DATE)
 
     expected_price = fields.Float(required=True)
-    _check_expected_price = models.Constraint('check(expected_price > 0)', 'Expected Price must be greater than 0')
 
     selling_price = fields.Float(readonly=True, copy=False)
-    _check_selling_price = models.Constraint('check(selling_price > 0)', 'Selling Price must be greater than 0')
 
     state = fields.Selection(
         selection=[
@@ -60,6 +58,9 @@ class EstateProperty(models.Model):
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     best_price = fields.Float(string='Best Offer', compute='_compute_best_price')
+
+    _check_selling_price = models.Constraint('check(selling_price > 0)', 'Selling Price must be greater than 0')
+    _check_expected_price = models.Constraint('check(expected_price > 0)', 'Expected Price must be greater than 0')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):

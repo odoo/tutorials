@@ -20,7 +20,6 @@
                     <field name="date_deadline"/>
                     <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status"/>
                     <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status"/>
-                    <field name="status" column_invisible="True"/> <!-- Used by list decorations and Accept/Refuse buttons -->
                 </list>
             </field>
         </record>

@@ -10,7 +10,6 @@ class EstatePropertyOffer(models.Model):
     _order = 'price desc'
 
     price = fields.Float()
-    _check_price = models.Constraint('check(price > 0)', 'Price must be greater than 0')
     status = fields.Selection(
         selection=[
             ('accepted', 'Accepted'),
@@ -27,6 +26,8 @@ class EstatePropertyOffer(models.Model):
     )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+
+    _check_price = models.Constraint('check(price > 0)', 'Price must be greater than 0')
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
