@@ -5,6 +5,15 @@ export class Card extends Component {
 
     static props = {
         title : String,
-        content : String
+        slots : { type: Object, optional: true}
+    }
+
+    setup() {
+        this.state = useState({ open: false });
+        this.changeState = this.changeState.bind(this)
+    }
+
+    changeState() {
+        this.state.open = !this.state.open
     }
 }

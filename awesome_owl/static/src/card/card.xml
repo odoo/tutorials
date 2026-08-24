@@ -6,9 +6,14 @@
                 <h5 class="card-title">
                     <t t-out="props.title"/>
                 </h5>
-                <p class="card-text">
-                    <t t-out="props.content"/>
-                </p>
+                <t>
+                    <button t-on-click="changeState"/>
+                </t>
+                <t t-if="state.open">
+                    <div class="card-text">
+                        <t t-slot="default"/>
+                    </div>
+                </t>
             </div>
         </div>
     </t>
