@@ -37,12 +37,12 @@ class EstatePropertyMaintenance(models.Model):
     final_cost = fields.Float(string="Final Cost")
     priority = fields.Selection(
         selection=[
-            ('0', "test"),
-            ('1', 'Low'),
-            ('2', "Medium"),
-            ('3', "High"),
+            ('0', "Low"),
+            ('1', "Medium"),
+            ('2', "High"),
+            ('3', "Very High"),
         ],
-        default="1",
+        default="0",
         string="Priority",
     )
     state = fields.Selection(

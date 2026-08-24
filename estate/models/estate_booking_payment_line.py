@@ -38,3 +38,29 @@ class EstateBookingPaymentLine(models.Model):
         for rec in self:
             if rec.amount <= 0:
                 raise ValidationError(_("Payment amount must be greater than zero."))
+
+    @api.constrains("booking_id")
+    def _check_booking_state(self):
+        for rec in self:
+            if rec.booking_id and rec.booking_id.state in ("confirmed", "cancelled", "expired"):
+                raise ValidationError(_("Cannot add or modify payment transactions on a confirmed, cancelled, or expired booking."))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        lines = super().create(vals_list)
+        bookings = lines.mapped("booking_id")
+        bookings._check_payment_completion_and_update_status()
+        return lines
+
+    def write(self, vals):
+        bookings_before = self.mapped("booking_id")
+        res = super().write(vals)
+        bookings_after = self.mapped("booking_id")
+        (bookings_before | bookings_after)._check_payment_completion_and_update_status()
+        return res
+
+    def unlink(self):
+        bookings = self.mapped("booking_id")
+        res = super().unlink()
+        bookings._check_payment_completion_and_update_status()
+        return res

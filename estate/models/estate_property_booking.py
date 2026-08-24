@@ -21,7 +21,7 @@ class EstatePropertyBooking(models.Model):
         "estate.property",
         string="Property",
         required=True,
-        domain="[('state', 'in', ['new', 'offer_received', 'offer_accepted'])]",
+        domain="[('state', '=', 'offer_accepted')]",
     )
 
     partner_id = fields.Many2one(
@@ -41,7 +41,10 @@ class EstatePropertyBooking(models.Model):
         required=True,
         default=fields.Date.context_today,
     )
-    expiry_date = fields.Date(string="Expiry date")
+    expiry_date = fields.Date(
+        string="Expiry date",
+        default=lambda self: fields.Date.context_today(self) + relativedelta(days=7),
+    )
     total_amount = fields.Float(string="Total Property Price", required=True)
     min_deposit_amount = fields.Float(
         string="Min Deposit Amount (10%)",
@@ -93,15 +96,21 @@ class EstatePropertyBooking(models.Model):
 
     @api.constrains("property_id", "state")
     def _check_duplicate_active_booking(self):
-        for rec in self:
-            if rec.state in ("pending", "confirmed"):
-                domain = [
-                    ("property_id", "=", rec.property_id.id),
-                    ("id", "!=", rec.id),
-                    ("state", "in", ("pending", "confirmed")),
-                ]
-                if rec.search_count(domain) > 0:
-                    raise ValidationError(_("Active booking already exists for this property."))
+        active_records = self.filtered(lambda r: r.state in ("draft", "pending", "confirmed"))
+        for rec in active_records:
+            if rec.property_id.state not in ("offer_accepted", "booked", "sold"):
+                raise ValidationError(_("Booking can only be created for a property with an accepted offer."))
+
+        prop_ids = active_records.mapped("property_id").ids
+        if prop_ids:
+            booking_counts = self.env["estate.property.booking"]._read_group(
+                domain=[("property_id", "in", prop_ids), ("state", "in", ("draft", "pending", "confirmed"))],
+                groupby=["property_id"],
+                aggregates=["__count"],
+            )
+            for property_rec, count in booking_counts:
+                if count > 1:
+                    raise ValidationError(_("An active booking already exists for property '%s'.", property_rec.display_name))
 
     @api.onchange("property_id")
     def _onchange_property_id(self):
@@ -112,10 +121,6 @@ class EstatePropertyBooking(models.Model):
                 self.total_amount = self.property_id.selling_price
             elif self.property_id.expected_price:
                 self.total_amount = self.property_id.expected_price
-            if not self.booking_date:
-                self.booking_date = fields.Date.context_today(self)
-            if self.booking_date and not self.expiry_date:
-                self.expiry_date = self.booking_date + relativedelta(days=7)
 
     @api.onchange("booking_date")
     def _onchange_booking_date(self):
@@ -131,16 +136,23 @@ class EstatePropertyBooking(models.Model):
 
             if rec.deposit_paid >= rec.total_amount and rec.total_amount > 0:
                 rec.payment_status = "paid"
-                if rec.state in ("draft", "pending"):
-                    rec.state = "confirmed"
-                    if rec.property_id and rec.property_id.state != "sold":
-                        rec.property_id.state = "sold"
             elif rec.deposit_paid >= rec.min_deposit_amount:
                 rec.payment_status = "deposit_paid"
             elif rec.deposit_paid > 0:
                 rec.payment_status = "partial"
             else:
                 rec.payment_status = "unpaid"
+
+    def _check_payment_completion_and_update_status(self):
+        for rec in self:
+            if rec.deposit_paid >= rec.total_amount and rec.total_amount > 0:
+                if rec.state in ("draft", "pending"):
+                    rec.state = "confirmed"
+                if rec.property_id and rec.property_id.with_context(active_test=False).state != "sold":
+                    rec.property_id.write({
+                        "state": "sold",
+                        "active": False,
+                    })
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -151,36 +163,38 @@ class EstatePropertyBooking(models.Model):
 
     def action_confirm_booking(self):
         for rec in self:
-            if rec.property_id.state == "booked":
-                raise UserError(_("This property is already booked by another customer."))
+            if rec.state in ("confirmed", "cancelled", "expired"):
+                raise UserError(_("This booking cannot be confirmed because it is already %s.", rec.state))
             if rec.property_id.state in ("sold", "cancelled"):
                 raise UserError(_("A sold or cancelled property cannot be booked."))
             rec.state = "pending"
             rec.property_id.state = "booked"
 
-    def action_cancel_booking(self):
+    def _reset_associated_property(self):
         for rec in self:
-            if rec.state == "confirmed":
-                raise UserError(_("This property booking cannot be cancelled because full payment is completed."))
-            rec.state = "cancelled"
-            if rec.property_id and rec.property_id.state in ("booked", "offer_accepted", "pending", "draft"):
+            if rec.property_id:
+                accepted_offers = rec.property_id.offer_ids.filtered(lambda o: o.status == "accepted")
+                if accepted_offers:
+                    accepted_offers.write({"status": "rejected"})
                 rec.property_id.write({
                     "buyer_id": False,
                     "selling_price": 0.0,
                     "state": "offer_received" if rec.property_id.offer_ids else "new",
                 })
 
+    def action_cancel_booking(self):
+        for rec in self:
+            if rec.state == "confirmed":
+                raise UserError(_("This property booking cannot be cancelled because full payment is completed."))
+        self.write({"state": "cancelled"})
+        self._reset_associated_property()
+
     def action_expire_booking(self):
         for rec in self:
             if rec.state in ("confirmed", "cancelled"):
                 raise UserError(_("Confirmed or cancelled bookings cannot be expired."))
-            rec.state = "expired"
-            if rec.property_id and rec.property_id.state == "booked":
-                rec.property_id.write({
-                    "buyer_id": False,
-                    "selling_price": 0.0,
-                    "state": "offer_received" if rec.property_id.offer_ids else "new",
-                })
+        self.write({"state": "expired"})
+        self._reset_associated_property()
 
     @api.model
     def cron_check_expired_bookings(self):
@@ -190,6 +204,5 @@ class EstatePropertyBooking(models.Model):
             ("state", "in", ("draft", "pending")),
             ("expiry_date", "<", today),
         ])
-        for booking in expired_bookings:
-            if booking.deposit_paid < booking.min_deposit_amount:
-                booking.action_expire_booking()
+        to_expire = expired_bookings.filtered(lambda b: b.deposit_paid < b.min_deposit_amount)
+        to_expire.action_expire_booking()

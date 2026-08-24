@@ -75,14 +75,14 @@
                     </div>
                     <group>
                         <group string="Booking Details">
-                            <field name="property_id" readonly="state in ('confirmed', 'cancelled')"/>
-                            <field name="partner_id" readonly="state in ('confirmed', 'cancelled')"/>
-                            <field name="salesperson_id"/>
-                            <field name="booking_date"/>
-                            <field name="expiry_date"/>
+                            <field name="property_id" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
+                            <field name="partner_id" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
+                            <field name="salesperson_id" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
+                            <field name="booking_date" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
+                            <field name="expiry_date" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
                         </group>
                         <group string="Financial Info">
-                            <field name="total_amount"/>
+                            <field name="total_amount" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
                             <field name="min_deposit_amount"/>
                             <field name="deposit_paid"/>
                             <field name="remaining_amount"/>
@@ -95,7 +95,7 @@
                     </group>
                     <notebook>
                         <page name="payment_lines" string="Payment Transactions">
-                            <field name="payment_line_ids">
+                            <field name="payment_line_ids" readonly="state in ('confirmed', 'cancelled', 'expired')">
                                 <list string="Payment Lines" editable="bottom">
                                     <field name="payment_date"/>
                                     <field name="amount"/>

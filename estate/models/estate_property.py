@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -136,14 +136,28 @@ class EstateProperty(models.Model):
 
     def action_view_bookings(self):
         self.ensure_one()
-        return {
+        action = {
             "name": "Bookings",
             "type": "ir.actions.act_window",
             "res_model": "estate.property.booking",
-            "view_mode": "list,form",
             "domain": [("property_id", "=", self.id)],
             "context": {"default_property_id": self.id},
         }
+        if len(self.booking_ids) == 1:
+            action.update({
+                "view_mode": "form",
+                "res_id": self.booking_ids.id,
+            })
+        else:
+            action.update({
+                "view_mode": "list,form",
+            })
+
+        active_booking = self.booking_ids.filtered(lambda b: b.state in ("draft", "pending", "confirmed"))
+        if active_booking or self.state != "offer_accepted":
+            action["context"]["create"] = False
+
+        return action
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -159,7 +173,10 @@ class EstateProperty(models.Model):
         if self.state == "sold":
             msg = "A sold property cannot be cancelled."
             raise UserError(msg)
-        self.state = "cancelled"
+        active_booking = self.booking_ids.filtered(lambda b: b.state in ("draft", "pending", "confirmed"))
+        if active_booking:
+            active_booking.action_cancel_booking()
+        self.write({"state": "cancelled", "active": False})
         return True
 
     def action_sold(self):
@@ -171,8 +188,8 @@ class EstateProperty(models.Model):
             msg = "A property cannot be sold without an accepted offer (buyer)."
             raise UserError(msg)
         self.selling_date = fields.Date.today()
-        self.state = "sold"
-        if (self.selling_date - self.create_date.date()).days <= 2:
+        create_date = self.create_date.date() if self.create_date else fields.Date.today()
+        if (self.selling_date - create_date).days <= 2:
             tag = self.env['estate.property.tag'].search([('name', '=', 'quick sell')], limit=1)
             if not tag:
                 tag = self.env['estate.property.tag'].create({
@@ -180,14 +197,21 @@ class EstateProperty(models.Model):
                     'description': 'Quick sell property tag',
                 })
             self.tag_ids = self.tag_ids | tag
+        active_booking = self.booking_ids.filtered(lambda b: b.state in ("draft", "pending"))
+        if active_booking:
+            active_booking.write({"state": "confirmed"})
+        self.write({"state": "sold", "active": False})
         return True
 
     def action_accept_best_offer(self):
         self.ensure_one()
-        if not self.offer_ids:
-            msg = "This property has no offers to accept."
-            raise UserError(msg)
-        best_offer = max(self.offer_ids, key=lambda o: o.price)
+        today = fields.Date.context_today(self)
+        pending_offers = self.offer_ids.filtered(lambda o: not o.status)
+        if not pending_offers:
+            raise UserError(_("This property has no pending offers to accept."))
+        valid_offers = pending_offers.filtered(lambda o: not o.date_deadline or o.date_deadline >= today)
+        offers_to_select = valid_offers or pending_offers
+        best_offer = max(offers_to_select, key=lambda o: (o.price, o.create_date or fields.Datetime.now(), o.id))
         best_offer.action_accept()
         return True
 

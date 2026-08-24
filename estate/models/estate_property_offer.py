@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -54,10 +54,6 @@ class EstatePropertyOffer(models.Model):
             if record.date_deadline:
                 record.validity = (record.date_deadline - create_date).days
 
-    @api.onchange("date_deadline")
-    def _onchange_date_deadline(self):
-        self._inverse_date_deadline()
-
     @api.depends("create_date", "partner_id")
     def _compute_is_suspicious(self):
         partner_ids = self.partner_id.ids
@@ -94,19 +90,19 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get("property_id"):
-                property = self.env["estate.property"].browse(vals["property_id"])
-                if property.state not in ("offer_accepted", "sold", "cancelled"):
-                    property.state = "offer_received"
+                prop = self.env["estate.property"].browse(vals["property_id"])
+                if prop.state in ("offer_accepted", "booked", "sold", "cancelled"):
+                    raise UserError(_("You cannot create an offer for a property that is already accepted, booked, sold, or cancelled."))
+                prop.state = "offer_received"
         return super().create(vals_list)
 
     def action_accept(self):
         self.ensure_one()
-        if self.property_id.state in ("sold", "cancelled"):
-            msg = "You cannot accept an offer for a sold or cancelled property."
-            raise UserError(msg)
-        if self.property_id.buyer_id:
-            msg = "An offer has already been accepted for this property."
-            raise UserError(msg)
+        if self.status in ("accepted", "rejected"):
+            raise UserError(_("This offer has already been accepted, rejected, or cancelled. Please create a new offer."))
+        if self.property_id.state in ("offer_accepted", "booked", "sold", "cancelled") or self.property_id.buyer_id:
+            raise UserError(_("An offer has already been accepted for this property."))
+
         self.status = "accepted"
         self.property_id.write({
             'buyer_id': self.partner_id.id,
@@ -114,10 +110,20 @@ class EstatePropertyOffer(models.Model):
             'state': 'offer_accepted',
         })
         other_offers = self.property_id.offer_ids - self
-        other_offers.status = 'rejected'
+        other_offers.write({'status': 'rejected'})
+
+        self.env["estate.property.booking"].create({
+            "property_id": self.property_id.id,
+            "partner_id": self.partner_id.id,
+            "total_amount": self.price,
+            "booking_date": fields.Date.context_today(self),
+            "state": "draft",
+        })
         return True
 
     def action_refuse(self):
         self.ensure_one()
+        if self.status == "accepted":
+            raise UserError(_("An accepted offer cannot be refused directly. Please cancel the associated property booking."))
         self.status = "rejected"
         return True

@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -36,7 +36,7 @@ class EstateVisit(models.Model):
     rating = fields.Selection(
         selection=[
             ("1", "Poor"),
-            ("2", " Fair"),
+            ("2", "Fair"),
             ("3", "Good"),
             ("4", "Very Good"),
             ("5", "Excellent"),
@@ -61,5 +61,5 @@ class EstateVisit(models.Model):
             ]
             if record.search_count(domain) > 0:
                 raise ValidationError(
-                    message="This customer already has a visit scheduled for this property.",
+                    _("This customer already has a visit scheduled for this property at this time."),
                 )
