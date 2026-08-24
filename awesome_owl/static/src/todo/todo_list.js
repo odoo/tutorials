@@ -11,6 +11,7 @@ export class TodoList extends Component {
     this.state = useState({ items: [], count: 0 });
     useAutoFocus("todo-input");
     this.toggleItemState = this.toggleItemState.bind(this);
+    this.removeTodo = this.removeTodo.bind(this);
   }
 
   addTodo(ev) {
@@ -23,6 +24,11 @@ export class TodoList extends Component {
   toggleItemState(id) {
     const item = this.state.items.find(item => item.id == id);
     item['isCompleted'] = !item['isCompleted'];
+  }
+
+  removeTodo(id) {
+    const item_index = this.state.items.findIndex(item => item.id == id);
+    this.state.items.splice(item_index, 1);
   }
 
 
