@@ -4,6 +4,7 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { browser } from "@web/core/browser/browser";
+import { _t } from "@web/core/l10n/translation";
 
 import { DashboardItem } from "./dashboard_item";
 import { SettingsDialog } from "./settings_dialog";
@@ -51,7 +52,7 @@ class AwesomeDashboard extends Component {
     gotoLeads() {
         this.action.doAction({
             type: "ir.actions.act_window",
-            name: "Leads",
+            name: _t("Leads"),
             res_model: "crm.lead",
             views: [[false, 'list'], [false, 'form']],
         })

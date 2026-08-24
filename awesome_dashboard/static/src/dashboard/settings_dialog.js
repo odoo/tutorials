@@ -3,6 +3,7 @@ import { Component, xml, useState } from "@odoo/owl"
 import { Dialog } from "@web/core/dialog/dialog"
 import { CheckBox } from "@web/core/checkbox/checkbox"
 import { browser } from "@web/core/browser/browser"
+import { _t } from "@web/core/l10n/translation"
 
 export class SettingsDialog extends Component {
     static props = {
@@ -13,7 +14,7 @@ export class SettingsDialog extends Component {
     static components = { Dialog, CheckBox }
 
     static template = xml`
-        <Dialog title="'Dashboard items configuration'">
+        <Dialog title="title">
             Which cards do you wish to see?
             <t t-foreach="props.items" t-as="item" t-key="item.id">
                 <CheckBox value="!disabled[item.id]" onChange="() => disabled[item.id] = !disabled[item.id]">
@@ -27,6 +28,7 @@ export class SettingsDialog extends Component {
     `
 
     setup() {
+        this.title = _t("Dashboard items configuration")
         this.disabled = useState({})
         for (const item of this.props.items) {
             this.disabled[item.id] = item.disabled
