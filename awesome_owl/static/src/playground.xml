@@ -12,6 +12,12 @@
             <div class="mt-2 p-2">The sum is: <span t-esc="sum"></span></div>
         </div>
 
+        <div class="border m-4">
+            <div class="border m-2 d-inline-block">
+                <TodoList/>
+            </div>
+        </div>
+
     </t>
 
 </templates>
