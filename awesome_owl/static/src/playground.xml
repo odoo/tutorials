@@ -7,9 +7,12 @@
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
             <p>Sum: <t t-esc="state.value"/></p>
-            <Card title="'Card 1'" content="card1Content"/>
-            <Card title="'Card 2'" content="card2Content"/>
-            <Card content="'card 3 - No title'"/>
+            <Card title="'Card 1'">
+                <Counter/>
+            </Card>
+            <Card title="'Card 2'">
+                Hey !
+            </Card>
             <TodoList/>
         </div>
     </t>
