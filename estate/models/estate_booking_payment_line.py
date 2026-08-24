@@ -59,8 +59,11 @@ class EstateBookingPaymentLine(models.Model):
         (bookings_before | bookings_after)._check_payment_completion_and_update_status()
         return res
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check_booking_status(self):
         bookings = self.mapped("booking_id")
-        res = super().unlink()
-        bookings._check_payment_completion_and_update_status()
-        return res
+        for booking in bookings:
+            remaining_lines = booking.payment_line_ids - self
+            paid_amount = sum(remaining_lines.mapped("amount"))
+            if paid_amount < booking.total_amount and booking.state == "confirmed":
+                booking.state = "pending"
