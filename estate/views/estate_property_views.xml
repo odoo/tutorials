@@ -1,6 +1,6 @@
 <odoo>
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties"
@@ -88,7 +88,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties">
-                <field name="name" string="Title" />
+                <field name="name" />
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />

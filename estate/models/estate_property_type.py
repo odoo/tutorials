@@ -4,6 +4,7 @@ from odoo import api, fields, models
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
+    _order = "sequence, name"
 
     name = fields.Char(required=True)
     _name_uniq = models.Constraint(
@@ -12,14 +13,17 @@ class EstatePropertyType(models.Model):
     )
 
     property_ids = fields.One2many(
-        "estate.property", "property_type_id", string="Properties"
+        "estate.property",
+        "property_type_id",
+        string="Properties",
     )
     offer_ids = fields.One2many(
-        "estate.property.offer", "property_type_id", string="Offers"
+        "estate.property.offer",
+        "property_type_id",
+        string="Offers",
     )
     offer_count = fields.Integer(compute="_compute_offer_count")
     sequence = fields.Integer("Sequence", default=1)
-    _order = "sequence, name"
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):

@@ -8,8 +8,9 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
-    name = fields.Char(required=True)
+    name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -60,7 +61,6 @@ class EstateProperty(models.Model):
         "CHECK(selling_price >= 0)",
         "The selling price of a property cannot be negative.",
     )
-    _order = "id desc"
 
     @api.constrains("selling_price")
     def _check_selling_price(self):

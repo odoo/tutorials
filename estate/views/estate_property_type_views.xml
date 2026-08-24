@@ -1,6 +1,6 @@
 <odoo>
-  <record id="estate_property_type_view_tree" model="ir.ui.view">
-    <field name="name">estate.property.type.tree</field>
+  <record id="estate_property_type_view_list" model="ir.ui.view">
+    <field name="name">estate.property.type.list</field>
     <field name="model">estate.property.type</field>
     <field name="arch" type="xml">
       <list string="Property Types">
@@ -29,7 +29,7 @@
             <page string="Properties">
               <field name="property_ids">
                 <list>
-                  <field name="name" string="Title" />
+                  <field name="name" />
                   <field name="expected_price" />
                   <field name="state" string="Status" />
                 </list>
