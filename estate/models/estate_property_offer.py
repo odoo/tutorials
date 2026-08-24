@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstatePropertyOffer(models.Model):
@@ -78,9 +79,16 @@ class EstatePropertyOffer(models.Model):
         properties = self.env['estate.property'].browse(prop_min_offer.keys())
 
         for prop in properties:
+            if prop.state in ('sold', 'cancelled'):
+                raise UserError("You can not make an offer on a sold or cancelled property")
+
             # No new offer may be lower than the best existing one
-            best_existing = prop.offer_ids[0]
-            if prop_min_offer[prop.id] < best_existing:
+            best_existing = prop.offer_ids[0].price if len(prop.offer_ids) else 0.0
+
+            if float_is_zero(best_existing, precision_digits=2):
+                continue
+
+            if float_compare(prop_min_offer[prop.id], best_existing, precision_digits=2) == -1:
                 raise UserError("You can not offer less than the biggest offer")
 
         properties.filtered(lambda p: p.state == 'new').state = 'offer_received'
