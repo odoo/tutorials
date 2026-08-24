@@ -5,7 +5,11 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text"><t t-esc="props.body"/></p>
+                <div class="card-text">
+                    <!-- Se viene passato dello slot mostra quello, altrimenti mostra props.body -->
+                    <t t-if="props.body" t-esc="props.body"/>
+                    <t t-slot="default"/>
+                </div>
             </div>
         </div>
     </t>

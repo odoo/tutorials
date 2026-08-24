@@ -4,7 +4,9 @@
     <t t-name="awesome_owl.playground">
         <div class="border d-inline-flex m-4">
             <Card title="'card 1'" body="'content of card 1'"/>
-            <Card title="'card 2'" body="'content of card 2'"/>
+            <Card title="'card 2'">
+                <div><b>Content 2</b></div>
+            </Card>
         </div>
     </t>
 
