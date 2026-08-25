@@ -4,11 +4,18 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
+                <h5 class="card-title"><t t-esc="props.title"/>
+                    <t t-if="props.toggleMode">
+                        <span t-on-click="toggle" style="cursor: pointer; margin-left: 10px" class="text-warning mb-2">
+                            <t t-esc="state.isToggleOn ? 'Untoggle' : 'Toggle'"/>
+                        </span>
+                    </t></h5>
                 <div class="card-text">
-                    <!-- Se viene passato dello slot mostra quello, altrimenti mostra props.body -->
                     <t t-if="props.body" t-esc="props.body"/>
-                    <t t-slot="default"/>
+
+                    <div t-att-class="{'d-none': props.toggleMode and !state.isToggleOn}">
+                        <t t-slot="default"/>
+                    </div>
                 </div>
             </div>
         </div>

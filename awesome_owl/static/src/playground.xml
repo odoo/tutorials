@@ -18,6 +18,15 @@
             </div>
         </div>
 
+        <div class="border m-4">
+            <Card title="'Card 1'" body="'Some content'" toggleMode="false"/>
+            <Card title="'Card 2'" toggleMode="false">
+                <Counter/>
+            </Card>
+            <Card title="'Card 3'" toggleMode="true">
+                <Counter/>
+            </Card>
+        </div>
     </t>
 
 </templates>
