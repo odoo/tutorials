@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="d-flex gap-1 mb-1">
+            <span class="mr-1"><t t-esc="props.todo.id" />.</span>
+            <p class="m-0"><t t-esc="props.todo.description" /></p>
+            <div t-if="props.todo.isCompleted">&#9989;</div>
+        </div>
+    </t>
+
+</templates>
