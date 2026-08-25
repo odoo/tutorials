@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+
+
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tags</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <!--List Property view-->
+
+
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state in ('offer_received','offer_accepted')"
+                  decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="postcode"/>
+                <field name="date_availability" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!--custom Property form view-->
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="property">
+                <header>
+                    <group invisible="state in ('sold','cancelled')">
+                        <button name="set_sold" type="object" string="Sold"/>
+                        <button name="set_cancel" type="object" string="Cancel"/>
+                        <!--                        <button name="%(estate.estate_property_type_action)d" type="action" string="view_action"/>-->
+                    </group>
+                    <field name="state" widget="statusbar" options="{'clickable':1}"/>
+                </header>
+
+                <div>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="postcode"/>
+                        <field name="date_availability"/>
+                        <field name="property_type_id"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+
+                    </group>
+
+
+                    <group>
+                        <field name="expected_price"/>
+                        <field name="selling_price"/>
+                        <field name="best_price"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Description">
+                        <group>
+                            <field name="description"/>
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="garage"/>
+                            <field name="garden"/>
+                            <field name="garden_area" invisible="not garden"/>
+                            <field name="garden_orientation" invisible="not garden"/>
+                            <field name="facades"/>
+                            <field name="total_area"/>
+                        </group>
+                    </page>
+                    <page string="Offers">
+                        <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')">
+                            <list editable="bottom" decoration-success="status == 'accepted'"
+                                  decoration-danger="status == 'refused'">
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="property_type_id"/>
+                                <field name="validity"/>
+                                <field name="date_deadline"/>
+                                <button name="set_accepted" string="Accept" type="object" icon="fa-check"
+                                        invisible="status in ('accepted','refused')"/>
+                                <button name="set_refused" string="Refuse" type="object" icon="fa-close"
+                                        invisible="status in ('accepted','refused')"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Other Info">
+                        <group>
+                            <field name="salesman_id"/>
+                            <field name="buyer_id"/>
+                        </group>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <!--custom Property search view-->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
+                <filter name=" group_by_bedrooms" string="Bedrooms" context="{'group_by':'bedrooms'}"/>
+                <filter name="filter" string="price" domain="[('expected_price', '>', 5000)]"/>
+                <filter name="available" string="available"
+                        domain="[('state','in',('new','offer_received')  )]"/>
+                <filter
+                    string="Bedrooms"
+                    name="bedrooms"
+                    domain="[('bedrooms', '=' , 2)]"/>
+
+
+            </search>
+        </field>
+    </record>
+
+</odoo>
