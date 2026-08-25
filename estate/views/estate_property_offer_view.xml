@@ -25,7 +25,6 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form>
-
                 <sheet>
                     <group>
                         <field name="price"/>
