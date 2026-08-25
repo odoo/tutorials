@@ -4,9 +4,10 @@ import { registry } from "@web/core/registry";
 
 class AwesomeDashboardLazy extends Component {
   static components = { LazyComponent };
-    static template = xml`
+  static template = xml`
     <LazyComponent bundle="'awesome_dashboard.dashboard_bundle'" Component="'awesome_dashboard.dashboard'" />
     `;
+  static props = ['*'];
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboardLazy);
