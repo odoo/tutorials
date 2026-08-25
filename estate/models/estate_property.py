@@ -87,3 +87,9 @@ class EstateModel(models.Model):
         else:
             self.state = 'cancelled'
         return True
+
+    _check_negative_expected_price = models.Constraint('CHECK(expected_price >= 0)',
+                                                       "Expected value can't be negative, check your Math!")
+
+    _check_negative_selling_price = models.Constraint('CHECK(selling_price >= 0)',
+                                                      "Do you actually give money while selling your Property? Selling Price can't be negative, check your Math!")
