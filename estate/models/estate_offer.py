@@ -1,6 +1,5 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
 
 
 class EstateOffer(models.Model):
@@ -50,12 +49,9 @@ class EstateOffer(models.Model):
                 if offers.id == record.id:
                     continue
                 offers.status = 'refused'
-
-
         return True
 
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
-
         return True
