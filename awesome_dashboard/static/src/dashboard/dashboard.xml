@@ -7,37 +7,12 @@
                 <button t-on-click="openPartnerForm" type="button" class="btn btn-primary" title="Customers">Customers</button>
                 <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
             </t>
-            <DashboardItem>
-                hi !
-            </DashboardItem>
-            <DashboardItem size="2">
-                hi but bigger ?
-            </DashboardItem>
-
-            <DashboardNumberItem
-                description="'Number of new orders this month'"
-                number="result.nb_new_orders"
-            />
-            <DashboardNumberItem
-                description="'Total amount of new orders this month'"
-                number="result.total_amount"
-            />
-            <DashboardNumberItem
-                description="'Average amount of t-shirt by order this month'"
-                number="result.average_quantity"
-            />
-            <DashboardNumberItem
-                description="'Number of cancelled orders this month'"
-                number="result.nb_cancelled_orders"
-            />
-            <DashboardNumberItem
-                description="'Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’'"
-                number="result.average_time"
-            />
-
-            <DashboardItem>
-                <PieChart data="result.orders_by_size"/>
-            </DashboardItem>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+               <DashboardItem size="item.size || 1">
+                  <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                  <t t-component="item.Component" t-props="itemProp" />
+               </DashboardItem>
+            </t>
         </Layout>
     </t>
 

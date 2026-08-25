@@ -3,18 +3,19 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard-item/dashboard-item";
-import { DashboardNumberItem } from "./dashboard-number-item/dashboard-number-item";
-import { PieChart } from "./pie-chart/pie-chart";
+import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
-  static components = { Layout, DashboardItem, DashboardNumberItem, PieChart };
+  static components = { Layout, DashboardItem, items };
 
   setup() {
     this.action = useService("action");
     const statisticsService = useService("awesome_dashboard.statistics");
 
-    this.result = useState(statisticsService);
+    this.statistics = useState(statisticsService);
+
+    this.items = items
   }
 
   openPartnerForm() {
