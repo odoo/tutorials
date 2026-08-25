@@ -7,9 +7,15 @@ export class TodoList extends Component {
     static components = { TodoItem };
 
     setup() {
-        this.todos = useState([
-            { id: 2, description: "write tutorial", isCompleted: true },
-            { id: 3, description: "buy milk", isCompleted: false }
-        ]);
+        this.todos = useState([]);
+    }
+
+    addTodo(event) {
+        if (event.keyCode === 13) {
+            const lastElement = this.todos.slice(-1)?.[0]
+            const lastId = lastElement?.id ?? 0
+            this.todos.push({ id: lastId + 1, description: event.target.value, isCompleted: false });
+            event.target.value = ""
+        }
     }
 }
