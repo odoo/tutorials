@@ -46,3 +46,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    _check_negative_offer_price = models.Constraint('CHECK(price >= 0)',
+                                                    "Have you ever thought of having negative value as an offer Price? Price can't be negative, check your Math!")

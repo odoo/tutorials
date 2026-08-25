@@ -1,5 +1,6 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateModel(models.Model):
@@ -87,3 +88,16 @@ class EstateModel(models.Model):
         else:
             self.state = 'cancelled'
         return True
+
+    _check_negative_expected_price = models.Constraint('CHECK(expected_price >= 0)',
+                                                       "Expected value can't be negative, check your Math!")
+
+    _check_negative_selling_price = models.Constraint('CHECK(selling_price >= 0)',
+                                                      "Do you actually give money while selling your Property? Selling Price can't be negative, check your Math!")
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, (record.expected_price * 0.9), precision_digits=2) == -1:
+                    raise ValidationError("The Selling Price cannot be less than 90% of Expected Price.")
