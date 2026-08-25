@@ -1,7 +1,7 @@
 import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
-import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
+import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard-item/dashboard-item";
 import { DashboardNumberItem } from "./dashboard-number-item/dashboard-number-item";
 import { PieChart } from "./pie-chart/pie-chart";
@@ -32,4 +32,4 @@ class AwesomeDashboard extends Component {
 
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);
