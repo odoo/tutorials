@@ -2,7 +2,47 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <button class="btn btn-primary me-1" t-on-click="kanban_action">
+            Customers
+        </button>
+        <button class="btn btn-primary" t-on-click="leads_action">
+            Leads
+        </button> 
+        <Layout className="'o_dashboard h-100'" display="'{controlPanel: {} }'">
+            <div className="d-flex flex-wrap">
+                <DashboardItem>
+                    Number of new orders this month
+                    <div>
+                        <t t-esc="state.statistics.nb_new_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of new orders this month
+                    <div>
+                        <t t-esc="state.statistics.total_amount"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average amount of t-shirt by order this month
+                    <div>
+                        <t t-esc="state.statistics.average_quantity"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <div>
+                        <t t-esc="state.statistics.nb_cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    <div>
+                        <t t-esc="state.statistics.average_time"/>
+                    </div>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
+    
 
 </templates>
