@@ -14,6 +14,10 @@ export class TodoItem extends Component {
         toggleState: {
             type: Function,
             optional: true
+        },
+        deleteElement: {
+            type: Function,
+            optional: true
         }
     }
 }
