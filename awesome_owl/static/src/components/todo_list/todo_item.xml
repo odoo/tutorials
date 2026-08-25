@@ -3,6 +3,12 @@
 
     <t t-name="awesome_owl.todo_item">
         <div class="d-flex gap-1 mb-1" t-att-class='{"text-muted text-decoration-line-through": props.todo.isCompleted}'>
+            <input 
+                type="checkbox"
+                t-att-value="props.todo.isCompleted"
+                t-on-change="() => this.props.toggleState?.(props.todo.id)"
+                class="mr-1" 
+            />
             <span class="mr-1"><t t-esc="props.todo.id" />.</span>
             <p class="m-0"><t t-esc="props.todo.description" /></p>
         </div>

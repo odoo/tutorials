@@ -5,7 +5,7 @@
         <div class="p-2 bg-light">
             <input placeholder="Add a todo" t-on-keyup="addTodo" t-ref="input" class="mb-1" />
             <t t-foreach="todos" t-as="t" t-key="t.id">
-                <TodoItem todo="t" />
+                <TodoItem todo="t" toggleState="toggleState" />
             </t>
         </div>
     </t>
