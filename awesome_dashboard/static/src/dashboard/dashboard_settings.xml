@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardSettings">
+        <Dialog title="'Configure Items'">
+            Select the items you want to see
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.handleToggle(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button t-on-click="handleClose">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
