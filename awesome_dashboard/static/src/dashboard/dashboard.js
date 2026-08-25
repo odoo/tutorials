@@ -1,14 +1,14 @@
-import { Component, xml, useState } from "@odoo/owl";
+import { Component, xml, useState, onWillStart } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
-import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
 
 import { DashboardItem } from "./dashboard_item";
 import { SettingsDialog } from "./settings_dialog";
 import "./dashboard_items";
+import "./disabled_items_service";
 
 class AwesomeDashboard extends Component {
     static template = xml`
@@ -35,10 +35,16 @@ class AwesomeDashboard extends Component {
         this.action = useService("action")
         this.dialog = useService("dialog")
         this.statistics = useService("awesome_dashboard.statistics")
-        const disabled = JSON.parse(browser.localStorage.getItem("disabled_dashboard_items") || "[]")
+        this.disabledItems = useService("awesome_dashboard.disabled_items")
         this.items = useState(registry.category("awesome_dashboard").getAll().map(
-            (item) => ({ ...item, disabled: disabled.includes(item.id) })
+            (item) => ({ ...item, disabled: false })
         ))
+        onWillStart(async () => {
+            const disabled = await this.disabledItems.load()
+            for (const item of this.items) {
+                item.disabled = disabled.includes(item.id)
+            }
+        })
     }
 
     openSettings() {

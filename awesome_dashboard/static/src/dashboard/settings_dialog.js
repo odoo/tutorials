@@ -2,7 +2,7 @@ import { Component, xml, useState } from "@odoo/owl"
 
 import { Dialog } from "@web/core/dialog/dialog"
 import { CheckBox } from "@web/core/checkbox/checkbox"
-import { browser } from "@web/core/browser/browser"
+import { useService } from "@web/core/utils/hooks"
 import { _t } from "@web/core/l10n/translation"
 
 export class SettingsDialog extends Component {
@@ -29,6 +29,7 @@ export class SettingsDialog extends Component {
 
     setup() {
         this.title = _t("Dashboard items configuration")
+        this.disabledItems = useService("awesome_dashboard.disabled_items")
         this.disabled = useState({})
         for (const item of this.props.items) {
             this.disabled[item.id] = item.disabled
@@ -40,7 +41,7 @@ export class SettingsDialog extends Component {
             item.disabled = this.disabled[item.id]
         }
         const ids = this.props.items.filter((item) => item.disabled).map((item) => item.id)
-        browser.localStorage.setItem("disabled_dashboard_items", JSON.stringify(ids))
+        this.disabledItems.save(ids)
         this.props.close()
     }
 }
