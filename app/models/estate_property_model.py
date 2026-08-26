@@ -39,7 +39,7 @@ class EstatePropertyModel(models.Model):
             ('cancelled', 'Cancelled'),
         ],
         string='State',
-        deafult='new',
+        default='new',
         required=True,
         copy=False
     )
