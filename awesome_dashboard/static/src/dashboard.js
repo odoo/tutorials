@@ -15,17 +15,16 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action")
+        this.caching = useService("myCaching")
 9
         this.state = useState({
             statistics: {}
         })
 
         onWillStart(async () => {
-            const result = await rpc(
-                "/awesome_dashboard/statistics",
-            )
-            console.log(result)
-            this.state.statistics = result
+            const stats = await this.caching.loadStatistics()
+            this.state.statistics = stats
+
         })
     }
 
