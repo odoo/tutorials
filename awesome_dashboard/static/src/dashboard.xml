@@ -10,7 +10,15 @@
                 </t>
 
                 <div class="p-3">
-                    <h1>Dashboard Content</h1>
+                    <DashboardItem>
+                        some content
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        some content
+                    </DashboardItem>
+                    <DashboardItem>
+                        some content
+                    </DashboardItem>
                 </div>
             </Layout>
         </div>
