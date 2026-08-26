@@ -7,7 +7,15 @@
                 <button t-on-click="openCustomers" type="button" class="btn btn-primary" title="Customers">Customers</button>
                 <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
             </t>
-            hello dashboard
+            <DashboardItem>
+                hello dashboard
+            </DashboardItem>
+            <DashboardItem size="2">
+                big dashboard item
+            </DashboardItem>
+            <DashboardItem>
+                Normal dashboard item
+            </DashboardItem>
         </Layout>
     </t>
 
