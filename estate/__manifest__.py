@@ -4,6 +4,7 @@
         'base',
     ],
     'data': [
+        'data/security.xml',
         'data/ir.model.access.csv',
         'views/estate_property_actions.xml',
         'views/estate_property_tag_view_list.xml',
@@ -17,4 +18,5 @@
         'data/estate_menus.xml',
     ],
     'application': True,
+    'category': 'Real Estate/Brokerage',
 }
