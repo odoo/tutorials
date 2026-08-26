@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.piechart">
+        <div>
+            <canvas t-ref="chart"/>
+            <!-- Use t-esc with a value, or remove if not displaying text -->
+            <t t-esc="props.label"/>
+        </div>
+    </t>
+
+</templates>

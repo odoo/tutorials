@@ -40,6 +40,9 @@
                         <t t-esc="state.statistics.average_time"/>
                     </div>
                 </DashboardItem>
+                <DashboardItem>
+                    <Piechart pieData="state.statistics"/>
+                </DashboardItem>
             </div>
         </Layout>
     </t>
