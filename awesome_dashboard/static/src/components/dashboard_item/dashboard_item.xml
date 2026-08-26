@@ -9,6 +9,9 @@
                 </div>
                 <div t-if="open.value" class="card-text">
                     <t t-slot="default" />
+                    <h1 t-if="props.slots.statistics" class="text-center text-success">
+                        <t t-slot="statistics" />
+                    </h1>
                 </div>
             </div>
         </div>
