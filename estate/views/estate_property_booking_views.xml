@@ -62,9 +62,14 @@
         <field name="arch" type="xml">
             <form string="Property Booking">
                 <header>
-                    <button name="action_confirm_booking" type="object" string="Confirm Booking" class="oe_highlight" invisible="state in ('confirmed', 'cancelled', 'expired')"/>
+                    <button name="action_open_payment_wizard"
+                            type="object"
+                            string="Register Payment"
+                            class="btn-primary"
+                            invisible="state in ('confirmed', 'cancelled', 'expired') or payment_status == 'paid'"/>
+                    <button name="action_confirm_booking" type="object" string="Confirm Booking" class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_expire_booking" type="object" string="Mark as Expired" invisible="state in ('confirmed', 'cancelled', 'expired')"/>
-                    <button name="action_cancel_booking" type="object" string="Cancel Booking" invisible="state in ('cancelled', 'expired')"/>
+                    <button name="action_cancel_booking" type="object" string="Cancel Booking" invisible="state in ('confirmed', 'cancelled', 'expired') or payment_status == 'paid'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,pending,confirmed,expired,cancelled"/>
                 </header>
                 <sheet>
@@ -82,7 +87,7 @@
                             <field name="expiry_date" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
                         </group>
                         <group string="Financial Info">
-                            <field name="total_amount" readonly="state in ('confirmed', 'cancelled', 'expired')"/>
+                            <field name="total_amount" readonly="1"/>
                             <field name="min_deposit_amount"/>
                             <field name="deposit_paid"/>
                             <field name="remaining_amount"/>

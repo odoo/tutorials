@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_booking_payment_wizard_view_form" model="ir.ui.view">
+        <field name="name">estate.booking.payment.wizard.view.form</field>
+        <field name="model">estate.booking.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Register Payment">
+                <sheet>
+                    <group string="Booking Summary" col="4">
+                        <field name="booking_id" readonly="1"/>
+                        <field name="property_id" readonly="1"/>
+                        <field name="partner_id" readonly="1"/>
+                        <field name="booking_state" widget="badge" decoration-info="booking_state == 'pending'" decoration-success="booking_state == 'confirmed'" decoration-muted="booking_state == 'cancelled'" decoration-danger="booking_state == 'expired'" readonly="1"/>
+                    </group>
+
+                    <group string="Payment Summary" col="4">
+                        <field name="total_amount" readonly="1"/>
+                        <field name="min_deposit_amount" readonly="1"/>
+                        <field name="deposit_paid" readonly="1"/>
+                        <field name="remaining_amount" readonly="1" decoration-danger="remaining_amount > 0" decoration-success="remaining_amount == 0"/>
+                    </group>
+
+                    <group string="Payment Details" col="2">
+                        <group>
+                            <field name="amount" widget="monetary"/>
+                            <field name="payment_date"/>
+                            <field name="payment_method"/>
+                            <field name="transaction_ref" placeholder="UTR No. / Cheque No. / UPI Ref..." invisible="payment_method == 'cash'"/>
+                        </group>
+                        <group>
+                            <field name="amount_after_payment" readonly="1" string="Balance After Payment"/>
+                        </group>
+                    </group>
+
+                    <group string="Notes" col="2">
+                        <field name="notes" placeholder="Optional internal notes for this payment entry..."/>
+                    </group>
+                </sheet>
+
+                <footer>
+                    <button name="action_register_payment" type="object" string="Register Payment" class="btn-primary" data-hotkey="v"/>
+                    <button string="Discard" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

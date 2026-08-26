@@ -153,6 +153,8 @@ class EstatePropertyBooking(models.Model):
                         "state": "sold",
                         "active": False,
                     })
+            elif rec.deposit_paid >= rec.min_deposit_amount and rec.state == "draft":
+                rec.action_confirm_booking()
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -161,31 +163,69 @@ class EstatePropertyBooking(models.Model):
                 vals["name"] = self.env["ir.sequence"].next_by_code("estate.property.booking") or "New"
         return super().create(vals_list)
 
+    def action_open_payment_wizard(self):
+        self.ensure_one()
+        return {
+            "name": _("Register Payment"),
+            "type": "ir.actions.act_window",
+            "res_model": "estate.booking.payment.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {
+                "active_id": self.id,
+                "default_booking_id": self.id,
+            },
+        }
+
     def action_confirm_booking(self):
         for rec in self:
-            if rec.state in ("confirmed", "cancelled", "expired"):
-                raise UserError(_("This booking cannot be confirmed because it is already %s.", rec.state))
+            if rec.state in ("pending", "confirmed", "cancelled", "expired"):
+                raise UserError(
+                    _("This booking cannot be activated because it is already %s.", rec.state),
+                )
             if rec.property_id.state in ("sold", "cancelled"):
                 raise UserError(_("A sold or cancelled property cannot be booked."))
+            if rec.deposit_paid < rec.min_deposit_amount:
+                raise UserError(
+                    _(
+                        "Cannot activate booking %(booking)s. "
+                        "A minimum deposit of %(min).2f is required before confirmation. "
+                        "Currently paid: %(paid).2f. Please register a payment first.",
+                        booking=rec.name,
+                        min=rec.min_deposit_amount,
+                        paid=rec.deposit_paid,
+                    ),
+                )
             rec.state = "pending"
             rec.property_id.state = "booked"
 
     def _reset_associated_property(self):
-        for rec in self:
-            if rec.property_id:
-                accepted_offers = rec.property_id.offer_ids.filtered(lambda o: o.status == "accepted")
-                if accepted_offers:
-                    accepted_offers.write({"status": "rejected"})
-                rec.property_id.write({
-                    "buyer_id": False,
-                    "selling_price": 0.0,
-                    "state": "offer_received" if rec.property_id.offer_ids else "new",
-                })
+        properties = self.mapped("property_id")
+        if not properties:
+            return
+
+        accepted_offers = properties.mapped("offer_ids").filtered(lambda o: o.status == "accepted")
+        if accepted_offers:
+            accepted_offers.write({"status": "rejected"})
+
+        for prop in properties:
+            prop.write({
+                "buyer_id": False,
+                "selling_price": 0.0,
+                "state": "offer_received" if prop.offer_ids else "new",
+            })
 
     def action_cancel_booking(self):
         for rec in self:
-            if rec.state == "confirmed":
-                raise UserError(_("This property booking cannot be cancelled because full payment is completed."))
+            if rec.deposit_paid > 0:
+                raise UserError(
+                    _(
+                        "Booking %(booking)s cannot be cancelled because a payment of %(paid).2f has been received. "
+                        "Please process a refund first.",
+                        booking=rec.name,
+                        paid=rec.deposit_paid,
+                    ),
+                )
         self.write({"state": "cancelled"})
         self._reset_associated_property()
 
@@ -198,11 +238,9 @@ class EstatePropertyBooking(models.Model):
 
     @api.model
     def cron_check_expired_bookings(self):
-        """Cron job to automatically expire bookings whose expiry date has passed without deposit."""
         today = fields.Date.context_today(self)
         expired_bookings = self.search([
             ("state", "in", ("draft", "pending")),
             ("expiry_date", "<", today),
         ])
-        to_expire = expired_bookings.filtered(lambda b: b.deposit_paid < b.min_deposit_amount)
-        to_expire.action_expire_booking()
+        expired_bookings.action_expire_booking()

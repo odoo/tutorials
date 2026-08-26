@@ -22,9 +22,11 @@ class EstateBookingPaymentLine(models.Model):
     payment_method = fields.Selection(
         selection=[
             ('cash', "Cash"),
-            ('bank', "Bank Transfer"),
-            ('card', "Credit/Debit Card"),
-            ('upi', "UPI / Online"),
+            ('bank', "Bank Transfer / NEFT / RTGS"),
+            ('card', "Credit / Debit Card"),
+            ('upi', "UPI / Online Payment"),
+            ('cheque', "Cheque / DD"),
+            ('other', "Other"),
         ],
         string="Payment Method",
         default="cash",
