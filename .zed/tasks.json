@@ -1,0 +1,42 @@
+[
+  {
+    "label": "Odoo: Enterprise (Update estate)",
+    "command": "venv/bin/python",
+    "args": [
+      "odoo-bin",
+      "--addons-path=addons/,../enterprise/,../tutorials",
+      "-u", "estate",
+      "-d", "odoo"
+    ],
+    "cwd": "/home/feraz/Documents/odoo",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false
+  },
+  {
+    "label": "Odoo: Community (Update estate)",
+    "command": "venv/bin/python",
+    "args": [
+      "odoo-bin",
+      "--addons-path=addons/,../tutorials",
+      "-u", "estate",
+      "-d", "odoo"
+    ],
+    "cwd": "/home/feraz/Documents/odoo",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false
+  },
+  {
+    "label": "Odoo: Test (estate)",
+    "command": "venv/bin/python",
+    "args": [
+      "odoo-bin",
+      "--addons-path=addons/,../enterprise/,../tutorials",
+      "-d", "odoo",
+      "--test-tags", "/estate",
+      "--stop-after-init"
+    ],
+    "cwd": "/home/feraz/Documents/odoo",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false
+  }
+]
