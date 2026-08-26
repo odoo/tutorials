@@ -27,5 +27,5 @@ class EstateBookingPayment(models.TransientModel):
 
         return {
             "type": "ir.actions.client",
-            "tag": "reload",
+            "tag": "soft_reload",
         }

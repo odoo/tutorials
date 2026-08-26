@@ -27,5 +27,5 @@ class EstateBookingPayment(models.TransientModel):
         booking._update_booking_and_property_status()
         return {
             "type": "ir.actions.client",
-            "tag": "reload",
+            "tag": "soft_reload",
         }

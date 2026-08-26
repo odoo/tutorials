@@ -4,6 +4,7 @@
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
+        "wizard/estate_property_offer_wizard_views.xml",
         "data/ir_sequence_data.xml",
         "data/ir_cron_data.xml",
         "data/mail_template_data.xml",
