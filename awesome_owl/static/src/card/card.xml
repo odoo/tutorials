@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title"><t t-esc="props.title"/><span class="fa fa-sort" t-on-click="() => state.open = !state.open"/></h5>
+                <t t-if="state.open" t-slot="default"/>
+            </div>
+        </div>
+    </t>
+
+</templates>

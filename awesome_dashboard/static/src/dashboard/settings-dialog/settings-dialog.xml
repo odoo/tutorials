@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.settings_dialog">
+        <Dialog title="'Dashboard items configuration'">
+            <t t-foreach="Object.entries(state.items)" t-as="entry" t-key="entry[0]">
+                <input
+                    type="checkbox"
+                    t-att-checked="entry[1].display"
+                    t-on-change="() => this.toggleDisplay(entry[0])"/>
+                <t t-esc="entry[1].description"/>
+                <br/>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onSave">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
