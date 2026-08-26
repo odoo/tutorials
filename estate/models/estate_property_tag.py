@@ -3,6 +3,7 @@ from odoo import fields, models
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Estate property tag, i.e. simple boolean characteristics of the estate outside the normal properties"
+    _order = "name"
 
     name = fields.Char(required=True)
     _check_name = models.Constraint(
@@ -12,3 +13,4 @@ class EstatePropertyTag(models.Model):
     _check_visual_code = models.Constraint(
             'unique (visual_code)',
             'The property tag visual code must be unique, choose different code')
+    color = fields.Integer(default=0, help="Colour of the tag")

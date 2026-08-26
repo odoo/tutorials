@@ -19,9 +19,12 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Estate Property Tag Tree and or List">
+            <list
+                string="Estate Property Tag Tree and or List"
+                editable="bottom">
                 <field name="name"/>
                 <field name="visual_code"/>
+                <field name="color"/>
             </list>
         </field>
     </record>
@@ -48,7 +51,7 @@
         </field>
     </record>
 
-    <record id="estate_property_type_view_form" model="ir.ui.view">
+    <record id="estate_property_tag_view_form" model="ir.ui.view">
         <field name="name">estate.property.tag.form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">

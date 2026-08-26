@@ -4,6 +4,7 @@
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_neutral_face">
             Create a new estate property offer.
@@ -19,7 +20,9 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Estate Property Offer Tree and or List">
+            <list
+                string="Estate Property Offer Tree and or List"
+                editable="bottom">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="status"/>
@@ -57,8 +60,23 @@
         <field name="arch" type="xml">
             <form string="Estate Property Offer Form">
                 <header>
-                    <button name="action_accept_offer" type="object" string="Accept" title="Mark property as sold"/>
-                    <button name="action_refuse_offer" type="object" string="Refuse" title="Cancel this property"/>
+                    <button
+                        name="action_accept_offer"
+                        type="object" string="Accept"
+                        title="Mark property as sold"
+                        invisible="status in ('accepted', 'refused')"/>
+                    <button
+                        name="action_refuse_offer"
+                        type="object"
+                        string="Refuse"
+                        title="Cancel this property"
+                        invisible="status in ('accepted', 'refused')"/>
+                    <button
+                        name="action_reset_status"
+                        type="object"
+                        string="Reset status"
+                        title="Reset status of this offer"
+                        invisible="status not in ('accepted', 'refused')"/>
                 </header>
                 <sheet>
                     <group>

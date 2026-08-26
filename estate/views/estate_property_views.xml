@@ -4,6 +4,11 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">
+            {
+                'search_default_available': True
+            }
+        </field>
         <field name="help" type="html">
           <p class="o_view_nocontent_neutral_face">
             Create a new estate property.
@@ -19,14 +24,24 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Property Tree and or List">
+            <list
+                string="Estate Property Tree and or List"
+                decoration-muted="state in ('sold')"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state in ('offer_accepted')">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
+                <field 
+                    name="tag_ids"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field
+                    name="date_availability"
+                    optional="hide"/>
                 <field name="property_type_id"/>
                 <field name="state"/>
             </list>
@@ -42,7 +57,11 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field
+                    name="living_area"
+                    string="Minimum living are ayou are searching for"
+                    filter_domain="[('living_area', '&gt;=', self)]"
+                    />
                 <field name="facades"/>
                 <field name="property_type_id"/>
 
@@ -57,7 +76,6 @@
                     name="groupby_postcode"
                     context="{'group_by': 'postcode'}"/>
 
-
             </search>
         </field>
     </record>
@@ -68,18 +86,35 @@
         <field name="arch" type="xml">
             <form string="Estate Property Form">
                 <header>
-                    <button name="action_set_property_as_sold" type="object" string="Sold" title="Mark property as sold"/>
-                    <button name="action_cancel_property" type="object" string="Cancel" title="Cancel this property"/>
-                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                    <button 
+                        name="action_set_property_as_sold"
+                        type="object" string="Sold"
+                        title="Mark property as sold"
+                        invisible="state in ('sold', 'cancelled')"/>
+                    <button
+                        name="action_cancel_property"
+                        type="object" string="Cancel"
+                        title="Cancel this property"
+                        invisible="state in ('sold', 'cancelled')"/>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        options="{'clickable': '1'}"
+                        statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Cancelled"
+                        tooltip="The estate property is cancelled"
+                        bg_color="text-bg-warning" invisible="state not in ('cancelled')"/>
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                     </div>
-                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}" />
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -98,23 +133,45 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
 
+                        <page string="Garden details" invisible="not garden">
+                            <group>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list string="Offers" editale="bottom">
+                            <field name="offer_ids"
+                                readonly="state in ('offer_accepted', 'sold', 'cancelled')">
+                                <list
+                                    string="Offers"
+                                    editale="bottom"
+                                    decoration-danger="status in ('refused')"
+                                    decoration-success="status in ('accepted')">
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
                                     <!-- states="draft"  /-->
-                                    <button name="action_accept_offer" type="object" string="Accept" title="Mark property as sold" icon="fa-check"/>
-                                    <button name="action_refuse_offer" type="object" string="Refuse" title="Cancel this property" icon="fa-times"/>
-                                    <field name="status"/>
+                                    <button
+                                        name="action_accept_offer" 
+                                        type="object"
+                                        string="Accept"
+                                        title="Mark property as sold"
+                                        icon="fa-check"
+                                        invisible="status in ('accepted', 'refused')"/>
+                                    <button
+                                        name="action_refuse_offer"
+                                        type="object"
+                                        string="Refuse"
+                                        title="Cancel this property"
+                                        icon="fa-times"
+                                        invisible="status in ('accepted', 'refused')"/>
+                                    <field name="status" optional="hide"/>
                                 </list>
                             </field>
                         </page>

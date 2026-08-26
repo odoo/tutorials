@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _order = "id desc"
 
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
 
