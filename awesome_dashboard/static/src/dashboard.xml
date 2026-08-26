@@ -11,13 +11,24 @@
 
                 <div class="p-3">
                     <DashboardItem>
-                        some content
-                    </DashboardItem>
-                    <DashboardItem size="2">
-                        some content
+                        <t t-set-slot="title">Number of new orders this month</t>
+                        <t t-set-slot="number"><t t-esc="stats.nb_new_orders"/></t>
                     </DashboardItem>
                     <DashboardItem>
-                        some content
+                        <t t-set-slot="title">Total amount of new orders this month</t>
+                        <t t-set-slot="number"><t t-esc="stats.total_amount"/></t>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <t t-set-slot="title">Average amount of t-shirt by order this month</t>
+                        <t t-set-slot="number"><t t-esc="stats.average_quantity"/></t>
+                    </DashboardItem>
+                    <DashboardItem>
+                        <t t-set-slot="title">Number of cancelled orders this month</t>
+                        <t t-set-slot="number"><t t-esc="stats.nb_cancelled_orders"/></t>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <t t-set-slot="title">Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’</t>
+                        <t t-set-slot="number"><t t-esc="stats.average_time"/></t>
                     </DashboardItem>
                 </div>
             </Layout>

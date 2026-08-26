@@ -1,4 +1,4 @@
-import { Component, useState } from "@odoo/owl";
+import { Component } from "@odoo/owl";
 
 export class DashboardItem extends Component {
     static template = "awesome_owl.dashboard_item";
@@ -10,6 +10,8 @@ export class DashboardItem extends Component {
             optional: true,
             shape: {
                 default: { optional: true },
+                title: String,
+                value: String
             },
         },
     };

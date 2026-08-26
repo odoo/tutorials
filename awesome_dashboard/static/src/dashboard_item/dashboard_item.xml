@@ -4,7 +4,11 @@
     <t t-name="awesome_owl.dashboard_item">
         <div class="card d-inline-block m-2" t-att-style="'width: ' + cardWidth + 'rem;'">
             <div class="card-body">
+                <div class="card-title">
+                    <t t-slot="title"/>
+                </div>
                 <div class="card-text">
+                    <p class="text-success text-center fs-1"><t t-slot="number"/></p>
                     <t t-slot="default"/>
                 </div>
             </div>
