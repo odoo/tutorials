@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.dashboard_item">
-        <div class="card d-inline-block m-2" t-att-style="'width: ' + cardWidth + 'rem;'">
+        <div class="card d-inline-block align-top m-2" t-att-style="'width: ' + cardWidth + 'rem;'">
             <div class="card-body">
                 <div class="card-title">
                     <t t-slot="title"/>
