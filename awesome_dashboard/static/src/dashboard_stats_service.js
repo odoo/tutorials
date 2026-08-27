@@ -9,8 +9,13 @@ export async function loadStatistics() {
 export const dashboardStatsService = {
     dependencies: [],
     start() {
+        const memoizedLoad = memoize(loadStatistics);
+
+        // Time key integer changing every 10m in order to miss the cache of memoize
+        const getTimeKey = () => Math.floor(Date.now() / 1000*60*10);
+
         return {
-            loadStatistics: memoize(loadStatistics)
+            loadStatistics: () => memoizedLoad(getTimeKey())
         };
     },
 };
