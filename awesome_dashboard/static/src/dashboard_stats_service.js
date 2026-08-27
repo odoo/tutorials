@@ -12,7 +12,7 @@ export const dashboardStatsService = {
         const memoizedLoad = memoize(loadStatistics);
 
         // Time key integer changing every 10m in order to miss the cache of memoize
-        const getTimeKey = () => Math.floor(Date.now() / 1000*60*10);
+        const getTimeKey = () => Math.floor(Date.now() / (1000 * 60 * 10));
 
         return {
             loadStatistics: () => memoizedLoad(getTimeKey())
