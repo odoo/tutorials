@@ -62,6 +62,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "canceled":
                 raise UserError("A canceled property cannot be sold.")
+            if not record.offer_ids.filtered(lambda offer: offer.status == "accepted"):
+                raise UserError("At lest one of the offer must be accpeted before sold")
             record.state = "sold"
 
     def action_cancel(self):

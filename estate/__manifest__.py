@@ -5,7 +5,7 @@
     "description": """
         Real Estate Tutorial Module
     """,
-    "author": "Piyush",
+    "author": "Odoo S.A.",
     "category": "Tutorials",
     "depends": ["base"],
     "license": "LGPL-3",
