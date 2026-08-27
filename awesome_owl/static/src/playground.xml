@@ -2,8 +2,30 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="border d-inline-flex flex-column m-4">
+            <div class="d-flex flex-row">
+                <t t-foreach="Array.from({ length: state.counters_num }, (_, i) => i)" t-as="i" t-key="i">
+                    <Counter initialValue="1" onRegister="(instance) => this.registerCounter(i, instance)" />
+                </t>
+            </div>
+
+            <div class="mt-2 p-2">The sum is: <span t-esc="sum"></span></div>
+        </div>
+
+        <div class="border m-4">
+            <div class="border m-2 d-inline-block">
+                <TodoList/>
+            </div>
+        </div>
+
+        <div class="border m-4">
+            <Card title="'Card 1'" body="'Some content'" toggleMode="false"/>
+            <Card title="'Card 2'" toggleMode="false">
+                <Counter/>
+            </Card>
+            <Card title="'Card 3'" toggleMode="true">
+                <Counter/>
+            </Card>
         </div>
     </t>
 
