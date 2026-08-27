@@ -1,5 +1,5 @@
 import { loadJS } from "@web/core/assets"
-import { Component, useState, onWillStart, onMounted, useRef } from "@odoo/owl";
+import { Component, useState, onWillStart, onMounted, useRef, reactive, onWillUnmount, onWillPatch, onWillUpdateProps } from "@odoo/owl";
 
 export class Piechart extends Component {
     static template = "awesome_dashboard.piechart";
@@ -15,10 +15,10 @@ export class Piechart extends Component {
 
         onWillStart(async () => {
             await loadJS("/web/static/lib/Chart/Chart.js")
-
         })
         onMounted(async () => {
-            const ordersBySize = this.props.pieData.orders_by_size
+            // chart stuff
+            const ordersBySize = this.props.pieData            
             const data = {
                 labels: ["m", "s", "xl"],
                 datasets: [{
@@ -36,8 +36,20 @@ export class Piechart extends Component {
                 data: data,
                 };
             
-            new Chart(this.chartRef.el, config)
+            this.chart = new Chart(this.chartRef.el, config)
         })
+        onWillUpdateProps((nextProps) => {
+            const ordersBySize = nextProps.pieData
 
+            if (this.chart && ordersBySize) {
+                this.chart.data.datasets[0].data = [
+                    ordersBySize.m || 0, 
+                    ordersBySize.s || 0, 
+                    ordersBySize.xl || 0
+                ];
+                
+                this.chart.update();
+            }
+        });
     }
 }
