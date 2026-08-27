@@ -6,10 +6,11 @@ import { rpc } from "@web/core/network/rpc";
 import { Layout } from "@web/search/layout"
 
 import { DashboardItem } from "./components/dashboard_item/dashboard_item";
+import { PieChart } from "./components/pie_chart/pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
 
     setup() {
         this.action = useService("action");

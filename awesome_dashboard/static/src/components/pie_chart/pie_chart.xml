@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.pie_chart">
+        <div t-if="props.data" class="canvas-container flex-grow-1">
+            <canvas t-ref="canvas" class="w-100"/>
+        </div>
+    </t>
+
+</templates>
