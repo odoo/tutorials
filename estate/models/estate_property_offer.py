@@ -60,3 +60,15 @@ class EstatePropertyOffer(models.Model):
     def action_reset_status(self):
             for record in self:
                 record.status = None
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            estate_property = self.env['estate.property'].browse(vals['property_id'])
+
+            if vals['price'] < estate_property.best_price:
+                raise UserError(f"You can not create an offer with lower price than est offer: {estate_property.best_price}")
+
+            estate_property.state = 'offer_received';
+
+        super().create(vals_list)
