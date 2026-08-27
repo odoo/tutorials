@@ -5,6 +5,9 @@ import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboardItem/dashboard_item";
 import { rpc } from "@web/core/network/rpc";
 import { Piechart } from "./piechart/piechart";
+import { MyDialog } from "./mydialog/mydialog";
+import { browser } from "@web/core/browser/browser";
+
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -12,13 +15,18 @@ class AwesomeDashboard extends Component {
     static components = {
         DashboardItem,
         Layout,
-        Piechart
+        Piechart,
+        MyDialog
     }
     setup() {
         this.action = useService("action")
         this.caching = useService("myCaching")
         this.statistics = useState({})
         this.items = registry.category("awesome_dashboard").get("items");
+        this.dialog = useService("dialog")
+        this.state = useState({
+            disabledItems: JSON.parse(browser.localStorage.getItem("disabledDashboardItems")?.split(",") || "{}")
+        })
 
         onWillStart(async () => {
             const stats = await this.caching.loadStatistics()
@@ -26,11 +34,23 @@ class AwesomeDashboard extends Component {
         })
         onMounted(() => {
             setInterval(async () => {
-                console.log("in de functie")
                 const stats = await this.caching.loadStatistics()
-                console.log(await stats())
                 Object.assign(this.statistics, await stats());
             }, 5000)
+        })
+    }
+
+    _updateConfiguration(newDisabledItems) {
+        this.state.disabledItems = newDisabledItems
+        console.log(this.state.disabledItems.average_quantity)
+        console.log(this.items[0])
+    }
+
+    openConfiguration() {
+        this.dialog.add(MyDialog, {
+            items: this.items,
+            disabledItems: this.state.disabledItems,
+            updateConfiguration: this._updateConfiguration.bind(this),
         })
     }
 
