@@ -1,0 +1,155 @@
+from odoo import fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.orm.models import api
+from odoo.tools.date_utils import add
+
+
+class EstateProperty(models.Model):
+    _name = "estate.property"
+    _description = "An estate property"
+    _order = "id desc"
+
+    name = fields.Char(required=True)
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date(
+        copy=False, default=lambda _: add(fields.Date.today(), months=+3)
+    )
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(
+        copy=False, readonly=True, compute="_compute_selling_price"
+    )
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
+    )
+    active = fields.Boolean(default=True)
+    state = fields.Selection(
+        [
+            ("new", "New"),
+            ("received", "Offer Received"),
+            ("accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        required=True,
+        copy=False,
+        default="new",
+    )
+
+    # Foreign fields
+    property_type_id = fields.Many2one(
+        "estate.type", required=True, ondelete="restrict"
+    )
+    buyer_id = fields.Many2one(
+        "res.partner",
+        required=False,
+        copy=False,
+        ondelete="restrict",
+        compute="_compute_buyer_id",
+    )
+    seller_id = fields.Many2one(
+        "res.users",
+        required=True,
+        default=lambda self: self.env.user,
+        ondelete="restrict",
+    )
+    tag_ids = fields.Many2many("estate.tag")
+    offer_ids = fields.One2many("estate.offer", "property_id")
+
+    # Computed fields
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Integer(compute="_compute_best_price")
+
+    # Constraints
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "Expected price must be stricly positive",
+    )
+
+    # Computations
+    @api.depends("offer_ids.status")
+    def _compute_selling_price(self):
+        for record in self:
+            record.selling_price = 0
+            for offer in record.offer_ids:
+                if offer.status == "accepted":
+                    record.selling_price = offer.price
+                    break
+
+    @api.depends("offer_ids.status")
+    def _compute_buyer_id(self):
+        for record in self:
+            record.buyer_id = None
+            for offer in record.offer_ids:
+                if offer.status == "accepted":
+                    record.buyer_id = offer.partner_id
+                    break
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            # Fallback to 0 if no records are present
+            record.best_price = max(record.offer_ids.mapped("price") or [0])
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        self.ensure_one()
+
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    # Actions
+
+    def action_state_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("A sold property cannot be cancelled")
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be cancelled again")
+
+            record.state = "cancelled"
+        return True
+
+    def action_state_sold(self):
+        for record in self:
+            accepted_offer = False
+            for offer in record.offer_ids:
+                if offer.status == "accepted":
+                    accepted_offer = True
+                    break
+
+            if not accepted_offer:
+                raise UserError("A property cannot be sold if no offer is accepted")
+
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be sold")
+            if record.state == "sold":
+                raise UserError("A sold property cannot be sold again")
+
+            record.state = "sold"
+        return True
+
+    # Overwrites
+
+    @api.ondelete(at_uninstall=False)
+    def onDelete(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise ValidationError(
+                    "Only properties in the state new or cancelled can be deleted"
+                )
