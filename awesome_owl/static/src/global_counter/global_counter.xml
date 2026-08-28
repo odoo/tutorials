@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.global_counter">
+        <div class="p-3">
+            <p>the sum is: <t t-esc="state.value"/></p>
+            <t t-foreach="buttons" t-as="i" t-key="i">
+                <Counter onChange="incrementSum"/>
+            </t>
+        </div>
+    </t>
+</templates>

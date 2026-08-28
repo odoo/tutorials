@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dashboarditem">
+        <div class="card m-2 d-inline-block align-top" t-attf-style="width: {{ props.size * 18 }}rem;">
+            <div class="card-body bg-white text-dark border">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+    
+</templates>
