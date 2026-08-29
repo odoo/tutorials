@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dashboard_item">
+        <div class="card d-inline-block m-2" t-att-style="`width: ${widthSize}`;">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                    <h5 class="card-title m-0"><t t-out="props.title" /></h5>
+                </div>
+                <div t-if="open.value" class="card-text">
+                    <t t-slot="default" />
+                    <h1 t-if="props.slots.statistics" class="text-center text-success">
+                        <t t-slot="statistics" />
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
