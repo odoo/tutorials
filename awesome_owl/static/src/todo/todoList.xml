@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todoList">
+        <input t-ref="add-todo-input" type="text" t-on-keyup="onAddTodo" placeholder="Add a new todo" class="form-control mb-2"/>
+        <div class="card d-inline-block m-2 p-2" style="width: 14rem;">
+            <div t-foreach="state.todos" t-as="i" t-key="i.id">
+                <TodoItem id="i.id" description="i.description" isCompleted="i.isCompleted" toggleState="() => this.toggleState(i.id)" removeTodo="() => this.removeTodo(i.id)"/>
+            </div>
+        </div>
+    </t>
+
+</templates>
