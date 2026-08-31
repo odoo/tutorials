@@ -30,6 +30,14 @@ class EstateOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer_received'
+        return offers
+
     def action_accept(self):
         has_offer = self.property_id.offer_ids.filtered(lambda r: r.status == 'accepted')
         if has_offer:
@@ -44,6 +52,7 @@ class EstateOffer(models.Model):
             record.property_id.write({
                 'buyer_id': record.partner_id.id,
                 'selling_price': record.price,
+                'state': 'offer_accepted',
             })
             for offers in record.property_id.offer_ids:
                 if offers.id == record.id:
