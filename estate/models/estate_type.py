@@ -4,6 +4,7 @@ from odoo import models, fields
 class EstateType(models.Model):
     _name = 'estate.type'
     _description = 'Estate Type'
+    _order = 'name'
 
     name = fields.Char(string='Name', required=True)
     property_ids = fields.One2many('estate', 'estate_type_id', string='Properties')

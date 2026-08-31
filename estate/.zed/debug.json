@@ -9,9 +9,9 @@
     "args": [
       "--addons-path=addons,../enterprise/,../tutorials/",
       "-d",
-      "rd-demo",
+      "rd-demo-100",
       "-u",
-      "estate"
+      "estate",
     ]
   }
 ]
