@@ -14,6 +14,7 @@
         "views/estate_property_offer_views.xml",
         "views/estate_property_maintenance_views.xml",
         "views/estate_visit_views.xml",
+        "views/res_users_views.xml",
         "views/estate_menus.xml",
         "data/estate_sequence.xml",
         "data/estate_cron.xml",

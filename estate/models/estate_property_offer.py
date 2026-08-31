@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -93,10 +94,14 @@ class EstatePropertyOffer(models.Model):
                 prop = self.env["estate.property"].browse(vals["property_id"])
                 if prop.state in ("offer_accepted", "booked", "sold", "cancelled"):
                     raise UserError(_("You cannot create an offer for a property that is already accepted, booked, sold, or cancelled."))
+                for offer in prop.offer_ids:
+                    if float_compare(vals.get("price", 0), offer.price, precision_rounding=0.01) < 0:
+                        raise UserError(_("You cannot create an offer with a lower amount than an existing offer."))
                 prop.state = "offer_received"
         return super().create(vals_list)
 
     def action_accept(self):
+
         self.ensure_one()
         if self.status in ("accepted", "rejected"):
             raise UserError(_("This offer has already been accepted, rejected, or cancelled. Please create a new offer."))

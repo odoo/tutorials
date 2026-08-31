@@ -181,7 +181,7 @@ class EstatePropertyBooking(models.Model):
         for rec in self:
             if rec.state in ("pending", "confirmed", "cancelled", "expired"):
                 raise UserError(
-                    _("This booking cannot be activated because it is already %s.", rec.state),
+                    _("This bookiang cannot be activated because it is already %s.", rec.state),
                 )
             if rec.property_id.state in ("sold", "cancelled"):
                 raise UserError(_("A sold or cancelled property cannot be booked."))
