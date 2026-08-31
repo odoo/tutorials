@@ -34,11 +34,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="set_sold" type="object" class="oe_highlight" string="Sold"/>
+                    <button name="set_cancelled" type="object" string="Cancel"/>
+                </header>
                 <sheet>
-                    <header>
-                        <button name="set_sold" type="object" class="oe_highlight" string="Sold"/>
-                        <button name="set_cancelled" type="object" string="Cancel"/>
-                    </header>
+
                     <div>
                         <h2>
                             <field name="name" placeholder="Enter Property Name"/>
