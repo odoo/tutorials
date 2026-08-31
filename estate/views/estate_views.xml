@@ -87,7 +87,7 @@
             <field name="living_area" />
             <field name="expected_price" />
             <field name="selling_price" />
-            <field name="date_availability" />
+            <field name="date_availability" optional="hide" />
             <field name="state" />
             <field name="estate_type_id" />
             <field name="total_area" />
