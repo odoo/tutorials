@@ -1,5 +1,6 @@
 from odoo import fields, models
 from odoo.exceptions import ValidationError
+from odoo.orm.commands import Command
 
 
 class EstatePropertyPaymentWizard(models.TransientModel):
@@ -59,9 +60,7 @@ class EstatePropertyPaymentWizard(models.TransientModel):
                     "invoice_date": self.payment_date,
                     "ref": f"Payment for {self.booking_id.name}",
                     "invoice_line_ids": [
-                        (
-                            0,
-                            0,
+                        Command.create(
                             {
                                 "name": f"Booking Payment for {self.booking_id.property_id.name} ({self.booking_id.name})",
                                 "quantity": 1,
