@@ -127,13 +127,13 @@
                             <field name="facades" />
                             <field name="garage" />
                             <field name="garden" />
-                            <field name="garden_area" />
-                            <field name="garden_orientation" />
+                            <field name="garden_area" invisible="not garden" />
+                            <field name="garden_orientation" invisible="not garden" />
                             <field name="total_area" />
                         </group>
                     </page>
                     <page string="Offers">
-                        <field name="offer_ids">
+                        <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
                             <list>
                                 <field name="price" />
                                 <field name="partner_id" />
@@ -145,12 +145,14 @@
                                         string="Accept"
                                         type="object"
                                         icon="fa-check"
+                                        invisible="status"
                                     />
                                 <button
                                         name="action_refuse"
                                         string="Refuse"
                                         type="object"
                                         icon="fa-times"
+                                        invisible="status"
                                     />
                             </list>
                             <form>
