@@ -1,8 +1,63 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="openCustomers" type="button" class="btn btn-primary">Customers</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-primary">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap">
+                
+                <DashboardItem>
+                    <t t-slot="default">
+                        Number of new orders this month
+                        <h4 class="text-success">
+                            <t t-esc="state.nb_new_orders"/>
+                        </h4>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <t t-slot="default">
+Total amount of new orders this month
+
+                        <h4 class="text-success">
+                            <t t-esc="state.total_amount"/>
+                        </h4>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <t t-slot="default">
+                        Average amount of t-shirt by order this month
+                        <h4 class="text-success">
+                            <t t-esc="state?.average_quantity"/>
+                        </h4>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <t t-slot="default">
+                        Number of cancelled orders this month
+                        <h4 class="text-success">
+                            <t t-esc="state?.nb_cancelled_orders"/>
+                        </h4>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <t t-slot="default">
+                        Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                        <h4 class="text-success">
+                            <t t-esc="state?.average_time"/>
+                        </h4>
+                    </t>
+                </DashboardItem>
+
+                <DashboardItem size="1">
+                    <t t-slot="default">
+                        <PieChart/>
+                    </t>
+                </DashboardItem>
+
+            </div>
+        </Layout>
     </t>
 
 </templates>
