@@ -9,7 +9,9 @@ class EstateProperties(models.Model):
 
     active = fields.Boolean(default=True)
     bedrooms = fields.Integer(default=2)
-    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    best_price = fields.Float(
+        compute="_compute_best_price", string="Best Offer", store=True
+    )
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     description = fields.Text()
     date_availability = fields.Date(
@@ -22,10 +24,10 @@ class EstateProperties(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[
-            ('north', "North"),
-            ('south', "South"),
-            ('east', "East"),
-            ('west', "West"),
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
         ]
     )
     living_area = fields.Integer()
@@ -36,11 +38,11 @@ class EstateProperties(models.Model):
     selling_price = fields.Float(readonly=True, copy=False)
     state = fields.Selection(
         selection=[
-            ('new', "New"),
-            ('offer received', "Offer Received"),
-            ('offer accepted', "Offer Accepted"),
-            ('sold', "Sold"),
-            ('canceled', "Canceled"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
         ],
         required=True,
         copy=False,
@@ -55,13 +57,13 @@ class EstateProperties(models.Model):
     )
 
     _check_price = models.Constraint(
-        'check (expected_price >= 0)',
-        'The expected price must be strictly positive',
+        "check (expected_price >= 0)",
+        "The expected price must be strictly positive",
     )
 
     _check_selling_price = models.Constraint(
-        'check (selling_price >= 0)',
-        'The selling price must be positive',
+        "check (selling_price >= 0)",
+        "The selling price must be positive",
     )
 
     @api.depends("living_area", "garden_area")
@@ -69,13 +71,21 @@ class EstateProperties(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
+    # @api.depends("offer_ids.price")
+    # def _compute_best_price(self):
+    #     for record in self:
+    #         if record.offer_ids:
+    #             record.best_price = max(record.offer_ids.mapped("price"))
+    #         else:
+    #             record.best_price = 0
+
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = 0
+            record.best_price = 0.0
+            for offer in record.offer_ids:
+                if offer.price > record.best_price:
+                    record.best_price = offer.price
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -90,9 +100,14 @@ class EstateProperties(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_constraint(self):
         for record in self:
-            if float_utils.float_compare(
-                record.selling_price, record.expected_price * 0.9, precision_digits=2
-            ) < 0:
+            if (
+                float_utils.float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_digits=2,
+                )
+                < 0
+            ):
                 raise UserError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )

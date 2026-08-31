@@ -4,6 +4,8 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available':1}</field>
+
     </record>
 
     <!-- List View  -->
@@ -34,6 +36,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold" class="btn-primary"/>
                     <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -46,7 +49,6 @@
                     </div>                    
                     <group>  
                         <group>
-                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -54,7 +56,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
-                            <field name="best_price" readonly="1"/>
+                            <field name="best_price" readonly="1" exportable="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -114,6 +116,11 @@
                         string="Available"
                         name="available"
                         domain="[('state', 'in', ['new','offer_received'])]"/>
+                    <filter
+                        string="BestPrice"
+                        name="best_price"
+                        domain="[('best_price','>',5000)]"
+                        />
 
                     <filter
                         string="Postcode"
