@@ -11,7 +11,6 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-
                 <separator />
                 <filter
                 string="Available"
@@ -20,7 +19,6 @@
                     ('state', '=', 'new'),
                     ('state', '=', 'offer_received')
                 ]"/>
-
                 <separator />
                 <filter
                     string="Postcode"

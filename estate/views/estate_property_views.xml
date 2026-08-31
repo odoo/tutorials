@@ -23,10 +23,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-            <header>
-                <button type="action" name="%(estate.property_tag_action)d" string="Property Tags" />
-                <button type="action" name="%(estate.property_type_action)d" string="Property Types"/>
-            </header>
                 <field name="title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -35,6 +31,7 @@
                 <field name="selling_price"/>
                 <field name="date_availability"/>
                 <field name="tags_id" widget="many2many_tags" />
+                <field name="state" />
             </list>
         </field>
     </record>
