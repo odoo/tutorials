@@ -21,12 +21,13 @@ class EstatePropertyModel(models.Model):
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(
         selection=[
-            ('male', 'Male'),
-            ('female', 'Female'),
-            ('other', 'Other')
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
         ],
-        string='Gender',
-        default='male'
+        string='Garden Orientation',
+        default='north'
     )
     sold = fields.Boolean('Sold', default=False)
     active = fields.Boolean('Active', default=True)
