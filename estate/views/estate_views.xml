@@ -80,7 +80,11 @@
     <field name="name">Estate List</field>
     <field name="model">estate</field>
     <field name="arch" type="xml">
-        <list>
+        <list
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state == 'offer_accepted'"
+                decoration-muted="state == 'sold'"
+            >
             <field name="name" />
             <field name="postcode" />
             <field name="bedrooms" />
