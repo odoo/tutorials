@@ -1,10 +1,10 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "its for the offers that we recive in the estate"
+    _description = "Estate Property Offer"
 
     price = fields.Float()
     status = fields.Selection(
@@ -21,6 +21,10 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+    )
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive.",
     )
 
     @api.depends("create_date", "validity")
@@ -46,7 +50,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         if any(offer.status == "accepted" for offer in self.property_id.offer_ids):
-            raise UserError("Only one offer can be accepted.")
+            raise UserError(_("Only one offer can be accepted."))
         self.status = "accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
@@ -55,8 +59,3 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         self.status = "refused"
         self.property_id.state = "offer_received"
-
-    _check_price = models.Constraint(
-        "CHECK(price > 0)",
-        "The offer price must be strictly positive.",
-    )
