@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
 
     _auto = True
     _log_access = False
-    # _table = "estate_property"
+    # _table = "estate.property
 
     name = fields.Char(string="Name", required=True, index=True)
     description = fields.Text("Description")
