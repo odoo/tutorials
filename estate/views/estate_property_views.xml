@@ -191,42 +191,43 @@
         <field name = "name">estate.property.view.kanban</field>
         <field name = "model">estate.property</field>
         <field name = "arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" records_draggable="0">
                 <templates>
                     <t t-name="card" >
-                        <div t-attf-class="#{!selection_mode ? 'text-centre' : ''}">
-                            <i class="fa fa-building" role="img" aria-label="Enterprise"/>
+                        <div t-attf-class="#{!selection_mode ? 'text-center' : ''}">
+                            <i class="fa fa-building" role="img" aria-label="Properties"/>
                             <field class="fw-bold fs-5" name="name"/>
                         </div>
                         <hr class="mt-50 mb-50"/>
                         <div class="row" t-if="!selection_mode">
-                            <div t-if="record.description.value" class="col-6 text-centre">
+                            <div t-if="record.description.value" class="col-6 text-center">
                                 <strong>Description: </strong>
                                 <field name="description"/>
                             </div>
-                            <div t-if="record.postcode.value" class="col-6 text-centre">
+                            <div t-if="record.postcode.value" class="col-6 text-center">
                                 <strong>Postcode: </strong>
                                 <field name="postcode"/>
                             </div>
-                            <div t-if="record.expected_price.value" class="col-6 text-centre">
+                            <div t-if="record.expected_price.value" class="col-6 text-center">
                                 <strong>Expected Price: </strong>
                                 <field name="expected_price"/>
                             </div>
-                            <div t-if="record.date_availability.value" class="col-6 text-centre">
+                            <div t-if="record.best_price.raw_value" class="col-6 text-center">
+                                <strong>Best Price:</strong>
+                                <field name="best_price"/>
+                            </div>
+                            <div t-if="record.selling_price.raw_value" class="col-6 text-center">
+                                <strong>Selling Price: </strong>
+                                <field name="selling_price"/>
+                            </div>
+                            <div t-if="record.date_availability.value" class="col-6 text-center">
                                 <strong>Available From: </strong>
                                 <field name="date_availability"/>
                             </div>
+                            <div class="12">
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
                         </div>
-                        <!-- <div t-else="">
-                            <div t-if="record.description.value" class="col-6 text-centre">
-                                <strong>Description: </strong>
-                                <field name="description"/>
-                            </div>
-                            <div t-if="record.postcode.value" class="col-6  text-centre">
-                                <strong>Postcode: </strong>
-                                <field  name="postcode"/>
-                            </div>
-                        </div> -->
                     </t>
                 </templates>
             </kanban>

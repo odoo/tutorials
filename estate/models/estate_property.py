@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import _, api, fields, models, Command
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_is_zero
@@ -163,29 +163,6 @@ class EstateProperty(models.Model):
             },
         }
     selling_date = fields.Date(string="date of sale", compute="_compute_selling_date", store=True)
-
-    @api.depends('state')
-    def _compute_selling_date(self):
-        quick_sale_tag = self.env['estate.property.tag'].search([('name', '=', 'quick sell')])
-        for record in self:
-            if record.state == 'sold':
-                record.selling_date = fields.Date.today()
-                if quick_sale_tag and record.create_date:
-                    days_to_sell = (fields.Date.today() - record.create_date.date()).days
-                    if days_to_sell <= 2:
-                        record.tag_ids = [Command.link(quick_sale_tag.id)]
-
-    @api.onchange('expected_price')
-    def _onchange_expected_price(self):
-        high_value_tag = self.env['estate.property.tag'].search(
-            [('name', '=', 'high value')])
-        # breakpoint()
-        low_value_tag = self.env['estate.property.tag'].search(
-             [('name', '=', 'low value')])
-        if self.expected_price >= 1000000:
-            self.tag_ids = [Command.link(high_value_tag.id)]
-        if self.expected_price < 1000000 and self.expected_price > 5000:
-            self.tag_ids = [Command.link(low_value_tag.id)]
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):

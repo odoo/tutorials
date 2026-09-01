@@ -61,7 +61,6 @@ class EstatePropertyBooking(models.Model):
         if 'state' in vals:
             for booking_id in self:
                 if booking_id.state == 'confirmed':
-                    booking_id.property_id.state = 'sold'
                     template = self.env.ref('estate.estate_booking_confirmed_mail_template')
                     template.send_mail(booking_id.id, force_send=True)
                 if booking_id.state == 'cancelled':
