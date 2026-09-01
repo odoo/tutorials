@@ -2,8 +2,8 @@ from datetime import timedelta
 from odoo import fields, models
 
 
-class EstatePropertyModel(models.Model):
-    _name = "estate.property.model"
+class EstateProperty(models.Model):
+    _name = "estate.property"
     _description = "Real Estate Property"
     _order = "name"
 
