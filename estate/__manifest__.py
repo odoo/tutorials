@@ -1,5 +1,5 @@
 {
-    "name": "Real Estate App",
+    "name": "Real Estate",
     "depends": ["base"],
     "application": True,
     "data": [
