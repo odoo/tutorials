@@ -44,6 +44,7 @@
               <header>
                   <button type="object" name="action_sell_property" class="btn-primary">Sold</button>
                   <button type="object" name="action_cancel_property">Cancel</button>
+                  <field name="state" widget="statusbar" />
               </header>
                 <sheet>
                     <group>
