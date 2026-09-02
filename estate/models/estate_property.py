@@ -117,7 +117,7 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area', 'garage_area')
     def _compute_total_area(self):
-        # breakpoint()
+        breakpoint()
         for record in self:
             record.total_area = (
                 record.living_area + record.garden_area + record.garage_area
