@@ -14,6 +14,14 @@
     <field name="view_mode">list,form</field>
 </record>
 
+<!-- Action for stat button: filters offers by the current property type -->
+<record id="estate_offer_action_by_type" model="ir.actions.act_window">
+    <field name="name">Estate Offers</field>
+    <field name="res_model">estate.offer</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('property_type_id', '=', active_id)]</field>
+</record>
+
 
 
 
@@ -37,6 +45,8 @@
             <sheet>
                 <div class="oe_button_box" name="button_box">
                     <button
+                        name="%(estate_offer_action_by_type)d"
+                        type="action"
                         class="oe_stat_button"
                         icon="fa-money"
                     >
