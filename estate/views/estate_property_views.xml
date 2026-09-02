@@ -2,34 +2,26 @@
 <odoo>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <!-- <field name="name">estate.property.form</field> -->
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
-                <!-- Header with Statusbar -->
-                <!-- <header>
-                    <field name="name"/>
-                </header> -->
 
                 <sheet>
-                    <!-- Status Ribbons -->
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
-                    
-                    <!-- Title Section -->
+
                     <div class="oe_title">
                         <label for="name"/>
                         <h1>
-                            <field name="name" placeholder="e.g. Modern Villa with Garden"/>
+                            <field name="name" placeholder="e.g. Modern Villa with Garden">title</field>
                         </h1>
                     </div>
-
-                    <!-- Key Metrics / Core Info Grid -->
                     <group>
                         <group string="Pricing &amp; Availability">
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="property_type_id"/>
                             <!-- <field name="state"/> -->
                         </group>
                         <group string="Property Specs">
@@ -39,8 +31,6 @@
                             <field name="garage"/>
                         </group>
                     </group>
-
-                    <!-- Tabbed Notebook Section -->
                     <notebook>
                         <page string="Description" name="description">
                             <field name="description" placeholder="Add property features, neighborhood details, etc."/>
@@ -50,53 +40,42 @@
                             <group>
                                 <group>
                                     <field name="garden"/>
-                                    <!-- Fields appear dynamically when 'garden' is checked -->
                                     <field name="garden_area" string="Garden Area (m²)" invisible="not garden"/>
                                     <field name="garden_orientation" invisible="not garden"/>
                                 </group>
                             </group>
                         </page>
 
-                        <page string="Settings" name="settings">
-                            <group>
-                                <field name="active"/>
-                            </group>
-                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="estate_property_wizard_views" model = "ir.ui.view">
-        <field name="name">estate property wizard</field>
+    <record id="estate_property_search_views" model="ir.ui.view">
+        <field name="name" >estate property search view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form >
-                <group>
-                    <field name="name" />
-                    <field name="postcode" />
-                    <field name="expected_price" />
-                </group>
-
-                <footer>
-                    <button name="action_confirm" type="object" string="Save" class="btn-primary" />
-                    <button string="Cancel" special="cancel" class="btn-secondary" />
-                </footer>
-            </form>
+            <search string="tests">
+                <field name="expected_price"/>
+                <field name="name"/>
+                <filter name="expected_price" string="Expected Price" domain="[('expected_price','!=',0)]"/>
+            </search>
         </field>
     </record>
-
 
     <record id="estate_property_views" model = "ir.ui.view">
         <field name="name">estate property views</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" />
-                <field name="postcode" />
-                <field name="description" />
-                <field name="date_availability" />
+                <field name="name" width="14.2%" />
+                <field name="postcode" width="14.2%" />
+                <field name="bedrooms" width="14.2%" />
+                <field name="living_area" width="14.2%" />
+                <field name="expected_price" width="14.2%" />   
+                <field name="selling_price" width="14.2%" />
+                <field name="date_availability" string="Available From" width="14.2%"/>
             </list>
         </field>
     </record>
