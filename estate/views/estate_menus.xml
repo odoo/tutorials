@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="estate_menu_root"
+        name="Real Estate"
+        web_icon="estate,static/description/icon.png"
+        sequence="1"/>
+
+    <menuitem
+        id="estate_property_menu_advertisement"
+        name="Advertisements"
+        parent="estate_menu_root"/>
+
+    <menuitem
+        id="estate_property_menu_properties"
+        name="Properties"
+        parent="estate_property_menu_advertisement"
+        action="estate_property_action"/>
+    
+    <menuitem
+        id="estate_property_offer_menu_all"
+        name="Offers"
+        parent="estate_property_menu_advertisement"
+        action="estate_property_offer_action_all"/>
+
+    <menuitem
+        id="estate_property_menu_bookings"
+        name="Bookings"
+        parent="estate_property_menu_advertisement"
+        action="estate_booking_action"/>
+
+    <menuitem
+        id="estate_property_menu_settings"
+        name="Settings"
+        parent="estate_menu_root"/>
+
+    <menuitem
+        id="estate_property_menu_type"
+        name="Property Type"
+        parent="estate_property_menu_settings"
+        action="estate_property_type_action"/>
+
+    <menuitem
+        id="estate_property_menu_tag"
+        name="Property Tag"
+        parent="estate_property_menu_settings"
+        action="estate_property_tag_action"/>
+
+    <menuitem
+        id="estate_property_menu_request"
+        name="Request Maintenance"
+        parent="estate_property_menu_settings"
+        action="property_maintenance_action"/>
+</odoo>

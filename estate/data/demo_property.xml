@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_property1" model="estate.property">
+        <field name="name">House in ahemedabad</field>
+        <field name="expected_price">700000</field>
+        <field name="description">near sg highway</field>
+        <field name="postcode">123456</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">south</field>
+        <field name="active">True</field>
+        <field name="property_type_id" ref="estate_demo_types1"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('estate_demo_tag_cozy'), ref('estate_demo_tag_luxury')])]"></field>
+    </record> 
+
+    <record id="demo_property2" model="estate.property">
+        <field name="name">Flat in surat</field>
+        <field name="expected_price">300000</field>
+        <field name="description">near station</field>
+        <field name="postcode">543210</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">west</field>
+        <field name="active">True</field>
+        <field name="property_type_id" ref="estate_demo_types1"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('estate_demo_tag_cozy')])]"></field>
+    </record> 
+</odoo>
