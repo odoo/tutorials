@@ -164,6 +164,15 @@ class EstateProperty(models.Model):
         }
     selling_date = fields.Date(string="date of sale", compute="_compute_selling_date", store=True)
 
+    @api.depends('state')
+    def _compute_selling_date(self):
+        for record in self:
+            if record.state == 'sold':
+                if not record.selling_date:
+                    record.selling_date = fields.Date.today()
+            else:
+                record.selling_date = None
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for properties in self:
