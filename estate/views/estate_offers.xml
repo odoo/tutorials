@@ -1,0 +1,44 @@
+<odoo>
+
+<!-- Default/global views: used by Offers menu action — show property_id -->
+<record id="estate_offer_list_view" model="ir.ui.view">
+    <field name="name">Estate Offer List</field>
+    <field name="model">estate.offer</field>
+    <field name="arch" type="xml">
+        <list
+                editable="bottom"
+                decoration-danger="status == 'refused'"
+                decoration-success="status == 'accepted'"
+            >
+            <field name="price" />
+            <field name="partner_id" />
+            <field name="property_id" />
+            <field name="validity" />
+            <field name="date_deadline" />
+            <field name="status" optional="hide" />
+            <button name="action_accept" string="Accept" type="object" icon="fa-check" />
+            <button name="action_refuse" string="Refuse" type="object" icon="fa-times" />
+        </list>
+    </field>
+</record>
+
+<record id="estate_offer_form_view" model="ir.ui.view">
+    <field name="name">Estate Offer Form</field>
+    <field name="model">estate.offer</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <group>
+                    <field name="partner_id" />
+                    <field name="property_id" />
+                    <field name="price" />
+                    <field name="status" />
+                    <field name="validity" />
+                    <field name="date_deadline" />
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+</odoo>
