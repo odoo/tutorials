@@ -5,10 +5,10 @@
     <!-- sequence is used to control the order, a lower sequence number comes before the higher one. -->
     <!-- every menuitem shoud have an action defined, without action the menuitem will not be displayed -->
 
-    <menuitem id="estate_menu_property" 
-            parent="estate_property_menu_root" 
+    <menuitem id="estate_menu_property"
+            parent="estate_property_menu_root"
             name="Properties"
-            sequence="10"  
+            sequence="10"
     />
    <menuitem id="estate_menu_discussion1" 
             parent="estate_menu_property" 
@@ -28,6 +28,6 @@
     <menuitem id="estate_menu_discussion3" 
             parent="estate_menu_property2" 
             name="discussion3"
-            action="estate_property_action2"
+            action="estate_property_action"
     />
 </odoo>
