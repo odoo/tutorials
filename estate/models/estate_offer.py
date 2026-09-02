@@ -14,6 +14,7 @@ class EstateOffer(models.Model):
     )
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate', required=True)
+    property_type_id = fields.Many2one(related='property_id.estate_type_id', store=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
