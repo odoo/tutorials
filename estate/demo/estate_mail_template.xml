@@ -1,0 +1,17 @@
+<odoo>
+    <record id="estate_booking_confirmed_mail_template" model="mail.template">
+        <field name="name">Estate Property : booking confirmed </field>
+        <field name="model_id" ref="model_estate_property_booking"/>
+        <field name="subject">Congratulations your booking is confirmed</field>
+        <field name="email_to">{{ object.customer_id.email}}</field>
+        <field name="body_html" type="html">
+        <div style="margin: 0px; padding: 0px">
+            <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                Dear <t t-out="object.customer_id.name"/><br/>
+                your booking <t t-out="object.property_id.name"/> has been confirmed<br/>
+                total amount : <t t-out="object.offer_id.price"/> has been paid
+            </p>
+        </div>
+        </field>
+    </record>
+</odoo>

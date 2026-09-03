@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="property_type_house" model="estate.property.type">
+        <field name="name">house</field>
+    </record>
+    <record id="property_type_appartment" model="estate.property.type">
+        <field name="name">appartment</field>
+    </record>
+    <record id="property_type_penthouse" model="estate.property.type">
+        <field name="name">penthouse</field>
+    </record>
+    <record id="property_type_villa" model="estate.property.type">
+        <field name="name">villa</field>
+    </record>
+    <record id="property_type_duplex" model="estate.property.type">
+        <field name="name">duplex</field>
+    </record> 
+    <record id="property_type_studio" model="estate.property.type">
+        <field name="name">studio</field>
+    </record>
+</odoo>
