@@ -5,7 +5,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-muted="state == 'sold'" editable="top" open_form_view="true">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="date_availability" />
@@ -47,11 +47,11 @@
                                     <field name="facades" />
                                     <field name="garage" />
                                     <field name="state"/>
-                                    <!-- <field name="active" /> -->
+                                    <field name="active" invisible="true"/>
                                 </group>
                                 <group>
                                     <field name="garden" />
-                                    <field name="garden_area" />
+                                    <field name="garden_area" invisible="not garden" />
                                     <field name="garden_orientation" />
                                 </group>
                             </group>
