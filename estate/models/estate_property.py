@@ -50,6 +50,7 @@ class EstateProperty(models.Model):
         "Best Price",
         compute="_compute_best_price"
     )
+    _order = "id desc"
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price >= 0)',
