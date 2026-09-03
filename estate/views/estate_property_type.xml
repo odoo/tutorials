@@ -21,11 +21,11 @@
                     <notebook>
                         <page string="Properties">
                             <field name="property_id">
-                            <list>
-                                <field name="title" />
-                                <field name="expected_price" />
-                                <field name="state" />
-                            </list>
+                                <list>
+                                    <field name="title" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
                             </field>
                         </page>
                     </notebook>
