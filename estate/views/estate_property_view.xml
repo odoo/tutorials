@@ -76,6 +76,8 @@
                 <filter name="achieved" string="Achieved" domain="[('active', '=', 'False')]" />
                 <filter name="garden" string="With Garden" context="{'group_by': 'garden'}" />
                 <filter name="garage" string="With Garage" context="{'group_by': 'garage'}" />
+                <filter name="postcode" string="By Postcode" context="{'group_by': 'postcode'}" />
+                <filter name="state" string="State" domain="['|', ('state', '=', 'new'), ('state','=','o_received')]" />
             </search>
         </field>
     </record>
