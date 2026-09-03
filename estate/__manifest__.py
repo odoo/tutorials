@@ -7,6 +7,9 @@
         "views/estate_property_views.xml",
         "views/estate_property_menus.xml",
     ],
+    "demo": [
+        "demo/estate_property_demo.xml",
+    ],
     'author': 'Hansil Chapadiya',
     'license': 'LGPL-3'
 }
