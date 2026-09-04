@@ -38,6 +38,7 @@
                 <header>
                     <button name="action_sold_property" type="object" class="btn-primary" string="Sold"/>
                     <button name="action_cancel_property" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <group>
@@ -69,7 +70,6 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
-                                <field name="state"/>
                                 <field name="total_area"/>
                             </group> 
                         </page>
