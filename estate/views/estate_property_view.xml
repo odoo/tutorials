@@ -70,6 +70,11 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
 
                 <separator/>
 
