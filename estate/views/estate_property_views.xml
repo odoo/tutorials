@@ -21,9 +21,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,sold"/>
                 </header>
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Alice's villa"/>
+                        </h1>
+                    </div>
                     <group>
                         <group>
-                            <field name="name"/>
+                            <field name="property_type_id"/>
                             <field name="date_availability"/>
                             <field name="selling_price"/>
                         </group>
@@ -51,6 +56,14 @@
                     <notebook>
                         <page string="description">
                             <field name="description"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <group>
+                                    <field name="salesperson_id" widget="many2one_avatar_user"/>
+                                    <field name="buyer_id" widget="many2one_avatar_user"/>
+                                </group>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
