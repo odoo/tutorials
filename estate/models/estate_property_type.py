@@ -6,3 +6,4 @@ class PropertyType(models.Model):
     _description = "this is used to define the types"
 
     name = fields.Char(required=True, string="Type")
+    tags = fields.Char(string="tags")
