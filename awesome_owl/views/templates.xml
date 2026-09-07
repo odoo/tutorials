@@ -1,38 +1,13 @@
+<?xml version="1.0"?>
 <odoo>
     <data>
-        <!-- Playground Template -->
         <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
             <html>
                 <head>
-                    <link
-                        type="image/x-icon"
-                        rel="shortcut icon"
-                        href="/web/static/img/favicon.ico"
-                    />
-                    <t t-call-assets="awesome_owl.assets_playground" />
+                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                    <t t-call-assets="awesome_owl.assets_playground"/>
                 </head>
-                <!-- Add data-page attribute here -->
-                <body data-page="playground">
-                </body>
-            </html>
-        </template>
-
-        <!-- Counter Template -->
-        <template
-            id="awesome_owl.counter_template"
-            name="Awesome T-Shirt thank you"
-        >
-            <html>
-                <head>
-                    <link
-                        type="image/x-icon"
-                        rel="shortcut icon"
-                        href="/web/static/img/favicon.ico"
-                    />
-                    <t t-call-assets="awesome_owl.assets_playground" />
-                </head>
-                <!-- Add data-page attribute here -->
-                <body data-page="counter">
+                <body class="bg-dark">
                 </body>
             </html>
         </template>
