@@ -10,6 +10,7 @@
                         <h1>
                             <field name="name" placeholder="e.g. Modern Villa with Garden">title</field>
                         </h1>
+                        <field name="property_tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group string="Pricing &amp; Availability">
@@ -33,12 +34,26 @@
 
                         <page string="Garden Details" name="garden_details">
                             <group>
-                                <group>
-                                    <field name="garden"/>
-                                    <field name="garden_area" string="Garden Area (m²)" invisible="not garden"/>
-                                    <field name="garden_orientation" invisible="not garden"/>
-                                </group>
+                                <field name="garden"/>
+                                <field name="garden_area" string="Garden Area (m²)" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                             </group>
+                        </page>
+
+                        <page string="Other info" name="other_info">
+                            <group>
+                                <field name="buyer" widget="many2one_avatar_user" />
+                                <field name="user_id" widget="many2one_avatar_user" />
+                            </group>
+                        </page>
+                        <page name="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
@@ -74,11 +89,11 @@
             </list>
         </field>
     </record>
-
+    
+    <!-- actions  -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field> 
     </record>
-    
 </odoo>

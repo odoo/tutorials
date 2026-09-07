@@ -43,12 +43,13 @@ class TestModel(models.Model):
     )
     active = fields.Boolean("Active", default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property_type")
+    property_tag_ids = fields.Many2many(
+        "estate.property.tag",
+        string="Property_Tag",
+    )
 
-    def action_confirm(self):
-        return {
-            "type": "ir.actions.act_window",  # type and name are very important
-            "name": "Properties",
-            "res_model": "estate.property",
-            "view_mode": "form",
-            "target": "current",
-        }
+    buyer = fields.Many2one("res.partner", string="buyer", copy=False)
+    user_id = fields.Many2one(
+        "res.users", string="salesperson", default=lambda self: self.env.user
+    )
+    offer_ids = fields.One2many("estate.property.offers", "property_id")

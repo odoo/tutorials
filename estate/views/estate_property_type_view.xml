@@ -6,12 +6,14 @@
         <field name="arch" type="xml">
             <form string="property.type">
                 <sheet>
+                    <label for="name"/>
                     <field name="name" string="Type"/>
                 </sheet>
             </form>
         </field>
     </record>
 
+    <!-- action -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
         <field name="res_model">estate.property.type</field>
