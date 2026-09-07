@@ -41,6 +41,7 @@
                         string="Cancel"
                     />
 
+                    <!-- <field name="state" widget="statusbar" /> -->
                 </header>
                 <sheet>
 

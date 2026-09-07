@@ -25,6 +25,11 @@ class EstatePropertyOffer(models.Model):
 
     property_id = fields.Many2one("estate.property", string="Property")
 
+    _check_price = models.Constraint(
+    "CHECK(price >= 0)",
+    "The offer price must be strictly positive.",
+)
+
     validity = fields.Integer(default=7)
 
     date_deadline = fields.Date(
@@ -61,4 +66,3 @@ class EstatePropertyOffer(models.Model):
             other_offers.write({"status": "refused"})
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
-    
