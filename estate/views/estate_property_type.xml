@@ -10,7 +10,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Properties Type" editable="bottom">
+            <list string="Properties Type">
                 <field name="name" string="Property Type"/>
             </list>
         </field>
@@ -21,10 +21,21 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Properties Type">
+                <h1>
+                    <field name="name" string="Property Type"/>
+                </h1>
                 <group>
-                    <group>
-                        <field name="name" string="Property Type"/>
-                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </group>
             </form>
         </field>

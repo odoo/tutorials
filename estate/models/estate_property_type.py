@@ -9,3 +9,5 @@ class EstatePropertyType(models.Model):
 
     _check_unique_type_name = models.Constraint('unique(name)',
                                                 "You cannot enter a new Property Type with a duplicate name")
+
+    property_ids = fields.One2many('estate.property', 'property_type_id')

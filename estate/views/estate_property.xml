@@ -23,7 +23,7 @@
                 <field name='best_offer'/>
                 <field name='selling_price' string="Selling Price"/>
                 <field name='date_availability' string="Available From"/>
-                <field name='state' string="State"/>
+                <field name='state'/>
             </list>
         </field>
     </record>
