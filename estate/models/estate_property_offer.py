@@ -69,6 +69,9 @@ class EstatePropertyOffer(models.Model):
             current_price = vals.get('price')
             property_id = self.env['estate.property'].browse(
                 vals['property_id'])
+            if property_id.living_area == 0:
+                raise UserError(
+                    _("You cannot make offer without mentioning living_area field"))
             for offer in property_id.offer_ids:
                 if current_price < offer.price:
                     raise UserError(_(
@@ -81,15 +84,11 @@ class EstatePropertyOffer(models.Model):
         other_offers = self.property_id.offer_ids - self
         other_offers.status = "refused"
         self.status = "accepted"
-
         self.property_id.write({
             'state': 'offer_accepted',
             'selling_price': self.price,
             'buyer_id': self.partner_id
         })
-        # self.property_id.state = "offer_accepted"
-        # self.property_id.selling_price = self.price
-        # self.property_id.buyer_id = self.partner_id
         return True
 
     def action_refuse(self):
