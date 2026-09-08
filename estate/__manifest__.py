@@ -1,0 +1,32 @@
+{
+    "name": "Real Estate",
+    "depends": [
+        "base",
+        "mail",
+        "account",
+    ],
+    "application": True,
+    "data": [
+        "security/ir.model.access.csv",
+        "data/estate_property_booking_sequence.xml",
+        "views/estate_property_booking_views.xml",
+        "views/estate_property_visits_views.xml",
+        "wizard/estate_property_payment_views.xml",
+        "views/estate_property_views.xml",
+        "views/estate_property_list_views.xml",
+        "views/estate_property_offer_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/estate_property_tag_views.xml",
+        "views/estate_property_maintenance_views.xml",
+        "views/res_users_views.xml",
+        "views/estate_menuitem.xml",
+        "views/mail_template.xml",
+    ],
+    "demo": [
+        "data/estate_property_type.xml",
+        "data/estate_property_tag.xml",
+        "data/estate_property_demo.xml",
+    ],
+    "author": "Odoo S.A.",
+    "license": "LGPL-3",
+}

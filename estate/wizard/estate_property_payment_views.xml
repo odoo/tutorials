@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_payment_wizard_action" model="ir.actions.act_window">
+        <field name="name">Process Payment</field>
+        <field name="res_model">estate.property.payment.wizard</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="estate.model_estate_property_booking"/>
+    </record>
+
+    <record id="estate_property_payment_wizard_view_form" model="ir.ui.view">
+        <field name="name">estate.property.payment.wizard.form</field>
+        <field name="model">estate.property.payment.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Process Payment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="booking_id"/>
+                            <field name="amount" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="payment_date"/>
+                            <field name="payment_method"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes" placeholder="Optional payment reference or notes..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm_payment" type="object" string="Confirm Payment" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

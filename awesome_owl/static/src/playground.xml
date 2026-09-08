@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="d-flex gap-3 vw-100  vh-100 align-items-center justify-content-center">
+            <Counter onChange="(val) => this.handleCounterChange('c1', val)"/>
+            <Counter onChange="(val) => this.handleCounterChange('c2', val)"/>
+
+            <div class="fw-bold fs-4 text-light">
+                Total Sum: <t t-esc="totalSum"/>
+            </div>
+
+            <Card title="this.nothing" content="'card content'"/>
         </div>
     </t>
 

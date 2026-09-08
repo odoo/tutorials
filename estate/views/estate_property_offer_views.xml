@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
+    <record id="estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="offers" editable="bottom" default_order="price desc" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
+                <field name="price"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="create_date"/>
+                <field name="security_status" widget="badge" decoration-danger="security_status=='suspicious'"/>
+                <button name="action_accept" data-hotkey="s" string="accept" type="object" icon="fa-check" invisible="status" confirm="Are you sure you want to accept this offer? This will automatically refuse other pending offers or accepted offer."/>
+                <button name="action_refuse" string="refuse" type="object" icon="fa-times" invisible="status"/>
+                <field name="status" invisible="1"/> <!-- Required for row decorations and button visibility -->
+                <field name="validity"/>
+                <button name="action_make_validity_default" icon="fa-refresh" type="object"/>
+                <field name="date_deadline" string="Deadline"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="offer">
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id" string="Partner"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
