@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Record 1: New House -->
+    <record id="estate_property_demo_1" model="estate.property">
+        <field name="name">Cozy Suburban Cottage</field>
+        <field name="description">A lovely 2-bedroom house with a spacious backyard.</field>
+        <field name="postcode">90210</field>
+        <field name="date_availability">2026-09-01</field>
+        <field name="expected_price">250000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">50</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+        
+    </record>
+
+    <!-- Record 2: Offer Received Apartment -->
+    <record id="estate_property_demo_2" model="estate.property">
+        <field name="name">Modern Downtown Apartment</field>
+        <field name="description">Luxury high-rise unit in the heart of the city.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability">2026-10-15</field>
+       
+        <field name="expected_price">450000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">75</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="state">offer_received</field>
+     
+    </record>
+
+    <!-- Record 3: Sold Villa -->
+    <record id="estate_property_demo_3" model="estate.property">
+        <field name="name">Spacious Family Villa</field>
+        <field name="description">Large villa featuring 5 bedrooms, pool, and huge garden.</field>
+        <field name="postcode">33101</field>
+        <field name="date_availability">2026-08-20</field>
+  
+        <field name="expected_price">850000</field>
+        <field name="selling_price">830000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">550</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">200</field>
+        <field name="garden_orientation">west</field>
+        <field name="state">sold</field>
+    
+    </record>
+
+    <!-- Record 4: New Penthouse -->
+    <record id="estate_property_demo_4" model="estate.property">
+        <field name="name">Luxury Penthouse Suite</field>
+        <field name="description">Top-floor penthouse with private rooftop terrace.</field>
+        <field name="postcode">90001</field>
+        <field name="date_availability">2027-01-15</field>
+        <field name="expected_price">1200000</field>
+        <field name="selling_price">0</field>
+
+        <field name="bedrooms">3</field>
+        <field name="living_area">280</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100</field>
+        <field name="garden_orientation">west</field>
+        <field name="state">new</field>
+    
+    </record>
+
+    <!-- Record 5: Offer Accepted House -->
+    <record id="estate_property_demo_5" model="estate.property">
+        <field name="name">Suburban Ranch House</field>
+        <field name="description">Single-story ranch home with a broad front porch.</field>
+        <field name="postcode">75002</field>
+        <field name="date_availability">2026-09-10</field>
+       
+        <field name="expected_price">290000</field>
+        <field name="selling_price">285000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">160</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">80</field>
+        <field name="garden_orientation">east</field>
+        <field name="state">offer_accepted</field>
+       
+    </record>
+
+    <!-- Record 6: Cancelled / Inactive Studio -->
+    <record id="estate_property_demo_6" model="estate.property">
+        <field name="name">Minimalist Urban Loft</field>
+        <field name="description">Open-concept loft with industrial design elements.</field>
+        <field name="postcode">60611</field>
+        <field name="date_availability">2026-10-01</field>
+        <field name="expected_price">380000</field>
+        <field name="selling_price">0</field>
+        <field name="active">False</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">95</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="state">cancelled</field>
+    </record>
+
+    <!-- Record 7: Beachfront Condo -->
+    <record id="estate_property_demo_7" model="estate.property">
+        <field name="name">Beachfront Condo</field>
+        <field name="description">Stunning ocean views with private balcony access.</field>
+        <field name="postcode">33139</field>
+        <field name="date_availability">2027-03-01</field>
+        <field name="expected_price">600000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">110</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="state">new</field>
+    
+    </record>
+
+    <!-- Record 8: Mountain Chalet -->
+    <record id="estate_property_demo_8" model="estate.property">
+        <field name="name">Mountain View Retreat</field>
+        <field name="description">Peaceful chalet nestled in the mountains.</field>
+        <field name="postcode">80202</field>
+        <field name="date_availability">2026-12-01</field>
+       
+        <field name="expected_price">510000</field>
+        <field name="selling_price">500000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">150</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">offer_received</field>
+
+    </record>
+
+    <!-- Record 9: Historic Townhouse -->
+    <record id="estate_property_demo_9" model="estate.property">
+        <field name="name">Historic Townhouse</field>
+        <field name="description">Classic architecture with modern interior renovations.</field>
+        <field name="postcode">02108</field>
+        <field name="date_availability">2026-08-15</field>
+        <field name="expected_price">720000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">210</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">40</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">new</field>
+    
+    </record>
+
+    <!-- Record 10: Grand Estate Manor -->
+    <record id="estate_property_demo_10" model="estate.property">
+        <field name="name">Grand Estate Manor</field>
+        <field name="description">Massive country estate with extensive living space.</field>
+        <field name="postcode">75001</field>
+        <field name="date_availability">2027-02-15</field>
+        <field name="expected_price">1900000</field>
+        <field name="selling_price">1850000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">580</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">800</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">sold</field>
+    </record>
+
+  </data>
+</odoo>
+
+
