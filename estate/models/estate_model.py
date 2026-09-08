@@ -53,4 +53,5 @@ class EstateProperty(models.Model):
         string="Salesperson",
         default=lambda self: self.env.user,
     )
+    tags_ids = fields.Many2many("estate.property.tag", "Tag")
     active = fields.Boolean("Active", default=True)

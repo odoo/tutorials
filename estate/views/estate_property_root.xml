@@ -11,4 +11,7 @@
 
     <!-- Property Types Menu -->
     <menuitem id="estate_menu_estates_property_type" name="Property Types" parent="estate_menu_estates_settings" action="estate_type_action" />
+
+    <!-- Property Tags Menu -->
+    <menuitem id="estate_menu_estates_property_tag" name="Property Tags" parent="estate_menu_estates_settings" action="estate_tag_action" />
 </odoo>
