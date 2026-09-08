@@ -106,8 +106,14 @@ class EstatePropertyBooking(models.Model):
         self.property_id.write({
             "state": "booked",
         })
-
-        return True
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': "nice job",
+                'image_url': '...',
+                'type': 'rainbow_man',
+            }
+        }
 
     def action_pay_remaining(self):
         self.ensure_one()

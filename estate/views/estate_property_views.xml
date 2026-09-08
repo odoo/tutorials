@@ -102,6 +102,12 @@
                             <field name="selling_price" />
                             <field name="best_offer" />
                         </group>
+                        <div class="o_widget o_widget_web_ribbon">
+                            <div class="ribbon ribbon-top-right"
+                                invisible="state in ('new', 'offer_received', 'offer_accepted','sold','canceled') ">
+                                <span class="text-bg-success">Booked</span>
+                            </div>
+                        </div>
                     </group>
 
                     <notebook>

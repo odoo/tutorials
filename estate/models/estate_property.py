@@ -43,7 +43,7 @@ class EstateProperty(models.Model):
             ('new', "New"),
             ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
-            ('booked', 'Booked'),
+            ('booked', "Booked"),
             ('sold', "Sold"),
             ('canceled', "Canceled"),
         ],
