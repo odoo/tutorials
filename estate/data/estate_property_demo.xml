@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-
-   
-   
-
     <!-- Record 1: New House -->
     <record id="estate_property_demo_1" model="estate.property">
         <field name="name">Cozy Suburban Cottage</field>

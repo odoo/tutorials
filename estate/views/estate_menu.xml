@@ -9,5 +9,7 @@
     <menuitem id="estate_property_setting" name="Settings" parent="estate_menu_root" />
 
   <menuitem id="estate_property_type" name="Property Type" parent="estate_property_setting" action="estate_property_type_form"/>
+  
+  <menuitem id="estate_property_tag" name="Property Tag" parent="estate_property_setting" action="estate_property_tag_form"/>
 
 </odoo>

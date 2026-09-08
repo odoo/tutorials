@@ -22,7 +22,12 @@
     <field name="res_model">estate.property.type</field>
     <field name="view_mode">list,form</field>
   </record>
-
+   
+  <record id="estate_property_tag_form" model="ir.actions.act_window">
+    <field name="name">Properties Tag</field>
+    <field name="res_model">estate.property.tag</field>
+    <field name="view_mode">list,form</field>
+  </record>
   <!-- Views -->
   <record id="estate_property_view_list" model="ir.ui.view">
     <field name="name">estate.property.list</field>
@@ -49,8 +54,11 @@
           <label for="name"/>
             <h1>
               <field name="name" placeholder="e.g. Modern Villa with Garden"/>
+            
             </h1>
           </div>
+
+            <field name="property_tag_ids" widget="many2many_tags"/>
           <group>
             <group string="Pricing &amp; Availability">
               <field name="postcode"/>
@@ -83,6 +91,12 @@
             <page string="Settings" name="settings">
               <group>
                 <field name="active"/>
+              </group>
+            </page>
+            <page string="Other Info" name="Info">
+              <group>
+                <field name="sales_man_id" widget="many2one_avatar_user"/>
+                <field name="buyer_id" widget="many2one_avatar_user"/>
               </group>
             </page>
           </notebook>

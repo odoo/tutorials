@@ -23,6 +23,11 @@ class EstateProperty(models.Model):
         readonly=True,
         copy=False,
     )
+    sales_man_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
+    property_tag_ids = fields.Many2many("estate.property.tag", "Tags")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
     active = fields.Boolean(string="Active", default=True)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer()
