@@ -18,6 +18,13 @@
         <field name="garden_area">180</field>
         <field name="garden_orientation">south</field>
         <field name="state">o_received</field>
+        <field name="property_type_id" ref="type_mansion" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_spacious'),
+                ref('tag_luxury'),
+            ])
+        ]" />
     </record>
 
     <record id="estate_property_demo_2" model="estate.property">
@@ -37,6 +44,13 @@
         <field name="garden_area">0</field>
         <field name="garden_orientation">north</field>
         <field name="state">new</field>
+        <field name="property_type_id" ref="type_house" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_compact'),
+                ref('tag_renovated'),
+            ])
+        ]" />
     </record>
 
     <record id="estate_property_demo_3" model="estate.property">
@@ -56,6 +70,13 @@
         <field name="garden_area">250</field>
         <field name="garden_orientation">east</field>
         <field name="state">sold</field>
+        <field name="property_type_id" ref="type_hotel" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_cozy'),
+                ref('tag_maintenance'),
+            ])
+        ]" />
     </record>
 
 </odoo>
