@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_booking_payment_action" model="ir.actions.act_window">
-        <field name="name">Register Payment</field>
-        <field name="res_model">estate.booking.payment</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-    </record>
 
     <record id="estate_booking_payment_view_form" model="ir.ui.view">
         <field name="name">estate.booking.payment.view.form</field>
@@ -34,3 +28,4 @@
         </field>
     </record>
 </odoo>
+

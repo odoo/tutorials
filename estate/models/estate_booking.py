@@ -114,7 +114,6 @@ class EstateBooking(models.Model):
 
     @api.model
     def _cron_expire_bookings(self):
-        """This method will be called automatically by the Odoo Scheduler"""
         today = fields.Date.today()
 
         expired_bookings = self.search(

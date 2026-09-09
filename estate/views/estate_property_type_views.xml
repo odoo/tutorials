@@ -10,9 +10,12 @@
         <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom">
                 <field name="sequence" widget="handle"/>
+                <field name="sequence"/>
                 <field name="name"/>
+                <field name="test"/>
+                <!-- <field name="create_date"/> -->
             </list>
         </field>
     </record>
