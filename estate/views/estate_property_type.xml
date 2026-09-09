@@ -12,6 +12,7 @@
         <field name="arch" type="xml">
             <list string="Properties Type">
                 <field name="name" string="Property Type"/>
+                <field name="sequence" widget="handle"/>
             </list>
         </field>
     </record>
