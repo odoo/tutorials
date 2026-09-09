@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_is_zero
 from odoo.tools.float_utils import float_compare
 
 
@@ -59,18 +60,19 @@ class EstateProperty(models.Model):
         "CHECK(selling_price > 0)", "Property selling price must be positive."
     )
 
-    @api.constrains("selling_price")
+    @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
-        if float_compare(self.selling_price, (self.expected_price * 0.9), 2) == -1:
-            raise ValidationError(
-                "Selling Price must not be less than 90% of expected price."
-            )
+        if not float_is_zero(self.selling_price, 2):
+            if float_compare(self.selling_price, (self.expected_price * 0.9), 2) == -1:
+                raise ValidationError(
+                    "Selling Price must not be less than 90% of expected price."
+                )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for realEstateProperty in self:
             realEstateProperty.total_area = (
-                realEstateProperty.living_area + realEstateProperty.garden_area
+                    realEstateProperty.living_area + realEstateProperty.garden_area
             )
 
     # @api.onchange("living_area", "garden_area")
@@ -80,7 +82,8 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
-        self.best_price = max(self.offer_ids.mapped("price")) if self.offer_ids else 0
+        for property in self:
+            property.best_price = max(property.offer_ids.mapped("price")) if property.offer_ids else 0
 
     # @api.depends("offer_ids")
     # def _compute_best_price(self):
@@ -121,3 +124,9 @@ class EstateProperty(models.Model):
         else:
             self.state = "cancelled"
         return True
+
+    @api.ondelete(at_uninstall=True)
+    def _unlink_if_new_or_cancelled(self):
+        for property in self:
+            if property.state not in ["cancelled", "new"]:
+                raise UserError("Only new and cancelled properties can be deleted.")

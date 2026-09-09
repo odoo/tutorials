@@ -24,7 +24,8 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state in ('offer_received','offer_accepted')"
-                  decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                  decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'"
+                  default_order="name,selling_price desc">
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="expected_price"/>
@@ -33,6 +34,7 @@
                 <field name="living_area"/>
                 <field name="postcode"/>
                 <field name="date_availability" optional="hide"/>
+                <field name="best_price"/>
             </list>
         </field>
     </record>
@@ -44,12 +46,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="property">
+                <group invisible="state in ('sold','cancelled')">
+                    <button name="set_sold" type="object" string="Sold"/>
+                    <button name="set_cancel" type="object" string="Cancel"/>
+                    <!--                        <button name="%(estate.estate_property_type_action)d" type="action" string="view_action"/>-->
+                </group>
                 <header>
-                    <group invisible="state in ('sold','cancelled')">
-                        <button name="set_sold" type="object" string="Sold"/>
-                        <button name="set_cancel" type="object" string="Cancel"/>
-                        <!--                        <button name="%(estate.estate_property_type_action)d" type="action" string="view_action"/>-->
-                    </group>
                     <field name="state" widget="statusbar" options="{'clickable':1}"/>
                 </header>
 
