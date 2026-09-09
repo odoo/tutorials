@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="estate_menu_root" name="Realest Estate" sequence="1" web_icon="estate,static/description/icon.png" />
+
+    <!-- Estate Menu -->
+    <menuitem id="estate_menu_estates_property" name="My Estates" parent="estate_menu_root" sequence="1" action="estate_property_action" />
+
+    <!-- Setting Menu -->
+    <menuitem id="estate_menu_estates_settings" name="Settings" parent="estate_menu_root" sequence="2" />
+
+    <!-- Property Types Menu -->
+    <menuitem id="estate_menu_estates_property_type" name="Property Types" parent="estate_menu_estates_settings" action="estate_type_action" />
+
+    <!-- Property Tags Menu -->
+    <menuitem id="estate_menu_estates_property_tag" name="Property Tags" parent="estate_menu_estates_settings" action="estate_tag_action" />
+</odoo>

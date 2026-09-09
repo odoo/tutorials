@@ -1,0 +1,4 @@
+id,name,description,postcode,date_availability,expected_price,selling_price,bedrooms,living_area,facades,garage,garden,garden_area,garden_orientation,state
+estate_property_demo_1,Luxury Villa,"Spacious luxury villa with a private swimming pool, landscaped garden, and modern interiors.",560001,2026-09-15,1250000.00,0.00,5,320,4,True,True,180,south,o_received
+estate_property_demo_2,Modern Apartment,"Elegant apartment located in the city center with a balcony and dedicated parking.",110001,2026-10-01,480000.00,0.00,2,95,2,True,False,0,north,new
+estate_property_demo_3,Cozy Country Cottage,"Charming countryside cottage surrounded by greenery, ideal for a peaceful family lifestyle.",411001,2026-08-20,650000.00,0.00,3,170,3,False,True,250,east,sold
