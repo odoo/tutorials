@@ -50,6 +50,14 @@ class EstateProperty(models.Model):
     )
     tag_ids = fields.Many2many('estate.property.tag', string="Property Tags")
     total_area = fields.Integer(compute='_compute_total_area')
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        "Expected price must be positive.",
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        "Selling price must be positive.",
+    )
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
