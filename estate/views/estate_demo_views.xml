@@ -1,0 +1,43 @@
+<odoo>
+
+    <record id="estate_property_1" model="estate.property">
+        <field name="name">Warranty</field>
+        <field name="description ">20.0</field>
+        <field name="postcode">9980</field>
+        <field name="date_availability" eval="datetime.now() - timedelta(months=3)" />
+        <field name="expected_price">service</field>
+        <field name="selling_price"  />
+        <field name="bedrooms">3 </field>
+        <field name="living_area" />
+        <field name="facades">delivery</field>
+        <field name="garage" />
+        <field name="selection" ></field>
+    </record>
+
+    <record id="estate_property_2" model="estate.property">
+        <field name="name">Warranty</field>
+        <field name="description ">20.0</field>
+        <field name="postcode">9980</field>
+        <field name="date_availability" eval="datetime.now() - timedelta(months=3)" />
+        <field name="expected_price">service</field>
+        <field name="selling_price" ref="uom.product_uom_unit" />
+        <field name="bedrooms">3</field>
+        <field name="living_area" />
+        <field name="facades">delivery</field>
+        <field name="garage" />
+    </record>
+
+     <record id="estate_property_2" model="estate.property">
+        <field name="name">Test</field>
+        <field name="description ">Office Chair - Context View</field>
+        <field name="postcode">9980</field>
+        <field name="date_availability" eval="datetime.now() - timedelta(months=3)"></field>
+        <field name="expected_price">service</field>
+        <field name="selling_price" ref="uom.product_uom_unit" />
+        <field name="bedrooms">3</field>
+        <field name="living_area" />
+        <field name="facades">delivery</field>
+        <field name="garage" />
+    </record>
+
+</odoo>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_estate_property_booking_form" model="ir.ui.view">
+        <field name="name">estate.property.booking.form</field>
+        <field name="model">estate.property.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_book" type="object" string="Confirm Booking" class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_pay" type="object" string="Pay Remaining" class="btn-primary" invisible="state != 'booked'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="property_id"/>
+                            <field name="buyer_id"/>
+                        </group>
+                        <group>
+                            <field name="final_price"/>
+                            <field name="booking_amount"/>
+                            <field name="remaining_amount"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_estate_property_booking" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="res_model">estate.property.booking</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
