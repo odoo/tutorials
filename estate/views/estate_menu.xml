@@ -1,29 +1,18 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+        <!-- Root Menu -->
+        <menuitem id="estate_menu_root" name="Real Estate"/>
 
-   
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-    </record>
+        <!-- Sub Menu -->
+        <menuitem id="estate_menu_property"
+                  name="Properties"
+                  parent="estate_menu_root"
+                  action="estate_property_view"/>
 
-    
+        <menuitem id="estate_menu_property_type"
+                  name="Settings"
+                  parent="estate_menu_root"
+                  action="estate_propert_type_view"/>
 
- <!-- Menu -->
-    <menuitem id="estate_menu_root" name="Real Estate"/>
-
-    <menuitem id="estate_menu_property"
-              name="Properties"
-              parent="estate_menu_root"
-              action="estate_property_action"/>
-    <menuitem id="estate_menu_property_default_search"
-              name="Properties2"
-              parent="estate_menu_root"
-              action="default_search_view"/>
-    <!-- <menuitem id="estate_menu_root"
-          name="Real Estate"
-          web_icon="estate,static/description/icon.png"/> -->
 </odoo>
-
