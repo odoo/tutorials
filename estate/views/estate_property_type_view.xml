@@ -4,11 +4,12 @@
     <record id="estate_property_type_view" model="ir.ui.view" >
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="property.type">
+            <form string="property type">
                 <sheet>
-                    <label for="name"/>
+                <group>
                     <field name="name" string="Type"/>
-                </sheet>
+                </group>
+                </sheet>            
             </form>
         </field>
     </record>
