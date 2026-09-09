@@ -37,9 +37,9 @@
                 <header>
                     <button name="set_sold" type="object" class="oe_highlight" string="Sold"/>
                     <button name="set_cancelled" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
-
                     <div>
                         <h2>
                             <field name="name" placeholder="Enter Property Name"/>
@@ -51,7 +51,6 @@
 
                     <group>
                         <group>
-                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>

@@ -39,7 +39,6 @@ class EstateModel(models.Model):
             ('cancelled', "Cancelled"),
         ],
         required=True,
-        readonly=True,
         copy=False,
         default="new",
         string="Status"
