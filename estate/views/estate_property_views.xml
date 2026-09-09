@@ -6,9 +6,8 @@
             <form string="Property">
                 <sheet>
                     <div class="oe_title">
-                        <label for="name"/>
                         <h1>
-                            <field name="name" placeholder="e.g. Modern Villa with Garden">title</field>
+                            <field name="name" string=""/>
                         </h1>
                         <field name="property_tag_ids" widget="many2many_tags"/>
                     </div>
@@ -19,12 +18,16 @@
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="property_type_id"/>
+                            <field name="total_offers"/>
+                            <field name="state"/>
                         </group>
                         <group string="Property Specs">
                             <field name="bedrooms"/>
                             <field name="living_area" string="Living Area (m²)"/>
                             <field name="facades"/>
                             <field name="garage"/>
+                            <field name = "best_price"/>
+                            <field name = "total_area"/>
                         </group>
                     </group>
                     <notebook>
@@ -69,6 +72,7 @@
                 <field name="expected_price"/>
                 <field name="name"/>
                 <filter name="expected_price" string="Expected Price" domain="[('expected_price','!=',0)]"/>
+                <filter name="date_availability" string="Available" domain="['|',('state','=','new'),('state','=','offer_received') ]"/>
             </search>
         </field>
     </record>
@@ -86,6 +90,7 @@
                 <field name="selling_price" width="14.2%" />
                 <field name="date_availability" string="Available From" width="14.2%"/>
                 <field name="property_type_id" string="Property Type" width="14.2%"/>
+                <field name="total_offers" string="Total Offers" width="14.2%"/>
             </list>
         </field>
     </record>
