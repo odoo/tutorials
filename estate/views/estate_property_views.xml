@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="estate_property_view" model="ir.actions.act_window">
+        <field name="name">Estate Property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+    <record id="estate_propert_list_view" model="ir.ui.view">
+        <field name="name">Estate property list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" string="Title"/>
+                <!-- <field name="description"/> -->
+                <field name="postcode" string="Postcode"/>
+                
+                
+               
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living area (sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <!-- <field name="facades"/> -->
+                <!-- <field name="garage"/> -->
+                  <field name="selling_price" string="Selling Price"/>
+                  <field name="date_availability" string="Available From"/>
+                <!-- <field name="garden"/> -->
+                <!-- <field name="garden_area"/> -->
+                <!-- <field name="garden_orientation"/> -->
+                <!-- <field name="active"/> -->
+                <!-- <field name="state"/> -->
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">Estate property from view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                    <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                    </group>
+                    <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                    </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                            <field name="description" string="Description"/>
+                            <field name="bedrooms" string="Bedrooms"/>
+                            <field name="living_area" string="Living area (sqm)"/>
+                            <field name="facades" string="Facades"/>
+                            <field name="garage" string="Garage"/>
+                            <field name="garden" string="Garden"/>
+                            <field name="garden_area" string="Garden area (sqm)"/>
+                            <field name="garden_orientation" string="Garden Orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">search.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living area (sqm)"/>
+                <field name="facades" string="Facades"/>
+                <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                <filter name="filter_availability" string="Availability" domain="[('state','=','New'),('state','=','Offer Received')]"/>
+            </search>
+        </field>
+
+    </record>
+</odoo>
