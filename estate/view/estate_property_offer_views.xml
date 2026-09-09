@@ -14,7 +14,6 @@
         <field name="arch" type="xml">
             <list string="Property Offers" editable="bottom" decoration-danger="status == 'refused'"
                   decoration-success="status == 'accepted'">
-                <field name="property_id"/>
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>

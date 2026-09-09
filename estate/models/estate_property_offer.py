@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from datetime import timedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -22,6 +23,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one(
         "estate.property",
         required=True,
+        ondelete="cascade",
     )
     validity = fields.Integer(
         string="Validity (days)",
@@ -51,6 +53,17 @@ class EstatePropertyOffer(models.Model):
                 record.create_date.date() if record.create_date else fields.Date.today()
             )
             record.deadline = create_date + timedelta(days=record.validity)
+
+    @api.model
+    def create(self, vals):
+        for offer in vals:
+            property = self.env["estate.property"].browse(offer["property_id"])
+            if property.best_price > offer["price"]:
+                raise UserError(
+                    "You cannot create an offer having price less than the best price."
+                )
+            property.state = "offer_received"
+        return super().create(vals)
 
     def _inverse_date_deadline(self):
         for record in self:

@@ -13,5 +13,6 @@
         "view/estate_property_tag_views.xml",
         "view/estate_property_views.xml",
         "view/estate_menus.xml",
+        "view/res_users_views.xml",
     ],
 }
