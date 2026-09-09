@@ -59,6 +59,15 @@
                                 </group>
                             </group>
                         </page>
+                        <page name="offer" string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
                         <page name="info" string="Other Info">
                             <group>
                                 <field name="seller_id" widget="many2one_avatar_user"/>

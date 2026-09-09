@@ -54,4 +54,5 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
     )
     tags_ids = fields.Many2many("estate.property.tag", "Tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     active = fields.Boolean("Active", default=True)
