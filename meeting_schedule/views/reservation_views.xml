@@ -1,0 +1,49 @@
+<odoo>
+    <record id="meeting_reservation_action" model="ir.actions.act_window">
+        <field name="name">Meeting Reservations</field>
+        <field name="res_model">meeting.reservation</field>
+        <field name="view_model">kanban,tree,form</field>
+    </record>
+
+                    <!-- Kanban -->
+    <record id="meeting_reservation_view_kanban" model="ir.ui.view">
+        <field name="name">meeting.reservation.kanban</field>
+        <field name="model">meeting.reservation</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="room_id" records_draggable="0" sample="1">
+                <field name="scheduleing"/>
+                
+                <field name="id"/>
+                <field name="name"/>
+                <field name="room_id"/>
+                <field name="building_id"/>
+                <field name="organizer_id"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="state"/>
+                <button name="Cancel">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div>
+                                <strong><field name="name"/></strong>
+                                <span><field name="state" /></span>
+                                </div>
+                                <div>
+                                    <i class="fa fa-building-o mr-1"/> <field name="building_id"/> / <field name="room_id"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+            </kanban>
+        </field>
+    </record>
+                    <!-- Tree -->
+    <record>
+        
+    </record>
+                    <!-- Form -->
+    <record>
+        
+    </record>
+</odoo>
