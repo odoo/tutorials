@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_propert_demo_1" model="estate.property">
+            <field name="name">estate1</field>
+            <field name="description">this is estate property description</field>
+            <field name="postcode">382007</field>
+            <field name="date_availability"></field>
+            <field name="expected_price">400</field>
+            <field name="selling_price">800</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation"></field>
+            <field name="active">True</field>
+            <field name="state">New</field>
+
+        </record>
+
+
+        <record id="estate_propert_demo_2" model="estate.property">
+            <field name="name">estate2</field>
+            <field name="description">this is estate 2 property description</field>
+            <field name="postcode">382007</field>
+            <field name="date_availability"></field>
+            <field name="expected_price">4000</field>
+            <field name="selling_price">8000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation"></field>
+            <field name="active">True</field>
+            <field name="state">Sold</field>
+
+        </record>
+
+        <record id="estate_propert_demo_3" model="estate.property">
+            <field name="name">estate2</field>
+            <field name="description">this is estate 2 property description</field>
+            <field name="postcode">382007</field>
+            <field name="date_availability"></field>
+            <field name="expected_price">4000</field>
+            <field name="selling_price">8000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation"></field>
+            <field name="active">True</field>
+            <field name="state">New</field>
+
+        </record>
+
+        <record id="estate_propert_demo_4" model="estate.property">
+            <field name="name">estate2</field>
+            <field name="description">this is estate 2 property description</field>
+            <field name="postcode">382007</field>
+            <field name="date_availability"></field>
+            <field name="expected_price">4000</field>
+            <field name="selling_price">8000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation"></field>
+            <field name="active">True</field>
+            <field name="state">Sold</field>
+
+        </record>
+        <record id="estate_propert_demo_5" model="estate.property">
+            <field name="name">estate2</field>
+            <field name="description">this is estate 2 property description</field>
+            <field name="postcode">382007</field>
+            <field name="date_availability"></field>
+            <field name="expected_price">4000</field>
+            <field name="selling_price">8000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation"></field>
+            <field name="active">True</field>
+            <field name="state">New</field>
+
+        </record>
+        <record id="estate_propert_demo_6" model="estate.property">
+            <field name="name">estate2</field>
+            <field name="description">this is estate 2 property description</field>
+            <field name="postcode">382007</field>
+            <field name="date_availability"></field>
+            <field name="expected_price">4000</field>
+            <field name="selling_price">8000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation"></field>
+            <field name="active">True</field>
+            <field name="state">New</field>
+
+        </record>
+
+        <record id="estate_propert_demo_7" model="estate.property">
+            <field name="name">estate2</field>
+            <field name="description">this is estate 2 property description</field>
+            <field name="postcode">382007</field>
+            <field name="date_availability"></field>
+            <field name="expected_price">4000</field>
+            <field name="selling_price">8000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation"></field>
+            <field name="active">True</field>
+            <field name="state">Sold</field>
+
+        </record>
+
+        <!-- <record id="hr_attendance_absence_cron" model="ir.cron">
+            <field name="name">Attendance: Detect Absences for employees</field>
+            <field name="model_id" ref="model_hr_attendance"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_absence_detection()</field>
+            <field name="interval_number">4</field>
+            <field name="interval_type">hours</field>
+        </record> -->
+    </data>
+</odoo>
