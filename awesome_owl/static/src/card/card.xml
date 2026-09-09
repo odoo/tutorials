@@ -3,10 +3,18 @@
     <t t-name="awesome_owl.Card" owl="1">
         <div class="card d-inline-block m-2 text-start" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text">
-                    <t t-out="props.content"/>
-                </p>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title"><t t-esc="props.title"/></h5>
+                    <button class="btn btn-sm btn-outline-secondary" t-on-click="toggle">
+                        <t t-if="state.isOpen">Collapse</t>
+                        <t t-else="">Expand</t>
+                    </button>
+                </div>
+                <t t-if="state.isOpen">
+                    <p class="card-text">
+                        <t t-slot="default"/>
+                    </p>
+                </t>
             </div>
         </div>
     </t>

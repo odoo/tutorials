@@ -5,6 +5,7 @@
         <div class="card p-3 my-3">
             <h3>Todo List</h3>
             <input
+                t-ref="input"
                 type="text"
                 class="form-control my-3"
                 placeholder="Enter a new task..."
@@ -12,7 +13,7 @@
             />
             <div class="mt-2">
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" toggleState.bind="toggleTodo"/>
+                    <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
                 </t>
             </div>
         </div>

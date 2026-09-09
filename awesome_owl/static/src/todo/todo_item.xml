@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem" owl="1">
-        <div class="p-2 border-bottom" style="cursor: pointer;" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''" t-on-click="onClick">
+        <div class="p-2 border-bottom" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
+            <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="onChange" class="form-check-input me-2"/>
             <span class="badge bg-secondary me-2"><t t-esc="props.todo.id"/></span>
             <t t-esc="props.todo.description"/>
+            <span class="fa fa-remove text-danger ms-2" style="cursor: pointer;" t-on-click="onRemove"/>
         </div>
     </t>
 </templates>

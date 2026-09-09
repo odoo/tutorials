@@ -11,12 +11,26 @@
                 <p>Sum: <t t-esc="state.sum"/></p>
             </div>
             <hr/>
-            <div class="d-flex justify-content-center flex-wrap">
-                <Card title="'Card 1'" content="'This is the content of Card 1'"/>
-                <Card title="'Card 2'" content="'This is the content of Card 2'"/>
-                <Card title="'Card 3'" content="'This is the content of Card 3'"/>
-                <Card title="'Escaped Card'" content="escapedHtml"/>
-                <Card title="'Markup Card'" content="safeHtml"/>
+            <div class="d-flex justify-content-center flex-wrap align-items-start">
+                <Card title="'Card 1'">
+                    <p>This is custom HTML content inside the card slot!</p>
+                </Card>
+                <Card title="'Card 2'">
+                    <p>This is custom HTML content inside the card slot!</p>
+                </Card>
+                <Card title="'Card 3'">
+                    <p>This is custom HTML content inside the card slot!</p>
+                </Card>
+                <Card title="'Escaped Card'">
+                    <p><t t-esc="escapedHtml"/></p>
+                </Card>
+                <Card title="'Markup Card'">
+                    <p><t t-raw="safeHtml"/></p>
+                </Card>
+                <Card title="'Counter Card'">
+                    <p>Here is a counter inside a card:</p>
+                    <Counter/>
+                </Card>
             </div>
             <hr/>
             <div class="d-flex justify-content-center">
