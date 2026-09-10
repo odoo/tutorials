@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="property_demo_1" model="estate.property">
+            <field name="name">Villa Sunset</field>
+            <field name="description">For Sunset Lovers with sea view</field>
+            <field name="date_availability">2026-10-01</field>
+            <field name="postcode">382016</field>
+            <field name="expected_price">400000000</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">4000</field>
+            <field name="facades">3</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">500</field>
+            <field name="garden_orientation">north</field>
+            <field name="sold">False</field>
+            <field name="active">True</field>
+            <field name="state">new</field>
+        </record>
+
+        <!-- Record 2: City Apartment -->
+        <record id="property_demo_2" model="estate.property">
+            <field name="name">Skyline Apartment</field>
+            <field name="description">Modern luxury apartment in city center</field>
+            <field name="date_availability">2026-11-15</field>
+            <field name="postcode">380015</field>
+            <field name="expected_price">15000000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">1200</field>
+            <field name="facades">1</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="sold">False</field>
+            <field name="active">True</field>
+            <field name="state">offer_received</field>
+        </record>
+
+        <!-- Record 3: Suburban House -->
+        <record id="property_demo_3" model="estate.property">
+            <field name="name">Green Valley Bungalow</field>
+            <field name="description">Peaceful family home with large garden</field>
+            <field name="date_availability">2026-09-30</field>
+            <field name="postcode">382421</field>
+            <field name="expected_price">25000000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">2200</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">800</field>
+            <field name="garden_orientation">south</field>
+            <field name="sold">False</field>
+            <field name="active">True</field>
+            <field name="state">offer_accepted</field>
+        </record>
+
+        <!-- Record 4: Compact Studio -->
+        <record id="property_demo_4" model="estate.property">
+            <field name="name">Cozy Studio Flat</field>
+            <field name="description">Ideal for working professionals</field>
+            <field name="date_availability">2026-08-01</field>
+            <field name="postcode">380009</field>
+            <field name="expected_price">5000000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">550</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="sold">True</field>
+            <field name="active">False</field>
+            <field name="state">sold</field>
+        </record>
+
+        <!-- Record 5: Luxury Penthouse -->
+        <record id="property_demo_5" model="estate.property">
+            <field name="name">Royal Heights Penthouse</field>
+            <field name="description">Premium penthouse with private terrace garden</field>
+            <field name="date_availability">2026-12-01</field>
+            <field name="postcode">380054</field>
+            <field name="expected_price">85000000</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">5500</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">350</field>
+            <field name="garden_orientation">east</field>
+            <field name="sold">False</field>
+            <field name="active">True</field>
+            <field name="state">new</field>
+        </record>
+    </data>
+</odoo>
