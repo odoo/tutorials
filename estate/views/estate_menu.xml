@@ -4,15 +4,35 @@
         <!-- Root Menu -->
         <menuitem id="estate_menu_root" name="Real Estate"/>
 
-        <!-- Sub Menu -->
-        <menuitem id="estate_menu_property"
-                  name="Properties"
-                  parent="estate_menu_root"
-                  action="estate_property_view"/>
+        <!-- Advertisements Menu -->
+        <menuitem id="estate_advertisements_menu"
+                  name="Advertisements"
+                  parent="estate_menu_root"/>
 
-        <menuitem id="estate_menu_property_type"
+        <!-- estate property -->
+        <menuitem id="estate_submenu_property" 
+                  name="Properties" 
+                  action="estate_property_view" 
+                  parent="estate_advertisements_menu"/> 
+
+
+
+        
+        <!-- Setting menu -->
+        <menuitem id="estate_setting_menu"
                   name="Settings"
-                  parent="estate_menu_root"
+                  parent="estate_menu_root"/>
+
+        <!-- estate property type -->
+        <menuitem id="estate_menu_property_type"
+                  name="Property Type"
+                  parent="estate_setting_menu"
                   action="estate_propert_type_view"/>
+
+        <!-- estate property tag -->
+        <menuitem id="estate_menu_property_tag"
+                  name="Property Tag"
+                  parent="estate_setting_menu"
+                  action="estate_property_tag_view"/>
 
 </odoo>
