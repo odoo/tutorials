@@ -20,6 +20,7 @@
                 <field name="organizer_id"/>
                 <field name="start_time"/>
                 <field name="end_time"/>
+                <field name="duration"/>
                 <field name="state"/>
                 <button name="Cancel">
                     <templates>
@@ -30,8 +31,28 @@
                                 <span><field name="state" /></span>
                                 </div>
                                 <div>
-                                    <i class="fa fa-building-o mr-1"/> <field name="building_id"/> / <field name="room_id"/>
+                                    <i class="fa fa-building-o mr-1"/>
+                                        <field name="building_id"/>
+                                        <field name="room_id"/>
                                 </div>
+                                <div>
+                                <i class="fa fa-clock-o mr-1 text-primary">
+                                    <field name="start_time" widget="datetime" />
+                                    <span> - </span>
+                                    <field name="end_time" widget="datetime" />
+                                </div>
+                            </div>
+                            <div>
+                                <field name="organizer_id"/>
+                            </div>
+                            <div>
+                                <button t-if="record.cancel.raw_value and
+                                    record.state.raw_value != 'canceled'"
+                                        name="action_cancel" type="object"
+                                        class="btn btn-sm btn-outline-danger"
+                                        title="Cancel Meeting">
+                                    Cancel
+                                </button>
                             </div>
                         </t>
                     </templates>
@@ -39,11 +60,86 @@
         </field>
     </record>
                     <!-- Tree -->
-    <record>
-        
+    <record id="meeting_reservation_view_tree">
+    <field name="name">meeting.reservation.tree</field>
+    <field name="model">meeting.reservation</field>
+    <field name="arch" type="xml">
+        <tree decoration-danger="state == 'canceled'"
+            decoration-success="state == 'confirmed'"
+        >
+        <field name="name"/>
+        <field name="room_id"/>
+        <field name="building_id"/>
+        <field name="start_time"/>
+        <field name="end_time"/>
+        <field name="duration" widget="float_time"/>
+        <field name="organizer_id"/>
+        <field name="state" widget="badge"
+            decoration-success="state == 'confirmed'"
+            decoration-danger="state == 'canceled'"/>
+    </field>
     </record>
                     <!-- Form -->
-    <record>
-        
+    <record id="meeting_reservation_view_form" model="ir.ui.view">
+        <field name="name">meeting.reservation.form</field>
+        <field name="model">meeting.reservation</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="cancel" type="object" string="Cancel Meeting"
+                        class="btn-danger"
+                        attrs="{'invisible': ['|', ('cancel', '=', False), ('state', '=', 'canceled')]}"/> />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <field name="cancel" invisible="1" />
+                    <div class="oe_title">
+                        <label for="name" string="Meeting Subject" />
+                        <h1><field name="name" placeholder="e.g. Sprint Planning"/></h1>
+                    </div>
+                    <group>
+                        <group string="Location">
+                            <field name="room_id"/>
+                            <field name="building_id"/>
+                            <field name="organizer_id"/>
+                        </group>
+                        <group string="Schedule (UTC)">
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                            <field name="duration" widget="float_time"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Agenda / Notes">
+                            <field name="description"
+                                placeholder="Add meeting agenda or notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="meeting_reservation_view_search" model="ir.ui.view">
+        <field name="name">meeting.reservation.search</field>
+        <field name="model">meeting.reservation</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="room_id"/>
+                <field name="building_id"/>
+                <field name="organizer_id"/>
+                <filter name="my_meetings" string="My Meetings"
+                    domain="[('organizer_id', '=', uid)]"/>
+                    <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                    <filter name="canceled" string="Canceled" domain="[('state', '=', 'canceled')]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_room" string="Room" context="{'group_by': 'room_id'}"/>
+                        <filter name="group_building" string="Building" context="{'group_by': 'building_id'}"/>
+                        <filter name="group_organizer" string="Organizer" context="{'group_by': 'organizer_id'}"/>
+                        <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    </group>
+            </search>
+        </field>
     </record>
 </odoo>

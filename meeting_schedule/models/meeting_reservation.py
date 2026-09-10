@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.release import description
+
 
 class MeetingReservation(models.Model):
     _name = "meeting.reservation"

@@ -32,3 +32,8 @@ class MeetingBuilding:
     def _compute_number_of_rooms(self):
         for building in self:
             building.number_of_rooms = len(building.room_ids)
+
+    def action_generate_rooms(self):
+        self.ensure_one()
+        current_count = len(self.room_ids)
+        to_create = 
