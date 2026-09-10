@@ -1,4 +1,3 @@
-
 {
     "name": "real state",
     "description": "This is my first module estate",
@@ -8,6 +7,7 @@
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/estate_property_type_view.xml",
+        "views/estate_property_tag_view.xml",
         "views/estate_menu.xml",
     ],
     "demo": [

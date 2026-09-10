@@ -43,6 +43,9 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <h3>
+                            <field name="tag_id" widget="many2many_tags"/>
+                        </h3>
                     </div>
                     <group>
                     <group>
@@ -54,6 +57,7 @@
                             <field name="selling_price"/>
                     </group>
                     </group>
+                    <group>
                     <notebook>
                         <page string="Description">
                             <group>
@@ -67,7 +71,14 @@
                             <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
                         </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson" string="Salesman"/>
+                                <field name="buyer" string="Buyer"/>
+                            </group>
+                        </page>
                     </notebook>
+                    </group>
                 </sheet>
             </form>
         </field>
