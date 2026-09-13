@@ -1,8 +1,8 @@
 <odoo>
-    <record id="meeting_reservation_action" model="ir.actions.act_window">
+    <record id="meeting_reservation_action" model="ir.actions.act_window" context="{'active_test': False}">
         <field name="name">Meeting Reservations</field>
         <field name="res_model">meeting.reservation</field>
-        <field name="view_model">kanban,tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 
                     <!-- Kanban -->
@@ -11,9 +11,6 @@
         <field name="model">meeting.reservation</field>
         <field name="arch" type="xml">
             <kanban default_group_by="room_id" records_draggable="0" sample="1">
-                <field name="scheduleing"/>
-                
-                <field name="id"/>
                 <field name="name"/>
                 <field name="room_id"/>
                 <field name="building_id"/>
@@ -22,62 +19,65 @@
                 <field name="end_time"/>
                 <field name="duration"/>
                 <field name="state"/>
-                <button name="Cancel">
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div class="oe_kanban_global_click">
-                                <div>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div>
                                 <strong><field name="name"/></strong>
-                                <span><field name="state" /></span>
-                                </div>
-                                <div>
-                                    <i class="fa fa-building-o mr-1"/>
-                                        <field name="building_id"/>
-                                        <field name="room_id"/>
-                                </div>
-                                <div>
-                                <i class="fa fa-clock-o mr-1 text-primary">
-                                    <field name="start_time" widget="datetime" />
-                                    <span> - </span>
-                                    <field name="end_time" widget="datetime" />
-                                </div>
+                                <span><field name="state"/></span>
+                            </div>
+                            <div>
+                                <i class="fa fa-building-o mr-1" title="Building"/>
+                                <field name="building_id"/>
+                                <field name="room_id"/>
+                            </div>
+                            <div>
+                                <i class="fa fa-clock-o mr-1 text-primary" title="Time"/>
+                                <field name="start_time" widget="datetime"/>
+                                <span> - </span>
+                                <field name="end_time" widget="datetime"/>
                             </div>
                             <div>
                                 <field name="organizer_id"/>
                             </div>
                             <div>
-                                <button t-if="record.cancel.raw_value and
-                                    record.state.raw_value != 'canceled'"
+                                <button t-if="record.state.raw_value != 'canceled'"
                                         name="action_cancel" type="object"
                                         class="btn btn-sm btn-outline-danger"
                                         title="Cancel Meeting">
                                     Cancel
                                 </button>
+                                <button t-if="record.state.raw_value != 'confirmed'"
+                                        name="action_confirm" type="object"
+                                        class="btn btn-sm btn-outline-success"
+                                        title="Confirm Meeting">
+                                    Confirm
+                                </button>
                             </div>
-                        </t>
-                    </templates>
+                        </div>
+                    </t>
+                </templates>
             </kanban>
         </field>
     </record>
                     <!-- Tree -->
-    <record id="meeting_reservation_view_tree">
-    <field name="name">meeting.reservation.tree</field>
-    <field name="model">meeting.reservation</field>
-    <field name="arch" type="xml">
-        <tree decoration-danger="state == 'canceled'"
-            decoration-success="state == 'confirmed'"
-        >
-        <field name="name"/>
-        <field name="room_id"/>
-        <field name="building_id"/>
-        <field name="start_time"/>
-        <field name="end_time"/>
-        <field name="duration" widget="float_time"/>
-        <field name="organizer_id"/>
-        <field name="state" widget="badge"
-            decoration-success="state == 'confirmed'"
-            decoration-danger="state == 'canceled'"/>
-    </field>
+    <record id="meeting_reservation_view_tree" model="ir.ui.view">
+        <field name="name">meeting.reservation.tree</field>
+        <field name="model">meeting.reservation</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="state == 'canceled'"
+                decoration-success="state == 'confirmed'"
+                decoration-info="state == 'draft'">
+                <field name="name"/>
+                <field name="room_id"/>
+                <field name="building_id"/>
+                <field name="start_time"/>
+                <field name="end_time"/>
+                <field name="duration" widget="float_time"/>
+                <field name="organizer_id"/>
+                <field name="state" widget="badge"/>
+            </tree>
+        </field>
     </record>
                     <!-- Form -->
     <record id="meeting_reservation_view_form" model="ir.ui.view">
@@ -86,15 +86,17 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="cancel" type="object" string="Cancel Meeting"
+                    <button name="action_confirm" type="object" string="Confirm Meeting"
+                        class="btn-success" attrs="{'invisible': [('state','!=','draft')]}"
+                        groups="hr.group_hr_manager"/>
+                    <button name="action_cancel" type="object" string="Cancel Meeting"
                         class="btn-danger"
-                        attrs="{'invisible': ['|', ('cancel', '=', False), ('state', '=', 'canceled')]}"/> />
-                    <field name="state" widget="statusbar" />
+                        attrs="{'invisible': [('state', '=', 'canceled')]}"/>
+                    <field name="state" widget="statusbar" satusbar_visible="draft,confirmed" />
                 </header>
                 <sheet>
-                    <field name="cancel" invisible="1" />
                     <div class="oe_title">
-                        <label for="name" string="Meeting Subject" />
+                        <label for="name" string="Meeting Subject"/>
                         <h1><field name="name" placeholder="e.g. Sprint Planning"/></h1>
                     </div>
                     <group>
@@ -112,14 +114,14 @@
                     <notebook>
                         <page string="Agenda / Notes">
                             <field name="description"
-                                placeholder="Add meeting agenda or notes..."/>
+                                placeholder="Add meeting notes"/>
                         </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
+                <!-- Search -->
     <record id="meeting_reservation_view_search" model="ir.ui.view">
         <field name="name">meeting.reservation.search</field>
         <field name="model">meeting.reservation</field>
@@ -131,14 +133,14 @@
                 <field name="organizer_id"/>
                 <filter name="my_meetings" string="My Meetings"
                     domain="[('organizer_id', '=', uid)]"/>
-                    <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
-                    <filter name="canceled" string="Canceled" domain="[('state', '=', 'canceled')]"/>
-                    <group expand="0" string="Group By">
-                        <filter name="group_room" string="Room" context="{'group_by': 'room_id'}"/>
-                        <filter name="group_building" string="Building" context="{'group_by': 'building_id'}"/>
-                        <filter name="group_organizer" string="Organizer" context="{'group_by': 'organizer_id'}"/>
-                        <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
-                    </group>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="canceled" string="Canceled" domain="[('state', '=', 'canceled')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_room" string="Room" context="{'group_by': 'room_id'}"/>
+                    <filter name="group_building" string="Building" context="{'group_by': 'building_id'}"/>
+                    <filter name="group_organizer" string="Organizer" context="{'group_by': 'organizer_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
             </search>
         </field>
     </record>

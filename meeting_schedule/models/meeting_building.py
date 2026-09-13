@@ -1,15 +1,13 @@
-from dataclasses import field
-
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools.misc import unique
 
 
-class MeetingBuilding:
+class MeetingBuilding(models.Model):
     _name = "meeting.building"
     _description = "Meeting Building"
     _order = "name"
-            
+
+    name = fields.Char("name of the building", copy=False)
     code = fields.Char("code of the building", required=True, copy=False)
     number_of_rooms = fields.Integer("Number Of Rooms", required=True, default=1)
     working_time_start = fields.Float("Working Time Start (UTC)", required=True,
@@ -17,11 +15,12 @@ class MeetingBuilding:
     working_time_end = fields.Float("Working Time End (UTC)", required=True,
                 default=18.0, help="When does work ends.")
     active = fields.Boolean("Active", default=True)
-    
-    room_ids = fields.One2many('meeting.room', 'building_ids')
 
+    company_id = fields.Many2one("res.company", string="Company",
+        required=True, default=lambda self: self.env.company)
+    room_ids = fields.One2many('meeting.room', 'building_id')
 
-    _sql_constrains = [
+    _sql_constraints = [
         ("code_unique", "UNIQUE(code)", "Building code must be unique!"),
         ("check_number_of_rooms", "CHECK(number_of_rooms > 0)", "Number of rooms must be strictly positive!"),
         ("check_working_hours", "CHECK(working_time_start < working_time_end)", "Working time start must be earlier than end time!"),
@@ -32,8 +31,3 @@ class MeetingBuilding:
     def _compute_number_of_rooms(self):
         for building in self:
             building.number_of_rooms = len(building.room_ids)
-
-    def action_generate_rooms(self):
-        self.ensure_one()
-        current_count = len(self.room_ids)
-        to_create = 

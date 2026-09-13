@@ -1,3 +1,60 @@
 <odoo>
-
+    <record id="meeting_building_action"
+        model="ir.actions.act_window">
+            <field name="name">Buildings</field>
+            <field name="res_model">meeting.building</field>
+            <field name="view_mode">tree,form</field>
+    </record>
+    <record id="meeting_building_view_tree"
+        model="ir.ui.view">
+            <field name="name">meeting.building.tree</field>
+            <field name="model">meeting.building</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="company_id"/>
+                    <field name="number_of_rooms" string="Number of Rooms"/>
+                    <field name="working_time_start" widget="float_time"/>
+                    <field name="working_time_end" widget="float_time"/>
+                </tree>
+            </field>
+    </record>
+    <record id="meeting_building_view_form"
+        model="ir.ui.view">
+        <field name="name">meeting.building.form</field>
+        <field name="model">meeting.building</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Building Name"/>
+                        <h1><field name="name" placeholder="e.g. Headquarters Tower"/></h1>
+                    </div>
+                    <group>
+                        <group string="Building Details">
+                            <field name="code"/>
+                            <field name="company_id"/>
+                            <field name="number_of_rooms" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Operating Schedule (UTC)">
+                            <field name="working_time_start" widget="float_time"/>
+                            <field name="working_time_end" widget="float_time"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Meeting Rooms">
+                            <field name="room_ids" context="{'active_test': False}">
+                                <tree editable="bottom" decoration-muted="not active">
+                                    <field name="code"/>
+                                    <field name="active"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 </odoo>
