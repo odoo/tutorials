@@ -1,0 +1,57 @@
+<odoo>
+    <record id="estate_property_maintenance_view_list" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.view.list</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="property_id" />
+                <field name="issue_type" />
+                <field name="description" />
+                <field name="priority" />
+                <field name="state" />
+                <field name="date" />
+                <field name="estimated_cost" />
+                <field name="actual_cost" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_maintenance_view_form" model="ir.ui.view">
+        <field name="name">estate.property.maintenance.view.form</field>
+        <field name="model">estate.property.maintenance</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_create_issue" type="object" string="Create Issue" class="btn-primary" invisible="state in ('assign','wip','complete')"/>
+                    <button name="action_inprogress_issue" type="object" string="In Progress" class="btn-primary" invisible="state != 'assign' "/>
+                    <button name="action_done_issue" type="object" string="Done" class="btn-primary" invisible="state != 'wip' " />
+                    <field name="state" widget="statusbar" />
+                </header>    
+                <sheet>
+                    <group>
+                        <field name="property_id" />
+                        <field name="issue_type" />
+                        <field name="description" />
+                        <field name="priority" />
+                        <field name="date" />
+                        <field name="estimated_cost" />
+                        <field name="actual_cost" />
+                    </group>
+                    <notebook>
+                        <page string="Assign">
+                            <group>
+                                <field name="technician" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_maintenance_action" model="ir.actions.act_window">
+        <field name="name">Property Maintenance</field>
+        <field name="res_model">estate.property.maintenance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
