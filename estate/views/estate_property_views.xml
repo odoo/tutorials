@@ -12,23 +12,12 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name" string="Title"/>
-                <!-- <field name="description"/> -->
                 <field name="postcode" string="Postcode"/>
-                
-                
-               
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living area (sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
-                <!-- <field name="facades"/> -->
-                <!-- <field name="garage"/> -->
-                  <field name="selling_price" string="Selling Price"/>
-                  <field name="date_availability" string="Available From"/>
-                <!-- <field name="garden"/> -->
-                <!-- <field name="garden_area"/> -->
-                <!-- <field name="garden_orientation"/> -->
-                <!-- <field name="active"/> -->
-                <!-- <field name="state"/> -->
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From"/>
             </list>
         </field>
     </record>
@@ -70,6 +59,15 @@
                             <field name="garden_area" string="Garden area (sqm)"/>
                             <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
+                        </page>
+                        <page string="offer">
+                            <field name="offer_ids">
+                                <list>
+                                <field name="price" string="Price"/>
+                                <field name="partner_id" string="partner"/>
+                                <field name="status" string="Status"/>
+                                </list>
+                            </field>
                         </page>
                         <page string="Other info">
                             <group>
