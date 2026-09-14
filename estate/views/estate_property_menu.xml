@@ -2,20 +2,26 @@
 <odoo>
     <menuitem id="estate_property_menu_root" name="Real Estate"/> 
     
-    <menuitem id="estate_menu_property"
+    <menuitem id="estate_menu_settings"
             parent="estate_property_menu_root"
             name="Settings"
-            sequence="10"
+            sequence="2"
     />
-   <menuitem id="estate_menu_settings" 
-            parent="estate_menu_property" 
+   <menuitem id="estate_menu_settings_type" 
+            parent="estate_menu_settings" 
             name="Property Type"
             action="estate_property_type_action"
     /> 
+    <menuitem id="estate_menu_settings_tag" 
+                parent="estate_menu_settings"
+                name="Property Tag"
+                action = "estate_property_tag_action"
+    />
+
     <menuitem id="estate_menu_advertisement" 
             parent="estate_property_menu_root" 
             name="Advertisement"
-            sequence="2"
+            sequence="1"
     />
     <menuitem id="estate_menu_properties" 
             parent="estate_menu_advertisement" 

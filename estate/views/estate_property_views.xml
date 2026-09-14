@@ -12,7 +12,7 @@
                         <field name="property_tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
-                        <group string="Pricing &amp; Availability">
+                        <group string="Pricing and Availability">
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="expected_price"/>
@@ -21,7 +21,7 @@
                             <field name="total_offers"/>
                             <field name="state"/>
                         </group>
-                        <group string="Property Specs">
+                        <group string="Property Specification">
                             <field name="bedrooms"/>
                             <field name="living_area" string="Living Area (m²)"/>
                             <field name="facades"/>
@@ -51,10 +51,12 @@
                         </page>
                         <page name="Offers">
                             <field name="offer_ids">
-                                <list editable="bottom">
-                                    <field name="price"/>
-                                    <field name="partner_id"/>
-                                    <field name="status"/>
+                                <list>
+                                    <field name="price" width="20%"/>
+                                    <field name="partner_id" width="20%" />
+                                    <field name="status" width="20%" />
+                                    <field name="validity_days" string="validity (Days)" width="20%"/>
+                                    <field name="deadline" width="20%" />
                                 </list>
                             </field>
                         </page>
