@@ -35,8 +35,8 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="set_sold" type="object" class="oe_highlight" string="Sold"/>
-                    <button name="set_cancelled" type="object" string="Cancel"/>
+                    <button name="set_sold" type="object" class="oe_highlight" string="Sold" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="set_cancelled" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
