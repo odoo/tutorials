@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_estate_property,access_estate_property,model_estate_property,base.group_user,1,1,1,1
+access_estate_property_type,access_estate_property_type,model_estate_property_type,base.group_user,1,1,1,1
+access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,base.group_user,1,1,1,1
+access_estate_property_offer,estate.property.offer,model_estate_property_offer,base.group_user,1,1,1,1
+access_estate_property_visit,estate.property.visit,model_estate_property_visit,base.group_user,1,1,1,1
+access_estate_property_booking,estate.property.booking,model_estate_property_booking,base.group_user,1,1,1,1
+access_estate_booking_wizard,estate.booking.wizard,model_estate_booking_wizard,base.group_user,1,1,1,1
+access_estate_payment,estate.payment,model_estate_payment,base.group_user,1,1,1,1

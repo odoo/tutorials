@@ -4,7 +4,6 @@ import logging
 import random
 
 from odoo import http
-from odoo.http import request
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +18,7 @@ class AwesomeDashboard(http.Controller):
             'nb_cancelled_orders': the number of cancelled orders, this month
             'nb_new_orders': the number of new orders, this month
             'total_amount': the total amount of orders, this month
+            'orders_by_size': the quantity of t-shirts sold for each size
         """
 
         return {
@@ -27,10 +27,11 @@ class AwesomeDashboard(http.Controller):
             'nb_cancelled_orders': random.randint(0, 50),
             'nb_new_orders': random.randint(10, 200),
             'orders_by_size': {
-                'm': random.randint(0, 150),
                 's': random.randint(0, 150),
+                'm': random.randint(0, 150),
+                'l': random.randint(0, 150),
                 'xl': random.randint(0, 150),
+                'xxl': random.randint(0, 150),
             },
             'total_amount': random.randint(100, 1000)
         }
-

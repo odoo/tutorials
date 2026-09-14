@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="seq_estate_payment" model="ir.sequence">
+        <field name="name">Estate Payment</field>
+        <field name="code">estate.payment.sequence</field>
+        <field name="prefix">PAY</field>
+        <field name="padding">5</field>
+    </record>
+
+</odoo>

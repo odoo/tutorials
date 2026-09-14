@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_estate_property_sold"
+            model="mail.template">
+            <field name="name">Estate: Property Sold</field>
+            <field name="model_id"
+                ref="estate.model_estate_property" />
+            <field name="subject">
+                Property {{ object.name }} has been sold
+            </field>
+            <field name="email_from">
+                {{ object.salesperson_id.email_formatted }}
+            </field>
+            <field name="partner_to">
+                {{ object.buyer_id.id }}
+            </field>
+            <field name="body_html" type="html">
+                <div>
+                    <p> Dear <t t-out="object.buyer_id.name" />, </p>
+
+                    <p>
+                        We are pleased to inform you that your property
+                        purchase has been successfully completed.
+                    </p>
+
+                    <p>
+                        <strong>Property:</strong>
+                        <t t-out="object.name" />
+                    </p>
+
+                    <p>
+                        <strong>Selling Price:</strong>
+                        <t t-out="object.selling_price" />
+                    </p>
+
+                    <p>
+                        <strong>Salesperson:</strong>
+                        <t t-out="object.salesperson_id.name" />
+                    </p>
+
+                    <p> The property is now officially marked as <strong>Sold</strong>. </p>
+
+                    <p>
+                        Thank you for choosing us.
+                    </p>
+                </div>
+            </field>
+
+        </record>
+    </data>
+</odoo>

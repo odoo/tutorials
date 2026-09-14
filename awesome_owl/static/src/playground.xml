@@ -1,10 +1,33 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+<t t-name="awesome_owl.playground">
+    <div class="container py-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+            <h3 class="mb-0">
+                Sum: <span class="badge bg-primary"><t t-esc="state.sum" /></span>
+            </h3>
+            <div class="d-flex gap-2">
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+            </div>
         </div>
-    </t>
 
-</templates>
+        <div class="row g-3">
+            <div class="col-12">
+                <Card title="'My Tasks'">
+                    <TodoList/>
+                </Card>
+            </div>
+            <div class="col-md-6">
+                <Card title="'Counter'">
+                    <Counter onChange.bind="incrementSum" />
+                </Card>
+            </div>
+            <div class="col-md-6">
+                <Card title="'Card with plain HTML'">
+                    <p class="mb-0">
+                        This card's body is arbitrary template content, not just a string!
+                    </p>
+                </Card>
+            </div>
+        </div>
+    </div>
+</t>
