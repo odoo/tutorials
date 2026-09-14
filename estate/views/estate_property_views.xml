@@ -29,8 +29,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Sold" name="action_sold" type="object" class="btn-primary"/>
-                    <button string="Cancel" name="action_cancel" type="object"/>
+                    <button string="Sold" name="action_sold" invisible= "state in ('canceled','sold')" type="object" class="btn-primary"/>
+                    <button string="Cancel" name="action_cancel" invisible="state in ('canceled','sold')" type="object"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -67,9 +67,7 @@
                             </group>
                         </page>
                         <page name="Offers" string="Offers">
-                            <group >
-                                <field name="offer_ids"/>
-                            </group>
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'canceled')"/>
                         </page>
                         <page string="Other Info">
                             <group >
