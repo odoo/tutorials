@@ -1,13 +1,6 @@
 from odoo import models, fields
 
 
-def in_3_month(_):
-    # Note something tell there is a more obvious way to do that...
-    # TODO: There is a date_utils with a relative delta inside odoo investigate it
-    today = fields.Date.today()
-    return today.replace(month=(today.month + 3 - 1) % 12 + 1)
-
-
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real estate property"
@@ -15,7 +8,7 @@ class Property(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=in_3_month)
+    date_availability = fields.Date(copy=False, default=lambda x: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(name=2, default=2)
