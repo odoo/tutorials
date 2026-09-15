@@ -21,8 +21,8 @@ class Property(models.Model):
         string="Garden Orientation",
             selection=[
                 ("north", "North"),
-                ("south", "South"), 
-                ("east", "East"), 
+                ("south", "South"),
+                ("east", "East"),
                 ("west", "West")
             ]
     )
