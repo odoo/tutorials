@@ -1,5 +1,7 @@
 {
     'name': 'Real Estate',
+    'author': 'macau',
+    'license': 'LGPL-3',
     "installable": True,
     "application": True,
     'depends': [
