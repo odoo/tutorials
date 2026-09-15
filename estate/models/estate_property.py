@@ -21,7 +21,7 @@ class Property(models.Model):
         string='Type',
         selection=[
             ('north', 'North'),
-            ('south', 'South'), 
+            ('south', 'South'),
             ('east', 'East'),
             ('west', 'West')
         ]
