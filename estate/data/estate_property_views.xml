@@ -11,6 +11,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name"/>
+                <field name="state"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -26,6 +27,14 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="state"/>
+                    </group>
                     <group>
                         <group>
                             <field name="postcode"/>
