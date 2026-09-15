@@ -1,8 +1,11 @@
 {
     'name': 'Real Estate',
-    'depends': [
-        'base'
-    ],
     "installable": True,
-    "application": True
+    "application": True,
+    'depends': [
+        'base',
+    ],
+    "data": [
+        "security/ir.model.access.csv",
+    ],
 }
