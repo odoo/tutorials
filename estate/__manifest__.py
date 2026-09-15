@@ -1,6 +1,6 @@
 {
     'name': 'Real Estate',
-    'author': 'coleo',
+    'author': 'Odoo S.A.',
     'license': 'LGPL-3',
     'depends': [
         'base',

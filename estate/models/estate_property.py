@@ -14,10 +14,15 @@ class Property(models.Model):
     bedrooms = fields.Integer()
     living_area = fields.Integer()
     facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
+    has_garage = fields.Boolean()
+    has_garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Type',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'), 
+            ('east', 'East'),
+            ('west', 'West')
+        ]
     )
