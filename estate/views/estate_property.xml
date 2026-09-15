@@ -35,8 +35,8 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="set_sold" type="object" class="oe_highlight" string="Sold" invisible="state in ('sold', 'cancelled')"/>
-                    <button name="set_cancelled" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="set_sold" type="object" class="oe_highlight" string="Sold" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="set_cancelled" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
@@ -70,14 +70,14 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
+                                <field name="garden_orientation" readonly="not garden" invisible="not garden"/>
+                                <field name="garden_area" readonly="not garden" invisible="not garden"/>
                                 <field name="living_area"/>
-                                <field name="garden_area" readonly="not garden"/>
                                 <field name="total_area"/>
-                                <field name="garden_orientation" readonly="not garden"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
