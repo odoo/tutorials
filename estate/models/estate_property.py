@@ -23,3 +23,4 @@ class Property(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation is used to define the orientation of the garden"
     )
+    a = fields.Text
