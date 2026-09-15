@@ -14,10 +14,10 @@ class Property(models.Model):
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
-    faces = fields.Integer()
+    faces = fields.Integer(string="Facade")
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         selection=(('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')))
     active = fields.Boolean(default=True)
