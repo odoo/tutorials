@@ -20,7 +20,7 @@ class Property(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=(('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')))
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
     state = fields.Selection(default='new', required=True,
                              selection=(('new', 'New'), ('offer_received', 'Offer Received'),
                                         ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
