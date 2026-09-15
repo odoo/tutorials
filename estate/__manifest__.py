@@ -1,5 +1,9 @@
 {
     'name': 'Real Estate',
-    'depends': ['base'],
-    'application': True
+    'author': 'aalon-odoo',
+    'depends': [
+        'base'
+    ],
+    'application': True,
+    'license': 'LGPL-3',
 }
