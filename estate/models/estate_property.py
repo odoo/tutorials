@@ -16,10 +16,12 @@ class EstatePropertyModel(models.Model):
     facades = fields.Integer()
     has_garage = fields.Boolean()
     has_garden = fields.Boolean()
-    garden_orientation= fields.Selection(string='Type',
-                                        selection=[('east', 'East'),
-                                                    ('west', 'West'),
-                                                    ('north', 'North'),
-                                                    ('south', 'South')
-                                                    ]
-                                        )
+    garden_orientation = fields.Selection(
+        string='Type',
+        selection=[
+           ('east', 'East'),
+           ('west', 'West'),
+           ('north', 'North'),
+           ('south', 'South'),
+         ]
+      )
