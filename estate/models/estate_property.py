@@ -7,9 +7,9 @@ class Property(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Text()
-    date_availability = fields.Date()
+    date_availability = fields.Date(copy=False)
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
+    selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer()
     living_area = fields.Integer()
     facades = fields.Integer()
