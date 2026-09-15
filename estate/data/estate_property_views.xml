@@ -45,7 +45,8 @@
                                     <field name="bedrooms"/>
                                     <field name="living_area"/>
                                     <field name="faces"/>
-                                    <field name="garage"/>
+                                    <field name="has_garage"/>
+                                    <field name="has_garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                 </group>
@@ -57,5 +58,4 @@
 
         </field>
     </record>
-
 </odoo>

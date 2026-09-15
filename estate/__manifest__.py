@@ -7,6 +7,6 @@
         'data/estate_property_views.xml',
         'data/estate_menus.xml'
     ],
-    'author': "Olivier Le Thanh Duong",
+    'author': "Odoo S.A.",
     'license': 'AGPL-3'
 }
