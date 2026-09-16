@@ -1,11 +1,12 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_utils
 
 
 class EstateProperties(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties"
+    _order = "id desc"
 
     active = fields.Boolean(default=True)
     bedrooms = fields.Integer(default=2)
@@ -108,7 +109,7 @@ class EstateProperties(models.Model):
                 )
                 < 0
             ):
-                raise UserError(
+                raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
 

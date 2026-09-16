@@ -34,8 +34,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="btn-primary"/>
-                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"/>
+                    <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state == 'canceled' or state == 'sold'"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state == 'sold' or state == 'canceled'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
@@ -44,14 +44,14 @@
                             <field name="name"/>
                         </h1>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
                     </div>                    
                     <group>  
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': True,'no_edit': True}"/>
                             <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="date_availability" optional="hide"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -68,21 +68,21 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="active"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list editable="bottom">
+                            <field name="offer_ids" readOnly="state in ['canceled','sold','offer_accepted']">
+                                <list editable="bottom" decoration-success="status == 'offer_received' or status == 'accepted'" decoration-danger="status == 'refused'" text-bf="status == 'accepted'">
                                     <field name="price" default="0"/>
                                     <field name="partner_id" default="0"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
-                                    <button name="action_accept" type="object" icon="fa-check" title="Accept"/>
-                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse"/>
+                                    <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status == 'accepted' or status == 'refused'"/>
+                                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status == 'refused' or status == 'accepted'"/>
                                     <field name="status"/>
                                 </list>
                             </field>
@@ -110,7 +110,7 @@
                     <field name="postcode"/>
                     <field name="expected_price"/>
                     <field name="bedrooms"/>
-                    <field name="living_area"/>
+                    <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                     <field name="facades"/>
                     <filter
                         string="Available"

@@ -4,6 +4,7 @@
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
     <!-- List View -->
@@ -17,6 +18,7 @@
                 <field name="status"/>
                 <field name="partner_id"/>
                 <field name="property_id"/>
+                <field name="property_type_id"/>
             </list>
         </field>
     </record>

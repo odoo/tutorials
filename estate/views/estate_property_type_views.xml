@@ -14,10 +14,11 @@
             <form>
                 <sheet>
                     <header>
-                        <h1>
+                    <button class="oe_stat_button" type="action" name="%(estate_property_offer_action)d" context="{'active_id': id}" icon="fa-money" title="Property Offers"/>  
+                    </header>
+                     <h1>
                             <field name="name"/>
                         </h1>
-                    </header>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
@@ -41,6 +42,9 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="offer_count" string="Number of Offers" readonly="1"/>
+                <field name="offer_ids"/>               
+                <field name="sequence" widget="handle"/>
             </list>
         </field>
     </record>

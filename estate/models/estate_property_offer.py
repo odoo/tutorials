@@ -4,6 +4,7 @@ from odoo import models, fields, api
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     date_deadline = fields.Date(
         string="Deadline",
@@ -17,6 +18,9 @@ class EstatePropertyOffer(models.Model):
         selection=[("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
     validity = fields.Integer(string="Validity (days)", default=7)
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", store=True
+    )
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -38,10 +42,13 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer = record.partner_id
-            record.property_id.state = "offer accepted"
+            record.property_id.state = "offer_accepted"
 
             other_offers = self.env["estate.property.offer"].search(
-                [("property_id", "=", record.property_id.id), ("id", "!=", record.id)]
+                [
+                    ("property_id", "=", record.property_id.id),
+                    ("id", "!=", record.id),
+                ]
             )
 
             other_offers.write({"status": "refused"})
