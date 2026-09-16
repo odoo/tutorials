@@ -2,15 +2,18 @@ from odoo import fields, models
 
 
 class Property(models.Model):
-    _name = "estate.property"
-    _description = "Estate property"
+    _name = 'estate.property'
+    _description = 'Estate property'
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, 
-        default=fields.Date.add(fields.Date.today(), months=3)
+        copy=False,
+        default=lambda self: fields.Date.add(
+            fields.Date.today(),
+            months=3
+        )
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(
@@ -42,7 +45,7 @@ class Property(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
-        default="new",
+        default='new',
         required=True,
         copy=False
     )
