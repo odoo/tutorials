@@ -40,6 +40,12 @@
                         type="object"
                         string="Cancel"
                     />
+                    <field 
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold"
+                        options="{'clickable': 1}"
+                    />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -48,7 +54,6 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="state"/>
                         <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
