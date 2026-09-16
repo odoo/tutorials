@@ -46,5 +46,5 @@ class PropertyOffer(models.Model):
 
     def _compute_validity(self):
         crdate = self.create_date or fields.Date.today()
-        delta = self.date_deadline - crdate.date()
+        delta = self.date_deadline - crdate
         return delta.days
