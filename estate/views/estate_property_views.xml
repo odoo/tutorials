@@ -55,26 +55,12 @@
                         <page string="Description">
                             <group>
                                 <field name="description" string="Description"/>
-                            </group>
-                            <group>
                                 <field name="bedrooms" string="Bedrooms"/>
-                            </group>
-                            <group>
                                 <field name="living_area" string="Living Area (sqm)"/>
-                            </group>
-                            <group>
                                 <field name="facades" string="Facades"/>
-                            </group>
-                            <group>
-                                <field name="garage" string="Garage"/>
-                            </group>
-                            <group>
-                                <field name="garden" string="Garden"/>
-                            </group>
-                            <group>
+                                <field name="has_garage" string="Garage"/>
+                                <field name="has_garden" string="Garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
-                            </group>
-                            <group>
                                 <field name="garden_orientation" string="Garden Orientation"/>
                                 <field name="state" string="State"/>
                             </group>
@@ -108,8 +94,7 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades" string="Facades"/>
                 <separator/>
-                <filter string="Available" name="active" domain="['|', ('state', '=', 'new'),
-                                                                        ('state', '=', 'offer_received')]"/>
+                <filter name="active" string="Available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <separator/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
