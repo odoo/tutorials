@@ -22,4 +22,5 @@ class EstateProperty(models.Model):
     garden_orientation: fields.Selection = fields.Selection(
         selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
         string='Type',
-        help="Type is used to separate Leads and Opportunities")
+        help="Type is used to separate Leads and Opportunities",
+    )
