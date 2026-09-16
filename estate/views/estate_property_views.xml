@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
+    <record id="estate_action_to_properties" model="ir.actions.act_window">
         <field name="name">Properties</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_view_list" model="ir.ui.view">
+    <record id="estate_view_properties_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" string="Title" />
@@ -24,20 +24,31 @@
         </field>
     </record>
 
-    <record id="estate_property_view_form" model="ir.ui.view">
+    <record id="estate_view_properties_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="sold_property" type="object" string="Sold" />
+                    <button name="cancel_property" type="object" string="Cancel" />
+                </header>
                 <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button name="action_view_offers" type="object" class="oe_stat_button" icon="fa-usd">
+                            <field name="offers" widget="statinfo" string="Offers" />
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" />
                         </h1>
                     </div>
                     <field name="tags" widget="many2many_tags" />
+                    <separator />
                     <group>
                         <group>
+                            <field name="state" />
                             <field name="property_type" />
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From" />
@@ -77,9 +88,9 @@
         </field>
     </record>
 
-    <record id="estate_property_view_search" model="ir.ui.view">
+    <record id="estate_search_properties" model="ir.ui.view">
         <field name="name">estate.property.search</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties Search">
                 <field name="name" string="Title" />

@@ -1,6 +1,6 @@
 {
     'name': 'Real Estate',
-    'author': 'macau',
+    'author': 'Odoo S.A.',
     'license': 'LGPL-3',
     "installable": True,
     "application": True,
