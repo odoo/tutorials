@@ -1,5 +1,21 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_model_view_list" model="ir.ui.view">
+        <field name="name">estate_property.list</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
+            </list>
+        </field>
+    </record>
+    
     <record id="estate_property_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
