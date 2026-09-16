@@ -15,11 +15,10 @@ class EstateProperty(models.Model):
     bedroom: fields.Integer = fields.Integer()
     living_area: fields.Integer = fields.Integer()
     facades: fields.Integer = fields.Integer()
-    garage: fields.Boolean = fields.Boolean()
     garden: fields.Boolean = fields.Boolean()
     garden_area: fields.Integer = fields.Integer()
-    garden_orientation: fields.Selection(
+    garage: fields.Boolean = fields.Boolean()
+    garden_orientation: fields.Selection = fields.Selection(
+        selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
         string='Type',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Type is used to separate Leads and Opportunities")
-
