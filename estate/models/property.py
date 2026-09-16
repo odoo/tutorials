@@ -27,12 +27,16 @@ class Property(models.Model):
         ]
     )
     active = fields.Boolean(default=True)
-    state = fields.Selection(default='new', required=True, copy=False,
-                             selection=[
-                                 ('new', "New"),
-                                 ('offer_received', "Offer Received"),
-                                 ('offer_accepted', "Offer Accepted"),
-                                 ('sold', "Sold"),
-                                 ('cancelled', "Cancelled")
-                             ]
-                            )
+    state = fields.Selection(
+        default='new',
+        required=True,
+        copy=False,
+        selection=[
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled")
+        ]
+    )
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
