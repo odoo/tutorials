@@ -11,7 +11,7 @@ tutorial's solutions. For example, `17.0`, `17.0-discover-js-framework-solutions
 `17.0-master-odoo-web-framework-solutions`.
 
 
-./odoo-bin --addons-path="addons/,../enterprise/,../tutorials" -d rd-demo -u estate
+./odoo-bin --addons-path="addons/,../enterprise/,../tutorials" -d rd-demo -u estate --dev xml
 
 dropdb rd-demo
 createdb rd-demo
