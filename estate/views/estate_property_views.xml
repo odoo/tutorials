@@ -46,7 +46,6 @@
                         <group>
                             <field name="selling_price"/>
                             <field name="expected_price"/>
-
                         </group>
                     </group>
                     <notebook>
@@ -64,6 +63,9 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <group>
@@ -72,10 +74,10 @@
                                 </group>
                             </group>
                         </page>
+
                     </notebook>
                 </sheet>
             </form>
-
         </field>
     </record>
     <record id="estate_property_view_search" model="ir.ui.view">
