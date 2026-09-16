@@ -10,7 +10,7 @@ class Property(models.Model):
     _description = "Real Estate Property"
 
     name = fields.Char("Property Name", required=True)
-    descritpion = fields.Text("Property Description")
+    description = fields.Text("Property Description")
     postcode = fields.Char("Postcode")
 
     date_availability = fields.Date("Available Date", copy=False, default=lambda _x: datetime.now() + relativedelta(months=+3))
