@@ -14,6 +14,7 @@
             <list>
                 <field name="name" string="Title"/>
                 <field name="postcode" string="Postcode"/>
+                <field name="tag_ids" string="Tags" widget="many2many_tags"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
@@ -32,9 +33,13 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <h2>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </h2>
                     <div class="row align-items-start">
                         <div class="col">
                             <group>
+                                <field name="property_type_id"/>
                                 <field name="postcode" string="Postcode"/>
                                 <field name="date_availability" string="Available From"/>
                             </group>
@@ -72,6 +77,17 @@
                             <group>
                                 <field name="garden_orientation" string="Garden Orientation"/>
                                 <field name="state" string="State"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <list>
+                                <field name="offer_ids"/>
+                            </list>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
