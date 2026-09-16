@@ -28,15 +28,21 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel" />
+                    <button name="action_sold" type="object" string="Sold" />
+                </header>
                 <sheet>
                     <div class="mb32">
                         <h1>
                             <field name="name" />
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" string="Tags" />
+                        <group>Tags: <field name="tag_ids" widget="many2many_tags" string="Tags" />
+                        </group>
                     </div>
                     <group>
                         <group>
+                            <field name="state" />
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
@@ -124,7 +130,8 @@
                 <field name="status" />
                 <field name="date_deadline" />
                 <field name="validity" />
-
+                <button name="action_accept" type="object" string="Accept" icon="fa-check" />
+                <button name="action_refuse" type="object" string="Refuse" icon="fa-times" />
             </list>
         </field>
     </record>

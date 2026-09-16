@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -48,3 +49,31 @@ class PropertyOffer(models.Model):
         crdate = self.create_date or fields.Date.today()
         delta = self.date_deadline - crdate
         return delta.days
+
+    def action_accept(self):
+        # prevent accepting multiple offers
+        if len(self) > 1:
+            msg = "Only one offer can be accepted at a time"
+            raise UserError(msg)
+
+        # no need to process an already accepted offer
+        if self.status == "accepted":
+            return True
+
+        # ensure no other offer is already accepted
+        accepted_offers = [
+            offer for offer in self.property_id.offer_ids if offer.status == "accepted"
+        ]
+        if len(accepted_offers) > 0:
+            msg = "Another offer was already accepted"
+            raise UserError(msg)
+
+        self.status = "accepted"
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
+        return True
