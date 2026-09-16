@@ -30,3 +30,16 @@ class Property(models.Model):
         help="The garden orientation",
     )
     active = fields.Boolean("Active", default=True)
+    state = fields.Selection(
+        string="State",
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        copy=False,
+        required=True,
+        default="new",
+    )
