@@ -8,10 +8,10 @@ class EstateProperty(models.Model):
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Availability Date')
+    date_availability = fields.Date('Availability Date', copy=False, default=lambda self: fields.Date.add(fields.Date.today(), days=90))
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price')
-    bedrooms = fields.Integer('Number of Bedrooms')
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Number of Bedrooms', default=2)
     living_area = fields.Integer('Living Area')
     facades = fields.Integer('Number of Facades')
     garage = fields.Boolean('is Garage')
@@ -24,4 +24,18 @@ class EstateProperty(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West")],
+    )
+    active = fields.Boolean("Active", default=True)
+    state = fields.Selection(
+        string='State',
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled")
+        ],
+        default="new",
+        required=True,
+        copy=False,
     )
