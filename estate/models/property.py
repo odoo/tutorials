@@ -59,3 +59,13 @@ class Property(models.Model):
         for record in self:
             # TODO: We should filter out rejected offers
             record.best_price = max(record.offer_ids.mapped("price"))
+
+
+    @api.onchange('has_garden')
+    def _onchange_has_garden(self):
+        if self.has_garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
