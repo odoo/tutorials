@@ -1,11 +1,11 @@
 {
-    'name' : "Real Estate",
-    'depends' : ["base"],
+    'name': "Real Estate",
+    'depends': ["base"],
     'application': True,
     'installable': True,
     'author': 'mialm',
     'license': 'LGPL-3',
-    'data' : [
+    'data': [
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/estate_menus.xml"
