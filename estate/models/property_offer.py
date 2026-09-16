@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class PropertyOffer(models.Model):
@@ -28,3 +28,19 @@ class PropertyOffer(models.Model):
         for record in self:
             base_date = fields.Date.to_date(record.create_date) if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - base_date).days
+
+    def action_accept(self):
+        for record in self:
+            if record.property_id.state in ('offer_accepted', 'sold', 'cancelled'):
+                err_msg = f"Cannot accept offer on property that is {record.property_id.state}"
+                raise exceptions.UserError(err_msg)
+            record.status = record.status = 'accepted'
+            record.property_id.buyer_id = self.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+        return True
