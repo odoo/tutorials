@@ -40,6 +40,14 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
         return True
     
+    def action_reset(self):
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.buyer_id = None
+                record.property_id.selling_price = 0
+            record.status = None
+        return True
+    
     def action_refuse(self):
         for record in self:
             if record.status == "accepted":
@@ -47,4 +55,8 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = 0
             record.status = "refused"
         return True
-    
+
+    _positive_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer prices should be strictly positive.',
+    )

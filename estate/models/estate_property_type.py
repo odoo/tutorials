@@ -8,4 +8,7 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(required=True)
 
-
+    _name_uniq = models.Constraint(
+        'unique(name)',
+        'The nae must be unique.',
+    )

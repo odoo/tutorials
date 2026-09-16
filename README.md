@@ -19,4 +19,3 @@ psql -d rd-demo
 
 
 lsof -i :8069
-
