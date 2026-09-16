@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -60,7 +61,6 @@ class Property(models.Model):
             # TODO: We should filter out rejected offers
             record.best_price = max(record.offer_ids.mapped("price"))
 
-
     @api.onchange('has_garden')
     def _onchange_has_garden(self):
         if self.has_garden:
@@ -69,3 +69,19 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_do_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError('Canceled property cannot be sold')
+            else:
+                record.state = 'sold'
+        return True
+
+
+    def action_do_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('Sold property cannot be canceled')
+            else:
+                record.state = 'cancelled'
