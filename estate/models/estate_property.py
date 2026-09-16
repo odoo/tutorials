@@ -29,3 +29,4 @@ class Property(models.Model):
         ],
         help="The garden orientation",
     )
+    active = fields.Boolean("Active", default=True)
