@@ -8,5 +8,8 @@
     'data': [
         'security/ir.model.access.csv',
         # 'security/security.xml',
+
+        'views/estate_menus.xml',
+        'views/estate_property_views.xml',
     ]
 }
