@@ -1,5 +1,6 @@
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
@@ -58,8 +59,10 @@ class Property(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            # TODO: We should filter out rejected offers
-            record.best_price = max(record.offer_ids.mapped("price"))
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = None
 
     @api.onchange('has_garden')
     def _onchange_has_garden(self):
@@ -78,10 +81,26 @@ class Property(models.Model):
                 record.state = 'sold'
         return True
 
-
     def action_do_cancel(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError('Sold property cannot be canceled')
             else:
                 record.state = 'cancelled'
+
+    # Constraints
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be strictly positive',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'Expected price must be positive',
+    )
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_expected_price_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.expected_price * 0.90, record.selling_price, precision_digits=2) == 1:
+                    raise ValidationError("Selling price must be above 90% of expected price")
