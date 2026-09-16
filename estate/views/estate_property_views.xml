@@ -4,7 +4,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,search</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -22,4 +22,85 @@
             </list>
         </field>
     </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.properties.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Properties">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <div class="row align-items-start">
+                        <div class="col">
+                            <group>
+                                <field name="postcode" string="Postcode"/>
+                                <field name="date_availability" string="Available From"/>
+                            </group>
+                        </div>
+                        <div class="col">
+                            <group>
+                                <field name="expected_price" string="Expected Price"/>
+                                <field name="selling_price" string="Selling Price"/>
+                            </group>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" string="Description"/>
+                            </group>
+                            <group>
+                                <field name="bedrooms" string="Bedrooms"/>
+                            </group>
+                            <group>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                            </group>
+                            <group>
+                                <field name="facades" string="Facades"/>
+                            </group>
+                            <group>
+                                <field name="garage" string="Garage"/>
+                            </group>
+                            <group>
+                                <field name="garden" string="Garden"/>
+                            </group>
+                            <group>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                            </group>
+                            <group>
+                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="state" string="State"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.properties.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Properties">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="facades" string="Facades"/>
+                <separator/>
+                <filter string="Available" name="active" domain="['|', ('state', '=', 'new'),
+                                                                        ('state', '=', 'offer_received')]"/>
+                <separator/>
+                <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
 </odoo>
