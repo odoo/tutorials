@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_payment_list_view" model="ir.ui.view">
+        <field name="name">estate.property.payment.list</field>
+        <field name="model">estate.property.payment</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="booking_id"/>
+                <field name="payment_date"/>
+                <field name="payment_type"/>
+                <field name="amount"/>
+            </list>
+        </field>
+    </record>
+    <record id="estate_property_payment_form_view" model="ir.ui.view">
+        <field name="name">estate.property.payment.form</field>
+        <field name="model">estate.property.payment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="booking_id"/>
+                            <field name="payment_date"/>
+                        </group>
+                        <group>
+                            <field name="payment_type"/>
+                            <field name="amount"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

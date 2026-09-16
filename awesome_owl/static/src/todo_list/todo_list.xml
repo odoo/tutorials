@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <div>
+            <!-- t-ref="input" gives the input a reference name: HTML input -> t-ref="input" -> "input" is the name of the reference -->
+            <input t-ref="input" placeholder="Enter a new task" t-on-keyup="addTodo"/>
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <!-- toggleState.bind -> toggleState means prop name that TodoItem receives. -->
+                <!-- rightside toggleState means method in TodoList -->
+                <!-- Give the TodoItem a prop called toggleState, using the TodoList's toggleState method. -->
+                <TodoItem todo="todo"
+                    toggleState.bind="toggleState"
+                    removeTodo.bind="removeTodo"/>
+            </t>
+        </div>
+    </t>
+</templates>

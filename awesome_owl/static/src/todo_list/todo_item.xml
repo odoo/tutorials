@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_item">
+        <div
+            t-att-class="{
+                'text-muted': props.todo.isCompleted,
+                'text-decoration-line-through': props.todo.isCompleted
+            }">
+            <!-- t-att-checked="props.todo.isCompleted" means calculate the checked HTML attribute from isCompleted. -->
+            <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="toggleState"/>
+            <span class="ms-2">
+                <t t-esc="props.todo.description"/>
+            </span>
+            <span class="fa fa-remove ms-2 text-danger" t-on-click="removeTodo"/>
+        </div>
+    </t>
+</templates>
