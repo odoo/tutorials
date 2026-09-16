@@ -12,6 +12,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" />
+                <field name="property_type_id" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
@@ -23,7 +24,7 @@
     </record>
 
     <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
@@ -32,9 +33,11 @@
                         <h1>
                             <field name="name" />
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags" string="Tags" />
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -58,6 +61,15 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -75,6 +87,7 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+                <field name="property_type_id" />
                 <!-- Filters -->
                 <filter string="Available as of today" name="available_as_of_today"
                     domain="[('date_availability','&lt;','today')]" />
@@ -84,6 +97,49 @@
                 <!-- Group by -->
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
             </search>
+        </field>
+    </record>
+
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="status" />
+            </list>
+        </field>
+    </record>
+
+
+    <record id="estate_property_offer_form_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="price" />
+                            <field name="partner_id" />
+                            <field name="status" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>
