@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class EstatePropertyOffer(models.Model):
@@ -9,8 +9,9 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float()
     status = fields.Selection(
         string="Status",
-        selection=[("accepted", "Accepted"), ("refused", "Refused"), ("pending", "Pending")],
+        selection=[("accepted", "Accepted"), ("refused", "Refused")],
         copy=False,
+        readonly=True,
     )
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
@@ -27,3 +28,23 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
+
+    def action_accept(self):
+        for record in self:
+            for other_offer in record.property_id.offer_ids:
+                if other_offer.status == "accepted" :
+                    other_offer.status = None
+                    Warning("An other offer acceptation was cancelled : only one offer can be accepted at a time !")
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+        return True
+    
+    def action_refuse(self):
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.buyer_id = None
+                record.property_id.selling_price = 0
+            record.status = "refused"
+        return True
+    
