@@ -6,4 +6,3 @@ class EstatePropertyTag(models.Model):
     _description = "Tag for estate property"
 
     name = fields.Char(required=True)
-    

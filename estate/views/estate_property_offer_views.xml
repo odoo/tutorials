@@ -5,9 +5,9 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list>
-                <field name="price" string="Price"/>
-                <field name="partner_id" string="Partner"/>
-                <field name="status" string="Status"/>
+                <field name="price" string="Price" />
+                <field name="partner_id" string="Partner" />
+                <field name="status" string="Status" />
 
             </list>
         </field>

@@ -13,7 +13,7 @@
             <form string="New property type">
                 <sheet>
                     <h1>
-                        <field name="name" placeholder="House"/>
+                        <field name="name" placeholder="House" />
                     </h1>
                 </sheet>
             </form>
