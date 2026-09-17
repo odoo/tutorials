@@ -54,12 +54,14 @@
                                     <field name="facades"/>
                                     <field name="has_garage"/>
                                     <field name="has_garden"/>
-                                    <field name="garden_area" string="Garden Area (sqm)" invisible="not has_garden"/>
-                                    <field name="garden_orientation" invisible="not has_garden"/>
+                                    <field name="garden_area" string="Garden Area (sqm)"/>
+                                    <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                 </group>
                                 <group>
                                     <field name="property_type_id"/>
                                     <field name="property_tags_ids" widget="many2many_tags"/>
+                                    <field name="best_price"/>
                                 </group>
                             </group>
                         </page>
