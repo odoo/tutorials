@@ -54,6 +54,7 @@
                                 <field name="garden_area"> </field>
                                 <field name="garden_orientation"> </field>
                                 <field name="property_type_id"> </field>
+                                <field name="total_area"> </field>
                             </group>
                         </page>
                         <page string="Offers">
