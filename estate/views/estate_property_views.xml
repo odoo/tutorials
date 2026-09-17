@@ -30,6 +30,10 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_sell_property" type="object" string="Sold" class="btn-primary" invisible="state in ('sold','cancelled')"/>
+                    <button name="action_cancel_property" type="object" string="Cancel" class="btn-secondary" invisible="state in ('sold','cancelled')"/>
+                </header>
                 <sheet>
                     <h1><field name="name"></field></h1>
                     <group>
@@ -74,6 +78,7 @@
                             <group>
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
+                                <field name="state"/>
                             </group>
                         </page>
                     </notebook>

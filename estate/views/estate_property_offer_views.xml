@@ -9,6 +9,8 @@
                 <field string="Buyer" name="partner_id"/>
                 <field string="Price" name="price"/>
                 <field string="Status" name="status"/>
+                <button name="action_accept_offer" string="Accept" type="object" icon="fa-check" invisible="status in ('accepted','refused')"/>
+                <button name="action_refuse_offer" string="Refuse" type="object" icon="fa-times" invisible="status in ('accepted','refused')"/>
             </list>
         </field>
     </record>
