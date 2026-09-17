@@ -1,11 +1,9 @@
-from odoo import fields, models
-import traceback
+from odoo import api, fields, models
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
-    traceback.print_stack()
     _name = "estate.property"
     _description = "Real Estate Property"
 
@@ -44,9 +42,33 @@ class EstateProperty(models.Model):
         default="New",
     )
 
+    property_type_id = fields.Many2one("estate.property.type")
     buyer = fields.Many2one("res.partner", copy=False)
     salesperson = fields.Many2one("res.users", default=lambda self: self.env.user)
 
     tag_id = fields.Many2many("estate.property.tag")
 
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+
+    total_area = fields.Integer(compute="_compute_total_area")
+
+    best_price = fields.Integer(compute="_compute_max_offer")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_max_offer(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
