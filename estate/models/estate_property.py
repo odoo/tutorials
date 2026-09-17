@@ -20,9 +20,9 @@ class Property(models.Model):
         string = 'Garden Orientation',
         selection=[
         ('north', 'North'), 
-        ('south','South'),
-        ('east','East'),
-        ('west','West')
+        ('south', 'South'),
+        ('east', 'East'),
+        ('west', 'West')
         ]
     )
     active = fields.Boolean('Active', default=True)
@@ -40,11 +40,12 @@ class Property(models.Model):
         default='new'
     )
 
-    salesperson = fields.Many2one('res.users', string='Salesperson', index=True, tracking=True, default= lambda self: self.env.user)
+    salesperson = fields.Many2one('res.users', string='Salesperson', index=True, tracking=True, default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
 
     tag_ids = fields.Many2many('estate_property.tag', string='Tags')
 
     offer_ids = fields.One2many('estate_property.offer', 'property_id', string='Offer')
+
 
 
