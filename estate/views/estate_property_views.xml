@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate action</field>
+        <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -51,6 +51,7 @@
                                 <field name="garden"> </field>
                                 <field name="garden_area"> </field>
                                 <field name="garden_orientation"> </field>
+                                <field name="property_type_id"> </field>
                             </group>
                         </page>
                     </notebook>
@@ -70,6 +71,7 @@
                 <field name="expected_price"/>
                 <field name="bedroom"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 <filter name="postcode" context="{'group_by':'postcode'}"/>
                 <filter name="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
             </search>
