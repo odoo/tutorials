@@ -26,4 +26,4 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         [(word.lower(), word) for word in ["New", "Offer Received", "Offer Accepted", "Sold", "Cancelled"]],
         copy=False,
-        default="New")
+        default=("new", "New"))
