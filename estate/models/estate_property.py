@@ -1,19 +1,21 @@
-
+from copy import copy
+from typing import override
 
 from odoo import fields, models
-
+from odoo.tools import date_utils
 
 class EstateProperty(models.Model):
     _name: str = "estate.property"
-
+    _active = True
     _description: str | None = None
+
     name: fields.Char = fields.Char()
     description: fields.Text = fields.Text()
     postcode: fields.Char = fields.Char()
-    date_availability: fields.Date = fields.Date('Creation Date')
+    date_availability: fields.Date = fields.Date('Availability Date', copy=False, default=date_utils.add(fields.Date.today(), months=3))
     expected_price: fields.Float = fields.Float()
-    selling_price: fields.Float = fields.Float()
-    bedroom: fields.Integer = fields.Integer()
+    selling_price: fields.Float = fields.Float(readonly=True, copy=False)
+    bedroom: fields.Integer = fields.Integer(default=2)
     living_area: fields.Integer = fields.Integer()
     facades: fields.Integer = fields.Integer()
     garden: fields.Boolean = fields.Boolean()
@@ -23,3 +25,7 @@ class EstateProperty(models.Model):
         selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
         string='Type',
         help="Type is used to separate Leads and Opportunities")
+    state = fields.Selection(
+        [(word.lower(), word) for word in ["New", "Offer Received", "Offer Accepted", "Sold", "Cancelled"]],
+        copy=False,
+        default="New")
