@@ -31,6 +31,8 @@
                             <field name="status"/>
                             <field name="partner_id"/>
                             <field name="property_id"/>
+                            <field name="date_deadline"/>
+                            <field name="validity"/>                            
                         </group>
                     </group>
                 </sheet>
