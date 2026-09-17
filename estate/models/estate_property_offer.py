@@ -16,6 +16,12 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', required=True, string='Partner')
     property_id = fields.Many2one('estate.property', required=True)
 
+#   Constraints:
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price should be stricty positive'
+    )
+
 #   computed fields
 
     @api.depends('validity', 'create_date')
@@ -32,11 +38,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_property_offer(self):
         for record in self:
-            try:
-                for properties in record.property_id:
-                    properties.action_set_selling_offer(record.partner_id, record.price)
-            except UserError as ue:
-                raise ue
+            for properties in record.property_id:
+                properties.action_set_selling_offer(record.partner_id, record.price)
             record.status = 'accepted'
             return True
         return True

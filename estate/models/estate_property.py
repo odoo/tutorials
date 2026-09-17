@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools import float_is_zero
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -54,6 +56,26 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     best_price = fields.Float(compute='_compute_best_price', string='Best Offer')
 
+#   Constraints:
+#   SQL:
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price should be stricly positive.'
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The proporty selling price should be stricly positive.'
+    )
+
+#   Python:
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 2):
+                if float_compare(record.selling_price, record.expected_price, 2) == -1:
+                    raise UserError('The Selling Price must be at least 90% of the Expected Price,'
+                                    ' you must change the expected price to accepted this offer')
+
 #   Computation Fields:
 
     @api.depends('living_area', 'garden_area')
@@ -89,7 +111,6 @@ class EstateProperty(models.Model):
             return True
         return True
 
-
     def action_sell_property_state(self):
         for record in self:
             if record.state == 'sold':
@@ -109,3 +130,5 @@ class EstateProperty(models.Model):
             record.selling_price = price
             return True
         return True
+
+
