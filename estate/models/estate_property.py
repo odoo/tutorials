@@ -57,6 +57,7 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
+#       QUESTION is the for each loop here necessary ? or can I just use self ?
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
@@ -67,3 +68,12 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0.
+
+    @api.onchange('has_garden')
+    def _onchange_has_garden(self):
+        if self.has_garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
