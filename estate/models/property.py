@@ -51,13 +51,22 @@ class Property(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+
+    # Constraints
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "Expected price must be strictly positive",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "Expected price must be positive",
+    )
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
-
-    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -66,6 +75,13 @@ class Property(models.Model):
                 record.best_price = max(record.offer_ids.mapped("price"))
             else:
                 record.best_price = None
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_expected_price_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.expected_price * 0.90, record.selling_price, precision_digits=2) == 1:
+                    raise ValidationError("Selling price must be above 90% of expected price")
 
     @api.onchange("has_garden")
     def _onchange_has_garden(self):
@@ -90,20 +106,3 @@ class Property(models.Model):
                 raise UserError("Sold property cannot be canceled")
             else:
                 record.state = "cancelled"
-
-    # Constraints
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "Expected price must be strictly positive",
-    )
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "Expected price must be positive",
-    )
-
-    @api.constrains("expected_price", "selling_price")
-    def _check_expected_price_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2):
-                if float_compare(record.expected_price * 0.90, record.selling_price, precision_digits=2) == 1:
-                    raise ValidationError("Selling price must be above 90% of expected price")
