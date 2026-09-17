@@ -13,6 +13,7 @@ class Property(models.Model):
         default=lambda self: fields.Date.add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float(required=True)
+    best_price = fields.Float(compute="_find_best_price")
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer("Living Area (sqm)")
@@ -55,3 +56,11 @@ class Property(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _find_best_price(self):
+        for record in self:
+            if not record.offer_ids:
+                record.best_price = 0
+            else:
+                record.best_price = max(record.offer_ids.mapped("price"))
