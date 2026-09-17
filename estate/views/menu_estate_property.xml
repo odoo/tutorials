@@ -1,0 +1,10 @@
+<odoo>
+    <menuitem id="estate_test_menu_root" name="Real Estate">
+        <menuitem id="test_first_level_menu" name="Estate Properties">
+            <menuitem id="estate_menu_item" name="List view" action="estate_property_action" />
+        </menuitem>
+        <menuitem id="settings_top_menu" name="Settings">
+            <menuitem id="property_type_menu_action" name="Property Types" action="estate_property_type_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
