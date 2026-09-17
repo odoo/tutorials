@@ -1,0 +1,448 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* meeting_schedule
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-16 07:35+0000\n"
+"PO-Revision-Date: 2026-09-16 07:35+0000\n"
+"Last-Translator: \n"
+"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__active
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_room__active
+msgid "Active"
+msgstr "نشط"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "Add meeting notes"
+msgstr "أضف ملاحظات الاجتماع"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "Agenda / Notes"
+msgstr "جدول الأعمال / ملاحظات"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__building_id
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_room__building_id
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_search
+msgid "Building"
+msgstr "المبنى"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_form
+msgid "Building Details"
+msgstr "تفاصيل المبنى"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_form
+msgid "Building Name"
+msgstr "اسم المبنى"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_kanban
+msgid "Building Reservations"
+msgstr "حجوزات المبنى"
+
+#. module: meeting_schedule
+#: model:ir.model.constraint,message:meeting_schedule.constraint_meeting_building_code_company_unique
+msgid "Building code must be unique per company!"
+msgstr "يجب أن يكون رمز المبنى فريداً لكل شركة!"
+
+#. module: meeting_schedule
+#: model:ir.actions.act_window,name:meeting_schedule.meeting_building_action
+#: model:ir.ui.menu,name:meeting_schedule.menu_meeting_building
+msgid "Buildings"
+msgstr "المباني"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_kanban
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_kanban
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "Cancel Meeting"
+msgstr "إلغاء الاجتماع"
+
+#. module: meeting_schedule
+#: model:ir.model.fields.selection,name:meeting_schedule.selection__meeting_reservation__state__canceled
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_search
+msgid "Canceled"
+msgstr "ملغي"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__company_id
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__company_id
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_room__company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: meeting_schedule
+#: model:ir.ui.menu,name:meeting_schedule.menu_meeting_configuration
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_kanban
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_kanban
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "Confirm Meeting"
+msgstr "تأكيد الاجتماع"
+
+#. module: meeting_schedule
+#: model:ir.model.fields.selection,name:meeting_schedule.selection__meeting_reservation__state__confirmed
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_search
+msgid "Confirmed"
+msgstr "مؤكد"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__description
+msgid "Description"
+msgstr "الوصف"
+
+#. module: meeting_schedule
+#: model:ir.model.fields.selection,name:meeting_schedule.selection__meeting_reservation__state__draft
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__duration
+msgid "Duration (hours)"
+msgstr "المدة (بالساعات)"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__end_time
+msgid "End Time"
+msgstr "وقت الانتهاء"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_search
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__organizer_id
+msgid "Holder"
+msgstr "صاحب الحجز"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_kanban
+msgid "Hours (UTC): "
+msgstr "الساعات (UTC): "
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "Location"
+msgstr "الموقع"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_kanban
+msgid "Max Seating:"
+msgstr "أقصى سعة: "
+
+#. module: meeting_schedule
+#: model:ir.model.fields,help:meeting_schedule.field_meeting_room__seating_capacity
+msgid "Maximum number of attendees this room can accommodate."
+msgstr "الحد الأقصى لعدد الحاضرين الذين يمكن أن تستوعبهم هذه الغرفة."
+
+#. module: meeting_schedule
+#: model:ir.model,name:meeting_schedule.model_meeting_building
+msgid "Meeting Building"
+msgstr "مبنى الاجتماعات"
+
+#. module: meeting_schedule
+#: model:ir.rule,name:meeting_schedule.meeting_building_rule_company
+msgid "Meeting Building Multi-Company"
+msgstr "مبنى الاجتماعات لعدة شركات"
+
+#. module: meeting_schedule
+#: model:ir.model,name:meeting_schedule.model_meeting_reservation
+msgid "Meeting Reservation"
+msgstr "حجز اجتماع"
+
+#. module: meeting_schedule
+#: model:ir.rule,name:meeting_schedule.meeting_reservation_rule_company
+msgid "Meeting Reservation Multi-Company"
+msgstr "حجز الاجتماعات لعدة شركات"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_res_users__reservation_ids
+#: model:ir.actions.act_window,name:meeting_schedule.meeting_reservation_action
+msgid "Meeting Reservations"
+msgstr "حجوزات الاجتماعات"
+
+#. module: meeting_schedule
+#: model:ir.model,name:meeting_schedule.model_meeting_room
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__room_id
+msgid "Meeting Room"
+msgstr "غرفة اجتماعات"
+
+#. module: meeting_schedule
+#: model:ir.rule,name:meeting_schedule.meeting_room_rule_company
+msgid "Meeting Room Multi-Company"
+msgstr "غرفة الاجتماعات لعدة شركات"
+
+#. module: meeting_schedule
+#: model:ir.actions.act_window,name:meeting_schedule.meeting_room_action
+#: model:ir.ui.menu,name:meeting_schedule.menu_meeting_root
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_form
+msgid "Meeting Rooms"
+msgstr "غرف الاجتماعات"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__name
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "Meeting Subject"
+msgstr "موضوع الاجتماع"
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "Meeting time for room '%(room)s' must be within building working hours (%(start)s - %(end)s UTC)."
+msgstr "يجب أن يكون وقت الاجتماع للغرفة '%(room)s' ضمن ساعات عمل المبنى (%(start)s - %(end)s UTC)."
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_search
+msgid "My Meetings"
+msgstr "اجتماعاتي"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_room__code
+msgid "Name"
+msgstr "الاسم"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__number_of_rooms
+msgid "Number Of Rooms"
+msgstr "عدد الغرف"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_tree
+msgid "Number of Rooms"
+msgstr "عدد الغرف"
+
+#. module: meeting_schedule
+#: model:ir.model.constraint,message:meeting_schedule.constraint_meeting_building_check_number_of_rooms
+msgid "Number of rooms must be strictly positive!"
+msgstr "يجب أن يكون عدد الغرف رقماً موجباً أكبر من الصفر!"
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "Only draft meetings can be confirmed."
+msgstr "يمكن فقط تأكيد الاجتماعات التي في حالة مسودة."
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "Only managers can confirm meetings."
+msgstr "يمكن للمديرين فقط تأكيد الاجتماعات."
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_kanban
+msgid "Operating Hours"
+msgstr "ساعات العمل"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_form
+msgid "Operating Schedule (UTC)"
+msgstr "جدول التشغيل (UTC)"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_search
+msgid "Organizer"
+msgstr "المنظم"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_room__reservation_ids
+msgid "Reservation"
+msgstr "الحجوزات"
+
+#. module: meeting_schedule
+#: model:ir.ui.menu,name:meeting_schedule.menu_meeting_reservation
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_room_view_form
+msgid "Reservations"
+msgstr "الحجوزات"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__room_ids
+msgid "Room"
+msgstr "غرفة"
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "Room '%(room)s' is already booked from %(start)s to %(end)s."
+msgstr "الغرفة '%(room)s' محجوزة بالفعل من %(start)s إلى %(end)s."
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__capacity
+msgid "Room Capacity"
+msgstr "سعة الغرفة"
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_room.py:0
+#, python-format
+msgid "Room capacity must be strictly positive."
+msgstr "يجب أن تكون سعة الغرفة رقماً موجباً أكبر من الصفر."
+
+#. module: meeting_schedule
+#: model:ir.model.constraint,message:meeting_schedule.constraint_meeting_room_building_room_name_uniq
+msgid "Room name must be unique within the same building!"
+msgstr "يجب أن يكون اسم الغرفة فريداً داخل نفس المبنى!"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_kanban
+msgid "Rooms"
+msgstr "الغرف"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_kanban
+msgid "Rooms: "
+msgstr "الغرف: "
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_kanban
+msgid "Schedule"
+msgstr "الجدول"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "Schedule (UTC)"
+msgstr "الجدول الزمني (UTC)"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_room__seating_capacity
+msgid "Seating Capacity"
+msgstr "سعة المقاعد"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__start_time
+msgid "Start Time"
+msgstr "وقت البدء"
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "Start time must be before end time."
+msgstr "يجب أن يكون وقت البدء قبل وقت الانتهاء."
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_reservation__state
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_search
+msgid "Status"
+msgstr "الحالة"
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "The reservation for room '%(room)s' falls outside building working hours or during a scheduled closure/holiday."
+msgstr "حجز الغرفة '%(room)s' يقع خارج ساعات عمل المبنى أو خلال فترة إغلاق/عطلة مجدولة."
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "This meeting is already canceled."
+msgstr "هذا الاجتماع ملغي بالفعل."
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_kanban
+msgid "Time"
+msgstr "الوقت"
+
+#. module: meeting_schedule
+#: model:ir.model,name:meeting_schedule.model_res_users
+msgid "Users"
+msgstr "المستخدمون"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,help:meeting_schedule.field_meeting_building__working_time_end
+msgid "When does work ends."
+msgstr "متى ينتهي العمل."
+
+#. module: meeting_schedule
+#: model:ir.model.fields,help:meeting_schedule.field_meeting_building__working_time_start
+msgid "When does work start."
+msgstr "متى يبدأ العمل."
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__resource_calendar_id
+msgid "Working Hours Schedule"
+msgstr "جدول ساعات العمل"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__working_time_end
+msgid "Working Time End (UTC)"
+msgstr "نهاية وقت العمل (UTC)"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__working_time_start
+msgid "Working Time Start (UTC)"
+msgstr "بداية وقت العمل (UTC)"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,help:meeting_schedule.field_meeting_building__resource_calendar_id
+msgid "Working hours and days when this building is open for meetings."
+msgstr "ساعات وأيام العمل التي يكون فيها هذا المبنى متاحاً للاجتماعات."
+
+#. module: meeting_schedule
+#: model:ir.model.constraint,message:meeting_schedule.constraint_meeting_building_check_working_hours_range
+msgid "Working hours must be between 00:00 and 24:00 UTC!"
+msgstr "يجب أن تكون ساعات العمل بين 00:00 و 24:00 بتوقيت UTC!"
+
+#. module: meeting_schedule
+#: model:ir.model.constraint,message:meeting_schedule.constraint_meeting_building_check_working_hours
+msgid "Working time start must be earlier than end time!"
+msgstr "يجب أن يكون وقت بداية العمل قبل وقت الانتهاء!"
+
+#. module: meeting_schedule
+#: code:addons/meeting_schedule/models/meeting_reservation.py:0
+#, python-format
+msgid "You can only cancel your own meetings."
+msgstr "يمكنك فقط إلغاء اجتماعاتك الخاصة."
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__code
+msgid "code of the building"
+msgstr "رمز المبنى"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_building_view_form
+msgid "e.g. Headquarters Tower"
+msgstr "مثال: برج المقر الرئيسي"
+
+#. module: meeting_schedule
+#: model_terms:ir.ui.view,arch_db:meeting_schedule.meeting_reservation_view_form
+msgid "e.g. Sprint Planning"
+msgstr "مثال: التخطيط لسبرنت"
+
+#. module: meeting_schedule
+#: model:ir.model.fields,field_description:meeting_schedule.field_meeting_building__name
+msgid "name of the building"
+msgstr "اسم المبنى"
+
+#. module: meeting_schedule
+#: model:ir.ui.menu,name:meeting_schedule.menu_meeting_room
+msgid "rooms"
+msgstr "الغرف"
+
+#. module: meeting_schedule
+#: model:ir.model.constraint,message:meeting_schedule.constraint_meeting_room_check_capacity_positive
+msgid "seating capacity must be positive!"
+msgstr "يجب أن تكون سعة المقاعد موجبة!"
