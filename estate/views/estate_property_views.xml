@@ -20,17 +20,7 @@
             </list>
         </field>
     </record>
-    <!-- <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml" string="AAAAAAAAAA">
-            <form string="BBBBBBBBBB">
-                <sheet>
-                    <field name="name"></field>
-                </sheet>
-            </form>
-        </field>
-    </record> -->
+
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -68,4 +58,23 @@
             </form>
         </field>
     </record>
+
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Delivery Carrier">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="date_availability"/>
+                <field name="expected_price"/>
+                <field name="bedroom"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                
+            </search>
+        </field>
+    </record>
+
+
 </odoo>
