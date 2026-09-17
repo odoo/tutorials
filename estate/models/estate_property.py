@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EstateProperty(models.Model):
@@ -12,14 +12,27 @@ class EstateProperty(models.Model):
         'estate.property.type',
         string='Property Type',
     )
-    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    tag_ids = fields.Many2many(
+        comodel_name='estate.property.tag',
+        string='Tags',
+    )
     date_availability = fields.Date(
         string='Available From',
         copy=False,
-        default=lambda self: fields.Date.add(fields.Date.today(), days=90),
+        default=lambda self: fields.Date.add(
+            fields.Date.today(),
+            days=90,
+        ),
     )
-    expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    expected_price = fields.Float(
+        string='Expected Price',
+        required=True,
+    )
+    selling_price = fields.Float(
+        string='Selling Price',
+        readonly=True,
+        copy=False,
+    )
     bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Number of Facades')
@@ -64,3 +77,13 @@ class EstateProperty(models.Model):
         inverse_name='property_id',
         string='Offers',
     )
+    total_area = fields.Integer(
+        string="Total area",
+        compute="_compute_total_area",
+        readonly=True,
+    )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
