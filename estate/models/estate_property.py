@@ -86,17 +86,9 @@ class Property(models.Model):
         if self.has_garden:
             self.garden_area = 10
             self.garden_orientation = "north"
-            return None
-        self.garden_area = 0
-        self.garden_orientation = ""
-        return {
-            "warning": {
-                "title": ("Warning"),
-                "message": (
-                    "This option erased the fields Garden Area and Garden Orientation"
-                ),
-            },
-        }
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def cancel_property(self):
         if self.state == "sold":
