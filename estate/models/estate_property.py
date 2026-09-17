@@ -40,4 +40,6 @@ class Property(models.Model):
         default='new'
     )
 
-    
+    salesperson = fields.Many2one('res.users', string='Salesperson', index=True, tracking=True, default= lambda self: self.env.user)
+    buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
+
