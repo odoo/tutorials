@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from dateutil.relativedelta import relativedelta
 
 from odoo import fields, models
@@ -46,5 +45,14 @@ class Property(models.Model):
         ],
         default="new",
     )
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
+
+    tags_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     active = fields.Boolean(default=True)
