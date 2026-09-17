@@ -1,5 +1,7 @@
 {
     'name': "Estate",
+    'author': "delje",
+    'license': "LGPL-3",
     'depends': ["base"],
     'application': True,
     'installable': True,
