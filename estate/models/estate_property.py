@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class Property(models.Model):
@@ -26,6 +26,7 @@ class Property(models.Model):
     has_garage = fields.Boolean()
     has_garden = fields.Boolean()
     garden_area = fields.Integer()
+    total_area = fields.Integer(compute='_compute_total_area')
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[
@@ -49,7 +50,7 @@ class Property(models.Model):
         required=True,
         copy=False
     )
-    type_id = fields.Many2one('estate.property.type', string='Type')
+    type_id = fields.Many2one('estate.property.type')
     partner_id = fields.Many2one(
         'res.partner',
         string='Buyer',
@@ -61,5 +62,31 @@ class Property(models.Model):
         index=True,
         default=lambda self: self.env.user
     )
-    tag_ids = fields.Many2many("estate.property.tag", string='Tags')
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    tag_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    best_price = fields.Integer(compute='_compute_best_price')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'))
+
+    @api.onchange('has_garden')
+    def _onchange_hjas_garden(self):
+        if self.has_garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
+            return {
+                'warning': {
+                    'title': ('Warning'),
+                    'message': ('This option erased the fields Garden Area and Garden Orientation')
+                }
+            }
