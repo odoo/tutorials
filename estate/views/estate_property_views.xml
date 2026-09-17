@@ -47,6 +47,7 @@
                         <div class="col">
                             <group>
                                 <field name="expected_price" string="Expected Price"/>
+                                <field name="best_price"/>
                                 <field name="selling_price" string="Selling Price"/>
                             </group>
                         </div>
@@ -62,6 +63,7 @@
                                 <field name="has_garden" string="Garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="total_area"/>
                                 <field name="state" string="State"/>
                             </group>
                         </page>
