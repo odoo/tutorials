@@ -1,9 +1,11 @@
+import logging
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero
+
+_logger = logging.getLogger(__name__)
 
 
 class EstateProperty(models.Model):
@@ -28,17 +30,6 @@ class EstateProperty(models.Model):
     _check_selling_price = models.Constraint(
         'CHECK( selling_price >= 0 )',
         'selling price cannot be less than 0 or in negative value ')
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue
-            if (
-                record.selling_price < 0.90 * record.expected_price
-            ):
-                raise ValidationError(_("selling price cannot be less than 90% of expected price"))
-
     bedrooms = fields.Integer(default=2, string="Bedrooms")
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
@@ -49,7 +40,6 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True, string="Active")
     booking_ids = fields.One2many("estate.property.booking", "property_id", string="Bookings")
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
-
     state = fields.Selection(
         selection=[
             ('new', "New"),
@@ -72,15 +62,9 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation",
     )
-
+    days_on_market = fields.Date(string="Days on the market")
     visit_ids = fields.One2many("estate.property.visits", "property_id", string="Visits")
     visit_count = fields.Integer(string="Visit Count", compute="_compute_visits")
-
-    @api.depends("visit_ids")
-    def _compute_visits(self):
-        for record in self:
-            record.visit_count = len(record.visit_ids)
-
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
@@ -92,15 +76,39 @@ class EstateProperty(models.Model):
     maintenance_ids = fields.One2many(
         "estate.property.maintenance", 'property_id', string="maintenance_id")
     offer_count = fields.Integer(related="property_type_id.offer_count")
+    # selling_date = fields.Date(string="date of sale", compute="_compute_selling_date", store=True)
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
             price = record.offer_ids.mapped('price')
             record.best_price = max(price) if price else 0.0
+            _logger.info("Recomputed best_price for %s: %s (from %d offers)",
+            record.name, record.best_price, len(price))
+
+    @api.depends("visit_ids")
+    def _compute_visits(self):
+        for record in self:
+            record.visit_count = len(record.visit_ids)
+
+    @api.depends('living_area', 'garden_area', 'garage_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = (
+                record.living_area + record.garden_area + record.garage_area
+            )
+
+    @api.depends('state')
+    def _compute_selling_date(self):
+        for record in self:
+            if record.state == 'sold':
+                if not record.selling_date:
+                    record.selling_date = fields.Date.today()
+            else:
+                record.selling_date = None
 
     @api.onchange('garden')
-    def _on_change_garden(self):
+    def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
@@ -109,33 +117,27 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     @api.onchange('garage')
-    def _on_change_garage(self):
+    def _onchange_garage(self):
         if self.garage:
             self.garage_area = 10
         else:
             self.garage_area = 0
 
-    @api.depends('living_area', 'garden_area', 'garage_area')
-    def _compute_total_area(self):
-        breakpoint()
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_minimum(self):
         for record in self:
-            record.total_area = (
-                record.living_area + record.garden_area + record.garage_area
-            )
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            if (
+                record.selling_price < 0.90 * record.expected_price
+            ):
+                raise ValidationError(_("selling price cannot be less than 90% of expected price"))
 
-    def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError(_("sold property cannot be cancelled"))
-            record.state = "cancelled"
-        return True
-
-    def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError(_("cancelled property cannot be sold"))
-            record.state = "sold"
-        return True
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for properties in self:
+            if properties.state not in ("new", "cancelled"):
+                raise ValidationError(_("cannot delete properties which are new or cancelled"))
 
     def action_accept_best_price(self):
         # for record in self:
@@ -162,19 +164,17 @@ class EstateProperty(models.Model):
                 'type': 'rainbow_man',
             },
         }
-    selling_date = fields.Date(string="date of sale", compute="_compute_selling_date", store=True)
 
-    @api.depends('state')
-    def _compute_selling_date(self):
+    def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                if not record.selling_date:
-                    record.selling_date = fields.Date.today()
-            else:
-                record.selling_date = None
+                raise UserError(_("sold property cannot be cancelled"))
+            record.state = "cancelled"
+        return True
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled(self):
-        for properties in self:
-            if properties.state not in ("new", "cancelled"):
-                raise ValidationError(_("cannot delete properties which are new or cancelled"))
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(_("cancelled property cannot be sold"))
+            record.state = "sold"
+        return True

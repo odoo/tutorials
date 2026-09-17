@@ -6,6 +6,8 @@
     'application': True,
     'data': [
         'security/ir.model.access.csv',
+        'views/ir.cron.xml',
+        'views/ir.cron2.xml', 
         'views/estate_property_new_view.xml',
         'views/estate_property_tags_views.xml',
         'views/estate_property_offer_views.xml',

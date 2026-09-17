@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -11,7 +11,7 @@ class EstatePropertyType(models.Model):
         'unique(name)',
         '2 property type names cannot be same ',
     )
-    property_id = fields.One2many("estate.property", "property_type_id")
+    property_ids = fields.One2many("estate.property", "property_type_id")
     sequence = fields.Integer(string="Sequence")
     color = fields.Integer()
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offer Ids")

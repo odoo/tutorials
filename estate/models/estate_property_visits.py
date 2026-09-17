@@ -1,5 +1,5 @@
-from odoo import _, fields, models, api
-from odoo.exceptions import ValidationError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyVisits(models.Model):
@@ -44,6 +44,12 @@ class EstatePropertyVisits(models.Model):
         required=True,
     )
 
+    @api.constrains('status_of_visit', 'rating')
+    def _check_visit_status(self):
+        for record in self:
+            if record.rating and record.status_of_visit != 'done':
+                raise UserError(_("cant not rate a visit before status of visit is done"))
+
     @api.constrains("visit_date", "property_id")
     def _check_no_overlap(self):
         for visit in self:
@@ -56,7 +62,7 @@ class EstatePropertyVisits(models.Model):
             if overlapping:
                 raise ValidationError(_("more than 1 visit cannot happen at the same time"))
 
-    @api.constrains("customer_id", "property_id")
+    @api.constrains("customer", "property_id")
     def _check_unique_visit(self):
         for visit in self:
             existing = self.search([
@@ -67,10 +73,10 @@ class EstatePropertyVisits(models.Model):
             if existing:
                 raise ValidationError(_("the customer has already visited the property"))
 
-    @api.onchange("propert_id")
+    @api.onchange("property_id")
     def _onchange_property_id(self):
         if self.property_id:
-            self.agent == self.property_id.user_id
+            self.agent = self.property_id.user_id
 
     def _compute_display_name(self):
         for record in self:

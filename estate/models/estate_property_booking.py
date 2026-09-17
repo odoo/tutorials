@@ -1,5 +1,9 @@
-from odoo import api, fields, models
+import logging
 from datetime import timedelta
+
+from odoo import api, fields, models
+
+_logger = logging.getLogger(__name__)
 
 
 class EstatePropertyBooking(models.Model):
@@ -19,6 +23,7 @@ class EstatePropertyBooking(models.Model):
         string="Deadline",
         default=lambda self: fields.Datetime.now() + timedelta(days=7),
     )
+    is_overdue = fields.Boolean(string="is overdue", default=False)
     payment_type = fields.Selection(
             selection=[
                 ('installments', "Installments"),
@@ -69,3 +74,13 @@ class EstatePropertyBooking(models.Model):
                         booking_id.offer_id.status = 'Refused'
                         booking_id.payment_ids.filtered(lambda p: p.status in ('pending', 'paid')).write({'status': 'cancelled'})
         return res
+
+    def _auto_booking_overdue(self):
+        overdue_booking = self.search([
+            ('deadline', '<', fields.Date.today()),
+            ('state', '=', 'draft'),
+            ('is_overdue', '=', False),
+        ])
+        _logger.info("Auto-refusing %d overdue bookings", len(overdue_booking))
+        if overdue_booking:
+            overdue_booking.write({'is_overdue': True})

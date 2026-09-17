@@ -1,3 +1,4 @@
 {
-    "python.languageServer": "None"
+    "python.languageServer": "None",
+    "xml.symbols.enabled": false
 }

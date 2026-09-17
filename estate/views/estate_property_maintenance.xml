@@ -45,7 +45,7 @@
                         <field name="property_id"/>
                         <field name="inspection_date"/>
                         <field name="expected_price"/>
-                        <field name="scheduled_date"/>
+                        <field name="scheduled_date" />
                         <field name="responsible_id"/>
                         <field name="actual_cost"/>
                     </group>

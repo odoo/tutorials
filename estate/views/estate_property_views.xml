@@ -52,7 +52,6 @@
                             type="action"
                             icon="fa-calendar">
                             <field name="offer_count" widget="statinfo"/>
-
                         </button> 
 
                     </div>

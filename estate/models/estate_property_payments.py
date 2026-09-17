@@ -1,4 +1,4 @@
-from odoo import models, api, fields, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -10,7 +10,7 @@ class EstatePropertyPayments(models.Model):
     booking_id = fields.Many2one("estate.property.booking", string="Booking ID", required=True)
     amount = fields.Float(string="amount")
     _check_amount_positive = models.Constraint(
-        'Check(amount > 0)',
+        'CHECK(amount > 0)',
         'amount being payed should be grater than 0',
     )
     payment_date = fields.Datetime()
@@ -48,6 +48,6 @@ class EstatePropertyPayments(models.Model):
                     raise UserError(_("amount cant be more than remaining amount"))
 
     @api.onchange('payment_type')
-    def _check_payment_type(self):
+    def _onchange_payment_type(self):
         if self.payment_type == 'full_payments':
             self.amount = self.booking_id.remaining_amount

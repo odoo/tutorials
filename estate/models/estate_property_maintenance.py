@@ -30,16 +30,16 @@ class EstatePropertyMaintenance(models.Model):
             self.custom_category = False
 
     property_id = fields.Many2one(
-        'estate.property', required=True, string="propert name",
+        'estate.property', required=True, string="property name",
     )
     inspection_date = fields.Date(string="Date Of Inspection", required=True)
     expected_price = fields.Float(string="Expected Cost")
-    scheduled_date = fields.Date(string="Scheduled Date")
+    scheduled_date = fields.Date(string="Scheduled Date", required=True)
 
     @api.constrains('inspection_date', 'scheduled_date')
     def _check_scheduled_date(self):
         for record in self:
-            if record.scheduled_date < record.inspection_date:
+            if record.scheduled_date and record.scheduled_date < record.inspection_date:
                 raise UserError(_("scheduled date can not be before inspection date"))
 
     responsible_id = fields.Many2one(
@@ -55,3 +55,7 @@ class EstatePropertyMaintenance(models.Model):
         ],
         string="state",
     )
+
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = record.title
