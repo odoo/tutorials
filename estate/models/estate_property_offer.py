@@ -30,7 +30,7 @@ class EstatePropertyOffer(models.Model):
 
     def _compute_display_name(self):
         for record in self:
-            record.display_name = self.env._("Estate Property Offer %s", self.id)
+            record.display_name = self.env._("Estate Property Offer %s", record.id)
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
