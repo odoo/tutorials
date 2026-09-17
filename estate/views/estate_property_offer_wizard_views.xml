@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="estate_property_offer_wizard_view_form" model="ir.ui.view">
+
+        <field name="name">estate.property.offer.wizard.form</field>
+        <field name="model">estate.property.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirmation">
+
+                <div>
+                    Another offer is already accepted for this property.
+                    Do you want to replace it?
+                </div>
+                
+                <footer>
+                    <button
+                        name="action_keep_previous"
+                        string="Keep Previous"
+                        type="object"
+                        class="btn-secondary"
+                    />
+
+                    <button
+                        name="action_accept_new"
+                        string="Accept New"
+                        type="object"
+                        class="btn-primary"
+                    />
+                </footer>
+            </form>
+        </field>
+
+    </record>
+
+</odoo>
