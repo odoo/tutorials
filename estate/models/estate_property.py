@@ -57,7 +57,7 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for record in self: #QUESTION is the for each loop here necessary ? or can I just use self ?
+        for record in self:  # QUESTION is the for each loop here necessary ? or can I just use self ?
             record.total_area = record.living_area + record.garden_area
 
     @api.depends('offer_ids.price')
