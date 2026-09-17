@@ -9,7 +9,7 @@
         parent="menu_meeting_root" action="meeting_room_action"
         groups="hr.group_hr_manager"/>
 
-    <menuitem id="menu_meeting_configuration"
+    <menuitem id="menu_meeting_configuration" name="Configuration"
         parent="menu_meeting_root"/>
 
     <menuitem id="menu_meeting_building"

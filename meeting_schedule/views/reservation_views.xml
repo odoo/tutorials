@@ -10,10 +10,10 @@
         <field name="name">meeting.reservation.kanban</field>
         <field name="model">meeting.reservation</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="room_id" records_draggable="0" sample="1">
+            <kanban default_group_by="room_id" records_draggable="0" sample="1" group_create="false">
                 <field name="name"/>
-                <field name="room_id"/>
                 <field name="building_id"/>
+                <field name="room_id"/>
                 <field name="organizer_id"/>
                 <field name="start_time"/>
                 <field name="end_time"/>
@@ -30,6 +30,10 @@
                                 <i class="fa fa-building-o mr-1" title="Building"/>
                                 <field name="building_id"/>
                                 <field name="room_id"/>
+                            </div>
+                            <div>
+                                <label for="capacity">Max Seating:</label>
+                                <field name="capacity"/>
                             </div>
                             <div>
                                 <i class="fa fa-clock-o mr-1 text-primary" title="Time"/>
@@ -92,7 +96,7 @@
                     <button name="action_cancel" type="object" string="Cancel Meeting"
                         class="btn-danger"
                         attrs="{'invisible': [('state', '=', 'canceled')]}"/>
-                    <field name="state" widget="statusbar" satusbar_visible="draft,confirmed" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed" />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -106,8 +110,9 @@
                             <field name="organizer_id"/>
                         </group>
                         <group string="Schedule (UTC)">
-                            <field name="start_time"/>
-                            <field name="end_time"/>
+                            <field name="meeting_date"/>
+                            <field name="start_time" options="{'datepicker': {'viewMode': 'times'}}"/>
+                            <field name="end_time" options="{'datepicker': {'viewMode': 'times'}}"/>
                             <field name="duration" widget="float_time"/>
                         </group>
                     </group>

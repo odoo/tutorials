@@ -1,3 +1,5 @@
+from operator import index
+
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -16,12 +18,15 @@ class MeetingBuilding(models.Model):
                 default=18.0, help="When does work ends.")
     active = fields.Boolean("Active", default=True)
 
+    resource_calendar_id = fields.Many2one('resource.calendar', string="Working Hours Schedule",
+        default=lambda self: self.env.company.resource_calendar_id,
+        help="Working hours and days when this building is open for meetings.")
     company_id = fields.Many2one("res.company", string="Company",
-        required=True, default=lambda self: self.env.company)
+        required=True, default=lambda self: self.env.company, index=True)
     room_ids = fields.One2many('meeting.room', 'building_id')
 
     _sql_constraints = [
-        ("code_unique", "UNIQUE(code)", "Building code must be unique!"),
+        ("code_company_unique", "UNIQUE(code, company_id)", "Building code must be unique per company!"),
         ("check_number_of_rooms", "CHECK(number_of_rooms > 0)", "Number of rooms must be strictly positive!"),
         ("check_working_hours", "CHECK(working_time_start < working_time_end)", "Working time start must be earlier than end time!"),
         ("check_working_hours_range", "CHECK(working_time_start >= 0.0 AND working_time_end <= 24.0)", "Working hours must be between 00:00 and 24:00 UTC!"),

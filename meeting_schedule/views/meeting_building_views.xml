@@ -3,8 +3,78 @@
         model="ir.actions.act_window">
             <field name="name">Buildings</field>
             <field name="res_model">meeting.building</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">kanban,tree,form</field>
     </record>
+                <!--Kanban-->
+    <record id="meeting_building_view_kanban" model="ir.ui.view">
+        <field name="name">meeting.building.kanban</field>
+        <field name="model">meeting.building</field>
+        <field name="arch" type="xml">
+            <kanban records_draggable="0" sample="1">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="number_of_rooms"/>
+                <field name="working_time_start"/>
+                <field name="working_time_end"/>
+                <field name="resource_calendar_id"/>
+                <field name="company_id"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click #{!record.active.raw_value ? 'oe_kanban_muted' : ''}">
+                            <div class="oe_kanban_details">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <t t-if="record.name.raw_value">
+                                                <field name="name"/>
+                                            </t>
+                                            <t t-else="">
+                                                <field name="code"/>
+                                            </t>
+                                        </strong>
+                                    </div>
+                                    <span class="badge badge-secondary float-right">
+                                        <field name="code"/>
+                                    </span>
+                                </div>
+                                <div class="mt-2">
+                                    <i class="fa fa-cube mr-1 text-primary" title="Rooms"/>
+                                    <span>Rooms: </span>
+                                    <strong><field name="number_of_rooms"/></strong>
+                                </div>
+                                <div>
+                                    <i class="fa fa-clock-o mr-1 text-info" title="Operating Hours"/>
+                                    <span>Hours (UTC): </span>
+                                    <field name="working_time_start" widget="float_time"/>
+                                    <span> - </span>
+                                    <field name="working_time_end" widget="float_time"/>
+                                </div>
+                                <div t-if="record.resource_calendar_id.raw_value">
+                                    <i class="fa fa-calendar mr-1 text-secondary" title="Schedule"/>
+                                    <field name="resource_calendar_id"/>
+                                </div>
+                                <div groups="base.group_multi_company" class="text-muted small mt-1">
+                                    <i class="fa fa-building-o mr-1" title="Company"/>
+                                    <field name="company_id"/>
+                                </div>
+                                <div>
+                                    <button name="%(meeting_schedule.meeting_reservation_action)d"
+                                                type="action"
+                                                class="btn btn-sm btn-outline-primary"
+                                                context="{'search_default_building_id': active_id, 'default_building_id': active_id}">
+                                            Building Reservations
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+                <!--Tree-->
     <record id="meeting_building_view_tree"
         model="ir.ui.view">
             <field name="name">meeting.building.tree</field>
@@ -13,13 +83,15 @@
                 <tree>
                     <field name="name"/>
                     <field name="code"/>
-                    <field name="company_id"/>
+                    <field name="resource_calendar_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                     <field name="number_of_rooms" string="Number of Rooms"/>
                     <field name="working_time_start" widget="float_time"/>
                     <field name="working_time_end" widget="float_time"/>
                 </tree>
             </field>
     </record>
+                <!--Form-->
     <record id="meeting_building_view_form"
         model="ir.ui.view">
         <field name="name">meeting.building.form</field>
@@ -34,7 +106,8 @@
                     <group>
                         <group string="Building Details">
                             <field name="code"/>
-                            <field name="company_id"/>
+                            <field name="resource_calendar_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                             <field name="number_of_rooms" readonly="1"/>
                             <field name="active"/>
                         </group>
@@ -48,6 +121,7 @@
                             <field name="room_ids" context="{'active_test': False}">
                                 <tree editable="bottom" decoration-muted="not active">
                                     <field name="code"/>
+                                    <field name="seating_capacity"/>
                                     <field name="active"/>
                                 </tree>
                             </field>
