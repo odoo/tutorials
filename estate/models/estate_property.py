@@ -1,12 +1,13 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     @api.model
     def _default_date_availability(self):
@@ -65,6 +66,15 @@ class EstateProperty(models.Model):
         "CHECK(selling_price > 0)",
         "The selling price must not be a negative value!",
     )
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price and record.expected_price:
+                if record.selling_price < (0.9 * record.expected_price):
+                    raise ValidationError(
+                        "The selling price must not be lower than 90% of the expected price!"
+                    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

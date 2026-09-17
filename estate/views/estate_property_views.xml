@@ -30,31 +30,27 @@
                 <header>
                     <button name="action_sold" string="Sold" type="object" />
                     <button name="action_cancel" string="Cancel" type="object" />
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-
                     <group>
                         <h1>
                             <field name="name"/>
                         </h1>
                     </group>
-
                     <group>
-                        
+                      
                         <group>
-                            <field name="property_type_id"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="property_type_id" options="{'no_create': True}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
-
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
-
                     </group>
-
                     <notebook>
                         <page string="Description">
                             <group>
@@ -64,12 +60,10 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="total_area"/>
                                 <field name="best_price"/>
                                 <field name="active"/>
-                                <field name="state"/>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -92,7 +86,6 @@
                             </field>
                         </page>
                     </notebook>
-
                 </sheet>
             </form>
         </field>
@@ -112,9 +105,7 @@
                 <field name="garden_area"/>
                 <field name="total_area"/>
                 <field name="facades"/>
-
                 <filter string="Available" name="date_availability" domain="[('state','in',('new','offer_received'))]"/>
-
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
 
             </search>
