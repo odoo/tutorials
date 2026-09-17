@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from odoo import fields, models
 from odoo.tools import date_utils
 
@@ -28,3 +30,5 @@ class EstateProperty(models.Model):
         copy=False,
         default="new")
     property_type_id = fields.Many2one("estate.property.type")
+    salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.uid)
+    buyer_id = fields.Many2one("res.partner", copy=False)
