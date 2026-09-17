@@ -45,9 +45,9 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days
 
     def accept_offer(self):
-        if any(any(offer.status == 'accepted' for offer in record.property_id.offers) for record in self):
-            raise UserError(self.env._('Only one offer can be accepted by property.'))
         for record in self:
+            if any(offer.status == 'accepted' for offer in record.property_id.offers):
+                raise UserError(self.env._('Only one offer can be accepted by property.'))
             record.status = 'accepted'
             record.property_id.buyer = record.partner_id
             record.property_id.selling_price = record.price
@@ -78,3 +78,13 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if float_compare(record.property_id.expected_price * 0.9, record.price, 2) == 1:
                 raise ValidationError(self.env._(r'The price of an offer cannot be lower than 90% of the expected price of the property.'))
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id']).with_prefetch(self.ids)
+            if any(offer.price > vals['price'] for offer in property.offers):
+                raise UserError(self.env._('An offer cannot have a lower price than an existing offer.'))
+            if property.state == 'new':
+                property.state = 'offer_received'
+        return super().create(vals_list)

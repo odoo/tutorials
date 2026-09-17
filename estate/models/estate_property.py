@@ -73,16 +73,16 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def sold_property(self):
-        if any(record.state == 'cancelled' for record in self):
-            raise UserError(self.env._('A cancelled property cannot be sold.'))
         for record in self:
+            if record.state == 'cancelled':
+                raise UserError(self.env._('A cancelled property cannot be sold.'))
             record.state = 'sold'
         return True
 
     def cancel_property(self):
-        if any(record.state == 'sold' for record in self):
-            raise UserError(self.env._('A sold property cannot be cancelled.'))
         for record in self:
+            if record.state == 'sold':
+                raise UserError(self.env._('A sold property cannot be cancelled.'))
             record.state = 'cancelled'
         return True
 
@@ -101,3 +101,8 @@ class EstateProperty(models.Model):
         for record in self:
             if float_compare(record.expected_price * 0.9, record.selling_price, 2) == 1 and not float_is_zero(record.selling_price, 2):
                 raise ValidationError(self.env._(r'The selling price cannot be lower than 90% of the expected price.'))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_status_is_new_or_cancelled(self):
+        if any(record.state not in ['new', 'cancelled'] for record in self):
+            raise UserError(self.env._('Can\'t delete a property that is not new or cancelled.'))
