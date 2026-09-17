@@ -10,7 +10,7 @@ class Property(models.Model):
     description = fields.Text()
     date_availability = fields.Date(
         copy=False,
-        default=lambda _: fields.Date.add(fields.Date.today(), months=3),
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
