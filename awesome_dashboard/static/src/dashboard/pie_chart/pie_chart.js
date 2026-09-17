@@ -6,6 +6,7 @@ export class PieChart extends Component {
     static props = {
         label: { type: String, optional: true },
         data: Object,
+        onPieClick: { type: Function, optional: true },
     };
 
     setup() {
@@ -28,10 +29,11 @@ export class PieChart extends Component {
             this.chart.destroy();
         }
         const ctx = this.canvasRef.el.getContext("2d");
+        const labels = Object.keys(this.props.data);
         this.chart = new Chart(ctx, {
             type: "pie",
             data: {
-                labels: Object.keys(this.props.data),
+                labels: labels,
                 datasets: [
                     {
                         data: Object.values(this.props.data),
@@ -41,6 +43,13 @@ export class PieChart extends Component {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                onClick: (event, activeElements) => {
+                    if (activeElements.length > 0 && this.props.onPieClick) {
+                        const index = activeElements[0].index;
+                        const label = labels[index];
+                        this.props.onPieClick(label);
+                    }
+                },
             },
         });
     }

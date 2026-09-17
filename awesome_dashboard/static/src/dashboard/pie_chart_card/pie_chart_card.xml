@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="card-body">
+            <PieChart label="props.title" data="props.data" onPieClick="(size) => this.onPieClick(size)"/>
+        </div>
+    </t>
+
+</templates>
