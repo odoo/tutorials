@@ -27,4 +27,20 @@ class PropertyType(models.Model):
     def _inverse_deadline(self):
         for record in self:
             create_date = record.create_date or fields.Date.today()
-            record.validity = (record.date_deadline - fields.Date.to_date(create_date)).days
+            record.validity = (
+                record.date_deadline - fields.Date.to_date(create_date)
+            ).days
+
+    # ------------------------------------------------------------
+    # ACTIONS
+    # ------------------------------------------------------------
+
+    def action_accept_offer(self):
+        for record in self:
+            record.status = "accepted"
+        return True
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
+        return True
