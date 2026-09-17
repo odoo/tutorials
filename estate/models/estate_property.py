@@ -12,6 +12,7 @@ class EstateProperty(models.Model):
         'estate.property.type',
         string='Property Type',
     )
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     date_availability = fields.Date(
         string='Available From',
         copy=False,
