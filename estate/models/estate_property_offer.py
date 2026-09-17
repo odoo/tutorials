@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class estate_property_offer(models.Model):
@@ -38,6 +39,17 @@ class estate_property_offer(models.Model):
             record.validity = (
                 record.date_deadline - fields.Date.to_date(create_date)
             ).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            if vals["price"] < property.best_price:
+                raise UserError(
+                    "The offer price cannot be lower than the current best offer price of the property"
+                )
+            property.state = "offer_received"
+        return super().create(vals_list)
 
     def action_accepted_offer(self):
         offer_model = self.env["estate.property.offer"]
