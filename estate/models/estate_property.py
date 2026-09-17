@@ -50,12 +50,12 @@ class EstateProperty(models.Model):
         copy=False,
     )
     buyer = fields.Many2one(
-        'res.partner',
+        comodel_name='res.partner',
         string='Buyer',
         copy=False,
     )
     salesman = fields.Many2one(
-        'res.users',
+        comodel_name='res.users',
         string='Salesman',
         default=lambda self: self.env.user,
     )
