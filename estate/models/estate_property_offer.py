@@ -23,14 +23,24 @@ class Offer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
-        compute="_compute_deadline", inverse="_inverse_deadline",
+        compute="_compute_deadline",
+        inverse="_inverse_deadline",
+    )
+
+    _check_price_positive = models.Constraint(
+        "CHECK(price >= 0)",
+        "The Price of an Offer should be positive.",
     )
 
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
+            if record.create:
+                record_date = fields.Date.today()
+            else:
+                record_date = record.create_date
             record.date_deadline = fields.Date.add(
-                fields.Date.today(),
+                record_date,
                 days=record.validity,
             )
 
