@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 
@@ -17,6 +17,7 @@ class PropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_id_state = fields.Selection(related="property_id.state")
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"

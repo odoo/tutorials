@@ -4,21 +4,27 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                  decoration-success="state in ('offer_accepted', 'offer_received')"
+                  decoration-bf="state == 'offer_accepted'"
+                  decoration-muted="state == 'sold'"
+            >
                 <field name="name"/>
                 <field name="property_type_id"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="True"/>
             </list>
         </field>
     </record>
@@ -28,19 +34,28 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_do_sold" type="object" class="oe_highlight" string="Sold"/>
-                    <button name="action_do_cancel" type="object" string="Cancel"/>
+                    <button name="action_do_sold" type="object" class="oe_highlight" string="Sold"
+                            invisible="state in ('sold', 'cancelled', 'new')"/>
+                    <button name="action_do_cancel" type="object" string="Cancel"
+                            invisible="state in ('sold', 'cancelled',)"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <group>
-                        <field name="state"/>
-                        <field name="property_type_id"/>
+                        <!--
+                        FIXME The attributes are documented but don't see to do anything
+                        https://www.odoo.com/documentation/19.0/developer/reference/frontend/javascript_reference.html#relational-fields:~:text=can_create,%3A
+                        -->
+                        <field name="property_type_id" widget="many2one" can_create="false"
+                               can_write="false"
+                               options="{'no_create': true}"
+                        />
                     </group>
                     <group>
                         <group>
@@ -63,14 +78,16 @@
                                     <field name="faces"/>
                                     <field name="has_garage"/>
                                     <field name="has_garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not has_garden"/>
+                                    <field name="garden_orientation" invisible="not has_garden"/>
                                     <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids"
+                                   readonly="state in ('offer_accepted', 'sold', 'cancelled')"
+                            />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -80,7 +97,6 @@
                                 </group>
                             </group>
                         </page>
-
                     </notebook>
                 </sheet>
             </form>
@@ -97,10 +113,12 @@
                 <field name="expected_price"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="faces"/>
                 <separator/>
-                <filter name="Available properties" domain="[('state', 'in', ['offer_received', 'new'])]"/>
+                <filter name="available" string="Available"
+                        domain="[('state', 'in', ['offer_received', 'new'])]"
+                />
                 <group>
                     <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
                     <filter name="property_type" string="Type" context="{'group_by':'property_type_id'}"/>
