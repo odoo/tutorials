@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChart">
+        <div class="h-100 d-flex flex-column">
+            <t t-if="props.label">
+                <h5 class="card-title text-start mb-2" t-out="props.label"/>
+            </t>
+            <div class="w-100 flex-grow-1 position-relative" style="max-height: 250px;">
+                <canvas t-ref="canvas"/>
+            </div>
+        </div>
+    </t>
+</templates>

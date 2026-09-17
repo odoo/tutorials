@@ -1,0 +1,12 @@
+.o_dashboard {
+    background-color: rgb(238, 238, 238);
+
+    .o_dashboard_item {
+        @media (max-width: 768px) {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+    }
+}

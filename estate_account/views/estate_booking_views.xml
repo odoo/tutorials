@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_booking_view_form_inherit_estate_account" model="ir.ui.view">
+        <field name="name">estate.booking.view.form.inherit.estate.account</field>
+        <field name="model">estate.booking</field>
+        <field name="inherit_id" ref="estate.estate_booking_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Invoices">
+                        <field name="invoice_ids" readonly="1">
+                            <list create="false" edit="false" delete="false">
+                                <field name="currency_id" column_invisible="True"/><!-- Needed for the currency Symbol -->
+                                <field name="name" string="Invoice Number"/>
+                                <field name="invoice_date" string="Date"/>
+                                <field name="amount_total" sum="Total Invoiced"/>
+                                <field name="payment_state" widget="badge"
+                                       decoration-danger="payment_state == 'not_paid'"
+                                       decoration-warning="payment_state in ('partial', 'in_payment')"
+                                       decoration-success="payment_state == 'paid'"/>
+                                <button name="action_open_invoice" type="object" icon="fa-external-link" title="Open Invoice"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
