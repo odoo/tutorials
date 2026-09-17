@@ -1,8 +1,6 @@
-from copy import copy
-from typing import override
-
 from odoo import fields, models
 from odoo.tools import date_utils
+
 
 class EstateProperty(models.Model):
     _name: str = "estate.property"
