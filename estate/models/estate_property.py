@@ -39,4 +39,5 @@ class Property(models.Model):
         copy=False,
         default='new'
     )
+
     
