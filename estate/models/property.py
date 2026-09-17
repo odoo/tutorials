@@ -4,7 +4,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
-    _name = 'estate.property'
+    _name = "estate.property"
     _description = "Real estate property"
 
     name = fields.Char(string="Title", required=True)
@@ -25,23 +25,23 @@ class Property(models.Model):
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[
-            ('north', "North"),
-            ('east', "East"),
-            ('south', "South"),
-            ('west', "West")
+            ("north", "North"),
+            ("east", "East"),
+            ("south", "South"),
+            ("west", "West")
         ]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        default='new',
+        default="new",
         required=True,
         copy=False,
         selection=[
-            ('new', "New"),
-            ('offer_received', "Offer Received"),
-            ('offer_accepted', "Offer Accepted"),
-            ('sold', "Sold"),
-            ('cancelled', "Cancelled")
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled")
         ]
     )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
@@ -50,9 +50,9 @@ class Property(models.Model):
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
-    total_area = fields.Float(compute='_compute_total_area')
+    total_area = fields.Float(compute="_compute_total_area")
 
-    @api.depends('garden_area', 'living_area')
+    @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
@@ -67,41 +67,41 @@ class Property(models.Model):
             else:
                 record.best_price = None
 
-    @api.onchange('has_garden')
+    @api.onchange("has_garden")
     def _onchange_has_garden(self):
         if self.has_garden:
             self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ''
+            self.garden_orientation = ""
 
     def action_do_sold(self):
         for record in self:
-            if record.state == 'cancelled':
-                raise UserError('Canceled property cannot be sold')
+            if record.state == "cancelled":
+                raise UserError("Canceled property cannot be sold")
             else:
-                record.state = 'sold'
+                record.state = "sold"
         return True
 
     def action_do_cancel(self):
         for record in self:
-            if record.state == 'sold':
-                raise UserError('Sold property cannot be canceled')
+            if record.state == "sold":
+                raise UserError("Sold property cannot be canceled")
             else:
-                record.state = 'cancelled'
+                record.state = "cancelled"
 
     # Constraints
     _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'Expected price must be strictly positive',
+        "CHECK(expected_price > 0)",
+        "Expected price must be strictly positive",
     )
     _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'Expected price must be positive',
+        "CHECK(selling_price >= 0)",
+        "Expected price must be positive",
     )
 
-    @api.constrains('expected_price', 'selling_price')
+    @api.constrains("expected_price", "selling_price")
     def _check_expected_price_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
