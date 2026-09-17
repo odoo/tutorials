@@ -31,13 +31,14 @@
             <form string="Estate Property">
                 <sheet>
                     <group>
-
                         <div class="oe_title">
                             <h1>
                                 <field name="name" />
                             </h1>
+                            <field name="tags_ids" string="" widget="many2many_tags" />
                         </div>
                     </group>
+                    <separator/>
                     <group>
 
                         <group>
@@ -91,6 +92,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" />
+                <field name="tags_ids" />
             </list>
         </field>
     </record>
