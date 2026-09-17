@@ -9,7 +9,7 @@ class Offer(models.Model):
     status = fields.Selection(
         selection=[
             ('accepted', 'Accepted'),
-            ('refused', 'Refused')
+            ('refused', 'Refused'),
         ],
         copy=False,
     )
@@ -17,7 +17,7 @@ class Offer(models.Model):
         'res.partner',
         string='Partner',
         index=True,
-        required=True
+        required=True,
     )
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
@@ -28,7 +28,7 @@ class Offer(models.Model):
         for record in self:
             record.date_deadline = fields.Date.add(
                 fields.Date.today(),
-                days=record.validity
+                days=record.validity,
             )
 
     def _inverse_deadline(self):
