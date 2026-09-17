@@ -17,6 +17,7 @@
                 <field name="selling_price"/>
                 <field name="bedroom"/>
                 <field name="living_area"/>
+                <field name="tag_ids"/>
             </list>
         </field>
     </record>
@@ -32,6 +33,7 @@
                     </h1>
                     <group>
                         <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"> </field>
                             <field name="date_availability"> </field>
                         </group>
