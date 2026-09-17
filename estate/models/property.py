@@ -90,9 +90,10 @@ class Property(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=False)
+    def prevent_unwanted_deletion(self):
         if self.state not in ("new", "cancelled"):
-            raise ValidationError("Can only delete Property that are New or Cancelled")
+            raise UserError("Can only delete Property that are New or Cancelled")
         return super().unlink()
 
     def action_do_sold(self):

@@ -46,6 +46,16 @@ class PropertyOffer(models.Model):
             )
             record.validity = (record.date_deadline - base_date).days
 
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            property_id.state = 'offer_received'
+            for record in property_id.offer_ids:
+                if record.price > vals['price']:
+                    raise UserError("Cannot create an offer with a lower value than an existing one")
+        return super().create(vals_list)
+
     def action_accept(self):
         # TODO Investigate using write() to update records
         for record in self:
