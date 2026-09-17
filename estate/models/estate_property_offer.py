@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
-from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -20,6 +21,15 @@ class EstatePropertyOffer(models.Model):
     )
     validity = fields.Integer(string='Validity', default=7)
 
+    _strictly_positive_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price of an offer should be strictly positive',
+    )
+
+    def _compute_display_name(self):
+        for record in self:
+            record.display_name = self.env._("Estate Property Offer %s", self.id)
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -34,7 +44,7 @@ class EstatePropertyOffer(models.Model):
 
     def accept_offer(self):
         if any(any(offer.status == 'accepted' for offer in record.property_id.offers) for record in self):
-            raise UserError(_('Only one offer can be accepted by property.'))
+            raise UserError(self.env._('Only one offer can be accepted by property.'))
         for record in self:
             record.status = 'accepted'
             record.property_id.buyer = record.partner_id
@@ -54,7 +64,13 @@ class EstatePropertyOffer(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'estate.property',
-            'name': _('Properties'),
+            'name': self.env._('Properties'),
             'views': [[False, 'list'], [False, 'form']],
             'domain': [('id', '=', self.property_id.id)],
         }
+
+    @api.constrains('price')
+    def _check_price(self):
+        for record in self:
+            if float_compare(record.property_id.expected_price * 0.9, record.price, 2) == 1:
+                raise ValidationError(self.env._(r'The price of an offer cannot be lower than 90% of the expected price of the property.'))

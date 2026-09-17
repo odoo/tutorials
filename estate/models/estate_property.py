@@ -1,5 +1,6 @@
-from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -42,6 +43,15 @@ class EstateProperty(models.Model):
     tags = fields.Many2many(comodel_name='estate.property.tag', string='Tags')
     total_area = fields.Integer(compute='_compute_total_area')
 
+    _strictly_positive_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property should be strictly positive.',
+    )
+    _positive_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price of a property should be positive.',
+    )
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -63,14 +73,14 @@ class EstateProperty(models.Model):
 
     def sold_property(self):
         if any(record.state == 'cancelled' for record in self):
-            raise UserError(_('A cancelled property cannot be sold.'))
+            raise UserError(self.env._('A cancelled property cannot be sold.'))
         for record in self:
             record.state = 'sold'
         return True
 
     def cancel_property(self):
         if any(record.state == 'sold' for record in self):
-            raise UserError(_('A sold property cannot be cancelled.'))
+            raise UserError(self.env._('A sold property cannot be cancelled.'))
         for record in self:
             record.state = 'cancelled'
         return True
@@ -80,7 +90,13 @@ class EstateProperty(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'estate.property.offer',
-            'name': _('Offers'),
+            'name': self.env._('Offers'),
             'views': [[False, 'list'], [False, 'form']],
             'domain': [('property_id', '=', self.id)],
         }
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price_relation_to_expected_price(self):
+        for record in self:
+            if float_compare(record.expected_price * 0.9, record.selling_price, 2) == 1 and not float_is_zero(record.selling_price, 2):
+                raise ValidationError(self.env._(r'The selling price cannot be lower than 90% of the expected price.'))
