@@ -15,8 +15,6 @@
                   action="estate_property_view" 
                   parent="estate_advertisements_menu"/> 
 
-
-
         
         <!-- Setting menu -->
         <menuitem id="estate_setting_menu"
