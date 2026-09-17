@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -23,6 +24,30 @@ class PropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Made by", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+
+    def action_accept_offer(self):
+        for record in self:
+            linked_property = record.property_id
+            states = linked_property.offer_ids.mapped("status")
+
+            if "accepted" in states:
+                raise UserError(message="An offer was already accepted")
+
+            if linked_property.state == "cancelled":
+                raise UserError(message="Can't accept offers on cancelled auctions")
+
+            record.status = "accepted"
+            linked_property.selling_price = record.price
+            linked_property.buyer_id = record.partner_id
+            linked_property.state = "sold"
+
+        return True
+
+    def action_reject_offer(self):
+        for record in self:
+            record.status = "refused"
+
+        return True
 
     @api.depends("validity")
     def _compute_date_deadline(self):

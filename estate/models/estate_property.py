@@ -2,6 +2,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -60,10 +61,28 @@ class Property(models.Model):
 
     active = fields.Boolean(default=True)
 
+    def action_mark_as_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError(message="Can't sell a cancelled auction.")
+
+            record.state = "sold"
+
+        return True
+
+    def action_cancel_selling(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(message="Can't cancel a sold auction.")
+
+            record.state = "cancelled"
+
+        return True
+
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"))
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
