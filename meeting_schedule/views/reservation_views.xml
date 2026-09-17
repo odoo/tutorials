@@ -110,7 +110,6 @@
                             <field name="organizer_id"/>
                         </group>
                         <group string="Schedule (UTC)">
-                            <field name="meeting_date"/>
                             <field name="start_time" options="{'datepicker': {'viewMode': 'times'}}"/>
                             <field name="end_time" options="{'datepicker': {'viewMode': 'times'}}"/>
                             <field name="duration" widget="float_time"/>

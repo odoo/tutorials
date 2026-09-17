@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 
 import pytz
 from odoo import _, api, fields, models
@@ -25,7 +25,6 @@ class MeetingReservation(models.Model):
             string="Meeting Room",                                                                                                                       
             required=True,                                                                                                                               
             domain="[('active', '=', True)]",                                                                                                            
-            group_expand='_read_group_room_ids',                                                                                                         
         )
     organizer_id = fields.Many2one('res.users', string="Holder",
         required=True, default=lambda self: self.env.user)
@@ -35,13 +34,6 @@ class MeetingReservation(models.Model):
         related="room_id.company_id",
         readonly=True,
         index=True,
-    )
-    meeting_date = fields.Date(
-        "Meeting Date",
-        compute="_compute_meeting_date",
-        inverse="_inverse_meeting_date",
-        store=False,
-        default=fields.Date.context_today,
     )
     start_time = fields.Datetime("Start Time", required=True)
     end_time = fields.Datetime("End Time", required=True)
@@ -56,31 +48,6 @@ class MeetingReservation(models.Model):
         ("confirmed", "Confirmed"),
         ("canceled", "Canceled"),
     ], string="Status", default="draft", required=True, index=True)
-
-    @api.model                                                                                                                                       
-    def _read_group_room_ids(self, rooms, domain, order):                                                                                            
-        return rooms.search([('active', '=', True)], order=order)  
-
-    @api.constrains("start_time")
-    def _compute_meeting_date(self):
-        for record in self:
-            record.meeting_date = record.start_time.date() if record.start_time else False
-
-    @api.onchange("meeting_date")
-    def _onchange_meeting_date(self):
-        if self.meeting_date:
-            if self.start_time:
-                self.start_time = datetime.combine(self.meeting_date, self.start_time.time())
-            if self.end_time:
-                self.end_time = datetime.combine(self.meeting_date, self.end_time.time())
-
-    def _inverse_meeting_date(self):
-        for record in self:
-            if record.meeting_date:
-                if record.start_time:
-                    record.start_time = datetime.combine(record.meeting_date, record.start_time.time())
-                if record.end_time:
-                    record.end_time = datetime.combine(record.meeting_date, record.end_time.time())
     
     @api.depends("start_time", "end_time")
     def _compute_duration(self):
