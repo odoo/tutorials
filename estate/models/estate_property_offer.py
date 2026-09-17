@@ -8,11 +8,13 @@ from odoo.tools.float_utils import float_compare
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
+    _order = 'price desc'
 
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Partner', required=True)
     price = fields.Float(string='Price')
     property_id = fields.Many2one(comodel_name='estate.property', string='Property', required=True)
+    property_type = fields.Many2one(related='property_id.property_type', string='Property type')
     status = fields.Selection(
         string='Status',
         readonly=True,
@@ -49,6 +51,7 @@ class EstatePropertyOffer(models.Model):
             record.status = 'accepted'
             record.property_id.buyer = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
         return True
 
     def refuse_offer(self):
@@ -56,6 +59,7 @@ class EstatePropertyOffer(models.Model):
             if record.status == 'accepted':
                 record.property_id.buyer = None
                 record.property_id.selling_price = None
+                record.property_id.state = 'offer_received'
             record.status = 'refused'
         return True
 
