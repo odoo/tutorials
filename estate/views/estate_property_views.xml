@@ -1,5 +1,5 @@
 <odoo>
-    <record id="estate_action" model="ir.actions.act_window">
+    <record id="estate_property_show_list" model="ir.actions.act_window">
         <field name="name">Porperties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list</field>
@@ -23,7 +23,7 @@
         </field>
     </record>
 
-    <record id="estate_property_view_list" model="ir.ui.view">
+    <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -46,12 +46,14 @@
             <form string="Properties">
                 <sheet>
                     <group>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
+                        <h1><field name="name"/></h1>
+                    </group>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
                         <group>
+                            <field name="type_id" string="Type"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -73,6 +75,15 @@
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
                                 <field name="active"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="user_id" string="Salesman"/>
+                                <field name="partner_id" string="Buyer"/>
                             </group>
                         </page>
                     </notebook>

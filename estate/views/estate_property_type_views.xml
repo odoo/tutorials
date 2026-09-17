@@ -1,0 +1,7 @@
+<odoo>
+    <record id="estate_property_type_show_list" model="ir.actions.act_window">
+        <field name="name">Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>
