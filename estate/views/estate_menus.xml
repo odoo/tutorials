@@ -4,5 +4,8 @@
         <menuitem id="estate_first_level_menu" name="Properties">
             <menuitem id="estate_model_menu_action" action="estate_property_action"/>
         </menuitem>
+        <menuitem id="estate_property_settings" name="Settings">
+            <menuitem id="estate_property_type_model_menu_action" action="estate_property_type_action"/>
+        </menuitem>
     </menuitem>
 </odoo>
