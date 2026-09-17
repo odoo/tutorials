@@ -59,3 +59,8 @@ class EstateProperty(models.Model):
         string='Salesman',
         default=lambda self: self.env.user,
     )
+    offer_ids = fields.One2many(
+        comodel_name='estate.property.offer',
+        inverse_name='property_id',
+        string='Offers',
+    )
