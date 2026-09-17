@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate properties"
+    _order = "id desc"
 
     name = fields.Char(required=True, default="Unknown")
     active = fields.Boolean(default=True)
@@ -81,7 +82,7 @@ class EstateProperty(models.Model):
                 record.expected_price * 0.9,
                 precision_digits=2,
             )
-            if comp < 0:
+            if record.selling_price > 0 and comp < 0:
                 msg = "Selling price must be at least 90% of expected price"
                 raise ValidationError(msg)
 
@@ -122,3 +123,9 @@ class EstateProperty(models.Model):
                 raise UserError(msg)
             record.state = "sold"
         return True
+
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        for record in self:
+            if record.state == "new" and len(record.offer_ids) == 1:
+                record.state = "offer_received"
