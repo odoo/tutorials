@@ -3,5 +3,8 @@
         <menuitem id="advertisement_level_menu" name="Advertisements">
             <menuitem id="properties_menu_action" action="real_estate_action"/>
         </menuitem>
+        <menuitem id="property_type_menu" name="Property Types">
+            <menuitem id="property_type_menu_action" name="Property Types" action="estate_action_property_type"/>
+        </menuitem>
     </menuitem>
 </odoo>

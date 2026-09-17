@@ -24,7 +24,7 @@
         </field>
     </record>
 
-    <record id="estate_from_view" model="ir.ui.view">
+    <record id="estate_form_view" model="ir.ui.view">
         <field name="name">real.estate.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
