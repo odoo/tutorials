@@ -71,17 +71,14 @@ class Property(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = None
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
 
     @api.constrains("expected_price", "selling_price")
     def _check_expected_price_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2):
-                if float_compare(record.expected_price * 0.90, record.selling_price, precision_digits=2) == 1:
-                    raise ValidationError("Selling price must be above 90% of expected price")
+            if not float_is_zero(record.selling_price, precision_digits=2) and \
+                    float_compare(record.expected_price * 0.90, record.selling_price, precision_digits=2) > 0:
+                raise ValidationError("Selling price must be above 90% of expected price")
 
     @api.onchange("has_garden")
     def _onchange_has_garden(self):
@@ -90,7 +87,7 @@ class Property(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = False
 
     def action_do_sold(self):
         for record in self:
@@ -106,3 +103,4 @@ class Property(models.Model):
                 raise UserError("Sold property cannot be canceled")
             else:
                 record.state = "cancelled"
+        return True

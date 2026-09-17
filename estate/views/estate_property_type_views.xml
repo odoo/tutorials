@@ -9,7 +9,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list>
                 <field name="name"/>
             </list>
         </field>
@@ -18,7 +18,7 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form>
                 <sheet>
                     <div class="oe_title">
                         <h1>

@@ -9,7 +9,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="state"/>
@@ -26,7 +26,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form>
                 <header>
                     <button name="action_do_sold" type="object" class="oe_highlight" string="Sold"/>
                     <button name="action_do_cancel" type="object" string="Cancel"/>
@@ -102,8 +102,8 @@
                 <separator/>
                 <filter name="Available properties" domain="[('state', 'in', ['offer_received', 'new'])]"/>
                 <group>
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
-                    <filter string="Type" name="property_type" context="{'group_by':'property_type_id'}"/>
+                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
+                    <filter name="property_type" string="Type" context="{'group_by':'property_type_id'}"/>
                 </group>
             </search>
         </field>
