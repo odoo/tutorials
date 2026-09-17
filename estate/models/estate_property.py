@@ -2,7 +2,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class Property(models.Model):
@@ -60,6 +61,18 @@ class Property(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     active = fields.Boolean(default=True)
+
+    _check_expected_price = models.Constraint("CHECK(expected_price > 0)", "Expected price must be greater than zero")
+    _check_selling_price = models.Constraint("CHECK(selling_price >= 0)", "Selling price must be greater or equal to zero")
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_selling_price_proportion(self):
+        for record in self:
+            if record.selling_price == 0:
+                continue  # 0 means no offer accepted
+
+            if float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0:
+                raise ValidationError(message="Selling price must be at least 90 percent of expected price")
 
     def action_mark_as_sold(self):
         for record in self:

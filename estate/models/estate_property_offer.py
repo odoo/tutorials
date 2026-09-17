@@ -25,6 +25,8 @@ class PropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Made by", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
 
+    _check_price = models.Constraint("CHECK(price > 0)", "Offered price must be greater than zero")
+
     def action_accept_offer(self):
         for record in self:
             linked_property = record.property_id
