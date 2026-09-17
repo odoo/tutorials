@@ -12,6 +12,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name" string="Title"/>
+                <field name="property_type_id" string="Type"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
@@ -31,6 +32,9 @@
                     <h1>
                         <field name="name" placeholder="New House"/>
                     </h1>
+                    <div class="mb-3">
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </div>
                     <div class="row">
                         <div class="col">
                             <group>
@@ -52,6 +56,7 @@
                                 <div class="col">
                                     <group>
                                         <field name="description" string="Description"/>
+                                        <field name="property_type_id" string="Type"/>
                                         <field name="bedrooms" string="Bedrooms"/>
                                         <field name="living_area" string="Living Area (sqm)"/>
                                         <field name="garage" string="Garage"/>
@@ -59,6 +64,21 @@
                                         <field name="garden_area" string="Garden Area (sqm)"/>
                                         <field name="garden_orientation" string="Garden Orientation"/>
                                         <field name="state" string="State"/>
+                                    </group>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Offers">
+                            <list>
+                                <field name="offer_ids" string="Offer"/>
+                            </list>
+                        </page>
+                        <page string="Other info">
+                            <div class="row w-50">
+                                <div class="col">
+                                    <group>
+                                        <field name="salesperson_id" string="Salesman"/>
+                                        <field name="buyer_id" string="Buyer"/>
                                     </group>
                                 </div>
                             </div>
