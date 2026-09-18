@@ -89,6 +89,16 @@ class EstateProperty(models.Model):
         readonly=True,
     )
 
+    _check_expected_price = models.Constraint(
+        definition='CHECK(expected_price > 0)',
+        message='The expected price must be positive',
+    )
+
+    _check_selling_price = models.Constraint(
+        definition='CHECK(selling_price >= 0)',
+        message='The selling price must be positive',
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
