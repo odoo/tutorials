@@ -30,6 +30,7 @@
                 <header>
                     <button name="sell" type="object" string="Sell"/>
                     <button name="cancel" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <h1 class="mb32">
