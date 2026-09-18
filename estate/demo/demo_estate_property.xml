@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Property 1 -->
+        <record id="estate_property_1" model="estate.property">
+            <field name="name">Modern Apartment</field>
+            <field name="description">A beautiful modern apartment in city center</field>
+            <field name="postcode">380001</field>
+            <field name="expected_price">50000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">1200</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="state">New</field>
+        </record>
+
+        <!-- Property 2 -->
+        <record id="estate_property_2" model="estate.property">
+            <field name="name">Luxury Villa</field>
+            <field name="description">Spacious villa with garden and pool</field>
+            <field name="postcode">380015</field>
+            <field name="expected_price">250000</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">3500</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">500</field>
+            <field name="garden_orientation">south</field>
+            <field name="state">Offer Received</field>
+        </record>
+
+        <!-- Property 3 -->
+        <record id="estate_property_3" model="estate.property">
+            <field name="name">Cozy House</field>
+            <field name="description">Perfect small family house</field>
+            <field name="postcode">380058</field>
+            <field name="expected_price">80000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">1500</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="garden_area">200</field>
+            <field name="garden_orientation">east</field>
+            <field name="state">Offer Accepted</field>
+        </record>
+
+        <!-- Property 4 -->
+        <record id="estate_property_4" model="estate.property">
+            <field name="name">Old Farmhouse</field>
+            <field name="description">Needs renovation but large land</field>
+            <field name="postcode">380060</field>
+            <field name="expected_price">60000</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">2000</field>
+            <field name="garden">True</field>
+            <field name="garden_area">1000</field>
+            <field name="garden_orientation">west</field>
+            <field name="state">Cancelled</field>
+        </record>
+
+    </data>
+</odoo>
