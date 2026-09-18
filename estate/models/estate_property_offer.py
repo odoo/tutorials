@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -19,6 +20,7 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", copy=False)
     property_id = fields.Many2one("estate.property", string="Property", copy=False)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+    property_locked = fields.Boolean(related="property_id.locked")
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -30,6 +32,17 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_instance = self.env['estate.property'].browse(vals['property_id'])
+            if vals['price'] < property_instance.best_offer:
+                raise UserError(_("Can't create an offer with a lower price than an existing offer !"))
+            if property_instance.state == "new":
+                property_instance.state = "offer_received"
+
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:

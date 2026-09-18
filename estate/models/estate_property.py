@@ -36,9 +36,10 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area", store=True)
 
     active = fields.Boolean(default=True)
+    locked = fields.Boolean(compute="_compute_locked", string="Locked", store=True)
     state = fields.Selection(
         string="Status",
-        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], 
+        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
         required=True,
         copy=False,
         default="new",
@@ -70,17 +71,11 @@ class EstateProperty(models.Model):
         for record in self:
             valid_offers = record.offer_ids.filtered(lambda offer: offer.status != "refused")
             record.best_offer = max(valid_offers.mapped("price"), default=0)
-            if valid_offers and record.state == "new":
-                record.state = "offer_received"
 
-    def _update_state_from_offers(self):
+    @api.depends("state")
+    def _compute_locked(self):
         for record in self:
-            if record.offer_ids.filtered(lambda offer: offer.status == "accepted"):
-                record.state = "offer_accepted"
-            elif any(not offer.status for offer in record.offer_ids):
-                record.state = "offer_received"
-            else:
-                record.state = "new"
+            record.locked = record.state in ("sold", "cancelled")
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -95,18 +90,29 @@ class EstateProperty(models.Model):
     def _only_if_new_or_cancelled(self):
         for record in self:
             if record.state != 'new' and record.state != 'cancelled':
-                raise UserError("Can't delete property that is not new or cancelled !")
+                raise UserError(_("Can't delete property that is not new or cancelled !"))
 
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("A cancelled property cannot be sold !")
+                raise UserError(_("A cancelled property cannot be sold !"))
+            if not record.offer_ids.filtered(lambda offer: offer.status == "accepted"):
+                raise UserError(_("A property with no accepted offer can't be sold !"))
             record.state = "sold"
         return True
 
     def action_cancelled(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("A sold property cannot be cancelled !")
+                raise UserError(_("A sold property cannot be cancelled !"))
             record.state = "cancelled"
         return True
+
+    def _update_state_from_offers(self):
+        for record in self:
+            if record.offer_ids.filtered(lambda offer: offer.status == "accepted"):
+                record.state = "offer_accepted"
+            elif any(not offer.status for offer in record.offer_ids):
+                record.state = "offer_received"
+            else:
+                record.state = "new"
