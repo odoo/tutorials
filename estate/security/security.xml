@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="groups_privilege_real_estate" model="base.module_category_real_estate_brokerage">
+    <!-- <record id="groups_privilege_real_estate" model="base.module_category_real_estate_brokerage">
         <field name="name">Real Estate</field>
-    </record>
+    </record> -->
 </odoo>
