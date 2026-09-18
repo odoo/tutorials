@@ -13,3 +13,4 @@ class PropertyType(models.Model):
 
     name = fields.Char(required=True)
     property_ids = fields.One2many("estate.property", "property_type_id", "Property")
+    sequence = fields.Integer(default=1, help="Used to order type. Lower is better.")

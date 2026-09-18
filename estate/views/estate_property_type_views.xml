@@ -36,6 +36,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Properties">
+                <field name="sequence" widget="handle" />
                 <field name="name" />
             </list>
         </field>
