@@ -4,6 +4,10 @@
         <menuitem id="estate_menu_first_level" name="Home">
             <menuitem id="estate_model_menu_action" action="estate_property_model_action" />
         </menuitem>
+        <menuitem id="estate_settings_menu_first_level" name="Settings">
+            <menuitem id="estate_property_type_model_menu_action" action="estate_property_type_model_action" />
+            <menuitem id="estate_property_tag_model_menu_action" action="estate_property_tag_model_action" />
+        </menuitem>
     </menuitem>
 
 </odoo>
