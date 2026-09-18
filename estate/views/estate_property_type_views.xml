@@ -26,6 +26,7 @@
                 <sheet>
                     <h1 class="mb32">
                         <field name="name" class="mb16"/>
+                        <button name="estate.estate_property_offer_action" type="action" string="Offers" class="oe_stat_button"/>
                     </h1>
                     <notebook>
                         <page string="Properties">

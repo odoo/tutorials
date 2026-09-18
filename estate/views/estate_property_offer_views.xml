@@ -4,6 +4,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
     <record id="estate_property_offer_view_list" model="ir.ui.view">
@@ -15,6 +16,7 @@
                 <field name="status"/>
                 <field name="partner_id"/>
                 <field name="property_id"/>
+                <field name="property_type_id"/>
                 <button name="accept" type="object" string="Accept" invisible="status in ('accepted', 'refused')"/>
                 <button name="deny" type="object" string="Deny" invisible="status in ('accepted', 'refused')"/>
             </list>
