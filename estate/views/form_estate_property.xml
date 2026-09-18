@@ -9,6 +9,9 @@
                         <field name="name"/>
                     </h1>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
                         
                         <group>
                             <field name="property_type_id" string="Property Type"/>
@@ -54,6 +57,16 @@
                                 <field string="Garden Orientation" name="garden_orientation"/>
                             </group>
                             
+                        </page>
+                        <page string="Offers">
+
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" string="Price"/>
+                                    <field name="partner_id" string="Partner"/>
+                                    <field name="status" string="Status"/>
+                                </list>
+                            </field>
                         </page>
                         <page string="Other info">
                             <group>
