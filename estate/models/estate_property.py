@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", copy=False)
+    buyer_id = fields.Many2one("res.partner", copy=False, required=True)
     offer_ids = fields.One2many("estate.property.offer", "property_id", copy=False)
     best_offer = fields.Float(compute="_compute_best_offer", string="Best Offer", store=True)
 
