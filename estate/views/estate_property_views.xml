@@ -89,6 +89,7 @@
                 <field name="property_type_id"/>
                 <filter name="postcode" context="{'group_by':'postcode'}"/>
                 <filter name="available_filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;', self)]"/>
                 
             </search>
         </field>
