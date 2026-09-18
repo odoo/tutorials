@@ -15,6 +15,9 @@
                 <field name="status"/>
                 <field name="partner_id"/>
                 <field name="property_id"/>
+                <button name="accept" type="object" string="Accept"/>
+                <button name="deny" type="object" string="Deny"/>
+                <field name="status"/>
             </list>
         </field>
     </record>
@@ -24,6 +27,7 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="My New House">
+
                 <sheet>
                     <group>
                         <group>

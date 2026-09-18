@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import date_utils
 
 
@@ -53,3 +54,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def _check_state_compatibility_because(self, record, state, message):
+        if record.state == state:
+            raise UserError(message)
+
+    def sell(self):
+        for record in self:
+            self._check_state_compatibility_because(record, "cancelled", "Canceled property can not be sold")
+            record.state = "sold"
+        return True
+
+    def cancel(self):
+        for record in self:
+            self._check_state_compatibility_because(record, "sold", "Sold property can not be canceld")
+            record.state = "cancelled"
+        return True
