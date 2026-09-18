@@ -1,5 +1,8 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
+
+THRESOLD_MIN_SELLING_POURCENT = 90
 
 
 class Property(models.Model):
@@ -82,6 +85,29 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    # ------------------------------------------------------------
+    # CONSTRAINS
+    # ------------------------------------------------------------
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 2):
+                if (
+                    float_compare(
+                        record.selling_price,
+                        record.expected_price * (THRESOLD_MIN_SELLING_POURCENT / 100),
+                        2,
+                    )
+                    < 0
+                ):
+                    raise ValidationError(
+                        _(
+                            "The selling price cannot be lower than %(value)s%% of the expected price",
+                            value=THRESOLD_MIN_SELLING_POURCENT,
+                        ),
+                    )
 
     # ------------------------------------------------------------
     # ACTIONS
