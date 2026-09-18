@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-    </record>
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -93,10 +88,16 @@
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <filter name="postcode" context="{'group_by':'postcode'}"/>
-                <filter name="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter name="available_filter" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                
             </search>
         </field>
     </record>
-
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available_filter': 1}</field>
+    </record>
 
 </odoo>
