@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
-class Property(models.Model):
 
+class Property(models.Model):
     _name = "estate_property"
     _description = "estate property model"
 
@@ -50,9 +50,7 @@ class Property(models.Model):
 
     total_area = fields.Integer(compute="_compute_areas")
 
-
     @api.depends("living_area", "garden_area")
     def _compute_areas(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
-
