@@ -6,7 +6,9 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Properties">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="offer_count"/>
             </list>
         </field>
     </record>
@@ -17,9 +19,33 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button name="%(estate_property_offer_action)d"
+                                class="oe_stat_button"
+                                icon="fa-bars"
+                                type="action"
+                                context="{'search_default_property_type_id': id}"
+                                invisible="offer_count==0">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
+
                     <h1>
                         <field name="name"/>
                     </h1>
+
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -30,6 +56,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <search string="Estate Property Type">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </search>
         </field>
