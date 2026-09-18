@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate property model'
+    _order = 'id desc'
 
 #   Property information
     name = fields.Char('Name', required=True)
@@ -35,7 +36,7 @@ class EstateProperty(models.Model):
         string='State',
         selection=[('new', 'New'),
                    ('offer_received', 'Offer Received'),
-                   ('offer_accepted', 'Offer accepted'),
+                   ('offer_accepted', 'Offer Accepted'),
                    ('sold', 'Sold'),
                    ('cancelled', 'Cancelled'),
         ],
@@ -122,13 +123,12 @@ class EstateProperty(models.Model):
         return True
 
 #   Actions :
-    def action_set_selling_offer(self, buyer, price):
+    def action_accept_selling_offer(self, buyer, price):
         for record in self:
             if record.buyer_id:
                 raise UserError('An offer is already accepted for this house')
             record.buyer_id = buyer
             record.selling_price = price
+            record.state = 'offer_accepted'
             return True
         return True
-
-
