@@ -2,13 +2,19 @@
 <odoo>
     <record id="estate_property_model_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_settings" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate_property.list</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
                 <field string="Estate" name="name"/>
@@ -22,13 +28,25 @@
         </field>
     </record>
 
+    <record id="estate_property_offers" model="ir.ui.view">
+        <field name="name">estate_property_offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
     <record id="estate_property_form" model="ir.ui.view">
         <field name="name">estate_property.form</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
-                    <field name="name"></field>
+                    <field string = "Estate" name="name"></field>
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -52,6 +70,19 @@
                                 <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
+                                <field name="property_type_id"/>
+                                <field name="property_tags_ids" widget="many2many_tags"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
+                        <page string="Other Infos">
+                            <group>
+                                <field string="Buyer" name="buyer_id"/>
+                                <field string="SalesPerson" name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -62,7 +93,7 @@
 
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate_property.search</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search properties">
                 <field string="Title" name="name"/>

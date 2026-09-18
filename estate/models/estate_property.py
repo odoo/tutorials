@@ -23,3 +23,8 @@ class EstateProperty(models.Model):
     stage = fields.Selection(string="Stage",
     selection=[("new", "New"), ("offer received", "Offer Received"), ("offer accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
     required=True, default="new", copy=False)
+    property_type_id = fields.Many2one("estate.property.type", string = "Property Type")
+    buyer_id = fields.Many2one("res.partner", string = "Buyer")
+    salesperson_id = fields.Many2one("res.users", string = "SalesPerson")
+    property_tags_ids = fields.Many2many("estate.property.tag", string = "Property Tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string = "Offers")
