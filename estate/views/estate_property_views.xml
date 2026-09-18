@@ -27,7 +27,6 @@
                             <field name="name" class="mb16"/>
                         </h1>
                         <field name="property_tag_ids" widget="many2many_tags"/>
-                        <field name="active" invisible="1"/>
                     </div>
                     <separator/>
                     <group>
