@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import date_utils
+from odoo.orm.utils import ValidationError
+from odoo.tools import date_utils, float_compare
 
 
 class EstateProperty(models.Model):
@@ -59,6 +60,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 0.9, 2) < 0:
+                raise ValidationError("Can not accept offer if offered price is lower than 90% of expected")
 
     def _check_state_compatibility_because(self, record, state, message):
         if record.state == state:
