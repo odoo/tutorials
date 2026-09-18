@@ -50,14 +50,14 @@ class Property(models.Model):
 
     total_area = fields.Integer(compute="_compute_areas")
 
-    best_price = fields.Float(compute="_compute_price")
+    best_price = fields.Float(compute="_compute_best_price")
 
     @api.depends("living_area", "garden_area")
     def _compute_areas(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends()
-    def _compute_price(self):
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"))
+            record.best_price = max(record.offer_ids.mapped(("price")))
