@@ -6,3 +6,7 @@ class EstatePropertyTag(models.Model):
     _description: str | None = None
 
     name: fields.Char = fields.Char()
+    _unique_name = models.Constraint(
+        'unique (name)',
+        "Tag nmust be unique!",
+    )
