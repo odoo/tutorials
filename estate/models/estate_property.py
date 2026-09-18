@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name: str = "estate.property"
     _active = True
     _description: str | None = None
+    _order = "id desc"
 
     name: fields.Char = fields.Char()
     description: fields.Text = fields.Text()
