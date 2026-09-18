@@ -133,6 +133,13 @@ class EstateProperty(models.Model):
             return True
         return True
 
+    def action_set_offer_received(self):
+        for record in self:
+            if record.state == 'new':
+                record.state = 'offer_received'
+                return True
+        return True
+
 #   CRUD methods:
     @api.ondelete(at_uninstall=False)
     def _delete_property(self):
