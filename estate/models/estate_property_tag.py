@@ -12,3 +12,4 @@ class PropertyType(models.Model):
     )
 
     name = fields.Char(required=True)
+    color = fields.Integer()

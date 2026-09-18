@@ -41,7 +41,8 @@
                             <h1>
                                 <field name="name" />
                             </h1>
-                            <field name="tags_ids" string="" widget="many2many_tags" />
+                            <field name="tags_ids" string="" widget="many2many_tags"
+                                options="{'no_create': True, 'color_field' : 'color'}" />
                         </div>
                     </group>
                     <separator />
