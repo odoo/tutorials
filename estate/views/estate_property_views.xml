@@ -11,9 +11,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list
-                  decoration-success="state in ('offer_accepted', 'offer_received')"
-                  decoration-bf="state == 'offer_accepted'"
-                  decoration-muted="state == 'sold'"
+                    decoration-success="state in ('offer_accepted', 'offer_received')"
+                    decoration-bf="state == 'offer_accepted'"
+                    decoration-muted="state == 'sold'"
             >
                 <field name="name"/>
                 <field name="property_type_id"/>
@@ -37,7 +37,7 @@
                     <button name="action_do_sold" type="object" class="oe_highlight" string="Sold"
                             invisible="state in ('sold', 'cancelled', 'new')"/>
                     <button name="action_do_cancel" type="object" string="Cancel"
-                            invisible="state in ('sold', 'cancelled',)"/>
+                            invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -48,13 +48,8 @@
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <group>
-                        <!--
-                        FIXME The attributes are documented but don't see to do anything
-                        https://www.odoo.com/documentation/19.0/developer/reference/frontend/javascript_reference.html#relational-fields:~:text=can_create,%3A
-                        -->
-                        <field name="property_type_id" widget="many2one" can_create="false"
-                               can_write="false"
-                               options="{'no_create': true}"
+                        <field name="property_type_id" widget="many2one"
+                               options="{'no_create': True, 'no_edit': True}"
                         />
                     </group>
                     <group>
