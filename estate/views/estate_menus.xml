@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="estate_menu_root" name="Real Estate"
+        web_icon="estate,static/description/icon.png">
+    </menuitem>
+    <menuitem id="estate_first_level_menu"
+            name="Advertisements"
+            parent="estate.estate_menu_root"
+    />
+    <menuitem
+        id="estate_settings_menu"
+        name="Settings"
+        parent="estate.estate_menu_root"
+    />
+    <menuitem
+        id="estate_property_menu_action"
+        name="Properties"
+        parent="estate.estate_first_level_menu"
+        action="estate_property_action"
+    />
+    <menuitem
+        id="estate_property_type_menu"
+        name="Property Types"
+        parent="estate_settings_menu"
+        action="estate_property_type_action"
+    />
+    <menuitem
+        id="estate_property_tag_menu"
+        name="Property Tags"
+        parent="estate_settings_menu"
+        action="estate_property_tag_action"
+    />
+    <menuitem
+        id="estate_property_offer_menu"
+        name="Property Offer"
+        parent="estate_settings_menu"
+        action="estate_property_offer_action"
+    />
+    <menuitem
+        id="estate_property_new_menu"
+        name="Create Property"
+        parent="estate_first_level_menu"
+        action="estate_property_new_action"/>
+
+    <menuitem
+        id="estate_property_maintenance_menu"
+        name="Maintenance"
+        parent="estate.estate_settings_menu"
+        action="estate.estate_property_maintenance_action"
+    />
+    <menuitem
+        id="estate_property_visits_menu"
+        name="Visits"
+        parent="estate_settings_menu"
+        action="estate_property_visits_action"
+        sequence="30"
+    />
+
+</odoo>

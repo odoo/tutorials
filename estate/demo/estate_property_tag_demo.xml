@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="property_tags_cozy" model="estate.property.tag">
+        <field name="name">cozy</field>
+    </record>
+    <record id="property_tags_furnished" model="estate.property.tag">
+        <field name="name">furnished</field>
+    </record>
+    <record id="property_tags_unfurnished" model="estate.property.tag">
+        <field name="name">unfurnished</field>
+    </record>
+    <record id="property_tags_renovated" model="estate.property.tag">
+        <field name="name">renovated</field>
+    </record>
+    <record id="property_tags_new" model="estate.property.tag">
+        <field name="name">new</field>
+    </record>
+    <record id="property_tags_old_property" model="estate.property.tag">
+        <field name="name">old property</field>
+    </record>
+</odoo>
