@@ -88,5 +88,4 @@ class EstateProperty(models.Model):
         self.buyer_id = offer_buyer_id
         self.selling_price = offer_selling_price
         self.state = "sold"
-        
         return True
