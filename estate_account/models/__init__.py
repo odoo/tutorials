@@ -1,8 +1,8 @@
 from odoo import models, Command
 
 
-class EstateProperty(models.Model):
-    _inherit = ["estate.property"]
+class Property(models.Model):
+    _inherit = "estate.property"
 
     def action_do_sold(self):
         move_type = "out_invoice"  # Customer Invoice
