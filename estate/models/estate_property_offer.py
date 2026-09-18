@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import models, fields, api
 
 
 class EstatePropertyOffer(models.Model):
@@ -27,7 +25,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             start_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.date_deadline = fields.Date.add(start_date, days=record.validity)
-    
+
     @api.depends("date_deadline", "create_date")
     def _inverse_date_deadline(self):
         for record in self:
@@ -36,15 +34,15 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             for other_offer in record.property_id.offer_ids:
-                if other_offer.status == "accepted" :
+                if other_offer.status == "accepted":
                     other_offer.status = False
-                    Warning("An other offer acceptation was cancelled : only one offer can be accepted at a time !")
+                    raise Warning("An other offer acceptation was cancelled : only one offer can be accepted at a time !")
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id._update_state_from_offers()
         return True
-    
+
     def action_reset(self):
         for record in self:
             if record.status == "accepted":
@@ -53,7 +51,7 @@ class EstatePropertyOffer(models.Model):
             record.status = False
             record.property_id._update_state_from_offers()
         return True
-    
+
     def action_refuse(self):
         for record in self:
             if record.status == "accepted":
@@ -67,4 +65,3 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'The offer prices should be strictly positive.',
     )
-
