@@ -38,7 +38,7 @@
                     </h1>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"> </field>
                             <field name="date_availability"> </field>
                         </group>
@@ -59,7 +59,7 @@
                                 <field name="garden"> </field>
                                 <field name="garden_area"> </field>
                                 <field name="garden_orientation"> </field>
-                                <field name="property_type_id"> </field>
+                                <field name="property_type_id" options="{'no_create_edit':True, 'no_create':True}"> </field>
                                 <field name="total_area"> </field>
                             </group>
                         </page>
