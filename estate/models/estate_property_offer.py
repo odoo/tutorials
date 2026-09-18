@@ -1,10 +1,11 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
 class Offer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for a property of Estate"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -22,13 +23,11 @@ class Offer(models.Model):
     )
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(
-        compute="_compute_deadline",
-        inverse="_inverse_deadline",
-    )
+    date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
+    property_type_id = fields.Many2one(related="property_id.type_id", store=True)
 
     _check_price_positive = models.Constraint(
-        "CHECK(price >= 0)",
+        "CHECK(price > 0)",
         "The Price of an Offer should be positive.",
     )
 
@@ -50,16 +49,19 @@ class Offer(models.Model):
                 record.date_deadline - fields.Date.to_date(record.create_date)
             ).days
 
-    def confirm_offer(self):
-        if "accepted" in self.property_id.offer_ids.mapped("status"):
-            msg = "Property already sold"
-            raise UserError(msg)
-        self.status = "accepted"
-        self.property_id.selling_price = self.price
+    def action_confirm_offer(self):
+        for record in self:
+            if "accepted" in record.property_id.offer_ids.mapped("status"):
+                raise UserError(_("Property already sold"))
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
+            record.property_id.partner_id = record.partner_id
         return True
 
-    def refuse_offer(self):
-        if self.status == "accepted":
-            self.property_id.selling_price = 0
-        self.status = "refused"
+    def action_refuse_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.selling_price = 0
+            record.status = "refused"
         return True

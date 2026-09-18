@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -18,17 +19,14 @@ class Property(models.Model):
         ),
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(
-        readonly=True,
-        copy=False,
-    )
+    selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     has_garage = fields.Boolean()
     has_garden = fields.Boolean()
-    garden_area = fields.Integer()
-    total_area = fields.Integer(compute="_compute_total_area")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
+    total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
@@ -56,7 +54,6 @@ class Property(models.Model):
     partner_id = fields.Many2one(
         "res.partner",
         string="Buyer",
-        index=True,
         copy=False,
     )
     user_id = fields.Many2one(
@@ -71,23 +68,19 @@ class Property(models.Model):
 
     _check_expected_price_positive = models.Constraint(
         "CHECK(expected_price >= 0)",
-        "The Expected Price should be positive.",
+        "The Expected Price should be positive or zero.",
     )
     _check_selling_price_positive = models.Constraint(
-        "CHECK(selling_price >= 0)",
+        "CHECK(selling_price > 0)",
         "The Selling Price should be positive.",
     )
 
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if (not float_is_zero(record.selling_price, 2)) and float_compare(
-                record.selling_price, (record.expected_price * 0.9), 2,
-            ) < 0:
-                msg = (
-                    r"The selling price cannot be lower than 90% of the expected price"
-                )
-                raise ValidationError(msg)
+            if not float_is_zero(record.selling_price, 2) and\
+                float_compare(record.selling_price, (record.expected_price * 0.9), 2) < 0:
+                raise ValidationError(_(r"The selling price cannot be lower than 90% of the expected price"))
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -99,31 +92,34 @@ class Property(models.Model):
         for record in self:
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped("price"))
+                if record.state == "new":
+                    record.state = "offer_received"
             else:
                 record.best_price = 0
+                record.state = "new"
 
     @api.onchange("has_garden")
-    def _onchange_hjas_garden(self):
-        if self.has_garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+    def _onchange_has_garden(self):
+        for record in self:
+            if record.has_garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
 
-    def cancel_property(self):
-        if self.state == "sold":
-            msg = "A sold property cannot be cancelled"
-            raise UserError(msg)
-        self.state = "cancelled"
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(_("A sold property cannot be cancelled"))
+            record.state = "cancelled"
         return True
 
-    def sell_property(self):
-        if self.state == "cancelled":
-            msg = "A cancelled property cannot be sold"
-            raise UserError(msg)
-        if not ("accepted" in self.offer_ids.mapped("status")):
-            msg = "A offer need to be accepted before selling"
-            raise UserError(msg)
-        self.state = "sold"
+    def action_sell_property(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError(_("A cancelled property cannot be sold"))
+            if not ("accepted" in record.offer_ids.mapped("status")):
+                raise UserError(_("A offer need to be accepted before selling"))
+            record.state = "sold"
         return True
