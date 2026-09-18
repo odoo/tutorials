@@ -38,6 +38,13 @@ class PropertyType(models.Model):
     def action_accept_offer(self):
         for record in self:
             record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer = record.partner_id
+
+            for offer in record.property_id.offer_ids:
+                if offer != record:
+                    offer.status = "refused"
+
         return True
 
     def action_refuse_offer(self):
