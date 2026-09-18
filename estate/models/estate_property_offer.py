@@ -42,7 +42,7 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.state == "sold"
                 or record.property_id.state == "cancelled"
             ):
-                raise UserError(_("Property already %s") % record.property_id.state)
+                raise UserError(_("Property already sold, or cancelled"))
             elif record.property_id.action_sell_to_offer(
                 offer_buyer_id=record.partner_id, offer_selling_price=record.price
             ):
