@@ -57,15 +57,15 @@
                                 <field name="living_area"> </field>
                                 <field name="facades"> </field>
                                 <field name="garden"> </field>
-                                <field name="garden_area"> </field>
-                                <field name="garden_orientation"> </field>
+                                <field name="garden_area" invisible="not garden"> </field>
+                                <field name="garden_orientation" invisible="not garden"> </field>
                                 <field name="property_type_id" options="{'no_create_edit':True, 'no_create':True}"> </field>
                                 <field name="total_area"> </field>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids"> </field>
+                                <field name="offer_ids" readonly="state in ('sold', 'cancelled')"> </field>
                             </group>
                         </page>
                         <page string="Other Info">
