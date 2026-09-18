@@ -20,8 +20,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer('Validity')
     date_deadline = fields.Date(compute="_compute_deadline")
 
-
-    @api.depends()
+    @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
             base_date = record.create_date if record.create_date else fields.Date.today()
