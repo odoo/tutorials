@@ -38,6 +38,7 @@
                     <div class="row">
                         <div class="col">
                             <group>
+                                <field name="property_type_id" string="Type" />
                                 <field name="postcode" string="Postcode" />
                                 <field name="date_availability" string="Available From" />
                             </group>
@@ -45,6 +46,7 @@
                         <div class="col">
                             <group>
                                 <field name="expected_price" string="Expected Price" />
+                                <field name="best_price" string="Best Price"/>
                                 <field name="selling_price" string="Selling Price" />
                             </group>
                         </div>
@@ -56,12 +58,12 @@
                                 <div class="col">
                                     <group>
                                         <field name="description" string="Description" />
-                                        <field name="property_type_id" string="Type" />
                                         <field name="bedrooms" string="Bedrooms" />
                                         <field name="living_area" string="Living Area (sqm)" />
-                                        <field name="garage" string="Garage" />
                                         <field name="garden" string="Garden" />
                                         <field name="garden_area" string="Garden Area (sqm)" />
+                                        <field name="total_area" string="Total Area"/>
+                                        <field name="garage" string="Garage" />
                                         <field name="garden_orientation" string="Garden Orientation" />
                                         <field name="state" string="State" />
                                     </group>
