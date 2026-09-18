@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate_property.offer"
     _description = "Offer to the Estate"
