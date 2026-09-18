@@ -30,8 +30,10 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <header>
-                    <button name="action_sold_property" type="object" string="SOLD" />
-                    <button name="action_cancel_property" type="object" string="CANCEL" />
+                    <button name="action_sold_property" type="object" string="SOLD"
+                        invisible="state in ('cancelled', 'sold')" />
+                    <button name="action_cancel_property" type="object" string="CANCEL"
+                        invisible="state in ('cancelled', 'sold')" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new, offer_received, offer_accepted, sold" />
                 </header>
@@ -70,14 +72,15 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" />
+                                <field name="offer_ids"
+                                    readonly="state in ('offer_accepted','sold','cancelled')" />
                             </group>
                         </page>
                         <page string="Other Info">
