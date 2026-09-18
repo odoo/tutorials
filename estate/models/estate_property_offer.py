@@ -37,18 +37,18 @@ class EstatePropertyOfferModel(models.Model):
     @api.depends("property_id")
     def action_accept_offer(self):
         for record in self:
-            if self.status == "accepted" or self.property_id.state in ['cancelled', 'sold', 'offer_accepted']:
+            if record.status == "accepted" or record.property_id.state in ['cancelled', 'sold', 'offer_accepted']:
                 return False
-            self.property_id.selling_price = self.price
-            self.property_id.state = 'offer_accepted'
-            self.property_id.buyer_id = self.partner_id
-            self.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.status = 'accepted'
         return True
 
     @api.depends("property_id")
     def action_refuse_offer(self):
         for record in self:
-            if self.property_id.state in ['cancelled', 'sold']:
+            if record.property_id.state in ['cancelled', 'sold']:
                 return False
-            self.status = 'refused'
+            record.status = 'refused'
         return True

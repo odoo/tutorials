@@ -71,18 +71,18 @@ class EstatePropertyModel(models.Model):
 
     def action_sell_property(self):
         for record in self:
-            if self.state == 'cancelled':
+            if record.state == 'cancelled':
                 UserError("Cannot sell a cancelled property")
                 return False
-            self.state = 'sold'
+            record.state = 'sold'
         return True
 
     def action_cancel_property(self):
         for record in self:
-            if self.state == 'sold':
+            if record.state == 'sold':
                 UserError("Cannot cancel a sold property")
                 return False
-            self.state = 'cancelled'
+            record.state = 'cancelled'
         return True
 
     _check_expected_price_constraint = models.Constraint(
