@@ -17,7 +17,6 @@
                 <field name="property_id"/>
                 <button name="accept" type="object" string="Accept" invisible="status in ('accepted', 'refused')"/>
                 <button name="deny" type="object" string="Deny" invisible="status in ('accepted', 'refused')"/>
-                <field name="status"/>
             </list>
         </field>
     </record>
