@@ -9,6 +9,7 @@ from odoo.tools.float_utils import float_compare
 class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char("Property Name", required=True)
     description = fields.Text("Property Description")
@@ -72,27 +73,29 @@ class Property(models.Model):
                 continue  # 0 means no offer accepted
 
             if float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0:
-                raise ValidationError(message="Selling price must be at least 90 percent of expected price")
+                raise ValidationError(_("Selling price must be at least 90 percent of expected price"))
 
     def action_mark_as_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError(message="Can't sell a cancelled auction.")
 
+        if "cancelled" in self.mapped("state"):
+            raise UserError(_("Can't sell a cancelled auction."))
+
+        for record in self:
             record.state = "sold"
 
         return True
 
     def action_cancel_selling(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError(message="Can't cancel a sold auction.")
 
+        if "sold" in self.mapped("state"):
+            raise UserError(_("Can't cancel a sold auction."))
+
+        for record in self:
             record.state = "cancelled"
 
         return True
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
@@ -110,4 +113,4 @@ class Property(models.Model):
             return
 
         self.garden_area = 0
-        self.garden_orientation = ""
+        self.garden_orientation = False
