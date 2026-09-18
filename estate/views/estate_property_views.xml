@@ -12,7 +12,7 @@
             <list string="Channel">
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="bedroom"/>
