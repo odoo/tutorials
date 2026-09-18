@@ -1,5 +1,6 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare
 
 
 class EstateProperty(models.Model):
@@ -98,6 +99,12 @@ class EstateProperty(models.Model):
         definition='CHECK(selling_price >= 0)',
         message='The selling price must be positive',
     )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0:
+                raise ValidationError('The selling price must be at least 90% of the Expected price')
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
