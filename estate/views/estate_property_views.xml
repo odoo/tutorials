@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate_property.list</field>
-        <field name="model">estate_property</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" width="500px" string="Title"/>
@@ -17,8 +17,8 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate_property.form</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
@@ -26,10 +26,13 @@
                         <h1 class="mb32">
                             <field name="name" class="mb16"/>
                         </h1>
+                        <field name="property_tag_ids" widget="many2many_tags"/>
                         <field name="active" invisible="1"/>
                     </div>
+                    <separator/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -53,6 +56,23 @@
                                 </group>
                             </div>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list string="Offers">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <div class="col">
+                                <group>
+                                    <field name="salesperson_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </div>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -60,8 +80,8 @@
     </record>
 
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate_property.view.search</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
                 <field name="name"/>
@@ -73,14 +93,14 @@
                 <separator/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
-                <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
