@@ -4,6 +4,8 @@ from odoo import fields, models
 class PropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
+    _order = "name"
+
     _check_unique_name = models.Constraint(
         "UNIQUE (name)",
         "The name must be unique",

@@ -8,6 +8,8 @@ THRESOLD_MIN_SELLING_POURCENT = 90
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
+
     _check_positive_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
         "The expected price must be stricly positive",
