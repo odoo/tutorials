@@ -1,6 +1,7 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class Property(models.Model):
+
     _name = "estate_property"
     _description = "estate property model"
 
@@ -17,35 +18,41 @@ class Property(models.Model):
     garden = fields.Boolean('Has Garden')
     garden_area = fields.Integer('# Garden Areas')
     garden_orientation = fields.Selection(
-        string = 'Garden Orientation',
+        string="Garden Orientation",
         selection=[
-        ('north', 'North'), 
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West')
+        ('north', "North"),
+        ('south', "South"),
+        ('east', "East"),
+        ('west', "West"),
         ]
     )
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
-        string='State',
+        string="State",
         selection=[
-            ('new', 'New'), 
-            ('offer_received', 'Offer Received'), 
-            ('offer_accepted', 'Offer accepted'), 
-            ('sold', 'Sold'), 
-            ('cancelled', 'Cancelled')
-            ],
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
+        ],
         required=True,
         copy=False,
-        default='new'
+        default='new',
     )
 
-    salesperson = fields.Many2one('res.users', string='Salesperson', index=True, tracking=True, default=lambda self: self.env.user)
+    salesperson = fields.Many2one('res.users', string="Salesperson", index=True, default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
 
-    tag_ids = fields.Many2many('estate_property.tag', string='Tags')
+    tag_ids = fields.Many2many('estate_property.tag', string="Tags")
 
-    offer_ids = fields.One2many('estate_property.offer', 'property_id', string='Offer')
+    offer_ids = fields.One2many('estate_property.offer', 'property_id', string="Offer")
+
+    total_area = fields.Integer(compute="_compute_areas")
 
 
+    @api.depends("living_area", "garden_area")
+    def _compute_areas(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
 
