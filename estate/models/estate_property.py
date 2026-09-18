@@ -132,3 +132,11 @@ class EstateProperty(models.Model):
             record.state = 'offer_accepted'
             return True
         return True
+
+#   CRUD methods:
+    @api.ondelete(at_uninstall=False)
+    def _delete_property(self):
+        for record in self:
+            if not record.state in ('new', 'cancelled'):
+                raise UserError('Property that are not new or cancelled cannot be deleted !')
+        #return super().unlink()
