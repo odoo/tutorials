@@ -1,5 +1,8 @@
 {
     "name": "Real Estate",
+    "version": "19.0.1.0.0",
+    "category": "Real Estate",
+    "summary": "Real Estate Advertisement and Management",
     "author": "Odoo S.A.",
     "license": "LGPL-3",
     "depends": ["base"],
@@ -18,6 +21,8 @@
         "views/estate_menus.xml",
         "data/estate_sequence.xml",
         "data/estate_cron.xml",
+    ],
+    "demo": [
         "data/estate_demo.xml",
     ],
     "application": True,

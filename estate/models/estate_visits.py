@@ -16,24 +16,19 @@ class EstateVisit(models.Model):
         default=lambda self: self.env.user,
     )
     date_time = fields.Datetime(string="Time Slot", required=True)
-
-    @api.onchange("property_id")
-    def _onchange_property_id(self):
-        if self.property_id and self.property_id.salesperson_id:
-            self.agent_id = self.property_id.salesperson_id
-
     state = fields.Selection(
+        string="Status",
         selection=[
             ('draft', "Draft"),
             ('scheduled', "Scheduled"),
             ('completed', "Completed"),
             ('cancelled', "Cancelled"),
         ],
-        string="Status",
         default="scheduled",
         required=True,
     )
     rating = fields.Selection(
+        string="Rating",
         selection=[
             ("1", "Poor"),
             ("2", "Fair"),
@@ -41,7 +36,6 @@ class EstateVisit(models.Model):
             ("4", "Very Good"),
             ("5", "Excellent"),
         ],
-        string="Rating",
     )
     feedback = fields.Text(string="Feedback")
 
@@ -63,3 +57,8 @@ class EstateVisit(models.Model):
                 raise ValidationError(
                     _("This customer already has a visit scheduled for this property at this time."),
                 )
+
+    @api.onchange("property_id")
+    def _onchange_property_id(self):
+        if self.property_id and self.property_id.salesperson_id:
+            self.agent_id = self.property_id.salesperson_id

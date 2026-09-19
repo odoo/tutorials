@@ -10,32 +10,35 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
-    name = fields.Char(required=True, string="Property Name", translate=True)
-    description = fields.Text(translate=True)
-    postcode = fields.Char()
+    name = fields.Char(string="Property Name", required=True, translate=True)
+    description = fields.Text(string="Description", translate=True)
+    postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
+        string="Available From",
         default=lambda self: fields.Date.context_today(self) + relativedelta(months=3),
+        copy=False,
     )
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    selling_date = fields.Date()
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    selling_date = fields.Date(string="Selling Date", readonly=True, copy=False)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
+        string="Garden Orientation",
         selection=[
             ('north', "North"),
             ('south', "South"),
             ('east', "East"),
             ('west', "West"),
         ],
-        string="Garden Orientation",
     )
-    active = fields.Boolean(default=True)
+    active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
+        string="State",
         selection=[
             ('new', "New"),
             ('offer_received', "Offer Received"),
@@ -47,7 +50,6 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
-        string="State",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -64,26 +66,25 @@ class EstateProperty(models.Model):
         string="Maintenance Requests",
     )
     visit_ids = fields.One2many("estate.visit", "property_id", string="Visits")
-    visit_count = fields.Integer(string="Visit Count", compute="_compute_visit_count")
-
     booking_ids = fields.One2many("estate.property.booking", "property_id", string="Bookings")
-    booking_count = fields.Integer(string="Booking Count", compute="_compute_booking_count")
 
     total_area = fields.Integer(
         string="Total Area (sqm)",
         compute="_compute_total_area",
         help="Total area of the property (living area + garden area)",
     )
-    best_price = fields.Float(
-        string="Best Offer",
-        compute="_compute_best_price",
-        help="The highest offer received for this property",
-        store=True,
-    )
     square_area = fields.Integer(
         string="Square Area",
         compute="_compute_total_square",
     )
+    best_price = fields.Float(
+        string="Best Offer",
+        compute="_compute_best_price",
+        store=True,
+        help="The highest offer received for this property",
+    )
+    visit_count = fields.Integer(string="Visit Count", compute="_compute_visit_count")
+    booking_count = fields.Integer(string="Booking Count", compute="_compute_booking_count")
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -123,10 +124,76 @@ class EstateProperty(models.Model):
         for record in self:
             record.booking_count = len(record.booking_ids)
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price_difference(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_rounding=0.01):
+                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=0.01) < 0:
+                    raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(_("Only new and cancelled properties can be deleted."))
+
+    def action_accept_best_offer(self):
+        self.ensure_one()
+        today = fields.Date.context_today(self)
+        pending_offers = self.offer_ids.filtered(lambda o: not o.status)
+        if not pending_offers:
+            raise UserError(_("This property has no pending offers to accept."))
+        valid_offers = pending_offers.filtered(lambda o: not o.date_deadline or o.date_deadline >= today)
+        offers_to_select = valid_offers or pending_offers
+        best_offer = max(offers_to_select, key=lambda o: (o.price, o.create_date or fields.Datetime.now(), o.id))
+        best_offer.action_accept()
+        return True
+
+    def action_sold(self):
+        self.ensure_one()
+        if self.state == "cancelled":
+            raise UserError(_("A cancelled property cannot be set as sold."))
+        if not self.buyer_id:
+            raise UserError(_("A property cannot be sold without an accepted offer (buyer)."))
+        self.selling_date = fields.Date.today()
+        create_date = self.create_date.date() if self.create_date else fields.Date.today()
+        if (self.selling_date - create_date).days <= 2:
+            tag = self.env['estate.property.tag'].search([('name', '=', 'quick sell')], limit=1)
+            if not tag:
+                tag = self.env['estate.property.tag'].create({
+                    'name': 'quick sell',
+                    'description': 'Quick sell property tag',
+                })
+            self.tag_ids = self.tag_ids | tag
+        active_booking = self.booking_ids.filtered(lambda b: b.state in ("draft", "pending"))
+        if active_booking:
+            active_booking.write({"state": "confirmed"})
+        self.write({"state": "sold", "active": False})
+        return True
+
+    def action_cancel(self):
+        self.ensure_one()
+        if self.state == "sold":
+            raise UserError(_("A sold property cannot be cancelled."))
+        active_booking = self.booking_ids.filtered(lambda b: b.state in ("draft", "pending", "confirmed"))
+        if active_booking:
+            active_booking.action_cancel_booking()
+        self.write({"state": "cancelled", "active": False})
+        return True
+
     def action_view_visits(self):
         self.ensure_one()
         return {
-            "name": "Visits",
+            "name": _("Visits"),
             "type": "ir.actions.act_window",
             "res_model": "estate.visit",
             "view_mode": "list,form",
@@ -137,7 +204,7 @@ class EstateProperty(models.Model):
     def action_view_bookings(self):
         self.ensure_one()
         action = {
-            "name": "Bookings",
+            "name": _("Bookings"),
             "type": "ir.actions.act_window",
             "res_model": "estate.property.booking",
             "domain": [("property_id", "=", self.id)],
@@ -158,73 +225,3 @@ class EstateProperty(models.Model):
             action["context"]["create"] = False
 
         return action
-
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
-
-    def action_cancel(self):
-        self.ensure_one()
-        if self.state == "sold":
-            msg = "A sold property cannot be cancelled."
-            raise UserError(msg)
-        active_booking = self.booking_ids.filtered(lambda b: b.state in ("draft", "pending", "confirmed"))
-        if active_booking:
-            active_booking.action_cancel_booking()
-        self.write({"state": "cancelled", "active": False})
-        return True
-
-    def action_sold(self):
-        self.ensure_one()
-        if self.state == "cancelled":
-            msg = "A cancelled property cannot be set as sold."
-            raise UserError(msg)
-        if not self.buyer_id:
-            msg = "A property cannot be sold without an accepted offer (buyer)."
-            raise UserError(msg)
-        self.selling_date = fields.Date.today()
-        create_date = self.create_date.date() if self.create_date else fields.Date.today()
-        if (self.selling_date - create_date).days <= 2:
-            tag = self.env['estate.property.tag'].search([('name', '=', 'quick sell')], limit=1)
-            if not tag:
-                tag = self.env['estate.property.tag'].create({
-                    'name': 'quick sell',
-                    'description': 'Quick sell property tag',
-                })
-            self.tag_ids = self.tag_ids | tag
-        active_booking = self.booking_ids.filtered(lambda b: b.state in ("draft", "pending"))
-        if active_booking:
-            active_booking.write({"state": "confirmed"})
-        self.write({"state": "sold", "active": False})
-        return True
-
-    def action_accept_best_offer(self):
-        self.ensure_one()
-        today = fields.Date.context_today(self)
-        pending_offers = self.offer_ids.filtered(lambda o: not o.status)
-        if not pending_offers:
-            raise UserError(_("This property has no pending offers to accept."))
-        valid_offers = pending_offers.filtered(lambda o: not o.date_deadline or o.date_deadline >= today)
-        offers_to_select = valid_offers or pending_offers
-        best_offer = max(offers_to_select, key=lambda o: (o.price, o.create_date or fields.Datetime.now(), o.id))
-        best_offer.action_accept()
-        return True
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_price_difference(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_rounding=0.01):
-                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=0.01) < 0:
-                    msg = "The selling price cannot be lower than 90% of the expected price."
-                    raise ValidationError(msg)
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_not_new_or_cancelled(self):
-        for record in self:
-            if record.state not in ("new", "cancelled"):
-                raise UserError(_("Only new and cancelled properties can be deleted."))

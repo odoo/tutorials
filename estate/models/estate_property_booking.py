@@ -149,10 +149,7 @@ class EstatePropertyBooking(models.Model):
                 if rec.state in ("draft", "pending"):
                     rec.state = "confirmed"
                 if rec.property_id and rec.property_id.with_context(active_test=False).state != "sold":
-                    rec.property_id.write({
-                        "state": "sold",
-                        "active": False,
-                    })
+                    rec.property_id.action_sold()
             elif rec.deposit_paid >= rec.min_deposit_amount and rec.state == "draft":
                 rec.action_confirm_booking()
 

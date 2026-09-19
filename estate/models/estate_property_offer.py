@@ -10,18 +10,18 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
     _order = "price desc"
 
-    price = fields.Float(required=True)
+    price = fields.Float(string="Price", required=True)
     is_suspicious = fields.Boolean(
         string="Suspicious",
         compute="_compute_is_suspicious",
     )
     status = fields.Selection(
+        string="Status",
         selection=[
             ('accepted', "Accepted"),
             ('rejected', "Rejected"),
         ],
         copy=False,
-        string="Status",
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
@@ -36,24 +36,6 @@ class EstatePropertyOffer(models.Model):
         "CHECK(price > 0)",
         "A property offer price must be strictly positive",
     )
-
-    @api.depends("create_date", "validity")
-    def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                create_date = record.create_date.date()
-            else:
-                create_date = fields.Date.today()
-            record.date_deadline = create_date + timedelta(days=record.validity)
-
-    def _inverse_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                create_date = record.create_date.date()
-            else:
-                create_date = fields.Date.today()
-            if record.date_deadline:
-                record.validity = (record.date_deadline - create_date).days
 
     @api.depends("create_date", "partner_id")
     def _compute_is_suspicious(self):
@@ -86,6 +68,24 @@ class EstatePropertyOffer(models.Model):
                 ),
             )
             record.is_suspicious = len(recent) > 2
+
+    @api.depends("create_date", "validity")
+    def _compute_date_deadline(self):
+        for record in self:
+            if record.create_date:
+                create_date = record.create_date.date()
+            else:
+                create_date = fields.Date.today()
+            record.date_deadline = create_date + timedelta(days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            if record.create_date:
+                create_date = record.create_date.date()
+            else:
+                create_date = fields.Date.today()
+            if record.date_deadline:
+                record.validity = (record.date_deadline - create_date).days
 
     @api.model_create_multi
     def create(self, vals_list):
