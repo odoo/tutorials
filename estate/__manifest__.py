@@ -1,0 +1,38 @@
+{
+    "name": "Real Estate",
+    "depends": ["base", "mail", "website"],
+    "data": [
+        "security/estate_security.xml",
+        "security/ir.model.access.csv",
+        "wizard/estate_property_offer_wizard_views.xml",
+        "data/ir_sequence_data.xml",
+        "data/ir_cron_data.xml",
+        "data/mail_template_data.xml",
+        # "views/res_users_view.xml",
+        "views/property_maintenance_views.xml",
+        "views/res_config_settings_views.xml",
+        "views/estate_property_offer_views.xml",
+        "views/estate_property_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/estate_property_tag_views.xml",
+        "views/estate_booking_views.xml",
+        "views/estate_booking_payment.xml",
+        "views/website_property_templates.xml",
+        "views/estate_menus.xml",
+        "data/demo_types.xml",
+        "data/demo_tags.xml",
+        "data/demo_property.xml",
+    ],
+    "assets": {
+        "web.assets_backend": [
+            "estate/static/src/scss/estate_auction_state.scss",
+        ],
+        "web.assets_frontend": [
+            "estate/static/src/js/auction_timer.js",
+        ],
+    },
+    "application": True,
+    "author": "dhruvi kalariya",
+    "license": "LGPL-3",
+    "installable": True,
+}

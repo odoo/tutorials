@@ -1,0 +1,45 @@
+.o_estate_auction_state_selection {
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+
+    .btn, button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 1.5px solid #00b4d8 !important;
+        border-radius: 50px !important;
+        padding: 6px 20px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        color: #00b4d8 !important;
+        text-decoration: none !important;
+        background-color: rgba(0, 180, 216, 0.06) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+        transition: all 0.25s ease-in-out !important;
+
+        &:hover {
+            background-color: rgba(0, 180, 216, 0.18) !important;
+            border-color: #0077b6 !important;
+            color: #0077b6 !important;
+            box-shadow: 0 4px 12px rgba(0, 180, 216, 0.25) !important;
+            transform: translateY(-1px);
+        }
+
+        .o_status {
+            width: 14px !important;
+            height: 14px !important;
+            margin-right: 8px !important;
+            border-radius: 50% !important;
+            flex-shrink: 0 !important;
+        }
+
+        .o_status_label {
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.3px !important;
+            white-space: nowrap !important;
+        }
+    }
+}

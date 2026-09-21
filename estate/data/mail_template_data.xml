@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_property_booked" model="mail.template">
+            <field name="name">Real Estate: Property Booked</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">Booking Confirmed for Property: {{ object.name }}</field>
+            <field name="email_from">{{ object.salesperson_id.email_formatted or object.create_uid.email_formatted }}</field>
+            <field name="partner_to">{{ object.buyer_id.id }}</field>
+            <field name="use_default_to" eval="False"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                    <p style="margin: 0px; padding: 0px; font-size: 14px;">
+                        Dear <t t-out="object.buyer_id.name"/>,
+                        <br/><br/>
+                        We are pleased to inform you that your booking for the property <strong><t t-out="object.name"/></strong> has been successfully confirmed.
+                        <br/><br/>
+                        <t t-set="booking" t-value="object.env['estate.booking'].search([('property_id', '=', object.id), ('booking_status', '=', 'booked')], limit=1)"/>
+                        <t t-if="booking">
+                            <strong>Booking Details:</strong>
+                            <ul>
+                                <li><strong>Booking Number:</strong> <t t-out="booking.booking_number"/></li>
+                                <li><strong>Final Property Price:</strong> <t t-out="booking.final_price"/></li>
+                                <li><strong>Booking Amount Paid:</strong> <t t-out="booking.booking_amount"/></li>
+                            </ul>
+                        </t>
+                        <br/>
+                        Thank you for choosing us!
+                        <br/><br/>
+                        Best regards,
+                        <br/>
+                        <t t-out="object.salesperson_id.name"/>
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>
