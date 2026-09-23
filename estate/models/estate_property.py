@@ -1,6 +1,7 @@
 from odoo import api, fields, models
-from datetime import date
 from dateutil.relativedelta import relativedelta
+from datetime import date
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -8,7 +9,7 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
 
     def check_availability(self):
-        return (date.today() + relativedelta(months=3))
+        return date.today() + relativedelta(months=3)
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -33,25 +34,21 @@ class EstateProperty(models.Model):
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         [
-            ("New", "New"),
-            ("Offer Received", "Offer Received"),
-            ("Offer Accepted", "Offer Accepted"),
-            ("Sold", "Sold"),
-            ("Cancelled", "Cancelled"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
-        default="New",
+        default="new",
     )
 
     property_type_id = fields.Many2one("estate.property.type")
     buyer = fields.Many2one("res.partner", copy=False)
     salesperson = fields.Many2one("res.users", default=lambda self: self.env.user)
-
     tag_id = fields.Many2many("estate.property.tag")
-
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-
     total_area = fields.Integer(compute="_compute_total_area")
-
     best_price = fields.Integer(compute="_compute_max_offer")
 
     @api.depends("living_area", "garden_area")
@@ -72,3 +69,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def action_on_sold_button(self):
+        if self.state != "cancelled":
+            self.state = "sold"
+        else:
+            raise UserError("Cancelled property cannot be sold")
+
+    def action_on_cancel_button(self):
+        if self.state != "sold":
+            self.state = "cancelled"
+        else:
+            raise UserError("Sold property cannot be cancelled")
