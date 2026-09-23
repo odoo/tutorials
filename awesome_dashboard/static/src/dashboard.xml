@@ -2,7 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomer" type="button" class="btn btn-primary"
+                        title="Customers">Customers</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
+            </t>
+            <t if="stats_service.resp">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp"
+                           t-value="item.props ? item.props(stats_service.resp) : {'data': stats_service.resp}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+
+            </t>
+        </Layout>
     </t>
 
 </templates>
