@@ -102,3 +102,9 @@ class Estate(models.Model):
                 raise exceptions.ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete(self):
+        for record in self:
+            if record.state not in ["new", "offer_received"]:
+                raise exceptions.UserError("Cannot delete a property that is not in the new or offer_received state.")

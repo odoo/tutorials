@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateOffer(models.Model):
@@ -13,7 +14,7 @@ class EstateOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate', required=True)
+    property_id = fields.Many2one('estate', required=True, ondelete='cascade')
     property_type_id = fields.Many2one(related='property_id.estate_type_id', store=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
@@ -36,6 +37,9 @@ class EstateOffer(models.Model):
     def create(self, vals_list):
         offers = super().create(vals_list)
         for offer in offers:
+            if offer.price < offer.property_id.best_offer:
+                raise UserError("Offer price must be higher than the best offer.")
+
             if offer.property_id.state == 'new':
                 offer.property_id.state = 'offer_received'
         return offers
