@@ -1,0 +1,18 @@
+<odoo>
+    <menuitem id="menu_meeting_root" name="Meeting Rooms"
+        web_icon="meeting_schedule,static/description/icon.png" sequence="25"/>
+    
+    <menuitem id="menu_meeting_reservation" name="Reservations"
+        parent="menu_meeting_root" action="meeting_reservation_action"/>
+
+    <menuitem id="menu_meeting_room" name="rooms"
+        parent="menu_meeting_root" action="meeting_room_action"
+        groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_meeting_configuration" name="Configuration"
+        parent="menu_meeting_root"/>
+
+    <menuitem id="menu_meeting_building"
+        parent="menu_meeting_root" action="meeting_building_action"
+        groups="hr.group_hr_manager"/>
+</odoo>
