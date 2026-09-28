@@ -4,6 +4,14 @@
         <!-- Root Menu -->
         <menuitem id="estate_menu_root" name="Real Estate" />
 
+        <!-- Iamge icon-->
+        <menuitem
+                id="estate_menu_root"
+                name="Real Estate"
+                sequence="10"
+                web_icon="estate,static/description/icon.png"
+        />
+
         <!-- Advertisements Menu -->
         <menuitem id="estate_advertisements_menu"
                 name="Advertisements"

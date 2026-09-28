@@ -1,6 +1,7 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
-from datetime import date
 from odoo.exceptions import UserError
 
 
@@ -8,13 +9,12 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
-    def check_availability(self):
-        return date.today() + relativedelta(months=3)
-
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=check_availability)
+    date_availability = fields.Date(
+        copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
+    )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -91,3 +91,19 @@ class EstateProperty(models.Model):
         "CHECK(selling_price >= 0)",
         "The selling price of property must be positive",
     )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+
+            min_price = record.expected_price * 0.9
+
+            if (
+                float_compare(record.selling_price, min_price, precision_rounding=0.01)
+                < 0
+            ):
+                raise ValidationError(
+                    "Selling price cannot be less than 90% of expected price."
+                )
