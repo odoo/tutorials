@@ -5,6 +5,7 @@
     "depends": ["base"],
     "data": [
         "security/ir.model.access.csv",
+        "security/security.xml",
         "views/estate_property_views.xml",
         "views/estate_property_type_view.xml",
         "views/estate_property_tag_view.xml",
@@ -13,6 +14,7 @@
     "demo": [
         "demo/demo_estate_property.xml",
     ],
+    "category": "Real Estate/Brokerage",
     "application": True,
     "installable": True,
     "author": "Gautam",
