@@ -1,0 +1,23 @@
+<odoo>
+    <record id="report_estate_property_offer" model="ir.actions.report">
+        <field name="name">Property offers</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_offers</field>
+        <field name="report_file">estate.report_property_offers
+        </field> <!-- Q? in the example but not in the documentation -->
+        <field name="print_report_name">'Offer for property - %s' % (object.name or '##').replace('/','')</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+    <record id="report_estate_property_offer_user" model="ir.actions.report">
+        <field name="name">Property offers</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_estate_property_offer_user_template</field>
+        <field name="print_report_name">'Property managed by user - %s' % (object.name or '##').replace('/','')</field>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
