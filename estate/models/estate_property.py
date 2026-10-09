@@ -6,6 +6,7 @@ from odoo.tools import float_utils
 class EstateProperties(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties"
+    _inherit = ["mail.activity.mixin", "mail.tracking.duration.mixin"]
     _order = "id desc"
 
     active = fields.Boolean(default=True)
@@ -32,7 +33,7 @@ class EstateProperties(models.Model):
         ]
     )
     living_area = fields.Integer()
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
     postcode = fields.Char()
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")

@@ -95,9 +95,8 @@ class EstatePropertyOffer(models.Model):
             # update the property's selling price.
             if offer.status == "accepted":
                 offer.property_id.selling_price = offer.price
+                offer.property_id.state = 'offer_accepted'
 
-            # If this offer has just been accepted,
-            # refuse all other offers.
             if vals.get("status") == "accepted":
                 other_offers = self.search([
                     ("property_id", "=", offer.property_id.id),
@@ -107,5 +106,14 @@ class EstatePropertyOffer(models.Model):
                 other_offers.write({
                     "status": "refused",
                 })
+
+            if vals.get("status") == "refused":
+                offers = self.search([
+                    ("property_id", "=", offer.property_id.id),
+                ])
+
+                if all(offer.status == "refused" for offer in offers):
+                    offer.property_id.state = "offer_received"
+                    offer.property_id.selling_price = 0
 
         return result
