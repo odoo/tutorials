@@ -3,5 +3,10 @@
     <t t-name="awesome_owl.playground">
         <Counter />
         <Counter />
+
+        <br />
+
+        <Card title="'First card'" content="'Content of the first card'" />
+        <Card title="'Second card'" content="'Content of the second card'" />
     </t>
 </templates>
