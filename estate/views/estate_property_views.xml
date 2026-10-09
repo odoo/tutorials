@@ -9,19 +9,19 @@
     </record>
 
     <!-- Property list view -->
-    <record id="estate_property_list_view"
-        model="ir.ui.view">
+    <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name" />
-                <field name="postcode" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="name" width="14.2%" />
+                <field name="postcode" width="14.2%" />
+                <field name="bedrooms" width="14.2%" />
+                <field name="living_area" width="14.2%" />
+                <field name="expected_price" width="14.2%" />
+                <field name="selling_price" width="14.2%" />
+                <field name="date_availability" width="14.2%" />
+                <field name="property_type_id" width="14.2%" />
             </list>
         </field>
     </record>
@@ -33,27 +33,27 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Property Name" />
+                        </h1>
+                    </div>
+                    <br />
                     <group>
                         <group>
-                            <field name="name" />
-                        </group>
-                        <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
+                            <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
-                        </group>
-                        <group>
                             <field name="selling_price" />
-                        </group>
-                        <group>
-                            <field name="date_availability" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field string="Description" name="description" />
+                                <field name="description" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
                                 <field name="facades" />
@@ -78,12 +78,13 @@
         <field name="arch" type="xml">
             <search string="Estate Property">
                 <field name="name" string="Title" />
-                <field name="postcode" string="Postcode" />
-                <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area" />
-                <field name="expected_price" string="Expected Price" />
-                <field name="selling_price" string="Selling Price" />
-                <field name="facades" string="Facades" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="facades" />
+                <field name="property_type_id" />
                 <!-- Filters and Groups -->
                 <filter name="date_availability" string="Available"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
