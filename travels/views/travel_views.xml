@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="yash_travels_list_view" model="ir.ui.view">
+        <field name="name">yash.travels.list</field>
+        <field name="model">yash.travels</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="destination"/>
+                <field name="amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="yash_travels_view_form" model="ir.ui.view">
+        <field name="name">yash.travels.form</field>
+        <field name="model">yash.travels</field>
+        <field name="arch" type="xml">
+            <form string="Yash Travels">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="destination"/>
+                        <field name="amount"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="yash_travels_action" model="ir.actions.act_window">
+        <field name="name">Yash Travels</field>
+        <field name="res_model">yash.travels</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
