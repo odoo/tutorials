@@ -19,6 +19,7 @@ class PropertyOffer(models.Model):
         required=True,
     )
     property_id = fields.Many2one("estate.property", required=True)
+    type_id = fields.Many2one("estate.property.type")
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         "Deadline",
