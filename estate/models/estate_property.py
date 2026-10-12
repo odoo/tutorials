@@ -49,6 +49,8 @@ class EstateProperty(models.Model):
         default='new'
     )
     property_type_id = fields.Many2one(
-        "estate.property.type",
-        string="Property Type"
+        comodel_name="estate.property.type",
+        string="Property Type",
+        domain=[("active", "=", True)],
+        ondelete="set null"
     )
