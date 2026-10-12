@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2 rounded-3 card-hover cursor-pointer w-25">
+        <div class="card d-inline-block me-2 rounded-3 card-hover cursor-pointer w-25">
             <div class="card-body">
                 <h5 class="card-title"><t t-out="props.title"/></h5>
                 <p class="card-text">

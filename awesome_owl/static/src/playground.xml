@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <Counter />
-        <Counter />
+        <div class="p-3">
+            <Counter onChange.bind="incrementSum" />
+            <Counter onChange.bind="incrementSum" />
 
-        <br />
+            <br />
 
-        <Card title="'First card'" content="'Content of the first card'" />
-        <Card title="'Second card'" content="'Content of the second card'" />
+            <Card title="'First card'" content="'Content of the first card'" />
+            <Card title="'Second card'" content="'Content of the second card'" />
+
+            <br />
+
+            <p class="mt-3 fw-bold">The sum is: <t t-out="sum.value"/></p>
+        </div>
     </t>
 </templates>
