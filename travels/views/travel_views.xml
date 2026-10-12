@@ -6,9 +6,9 @@
         <field name="model">yash.travels</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name"/>
-                <field name="destination"/>
-                <field name="amount"/>
+                <field name="name" />
+                <field name="destination" />
+                <field name="amount" />
             </list>
         </field>
     </record>
@@ -20,9 +20,9 @@
             <form string="Yash Travels">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="destination"/>
-                        <field name="amount"/>
+                        <field name="name" />
+                        <field name="destination" />
+                        <field name="amount" />
                     </group>
                 </sheet>
             </form>
