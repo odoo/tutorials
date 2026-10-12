@@ -1,9 +1,10 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer for Estate Property"
+    _order = "price desc"
 
     price = fields.Float(
         "Price",
@@ -19,7 +20,6 @@ class PropertyOffer(models.Model):
         required=True,
     )
     property_id = fields.Many2one("estate.property", required=True)
-    type_id = fields.Many2one("estate.property.type")
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         "Deadline",
@@ -47,12 +47,11 @@ class PropertyOffer(models.Model):
             ).days
 
     def action_accept(self):
-
         for record in self:
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
-
+            record.property_id.state = "offer_accepted"
             refused_offer = record.property_id.property_offer_id - record
             for offer in refused_offer:
                 offer.status = "refused"

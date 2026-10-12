@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -6,6 +6,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
+
     name = fields.Char("Title", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
@@ -105,6 +107,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if not record.property_offer_id:
+                raise UserError("You cannot sell a property without an offer.")
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot set to be sold")
             record.state = "sold"

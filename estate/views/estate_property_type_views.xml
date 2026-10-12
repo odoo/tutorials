@@ -8,6 +8,19 @@
   </record>
 
 
+  <record id="estate_property_type_list" model="ir.ui.view">
+    <field name="name">estate.property.type.list</field>
+    <field name="model">estate.property.type</field>
+     <field name="arch" type="xml">
+        <list string="Type">
+        <field name="name" class="fw-bold"/>
+        <field name="sequence" widget="handle"/>
+      </list>
+    </field>
+
+  </record>
+
+
   <record id="estate_property_type_form" model="ir.ui.view">
     <field name="name">estate.property.type.form</field>
     <field name="model">estate.property.type</field>
