@@ -5,8 +5,18 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-    <record id="estate_property_type_form_view" model="ir.ui.view">
+    <record id="estate_property_type_list_view" model="ir.ui.view">
         <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Types">
+                <field name="property_type"/>
+                <field name="sequence" widget="handle"/>
+            </list>
+        </field>
+    </record>
+    <record id="estate_property_type_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form>
@@ -19,7 +29,7 @@
                     <notebook>
                         <page name="Properties">
                             <field name="property_ids">
-                                <list>
+                                <list default_order="expected_price desc">
                                     <field name="name"/>
                                     <field name="expected_price"/>
                                     <field name="state"/>
