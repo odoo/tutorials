@@ -34,7 +34,7 @@
                 <header>
                     <button string="Sold" name="action_sold_property" type="object" />
                     <button string="Cancel" name="action_cancel_property" type="object" />
-                    <field name="state" widget="statusbar" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,o_accepted,o_received,sold" />
                 </header>
                 <sheet>
                     <group>
