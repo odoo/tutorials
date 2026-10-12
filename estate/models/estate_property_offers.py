@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class PropertyOffer(models.Model):
@@ -23,6 +24,11 @@ class PropertyOffer(models.Model):
         store=True,
     )
     validity_days = fields.Integer(default=7, copy=False)
+
+    _check_price = models.Constraint(
+        'check(price>0)',
+        'Offer price must be strictly positive'
+    )
 
     @api.depends("validity_days")
     def _compute_deadline(self):
@@ -57,4 +63,13 @@ class PropertyOffer(models.Model):
                 record.status = "refused"
 
     def action_cancel(self):
-        self.status = "refused"
+        for rec in self:
+            if rec.status == "accepted" and rec.property_id.state == "sold":
+                raise ValidationError("Sold property cannot be refused")
+            rec.status = "refused"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_sold(self):
+        for rec in self:
+            if rec.property_id.state == "sold" and rec.status == "accepted":
+                raise ValidationError("Sold property cannot de removed")

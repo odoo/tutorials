@@ -6,25 +6,24 @@
             <field name="name">ES Manager</field>
             <field name="login">manager</field>
             <field name="password">manager</field>
-            <field name="group_ids"
-                eval="[(4, ref('estate.estate_group_manager'))]"
-            />
         </record>
+
         <record id="estate_property_agent_user1" model="res.users">
             <field name="name">ES Agent1</field>
             <field name="login">agent1</field>
             <field name="password">agent1</field>
-            <field name="group_ids"
-                eval="[(4, ref('estate.estate_group_user'))]"
-            />
         </record>
+
         <record id="estate_property_agent_user2" model="res.users">
             <field name="name">ES Agent2</field>
             <field name="login">agent2</field>
             <field name="password">agent2</field>
-            <field name="group_ids"
-                eval="[(4, ref('estate.estate_group_user'))]"
-            />
+        </record>
+
+        <record id="estate_property_agent_user3" model="res.users">
+            <field name="name">public user</field>
+            <field name="login">lokesh</field>
+            <field name="password">12</field>
         </record>
 
         <!-- Record 1: New House -->
@@ -42,8 +41,6 @@
             <field name="garden">True</field>
             <field name="garden_area">50</field>
             <field name="garden_orientation">south</field>
-
-
         </record>
 
         <!-- Record 2: Offer Received Apartment -->
@@ -52,7 +49,6 @@
             <field name="description">Luxury high-rise unit in the heart of the city.</field>
             <field name="postcode">10001</field>
             <field name="date_availability">2026-10-15</field>
-
             <field name="expected_price">450000</field>
             <field name="selling_price">0</field>
             <field name="bedrooms">1</field>
@@ -60,8 +56,6 @@
             <field name="facades">1</field>
             <field name="garage">False</field>
             <field name="garden">False</field>
-
-
         </record>
 
         <!-- Record 3: Sold Villa -->
@@ -129,7 +123,6 @@
             <field name="facades">2</field>
             <field name="garage">False</field>
             <field name="garden">False</field>
-
         </record>
 
         <!-- Record 7: Beachfront Condo -->
@@ -145,8 +138,6 @@
             <field name="facades">2</field>
             <field name="garage">True</field>
             <field name="garden">False</field>
-
-
         </record>
 
         <!-- Record 8: Mountain Chalet -->
@@ -155,7 +146,6 @@
             <field name="description">Peaceful chalet nestled in the mountains.</field>
             <field name="postcode">80202</field>
             <field name="date_availability">2026-12-01</field>
-
             <field name="expected_price">510000</field>
             <field name="selling_price">500000</field>
             <field name="bedrooms">3</field>
@@ -165,8 +155,6 @@
             <field name="garden">True</field>
             <field name="garden_area">150</field>
             <field name="garden_orientation">north</field>
-
-
         </record>
 
         <!-- Record 9: Historic Townhouse -->
@@ -184,8 +172,6 @@
             <field name="garden">True</field>
             <field name="garden_area">40</field>
             <field name="garden_orientation">south</field>
-
-
         </record>
 
         <!-- Record 10: Grand Estate Manor -->
@@ -203,7 +189,6 @@
             <field name="garden">True</field>
             <field name="garden_area">800</field>
             <field name="garden_orientation">south</field>
-
         </record>
 
     </data>

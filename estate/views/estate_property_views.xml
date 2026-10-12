@@ -52,7 +52,8 @@
 
                         <page name="Offers">
                             <field name="offer_ids">
-                                <list>
+                                <list decoration-success="status=='accepted'"
+                                    decoration-danger="status=='refused'">
                                     <field name="price" width="190px" />
                                     <field name="partner_id" width="190px" />
                                     <field name="validity_days" string="validity (Days)"

@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -8,14 +8,18 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is a dummy table"
 
+    def _cal_date(self):
+        return fields.Date.today() + relativedelta(months=3)
+
     name = fields.Char(translate=True, required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
+        copy=False, default=_cal_date
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    selling_price = fields.Float(
+        readonly=True, copy=False)
     bedrooms = fields.Integer()
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -51,8 +55,7 @@ class EstateProperty(models.Model):
         "estate.property.tag",
         relation="losbo_property_propertyTag",
         column1="estate_property_id",
-        column2="estate_property_tag_id",
-        ondelete="cascade"
+        column2="estate_property_tag_id"
     )
     buyer = fields.Many2one("res.partner", string="buyer", copy=False)
     user_id = fields.Many2one(
@@ -62,6 +65,32 @@ class EstateProperty(models.Model):
     total_offers = fields.Integer(compute="_compute_offers")
     total_area = fields.Float(compute="_compute_area")
     best_price = fields.Integer(compute="_compute_price")
+
+    _check_expected_price = models.Constraint(
+        'check(expected_price>0)',
+        'Expected price must be strictly positive'
+    )
+
+    _check_selling_price = models.Constraint(
+        'check(selling_price>=0)',
+        'Selling price must be positive'
+    )
+
+    def copy_data(self, default=None):
+        default = dict(default or {})
+        vals_list = super().copy_data(default=default)
+        if "name" not in default:
+            for template, vals in zip(self, vals_list):
+                vals["name"] = _("%s (copy)", template.name)
+        return vals_list
+
+    @api.constrains('selling_price', 'expected_price')
+    def _selling_price_check(self):
+        for rec in self:
+            if rec.selling_price < (rec.expected_price * 0.9):
+                raise ValidationError(
+                    "Selling Price Cannot be lower than %s%% of the expected price." % 90
+                )
 
     @api.depends("offer_ids")
     def _compute_offers(self):
@@ -96,13 +125,15 @@ class EstateProperty(models.Model):
                 records.garden_area = 0
                 records.garden_orientation = ""
 
-    @api.depends("offer_ids.status")
+    @api.depends("offer_ids", "offer_ids.status")
     def _compute_state(self):
         for record in self:
-            if record.state not in ("sold", "cancelled"):
+            if len(record.offer_ids) == 0:
+                record.state = "new"
+            elif record.state not in ("sold", "cancelled"):
                 if "accepted" in record.offer_ids.mapped("status"):
                     record.state = "offer_accepted"
-                elif len(record.offer_ids) > 0:
+                else:
                     record.state = "offer_received"
 
     def property_sold(self):
