@@ -7,5 +7,8 @@ export class Card extends Component {
         this.footer = markup("<div class='fw-bold text-success'>This is the footer</div>");
     }
 
-    static props = ["title", "content"]
+    static props = {
+        title: { type: String },
+        content: { type: String }
+    }
 }
