@@ -2,11 +2,11 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.counter">
         <div class="p-3">
-            <h4 class="fw-bold">Counter: <t t-esc="counter.value"/></h4>
+            <h4 class="fw-bold">Counter: <t t-out="counter.value"/></h4>
 
             <div class="d-flex gap-3">
-                <button class="btn btn-primary border border-success" t-on-click="increment">Increment</button>
                 <button class="btn btn-primary border border-danger" t-on-click="decrement">Decrement</button>
+                <button class="btn btn-primary border border-success" t-on-click="increment">Increment</button>
             </div>
         </div>
     </t>
