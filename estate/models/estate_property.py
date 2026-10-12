@@ -85,22 +85,11 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids.price", "offer_ids.status")
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            accepted_offers = self.env["estate.property.offer"].search(
-                [
-                    ("property_id", "=", record.id),
-                    ("status", "=", "accepted"),
-                ]
-            )
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
-            if accepted_offers:
-                record.best_price = max(accepted_offers.mapped("price"))
-            else:
-                record.best_price = 0
-
-    @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
