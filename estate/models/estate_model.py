@@ -11,6 +11,7 @@ class EstateProperty(models.Model):
 
     _auto = True
     _log_access = False
+    _order = "id desc"
     # _table = "estate.property
 
     name = fields.Char(string="Name", required=True, index=True)
