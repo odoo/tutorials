@@ -1,0 +1,81 @@
+from odoo import models, fields, api
+from odoo.exceptions import UserError
+
+
+class estate_property_offer(models.Model):
+    _name = 'estate.property.offer'
+    _description = 'Estate Property Offer'
+    _order = 'price desc'
+
+    price = fields.Float(required=True)
+    status = fields.Selection(
+        selection=[('accepted', "Accepted"), ('refused', "Refused")], copy=False
+    )
+    partner_id = fields.Many2one('res.partner', required=True)
+    property_id = fields.Many2one('estate.property', required=True)
+    validity = fields.Integer(default=7)
+    date_deadline = fields.Date(
+        compute='_compute_date_deadline', inverse='_inverse_date_deadline'
+    )
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id', store=True
+    )
+
+    _check_price = models.Constraint(
+        'CHECK(price >= 0)', "Offer Price Cannot be Negative"
+    )
+
+    @api.depends('create_date', 'validity')
+    def _compute_date_deadline(self):
+        for record in self:
+            create_date = record.create_date or fields.Date.today()
+            record.date_deadline = fields.Date.add(
+                fields.Date.to_date(create_date), days=record.validity
+            )
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            create_date = record.create_date or fields.Date.today()
+            record.validity = (
+                record.date_deadline - fields.Date.to_date(create_date)
+            ).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if vals['price'] < 0.1 * property.expected_price:
+                raise UserError("The offer must be more then 10% of expected price")
+
+            if vals['price'] < property.best_price:
+                raise UserError(
+                    "The offer price cannot be lower than the current best offer price of the property"
+                )
+            property.state = 'offer_received'
+        return super().create(vals_list)
+
+    def action_accepted_offer(self):
+        property = self.property_id
+        property.buyer_id = self.partner_id
+        property.selling_price = self.price
+        property.state = 'offer_accepted'
+        self.status = 'accepted'
+
+        other_offers = property.offer_ids - self
+        other_offers.status = 'refused'
+
+        if self.price < property.best_price:
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "type": "warning",
+                    "message": (
+                        "The offer being accepted is lower than the property's current best offer"
+                    ),
+                    "next": {"type": "ir.actions.act_window_close"},
+                },
+            }
+
+    def action_refused_offer(self):
+        self.status = 'refused'

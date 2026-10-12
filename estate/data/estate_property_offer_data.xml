@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="estate_property_offer_record" model="estate.property.offer">
+            <field name="price">150</field>
+            <field name="property_id" ref="estate_property_record"/>
+            <field name="partner_id" ref="base.partner_admin"/>
+        </record>
+    </data>
+</odoo>
