@@ -2,9 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+        <Counter/>
+        <Card title="'Title 1'" content="this.withoutMarkup"/>
+        <Card title="'Title 2'" content="this.withMarkup"/>
     </t>
 
 </templates>
