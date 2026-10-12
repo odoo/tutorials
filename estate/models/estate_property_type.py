@@ -8,6 +8,7 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char("Type", required=True)
     property_ids = fields.One2many("estate.property", "property_type_id")
+    sequence = fields.Integer("Sequence", help="Used to order list.")
 
     _name_uniq = models.Constraint(
         "unique (name)",

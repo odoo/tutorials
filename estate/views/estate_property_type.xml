@@ -32,4 +32,15 @@
             </form>
         </field>
     </record>
+
+    <record id="estate_type_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="sequence" widget="handle" />
+            </list>
+        </field>
+    </record>
 </odoo>
