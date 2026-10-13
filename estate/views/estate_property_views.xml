@@ -11,7 +11,10 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="property_list_view">
+            <list string="property_list_view"
+                  decoration-success="state in ('offer_received','offer_accepted')"
+                  decoration-bf="state=='offer_accepted'"
+                  decoration-muted="state=='sold'">
                 <field name="name"/>
                 <field name="description"/>
                 <field name="property_type_id"/>
@@ -43,8 +46,8 @@
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
                             <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            <field name="property_type_id" options="{'no_create':true}"/>
                         </group>
                     </group>
                     <group>
@@ -87,7 +90,8 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')">
-                                <list editable="top">
+                                <list editable="top" decoration-danger="status=='refused'"
+                                      decoration-success="status=='accepted'">
                                     <field name="partner_id"/>
                                     <field name="price"/>
                                     <field name="validity"/>
