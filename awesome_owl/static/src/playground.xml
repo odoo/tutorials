@@ -5,8 +5,8 @@
         <div class="p-4 text-center">
             Interactive Counter Playground
 
-            <Counter/>
-            <Counter/>
+            <Card title="'card 1'" content='html'/>
+            <Card title="'card 2'" content='plainText'/>
         </div>
     </t>
         
