@@ -9,7 +9,6 @@
         <field name="postcode">560001</field>
         <field name="date_availability">2026-09-15</field>
         <field name="expected_price">1250000.00</field>
-        <field name="selling_price">0.00</field>
         <field name="bedrooms">5</field>
         <field name="living_area">320</field>
         <field name="facades">4</field>
@@ -35,7 +34,6 @@
         <field name="postcode">110001</field>
         <field name="date_availability">2026-10-01</field>
         <field name="expected_price">480000.00</field>
-        <field name="selling_price">0.00</field>
         <field name="bedrooms">2</field>
         <field name="living_area">95</field>
         <field name="facades">2</field>
@@ -61,7 +59,6 @@
         <field name="postcode">411001</field>
         <field name="date_availability">2026-08-20</field>
         <field name="expected_price">650000.00</field>
-        <field name="selling_price">0.00</field>
         <field name="bedrooms">3</field>
         <field name="living_area">170</field>
         <field name="facades">3</field>
