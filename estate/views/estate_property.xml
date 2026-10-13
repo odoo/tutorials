@@ -17,6 +17,7 @@
                 <field name="name" />
                 <field name="postcode" />
                 <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="expected_price" />
                 <field name="state" />
                 <button name="%(estate_offer_action)d" string="Offers" type="action" />
