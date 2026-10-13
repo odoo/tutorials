@@ -9,6 +9,9 @@
                 <Card title="'markup demo'" content="safeHtml"/>
                 <Card title="'escaped demo'" content="unsafeString"/>
             </div>
+            <div class="mt-3">
+                <TodoList />
+            </div>
         </div>
     </t>
 </templates>
