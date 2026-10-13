@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <div class="card mb-2 w-25 m-auto mt-3 rounded-3">
+            <div class="card-body">
+                <p class="mb-0"
+                   t-att-class="{ 'text-decoration-line-through text-muted': props.todo.isCompleted }">
+                    <t t-out="props.todo.id"/>.
+                    <t t-out="props.todo.description"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
