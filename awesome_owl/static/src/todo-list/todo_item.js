@@ -11,6 +11,8 @@ export class TodoItem extends Component {
                 description: String,
                 isCompleted: Boolean
             }
-        }
+        },
+        toggleTodoState: Function,
+        removeTodo: Function
     }
 }
