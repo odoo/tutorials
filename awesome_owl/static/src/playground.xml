@@ -7,8 +7,17 @@
 
             <br />
 
-            <Card title="'First card'" content="'Content of the first card'" />
-            <Card title="'Second card'" content="'Content of the second card'" />
+            <Card title="'First card'">
+                <p>Content of the first card</p>
+            </Card>
+
+            <Card title="'Second card'">
+                <p>Content of the second card</p>
+            </Card>
+
+            <Card title="'Counter card'">
+                <Counter onChange.bind="incrementSum" />
+            </Card>
 
             <br />
 
