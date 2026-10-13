@@ -31,8 +31,8 @@
         <field name="arch" type="xml">
             <form string="estate_property_form">
                 <header>
-                    <button string="Sold" name="action_sold_property" type="object" />
-                    <button string="Cancel" name="action_cancel_property" type="object" />
+                    <button string="Sold" name="action_sold_property" type="object" invisible="state in ('sold', 'cancelled')" />
+                    <button string="Cancel" name="action_cancel_property" type="object" invisible="state in ('sold', 'cancelled')" />
                     <field name="state" widget="statusbar" statusbar_visible="new,o_accepted,o_received,sold" />
                 </header>
                 <sheet>
@@ -68,22 +68,21 @@
                                 </group>
                                 <group>
                                     <field name="garden" />
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation" />
+                                    <field name="garden_area" invisible="not garden" />
+                                    <field name="garden_orientation" invisible="not garden" />
                                     <field name="total_area" />
                                 </group>
                             </group>
                         </page>
                         <page name="offer" string="Offers">
-                            <field name="offer_ids">
+                            <field name="offer_ids" readonly="state in ('o_accepted', 'sold', 'cancelled')">
                                 <list editable="bottom">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
-                                    <button type="object" name="action_offer_accept" title="Accept" icon="fa-check" />
-                                    <button type="object" name="action_offer_reject" title="Reject" icon="fa-close" />
-                                    <field name="status" />
+                                    <button type="object" name="action_offer_accept" title="Accept" icon="fa-check" invisible="status" />
+                                    <button type="object" name="action_offer_reject" title="Reject" icon="fa-close" invisible="status" />
                                 </list>
                             </field>
                         </page>
