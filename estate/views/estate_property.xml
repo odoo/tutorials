@@ -41,6 +41,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="property_type_id" options="{'no_create': true}" />
                             <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                             <field name="postcode" />
                             <field name="date_availability" />
