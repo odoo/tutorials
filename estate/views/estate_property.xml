@@ -13,7 +13,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-muted="state == 'sold'">
+            <list decoration-muted="state == 'sold'" decoration-success="state in ('o_received','o_accepted')" decoration-bf="state == 'o_accepted'">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -77,7 +77,7 @@
                         </page>
                         <page name="offer" string="Offers">
                             <field name="offer_ids" readonly="state in ('o_accepted', 'sold', 'cancelled')">
-                                <list editable="bottom">
+                                <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="validity"/>
