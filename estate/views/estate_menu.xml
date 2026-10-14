@@ -8,8 +8,8 @@
 
     <menuitem id="estate_property_setting" name="Settings" parent="estate_menu_root"/>
 
-    <menuitem id="estate_property_type_menuaction"  parent="estate_property_setting" action="estate_property_type_action"/>
-  
+    <menuitem id="estate_property_type_menuaction" parent="estate_property_setting" action="estate_property_type_action"/>
+
     <menuitem id="estate_property_tag_menuaction" parent="estate_property_setting" action="estate_property_tag_action"/>
 
 </odoo>

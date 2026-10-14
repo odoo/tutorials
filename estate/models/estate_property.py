@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    property_offer_id = fields.One2many("estate.property.offer", "property_id", "Offer")
+    offer_id = fields.One2many("estate.property.offer", "property_id", "Offer")
     active = fields.Boolean(string="Active", default=True)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer()
@@ -98,20 +98,21 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.depends("property_offer_id.price")
+    @api.depends("offer_id.price")
     def _compute_best_price(self):
-        if self.property_offer_id:
-            self.best_price = max(self.property_offer_id.mapped("price"))
+        if self.offer_id:
+            self.best_price = max(self.offer_id.mapped("price"))
         else:
             self.best_price = 0.0
 
     def action_sold(self):
         for record in self:
-            if not record.property_offer_id:
+            if not record.offer_id:
                 raise UserError("You cannot sell a property without an offer.")
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot set to be sold")
-            record.state = "sold"
+            if record.state == "offer_accepted":
+                record.state = "sold"
 
     def action_cancel(self):
         for record in self:

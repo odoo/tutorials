@@ -20,6 +20,9 @@ class PropertyOffer(models.Model):
         required=True,
     )
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         "Deadline",
@@ -52,7 +55,7 @@ class PropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.state = "offer_accepted"
-            refused_offer = record.property_id.property_offer_id - record
+            refused_offer = record.property_id.offer_id - record
             for offer in refused_offer:
                 offer.status = "refused"
 

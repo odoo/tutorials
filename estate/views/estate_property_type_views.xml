@@ -7,19 +7,17 @@
     <field name="view_mode">list,form</field>
   </record>
 
-
   <record id="estate_property_type_list" model="ir.ui.view">
     <field name="name">estate.property.type.list</field>
     <field name="model">estate.property.type</field>
-     <field name="arch" type="xml">
-        <list string="Type">
+    <field name="arch" type="xml">
+      <list string="Type">
         <field name="name" class="fw-bold"/>
+        <field name="offer_count"/>
         <field name="sequence" widget="handle"/>
       </list>
     </field>
-
   </record>
-
 
   <record id="estate_property_type_form" model="ir.ui.view">
     <field name="name">estate.property.type.form</field>
@@ -27,13 +25,21 @@
     <field name="arch" type="xml">
       <form string="Property type">
         <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="%(action_offer)d" type="action" class="oe_stat_button" icon="fa-star">
+              <div class="o_stat_info">
+                <field name="offer_count" class="o_stat_value"/>
+                <span class="o_stat_text">Offer</span>
+              </div>
+            </button>
+          </div>
           <div class="oe_title">
             <label for="name"/>
             <h1>
               <field name="name" placeholder="Villa....."/>
             </h1>
           </div>
-        <notebook>
+          <notebook>
             <page string="Property">
               <field name="property_ids">
                 <list>
@@ -43,9 +49,9 @@
                 </list>
               </field>
             </page>
-        </notebook>
-          </sheet>
+          </notebook>
+        </sheet>
       </form>
-     </field>
+    </field>
   </record>
 </odoo>
