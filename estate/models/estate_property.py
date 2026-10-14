@@ -88,7 +88,10 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"), default=0)
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0
 
     def _onchange_garden(self):
         if self.garden:
@@ -99,10 +102,10 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     def action_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled Property cannot be Sold")
-            record.state = "sold"
+            for record in self:
+                if record.state == "cancelled":
+                    raise UserError("Cancelled Property cannot be Sold")
+                record.state = "sold"
 
     def action_cancel(self):
         for record in self:

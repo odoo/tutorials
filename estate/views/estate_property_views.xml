@@ -27,6 +27,7 @@
             <div>Expected: <field name="expected_price"/></div>
             <div t-if="record.best_price.raw_value">Best: <field name="best_price"/></div>
             <div t-if="record.selling_price.raw_value">Selling: <field name="selling_price"/></div>
+            <div>Tags: <field name="tag_ids"/></div>
           </div>
         </t>
       </templates>

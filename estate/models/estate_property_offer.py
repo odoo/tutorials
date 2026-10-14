@@ -3,7 +3,6 @@ from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
-
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
@@ -20,7 +19,7 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False,
     )
-    partner_id = fields.Many2one("res.partner", string="Buyer")
+    partner_id = fields.Many2one("res.partner", required = True, string="Buyer")
     property_id = fields.Many2one("estate.property", string="Property")
     property_type_id = fields.Many2one(
         "estate.property.type",
@@ -65,18 +64,17 @@ class EstatePropertyOffer(models.Model):
 
         # Accept this offer
         self.status = "accepted"
-
-        # Reject all other offers
-        other_offers = self.env["estate.property.offer"].search(
-            [
-                ("property_id", "=", self.property_id.id),
-                ("id", "!=", self.id),
-            ]
+       
+        # reject all other offers
+        other_offers = self.property_id.offer_ids.filtered(
+            lambda offer_id: offer_id.id != self.id 
         )
+                
+            
 
         other_offers.write({"status": "refused"})
 
-        # Update property
+        # update property
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
         self.property_id.state = "offer_accepted"
@@ -93,6 +91,7 @@ class EstatePropertyOffer(models.Model):
                 )
 
             # If this offer is changed to Accepted,
+            
             # refuse other accepted offers
             if vals.get("status") == "accepted":
                 other_offers = self.env["estate.property.offer"].search(
@@ -116,7 +115,9 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     "The offer price must be higher than the current best offer."
                 )
+            
 
             property.state = "offer_received"
+        
 
         return super().create(vals_list)
