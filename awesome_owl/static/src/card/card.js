@@ -5,5 +5,5 @@ export class Card extends Component {
     static props = {
         title: String,
         content: String,
-    }
+    };
 }
