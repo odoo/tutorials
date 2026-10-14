@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 
@@ -16,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
-        compute="compute_date_deadline", inverse="inverse_date_deadline"
+        compute="compute_date_deadline", inverse="inverse_date_deadline", store=True
     )
     property_type_id = fields.Many2one(
         "estate.property.type", related="property_id.property_type_id", store=True
@@ -69,7 +70,8 @@ class EstatePropertyOffer(models.Model):
                 "context": {"default_offer_id": self.id},
             }
         self.status = "accepted"
-        self.property_id.selling_price = self.price
+        # self.property_id.selling_price = self.price
+        self.write({"selling_price": self.price})
         self.property_id.buyer_id = self.partner_id
         self.property_id.state = "offer_accepted"
 
@@ -99,3 +101,15 @@ class EstatePropertyOffer(models.Model):
                     raise ValidationError(
                         f"The offer price must not be lower than 90% of the expected price! Min Price must be {0.9 * record.property_id.expected_price}"
                     )
+
+    @api.model
+    def _cron_auto_refuse(self):
+        expire = self.search(
+            [
+                ("date_deadline", "<", fields.Date.today()),
+                ("status", "=", False),
+            ]
+        )
+        if expire:
+            expire.write({"status": "refused"})
+        return True

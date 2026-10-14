@@ -10,6 +10,15 @@
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
+    <record id="ir_cron_auto_refuse" model="ir.cron">
+        <field name="name">REFUSE O FFER</field>
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="state">code</field>
+        <field name="code">model._cron_auto_refuse()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+    </record>
+
     <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
