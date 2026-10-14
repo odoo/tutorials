@@ -10,7 +10,9 @@
     "depends": [
         "base",
     ],
-    "data": [],
+    "data": [
+        'security/ir.model.access.csv',
+    ],
     "author": "Mehul Mistry",
     "license": "LGPL-3",
 }
