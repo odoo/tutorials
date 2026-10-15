@@ -8,6 +8,7 @@
     Description text
     """,
     'data': [
+        'security/ir.access.csv',
     ],
     'demo': [
     ],
