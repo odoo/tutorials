@@ -11,6 +11,11 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner")
     validity = fields.Integer("Validity")
     date_deadline = fields.Date("Date Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price of an offer should be strictly positive.',
+    )
+
     # ------------------------------------------------------------
     # COMPUTED FIELDS
     # ------------------------------------------------------------
