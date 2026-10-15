@@ -11,7 +11,9 @@
         <field name="arch" type="xml">
             <list decoration-success="state in ['received', 'accepted']" decoration-bf="state == 'accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
+                <field name="property_type_id" options="{'no_create':true, 'no_create_edit': true}"/>
                 <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -28,10 +30,13 @@
             <form>
                 <sheet>
                     <h1><field name="name"/></h1>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
+                    <separator/>
                     <group>
                         <group>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="property_type_id" options="{'no_create':true, 'no_create_edit': true}"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -49,6 +54,17 @@
                                 <field name="garden"/>
                                 <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" readonly="state in ['accepted', 'sold', 'cancel']"/>
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer" readonly="true"/>
+                                <field name="salesperson"/>
                             </group>
                         </page>
                     </notebook>
@@ -72,6 +88,7 @@
                 <separator/>
                 <filter string="Available" name="inactive" domain="[('state', 'in', ['new', 'received'])]"/>
                 <filter string="Postcode" name="provider" context="{'group_by':'postcode'}"/>
+                <filter string="Property Type" name="provider" context="{'group_by':'property_type_id'}"/>
             </search>
         </field>
     </record>
