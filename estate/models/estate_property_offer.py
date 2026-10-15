@@ -1,4 +1,5 @@
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -33,6 +34,21 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date:
                 record.validity = (record.date_deadline - record.create_date.date()).days
+
+    # ------------------------------------------------------------
+    # CRUD
+    # ------------------------------------------------------------
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals["property_id"]
+            prop = self.env["estate.property"].browse(property_id)
+            if prop.offer_ids and vals["price"] < min(prop.offer_ids.mapped("price")):
+                raise ValidationError(_("You cannot create a new offer with a lower price than existing offer!"))
+            prop.state = "received"
+        return super().create(vals_list)
+
     # ------------------------------------------------------------
     # ACTION METHODS
     # ------------------------------------------------------------
