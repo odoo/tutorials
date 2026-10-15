@@ -20,7 +20,6 @@
                 <field name="date_availability" optional="hide"/>
                 <field name="expected_price" />
                 <field name="state" />
-                <button name="%(estate_offer_action)d" string="Offers" type="action" />
             </list>
         </field>
     </record>
