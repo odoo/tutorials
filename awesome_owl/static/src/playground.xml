@@ -7,6 +7,10 @@
 
             <Card title="'card 1'" content='html'/>
             <Card title="'card 2'" content='plainText'/>
+
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <p>Sum: <t t-esc="state.sum"/></p>
         </div>
     </t>
         

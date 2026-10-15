@@ -9,5 +9,11 @@ export class Playground extends Component {
     setup(){
         this.html = markup("<div class='text-primary'>This html is rendered in blue.</div>");
         this.plainText = "<div class='text-primary'>This is plain text,not HTML.</div>";
+
+        this.state = useState({ sum: 2});
+    }
+
+    incrementSum(){
+        this.state.sum++;
     }
 }
