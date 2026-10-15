@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero
+from odoo.tools import _, float_is_zero
 from odoo.tools.float_utils import float_compare
 
 
@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
     _inherit = ["mail.thread", "mail.activity.mixin"]
-    name = fields.Char(required=True, default="Unknown")
+    name = fields.Char(required=True, default="Unknown", translate=True)
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     description = fields.Text()
     tag_ids = fields.Many2many("estate.property.tags", string="Tags")
@@ -64,9 +64,7 @@ class EstateProperty(models.Model):
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
-            record.total_area = (
-                    record.living_area + record.garden_area
-            )
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
@@ -101,14 +99,14 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for property in self:
             if property.state == "new":
-                raise UserError("Create a offer to accept and sell the property")
+                raise UserError(_("Create a offer to accept and sell the property"))
             elif property.state == "cancelled":
                 raise UserError("Cancelled Properties Cannot be Sold")
             elif property.state == "offer_accepted":
                 property.state = "sold"
                 return True
             else:
-                raise UserError("Please accept offer to sell a property")
+                raise UserError(self.env._("Please accept offer to sell a property"))
 
         return False
 
@@ -120,4 +118,12 @@ class EstateProperty(models.Model):
                 property.state = "cancelled"
 
             property.offer_ids.status = "refused"
+        return True
+
+    def action_accept_best(self):
+        best = max(self.offer_ids.mapped("price"))
+        best_id = self.env["estate.property.offers"].search(
+            [("price", "=", best)], limit=1
+        )
+        best_id.action_accepted()
         return True

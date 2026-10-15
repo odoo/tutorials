@@ -50,7 +50,8 @@
                     <group invisible="state in ('sold','cancelled')">
                         <button name="action_sold" type="object" string="Sold" class="btn-primary"/>
                         <button name="action_cancel" type="object" string="Cancel"/>
-                          </group>
+                        <button name="action_accept_best" string="Accept Best" type="object"/>
+                    </group>
                     <field name="state" widget="statusbar" options="{'clickable':1}"/>
 
                 </header>
@@ -104,8 +105,10 @@
                                             invisible="status in ('accepted','refused')"/>
                                     <button name="action_refused" string="Refuse" type="object" icon="fa-close"
                                             invisible="status in ('accepted','refused')"/>
+                                    <field name="suspicious" readonly="1"/>
 
-                                      </list>
+
+                                </list>
                             </field>
                         </page>
                         <page string="Other Info">
@@ -174,6 +177,14 @@
 
             </search>
         </field>
+    </record>
+    <record id="estate_offer_suspicious_cron" model="ir.cron">
+        <field name="name">Automated suspicious offer retriever</field>
+        <field name="model_id" ref="model_estate_property_offers"/>
+        <field name="state">code</field>
+        <field name="code">model._action_mark_suspicious()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
     </record>
 
 </odoo>

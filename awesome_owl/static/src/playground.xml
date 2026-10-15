@@ -7,5 +7,7 @@
       <p class="p-3"> the sum is: <t t-out="state.sum"/></p>
       <Card title="'title'" content="withoutMarkup"/>
       <Card title="'new'" content="safeHtml"/>
+        <TodoList/>
+
     </t>
 </templates>
