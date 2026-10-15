@@ -81,6 +81,32 @@
         </field>
     </record>
 
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id"
+                    records_draggable="0">
+                <templates>
+                    <field name="state"/>
+                    <t t-name="card">
+                        <div>
+                            <h4><field name="name"/></h4>
+                            Expected Price: <field name="expected_price"/>
+                            <div t-if="record.state.raw_value == 'received'">
+                                Best Offer: <field name="best_offer"/>
+                            </div>
+                            <div t-elif="record.state.raw_value == 'accepted'">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
