@@ -82,6 +82,15 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
 
     # ------------------------------------------------------------
+    # CRUD
+    # ------------------------------------------------------------
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state(self):
+        if any(record.state not in ['new', 'canceled'] for record in self):
+            raise ValidationError(_("You cannot delete a property that is not new or canceled!"))
+
+    # ------------------------------------------------------------
     # ACTION METHODS
     # ------------------------------------------------------------
 
