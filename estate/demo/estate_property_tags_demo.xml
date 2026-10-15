@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="tag_spacious" model="estate.property.tag">
+        <field name="name">Spacious</field>
+    </record>
+
+    <record id="tag_luxury" model="estate.property.tag">
+        <field name="name">Luxury</field>
+    </record>
+
+    <record id="tag_compact" model="estate.property.tag">
+        <field name="name">Compact</field>
+    </record>
+
+    <record id="tag_renovated" model="estate.property.tag">
+        <field name="name">Renovated</field>
+    </record>
+
+    <record id="tag_cozy" model="estate.property.tag">
+        <field name="name">Cozy</field>
+    </record>
+
+    <record id="tag_maintenance" model="estate.property.tag">
+        <field name="name">Maintenance</field>
+    </record>
+
+</odoo>
