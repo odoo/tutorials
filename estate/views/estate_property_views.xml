@@ -29,6 +29,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_sell_property" type="object" string="Sell"/>
+                    <button name="action_cancel_property" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1><field name="name"/></h1>
                     <field name="tag_ids" widget="many2many_tags"/>
