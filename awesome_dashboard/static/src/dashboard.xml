@@ -12,7 +12,17 @@
                 </button>
             </t>
 
-            <p>hello dashboard</p>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    <h5 class="card-title">First Dashboard Item</h5>
+                    <p class="card-text">This card uses the default size.</p>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    <h5 class="card-title">Second Dashboard Item</h5>
+                    <p class="card-text">This card is twice as wide.</p>
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
 
