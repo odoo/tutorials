@@ -4,11 +4,6 @@
     <menuitem
         id="estate_menu_root"
         name="Real Estate"
-    />
-
-    <menuitem
-        id="estate_menu_root"
-        name="Real Estate"
         sequence="10"
         web_icon="estate,static/description/icon.png"
     />
