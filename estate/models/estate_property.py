@@ -1,5 +1,7 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models
+
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
@@ -54,3 +56,18 @@ class EstateProperty(models.Model):
         domain=[("active", "=", True)],
         ondelete="set null"
     )
+    salesperson_id = fields.Many2one(
+        'res.users',
+        string="Salesperson",
+        default=lambda self: self.env.user
+    )
+    buyer_id = fields.Many2one(
+        'res.partner',
+        string="Buyer"
+    )
+
+    @api.constrains("expected_price")
+    def _check_expected_price(self):
+        for record in self:
+            if record.expected_price <= 0:
+                raise ValidationError("Expected price must be greater than Zero")
