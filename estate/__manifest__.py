@@ -4,8 +4,7 @@
     "description": "Specific Real Estate Module",
     "depends": ["base", "mail", "portal", "website"],
     "data": [
-        "security/estate_security.xml",
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "views/estate_mail_template.xml",
         "views/res_config_settings_views.xml",
         "views/portal_menu.xml",
