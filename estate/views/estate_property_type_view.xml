@@ -30,11 +30,12 @@
     </record>
 
     <record id="estate_property_type_list_view" model="ir.ui.view">
-        <field name="name">Estate Property List View</field>
+        <field name="name">estate.estate_property_type.tree</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="name" />
+            <list string="Stages">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
             </list>
         </field>
     </record>
