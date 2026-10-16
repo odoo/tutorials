@@ -8,6 +8,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -42,6 +43,8 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         default="new",
+        compute="_change_offer_state",
+        store=True,
     )
 
     property_type_id = fields.Many2one("estate.property.type")
@@ -61,6 +64,19 @@ class EstateProperty(models.Model):
     def _compute_max_offer(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
+
+    @api.depends("offer_ids")
+    def _change_offer_state(self):
+        records = self.offer_ids
+
+        if len(records) > 0 and self.state not in (
+            "offer_accepted",
+            "sold",
+            "cancelled",
+        ):
+            self.state = "offer_received"
+        elif self.state not in ("offer_accepted", "sold", "cancelled"):
+            self.state = "new"
 
     @api.onchange("garden")
     def _onchange_garden(self):
