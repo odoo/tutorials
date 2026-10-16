@@ -1,0 +1,10 @@
+<odoo>
+    <record id="ir_cron_check_auction_end" model="ir.cron">
+        <field name="name">Check Auction End</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="code">model._cron_check_auction_end()</field>
+        <field name="active" />
+    </record>
+</odoo>

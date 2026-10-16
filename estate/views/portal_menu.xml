@@ -1,0 +1,9 @@
+<odoo>
+    <template id="portal_my_home_inherit" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <a t-att-href="'/my/properties'" class="list-group-item">
+                My Properties
+            </a>
+        </xpath>
+    </template>
+</odoo>

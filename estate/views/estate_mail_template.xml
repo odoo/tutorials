@@ -1,0 +1,24 @@
+<odoo>
+    <record id="email_template_property_sold" model="mail.template">
+        <field name="name">Property Sold</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="subject">Your offer is accepted</field>
+        <field name="body_html" type="html">
+            <table style="width:100%;">
+                <tr>
+                    <td style="text-align:center; font-size:16px;">
+
+                        <t t-if="object.buyer_id.name"> Hello <strong t-out="object.buyer_id.name" />
+                        ,<br /><br />
+                        </t> Congratulations! 🎉<br /><br />
+                        Your offer for <strong t-out="object.name" /> has been accepted.<br /><br />
+                        The property is now marked as <strong>Sold</strong>.<br /><br /> Our team
+                        will contact you shortly with the next steps.<br /><br /> Regards,<br />
+                        <t
+                            t-out="object.env.company.name" />
+                    </td>
+                </tr>
+            </table>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,7 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.dashboard_item">
+        <div class="card text-center p-2" t-att-style="'width: ' + width ">
+            <t t-slot="default"/>
+        </div>
+    </t>
+</templates>

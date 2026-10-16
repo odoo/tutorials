@@ -1,3 +1,15 @@
+# custom ignore
+custom_module/
+estate/demo/
+website_estate/
+whatsapp_estate/
+
+# Odoo translations (managed by translate.odoo.com)
+*.po
+*.pot
+*/i18n/*.po
+*/i18n/*.pot
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
