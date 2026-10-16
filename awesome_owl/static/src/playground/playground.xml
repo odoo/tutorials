@@ -3,20 +3,23 @@
 
     <t t-name="awesome_owl.playground">
 
-        <div class="p-3">
-            hello world
+        <div class="p-3" align="center"> 
+            <h2>hello world</h2>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex justify-content-center gap-2 ">
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
         </div>
-        <p class="p-3">
+        <p class="p-3" align="center">
             SUM : <t t-esc="state.sum"/>
         </p>
 
-        <div class="d-flex gap-2">
-            <Card title="'Card'" content="'Prerana'" />
-            <Card title="'Card'" content="this.html"/>
+        <div class="d-flex justify-content-center gap-2">
+            <Card title="'Card 1 '"> <p> Hello </p></Card>
+            <Card title="'Card 2 '"> <Counter/> </Card>
+        </div>
+        <div class="p-3" align="center">
+            <TodoList />
         </div>
     </t>
 
