@@ -5,7 +5,7 @@ export class Counter extends Component {
     static template = "awesome_owl.counter";
 
     static props = {
-        onChange: { type: Function, optional: true},
+        onChangeIncrement: { type: Function, optional: true},
     };
 
     setup() {
@@ -15,8 +15,9 @@ export class Counter extends Component {
     increment() {
         this.state.value++;
 
-        if (this.props.onChange) {
-            this.props.onChange();
+        if (this.props.onChangeIncrement) {
+            this.props.onChangeIncrement();
         }
     }
+
 }

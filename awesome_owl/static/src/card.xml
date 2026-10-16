@@ -7,14 +7,18 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-out="props.title"/>
+                    <button
+                        class="btn btn-sm btn-secondary float-end"
+                        t-on-click="toggle"
+                    >
+                        Toggle
+                    </button>
                 </h5>
-
-                <p>
-                    <t t-out="props.content"/>
-                </p>
+            </div>
+            <div class="card-body" t-if="state.open">
+                <t t-slot="default"/>
             </div>
         </div>
     </t>
 
 </templates>
-
