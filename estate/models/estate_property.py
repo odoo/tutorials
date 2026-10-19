@@ -1,5 +1,4 @@
 from dateutil.relativedelta import relativedelta
-
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -7,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is a dummy table"
+    _order = "id desc"
 
     def _cal_date(self):
         return fields.Date.today() + relativedelta(months=3)
@@ -14,12 +14,9 @@ class EstateProperty(models.Model):
     name = fields.Char(translate=True, required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(
-        copy=False, default=_cal_date
-    )
+    date_availability = fields.Date(copy=False, default=_cal_date)
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(
-        readonly=True, copy=False)
+    selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer()
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -34,7 +31,7 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
         string="Direction",
-        default="north"
+        default="north",
     )
     state = fields.Selection(
         [
@@ -44,18 +41,17 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        default="new",
         compute="_compute_state",
-        store=True
+        store=True,
     )
     active = fields.Boolean("Active", default=True)
     property_type_id = fields.Many2one(
-        "estate.property.type", string="Property Type")
+        "estate.property.type", string="Property Types")
     property_tag_ids = fields.Many2many(
         "estate.property.tag",
         relation="losbo_property_propertyTag",
         column1="estate_property_id",
-        column2="estate_property_tag_id"
+        column2="estate_property_tag_id",
     )
     buyer = fields.Many2one("res.partner", string="buyer", copy=False)
     user_id = fields.Many2one(
@@ -67,13 +63,11 @@ class EstateProperty(models.Model):
     best_price = fields.Integer(compute="_compute_price")
 
     _check_expected_price = models.Constraint(
-        'check(expected_price>0)',
-        'Expected price must be strictly positive'
+        "check(expected_price>0)", "Expected price must be strictly positive"
     )
 
     _check_selling_price = models.Constraint(
-        'check(selling_price>=0)',
-        'Selling price must be positive'
+        "check(selling_price>=0)", "Selling price must be positive"
     )
 
     def copy_data(self, default=None):
@@ -84,12 +78,12 @@ class EstateProperty(models.Model):
                 vals["name"] = _("%s (copy)", template.name)
         return vals_list
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains("selling_price")
     def _selling_price_check(self):
         for rec in self:
             if rec.selling_price < (rec.expected_price * 0.9):
                 raise ValidationError(
-                    "Selling Price Cannot be lower than %s%% of the expected price." % 90
+                    "Selling Price Cannot be lower than 90% of the expected price."
                 )
 
     @api.depends("offer_ids")

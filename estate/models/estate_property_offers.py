@@ -1,5 +1,4 @@
 from dateutil.relativedelta import relativedelta
-
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -7,6 +6,7 @@ from odoo.exceptions import ValidationError
 class PropertyOffer(models.Model):
     _name = "estate.property.offers"
     _description = "this model is used to define the offers received to the property"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -16,6 +16,7 @@ class PropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one(
         "estate.property", required=True, ondelete="cascade")
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
     deadline = fields.Date(
         default=lambda self: fields.Date.today() + relativedelta(days=7),
         copy=False,
@@ -26,8 +27,7 @@ class PropertyOffer(models.Model):
     validity_days = fields.Integer(default=7, copy=False)
 
     _check_price = models.Constraint(
-        'check(price>0)',
-        'Offer price must be strictly positive'
+        "check(price>0)", "Offer price must be strictly positive"
     )
 
     @api.depends("validity_days")
