@@ -18,7 +18,10 @@
     'installable': True,
     'depends': ['base', 'web'],
 
-    'data': [],
+
+    'data': [
+        'security/ir.access.csv',
+    ],
     'assets': {
 
     },
