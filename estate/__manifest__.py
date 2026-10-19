@@ -7,4 +7,5 @@
     'description': """
     Description text
     """,
+    'license': "LGPL-3"
 }
