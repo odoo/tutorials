@@ -1,6 +1,6 @@
 {
-    'name' : 'Estate Agency',
-    'depends' : ['base'],
-    'installable' : True,
-    'application' : True,
+    'name': 'Estate Agency',
+    'depends': ['base'],
+    'installable': True,
+    'application': True,
 }
