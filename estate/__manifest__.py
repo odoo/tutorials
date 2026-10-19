@@ -3,6 +3,8 @@
     'depends': [
         'base'
     ],
-    'application': True
+    'application': True,
+    'author': 'nakin',
+    'license': 'LGPL-3'
 
 }
