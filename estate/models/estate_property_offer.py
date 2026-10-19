@@ -25,15 +25,12 @@ class EstatePropertyOffer(models.Model):
 
     _check_price = models.Constraint("CHECK(price > 0)", "Price must be positive")
 
-    @api.depends("validity", "create_date")
+    @api.depends("validity")
     def compute_date_deadline(self):
         for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date.date() + relativedelta(
-                    days=record.validity
-                )
-            else:
-                record.date_deadline = False
+            record.date_deadline = (
+                record.create_date or fields.Date.today()
+            ) + relativedelta(days=record.validity)
 
     def inverse_date_deadline(self):
         for record in self:
@@ -70,8 +67,7 @@ class EstatePropertyOffer(models.Model):
                 "context": {"default_offer_id": self.id},
             }
         self.status = "accepted"
-        # self.property_id.selling_price = self.price
-        self.write({"selling_price": self.price})
+        self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
         self.property_id.state = "offer_accepted"
 

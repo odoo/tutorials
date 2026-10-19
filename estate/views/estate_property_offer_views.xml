@@ -16,7 +16,7 @@
         <field name="state">code</field>
         <field name="code">model._cron_auto_refuse()</field>
         <field name="interval_number">1</field>
-        <field name="interval_type">minutes</field>
+        <field name="interval_type">days</field>
     </record>
 
     <record id="estate_property_offer_view_list" model="ir.ui.view">
