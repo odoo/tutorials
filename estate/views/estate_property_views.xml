@@ -21,7 +21,7 @@
                 <field name="expected_price" width="14.2%" />
                 <field name="selling_price" width="14.2%" />
                 <field name="date_availability" width="14.2%" />
-                <field name="property_type_id" width="14.2%" />
+                <field name="property_type_ids" width="14.2%" />
             </list>
         </field>
     </record>
@@ -37,11 +37,12 @@
                         <h1>
                             <field name="name" placeholder="Property Name" />
                         </h1>
+                        <field name="tag_ids" placeholder="Property Tag" widget="many2many_tags" />
                     </div>
                     <br />
                     <group>
                         <group>
-                            <field name="property_type_id" />
+                            <field name="property_type_ids" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -67,8 +68,8 @@
                         </page>
                         <page string="Other info">
                             <group>
-                                <field name="salesperson_id" />
-                                <field name="buyer_id" />
+                                <field name="salesperson_ids" />
+                                <field name="buyer_ids" />
                             </group>
                         </page>
                     </notebook>
@@ -90,7 +91,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="facades" />
-                <field name="property_type_id" />
+                <field name="property_type_ids" />
                 <!-- Filters and Groups -->
                 <filter name="date_availability" string="Available"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
