@@ -20,9 +20,6 @@
 
     'data': [],
     'assets': {
-        'web.assets_backend': [
-            'estate/static/src/**/*',
-        ],
 
     },
     'license': 'AGPL-3'
