@@ -4,7 +4,6 @@ from odoo import models, fields
 class Estate(models.Model):
     _name = "estate_property"
     _description = "Real Estate management module"
-    _order = "sequence"
 
     name = fields.Char(string="Name of the property", required=True)
     description = fields.Text(string="Description")
