@@ -6,5 +6,9 @@
     'author': 'thvan',
     'installable': True,
     'application': True,
-    'license': 'AGPL-3'
+    'license': 'AGPL-3',
+
+    'data': [
+        'security/ir.access.csv',
+    ]
 }
