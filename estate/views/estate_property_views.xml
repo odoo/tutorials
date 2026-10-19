@@ -17,6 +17,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id" />
                 <filter string="Available" name="active" domain="[('state', 'in', ('new', 'received'))]"/>
                 <filter string="Postcode" name="postcode" context="{'group_by': 'postcode', 'residual_visible': True}"/>
             </search>
@@ -35,6 +36,8 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" />
+                <field name="property_type_id" />
+                <field name="property_tag_ids"/>
             </list>
         </field>
     </record>
@@ -43,13 +46,15 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Estate Property">
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <group>
+                        <field name="property_tag_ids" widget="many2many_tags" />
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode"/>
                             <field name="expected_price"/>
                         </group>
@@ -69,6 +74,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="seller_id" />
                             </group>
                         </page>
                     </notebook>
