@@ -3,10 +3,10 @@
 {
     'name': 'Real Estate',
     'version': '0.1',
-    'category': 'Sales/Real Estate',
+    'category': 'Real Estate',
     'sequence': 1,
     'summary': 'Real Estate module',
-    'website': 'https://www.odoo.com/app/crm',
+    'website': 'https://www.odoo.com',
     'depends': ['base'],
     'data': [],
     'assets': {},
