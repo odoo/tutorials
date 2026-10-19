@@ -5,4 +5,5 @@
     'depends': ['base'],
     'installable': True,
     'application': True,
+    'data': ['security/ir.access.csv'],
 }
