@@ -67,16 +67,15 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids")
     def _change_offer_state(self):
-        records = self.offer_ids
-
-        if len(records) > 0 and self.state not in (
-            "offer_accepted",
-            "sold",
-            "cancelled",
-        ):
-            self.state = "offer_received"
-        elif self.state not in ("offer_accepted", "sold", "cancelled"):
-            self.state = "new"
+        for record in self:
+            if record.offer_ids and record.state not in (
+                "offer_accepted",
+                "sold",
+                "cancelled",
+            ):
+                record.state = "offer_received"
+            elif record.state not in ("offer_accepted", "sold", "cancelled"):
+                record.state = "new"
 
     @api.onchange("garden")
     def _onchange_garden(self):

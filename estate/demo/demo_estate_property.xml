@@ -13,7 +13,6 @@
             <field name="facades">2</field>
             <field name="garage">True</field>
             <field name="garden">False</field>
-            <field name="state">New</field>
         </record>
 
         <!-- Property 2 -->
@@ -29,7 +28,6 @@
             <field name="garden">True</field>
             <field name="garden_area">500</field>
             <field name="garden_orientation">south</field>
-            <field name="state">Offer Received</field>
         </record>
 
         <!-- Property 3 -->
@@ -44,7 +42,6 @@
             <field name="garden">True</field>
             <field name="garden_area">200</field>
             <field name="garden_orientation">east</field>
-            <field name="state">Offer Accepted</field>
         </record>
 
         <!-- Property 4 -->
@@ -58,7 +55,6 @@
             <field name="garden">True</field>
             <field name="garden_area">1000</field>
             <field name="garden_orientation">west</field>
-            <field name="state">Cancelled</field>
         </record>
 
     </data>
