@@ -3,7 +3,7 @@ from odoo import fields, models  # ty: ignore[unresolved-import]
 
 
 class TestModel(models.Model):
-    _name = "test_model"
+    _name = "estate.property"
     _description = "Test model for real_estate module"
 
     name = fields.Char(required=True, string="Title")
@@ -43,3 +43,12 @@ class TestModel(models.Model):
         ],
         default="new",
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesman = fields.Many2one(
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user,
+    )
+    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")

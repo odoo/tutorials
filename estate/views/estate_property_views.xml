@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="test_model_action" model="ir.actions.act_window">
-        <field name="name">Test action</field>
-        <field name="res_model">test_model</field>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
-    <record id="test_model_list_view" model="ir.ui.view">
-        <field name="name">test_model.list</field>
-        <field name="model">test_model</field>
+    <record id="estate_property_list_view" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Tests">
+            <list string="Properties">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -20,9 +20,9 @@
             </list>
         </field>
     </record>
-    <record id="test_model_form_view" model="ir.ui.view">
-        <field name="name">test_model.form</field>
-        <field name="model">test_model</field>
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
         <form string="Test">
             <sheet>
@@ -30,17 +30,22 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <seperator/>
                 </div>
-                <group>
+                <div>
                     <group>
-                        <field name="postcode"/>
-                        <field name="date_availability"/>
+                        <group>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
                     </group>
-                    <group>
-                        <field name="expected_price"/>
-                        <field name="selling_price"/>
-                    </group>
-                </group>
+                </div>
                 <notebook>
                     <page string="Description">
                     <group>
@@ -54,14 +59,23 @@
                         <field name="garden_orientation"/>
                     </group>
                     </page>
+                    <page string="Offers">
+                        <field name="offer_ids"/>
+                    </page>
+                    <page string="Other Info">
+                        <group>
+                            <field name="salesman"/>
+                            <field name="buyer"/>
+                        </group>
+                    </page>
                 </notebook>
             </sheet>
         </form>
         </field>
     </record>
-    <record id="test_model_search_view" model="ir.ui.view">
-        <field name="name">test_model.search</field>
-        <field name="model">test_model</field>
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Tests">
                 <field name="name"/>
