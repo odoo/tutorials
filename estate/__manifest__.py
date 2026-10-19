@@ -2,5 +2,8 @@
     'name':'Estate',
     'depends': [
         'base_setup'],
-    'application':True
+    'application':True,
+    'data': [
+        'security/ir.access.csv',
+    ]
 }
