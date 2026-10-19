@@ -24,6 +24,8 @@
             <list string="Properties">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <button name="confirm_offer" string=" " class="btn-link" type="object" icon="oi-check"/>
+                <button name="refuse_offer"  string=" " class="btn-link" type="object" icon="oi-close"/> 
                 <field name="status"/>
             </list>
         </field>

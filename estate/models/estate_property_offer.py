@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models  # ty: ignore[unresolved-import]
+from odoo.exceptions import UserError  # ty: ignore[unresolved-import]
 
 
 class PropertyOffer(models.Model):
@@ -46,3 +47,31 @@ class PropertyOffer(models.Model):
                 record.validity = max(delta.days, 0)
             else:
                 record.validity = record.validity.default
+
+    def confirm_offer(self):
+        for record in self:
+            if (
+                record.property_id.state == "offer_accepted"
+                or record.property_id.state == "sold"
+                or record.property_id.state == "cancelled"
+            ):
+                raise UserError(
+                    "Cannot accept an offer for a property that has already accepted and offer or is cancelled"
+                )
+            record.status = "accepted"
+            record.property_id.state = "offer_accepted"
+            record.property_id.buyer = record.partner_id
+            record.property_id.selling_price = record.price
+        return True
+
+    def refuse_offer(self):
+        for record in self:
+            if (
+                record.status == "accepted"
+                and record.property_id.state == "offer_accepted"
+            ):
+                record.property_id.state = "offer_received"
+                record.property_id.buyer = None
+                record.property_id.selling_price = None
+            record.status = "refused"
+        return True

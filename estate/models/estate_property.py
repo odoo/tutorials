@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models  # ty: ignore[unresolved-import]
+from odoo.exceptions import UserError  # ty: ignore[unresolved-import]
 
 
 class TestModel(models.Model):
@@ -66,7 +67,10 @@ class TestModel(models.Model):
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"))
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -78,3 +82,19 @@ class TestModel(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    def sold_property(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be sold")
+            else:
+                record.state = "sold"
+        return True
+
+    def cancel_property(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("A sold property cannot be cancelled")
+            else:
+                record.state = "cancelled"
+        return True
