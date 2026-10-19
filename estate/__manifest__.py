@@ -6,3 +6,4 @@
     'installable': True,
     'application': True
 }
+
