@@ -3,15 +3,14 @@
 {
     'name': 'Real Estate',
     'version': '0.1',
-    'category': 'Real Estate',
+    'category': 'Tutorials',
     'sequence': 1,
     'summary': 'Real Estate module',
-    'website': 'https://www.odoo.com',
     'depends': ['base'],
     'data': [],
     'assets': {},
     'installable': True,
     'application': True,
-    'author': 'Odoo S.A.',
+    'author': 'Glineur Loïc',
     'license': 'AGPL-3',
 }
