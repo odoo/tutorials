@@ -7,7 +7,7 @@
     'sequence': 1,
     'summary': 'Real Estate module',
     'depends': ['base'],
-    'data': [],
+    'data': ['security/ir.access.csv',],
     'assets': {},
     'installable': True,
     'application': True,
