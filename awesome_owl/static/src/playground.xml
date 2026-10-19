@@ -2,9 +2,17 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+
+        <Counter onChange.bind="incrementSum"/>
+        <Counter onChange.bind="incrementSum"/>
+        <div class="mt-3 fs-4 fw-bold">
+            Sum: <t t-out="state.sum"/>
         </div>
+
+        <Card title="'Title 1'" content="this.withoutMarkup"/>
+        <Card title="'Title 2'" content="this.withMarkup"/>
+
+        <TodoList/>
     </t>
 
 </templates>
