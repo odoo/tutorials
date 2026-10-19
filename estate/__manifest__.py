@@ -6,6 +6,9 @@
     "depends": [
         "base",
     ],
+    "data": [
+        "security/ir.access.csv",
+    ],
     "author": "Weng Hou Mak (wemak)",
     "license": "LGPL-3",
 }
