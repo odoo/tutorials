@@ -4,4 +4,7 @@
     'application': True,
     'author': "huler",
     'license': "LGPL-3",
+    'data': [
+        'security/ir.access.csv',
+    ],
 }
