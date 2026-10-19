@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models  # ty: ignore[unresolved-import]
-from odoo.exceptions import UserError  # ty: ignore[unresolved-import]
+from odoo.exceptions import UserError, ValidationError  # ty: ignore[unresolved-import]
+from odoo.tools.float_utils import float_is_zero, float_compare  # ty: ignore[unresolved-import]
 
 
 class TestModel(models.Model):
@@ -16,7 +17,13 @@ class TestModel(models.Model):
         string="Available From",
     )
     expected_price = fields.Float(required=True)
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price >= 0)", "The expected price must be non-negative"
+    )
     selling_price = fields.Float(readonly=True, copy=False)
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)", "The selling price must be non-negative"
+    )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
@@ -98,3 +105,19 @@ class TestModel(models.Model):
             else:
                 record.state = "cancelled"
         return True
+
+    @api.constrains("selling_price")
+    def _constrain_selling_price(self):
+        for record in self:
+            if (
+                not float_is_zero(record.selling_price, precision_digits=2)
+                and float_compare(
+                    record.expected_price * 0.9,
+                    record.selling_price,
+                    precision_digits=2,
+                )
+                > 0
+            ):
+                raise ValidationError(
+                    "The Selling price cannot be below 90% of the expected price"
+                )

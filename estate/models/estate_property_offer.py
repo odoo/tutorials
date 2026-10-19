@@ -8,6 +8,10 @@ class PropertyOffer(models.Model):
     _description = "Offer for a property by buyer"
 
     price = fields.Float()
+    _check_price = models.Constraint(
+        "CHECK(price >= 0)", "The offer price must be non-negative"
+    )
+
     status = fields.Selection(
         string="Offer Status",
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
