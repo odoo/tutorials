@@ -6,4 +6,7 @@
     'author': 'Odoo S.A.',
     'license': 'AGPL-3',
     'depends': ['base'],
+    'data': [
+        'security/ir.access.csv',
+     ],
 }
