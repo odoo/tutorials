@@ -1,3 +1,4 @@
+from dateutil.relativedelta import relativedelta
 from odoo import fields, models  # ty: ignore[unresolved-import]
 
 
@@ -8,10 +9,12 @@ class TestModel(models.Model):
     name = fields.Char(required=True)
     description = fields.Char()
     postcode = fields.Char()
-    date_availability = fields.Date()
+    date_availability = fields.Date(
+        copy=False, default=fields.Date.today() + relativedelta(months=3)
+    )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -22,8 +25,19 @@ class TestModel(models.Model):
         selection=[
             ("north", "North"),
             ("east", "East"),
-            ("West", "west"),
+            ("west", "West"),
             ("south", "South"),
         ],
         help="Denotes the Orientation of the garden relative to the house",
+    )
+    active = fields.Boolean(default=True)
+    state = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="new",
     )
