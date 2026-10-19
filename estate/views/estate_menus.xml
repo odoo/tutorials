@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <menuitem
-        id="estate_menu_root"
-        name="Real Estate"
-    />
+        <!-- Root Menu -->
+        <menuitem
+                id="estate_menu_root"
+                name="Real Estate"
+                web_icon="estate,static/description/icon.png"
+        />
 
-    <menuitem
-        id="estate_property_menu_root"
-        name="Advertisement"
-        parent="estate_menu_root"
-    />
+        <!-- Advertisement Menu -->
+        <menuitem
+                id="advertisement_menu"
+                name="Advertisement"
+                parent="estate_menu_root"
+        />
 
-    <menuitem
-        id="estate_property_menu_action"
-        name="Property List"
-        action="estate_property_action"
-        parent="estate_property_menu_root"
-    />
+        <!-- Property List Menu -->
+        <menuitem
+                id="menu_property_list"
+                name="Property List"
+                action="estate_property_action"
+                parent="advertisement_menu"
+        />
 
-     <menuitem
-        id="estate_property_type_menu_root"
-        name="Settings"
-        parent="estate_menu_root"
-    />
+        <!-- Settings Menu -->
+        <menuitem
+                id="setting_menu"
+                name="Settings"
+                parent="estate_menu_root"
+        />
 
-    <menuitem
-        id="estate_property_type_menu_action"
-        name="Property Type"
-        action="estate_property_type_action"
-        parent="estate_property_type_menu_root"
-    />
+        <!-- Property Type Menu -->
+        <menuitem
+                id="menu_property_type"
+                name="Property Type"
+                action="estate_property_type_action"
+                parent="setting_menu"
+        />
+
+        <!-- Property Tags Menu -->
+        <menuitem
+                id="menu_property_tag"
+                name="Property Tags"
+                action="estate_property_tag_action"
+                parent="setting_menu"
+        />
 
 </odoo>

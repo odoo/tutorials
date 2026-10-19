@@ -19,7 +19,7 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="active"/>
+                        <field name="active" />
                     </group>
                 </sheet>
             </form>
