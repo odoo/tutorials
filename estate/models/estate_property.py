@@ -13,10 +13,10 @@ class EstateProperty(models.Model):
     name = fields.Char('Name', required=True, translate=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Date Availability')
+    date_availability = fields.Date('Date Availability', copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=2))
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price')
-    bedrooms = fields.Integer('Bedrooms')
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area')
     facades = fields.Integer('Facades')
     garage = fields.Boolean('Garage')
@@ -26,6 +26,11 @@ class EstateProperty(models.Model):
         string='Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation of the garden")
+    state = fields.Selection(
+        string='Status',
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'),
+                   ('sold', 'Sold'), ('canceled', 'Canceled')],
+        required=True, copy=False, default='new')
     active = fields.Boolean('Active', default=True)
     sequence = fields.Integer('Sequence', default=10)
 
