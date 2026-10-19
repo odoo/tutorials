@@ -1,9 +1,8 @@
 {
     'name': 'Estate',
     'depends': [
-        'base_setup'
+        'base',
     ],
     'installable': True,
     'application': True
 }
-
