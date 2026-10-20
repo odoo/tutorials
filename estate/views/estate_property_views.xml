@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -25,19 +25,22 @@
     </record>
 
     <record id="estate_property_form" model="ir.ui.view">
-        <field name="name">estate.property.view</field>
+        <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <sheet>
                     <group>
-                        <group>
+                        <h1>
                             <field name="name"/>
+                        </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <group>
                             <field name="postcode"/>
+                            <field name="state"/>
                         </group>
                         <group>
                             <field name="active"/>
-                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -62,6 +65,11 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offer">
+                            <group>
+                                <field name="offer_ids"/>
                             </group>
                         </page>
                     </notebook>
@@ -93,4 +101,3 @@
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
-

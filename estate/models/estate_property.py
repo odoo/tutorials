@@ -15,20 +15,24 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(default=0)
-    facades = fields.Integer(default=0)
-    garage = fields.Boolean(default=False)
-    garden = fields.Boolean(default=False)
-    garden_area = fields.Integer(default=0)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[("east", "East"), ("west", "West"), ("north", "North"), ("south", "South")],
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean()
     state = fields.Selection(
-        selection=[("new", "New"),
-                   ("offer_recieved", "Offer recieved"),
-                   ("offer_accepted", "Offer Accepted"),
-                   ("sold", "Sold"),
-                   ("cancelled", "Cancelled")],
+        selection=[
+            ("new", "New"),
+            ("offer_recieved", "Offer recieved"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled")],
         default="new",
     )
+    estate_property_type_id = fields.Many2one("estate.property.type", string="Estate")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
