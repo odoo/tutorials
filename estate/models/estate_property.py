@@ -9,7 +9,6 @@ class EstateProperty(models.Model):
 
     name = fields.Char('Property Name', required=True, translate=True, default='Unknown')
     availability = fields.Date('Availability Date', required=True, default=lambda self: date.today() + relativedelta(months=3), copy=False)
-    address = fields.Char('Address', required=True, translate=True)
     postcode = fields.Char('Postal Code', required=True, translate=True)
     description = fields.Text('Description', translate=True)
     expected_price = fields.Float('Expected Price')
@@ -30,6 +29,5 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string='State',
         selection=[('new', 'New'), ('offerreceived', 'Offer Received'), ('offeraccepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-        translate=True,
         default='new',
     )
