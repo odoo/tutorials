@@ -7,6 +7,15 @@ class EstateProperty(models.Model):
 
     name = fields.Char(string='Property name', required=True)
     description = fields.Text()
+
+    type_id = fields.Many2one('estate.property.type', string='Property type', required=True)
+
+    seller_id = fields.Many2one('res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', index=True)
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [('new', 'New'),
