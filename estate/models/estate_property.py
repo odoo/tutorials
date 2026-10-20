@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Name", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=+3),
+    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3),
                                     string="Available from")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -21,8 +21,10 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection([('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')])
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        [('new', 'New'), ('offer_received', 'Offer Receive'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
-         ('cancel', 'Cancelled')], default='new', copy=False, required=True)
+        [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
+         ('cancelled', 'Cancelled')], default='new', copy=False, required=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.uid, string="Salesperson")
     buyer_id = fields.Many2one("res.partner", copy=False, string="Buyer")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")

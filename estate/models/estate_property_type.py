@@ -5,4 +5,4 @@ class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Property Type object"
 
-    name = fields.Char(string="Type", required=True)
+    name = fields.Char(required=True)
