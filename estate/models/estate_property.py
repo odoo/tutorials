@@ -5,19 +5,27 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate properties"
 
-    title = fields.Char("Title", required=True)
+    name = fields.Char("Title", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Availability")
+    date_availability = fields.Date("Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price")
-    bedrooms = fields.Integer("Bedrooms")
-    living_area = fields.Integer("Living Area")
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer("Facades")
     garage = fields.Boolean("Has Garage")
     garden = fields.Boolean("Has Garden")
     garden_area = fields.Integer("Garden Area")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
-        selection=[("nord", "Nord"), ("south", "South"), ("east", "East"), ("west", "West")]
+        selection=[("nord", "Nord"), ("south", "South"), ("east", "East"), ("west", "West")],
+    )
+    active = fields.Boolean("Active", default=True)
+    state = fields.Selection(
+        string="State",
+        selection=[("new", "New"), ("received", "Offer Received"), ("accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
+        required=True,
+        copy=False,
+        default="new",
     )
