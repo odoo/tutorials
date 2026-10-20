@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, models, api
-# from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError  # , ValidationError
 from odoo.tools import date_utils
 
 
@@ -55,10 +55,10 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
-    buyer = fields.Many2one('res.users', string='Buyer',
-                            index=True, default=lambda self: self.env.user)
+    buyer = fields.Many2one(
+        'res.partner', string='Buyer', index=True, copy=False)
     seller = fields.Many2one(
-        'res.users', string='Salesman', index=True, copy=False)
+        'res.users', string='Salesman', index=True, default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many(
         'estate.property.offer', 'property_id', string="Offers")
@@ -84,19 +84,19 @@ class EstateProperty(models.Model):
         self.garden_area = 10
         self.garden_orientation = 'north'
 
-    # def action_sold(self):
-    #     for property in self:
-    #         if property.state == "canceled":
-    #             raise UserError("Un bien annulé ne peut pas être vendu.")
-    #         property.state = "sold"
-    #     return True
+    def action_sold(self):
+        for property in self:
+            if property.state == "canceled":
+                raise UserError("Un bien annulé ne peut pas être vendu.")
+            property.state = "sold"
+        return True
 
-    # def action_cancel(self):
-    #     for property in self:
-    #         if property.state == "sold":
-    #             raise UserError("Un bien vendu ne peut pas être annulé.")
-    #         property.state = "canceled"
-    #     return True
+    def action_cancel(self):
+        for property in self:
+            if property.state == "sold":
+                raise UserError("Un bien vendu ne peut pas être annulé.")
+            property.state = "cancelled"
+        return True
 
     # @api.constrains('product_id')
     # def _check_selling_price(self):

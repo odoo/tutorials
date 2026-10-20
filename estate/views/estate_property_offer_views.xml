@@ -7,13 +7,15 @@
             <list string="Property Offers">
                 <field name="price" width="20%"/>
                 <field name="partner_id" width="20%"/>
-                <field name="status" width="15%"/>
                 <field name="validity" width="15%"/>
                 <field name="date_deadline" width="20%"/>
-                <!-- <button name="action_accept" type="object" icon="fa-check"
-                        title="Accept" invisible="status == 'accepted'" width="5%"/>
-                <button name="action_refuse" type="object" icon="fa-times"
-                        title="Refuse" invisible="status == 'refused'" width="5%"/> -->
+                <button name="action_accept" type="object" icon="check"
+                        title="Accept" width="3%"
+                        invisible="status == 'accepted'"/>
+                <button name="action_refuse" type="object" icon="close"
+                        title="Refuse" width="3%"
+                        invisible="status == 'refused'"/>
+                <field name="status" width="15%"/>
             </list>
         </field>
     </record>
