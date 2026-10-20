@@ -35,8 +35,10 @@
                             <field name="name"/>
                         </h1>
                     </div>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -58,6 +60,15 @@
                                 <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
                         </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesman_id" string="Salesman"/>
+                                <field name="buyer_id" string="Buyer"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -75,7 +86,7 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="facades" string="Facades"/>
-                <filter string="Available" domain="['|', ('stage', '=', 'new'), ('stage', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="['|', ('stage', '=', 'new'), ('stage', '=', 'offer_received')]"/>
                 <filter string="Postcode" name="groupby_postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
