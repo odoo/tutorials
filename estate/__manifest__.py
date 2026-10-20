@@ -1,4 +1,6 @@
 {
+    "author": "qubac",
+    "license": "LGPL-3",
     "name": "Estate",
     "depends": ["base", "base_setup"],
     "data": [
