@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.orm.decorators import ondelete
 from odoo.tools import float_compare, float_is_zero
 
 
@@ -86,3 +87,8 @@ class EstateProperty(models.Model):
                     "The selling price must be at least 90% of the expected price! "
                     "You must reduce the expected price if you want to accept this offer.",
                 )
+
+    @ondelete(at_uninstall=False)
+    def _unlink_if_property_new_or_cancelled(self):
+        if any(record.state not in ["new", "cancelled"] for record in self):
+            raise UserError("Only new and cancelled properties can be deleted.")

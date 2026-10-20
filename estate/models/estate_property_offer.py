@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -48,3 +49,30 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        property_ids = [val["property_id"] for val in vals_list]
+        property_by_id = dict(
+            zip(
+                property_ids,
+                self.env["estate.property"].browse(property_ids),
+                strict=True,
+            ),
+        )
+        for val in vals_list:
+            property = property_by_id[val["property_id"]]
+            if (
+                float_compare(
+                    val.get("price", 0),
+                    property.best_price,
+                    precision_digits=2,
+                )
+                <= 0
+            ):
+                raise UserError(
+                    f"The offer must be higher than {property.best_price:.2f}.",
+                )
+        offers = super().create(vals_list)
+        offers.property_id.state = "received"
+        return offers
