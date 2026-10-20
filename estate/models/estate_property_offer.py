@@ -1,4 +1,5 @@
-from dateutil.relativedelta import relativedelta
+from dateutil.relativedelta import relativedelta  # noqa: I001
+
 from odoo import api, fields, models  # ty: ignore[unresolved-import]
 from odoo.exceptions import UserError  # ty: ignore[unresolved-import]
 

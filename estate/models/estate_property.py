@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta  # noqa: I001
+
 from odoo import api, fields, models  # ty: ignore[unresolved-import]
 from odoo.exceptions import UserError, ValidationError  # ty: ignore[unresolved-import]
 from odoo.tools.float_utils import float_is_zero, float_compare  # ty: ignore[unresolved-import]
