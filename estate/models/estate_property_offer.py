@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-# from datetime import datetime, timedelta
-from odoo import fields, models  # , api
+from datetime import timedelta  # , datetime
+from odoo import fields, models, api
 
 
 class EstatePropertyOffer(models.Model):
@@ -24,21 +24,24 @@ class EstatePropertyOffer(models.Model):
             ('pending', 'Pending')
         ]
     )
-    # validity = fields.Integer('Validity', default=7)
-    # date_deadline = fields.Date('Deadline',
-    #                             compute="_compute_date_deadline",
-    #                             inverse="_inverse_date_deadline")
+    validity = fields.Integer('Validity', default=7)
+    date_deadline = fields.Date('Deadline',
+                                compute="_compute_date_deadline",
+                                inverse="_inverse_date_deadline")
 
-    # @api.depends('create_date', 'validity')
-    # def _compute_date_deadline(self):
-    #     for record in self:
-    #         creation_date = record.create_date.date() if record.create_date else fields.Date.today()
-    #         record.date_deadline = creation_date + timedelta(days=record.validity)
+    @api.depends('create_date', 'validity')
+    def _compute_date_deadline(self):
+        for record in self:
+            creation_date = record.create_date.date(
+            ) if record.create_date else fields.Date.today()
+            record.date_deadline = creation_date + \
+                timedelta(days=record.validity)
 
-    # def _inverse_date_deadline(self):
-    #     for record in self:
-    #         creation_date = record.create_date.date() if record.create_date else fields.Date.today()
-    #         record.validity = (record.date_deadline - creation_date).days
+    def _inverse_date_deadline(self):
+        for record in self:
+            creation_date = record.create_date.date(
+            ) if record.create_date else fields.Date.today()
+            record.validity = (record.date_deadline - creation_date).days
 
     # def action_accept(self):
     #     for offer in self:

@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models  # , api
+from odoo import fields, models, api
 # from odoo.exceptions import ValidationError
 from odoo.tools import date_utils
 
@@ -62,26 +62,27 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many(
         'estate.property.offer', 'property_id', string="Offers")
-    # total_area = fields.Integer("Total Area", compute="_compute_total_area")
-    # best_price = fields.Float('Best price', compute="_compute_best_price")
+    total_area = fields.Integer(
+        "Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float('Best price', compute="_compute_best_price")
 
-    # @api.depends("living_area", "garden_area")
-    # def _compute_total_area(self):
-    #     for record in self:
-    #         record.total_area = record.living_area + record.garden_area
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
-    # @api.depends("offer_ids.price")
-    # def _compute_best_price(self):
-    #     for record in self:
-    #         if record.offer_ids:
-    #             record.best_price = max(r.price for r in record.offer_ids)
-    #         else:
-    #             record.best_price = 0
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(r.price for r in record.offer_ids)
+            else:
+                record.best_price = 0
 
-    # @api.onchange('garden')
-    # def _onchange_garden(self):
-    #     self.garden_area = 10
-    #     self.garden_orientation = 'north'
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        self.garden_area = 10
+        self.garden_orientation = 'north'
 
     # def action_sold(self):
     #     for property in self:
