@@ -1,5 +1,3 @@
-from odoo.fields import Date
-
 from odoo import fields, models
 
 
@@ -9,9 +7,11 @@ class Property(models.Model):
 
     name = fields.Char(required=True)
     active = fields.Boolean('Active', default=True)
-    descritpion = fields.Text()
+    description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default= lambda self: Date.today().replace(month=(Date.today().month + 3) % 12))
+    date_availability = fields.Date(
+        copy=False,
+        default=lambda self: fields.Date.today().replace(month=(fields.Date.today().month + 3) % 12))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True)
     bedrooms = fields.Integer(default=2)
@@ -25,7 +25,7 @@ class Property(models.Model):
         selection=[('south', 'South'), ('north', 'North'), ('east', 'East'), ('west', 'West')]
     )
     state = fields.Selection(
-        selection=[('new_property', "New"), ('offer_recieved', 'Offer recieved'), 
+        selection=[('new_property', "New"), ('offer_received', 'Offer received'),
             ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         default='new_property'
     )
