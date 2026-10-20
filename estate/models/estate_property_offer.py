@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class Offer(models.Model):
@@ -28,3 +28,24 @@ class Offer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.today()).days
             else:
                 record.validity = 0
+
+    def action_accepted(self):
+        for record in self:
+            property = record.property_id
+
+            if ('accepted' in property.offer_ids.mapped('status')):
+                raise exceptions.UserError("An offer has already been accepted for this property")
+
+            if (property.state in ('cancelled', 'sold')):
+                raise exceptions.UserError("You cannot accept an offer for a property that is sold or cancelled")
+
+            record.status = 'accepted'
+            property.buyer_id = record.partner_id
+            property.selling_price = record.price
+        return True
+
+    def action_refused(self):
+        for record in self:
+            if (not record.status):
+                record.status = 'refused'
+        return True
