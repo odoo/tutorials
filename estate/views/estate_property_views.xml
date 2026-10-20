@@ -52,10 +52,11 @@
                         <group>
                             <field name="property_type_id">Property Type</field>
                             <field name="postcode">Postcode</field>
-                            <field name="expected_price">Expected Price</field>
+                            <field name="date_availability">Availabile From</field>
                         </group>
                         <group>
-                            <field name="date_availability">Availabile From</field>
+                            <field name="expected_price">Expected Price</field>
+                            <field name="best_price">Best Offer</field>
                             <field name="selling_price">Selling Price</field>
                         </group>
                     </group>
@@ -124,6 +125,14 @@
                                     </div>
                                     <div class="col">
                                         <field name="garden_orientation"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="total_area" string="Total Area"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="total_area"/>
                                     </div>
                                 </div>
                             </div>
