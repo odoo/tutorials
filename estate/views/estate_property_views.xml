@@ -44,8 +44,13 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id">Property Type</field>
                             <field name="postcode">Postcode</field>
                             <field name="expected_price">Expected Price</field>
                         </group>
@@ -119,6 +124,30 @@
                                     </div>
                                     <div class="col">
                                         <field name="garden_orientation"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <div class="w-50">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="salesman_id" string="Salesman"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="salesman_id"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="buyer_id" string="Buyer"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="buyer_id"/>
                                     </div>
                                 </div>
                             </div>
