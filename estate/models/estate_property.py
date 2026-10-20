@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     description = fields.Text(default="Unknown")
     postcode = fields.Char(default="Unknown")
     date_available = fields.Date(copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
-    expected_price = fields.Float(required=True, default=0)
+    expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(default=0)
@@ -21,12 +21,10 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(default=False)
     garden_area = fields.Integer(default=0)
     garden_orientation = fields.Selection(
-        string="garden_orientation",
         selection=[("east", "East"), ("west", "West"), ("north", "North"), ("south", "South")],
     )
     active = fields.Boolean(default=False)
     state = fields.Selection(
-        string="state",
         selection=[("new", "New"),
                    ("offer_recieved", "Offer recieved"),
                    ("offer_accepted", "Offer Accepted"),
