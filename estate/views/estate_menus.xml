@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="estate_root_menu"
                 name="Real Estate"
@@ -15,10 +16,17 @@
                 action="estate_property_action"
                 sequence="12"/>
 
+<<<<<<< HEAD
     <!--menuitem id="estate_settings_menu"
                 name="Settings"
                 parent="estate_root_menu"
                 sequence="13"/>
+=======
+        <menuitem id="estate_settings_menu"
+                  name="Settings"
+                  parent="estate_root_menu"
+                  sequence="13"/>
+>>>>>>> 2289f77 ([IMP] estate: relations between models)
 
     <menuitem id="estate_property_types_menu"
                 name="Property Types"
@@ -26,10 +34,18 @@
                 action="estate_property_type_action"
                 sequence="14"/>
 
+<<<<<<< HEAD
     <menuitem id="estate_property_tags_menu"
                 name="Property Tags"
                 parent="estate_settings_menu"
                 action="estate_property_tag_action"
                 sequence="15"/-->
+=======
+        <menuitem id="estate_property_tags_menu"
+                  name="Property Tags"
+                  parent="estate_settings_menu"
+                  action="estate_property_tag_action"
+                  sequence="15"/>
+>>>>>>> 2289f77 ([IMP] estate: relations between models)
 
 </odoo>

@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, models  # , api
-from odoo.tools import date_utils
 # from odoo.exceptions import ValidationError
+from odoo.tools import date_utils
 
 
 class EstateProperty(models.Model):
@@ -24,12 +24,12 @@ class EstateProperty(models.Model):
         fields.Date.today(), months=3))
     expected_price = fields.Float('Expected price', required=True)
     selling_price = fields.Float('Selling price', readonly=True, copy=False)
-    bedrooms = fields.Integer('Bedrooms', default=2)
+    bedrooms = fields.Integer('Number of bedrooms', default=2)
     living_area = fields.Integer('Living area (sqm)')
     facades = fields.Integer('Number of facades')
     garage = fields.Boolean('Has a garage')
     garden = fields.Boolean('Has a garden')
-    garden_area = fields.Integer('Garden area (sqm)')
+    garden_area = fields.Integer('Garden area')
     garden_orientation = fields.Selection(
         string='Garden orientation',
         selection=[
@@ -53,11 +53,15 @@ class EstateProperty(models.Model):
         copy=False,
         required=True
     )
-    # property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    # buyer = fields.Many2one('res.users', string='Buyer', index=True, default=lambda self: self.env.user)
-    # seller = fields.Many2one('res.users', string='Salesman', index=True, copy=False)
-    # tag_ids = fields.Many2many('estate.property.tag', string='Tags')
-    # offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    property_type_id = fields.Many2one(
+        'estate.property.type', string="Property Type")
+    buyer = fields.Many2one('res.users', string='Buyer',
+                            index=True, default=lambda self: self.env.user)
+    seller = fields.Many2one(
+        'res.users', string='Salesman', index=True, copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    offer_ids = fields.One2many(
+        'estate.property.offer', 'property_id', string="Offers")
     # total_area = fields.Integer("Total Area", compute="_compute_total_area")
     # best_price = fields.Float('Best price', compute="_compute_best_price")
 
