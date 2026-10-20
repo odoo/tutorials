@@ -126,3 +126,11 @@ class TestModel(models.Model):
                 raise ValidationError(
                     "The Selling price cannot be below 90% of the expected price"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def check_delete(self):
+        if any(
+            not (record.state == "new" or record.state == "cancelled")
+            for record in self
+        ):
+            raise UserError("can only delete new or cancelled properties")
