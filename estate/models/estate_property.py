@@ -5,7 +5,7 @@ from odoo.tools import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", "mail.composer.mixin"]
     _description = "Real Estate Property"
     _order = "id desc"
 
@@ -104,6 +104,28 @@ class EstateProperty(models.Model):
         if self.state != "offer_accepted":
             raise UserError("You cannot sell the property if you haven't received an offer AND have an offer accepted!")
         self.state = "sold"
+        mail_template = self.env.ref(
+            "estate.email_template_estate_sold"
+        )
+        mail_template.send_mail(
+            self.buyer_id.id,
+            force_send=True,
+            email_layout_xmlid="mail.mail_notification_light",
+            email_values={
+                "email_from": self.salesman_id.email_formatted,
+                "email_to": self.buyer_id.email,
+            },
+        )
+        # self.message_post(
+        #     author_id=self.salesman_id.id,
+        #     body="Body of Property Sold",
+        #     email_layout_xmlid="mail.mail_notification_light",
+        #     message_type="email",
+        #     partner_ids=self.buyer_id.ids,
+        #     subject="This is the subject of Action Sold",
+        # )
+        # self.env['mail.mail'].sudo(), self.env['mail.message']
+
         return True
 
     def action_cancelled(self):

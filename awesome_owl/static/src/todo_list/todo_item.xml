@@ -3,7 +3,16 @@
 
     <t t-name="awesome_owl.todo_item">
         <div class="card" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">
-            <t t-out="props.todo.id"/>. <t t-out="props.todo.description"/>
+            <div>
+                <input
+                    type="checkbox"
+                    t-att-checked="props.todo.isCompleted"
+                    t-on-change="onChange"
+                />
+                <t t-out="props.todo.id"/>.
+                <t t-out="props.todo.description"/>
+                <span class="fa fa-remove float-end" t-on-click="onDelete"/>
+            </div>
         </div>
     </t>
 

@@ -5,9 +5,19 @@
         <div class="card p-3 shadow-sm style-container" style="max-width: 400px;">
             <h4 class="card-title mb-3">Todo List</h4>
             <div class="todo-list">
-                <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo"/>
-                </t>
+                <input
+                        type="text"
+                        class="form-control flex gap-px rounded my-1"
+                        placeholder="Enter a New To-Do Task"
+                        t-on-keyup="addTodo"
+                        t-ref="input"
+                />
+                <div>
+                    <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                        <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
+                    </t>
+                </div>
+
             </div>
         </div>
     </t>

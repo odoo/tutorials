@@ -16,6 +16,9 @@
                   decoration-success="offer_ids"
                   decoration-bf="state == 'offer_accepted'"
                   decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(estate.set_offers_views)d" type="action" string="Add Offer of Mauryan :)" />
+                </header>
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
@@ -175,6 +178,20 @@
                 <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
 
             </search>
+        </field>
+    </record>
+
+    <record id="email_template_estate_sold" model="mail.template">
+        <field name="name">Estate Sold Mail</field>
+        <field name="model_id" ref="estate.model_estate_property"></field>
+        <field name="subject">Congrats for your property Sold</field>
+        <field name="description">Subscription confirmation to a mailing group</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                Hello,<br/><br/>
+                You have successfully sold the property!! <br/> <br/>
+                This email template is for Testing Purpose :)
+            </div>
         </field>
     </record>
 </odoo>

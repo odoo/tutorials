@@ -62,9 +62,16 @@ class EstatePropertyOffer(models.Model):
             raise UserError("You cannot accept more than 1 offer for a single Property")
         for record in self:
             record.status = "accepted"
-            record.property_id.state = "offer_accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
+            record.property_id.write({
+                'state': "offer_accepted",
+                'selling_price': record.price,
+                'buyer_id': record.partner_id
+            })
+
+            # record.property_id.state = "offer_accepted"
+            # record.property_id.selling_price = record.price
+            # record.property_id.buyer_id = record.partner_id
+
         return True
 
     def action_refuse(self):

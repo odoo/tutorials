@@ -9,8 +9,12 @@
             Sum: <t t-out="state.sum"/>
         </div>
 
-        <Card title="'Title 1'" content="this.withoutMarkup"/>
-        <Card title="'Title 2'" content="this.withMarkup"/>
+        <Card title="'My Card 1'">
+            <p>Hello, this is simple Text!</p>
+        </Card>
+        <Card title="'Counter Card'">
+            <Counter onChange.bind="incrementSum"/>
+        </Card>
 
         <TodoList/>
     </t>

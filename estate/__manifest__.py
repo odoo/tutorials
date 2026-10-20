@@ -14,6 +14,7 @@
         "views/estate_property.xml",
         "views/res_users.xml",
         "views/estate_menus.xml",
+        "wizard/set_offers_views.xml",
     ],
     "application": True,
     "installable": True,
