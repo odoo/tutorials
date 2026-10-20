@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="real_estate_action" model="ir.actions.act_window">
-        <field name="name">Estate Property Action</field>
+        <field name="name">Estate Property Window</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -67,7 +67,7 @@
 
     <record id="real_estate_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
-        <field name="model">estate.property</field>
+        <feld name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Tests">
                 <field name="name"/>

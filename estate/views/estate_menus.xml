@@ -3,6 +3,7 @@
     <menuitem id="estate_menu_root" name="Estate">
         <menuitem id="test_first_level_menu" name="First Level Menu Item">
             <menuitem id="test_model_menu_action" action="real_estate_action"/>
+            <menuitem id="test_model_menu_action_2" action="estate_property_type_action"/>
         </menuitem>
     </menuitem>
 </odoo>

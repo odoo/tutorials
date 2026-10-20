@@ -3,11 +3,9 @@ from odoo import models, fields
 
 
 class EstateProperty(models.Model):
-    # Meta
     _name = "estate.property"
     _description = "Estate properties"
 
-    # Fields
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -38,3 +36,4 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
