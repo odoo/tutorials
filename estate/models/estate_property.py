@@ -43,6 +43,7 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean('Active', default=True)
     sequence = fields.Integer('Sequence', default=10)
+    
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
