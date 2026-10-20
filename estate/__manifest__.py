@@ -9,5 +9,7 @@
         'views/estate_property_offer_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml'
-    ]
+    ],
+    'author': 'Louis (lobur)',
+    'license': 'LGPL-3',
 }
