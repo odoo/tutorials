@@ -25,6 +25,7 @@ class EstateProperty(models.Model):
             ('west', 'West')
         ])
     active = fields.Boolean(default=True)
+
     state = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -37,3 +38,5 @@ class EstateProperty(models.Model):
         copy=False,
         default='new'
         )
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
