@@ -53,6 +53,26 @@
         </field>
     </record>
 
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate Property Search">
+                <field name="name" string="Title"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="facades" string="Facades"/>
+                <separator/>
+                <filter string="Available Properties" name="available_properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <group>
+                    <filter string="Postcode" name="postcode_filter" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="test_estate_property_action" model="ir.actions.act_window">
         <field name="name">Test action</field>
         <field name="res_model">estate.property</field>
