@@ -67,7 +67,7 @@
 
     <record id="real_estate_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
-        <feld name="model">estate.property</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Tests">
                 <field name="name"/>
