@@ -1,4 +1,4 @@
-from dateutil.relativedelta import relativedelta
+from dateutil.relativedelta import relativedelta  # noqa: I001
 from odoo import api, fields, models  # ty: ignore[unresolved-import]
 from odoo.exceptions import UserError, ValidationError  # ty: ignore[unresolved-import]
 from odoo.tools.float_utils import float_is_zero, float_compare  # ty: ignore[unresolved-import]
@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_is_zero, float_compare  # ty: ignore[un
 class TestModel(models.Model):
     _name = "estate.property"
     _description = "Test model for real_estate module"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Char()
@@ -50,8 +51,12 @@ class TestModel(models.Model):
             ("cancelled", "Cancelled"),
         ],
         default="new",
+        string="Status",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    # property_type_id = fields.Integer(
+    #     related="property_id.property_type_id", store=True
+    # )
     salesman = fields.Many2one(
         "res.users",
         string="Salesman",
