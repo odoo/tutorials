@@ -8,6 +8,8 @@
             <list string="Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <button name="action_accept" type="object" title="Accept" icon="fa-check"/>
+                <button name="action_refuse" type="object" title="Refuse" icon="fa-close"/>
                 <field name="status"/>
             </list>
         </field>

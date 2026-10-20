@@ -42,3 +42,14 @@ class EstatePropertyOffer(models.Model):
     active = fields.Boolean('Active', default=True)
     sequence = fields.Integer('Sequence', default=10)
 
+    def action_accept(self):
+        for record in self:
+            record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+    
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+

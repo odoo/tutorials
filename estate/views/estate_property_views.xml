@@ -42,7 +42,13 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <form string="Estate Property">
+            <form string="Estate Property"> 
+                <header>
+                    <button name="action_cancel_estate_property" string="Cancel"
+                        type="object" data-hotkey="c" title="Mark as cancelled"/>
+                    <button name="action_sold_estate_property" string="Sold"
+                        type="object" data-hotkey="v" title="Mark as sold"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate_property"
@@ -66,4 +67,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-        
+
+    def action_cancel_estate_property(self):
+        if self.state == 'sold':
+            raise UserError("You cannot cancel a sold property.")
+        for record in self:
+            record.state = 'canceled'
+        return True
+
+    def action_sold_estate_property(self):
+        if self.state == 'canceled':
+            raise UserError("You cannot sell a canceled property.")
+        for record in self:
+            record.state = 'sold'
+        return True
