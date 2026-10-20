@@ -3,5 +3,8 @@
     'application': True,
     'depends': [
         'base',
+    ],
+    'data': [
+        'security/ir.access.csv',
     ]
 }
