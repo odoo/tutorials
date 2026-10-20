@@ -1,21 +1,22 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, models, api
-from odoo.exceptions import UserError  # , ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import date_utils
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate property"
 
-    # _check_expected_price = models.Constraint(
-    #     'CHECK(expected_price > 0)',
-    #     'The expected price must be strictly positive.',
-    # )
-    # _check_selling_price = models.Constraint(
-    #     'CHECK(selling_price >= 0)',
-    #     'The selling price must be positive.',
-    # )
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive.',
+    )
 
     name = fields.Char('Estate Name', required=True)
     description = fields.Text('Estate Description')
@@ -99,19 +100,20 @@ class EstateProperty(models.Model):
         return True
 
     # @api.constrains('product_id')
-    # def _check_selling_price(self):
-    #     for record in self:
-    #         if float_is_zero(record.selling_price, precision_rounding=0.01):
-    #             continue
-    #         if (
-    #             float_compare(
-    #                 record.selling_price,
-    #                 record.expected_price * 0.9,
-    #                 precision_rounding=0.01,
-    #             )
-    #             < 0
-    #         ):
-    #             raise ValidationError(
-    #                 "The selling price must be at least 90% of the expected price! "
-    #                 "You must reduce the expected price if you want to accept this offer."
-    #             )
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+            if (
+                float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_rounding=0.01,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! "
+                    "You must reduce the expected price if you want to accept this offer."
+                )
