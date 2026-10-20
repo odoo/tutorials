@@ -1,5 +1,3 @@
-from typing import Required
-
 from odoo import fields, models
 
 
