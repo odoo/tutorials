@@ -1,7 +1,7 @@
 {
     "name": "estate",
-    'installable': True,
-    'application': True,
+    "installable": True,
+    "application": True,
     "depends": [
         "base",
     ],
