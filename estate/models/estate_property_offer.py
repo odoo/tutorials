@@ -7,10 +7,10 @@ from datetime import timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer"
     _description = "Estate Property Offer"
-    _order = "sequence"
+    _order = "price desc"
 
     price = fields.Float('Price')
-    _positive_offer_price = models.Constraint("CHECK(price > 0)", "Offer price must be positive.")
+    _positive_offer_price = models.Constraint("Check(price > 0)", "Offer price must be positive.")
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string='Status', copy=False)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate_property', string='Property', required=True)
@@ -18,6 +18,8 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer('Validity', compute="_compute_validity", inverse="_inverse_validity", default=7, help="Validity in days")
     create_date = fields.Datetime('Creation Date', default=fields.Datetime.now, readonly=True)
     date_deadline = fields.Date('Date Deadline')
+
+    property_type_id = fields.Many2one('estate_property_type', string='Property Type', related='property_id.property_type_id', store=True)
 
     @api.depends("date_deadline")
     def _compute_validity(self):

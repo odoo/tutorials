@@ -8,7 +8,7 @@ from odoo import tools
 class EstateProperty(models.Model):
     _name = "estate_property"
     _description = "Estate Property"
-    _order = "sequence"
+    _order = "id desc"
 
     name = fields.Char('Name', required=True, translate=True)
     description = fields.Text('Description')

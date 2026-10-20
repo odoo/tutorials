@@ -17,7 +17,7 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate_property_tag</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" editable="bottom">
                 <field name="name"/>
                 <field name="description"/>
             </list>
@@ -33,6 +33,7 @@
                     <group>
                         <field name="name">Name</field>
                         <field name="description">Description</field>
+                        <field name="color"/>
                     </group>
                 </sheet>
             </form>
