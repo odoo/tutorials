@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         copy=False,
         default=lambda self: fields.Date.add(fields.Date.today(), months=3),
-        string='Available From'
+        string='Available From',
     )
     garden_area = fields.Integer(string='Garden Area (sqm)')
     expected_price = fields.Float(required=True)
@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
-            ('west', 'West')
+            ('west', 'West'),
         ]
     )
     active = fields.Boolean(default=True)
@@ -36,13 +36,34 @@ class EstateProperty(models.Model):
             ('offer', 'Offer Received'),
             ('accept', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancel', 'Cancelled')
+            ('cancel', 'Cancelled'),
         ],
         default='new',
-        required=True
+        required=True,
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer')
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    total_area = fields.Integer(compute='_compute_area', string='Total Area (sqm)')
+    best_price = fields.Float(compute='_compute_best_price', string='Best Offer')
+
+    @api.depends("living_area", "garden_area")
+    def _compute_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
