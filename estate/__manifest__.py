@@ -7,5 +7,8 @@
     'description': """
     Description text
     """,
-    'license': "LGPL-3"
+    'license': "LGPL-3",
+    'data': [
+        'security/ir.access.csv',
+    ]
 }
