@@ -1,6 +1,5 @@
 <odoo>
-
-    <!-- <record id="estate_property_view_search" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -17,7 +16,7 @@
                 </group>
             </search>
         </field>
-    </record> -->
+    </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
@@ -56,14 +55,14 @@
                             <group>
                                 <field name="description"/>
                                 <field name="bedrooms"/>
+                                <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="living_area"/>
                                 <field name="garden_area" invisible="not garden"/>
                                 <!-- <field name="total_area"/> -->
                                 <field name="garden_orientation" invisible="not garden"/>
-                                <field name="active"/>
+                                <!-- <field name="active"/> -->
                             </group>
                         </page>
                         <!-- <page string="Offers">
@@ -88,12 +87,12 @@
             <!--list string="Channel" editable="bottom" class="o_list_table_auto"-->
             <list>
                 <field name="name" width="150px"/>
-                <!-- <field name="postcode" width="150px"/>
+                <field name="postcode" width="150px"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/> -->
+                <field name="date_availability"/>
             </list>
         </field>
     </record>

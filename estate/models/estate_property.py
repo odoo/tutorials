@@ -24,12 +24,12 @@ class EstateProperty(models.Model):
         fields.Date.today(), months=3))
     expected_price = fields.Float('Expected price', required=True)
     selling_price = fields.Float('Selling price', readonly=True, copy=False)
-    bedrooms = fields.Integer('Number of bedrooms', default=2)
-    living_area = fields.Integer('Living area')
+    bedrooms = fields.Integer('Bedrooms', default=2)
+    living_area = fields.Integer('Living area (sqm)')
     facades = fields.Integer('Number of facades')
     garage = fields.Boolean('Has a garage')
     garden = fields.Boolean('Has a garden')
-    garden_area = fields.Integer('Garden area')
+    garden_area = fields.Integer('Garden area (sqm)')
     garden_orientation = fields.Selection(
         string='Garden orientation',
         selection=[
