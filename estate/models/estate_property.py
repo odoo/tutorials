@@ -5,17 +5,19 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, string='Title')
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
-        default=lambda self: fields.Date.add(fields.Date.today(), months=3))
-    garden_area = fields.Integer()
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
+        string='Available From'
+    )
+    garden_area = fields.Integer(string='Garden Area (sqm)')
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
