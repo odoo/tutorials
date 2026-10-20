@@ -2,7 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo import tools
 
 class EstateProperty(models.Model):
     _name = "estate_property"
@@ -14,7 +15,9 @@ class EstateProperty(models.Model):
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Date Availability', copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=2))
     expected_price = fields.Float('Expected Price', required=True)
+    _positive_expected_price = models.Constraint("CHECK(expected_price > 0)", "Expected price must be positive.")
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    _positive_selling_price = models.Constraint("CHECK(selling_price >= 0)", "Selling price must be positive.")
     bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area')
     facades = fields.Integer('Facades')
@@ -81,3 +84,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = 'sold'
         return True
+
+    @api.constrains('selling_price')
+    def _check_selling_price_to_expected(self):
+        for record in self:
+            if record.selling_price == 0:
+                continue
+            if  tools.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError("The selling price cannot be lower than the expected price")
+        # all records passed the test, don't return anything

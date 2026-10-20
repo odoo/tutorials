@@ -9,6 +9,7 @@ class EstatePropertyTag(models.Model):
     _order = "sequence"
 
     name = fields.Char('Name', required=True, translate=True)
+    _unique_name = models.Constraint("UNIQUE(name)", "Tag name must be unique.")
     description = fields.Text('Description')
     active = fields.Boolean('Active', default=True)
     sequence = fields.Integer('Sequence', default=10)
