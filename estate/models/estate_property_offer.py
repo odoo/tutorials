@@ -1,6 +1,8 @@
 import datetime
 from datetime import timedelta
 
+from odoo.exceptions import UserError
+
 from odoo import api, fields, models
 
 
@@ -35,3 +37,16 @@ class EstatePropertyOffer(models.Model):
             record.validity = (
                 record.date_deadline - creation_date.date()
             ) // timedelta(days=1)
+
+    def accept(self):
+        for record in self:
+            if not record.property_id.buyer_id:
+                record.status = "accepted"
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+            else:
+                raise UserError("The property already have a buyer defined")
+
+    def refuse(self):
+        for record in self:
+            record.status = "refused"
