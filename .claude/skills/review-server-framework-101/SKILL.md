@@ -16,7 +16,7 @@ drown them in comments until the PR is perfect.
 ## How to review
 
 1. **Read every changed file in full**, XML and CSV included. Only review this tutorial's modules
-   (`estate`, `estate_account`, ...). Ignore files from other tutorials (e.g. `awesome_owl`,
+   (`estate_property.py`, `estate_account`, ...). Ignore files from other tutorials (e.g. `awesome_owl`,
    `awesome_dashboard`) and commits that only touch them: don't review them or comment on them.
 2. **Go through the checklist**, then hunt for the bugs listed below. Don't ask for something a 
    later chapter introduces.
@@ -97,7 +97,7 @@ These have no checklist entry; you only find them by reading.
   - **[should fix]** Don't assume keys exist in `vals` (`vals['property_id']`); use `.get()`.
 - **Ch. 13 Other modules**
   - **[nit]** `auto_install: True` on a glue module that bridges two independent modules (e.g.
-    `estate_account` depends on `estate` and `account`).
+    `estate_account` depends on `estate_property.py` and `account`).
 
 ## Output format
 

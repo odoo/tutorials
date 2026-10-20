@@ -4,14 +4,22 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate" widths="name: 20%, ">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>
+            <list string="Estate">
+                <field name="name" optional="show"/>
+                <field name="description" optional="hide"/>
+                <field name="postcode" optional="show"/>
+                <field name="bedrooms" optional="show"/>
+                <field name="living_area" optional="show"/>
+                <field name="facades" optional="hide"/>
+                <field name="garage" optional="hide"/>
+                <field name="garden" optional="hide"/>
+                <field name="garden_area" optional="hide"/>
+                <field name="garden_orientation" optional="hide"/>
+                <field name="expected_price" optional="show"/>
+                <field name="selling_price" optional="show"/>
+                <field name="date_availability" optional="show"/>
+                <field name="active" optional="hide"/>
+                <field name="state" optional="hide"/>
             </list>
         </field>
     </record>
@@ -33,8 +41,8 @@
                             <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price">Expected Price</field>
-                            <field name="selling_price">Selling Price</field>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -53,6 +61,44 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+
+                <separator/>
+
+                <filter string="Available"
+                        name="archived_estate"
+                        domain="[('date_availability', '&lt;', 'today')]"
+                />
+
+                <separator/>
+
+                <filter string="New"
+                        name="new_property"
+                        domain="[('state', '=', 'new')]"
+                />
+                <filter string="Offer Received"
+                        name="offer_rcv_property"
+                        domain="[('state', '=', 'offer_rcv')]"
+                />
+
+                <separator/>
+
+                <filter string="Postcode" name="group_postcode" context="{'group_by':'postcode'}"/>
+
+            </search>
         </field>
     </record>
 
