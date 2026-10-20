@@ -39,20 +39,20 @@ class EstateProperty(models.Model):
             ('west', 'West')
         ]
     )
-    # active = fields.Boolean('Active', default=True)
-    # state = fields.Selection(
-    #     string='State',
-    #     selection=[
-    #         ('new', 'New'),
-    #         ('offer_received', 'Offer Received'),
-    #         ('offer_accepted', 'Offer Accepted'),
-    #         ('sold', 'Sold'),
-    #         ('cancelled', 'Cancelled')
-    #     ],
-    #     default='new',
-    #     copy=False,
-    #     required=True
-    # )
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(
+        string='State',
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='new',
+        copy=False,
+        required=True
+    )
     # property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     # buyer = fields.Many2one('res.users', string='Buyer', index=True, default=lambda self: self.env.user)
     # seller = fields.Many2one('res.users', string='Salesman', index=True, copy=False)
