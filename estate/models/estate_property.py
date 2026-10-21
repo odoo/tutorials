@@ -48,7 +48,20 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer(s)")
 
     # -------------------------------------------------------------
-    # computed field and their method
+    # Constraints
+    # -------------------------------------------------------------
+    _check_expected_price_strict_positive = models.Constraint(
+    'CHECK(expected_price > 0)',
+    'The expected price of a property should be greater than 0.',
+    )
+
+    _check_selling_price_positive = models.Constraint(
+    'CHECK(selling_price >= 0)',
+    'The selling price of a property should be positive.',
+    )
+
+    # -------------------------------------------------------------
+    # Computed field and their method
     # -------------------------------------------------------------
     total_area = fields.Integer(compute="_compute_total_area")
 
@@ -65,7 +78,7 @@ class EstateProperty(models.Model):
             record.best_offer = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0
 
     # -------------------------------------------------------------
-    # onchange actions
+    # Onchange actions
     # -------------------------------------------------------------
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -75,7 +88,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
-    
+            
     # ------------------------------------------------------------- 
     # UI actions
     # -------------------------------------------------------------

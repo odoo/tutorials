@@ -1,4 +1,5 @@
 from odoo import api, exceptions, fields, models
+from odoo.tools import float_utils
 from dateutil.relativedelta import relativedelta
 
 
@@ -16,6 +17,21 @@ class EstateProperty(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
 
     # -------------------------------------------------------------
+    # Constraints
+    # -------------------------------------------------------------
+    _check_price_strict_positive = models.Constraint(
+    'CHECK(price > 0)',
+    'The offer price should be greater than 0.',
+    )
+
+    @api.constrains('price')
+    def _check_price_offer(self):
+        for record in self:
+            if not float_utils.float_is_zero(record.price, precision_digits=2):
+                if float_utils.float_compare((0.9 * record.property_id.expected_price), record.price, precision_digits=2) == 1:
+                    raise exceptions.ValidationError("Offering price should be higher than 90% of the property expected price")
+
+    # -------------------------------------------------------------
     # computed field and their method
     # -------------------------------------------------------------
     validity = fields.Integer(string="Validity in days")
@@ -31,7 +47,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.date_deadline:
                 record.validity = (record.date_deadline - fields.Date.today()).days
-                   
+           
     # -------------------------------------------------------------
     # UI actions
     # -------------------------------------------------------------
