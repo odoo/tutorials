@@ -48,7 +48,7 @@ class EstateProperty(models.Model):
                         if record.best_price < offers.price:
                             record.best_price = offers.price
 
-            #record.best_price = max(offers.mapped('price') for offers in record.offer_ids) if record.offer_ids else 0.0
+            # record.best_price = max(offers.mapped('price') for offers in record.offer_ids) if record.offer_ids else 0.0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -57,10 +57,12 @@ class EstateProperty(models.Model):
 
     def action_sold_estate_property(self):
         for record in self:
-            if record.state == 'cancelled' : raise UserError("Cancelled property cannot be sold")
+            if record.state == 'cancelled':
+                raise UserError("Cancelled property cannot be sold")
             record.state = 'sold'
 
     def action_cancel_estate_property(self):
         for record in self:
-            if record.state == 'sold': raise UserError("Sold property cannot be cancelled")
+            if record.state == 'sold':
+                raise UserError("Sold property cannot be cancelled")
             record.state = 'cancelled'
