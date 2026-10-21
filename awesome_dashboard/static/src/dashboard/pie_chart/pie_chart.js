@@ -6,6 +6,7 @@ export class PieChart extends Component {
     static props = {
         label: String,
         data: Object,
+        onClickSegment: { type: Function, optional: true },
     };
 
     setup() {
@@ -25,7 +26,14 @@ export class PieChart extends Component {
                     data: Object.values(this.props.data),
                 }],
             },
+            options: {
+                onClick: (event, elements, chart) => {
+                    if (elements.length) {
+                        const label = chart.data.labels[elements[0].index];
+                        this.props.onClickSegment?.(label);
+                    }
+                },
+            },
         });
     }
 }
-

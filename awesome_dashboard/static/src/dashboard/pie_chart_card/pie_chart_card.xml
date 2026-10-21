@@ -2,6 +2,6 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.PieChartCard">
         <t t-esc="props.title"/>
-        <PieChart data="props.values" label="''"/>
+        <PieChart data="props.values" label="''" onClickSegment="(size) => this.openOrdersBySize(size)"/>
     </t>
 </templates>
