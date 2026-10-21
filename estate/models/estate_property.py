@@ -1,11 +1,11 @@
 from odoo import api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property"
-    _expected_price_check = models.Constraint('CHECK(expected_price > 0)', 'The expected price must be strictly positive')
-    _selling_price_check = models.Constraint('CHECK(selling_price >= 0)', 'The selling price must be positive')
+    _order = "id desc"
 
     name = fields.Char(required=True)
     active = fields.Boolean('Active', default=True)
@@ -39,6 +39,9 @@ class Property(models.Model):
     tags_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
 
+    _expected_price_check = models.Constraint('CHECK(expected_price > 0)', 'The expected price must be strictly positive')
+    _selling_price_check = models.Constraint('CHECK(selling_price >= 0)', 'The selling price must be positive')
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -62,7 +65,7 @@ class Property(models.Model):
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if (record.selling_price < record.expected_price * 0.9):
+            if (float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1):
                 raise exceptions.ValidationError("The selling price must be at least 90% of the expected price")
 
     def action_cancel(self):

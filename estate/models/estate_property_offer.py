@@ -4,7 +4,7 @@ from odoo import api, exceptions, fields, models
 class Offer(models.Model):
     _name = "estate.property.offer"
     _description = "Property offer"
-    _price_check = models.Constraint('CHECK(price >= 0)', 'An offer price must be strictly positive')
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -15,6 +15,9 @@ class Offer(models.Model):
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
+
+    _price_check = models.Constraint('CHECK(price >= 0)', 'An offer price must be strictly positive')
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -43,6 +46,7 @@ class Offer(models.Model):
             record.status = 'accepted'
             property.buyer_id = record.partner_id
             property.selling_price = record.price
+            property.state = 'offer_accepted'
         return True
 
     def action_refused(self):
