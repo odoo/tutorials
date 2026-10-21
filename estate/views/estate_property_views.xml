@@ -71,6 +71,18 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="property_tag_ids" widget="many2many_tags"/>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <list name="estate.property.offer.list" default_order="price desc">
+                                    <field name="offer_ids"/>
+                                </list>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="seller_id"/>
+                                    <field name="buyer_id"/>
                                 </group>
                             </page>
                         </notebook>
