@@ -52,11 +52,14 @@
                         <br/>
                         <group>
                             <group>
+                                <field name="property_tag_ids" widget="many2many_tags"/>
+                                <field name="property_type_id"/>
                                 <field name="postcode" class="oe_inline"/>
                                 <field name="date_availability"/>
                             </group>
                             <group>
                                 <field name="expected_price"/>
+                                <field name="best_price" string="Best Offer"/>
                                 <field name="selling_price" string="Selling Price"/>
                             </group>
                         </group>
@@ -71,7 +74,7 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
-                                    <field name="property_tag_ids" widget="many2many_tags"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
