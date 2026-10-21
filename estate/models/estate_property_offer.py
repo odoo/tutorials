@@ -1,4 +1,5 @@
-from odoo import fields, models, api
+from odoo.tools.float_utils import float_compare
+from odoo import api, exceptions, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -36,6 +37,21 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for offer in self:
             offer.validity = (offer.date_deadline.date() - fields.Date.today()).days
+
+    @api.model
+    def create(self, vals_list):
+        property_ids = [vals['property_id'] for vals in vals_list if 'property_id' in vals]
+        properties = {p.id: p for p in self.env['estate.property'].browse(property_ids)}
+        for vals in vals_list:
+            offer_property = properties.get(vals.get('property_id'))
+            if any(
+                    (float_compare(vals.get('price', 0.0), offer.price, 2) < 0)
+                    for offer in offer_property.offer_ids
+            ):
+                raise exceptions.UserError('Offer price cannot be lower that an existing offer price.')
+
+            offer_property.state = 'received'
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:

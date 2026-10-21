@@ -86,6 +86,12 @@ class EstateProperty(models.Model):
         other_offers = self.offer_ids - offer
         other_offers.action_refuse()
 
+    @api.ondelete(at_uninstall=False)
+    def _check_allow_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise exceptions.UserError("Can only delete new and cancelled properties.")
+
     def action_set_state_sold(self):
         for record in self:
             if record.state == 'cancelled':
