@@ -1,6 +1,5 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
-from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
@@ -22,7 +21,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date:
                 create_date = record.create_date
-            else: 
+            else:
                 create_date = fields.Date.today()
             record.date_deadline = create_date + relativedelta(days=record.validity)
 
@@ -31,6 +30,24 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date:
                 create_date = record.create_date
-            else: 
+            else:
                 create_date = fields.Date.today()
-            record.validity = (record.date_deadline - create_date.date()).days
+            # record.validity = (record.date_deadline - create_date).days
+            create_date_val = create_date.date() if hasattr(create_date, 'date') else create_date
+            record.validity = (record.date_deadline - create_date_val).days
+    
+    def action_accept(self):
+        for record in self:
+            if record.property_id.state == 'sold':
+                odoo.exceptions.UserError('Property was already sold')
+            if record.property_id.state == 'cancelled':
+                odoo.exceptions.UserError('Cancelled properties cannot be sold')
+            else:
+                record.status = 'accepted'
+                record.property_id.state = 'sold'
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'

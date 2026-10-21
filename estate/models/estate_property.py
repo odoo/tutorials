@@ -53,7 +53,6 @@ class EstateProperty(models.Model):
         else:
             self.best_price = 0
 
-
     @api.depends("living_area", 'garden_area')
     def _compute_total_area(self):
         self.total_area = self.living_area + self.garden_area
@@ -67,3 +66,17 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
+
+    def action_sold(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = 'sold'
+            else:
+                odoo.exceptions.UserError('Cancelled properties cannot be sold')
+
+    def action_cancel(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = 'cancelled'
+            else:
+                odoo.exceptions.UserError('Sold properties cannot be cancelled')
