@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property.offer"
     _description = "Estate properties offers"
+    _order = "id desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -15,6 +16,7 @@ class EstateProperty(models.Model):
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(related="property_id.type_id")
 
     # -------------------------------------------------------------
     # Constraints
@@ -30,9 +32,11 @@ class EstateProperty(models.Model):
             if not float_utils.float_is_zero(record.price, precision_digits=2):
                 if float_utils.float_compare((0.9 * record.property_id.expected_price), record.price, precision_digits=2) == 1:
                     raise exceptions.ValidationError("Offering price should be higher than 90% of the property expected price")
+                else:
+                    record.property_id.state = 'offer_received' if record.property_id.state == 'new' else record.property_id.state
 
     # -------------------------------------------------------------
-    # computed field and their method
+    # computed fields and their method
     # -------------------------------------------------------------
     validity = fields.Integer(string="Validity in days")
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
@@ -47,7 +51,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.date_deadline:
                 record.validity = (record.date_deadline - fields.Date.today()).days
-           
+
     # -------------------------------------------------------------
     # UI actions
     # -------------------------------------------------------------
@@ -67,7 +71,7 @@ class EstateProperty(models.Model):
                     offer.status = 'accepted'
                     offer.property_id.selling_price = offer.price
                     offer.property_id.buyer_id = offer.buyer_id
+                    offer.property_id.state = 'offer_accepted'
                 else:
                     offer.status = 'refused'
         return True
-        

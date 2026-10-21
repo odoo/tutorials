@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate properties declaration"
+    _order = "id desc"
 
     active = fields.Boolean(default=True)
     name = fields.Char(string="Title", required=True)
@@ -61,7 +62,7 @@ class EstateProperty(models.Model):
     )
 
     # -------------------------------------------------------------
-    # Computed field and their method
+    # Computed fields and their method
     # -------------------------------------------------------------
     total_area = fields.Integer(compute="_compute_total_area")
 
@@ -88,8 +89,8 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
-            
-    # ------------------------------------------------------------- 
+
+    # -------------------------------------------------------------
     # UI actions
     # -------------------------------------------------------------
     def action_flag_property_as_sold(self):
@@ -104,4 +105,3 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = 'canceled'
         return True
-        
