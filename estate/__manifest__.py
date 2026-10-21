@@ -11,6 +11,9 @@
         "views/estate_property_tag_views.xml",
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
+        "report/estate_property_template.xml",
+        "report/estate_property_report.xml",
+        "report/res_users_report.xml",
     ],
     "application": True,
 }

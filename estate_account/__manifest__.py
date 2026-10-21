@@ -3,5 +3,7 @@
     "author": "dabos",
     "license": "LGPL-3",
     "depends": ["estate", "account"],
-    "data": [],
+    "data": [
+        "report/estate_account_property_template.xml",
+    ],
 }

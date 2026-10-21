@@ -2,9 +2,8 @@ from odoo import Command, models  # ty: ignore[unresolved-import]
 
 
 class EstateProperty(models.Model):
-    _name = "estate_account.property"
+    _inherit = "estate.property"
     _description = "test module for combining the estate module with account invoicing"
-    _inherit = ["estate.property"]
 
     def sold_property(self):
         journal = self.env["account.journal"].search(
