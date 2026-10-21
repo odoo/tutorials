@@ -4,7 +4,7 @@
     <input type="text" placeholder="Enter a new task" t-ref="input" t-on-keyup="addTodo"/>
       <div class="p-3">
       <t t-foreach="todos" t-as="todo" t-key="todo.id">
-        <TodoItem todo="todo" toggleState.bind="toggleTodo"/>
+        <TodoItem todo="todo" toggleState.bind="toggleTodo" delTodo.bind="removeTodo"/>
       </t>
     </div>
     </div>

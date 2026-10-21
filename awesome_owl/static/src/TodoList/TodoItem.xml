@@ -7,6 +7,7 @@
         <input type="checkbox" t-on-change="onChange" t-att-checked="props.todo.isCompleted"/>
         <t t-out="props.todo.id"/>:
         <t t-out="props.todo.description"/>
+        <span class="fa fa-remove" t-on-click="onDelete"/>
   </div>
 </t>
 
