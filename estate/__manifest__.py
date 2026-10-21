@@ -5,8 +5,8 @@
     "license": "LGPL-3",
     "category": "Real Estate/Brokerage",
     "data": [
-        "security/ir.access.csv",
         "security/estate_security.xml",
+        "security/ir.access.csv",
         "views/res_user_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
@@ -16,6 +16,9 @@
         "report/estate_property_template.xml",
         "report/estate_property_report.xml",
         "report/res_users_report.xml",
+        "data/estate.property.type.csv",
+        "data/estate.property.xml",
+        "data/estate.property.offer.xml",
     ],
     "application": True,
 }
