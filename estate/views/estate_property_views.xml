@@ -28,6 +28,7 @@
                         <h1>
                             <field name="name" placeholder="Property name"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
