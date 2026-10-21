@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import logging
 import random
 
 from odoo import http
+from odoo.http import request
 
 logger = logging.getLogger(__name__)
-
 
 class AwesomeDashboard(http.Controller):
     @http.route('/awesome_dashboard/statistics', type='jsonrpc', auth='user')
@@ -31,3 +33,4 @@ class AwesomeDashboard(http.Controller):
             },
             'total_amount': random.randint(100, 1000)
         }
+
