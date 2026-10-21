@@ -4,6 +4,7 @@ from odoo import api, exceptions, fields, models, tools, _
 class Properties(models.Model):
     _name = "estate.property"
     _description = "Real Estate Properties"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     active = fields.Boolean(default=True)
@@ -30,7 +31,7 @@ class Properties(models.Model):
         ],
     )
     state = fields.Selection(
-        string="State",
+        string="Status",
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),
@@ -47,7 +48,7 @@ class Properties(models.Model):
     seller_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    tag_ids = fields.Many2many("estate.property.tag")
+    tag_ids = fields.Many2many(string="Tags", comodel_name="estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
