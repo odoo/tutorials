@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 from odoo import api, fields, models
 
@@ -16,7 +17,26 @@ class EstateProperty(models.Model):
     )
 
     expected_price = fields.Float()
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
     selling_price = fields.Float(readonly=True, copy=False)
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price must be positive.",
+    )
+
+    @api.constrains("selling_price")
+    def _check_date_end(self):
+        for record in self:
+            if (
+                float_compare(record.selling_price, 0.9 * record.expected_price, 2)
+                == -1
+            ):
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()

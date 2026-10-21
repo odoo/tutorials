@@ -10,6 +10,10 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property offer"
     price = fields.Float()
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offered price must be strictly positive.",
+    )
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
