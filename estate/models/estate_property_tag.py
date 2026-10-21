@@ -14,4 +14,4 @@ class EstatePropertyTag(models.Model):
     active = fields.Boolean('Active', default=True)
     sequence = fields.Integer('Sequence', default=10)
     color = fields.Integer('Color')
-
+    _valid_color = models.Constraint("CHECK(color >= 0 AND color <= 11)", "Color must be a valid Color ID between 0 and 11.")

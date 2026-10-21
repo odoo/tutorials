@@ -20,6 +20,7 @@
             <list string="Properties" editable="bottom">
                 <field name="name"/>
                 <field name="description"/>
+                <field name="color"/>   
             </list>
         </field>
     </record>
