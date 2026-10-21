@@ -6,9 +6,13 @@
         <h5 class="card-title">
             <t t-out="props.title"/>
         </h5>
-        <p class="card-text">
-         <t t-out="props.content"/>
-        </p>
+        <button class="btn btn-sm btn-primary mb-2" t-on-click="toggleCard">
+            <t t-out="state.isOpen ? 'Hide' : 'Show'"/>
+            Content
+        </button>
+        <div t-if="state.isOpen">
+            <t t-slot="default"/>
+        </div>
     </div>
 </div>
 
