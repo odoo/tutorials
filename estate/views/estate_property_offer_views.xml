@@ -10,8 +10,8 @@
                 decoration-danger="status == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <button name="action_accept" type="object" title="Accept" icon="fa-check" invisible="status"/>
-                <button name="action_refuse" type="object" title="Refuse" icon="fa-close" invisible="status"/>
+                <button name="action_accept" type="object" title="Accept" icon="check" invisible="status"/>
+                <button name="action_refuse" type="object" title="Refuse" icon="close" invisible="status"/>
                 <field name="status" invisible="True"/>
             </list>
         </field>
@@ -36,5 +36,12 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Estate Property Offers</field>
+        <field name="res_model">estate_property_offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>
