@@ -37,7 +37,12 @@
                         <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
-                        <field name="property_type_id"/>
+                        <group>
+                            <field name="property_type_id"/>
+                        </group>
+                        <group>
+                            <field name="best_price"/>
+                        </group>
                     </group>
                     <group>
                         <group>
@@ -65,8 +70,9 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
