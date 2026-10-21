@@ -18,6 +18,8 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
+    _check_price = models.Constraint('CHECK (price > 0)', 'An offer price must be strictly positive')
+
     def action_accept(self):
         for record in self:
             already_accepted = record.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted')
