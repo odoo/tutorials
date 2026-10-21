@@ -3,6 +3,7 @@
 
 from odoo import fields, models, api
 from datetime import timedelta
+from odoo.exceptions import ValidationError, UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer"
@@ -56,3 +57,13 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
 
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        property_record = self.env['estate_property'].browse(property_id)
+        if property_record.state not in ['new', 'offer_received']: # Block creating offers for properties that are already closed
+            raise ValidationError("You cannot make an offer on a property that is not new or offer received.")
+        if vals.get('price') and property_record.best_price and vals['price'] < property_record.best_price:
+            raise UserError("A better offer already exists for this property.")
+        property_record.state = 'offer_received'
+        return super(EstatePropertyOffer, self).create(vals)
