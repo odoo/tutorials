@@ -11,6 +11,8 @@
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
             <p>Sum: <t t-esc="state.sum"/></p>
+
+            <TodoList/>
         </div>
     </t>
         
