@@ -6,14 +6,21 @@ class EstateProperty(models.Model):
     _description = "test module for combining the estate module with account invoicing"
 
     def sold_property(self):
-        journal = self.env["account.journal"].search(
-            [
-                ("type", "=", "sale"),
-            ],
-            limit=1,
+        self.check_access("write")
+
+        journal = (
+            self.env["account.journal"]
+            .sudo()
+            .search(
+                [
+                    ("type", "=", "sale"),
+                ],
+                limit=1,
+            )
         )
         moves = (
             self.env["account.move"]
+            .sudo()
             .with_context(default_move_type="out_invoice")
             .create(
                 [

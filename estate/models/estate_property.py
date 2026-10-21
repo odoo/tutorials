@@ -61,7 +61,6 @@ class TestModel(models.Model):
     salesman = fields.Many2one(
         "res.users",
         string="Salesman",
-        default=lambda self: self.env.user,
     )
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
@@ -69,6 +68,13 @@ class TestModel(models.Model):
 
     total_area = fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company.id,
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

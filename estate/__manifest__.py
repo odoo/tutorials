@@ -3,8 +3,10 @@
     "depends": ["base"],
     "author": "dabos",
     "license": "LGPL-3",
+    "category": "Real Estate/Brokerage",
     "data": [
         "security/ir.access.csv",
+        "security/estate_security.xml",
         "views/res_user_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
