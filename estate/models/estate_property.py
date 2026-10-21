@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char("Title", required=True)
     description = fields.Text()
@@ -38,6 +39,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new',
+        string="Status",
     )
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type")
@@ -54,14 +56,14 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if not record.selling_price == 0:
+            if record.selling_price != 0:
                 if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=0) == -1:
                     raise ValidationError("The selling price must be at least 90% of the expected price")
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise exceptions.UserError("Sold properties cannot be cancelled")
+                raise UserError("Sold properties cannot be cancelled")
             else:
                 record.state = "cancelled"
         return True
@@ -69,7 +71,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise exceptions.UserError("Cancelled properties cannot be sold")
+                raise UserError("Cancelled properties cannot be sold")
             else:
                 record.state = "sold"
         return True
@@ -92,3 +94,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        self.state = 'offer_received' if self.offer_ids else 'new'
