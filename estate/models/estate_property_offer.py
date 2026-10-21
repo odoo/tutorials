@@ -8,6 +8,8 @@ class EstatePropertyOffer(models.Model):
 
     name = fields.Char(required=True)
     price = fields.Float()
+    _check_offer_price = models.Constraint("CHECK (price >= 0)", "Offer price must be stricly positive")
+
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
 
     validity = fields.Integer(default=7)
