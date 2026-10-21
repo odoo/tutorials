@@ -13,7 +13,7 @@
                 <field name="facades"/>
                 <filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
                 <separator/>
-                <filter string="Available" name="available" domain="[('state', '=', 'new')]"/>
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
@@ -179,10 +179,32 @@
         </field>
     </record>
 
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="offer_ids"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold"/>
+                        <div>Expected Price: <field name="expected_price"/></div>
+                        <div t-if="record.offer_ids.raw_value.length > 0">Best Offer: <field name="best_price"/></div>
+                        <div t-if="record.state.raw_value == 'offer_accepted' || record.state.raw_value == 'sold'">
+                            Selling Price: <field name="selling_price"/>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate_property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 </odoo>
