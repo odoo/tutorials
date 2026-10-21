@@ -4,5 +4,8 @@
     'depends': ['base'],
     'author': "madeb",
     'license': 'GPL-3',
-    'application': True
+    'application': True,
+    'data': [
+        'security/ir.access.csv'
+    ]
 }
