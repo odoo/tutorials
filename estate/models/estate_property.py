@@ -1,4 +1,6 @@
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
+import odoo
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -11,7 +13,7 @@ class EstateProperty(models.Model):
     availability = fields.Date('Availability Date', required=True, default=lambda self: date.today() + relativedelta(months=3), copy=False)
     postcode = fields.Char('Postal Code', required=True, translate=True)
     description = fields.Text('Description', translate=True)
-    expected_price = fields.Float('Expected Price')
+    expected_price = fields.Float('Expected Price', default=0)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     living_area = fields.Integer('Living Area')
     bedrooms = fields.Integer('Bedrooms', help='number of bedrooms', default=2)
@@ -45,6 +47,15 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string='Total Area', compute='_compute_total_area')
     best_price = fields.Float(string='Highest Price', compute='_compute_highest_price')
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price >= 0)',
+        'The expected price cannot be negative',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price cannot be negative',
+    )
+
     @api.depends('offer_ids.price')
     def _compute_highest_price(self):
         prices = self.offer_ids.mapped('price')
@@ -66,6 +77,12 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price_percentage(self):
+        for record in self:
+            if record.selling_price <= record.expected_price * 0.9:
+                raise ValidationError("The selling price must be at least 90% of the expected price")
 
     def action_sold(self):
         for record in self:

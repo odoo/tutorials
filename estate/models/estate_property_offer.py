@@ -1,12 +1,13 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+import odoo
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property ofer"
 
-    price = fields.Float('Price')
+    price = fields.Float('Price', default=0)
     status = fields.Selection(
         string='Status',
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
@@ -15,6 +16,11 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string='Offer Validity', default=7)
     date_deadline = fields.Date('Offer Deadline', compute='_compute_validity', inverse='_inverse_validity')
+
+    _check_offer_price = models.Constraint(
+        'CHECK(price >= 0)',
+        'The offer price cannot be negative',
+    )
 
     @api.depends('validity', 'create_date')
     def _compute_validity(self):
@@ -35,7 +41,7 @@ class EstatePropertyOffer(models.Model):
             # record.validity = (record.date_deadline - create_date).days
             create_date_val = create_date.date() if hasattr(create_date, 'date') else create_date
             record.validity = (record.date_deadline - create_date_val).days
-    
+
     def action_accept(self):
         for record in self:
             if record.property_id.state == 'sold':
