@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -38,13 +38,29 @@ class EstateProperty(models.Model):
         default='new',
     )
     active = fields.Boolean(default=True)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer_id = fields.Many2one("res.partner", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
-    best_price = fields.Float("Best Offer", compute="_compute_max_offers")
+    best_price = fields.Float("Best Offer", compute="_compute_best_price")
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError("Sold properties cannot be cancelled")
+            else:
+                record.state = "cancelled"
+        return True
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise exceptions.UserError("Cancelled properties cannot be sold")
+            else:
+                record.state = "sold"
+        return True
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -52,16 +68,13 @@ class EstateProperty(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
-    def _compute_max_offers(self):
+    def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_price = 0.0
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden is True:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
