@@ -5,7 +5,7 @@
             <!-- the value of the action property is the id of the record action we want to target -->
             <!-- estate_property_views.xml -->
             <!-- It also fetch the value in the tag with the field with the property name of value name -->
-            <menuitem id="property_menu_action" action="estate_model_action"/>
+            <menuitem id="property_menu_action" action="estate_property_model_action"/>
         </menuitem>
     </menuitem>
 </odoo>
