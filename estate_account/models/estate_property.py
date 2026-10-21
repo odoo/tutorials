@@ -1,14 +1,12 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, Command
+from odoo import models, Command
 
 class EstateProperty(models.Model):
     _inherit = 'estate_property'
     _description = 'Estate Property'
 
     def action_sold_estate_property(self):
-        new_account_move = self.env['account.move'].create({
+        self.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': self.buyer_id.id,
             'invoice_line_ids': [Command.create({
@@ -28,5 +26,5 @@ class EstateProperty(models.Model):
             }),
             ],
         })
-        
+
         return super().action_sold_estate_property()

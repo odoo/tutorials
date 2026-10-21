@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
@@ -33,7 +31,7 @@ class EstateProperty(models.Model):
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'),
                    ('sold', 'Sold'), ('canceled', 'Canceled')],
         required=True, copy=False, default='new')
-    
+
     property_type_id = fields.Many2one('estate_property_type', string='Property Type')
     salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -42,12 +40,11 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate_property_offer', 'property_id', string='Offers')
 
     total_area = fields.Integer('Total Area', compute='_compute_total_area')
-    
+
     best_price = fields.Float('Best Offer', compute='_compute_best_price')
 
     active = fields.Boolean('Active', default=True)
     sequence = fields.Integer('Sequence', default=10)
-    
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -90,7 +87,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price == 0:
                 continue
-            if  tools.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+            if tools.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                 raise ValidationError("The selling price cannot be lower than the expected price")
         # all records passed the test, don't return anything
 
@@ -99,4 +96,4 @@ class EstateProperty(models.Model):
         for record in records:
             if record.state not in ['new', 'canceled']:
                 raise UserError("You cannot delete a property that is not new or canceled.")
-        return super(EstateProperty, self).ondelete(records)
+        return super().ondelete(records)

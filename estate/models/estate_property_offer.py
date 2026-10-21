@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from datetime import timedelta
 
 from odoo import fields, models, api
-from datetime import timedelta
 from odoo.exceptions import ValidationError, UserError
 
 class EstatePropertyOffer(models.Model):
@@ -52,7 +51,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
-    
+
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
@@ -60,12 +59,11 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         for offer in vals:
-            print("Creating offer with vals:", offer)
             property_id = offer.get('property_id')
             property_record = self.env['estate_property'].browse(property_id)
-            if property_record.state not in ['new', 'offer_received']: # Block creating offers for properties that are already closed
+            if property_record.state not in ['new', 'offer_received']:  # Block creating offers for properties that are already closed
                 raise ValidationError("You cannot make an offer on a property that is not new or offer received.")
             if offer.get('price') and property_record.best_price and offer['price'] < property_record.best_price:
                 raise UserError("A better offer already exists for this property.")
             property_record.state = 'offer_received'
-        return super(EstatePropertyOffer, self).create(vals)
+        return super().create(vals)
