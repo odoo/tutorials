@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -23,7 +23,6 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')],
-        translate=True,
     )
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     state = fields.Selection(
@@ -43,3 +42,28 @@ class EstateProperty(models.Model):
         comodel_name='estate.property.offer',
         inverse_name='property_id'
     )
+    total_area = fields.Integer(string='Total Area', compute='_compute_total_area')
+    best_price = fields.Float(string='Highest Price', compute='_compute_highest_price')
+
+    @api.depends('offer_ids.price')
+    def _compute_highest_price(self):
+        prices = self.offer_ids.mapped('price')
+        if prices:
+            self.best_price = max(prices)
+        else:
+            self.best_price = 0
+
+
+    @api.depends("living_area", 'garden_area')
+    def _compute_total_area(self):
+        self.total_area = self.living_area + self.garden_area
+
+    @api.onchange("garden")
+    def _inverse_validity(self):
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
