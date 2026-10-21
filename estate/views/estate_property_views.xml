@@ -13,7 +13,7 @@
                 <sheet>
                     <group>
                         <field name="name" placeholder="Title"/>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
                     </group>
                     <group>
                         <group>
@@ -63,6 +63,7 @@
         <field name="arch" type="xml">
             <list string="Estate Property List">
                 <field name="name" string="Title"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
