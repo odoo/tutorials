@@ -1,5 +1,8 @@
 {
     'name': 'estate',
+    'version': '1.0',
+    'author': 'Malur',
+    'license': 'LGPL-3',
     'application': True,
     'depends': [
         'base',
