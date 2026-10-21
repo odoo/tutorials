@@ -9,7 +9,7 @@ from odoo.http import request
 logger = logging.getLogger(__name__)
 
 class AwesomeDashboard(http.Controller):
-    @http.route('/awesome_dashboard/statistics', type='json', auth='user')
+    @http.route('/awesome_dashboard/statistics', type='jsonrpc', auth='user')
     def get_statistics(self):
         """
         Returns a dict of statistics about the orders:
@@ -33,4 +33,3 @@ class AwesomeDashboard(http.Controller):
             },
             'total_amount': random.randint(100, 1000)
         }
-
