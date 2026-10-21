@@ -6,6 +6,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Property offer"
 
     property_id = fields.Many2one('estate.property', string='Property')
+    property_type_id = fields.Many2one(related='property_id.type_id', string='Type', store=True)
 
     price = fields.Float(string='Price', required=True)
     buyer_id = fields.Many2one('res.partner', string='Partner', index=True)
