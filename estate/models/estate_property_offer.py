@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,3 +21,19 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.property_id.selling_price != 0.0 and record.status != 'accepted':
+                raise exceptions.UserError("Pay attention: in real life only one offer can be accepted for a given property!")
+            else:
+                record.status = 'accepted'
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+
+    def action_refuse_offer(self):
+        for record in self:
+            if record.status == 'accepted':
+                record.property_id.selling_price = 0.0
+                record.property_id.buyer_id = None
+            record.status = 'refused'
