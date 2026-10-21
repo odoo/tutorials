@@ -16,6 +16,11 @@ class EstatePropertyOffer(models.Model):
         default='waiting'
     )
 
+    _check_price_strict_positive = models.Constraint(
+        'check(price > 0)',
+        'Expected price must be strictly positive.',
+    )
+
     validity = fields.Integer(default=7)
     date_deadline = fields.Datetime(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 

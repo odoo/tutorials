@@ -1,3 +1,4 @@
+from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo import fields, models, api, exceptions
 
 
@@ -40,6 +41,16 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_total_area')
     garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
 
+    _check_expected_price_strict_positive = models.Constraint(
+        'check(expected_price > 0)',
+        'Expected price must be strictly positive.',
+    )
+
+    _check_selling_price_positive = models.Constraint(
+        'check(selling_price >= 0)',
+        'Selling price must be positive.',
+    )
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -61,6 +72,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 2) and float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1:
+                raise exceptions.ValidationError('Selling price cannot be lower than 90% of expected price.')
 
     def _accept_offer(self, offer):
         self.state = 'accepted'
