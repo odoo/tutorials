@@ -31,3 +31,15 @@ class EstateProperty(models.Model):
         selection=[('new', 'New'), ('offerreceived', 'Offer Received'), ('offeraccepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         default='new',
     )
+    property_type_id = fields.Many2one(
+        string='Property Type',
+        comodel_name='estate.property.type',
+    )
+    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.users", string="Buyer", copy=False)
+    tags_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many(
+        string='Offers',
+        comodel_name='estate.property.offer',
+        inverse_name='property_id'
+    )
