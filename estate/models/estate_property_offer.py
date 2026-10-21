@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta  # noqa: I001
 
 from odoo import api, fields, models  # ty: ignore[unresolved-import]
-from odoo.exceptions import UserError  # ty: ignore[unresolved-import]
+from odoo.exceptions import UserError, ValidationError  # ty: ignore[unresolved-import]
 
 
 class PropertyOffer(models.Model):
@@ -88,6 +88,8 @@ class PropertyOffer(models.Model):
     def create(self, vals):
         for val in vals:
             property = self.env["estate.property"].browse(val["property_id"])
+            if property.state == "sold":
+                raise ValidationError("Cannot create an offer on a sold property")
             if any(offer.price >= val["price"] for offer in property.offer_ids):
                 raise UserError("offer must be higher than existing offers")
             property.state = "offer_received"

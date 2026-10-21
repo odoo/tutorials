@@ -98,6 +98,10 @@ class TestModel(models.Model):
 
     def sold_property(self):
         for record in self:
+            if all(offer.status != "accepted" for offer in self.offer_ids):
+                raise ValidationError(
+                    "A property cannot be sold if does not have an accepted offer"
+                )
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold")
             else:
