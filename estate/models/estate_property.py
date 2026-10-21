@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -22,7 +23,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
-         ('cancelled', 'Cancelled')], default='new', copy=False, required=True)
+         ('cancelled', 'Cancelled')], default='new', copy=False, required=True, readonly=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.uid, string="Salesperson")
     buyer_id = fields.Many2one("res.partner", copy=False, string="Buyer")
@@ -40,8 +41,26 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0
+            record.best_price = 0.0
+            if record.offer_ids:
+                for offers in record.offer_ids:
+                    if offers.validity >= 0:
+                        if record.best_price < offers.price:
+                            record.best_price = offers.price
+
+            #record.best_price = max(offers.mapped('price') for offers in record.offer_ids) if record.offer_ids else 0.0
+
     @api.onchange("garden")
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0.0
         self.garden_orientation = 'north' if self.garden else None
+
+    def action_sold_estate_property(self):
+        for record in self:
+            if record.state == 'cancelled' : raise UserError("Cancelled property cannot be sold")
+            record.state = 'sold'
+
+    def action_cancel_estate_property(self):
+        for record in self:
+            if record.state == 'sold': raise UserError("Sold property cannot be cancelled")
+            record.state = 'cancelled'
