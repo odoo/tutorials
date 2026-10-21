@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models, _
 
 
 class PropertyOffers(models.Model):
@@ -53,3 +53,17 @@ class PropertyOffers(models.Model):
         "CHECK(price > 0)",
         "An offer price must be strictly positive.",
     )
+
+    @api.model
+    def create(self, vals_list):
+        properties = self.env["estate.property"].browse(
+            [vals.get("property_id") for vals in vals_list]
+        )
+        property_dict = {property.id: property for property in properties}
+        for vals in vals_list:
+            if vals.get("price") < property_dict[vals.get("property_id")].best_price:
+                raise exceptions.ValidationError(
+                    _("A new offer can't have a lower amount than an existing offer")
+                )
+            property_dict[vals.get("property_id")].state = "offer_received"
+        return super().create(vals_list)
