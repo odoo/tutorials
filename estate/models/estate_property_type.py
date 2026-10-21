@@ -6,6 +6,7 @@ from odoo import fields, models
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = "Estate property type"
+    _order = "sequence asc"
 
     _name_uniq = models.Constraint(
         'UNIQUE(name)',
@@ -13,3 +14,6 @@ class EstatePropertyType(models.Model):
     )
 
     name = fields.Char('Type name', required=True)
+    property_ids = fields.One2many(
+        'estate.property', 'property_type_id', string='Properties')
+    sequence = fields.Integer("Sequence", default=1)

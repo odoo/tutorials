@@ -8,6 +8,7 @@ from odoo import fields, models, api
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate property offer"
+    _order = "price desc"
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',

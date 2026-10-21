@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list string="Property Types">
                 <field name="name"/>
+                <field name="sequence" widget="handle"/>
             </list>
         </field>
     </record>
@@ -19,6 +20,11 @@
                     <group>
                         <field name="name"/>
                     </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
