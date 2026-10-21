@@ -30,7 +30,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.status == 'refused':
                 raise exceptions.UserError("Can't refuse an already accepted offer")
-            if 'offer accepted' == record.property_id.state:
+            if record.property_id.state == 'offer accepted':
                 raise exceptions.UserError("Can only accept one offer!")
             record.status = 'accepted'
             record.property_id.state = 'offer accepted'
@@ -42,3 +42,8 @@ class EstatePropertyOffer(models.Model):
             if record.status == 'accepted':
                 raise exceptions.UserError("Can't accept an already refused offer")
             record.status = 'refused'
+
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'An offer price must be strictly positive'
+    )
