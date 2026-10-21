@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard-item";
@@ -11,6 +11,17 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.statistics = useService("awesome_dashboard.statistics");
+
+        onWillStart(async () => {
+            const result = await this.statistics.loadStatistics();
+
+            this.average_quantity = result.average_quantity;
+            this.average_time = result.average_time;
+            this.nb_cancelled_orders = result.nb_cancelled_orders;
+            this.nb_new_orders = result.nb_new_orders;
+            this.total_amount = result.total_amount;
+        })
     }
 
     openCustomers() {
