@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -24,8 +24,14 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
-        string="State",
-        selection=[("new", "New"), ("received", "Offer Received"), ("accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
+        string="Status",
+        selection=[
+            ("new", "New"),
+            ("received", "Offer Received"),
+            ("accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
         required=True,
         copy=False,
         default="new",
@@ -45,11 +51,29 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for property in self:
-            property.best_price = max(property.offer_ids.mapped("price")) if property.offer_ids else None
+            property.best_price = max(property.offer_ids.mapped("price")) if property.offer_ids else 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
         for property in self:
             has_garden = property.garden
-            property.garden_area = 10 if has_garden else None
+            property.garden_area = 10 if has_garden else 0
             property.garden_orientation = "north" if has_garden else None
+
+    def action_property_sold(self):
+        for property in self:
+            if property.state == "sold":
+                raise exceptions.ValidationError("Already sold property")
+            if property.state == "cancelled":
+                raise exceptions.ValidationError("Can't sold a cancelled property")
+            property.state = "sold"
+        return True
+
+    def action_property_refused(self):
+        for property in self:
+            if property.state == "cancelled":
+                raise exceptions.ValidationError("Already cancelled property")
+            if property.state == "sold":
+                raise exceptions.ValidationError("Can't cancel an already sold property")
+            property.state = "cancelled"
+        return True

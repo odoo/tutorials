@@ -28,11 +28,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_property_sold" type="object" string="Sold"/>
+                    <button name="action_property_refused" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <separator/>
+                    <group>
+                        <field name="state"/>
+                    </group>
                     <group>
                         <field name="tag_ids" widget="many2many_tags"/>
                     </group>
@@ -76,7 +83,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" nolabel="1"/>
+                            <field name="offer_ids" nolabel="1" readonly="state == 'sold' or state == 'cancelled' or state == 'accepted'"/>
                         </page>
                         <page string="Other Info">
                             <group>
