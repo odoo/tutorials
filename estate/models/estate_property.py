@@ -1,14 +1,14 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property object"
+    _order = "id desc"
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3),
@@ -25,7 +25,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
-         ('cancelled', 'Cancelled')], default='new', copy=False, required=True, readonly=True)
+         ('cancelled', 'Cancelled')], default='new', copy=False, required=True, readonly=True, string="Status", store="True", compute="_compute_state")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.uid, string="Salesperson")
     buyer_id = fields.Many2one("res.partner", copy=False, string="Buyer")
@@ -53,40 +53,43 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = 0.0
-            if record.offer_ids:
-                for offers in record.offer_ids:
-                    if offers.validity >= 0:
-                        if record.best_price < offers.price:
-                            record.best_price = offers.price
+            record.best_price = max((offer.price for offer in record.offer_ids if offer.status != 'refused'), default=0.0)
 
-            # record.best_price = max(offers.mapped('price') for offers in record.offer_ids) if record.offer_ids else 0.0
+    @api.depends("offer_ids", "offer_ids.status")
+    def _compute_state(self):
+        for record in self:
+            for offers in record.offer_ids:
+                record.state = 'offer_received'
+                if offers.status == 'accepted':
+                    record.state = 'offer_accepted'
+                    break
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else 0.0
-        self.garden_orientation = 'north' if self.garden else None
+        for record in self:
+            record.garden_area = 10 if record.garden else 0.0
+            record.garden_orientation = 'north' if record.garden else None
 
     def action_sold_estate_property(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled property cannot be sold")
+                raise UserError(self.env._("Cancelled property cannot be sold"))
             record.state = 'sold'
 
     def action_cancel_estate_property(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold property cannot be cancelled")
+                raise UserError(self.env._("Sold property cannot be cancelled"))
             record.state = 'cancelled'
 
     @api.constrains('selling_price')
     def _constrains_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_rounding=0.001) and float_compare(record.selling_price, (0.9 * record.expected_price), precision_rounding=0.001) == -1:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price")
+                raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))
 
     @api.constrains('expected_price')
     def _constrains_expected_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_rounding=0.001) and float_compare(record.selling_price, (0.9 * record.expected_price), precision_rounding=0.001) == -1:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price")
+                raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))

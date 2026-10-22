@@ -97,7 +97,7 @@ These have no checklist entry; you only find them by reading.
   - **[should fix]** Don't assume keys exist in `vals` (`vals['property_id']`); use `.get()`.
 - **Ch. 13 Other modules**
   - **[nit]** `auto_install: True` on a glue module that bridges two independent modules (e.g.
-    `estate_account` depends on `estate_property.py` and `account`).
+    `estate_account` depends on `estate` and `account`).
 
 ## Output format
 
