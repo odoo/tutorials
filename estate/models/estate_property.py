@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import date_utils
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -88,7 +87,7 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for property in self:
-            if property.state == "canceled":
+            if property.state == "cancelled":
                 raise UserError("Un bien annulé ne peut pas être vendu.")
             property.state = "sold"
         return True

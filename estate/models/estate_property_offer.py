@@ -23,13 +23,14 @@ class EstatePropertyOffer(models.Model):
         selection=[
             ('refused', 'Refused'),
             ('accepted', 'Accepted'),
-            ('pending', 'Pending')
+            ('pending', 'Pending'),
         ]
     )
     validity = fields.Integer('Validity', default=7)
     date_deadline = fields.Date('Deadline',
                                 compute="_compute_date_deadline",
                                 inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):

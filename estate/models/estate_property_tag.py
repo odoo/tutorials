@@ -14,3 +14,4 @@ class EstatePropertyTag(models.Model):
     )
 
     name = fields.Char('Tag name', required=True)
+    color = fields.Integer(string='Color Index')

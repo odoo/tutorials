@@ -4,7 +4,7 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers">
+            <list string="Property Offers" editable="bottom" decoration-danger="status=='refused'" decoration-success="status=='accepted'">
                 <field name="price" width="20%"/>
                 <field name="partner_id" width="20%"/>
                 <field name="validity" width="15%"/>
@@ -15,7 +15,7 @@
                 <button name="action_refuse" type="object" icon="close"
                         title="Refuse" width="3%"
                         invisible="status == 'refused'"/>
-                <field name="status" width="15%"/>
+                <!-- <field name="status" width="15%"/> -->
             </list>
         </field>
     </record>
@@ -42,5 +42,6 @@
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>
