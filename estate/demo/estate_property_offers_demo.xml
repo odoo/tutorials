@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+
+    <record id="property_offer_1" model="estate.property.offer">
+        <field name="price">400000</field>
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="status">accepted</field>
+        <field name="validity">8</field>
+        <field name="property_id" ref="estate_property_1" />
+    </record>
+
+    <record id="property_offer_2" model="estate.property.offer">
+        <field name="price">700000</field>
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="status">refused</field>
+        <field name="validity">10</field>
+        <field name="property_id" ref="estate_property_1" />
+    </record>
+
+    <record id="property_offer_4" model="estate.property.offer">
+        <field name="price">450000</field>
+        <field name="partner_id" ref="base.partner_admin" />
+        <field name="status">refused</field>
+        <field name="validity">45</field>
+        <field name="property_id" ref="estate_property_2" />
+    </record>
+
+    <record id="property_offer_3" model="estate.property.offer">
+        <field name="price">670000</field>
+        <field name="partner_id" ref="base.res_partner_3" />
+        <field name="status">accepted</field>
+        <field name="validity">15</field>
+        <field name="property_id" ref="estate_property_3" />
+    </record>
+
+</odoo>
