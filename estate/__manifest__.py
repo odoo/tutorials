@@ -5,7 +5,7 @@
     'author': "pirth",
     'category': 'Tutorial',
     'application': True,
-    'installation': True,
+    'installable': True,
     'summary': "Real estate",
     'description': """
     Module about real estate
