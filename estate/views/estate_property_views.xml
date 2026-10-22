@@ -61,6 +61,29 @@
         </field>
     </record>
 
+    <record id="property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <filter
+                    string="Available"
+                    name="available"
+                    domain="['|', ('status', '=', 'new'),
+                  ('status', '=', 'offer_received')]"
+                />
+                <filter string="Postcode" name="group_by_postcode"
+                    context="{'group_by':'postcode'}" />
+            </search>
+        </field>
+    </record>
+
     <menuitem id="estate_property_menu_root" name="Real Estate" />
     <menuitem id="estate_property_advertisements_menu" name="Advertisements"
         parent="estate_property_menu_root" />
