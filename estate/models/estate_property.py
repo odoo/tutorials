@@ -40,6 +40,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
+    git_challenge = fields.Boolean(default=True)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -73,3 +74,6 @@ class EstateProperty(models.Model):
                 raise UserError("You can't sell and canceled property.")
             record.state = "cancelled"
         return True
+
+    def _hello_world_function(self):
+        return "Hello world !"
