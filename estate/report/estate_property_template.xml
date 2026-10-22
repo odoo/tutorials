@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Entry Point 1: User Properties Report -->
+    <template id="report_property_offers_user">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="user">
+                    <div class="page article" style="page-break-after: always;">
+                        <h2><strong>Salesman:</strong> <span t-field="user.name"/></h2>
+                        <!-- Iterate over the user's property recordset directly -->
+                        <t t-foreach="user.property_ids" t-as="property">
+                            <div class="mb-4">
+                                <h3><span t-field="property.name"/></h3>
+                                <div>
+                                    <strong>Expected Price: </strong>
+                                    <span t-field="property.expected_price"/>
+                                </div>
+                                <div>
+                                    <strong>Status: </strong>
+                                    <span t-field="property.state"/>
+                                </div>
+                                <t t-if="property.offer_ids">
+                                    <!-- Pass the current property into the table template -->
+                                    <t t-call="estate.report_property_table_template"/>
+                                </t>
+                                <t t-else="">
+                                    <p>There are no offers yet.</p>
+                                </t>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Entry Point 2: Standalone Property Report (when calling from estate.property model directly) -->
+    <template id="report_property_offers">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="property">
+                    <div class="page article" style="page-break-after: always;">
+                        <h2><span t-field="property.name"/></h2>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/> 
+                        </div>
+                        <div>
+                            <strong>Status: </strong>
+                            <span t-field="property.state"/>
+                        </div>
+                        <t t-if="property.offer_ids">
+                            <t t-call="estate.report_property_table_template"/>
+                        </t>
+                        <t t-else="">
+                            <p>There are no offers yet.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Sub-Template Component: Offers Table -->
+    <template id="report_property_table_template">
+        <table class="table table-sm mt-2">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity (days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="property.offer_ids" t-as="offer">
+                    <td><span t-field="offer.price"/></td>
+                    <td><span t-field="offer.partner_id"/></td>
+                    <td><span t-field="offer.validity"/></td>
+                    <td><span t-field="offer.deadline"/></td>
+                    <td><span t-field="offer.status"/></td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+</odoo>

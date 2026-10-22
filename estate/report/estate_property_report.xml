@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+    
+     <record id="action_report_estate_property" model="ir.actions.report">
+        <field name="name">Print Report</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_offers</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
+<!-- <field name="paperformat_id" ref="paperformat_event_full_page_ticket"/> -->
+<!-- <field name="print_report_name">'Full Page Ticket - %s - %s' % ((object.event_id.name or 'Event').replace('/',''), (object.name or '').replace('/',''))</field> -->
