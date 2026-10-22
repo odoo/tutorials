@@ -1,6 +1,6 @@
 from datetime import timedelta
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_is_zero, float_compare
 
 
@@ -97,6 +97,12 @@ class EstateProperty(models.Model):
             raise ValidationError("This property has already been cancelled and cannot be sold.")
         elif self._origin.state == 'sold' and self.state == 'cancelled':
             raise ValidationError("This property has already been sold and cannot be cancelled.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError('Only new and cancelled state of property can be unlinked.')
 
     def action_cancel_property(self):
         self.ensure_one()

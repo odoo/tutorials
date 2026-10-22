@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -49,3 +50,30 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         self.ensure_one()
         self.status = 'refused'
+
+    @api.model
+    def create(self, vals_list):
+        property_ids = set()
+
+        for val in vals_list:
+            if val.get('property_id'):
+                property_ids.add(val['property_id'])
+
+        properties = self.env['estate.property'].browse(property_ids)
+
+        property_by_id = {
+            prop.id: prop for prop in properties
+        }
+
+        for val in vals_list:
+            singleton_property = property_by_id.get(val.get('property_id'))
+
+            if singleton_property and val['price'] < singleton_property.best_price:
+                raise ValidationError('The price of property offer must be greater than the best price')
+
+        offers = super().create(vals_list)
+
+        offers.mapped('property_id').filtered(lambda prop: prop.state != 'offer_received').write(
+            {'state': 'offer_received'})
+
+        return offers
