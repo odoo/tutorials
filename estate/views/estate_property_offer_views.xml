@@ -5,7 +5,10 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-        <list>
+        <list editable="True"
+            decoration-success="status == 'accepted'"
+            decoration-danger="status == 'refused'">
+            <field name="name" string="Offer Name"/>
             <field name="price" string="Price"/>
             <field name="partner_id" string="Buyer"/>
             <field name="validity" string="Validity (days)"/>
@@ -14,8 +17,8 @@
             invisible="status"/>
             <button name="offer_refuse" type="object" icon="close" title="Refuse"
                     invisible="status"/>
-            <field name="status" string="Status"/>
         </list>
         </field>
     </record>
+
 </odoo>

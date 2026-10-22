@@ -1,6 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_is_zero
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -89,9 +89,18 @@ class EstateProperty(models.Model):
             record.state = "cancelled"
         return True
 
-    @api.onchange("selling_price", "expected_price")
-    @api.constrains("selling_price")
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price_90(self):
         for record in self:
-            if (not float_is_zero(record.selling_price, 4)) and (record.selling_price < 0.9 * record.expected_price):
-                raise ValidationError("The selling price must be at least 90/% of the expected price")
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            if float_compare(record.selling_price, 0.9 * record.expected_price,
+                             precision_digits=2) < 0:
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price."
+                )
+
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if self.state == 'new':
+            self.state = 'offer_received'
