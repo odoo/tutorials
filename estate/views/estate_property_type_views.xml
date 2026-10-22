@@ -12,6 +12,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Estate Property Types">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -36,7 +37,7 @@
                                 </list>
                             </field>
                         </page>
-                        </notebook>
+                    </notebook>
                 </sheet>
             </form>
         </field>
