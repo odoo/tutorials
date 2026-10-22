@@ -27,7 +27,7 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property_obj = self.env['estate.property'].browse(vals['property_id'])
             if property_obj.state in ['offer_accepted', 'sold', 'cancelled']:
-                raise UserError('Cannot create an offer for a property that is accepted, sold or cancelled')
+                raise UserError(self.env._('Cannot create an offer for a property that is accepted, sold or cancelled'))
             if property_obj.state == 'new':
                 property_obj.state = 'offer_received'
 
@@ -56,10 +56,10 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.property_id.state in ['sold', 'cancelled']:
-                raise UserError("Cannot accept an offer for a sold or cancelled property.")
+                raise UserError(self.env._("Cannot accept an offer for a sold or cancelled property."))
 
             if bool(record.property_id.accepted_offer_id):
-                raise UserError("There is already an accepted offer for this property")
+                raise UserError(self.env._("There is already an accepted offer for this property"))
 
             other_offers = record.property_id.offer_ids - record
             other_offers.write({'status': 'refused'})
@@ -75,10 +75,10 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             if record.property_id.state in ['sold', 'cancelled']:
-                raise UserError("Cannot refuse an offer for a sold or cancelled property.")
+                raise UserError(self.env._("Cannot refuse an offer for a sold or cancelled property."))
 
             if record.status == 'accepted':
-                raise UserError('Cannot refuse an accepted offer, you need to cancel it first.')
+                raise UserError(self.env._('Cannot refuse an accepted offer, you need to cancel it first.'))
             record.status = 'refused'
 
         return True

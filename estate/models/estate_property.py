@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
                 continue
             min_price = record.expected_price * 0.90
             if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
-                raise ValidationError('The selling price cannot be lower than 90%% of the expected price.')
+                raise ValidationError(self.env._('The selling price cannot be lower than 90%% of the expected price.'))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -87,10 +87,10 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold.")
+                raise UserError(self.env._("Cancelled properties cannot be sold."))
 
             if not bool(record.accepted_offer_id):
-                raise UserError("A offer must be accepted before a property can be marked as sold")
+                raise UserError(self.env._("A offer must be accepted before a property can be marked as sold"))
 
             record.state = "sold"
 
@@ -99,7 +99,7 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("Sold properties cannot be cancelled")
+                raise UserError(self.env._("Sold properties cannot be cancelled"))
 
             record.state = "cancelled"
 
