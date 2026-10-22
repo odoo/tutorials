@@ -2,7 +2,58 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">
+                    Customers
+                </button>
+                <button class="btn btn-primary" t-on-click="openLeads">
+                    Leads
+                </button>
+            </t>
+
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    <h5 class="card-title">First Dashboard Item</h5>
+                    <p class="card-text">This card uses the default size.</p>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    <h5 class="card-title">Second Dashboard Item</h5>
+                    <p class="card-text">This card is twice as wide.</p>
+                </DashboardItem>
+            </div>
+
+            <div class="w-full">
+                <h3 class="mx-auto">Server Data</h3>
+                <div class="d-flex gap-2 flex-wrap">
+                    <DashboardItem size="2">
+                        <p>Average amount of t-shirt by order this month</p>
+                        <h1 class="fw-semibold text-success text-center"><t t-out="average_quantity"/></h1>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                        <h1 class="fw-semibold text-success text-center"><t t-out="average_time"/></h1>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <p>Number of new orders this month</p>
+                        <h1 class="fw-semibold text-success text-center"><t t-out="average_time"/></h1>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <p>Number of cancelled orders this month</p>
+                        <h1 class="fw-semibold text-success text-center"><t t-out="average_time"/></h1>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <p>Total amount of new orders this month</p>
+                        <h1 class="fw-semibold text-success text-center"><t t-out="average_time"/></h1>
+                    </DashboardItem>
+                    <DashboardItem size="2">
+                        <h5 class="card-title">T-shirts sold by size</h5>
+                        <PieChart/>
+                    </DashboardItem>
+                </div>
+            </div>
+        </Layout>
     </t>
 
 </templates>
