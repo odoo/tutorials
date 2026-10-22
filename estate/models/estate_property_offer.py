@@ -11,13 +11,21 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float()
-    status = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")], copy=False)
+    status = fields.Selection(
+        [("accepted", "Accepted"), ("refused", "Refused")],
+        copy=False,
+    )
     validity = fields.Integer(string="Validity (days)", default=7)
-    date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    date_deadline = fields.Date(
+        string="Deadline",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+    )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(
-        related="property_id.property_type_id", store=True
+        related="property_id.property_type_id",
+        store=True,
     )
 
     _check_offer_price = models.Constraint(
@@ -38,7 +46,9 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if record.property_id.offer_ids.filtered(lambda offer: offer.status == "accepted"):
+            if record.property_id.offer_ids.filtered(
+                lambda offer: offer.status == "accepted",
+            ):
                 raise UserError("There is already an accepted offer for this property.")
             record.status = "accepted"
             record.property_id.selling_price = record.price

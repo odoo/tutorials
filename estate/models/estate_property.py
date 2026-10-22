@@ -12,7 +12,10 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=lambda _model: fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date(
+        copy=False,
+        default=lambda _model: fields.Date.add(fields.Date.today(), months=3),
+    )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -21,14 +24,34 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
-    garden_orientation = fields.Selection([("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
-    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
-    state = fields.Selection(copy=False, selection=[("new", "New"), ("received", "Offer Received"), ("accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], default="new", required=True)
+    garden_orientation = fields.Selection(
+        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
+    )
+    total_area = fields.Integer(
+        string="Total Area (sqm)",
+        compute="_compute_total_area",
+    )
+    state = fields.Selection(
+        copy=False,
+        selection=[
+            ("new", "New"),
+            ("received", "Offer Received"),
+            ("accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="new",
+        required=True,
+    )
     active = fields.Boolean(default=True)
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    seller_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+    seller_id = fields.Many2one(
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user,
+    )
 
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
@@ -82,7 +105,14 @@ class EstateProperty(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_digits=2):
                 continue
-            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
+            if (
+                float_compare(
+                    record.selling_price,
+                    0.9 * record.expected_price,
+                    precision_digits=2,
+                )
+                == -1
+            ):
                 raise ValidationError(
                     "The selling price must be at least 90% of the expected price! "
                     "You must reduce the expected price if you want to accept this offer.",
