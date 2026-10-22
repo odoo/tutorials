@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class PropertyOffer(models.Model):
@@ -26,3 +26,17 @@ class PropertyOffer(models.Model):
             if record.date_deadline and record.property_id.date_availability:
                 record.validity = fields.Date.subtract(record.date_deadline, record.property_id.date_availability).day
 
+    def action_set_property_offer_status_to_accepted(self):
+        for record in self:
+            if record.status == "accepted":
+                raise exceptions.UserError("An offer was already accepted !")
+            else:
+                record.status = "accepted"
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id.name = record.partner_id.name
+        return True
+
+    def action_set_property_offer_status_to_refused(self):
+        for record in self:
+            record.state = "refused"
+        return True

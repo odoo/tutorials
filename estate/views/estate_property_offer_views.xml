@@ -10,6 +10,8 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
+                <button name="action_set_property_offer_status_to_accepted" type="object" string="Accept" icon="check"/>
+                <button name="action_set_property_offer_status_to_refused" type="object" string="Refuse" icon="close"/>
                 <field name="status"/>
             </list>
         </field>
@@ -29,6 +31,8 @@
                                 <field name="partner_id"/>
                                 <field name="validity"/>
                                 <field name="date_deadline"/>
+                                <button name="action_set_property_offer_status_to_accepted" type="object" string="Accept" icon="check"/>
+                                <button name="action_set_property_offer_status_to_refused" type="object" string="Refuse" icon="close"/>
                                 <field name="status"/>
                             </group>
                         </page>
