@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, exceptions, fields, models, tools
 
 
 class EstatePropertyOffer(models.Model):
@@ -49,3 +49,10 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'An offer price must be strictly positive'
     )
+
+    @api.model
+    def create(self, vals):
+        if tools.float_compare(self.env['estate.property'].browse(vals[0]['property_id']).best_price, vals[0]['price'], precision_digits=2) == 1:
+            raise exceptions.UserError("New offer must beat precedent offers")
+        self.env['estate.property'].browse(vals[0]['property_id']).state = 'offer received'
+        return super().create(vals)
