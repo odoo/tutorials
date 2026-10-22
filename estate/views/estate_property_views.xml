@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" string="Title"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color','on_tag_click':'edit_color'}"/>
                 <field name="property_type_id" string="Property Type"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="bedrooms" string="Bedrooms"/>
@@ -35,11 +36,11 @@
                         <h1>
                             <field name="name" placeholder="Property name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color','on_tag_click':'edit_color'}"/>
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id" string="Property Type"/>
+                            <field name="property_type_id" string="Property Type" options="{'no_create': True}"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
