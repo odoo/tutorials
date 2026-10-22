@@ -1,4 +1,4 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, tools
 
 
 class EstatePropertyOffer(models.Model):
@@ -24,7 +24,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            if record.property_id.selling_price != 0.0 and record.status != 'accepted':
+            if not tools.float_is_zero(record.property_id.selling_price, precision_digits=2) and record.status != 'accepted':
                 raise exceptions.UserError("Pay attention: in real life only one offer can be accepted for a given property!")
             else:
                 record.status = 'accepted'
@@ -37,3 +37,8 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = 0.0
                 record.property_id.buyer_id = None
             record.status = 'refused'
+
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'An offer price must be strictly positive'
+    )

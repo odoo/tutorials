@@ -13,4 +13,6 @@
     ],
     'application': True,
     'installable': True,
+    'author': 'besch',
+    'license': 'LGPL-3',
 }
