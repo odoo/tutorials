@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="estate_property_record" model="estate.property">
+            <field name="name">NEW PROP</field>
+            <field name="expected_price">100</field>
+            <field name="state">offer_received</field>
+        </record>
+    </data>
+</odoo>
