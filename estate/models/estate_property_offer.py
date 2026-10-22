@@ -48,6 +48,9 @@ class EstatePropertyOffer(models.Model):
                     "You cannot create offer lower than an existing offer."
                 )
 
+            if property.state != "o_received":
+                property.state = "o_received"
+
         return super().create(vals_list)
 
     @api.depends("create_date", "validity")
