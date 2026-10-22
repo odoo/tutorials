@@ -1,8 +1,7 @@
-from odoo import api, fields, models
-from odoo.exceptions import ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError, UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -87,10 +86,10 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     def action_on_sold_button(self):
-        if self.state != "cancelled":
+        if self.state == "offer_accepted":
             self.state = "sold"
         else:
-            raise UserError("Cancelled property cannot be sold")
+            raise UserError("Property cannot be sold")
 
     def action_on_cancel_button(self):
         if self.state != "sold":
@@ -123,3 +122,9 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "Selling price cannot be less than 90% of expected price."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_not_new_and_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Property can't be deleted")

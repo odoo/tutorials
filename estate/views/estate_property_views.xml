@@ -11,7 +11,7 @@
         <field name="name">Estate property list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list multi_edit="True" decoration-success="state == 'offer_received'" decoration-primary="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+            <list editable="top" open_form_view="True" decoration-success="state == 'offer_received'" decoration-primary="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title" />
                 <field name="property_type_id" string="Property Type" />
                 <field name="postcode" string="Postcode" />

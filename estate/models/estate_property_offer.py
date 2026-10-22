@@ -1,6 +1,7 @@
-from odoo import api, fields, models
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -29,13 +30,18 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            record.date_deadline = record.create_date + relativedelta(
-                days=record.validity
-            )
+            if record.validity < 0:
+                raise UserError("Invalid validity period.")
+            else:
+                record.date_deadline = record.create_date + relativedelta(
+                    days=record.validity
+                )
 
     def _inverse_date_validity(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
+            if record.validity < 0:
+                raise UserError("Date cannot be earlier than today.")
 
     def action_property_sold(self):
         self.status = "accepted"
@@ -55,3 +61,15 @@ class EstatePropertyOffer(models.Model):
         "CHECK(price > 0)",
         "The offer price of property must be positive",
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+
+        for vals in vals_list:
+            best_price = (
+                self.env["estate.property"].browse(vals["property_id"]).best_price
+            )
+
+            if vals["price"] < best_price:
+                raise UserError(f"Offer price can't be less than {best_price}")
+        return super().create(vals_list)
