@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo noupdate="1">
+    <!-- Create an Individual Partner -->
+    <record id="partner_john_doe" model="res.partner">
+        <field name="name">John Doe</field>
+        <field name="email">john.doe@example.com</field>
+        <field name="is_company">False</field>
+        <field name="street">123 Main Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">1050</field>
+    </record>
+
+    <record id="partner_john_doe2" model="res.partner">
+        <field name="name">John Doe</field>
+        <field name="email">john.doe2@example.com</field>
+        <field name="is_company">False</field>
+        <field name="street">123 Main Street</field>
+        <field name="city">Brussels</field>
+        <field name="zip">1050</field>
+    </record>
+</odoo>

@@ -2,21 +2,21 @@
 <odoo>
 
     <record id="estate.property_offer_1" model="estate.property.offer">
-        <field name="partner_id">1</field>
+        <field name="partner_id" ref="estate.partner_john_doe"/>
         <field name="property_id" ref="estate.property_1"></field>
         <field name="price">10000</field>
         <field name="validity">14</field>
     </record>
 
     <record id="estate.property_offer_2" model="estate.property.offer">
-        <field name="partner_id">1</field>
+        <field name="partner_id" ref="estate.partner_john_doe"/>
         <field name="property_id" ref="estate.property_1"></field>
         <field name="price">1500000</field>
         <field name="validity">14</field>
     </record>
 
     <record id="estate.property_offer_3" model="estate.property.offer">
-        <field name="partner_id">1</field>
+        <field name="partner_id" ref="estate.partner_john_doe2"/>
         <field name="property_id" ref="estate.property_1"></field>
         <field name="price">1500001</field>
         <field name="validity">14</field>

@@ -16,6 +16,7 @@
         "report/estate_property_template.xml",
         "report/estate_property_report.xml",
         "report/res_users_report.xml",
+        "data/base.res.partner.xml",
         "data/estate.property.type.csv",
         "data/estate.property.xml",
         "data/estate.property.offer.xml",
