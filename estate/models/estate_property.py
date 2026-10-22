@@ -1,4 +1,4 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, tools
 
 
 class EstateProperty(models.Model):
@@ -39,6 +39,16 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute='_compute_total_area')
     best_offer = fields.Float(compute='_compute_best_price')
 
+    _expected_price_must_be_positive = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be greater than 0",
+    )
+
+    _selling_price_must_be_positive = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "The selling price must be greater than 0",
+    )
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         self.total_area = self.living_area + self.garden_area
@@ -56,11 +66,22 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    @api.constrains("expected_price", "selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                not tools.float_is_zero(record.selling_price, 2)
+                and tools.float_compare(record.selling_price, record.expected_price * 0.9, 2) == -1
+            ):
+                raise exceptions.ValidationError("The selling price cannot be below the 90% of the expected price.")
+
+
     def action_set_sold(self):
         if self.state != 'cancelled':
             self.state = 'sold'
             return True
-        raise exceptions.UserError("The property is marked as cancelled. Cancelled properties cannot be sold.")
+        else:
+            raise exceptions.UserError("The property is marked as cancelled. Cancelled properties cannot be sold.")
 
     def action_set_cancelled(self):
         if self.state != 'sold':
@@ -68,4 +89,5 @@ class EstateProperty(models.Model):
             self.selling_price = 0
             self.buyer_id = None
             return True
-        raise exceptions.UserError("The property is marked as sold. Sold properties cannot be cancelled.")
+        else:
+            raise exceptions.UserError("The property is marked as sold. Sold properties cannot be cancelled.")

@@ -19,6 +19,11 @@ class EstatePropertyOffer(models.Model):
         inverse='_inverse_date_deadline',
     )
 
+    _offer_price_must_be_positive = models.Constraint(
+        "CHECK(price > 0.0)",
+        "The offer price must be greater than 0",
+    )
+
     @api.depends("date_deadline", "create_date")
     def _inverse_date_deadline(self):
         for record in self:
@@ -37,7 +42,8 @@ class EstatePropertyOffer(models.Model):
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
             return True
-        else: raise exceptions.UserError("Only one offer can be accepted at a time. If you want to accept another offer, refuse this first and then accept the one you want.")
+        else:
+            raise exceptions.UserError("Only one offer can be accepted at a time. If you want to accept another offer, refuse this first and then accept the one you want.")
 
     def action_refuse_offer(self):
         self.status = 'refused'
