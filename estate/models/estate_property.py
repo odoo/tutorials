@@ -89,14 +89,14 @@ class EstateProperty(models.Model):
     def action_mark_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold.")
+                raise UserError(self.env._("Cancelled properties cannot be sold."))
             record.state = "sold"
         return True
 
     def action_mark_cancelled(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("Sold properties cannot be cancelled.")
+                raise UserError(self.env._("Sold properties cannot be cancelled."))
             record.state = "cancelled"
         return True
 
@@ -114,11 +114,15 @@ class EstateProperty(models.Model):
                 == -1
             ):
                 raise ValidationError(
-                    "The selling price must be at least 90% of the expected price! "
-                    "You must reduce the expected price if you want to accept this offer.",
+                    self.env._(
+                        "The selling price must be at least 90% of the expected price! "
+                        "You must reduce the expected price if you want to accept this offer.",
+                    ),
                 )
 
     @ondelete(at_uninstall=False)
     def _unlink_if_property_new_or_cancelled(self):
         if any(record.state not in ["new", "cancelled"] for record in self):
-            raise UserError("Only new and cancelled properties can be deleted.")
+            raise UserError(
+                self.env._("Only new and cancelled properties can be deleted."),
+            )

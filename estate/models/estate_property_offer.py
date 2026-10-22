@@ -49,7 +49,9 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.offer_ids.filtered(
                 lambda offer: offer.status == "accepted",
             ):
-                raise UserError("There is already an accepted offer for this property.")
+                raise UserError(
+                    self.env._("There is already an accepted offer for this property."),
+                )
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
@@ -81,7 +83,10 @@ class EstatePropertyOffer(models.Model):
                 <= 0
             ):
                 raise UserError(
-                    f"The offer must be higher than {property.best_price:.2f}.",
+                    self.env._(
+                        "The offer must be higher than %(best_price).2f.",
+                        best_price=property.best_price,
+                    ),
                 )
         offers = super().create(vals_list)
         offers.property_id.state = "received"
