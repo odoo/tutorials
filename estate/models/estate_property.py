@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -58,3 +58,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_property_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError("Cancelled properties cannot be sold.")
+            record.state = 'sold'
+
+    def action_property_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("Sold properties cannot be cancelled.")
+            record.state = 'cancelled'
