@@ -79,6 +79,33 @@
         </field>
     </record>
 
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <group>
+                                <h2><field name="name"/></h2>
+                                Expected Price : <field name="expected_price"/>
+                                <div t-if="record.state.raw_value == 'offer_received'">
+                                    Best Price : <field name="best_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_accepted'">
+                                    Selling Price : <field name="selling_price"/>
+                                </div>
+                                <field name="tag_ids" string="Tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </group>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -91,9 +118,9 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades" string="Facades"/>
                 <separator/>
-                <filter string="Available Properties" name="available_properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter name="available_properties" string="Available Properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <group>
-                    <filter string="Postcode" name="postcode_filter" context="{'group_by':'postcode'}"/>
+                    <filter name="postcode_filter" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
@@ -102,6 +129,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'search_default_available_properties': True}</field>
     </record>
 </odoo>
