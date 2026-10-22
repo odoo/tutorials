@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
             'move_type': 'out_invoice',
             'invoice_line_ids': [
                 Command.create({
-                    'name': 'Down Payment',
+                    'name': self.name + ' : 6% Down Payment',
                     'quantity': 1,
                     'price_unit': self.selling_price * 0.06
                 }),

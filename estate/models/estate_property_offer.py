@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
 
@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -32,16 +33,16 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.date_deadline = fields.Date.add(fields.Date.today(), days=record.validity)
 
+    def _inverse_date_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline - record.create_date.date()).days
+
     @api.model
     def create(self, vals):
         if float_compare(vals[0]['price'], self.env['estate.property'].browse(vals[0]['property_id']).best_price, precision_digits=2) < 0:
             raise UserError("You cannot create an offer with a lower amount than an existing offer!")
         self.env['estate.property'].browse(vals[0]['property_id']).state = 'offer_received'
         return super().create(vals)
-
-    def _inverse_date_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
 
     def action_accept(self):
         if self.status == 'accepted':
@@ -52,6 +53,7 @@ class EstatePropertyOffer(models.Model):
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
 
     def action_refuse(self):
         for record in self:

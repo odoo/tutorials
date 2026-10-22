@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="estate_property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
                 <header>
                     <button name="action_sell" type="object" string="Sold"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <group>
@@ -21,7 +22,6 @@
                     </group>
                     <group>
                         <group>
-                            <field name="state" string="Status"/>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
@@ -41,13 +41,13 @@
                                 <field name="facades" string="Facades"/>
                                 <field name="garages" string="Garages"/>
                                 <field name="garden" string="Has a Garden?"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                <field name="garden_orientation" string="Garden Orientation" invisible="not garden"/>
                                 <field name="total_area" string="Total Area (sqm)"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" string="Offers"/>
+                            <field name="offer_ids" string="Offers" readonly="state in ['offer_accepted', 'sold', 'canceled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -61,8 +61,8 @@
         </field>
     </record>
 
-    <record id="estate_property_list_view" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Estate Property List">
@@ -73,14 +73,13 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="selling_price" string="Selling Price"/>
-                <field name="date_availability" string="Available From"/>
-                <field name="tag_ids" string="Tags" widget="many2many_tags"/>
+                <field name="date_availability" string="Available From" optional="hide"/>
             </list>
         </field>
     </record>
 
-    <record id="estate_property_kanban_view" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
@@ -106,8 +105,8 @@
         </field>
     </record>
 
-    <record id="estate_property_search_view" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Property Search">
@@ -115,7 +114,7 @@
                 <field name="postcode" string="Postcode"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades" string="Facades"/>
                 <separator/>
                 <filter name="available_properties" string="Available Properties" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
