@@ -15,7 +15,7 @@ class Property(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        default="new"
+        default="new",
     )
     description = fields.Text()
     postcode = fields.Char()
