@@ -86,20 +86,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def action_mark_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError(self.env._("Cancelled properties cannot be sold."))
-            record.state = "sold"
-        return True
-
-    def action_mark_cancelled(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError(self.env._("Sold properties cannot be cancelled."))
-            record.state = "cancelled"
-        return True
-
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_high_enough(self):
         for record in self:
@@ -126,3 +112,17 @@ class EstateProperty(models.Model):
             raise UserError(
                 self.env._("Only new and cancelled properties can be deleted."),
             )
+
+    def action_mark_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError(self.env._("Cancelled properties cannot be sold."))
+            record.state = "sold"
+        return True
+
+    def action_mark_cancelled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(self.env._("Sold properties cannot be cancelled."))
+            record.state = "cancelled"
+        return True
