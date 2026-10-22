@@ -95,10 +95,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    # @api.onchange("offer_ids")
-    # def _onchange_offer_ids(self):
-    #     self.state = 'offer_received' if self.offer_ids else 'new'
-
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_new_or_cancelled(self):
         for record in self:
