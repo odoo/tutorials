@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -30,6 +31,24 @@ class EstatePropertyOffer(models.Model):
         "CHECK (price > 0)",
         "An offer price must be strictly positive",
     )
+
+    @api.model
+    def create(self, vals_list):
+        for val in vals_list:
+            property_id = val.get("property_id")
+
+            if not property_id:
+                continue
+
+            property = self.env["estate.property"].browse(property_id)
+            price = val.get("price", 0)
+
+            if price < property.best_price:
+                raise ValidationError(
+                    "You cannot create offer lower than an existing offer."
+                )
+
+        return super().create(vals_list)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):

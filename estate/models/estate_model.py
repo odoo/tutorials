@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -72,6 +72,12 @@ class EstateProperty(models.Model):
         "CHECK (selling_price > 0)",
         "A property selling price must be positive",
     )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Only new and cancelled properties can be deleted.")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
