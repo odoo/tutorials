@@ -47,6 +47,10 @@
                         <p>Total amount of new orders this month</p>
                         <h1 class="fw-semibold text-success text-center"><t t-out="average_time"/></h1>
                     </DashboardItem>
+                    <DashboardItem size="2">
+                        <h5 class="card-title">T-shirts sold by size</h5>
+                        <PieChart/>
+                    </DashboardItem>
                 </div>
             </div>
         </Layout>
