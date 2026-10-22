@@ -14,7 +14,7 @@
             <list string="Estate Property Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="status"/>
+                <field name="state"/>
             </list>
         </field>
     </record>
@@ -26,16 +26,17 @@
             <form string="Estate Property Offer">
                 <header>
                     <button name="action_accept_offer" string="Accept"
-                        type="object" class="oe_highlight"/>
+                        type="object" class="oe_highlight"
+                        invisible="state"/>
                     <button name="action_refuse_offer" string="Refuse"
-                        type="object"/>
+                        type="object" invisible="state"/>
                 </header>
                 <sheet>
                     <group>
                         <field name="property_id"/>
                         <field name="price"/>
                         <field name="partner_id"/>
-                        <field name="status"/>
+                        <field name="state"/>
                     </group>
                     <group>
                         <field name="validity"/>

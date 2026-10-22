@@ -9,7 +9,7 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float(string="Price")
-    status = fields.Selection(
+    state = fields.Selection(
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
         string="Status",
         copy=False,
@@ -44,11 +44,11 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.state in ["sold", "cancelled", "accepted"]:
                 raise exceptions.UserError("You cannot accept an offer for a sold, cancelled, or already accepted property.")
 
-            record.status = "accepted"
+            record.state = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.state = "accepted"
 
     def action_refuse_offer(self):
         for record in self:
-            record.status = "refused"
+            record.state = "refused"

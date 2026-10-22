@@ -31,9 +31,11 @@
             <form string="Property">
                 <header>
                     <button name="action_sold_property" string="Sold"
-                        type="object" class="oe_highlight"/>
+                        type="object" class="oe_highlight"
+                        invisible="state != 'accepted'"/>
                     <button name="action_cancel_property" string="Cancel"
-                        type="object"/>
+                        type="object"
+                        invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold"/>
                 </header>
                 <sheet>
@@ -65,21 +67,21 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page name="offers" string="Offers">
-                            <field name="offer_ids">
+                            <field name="offer_ids" readonly="state in ['accepted', 'sold', 'cancelled']">
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <button name="action_accept_offer" icon="check"
-                                        type="object" title="Accept Offer"/>
+                                        type="object" title="Accept Offer" invisible="state"/>
                                     <button name="action_refuse_offer" icon="close"
-                                        type="object" title="Refuse Offer"/>
-                                    <field name="status"/>
+                                        type="object" title="Refuse Offer" invisible="state"/>
+                                    <field name="state"/>
                                 </list>
                             </field>
                         </page>
