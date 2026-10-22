@@ -29,11 +29,20 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold_property" string="Sold"
+                        type="object" class="oe_highlight"/>
+                    <button name="action_cancel_property" string="Cancel"
+                        type="object"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags"/>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="state"/>
+                    </group>
                     <group>
                         <group>
                             <field name="property_type_id"/>
@@ -65,6 +74,10 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <button name="action_accept_offer" icon="check"
+                                        type="object" title="Accept Offer"/>
+                                    <button name="action_refuse_offer" icon="close"
+                                        type="object" title="Refuse Offer"/>
                                     <field name="status"/>
                                 </list>
                             </field>

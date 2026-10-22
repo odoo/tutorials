@@ -24,6 +24,12 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Estate Property Offer">
+                <header>
+                    <button name="action_accept_offer" string="Accept"
+                        type="object" class="oe_highlight"/>
+                    <button name="action_refuse_offer" string="Refuse"
+                        type="object"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="property_id"/>
