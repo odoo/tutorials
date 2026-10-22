@@ -119,7 +119,6 @@ class EstateProperty(models.Model):
             else:
                 record.state = "sold"
 
-
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_less_than_expected_price(self):
         for record in self:
