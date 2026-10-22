@@ -11,9 +11,7 @@
 
     'author': "FRCHA",
     'category': 'Tutorials',
-    'version': '0.1',
     'application': True,
-    'installable': True,
     'depends': ['base'],
     'data': [
         'security/ir.access.csv',

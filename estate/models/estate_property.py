@@ -1,5 +1,6 @@
-from odoo import api, exceptions, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -11,7 +12,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=(fields.Date.today() + relativedelta(months=3)), copy=False)
+    date_availability = fields.Date(default=lambda self: fields.Date.context_today(self) + relativedelta(months=7), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -50,19 +51,6 @@ class EstateProperty(models.Model):
     git_challenge = fields.Boolean(default=False)
 
     # -------------------------------------------------------------
-    # Constraints
-    # -------------------------------------------------------------
-    _check_expected_price_strict_positive = models.Constraint(
-    'CHECK(expected_price > 0)',
-    'The expected price of a property should be greater than 0.',
-    )
-
-    _check_selling_price_positive = models.Constraint(
-    'CHECK(selling_price >= 0)',
-    'The selling price of a property should be positive.',
-    )
-
-    # -------------------------------------------------------------
     # Computed fields and their method
     # -------------------------------------------------------------
     total_area = fields.Integer(compute="_compute_total_area")
@@ -74,10 +62,23 @@ class EstateProperty(models.Model):
 
     best_offer = fields.Float(compute="_compute_best_offer")
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0
+
+    # -------------------------------------------------------------
+    # Constraints
+    # -------------------------------------------------------------
+    _check_expected_price_strict_positive = models.Constraint(
+    'CHECK(expected_price > 0)',
+    'The expected price of a property should be greater than 0.',
+    )
+
+    _check_selling_price_positive = models.Constraint(
+    'CHECK(selling_price >= 0)',
+    'The selling price of a property should be positive.',
+    )
 
     # -------------------------------------------------------------
     # Onchange actions
@@ -97,7 +98,7 @@ class EstateProperty(models.Model):
     def action_flag_property_as_sold(self):
         for record in self:
             if record.state == 'canceled':
-                raise exceptions.UserError('Canceled properties cannot be sold')
+                raise exceptions.UserError(self.env._('Canceled properties cannot be sold'))
             else:
                 record.state = 'sold'
         return True

@@ -1,6 +1,7 @@
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, exceptions, fields, models
 from odoo.tools import float_utils
-from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
@@ -31,7 +32,7 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_utils.float_is_zero(record.price, precision_digits=2):
                 if float_utils.float_compare((0.9 * record.property_id.expected_price), record.price, precision_digits=2) == 1:
-                    raise exceptions.ValidationError("Offering price should be higher than 90% of the property expected price")
+                    raise exceptions.ValidationError(self.env._("Offering price should be higher than 90% of the property expected price"))
                 else:
                     record.property_id.state = 'offer_received' if record.property_id.state == 'new' else record.property_id.state
 
@@ -64,7 +65,7 @@ class EstateProperty(models.Model):
     def action_confirm(self):
         for record in self:
             if record.property_id.state == 'sold':
-                raise exceptions.UserError('Property already sold')
+                raise exceptions.UserError(self.env._('Property already sold'))
             current_offer_id = record.id
             for offer in record.property_id.offer_ids:
                 if offer.id == current_offer_id:
