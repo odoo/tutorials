@@ -7,7 +7,7 @@
     </record>
 
     <!-- list -->
-    <record id="estate_property_list_views" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
