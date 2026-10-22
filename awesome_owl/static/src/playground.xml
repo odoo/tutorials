@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
@@ -7,6 +7,11 @@
         </div>
         <Counter/>
         <ProductCard name="this.headphone.name" price="this.headphone.price"/>
+        <input t-model="this.name" placeholder="Name"/>
+        <input t-model="this.email" placeholder="Email"/>
+        <t t-out="this.greeting()"/>
+        <t t-if="this.isValid()"><span>Valid</span></t>
+        <t t-else=""><span>Invalid</span></t>
     </t>
 
 </templates>
