@@ -12,7 +12,11 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="name" placeholder="Title"/>
+                        <h1>
+                            <field name="name" placeholder="Property Title"/>
+                        </h1>
+                    </group>
+                    <group>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
                     </group>
                     <group>
