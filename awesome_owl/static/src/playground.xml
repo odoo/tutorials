@@ -2,8 +2,24 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
+        <p>Hello World</p>
+        <Counter onChangeIncrement.bind="incrementSum"/>
+        <Counter onChangeIncrement.bind="incrementSum"/>
+        <h2> Sum: <t t-esc="state.sum"/></h2>
+        <Card title="'Card with text'">
+        <p>This is arbitrary HTML content inside the card.</p>
+    </Card>
+
+    <Card title="'Card with a Counter'">
+        <Counter onChangeIncrement.bind="incrementSum"/>
+    </Card>
+
+    <Card title="'Card with multiple elements'">
+        <p>You can include multiple elements.</p>
+        <Counter onChangeIncrement.bind="incrementSum"/>
+    </Card>
         <div class="p-3">
-            hello world
+             <TodoList/>
         </div>
     </t>
 
