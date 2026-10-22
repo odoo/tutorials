@@ -98,3 +98,6 @@ class EstateProperty(models.Model):
     @api.onchange("offer_ids")
     def _onchange_offer_ids(self):
         self.state = 'offer_received' if self.offer_ids else 'new'
+
+    def _hello_world_function(self):
+        return "Hello world !"

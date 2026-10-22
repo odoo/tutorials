@@ -19,6 +19,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(related="property_id.property_type_id")
+    git_challenge = fields.Boolean(default=True)
 
     _check_price = models.Constraint('CHECK (price > 0)', 'An offer price must be strictly positive')
 
