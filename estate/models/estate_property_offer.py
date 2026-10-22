@@ -18,6 +18,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
+    _check_prices = models.Constraint(
+        'CHECK(price > 0.0)',
+        'The expected and selling price must be strictly positive.',
+    )
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for offer in self:

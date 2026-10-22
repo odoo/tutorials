@@ -9,3 +9,8 @@ class EstatePropertyTag(models.Model):
     _order = "name"
 
     name = fields.Char('Property Tag', required=True)
+
+    _check_unique = models.Constraint(
+        'UNIQUE(name)',
+        'A property tag with that name already exists.',
+    )

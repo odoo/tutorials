@@ -9,3 +9,8 @@ class EstatePropertyType(models.Model):
     _order = "name"
 
     name = fields.Char('Property Type', required=True)
+
+    _check_unique = models.Constraint(
+        'UNIQUE(name)',
+        'A property type with that name already exists.',
+    )
