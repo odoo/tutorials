@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -15,6 +15,10 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price must be positive.',
+    )
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -23,7 +27,9 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            record.validity = record.date_deadline - record.create_date
+            create_date = fields.Date.to_date(record.create_date) or fields.Date.today()
+            if record.date_deadline:
+                record.validity = (record.date_deadline - create_date).days
 
     def action_confirm(self):
         for record in self:
