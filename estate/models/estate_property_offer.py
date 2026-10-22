@@ -33,7 +33,7 @@ class EstatePropertyOffer(models.Model):
 
         return super().create(vals_list)
 
-    @api.depends("validity")
+    @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
             base_date = record.create_date or fields.Datetime.now()
