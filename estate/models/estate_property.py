@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer('Number of facades')
     garage = fields.Boolean('Has a garage')
     garden = fields.Boolean('Has a garden')
-    garden_area = fields.Integer('Garden area')
+    garden_area = fields.Integer('Garden area', default=2)
     garden_orientation = fields.Selection(
         string='Garden orientation',
         selection=[
@@ -117,3 +117,10 @@ class EstateProperty(models.Model):
                     "The selling price must be at least 90% of the expected price! "
                     "You must reduce the expected price if you want to accept this offer."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def check_property_state(self):
+        for rec in self:
+            if rec.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "Only new and cancelled properties can be deleted.")

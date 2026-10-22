@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta  # , datetime
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo import fields, models, api
 
 
@@ -61,3 +61,19 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            property_record = self.env["estate.property"].browse(property_id)
+            highest_offer = self.env['estate.property.offer'].search(
+                [('property_id', '=', property_id)], order="price desc", limit=1)
+            if vals["price"] < highest_offer.price:
+                raise ValidationError(
+                    f"The offer must be higher than {highest_offer.price}")
+            if property_record.state == "new":
+                property_record.write({
+                    'state': 'offer_received'
+                })
+        return super().create(vals_list)
