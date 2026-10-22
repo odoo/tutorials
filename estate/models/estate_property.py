@@ -76,6 +76,8 @@ class EstateProperty(models.Model):
         return True
 
     def action_sold_estate_property(self):
+        if not any(self.offer_ids.mapped(lambda offer: offer.status == 'accepted')):
+            raise UserError("You cannot sell a property with no accepted offers.")
         if self.state == 'canceled':
             raise UserError("You cannot sell a canceled property.")
         for record in self:
