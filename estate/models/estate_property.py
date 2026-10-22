@@ -1,6 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from datetime import date, timedelta
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 default_availability_date = (fields.Datetime.add(fields.Datetime.today(), days=90))
 
@@ -42,6 +42,24 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+
+    _check_expected_price_positive = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be greated than 0.'
+    )
+    _check_selling_price_positive = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be greater than 0.'
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_min(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_price = record.expected_price * 0.90
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise ValidationError('The selling price cannot be lower than 90%% of the expected price.')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):

@@ -13,6 +13,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
+    _check_price_positive = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be greater than 0.'
+    )
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -30,7 +35,7 @@ class EstatePropertyOffer(models.Model):
             accepted_offers = record.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted')
             if accepted_offers:
                 raise UserError("There is already an accepted offer for this property")
-            
+
             other_offers = record.property_id.offer_ids - record
             other_offers.write({'status': 'refused'})
 
@@ -44,4 +49,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
-
