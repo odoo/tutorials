@@ -22,6 +22,7 @@ class EstateProperty(models.Model):
     # -------------------------------------------------------------
     # Constraints
     # -------------------------------------------------------------
+
     _check_price_strict_positive = models.Constraint(
     'CHECK(price > 0)',
     'The offer price should be greater than 0.',
@@ -35,6 +36,18 @@ class EstateProperty(models.Model):
                     raise exceptions.ValidationError(self.env._("Offering price should be higher than 90% of the property expected price"))
                 else:
                     record.property_id.state = 'offer_received' if record.property_id.state == 'new' else record.property_id.state
+
+    # -------------------------------------------------------------------------
+    # CRUD/ORM
+    # -------------------------------------------------------------------------
+
+    @api.model
+    def create(self, vals_list):
+        if self.env['estate.property'].browse(vals_list['property_id']).best_offer > vals_list['price']:
+            raise exceptions.UserError(self.env._("A new offer cannot be lower than an existing offer."))
+        self.env['estate.property'].browse(vals_list['property_id']).state = 'offer_received'
+        # Always call super to execute the parent method
+        return super().create(vals_list)
 
     # -------------------------------------------------------------
     # computed fields and their method
@@ -64,8 +77,8 @@ class EstateProperty(models.Model):
     # When order is confirmed, update the status of all the offer and set the property selling_price and buyer
     def action_confirm(self):
         for record in self:
-            if record.property_id.state == 'sold':
-                raise exceptions.UserError(self.env._('Property already sold'))
+            if record.property_id.state in ["sold", "canceled", "offer_accepted"]:
+                raise exceptions.UserError(self.env._('Property already sold, canceled or accepted an offer'))
             current_offer_id = record.id
             for offer in record.property_id.offer_ids:
                 if offer.id == current_offer_id:

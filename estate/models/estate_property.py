@@ -80,6 +80,17 @@ class EstateProperty(models.Model):
     'The selling price of a property should be positive.',
     )
 
+    # -------------------------------------------------------------------------
+    # CRUD/ORM
+    # -------------------------------------------------------------------------
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_canceled(self):
+        # Prevent deleting properties that are sold or got offers
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise exceptions.UserError(self.env._("You can't delete a property that is not new or canceled"))
+
     # -------------------------------------------------------------
     # Onchange actions
     # -------------------------------------------------------------
