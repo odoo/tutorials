@@ -66,6 +66,9 @@
                                 <field name="state" />
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
                         <page string="Other info">
                             <group>
                                 <field name="salesperson_ids" />
