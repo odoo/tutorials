@@ -1,4 +1,5 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -19,7 +20,6 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(related="property_id.property_type_id")
-    git_challenge = fields.Boolean(default=True)
 
     _check_price = models.Constraint('CHECK (price > 0)', 'An offer price must be strictly positive')
 
@@ -28,7 +28,7 @@ class EstatePropertyOffer(models.Model):
             already_accepted = record.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted')
 
             if already_accepted:
-                raise exceptions.UserError("Property cannot have several accepted offers")
+                raise UserError("Property cannot have several accepted offers")
 
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
@@ -51,3 +51,16 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             base_date = record.create_date if record.create_date else fields.Date.today(self)
             record.date_deadline = fields.Date.add(base_date, days=record.validity * -1)
+
+    @api.model
+    def create(self, vals_list):
+
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            property_record = self.env['estate.property'].browse(property_id)
+            property_record.state = 'offer_received'
+
+            if vals.get('price') < property_record.best_price:
+                raise UserError(f'The offer must be higher than {property_record.best_price}')
+
+        return super().create(vals_list)
