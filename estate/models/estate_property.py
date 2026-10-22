@@ -1,7 +1,8 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import date, timedelta
 
-default_availability_date = (date.today() + timedelta(days=90))
+default_availability_date = (fields.Datetime.add(fields.Datetime.today(), days=90))
 
 
 class EstateProperty(models.Model):
@@ -56,3 +57,17 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else None
         self.garden_orientation = 'north' if self.garden else None
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled properties cannot be sold.")
+            record.state = "sold"
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold properties cannot be cancelled")
+            record.state = "cancelled"
+        return True
