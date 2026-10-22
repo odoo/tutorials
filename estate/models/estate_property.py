@@ -38,8 +38,8 @@ class EstateProperty(models.Model):
         ("sold", "Sold"),
         ("cancelled", "Cancelled"),
     ])
-    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     offer_count = fields.Integer(compute="_compute_offer_count")
     total_area = fields.Integer(compute="_compute_total_area")
