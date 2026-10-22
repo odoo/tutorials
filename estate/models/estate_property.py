@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property info"
 
-    name = fields.Char(required=True)
+    name = fields.Char(string="Title", required=True)
     active = fields.Boolean(default=True)
     state = fields.Selection([
             ("new", "New"),
@@ -19,15 +19,15 @@ class EstateProperty(models.Model):
     )
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date(string="Available From", default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float()
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
