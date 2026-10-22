@@ -69,7 +69,7 @@
                         </page>
                         <page string="Other info">
                             <group>
-                                <field name="salesperson_id"/>
+                                <field name="salesperson_id" context="{'form_view_ref': 'base.view_users_form'}"/>
                                 <field name="buyer_id"/>
                             </group>
                         </page>
@@ -93,7 +93,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '&gt;', self)]"/>
                 <field name="facades"/>
-                <filter string="Available" name="state" domain="[('state', 'in', ['new_property', 'offer_recieved'])]"/>
+                <filter string="Available" name="state" domain="[('state', 'in', ['new_property', 'offer_received'])]"/>
                 <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>

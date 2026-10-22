@@ -33,6 +33,18 @@ class Offer(models.Model):
             else:
                 record.validity = 0
 
+    @api.model
+    def create(self, vals_list):
+        properties_ids = self.env['estate.property'].browse([item.get('property_id') for item in vals_list])
+        properties_set = {p.id: p for p in properties_ids}
+
+        for vals in vals_list:
+            property = properties_set.get(vals.get('property_id'))
+            if (vals['price'] < max(property.offer_ids.mapped('price'), default=0)):
+                raise exceptions.UserError("New offers must have a higher price that existing ones")
+            property.state = 'offer_received'
+            return super().create(vals)
+
     def action_accepted(self):
         for record in self:
             property = record.property_id
