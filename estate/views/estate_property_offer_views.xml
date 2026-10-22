@@ -12,7 +12,6 @@
                 <field name="partner_id"/>
                 <button name="action_accept" type="object" title="Accept" icon="check" invisible="status"/>
                 <button name="action_refuse" type="object" title="Refuse" icon="close" invisible="status"/>
-                <field name="status" invisible="True"/>
             </list>
         </field>
     </record>
