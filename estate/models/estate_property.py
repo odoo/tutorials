@@ -47,6 +47,7 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Propety tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer(s)")
+    git_challenge = fields.Boolean(default=False)
 
     # -------------------------------------------------------------
     # Constraints
@@ -105,3 +106,6 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = 'canceled'
         return True
+
+    def _hello_world_function(self):
+        return "Hello world !"
