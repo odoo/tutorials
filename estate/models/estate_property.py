@@ -1,5 +1,5 @@
 from odoo.tools.float_utils import float_compare, float_is_zero
-from odoo import fields, models, api, exceptions
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):

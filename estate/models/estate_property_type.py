@@ -24,10 +24,6 @@ class EstatePropertyType(models.Model):
             record.offer_count = len(record.offer_ids)
 
     def action_type_properties(self):
-        return {
-            'name': 'Property offers',
-            'view_mode': 'list,form',
-            'domain': [('id', 'in', self.offer_ids.ids)],
-            'res_model': 'estate.property.offer',
-            'type': 'ir.actions.act_window',
-        }
+        action = self.env.ref('estate.estate_property_offer_action').read()[0]
+        action['domain'] = [('id', 'in', self.offer_ids.ids)]
+        return action

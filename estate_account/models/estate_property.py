@@ -1,10 +1,10 @@
-from odoo import models, Command
-from odoo.tools import float_round
+from odoo import Command, models
 
 ADMIN_FEE_AMOUNT = 100.00
 
 
 class EstateProperty(models.Model):
+    _name = 'estate.property'
     _inherit = ['estate.property']
 
     def action_set_state_sold(self):
