@@ -6,6 +6,7 @@
             hello world
         </div>
         <Counter/>
+        <ProductCard name="this.headphone.name" price="this.headphone.price"/>
     </t>
 
 </templates>
