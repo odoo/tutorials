@@ -14,6 +14,7 @@
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
+                <field name="state"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -28,9 +29,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <group>
+                    <button name="action_set_sold" type="object" string="Sell it!" class="oe_highlight" invisible="state == 'sold'"/>
+                    <button name="action_set_cancelled" type="object" string="Cancel" class="oe_highlight" invisible="state == 'cancelled'"/>
+                </group>
                 <h1>
                     <field name="name"/>
                 </h1>
+                <separator/>
                 <group>
                     <field name="tag_ids" widget="many2many_tags"/>
                 </group>
