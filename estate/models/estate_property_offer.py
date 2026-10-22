@@ -22,7 +22,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one(comodel_name="res.partner", string="Buyer", required=True)
     property_id = fields.Many2one(comodel_name="estate.property", string="Property")
-
+    property_type_id = fields.Many2one(related="property_id.property_type_id", string="Property Type", store=True)
     _check_offer_price = models.Constraint(
         'CHECK(price >= 0)',
         'Offer price must be greater than zero.'
