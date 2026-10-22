@@ -105,7 +105,7 @@
                         ('state', '=', 'offer received')
                 ]"/>
                 <group>
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'"/>
                 </group>
             </search>
         </field>
