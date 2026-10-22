@@ -51,10 +51,12 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute='_compute_best_price', string='Best Offer')
 
     _exp_price_positive_constraint = models.Constraint(
-        "CHECK (expected_price > 0)", "A property expected price must be strictly positive"
+        "CHECK (expected_price > 0)",
+        "A property expected price must be strictly positive",
     )
     _sell_price_positive_constraint = models.Constraint(
-        "CHECK (selling_price >= 0)", "A property selling price must be strictly positive"
+        "CHECK (selling_price >= 0)",
+        "A property selling price must be strictly positive",
     )
 
     @api.depends("living_area", "garden_area")
@@ -69,20 +71,19 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
 
     @api.onchange("offer_ids")
     def _onchange_offer(self):
-        if self.state not in ['sold', 'cancel', 'accept']:
-            if self.offer_ids:
-                self.state = 'offer'
-            else:
-                self.state = 'new'
+        for record in self:
+            if record.state not in ['sold', 'cancel', 'accept']:
+                record.state = 'offer' if record.offer_ids else 'new'
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -93,16 +94,22 @@ class EstateProperty(models.Model):
             ):
                 raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_check_state(self):
+        for record in self:
+            if record.state not in ['new', 'cancel']:
+                raise exceptions.UserError("Only new and cancelled properties can be deleted")
+
     def action_set_sold(self):
-        if self.state != 'cancel':
-            self.state = 'sold' if self.state != 'sold' else 'new'
-        else:
+        self.ensure_one()
+        if self.state == 'cancel':
             raise exceptions.UserError("Cancelled properties cannot be sold")
+        self.state = 'sold' if self.state != 'sold' else 'new'
         return True
 
     def action_set_cancelled(self):
-        if self.state != 'sold':
-            self.state = 'cancel' if self.state != 'cancel' else 'new'
-        else:
+        self.ensure_one()
+        if self.state == 'sold':
             raise exceptions.UserError("Sold properties cannot be cancelled")
+        self.state = 'cancel' if self.state != 'cancel' else 'new'
         return True

@@ -13,9 +13,11 @@ class EstatePropertyType(models.Model):
     sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
 
     _type_name_unique_constraint = models.Constraint(
-        "UNIQUE (name)", "Type name must be unique"
+        "UNIQUE (name)",
+        "Type name must be unique",
     )
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):
-        self.offer_count = len(self.offer_ids)
+        for record in self:
+            record.offer_count = len(self.offer_ids)

@@ -76,7 +76,7 @@
                         </group>
                     </page>
                     <page string="Offers">
-                        <field name="offer_ids" readonly="buyer_id"/>
+                        <field name="offer_ids" readonly="state in ['sold', 'accept', 'cancel']"/>
                     </page>
                     <page string="Other info">
                         <group>
