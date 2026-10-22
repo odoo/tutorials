@@ -53,7 +53,6 @@ class EstateProperty(models.Model):
     property_type_ids = fields.Many2one(
         comodel_name="estate.property.type",
         string="Property Type",
-        domain=[("active", "=", True)],
         ondelete="set null"
     )
     tag_ids = fields.Many2many(
@@ -71,6 +70,11 @@ class EstateProperty(models.Model):
     buyer_ids = fields.Many2one(
         'res.partner',
         string="Buyer"
+    )
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+        string="Property Offers"
     )
 
     @api.constrains("expected_price")
