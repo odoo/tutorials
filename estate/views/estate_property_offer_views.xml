@@ -4,14 +4,16 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Estate Property Offers List">
+            <list string="Estate Property Offers List" editable="bottom" open_form_view="true"
+                decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
-                <field name="status" />
                 <field name="validity" />
                 <field name="date_deadline" />
-                <button name="action_accept" string="Accept" type="object" icon="check" />
-                <button name="action_refuse" string="Refuse" type="object" icon="close" />
+                <button name="action_accept" string="Accept" type="object" icon="check"
+                    invisible="status in ['accepted', 'refused']" />
+                <button name="action_refuse" string="Refuse" type="object" icon="close"
+                    invisible="status in ['accepted', 'refused']" />
             </list>
         </field>
     </record>
@@ -21,12 +23,22 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Estate Property Offer Form">
+                <header>
+                    <button string="Accept" name="action_accept" type="object" class="oe_highlight"
+                        invisible="status in ['accepted','refused']" />
+                    <button string="Refuse" name="action_refuse" type="object"
+                        invisible="status in ['accepted','refused']" />
+                    <button string="Reset to Pending" name="action_revert_pending" type="object"
+                        invisible="status == 'pending'" />
+                    <field name="status" widget="statusbar" statusbar_visible="pending,accepted" />
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="price" />
-                            <field name="status" />
                             <field name="partner_id" />
+                        </group>
+                        <group>
                             <field name="validity" />
                             <field name="date_deadline" />
                         </group>
@@ -34,5 +46,12 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>
