@@ -61,7 +61,11 @@ class PropertyOffers(models.Model):
         )
         property_dict = {property.id: property for property in properties}
         for vals in vals_list:
-            if vals.get("price") < property_dict[vals.get("property_id")].best_price:
+            if property_dict[vals.get("property_id")].state == "sold":
+                raise exceptions.ValidationError(
+                    _("A new offer can't be made for an already sold property")
+                )
+            elif vals.get("price") < property_dict[vals.get("property_id")].best_price:
                 raise exceptions.ValidationError(
                     _("A new offer can't have a lower amount than an existing offer")
                 )

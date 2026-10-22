@@ -80,8 +80,10 @@ class Properties(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.state == "canceled":
-                raise exceptions.UserError(_("Canceled properties cannot be sold."))
+            if record.state != "offer_accepted":
+                raise exceptions.UserError(
+                    _("A property canceled/with no accepted offers cannot be sold.")
+                )
             record.state = "sold"
 
     _check_expected_price = models.Constraint(
