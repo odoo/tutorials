@@ -1,0 +1,21 @@
+<odoo>
+    <record id="estate_property_type_id1" model="estate_property_type">
+        <field name="name">Residential</field>
+        <field name="description">Residential properties for living</field>
+    </record>
+
+    <record id="estate_property_type_id2" model="estate_property_type">
+        <field name="name">Commercial</field>
+        <field name="description">Commercial properties for business</field>
+    </record>
+
+    <record id="estate_property_type_id3" model="estate_property_type">
+        <field name="name">Industrial</field>
+        <field name="description">Industrial properties for manufacturing</field>
+    </record>
+
+    <record id="estate_property_type_id4" model="estate_property_type">
+        <field name="name">Land</field>
+        <field name="description">Land properties for development</field>
+    </record>
+</odoo>

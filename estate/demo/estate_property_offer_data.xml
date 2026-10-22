@@ -1,0 +1,32 @@
+<odoo>
+    <record id="estate_property_offer_id1" model="estate_property_offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_id1"/>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="estate_property_offer_id2" model="estate_property_offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_id1"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="estate_property_offer_id3" model="estate_property_offer">
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="property_id" ref="estate_property_id1"/>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+    </record>
+
+    <function model="estate_property_offer" name="action_refuse">
+        <value eval="[ref('estate_property_offer_id1')]"/>
+    </function>
+    <function model="estate_property_offer" name="action_refuse">
+        <value eval="[ref('estate_property_offer_id2')]"/>
+    </function>
+    <function model="estate_property_offer" name="action_accept">
+        <value eval="[ref('estate_property_offer_id3')]"/>
+    </function>
+</odoo>
