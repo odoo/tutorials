@@ -4,6 +4,7 @@ from odoo import api, exceptions, fields, models, tools
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True, string='Title')
     description = fields.Text()
@@ -43,7 +44,7 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer(compute='_compute_area', string='Total Area (sqm)')
@@ -74,6 +75,14 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.onchange("offer_ids")
+    def _onchange_offer(self):
+        if self.state not in ['sold', 'cancel', 'accept']:
+            if self.offer_ids:
+                self.state = 'offer'
+            else:
+                self.state = 'new'
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):

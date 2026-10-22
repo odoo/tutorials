@@ -4,6 +4,7 @@ from odoo import api, exceptions, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], readonly=True)
@@ -18,6 +19,7 @@ class EstatePropertyOffer(models.Model):
         inverse="_compute_validity",
         string="Deadline",
     )
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id')
 
     _offer_price_positive_constraint = models.Constraint(
         "CHECK (price > 0)", "An offer price must be positive"
@@ -38,6 +40,7 @@ class EstatePropertyOffer(models.Model):
     def action_confirm(self):
         if not any(offer.status == 'accepted' for offer in self.property_id.offer_ids):
             self.status = 'accepted'
+            self.property_id.state = 'accept'
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
         else:
@@ -46,6 +49,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.status = 'refused'
+        # Next part can be used to reset buyer_id and selling_price when refusing an already accepted offer
         if not any(offer.status == 'accepted' for offer in self.property_id.offer_ids):
             self.property_id.buyer_id = False
             self.property_id.selling_price = 0

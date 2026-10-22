@@ -4,8 +4,10 @@ from odoo import fields, models
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Estate Property Tag"
+    _order = "name"
 
     name = fields.Char(required=True)
+    color = fields.Integer()
 
     _tag_name_unique_constraint = models.Constraint(
         "UNIQUE (name)", "Tag name must be unique"
