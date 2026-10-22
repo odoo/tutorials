@@ -4,6 +4,7 @@ from odoo import api, exceptions, fields, models, tools
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property for the estate module"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
