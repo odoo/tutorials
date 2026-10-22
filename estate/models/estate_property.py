@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -22,6 +22,10 @@ class EstateProperty(models.Model):
     )
 
     expected_price = fields.Float(required=True)
+    best_price = fields.Float(
+        string="Best Price",
+        compute="_compute_best_price",
+    )
     selling_price = fields.Float(readonly=True, copy=False)
 
     # Description
@@ -40,6 +44,10 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
         help="Select the orientation of the property.",
+    )
+    total_area = fields.Integer(
+        string="Total Area (sqm)",
+        compute="_compute_total_area",
     )
 
     # Other Infos
@@ -72,3 +80,23 @@ class EstateProperty(models.Model):
         copy=False,
     )
     active = fields.Boolean(default=True)
+
+    # Compute logic
+
+    @api.depends("living_area", "garden", "garden_area")
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area = property.living_area + (
+                property.garden_area if property.garden else 0
+            )
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for property in self:
+            property.best_price = max(property.offer_ids.mapped("price"), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        has_garden = self.garden
+        self.garden_area = 10 if has_garden else 0
+        self.garden_orientation = "north" if has_garden else False
