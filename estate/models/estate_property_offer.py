@@ -1,7 +1,8 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -41,6 +42,17 @@ class EstatePropertyOffer(models.Model):
             record.validity = (
                 record.date_deadline - creation_date.date()
             ) // timedelta(days=1)
+
+    @api.model
+    def create(self, vals_list):
+        for record in vals_list:
+            property = self.env["estate.property"].browse(record.get("property_id"))
+            if float_compare(record.get("price"), property.best_price, 2) == -1:
+                raise ValidationError(
+                    "A new offer price can't be lower than the best price"
+                )
+            property.status = "offer_received"
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:
