@@ -11,7 +11,9 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Estate Property Offers">
+            <list string="Estate Property Offers" editable="top"
+                decoration-success="state == 'accepted'"
+                decoration-danger="state == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="state"/>
