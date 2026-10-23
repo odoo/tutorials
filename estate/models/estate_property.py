@@ -117,6 +117,14 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if self.state == "cancelled":
             raise UserError(self.env._("Cancelled properties cannot be sold."))
+        # estate.property.offer guarantees that there are at most one accepted offer per property,
+        # so we only check there is at least one
+        if not self.offer_ids.filtered(lambda o: o.status == "accepted"):
+            raise UserError(
+                self.env._(
+                    "An accepted offer is required to mark this property as sold.",
+                ),
+            )
         self.state = "sold"
         return True
 

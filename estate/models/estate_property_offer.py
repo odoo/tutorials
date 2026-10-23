@@ -56,6 +56,10 @@ class EstatePropertyOffer(models.Model):
         )
         for val in vals_list:
             property = property_by_id[val["property_id"]]
+            if property.state == "sold":
+                raise UserError(
+                    self.env._("You cannot create an offer for a sold property."),
+                )
             if (
                 float_compare(
                     val.get("price", 0),
