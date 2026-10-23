@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -26,6 +27,20 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             creation_date = (record.create_date or fields.Datetime.today()).date()
             record.date_deadline = fields.Date.add(creation_date, days=record.validity)
+
+    @api.model_create_multi
+    def create(self, offers_list):
+        for offer in offers_list:
+            record = self.env["estate.property"].browse(offer["property_id"])
+
+            current_offer = record.offer_ids.mapped("price")
+            if current_offer and float_compare(offer.get("price", 0.0), max(current_offer), precision_digits=2) < 0:
+                raise UserError(f"The offer must be higher than {max(current_offer)}")
+
+            if record.state == "new":
+                record.state = "offer_received"
+
+        return super().create(offers_list)
 
     def _inverse_date_deadline(self):
         for record in self:

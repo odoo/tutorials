@@ -77,10 +77,11 @@ class EstateProperty(models.Model):
                     "The selling price must be at least 90% of the expected price."
                 )
 
-    @api.onchange("offer_ids")
-    def _onchange_offer_ids(self):
-        if self.state == 'new':
-            self.state = 'offer_received'
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("This property can't be deleted.")
 
     @api.onchange("garden")
     def _onchange_garden(self):
