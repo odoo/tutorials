@@ -75,13 +75,13 @@ class EstateProperty(models.Model):
     )
 
     _check_expected_price = models.Constraint(
-    'CHECK( expected_price >= 0 )',
-    'The expected price of a property should be positive.',
+        'CHECK( expected_price >= 0 )',
+        'The expected price of a property should be positive.',
     )
 
     _check_selling_price = models.Constraint(
-    'CHECK( selling_price >= 0 )',
-    'The selling price of a property should be positive.',
+        'CHECK( selling_price >= 0 )',
+        'The selling price of a property should be positive.',
     )
 
     @api.depends("living_area", "garden_area")
@@ -98,7 +98,7 @@ class EstateProperty(models.Model):
                 record.best_price = 0.0
 
     @api.onchange("garden")
-    def _onchange_gardem(self):
+    def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"

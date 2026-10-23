@@ -27,7 +27,7 @@
                     <group>
                         <field name="name"/>
                     </group>
-                    <div name="button_box" class="oe_button_box" >
+                    <div name="button_box" class="oe_button_box">
                         <button name="%(estate_property_offer_action)d" string="Offers"
                             type="action" class="oe_stat_button"
                             icon="bars">

@@ -12,7 +12,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" 
+            <list string="Properties"
                 decoration-success="state == 'received' or state == 'accepted'"
                 decoration-bf="state == 'accepted'"
                 decoration-muted="state == 'sold'">
