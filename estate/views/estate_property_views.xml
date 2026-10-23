@@ -40,8 +40,7 @@
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click':'edit_color'}" editable="bottom"/>
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id" options='{"no_create": True}'/>
+                            <field name="property_type_id" string="Property Type" options='{"no_create": True}'/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>

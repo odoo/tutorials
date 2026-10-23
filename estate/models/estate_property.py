@@ -60,6 +60,7 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         for record in self:
+            print("============================================BASE VERSION================================================")
             if record.state == 'cancelled':
                 raise exceptions.UserError("Can't sell a cancel property.")
             record.state = 'sold'
