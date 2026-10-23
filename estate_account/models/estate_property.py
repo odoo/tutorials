@@ -5,7 +5,7 @@ class Property(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        res = super(Property, self).action_sold()
+        res = super().action_sold()
 
         values = {
             'partner_id': self.buyer_id.id,

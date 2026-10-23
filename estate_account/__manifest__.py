@@ -4,5 +4,4 @@
     'application': True,
     'author': "huler",
     'license': "LGPL-3",
-    'data': [],
 }
