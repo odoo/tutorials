@@ -1,0 +1,99 @@
+from odoo.tools.float_utils import float_compare
+
+from odoo import api, exceptions, fields, models
+
+
+class EstateProperty(models.Model):
+    _name = "estate.property"
+    _description = "Estate property info"
+
+    name = fields.Char(string="Title", required=True)
+    active = fields.Boolean(default=True)
+    state = fields.Selection([
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="new",
+    )
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date(string="Available From", default=fields.Date.add(fields.Date.today(), months=3))
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float()
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer(string="Garden Area (sqm)")
+    garden_orientation = fields.Selection(
+        selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
+    )
+    
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    property_type_id = fields.Many2one("estate.property.type")
+    salesman_id = fields.Many2one("res.partner")
+    buyer_id = fields.Many2one("res.users", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0.)",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+    )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            if record.living_area and record.garden_area:
+                record.total_area = record.living_area + record.garden_area
+            else:
+                record.total_area = 0
+        
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0.
+ 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+
+    def action_set_property_state_to_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise exceptions.UserError("Cancelled property cannot be cancelled !")
+            else:
+                record.state = "sold"
+        return True
+
+    def action_set_property_state_to_cancelled(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError("Sold property cannot be sold !")
+            else:
+                record.state = "cancelled"
+        return True
+
+    # every single attribute used within a constrain method must be specified !!!!!!!!!!!!!!!!!
+    @api.constrains("expected_price", "selling_price", "state")
+    def _constraint_selling_price(self):
+        for record in self:
+            price_condition = float_compare(record.selling_price, (9/10) * record.expected_price, precision_rounding=0.01) >= 0
+            if record.state not in ["new", "offer_received"] and not price_condition:
+                raise exceptions.ValidationError(f"The selling price must be at least {(9/10) * record.expected_price} !")
