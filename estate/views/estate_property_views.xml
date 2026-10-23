@@ -4,7 +4,10 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="estate_property_list">
+            <list string="estate_property_list"
+                  decoration-success="state == 'offer_received'"
+                  decoration-bf="state == 'offer_accepted'"
+                  decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="description"/>
                 <field name="postcode"/>
@@ -120,9 +123,12 @@
                 <field name="name" string="Estate"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <separator/>
+                <filter string="Available"
+                        name="available"
+                        domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <filter string="Active" name="active" domain="[('active', '=', True)]"/>
                 <filter string="Price" name="positive" domain="[('expected_price', '&gt;', 0)]"/>
             </search>
@@ -133,5 +139,6 @@
         <field name="name">Estate property action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': 1}</field>
     </record>
 </odoo>

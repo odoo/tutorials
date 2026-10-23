@@ -1,20 +1,22 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+from odoo import api, fields, models
+
 
 class EstateProperty(models.Model):
-
-    _name = 'estate.property'
-    _description = 'Real Estate'
-    _order = 'id desc'
+    _name = "estate.property"
+    _description = "Real Estate"
+    _order = "id desc"
 
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text(default="Unknown")
     postcode = fields.Char(default="Unknown")
-    date_available = fields.Date(copy=False, default=lambda self: fields.Date.today() + timedelta(days=90))
+    date_available = fields.Date(
+        copy=False, default=lambda self: fields.Date.today() + timedelta(days=90)
+    )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -28,7 +30,8 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
             ("north", "North"),
-            ("south", "South")],
+            ("south", "South"),
+        ],
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -37,7 +40,8 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled")],
+            ("cancelled", "Cancelled"),
+        ],
         default="new",
     )
     estate_property_type_id = fields.Many2one("estate.property.type", string="Estate")
@@ -48,12 +52,10 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer")
 
     _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected_price must be positive.'
+        "CHECK(expected_price > 0)", "The expected_price must be positive."
     )
     _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'The selling_price must be positive.'
+        "CHECK(selling_price >= 0)", "The selling_price must be positive."
     )
 
     @api.depends("living_area", "garden_area")
@@ -64,7 +66,9 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+            record.best_offer = (
+                max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+            )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -94,5 +98,12 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
                 minimum_price = record.expected_price * 0.9
-                if float_compare(record.selling_price, minimum_price, precision_digits=2) < 0:
-                    raise ValidationError("The selling price cannot be lower than 90% of the expected price! ")
+                if (
+                    float_compare(
+                        record.selling_price, minimum_price, precision_digits=2
+                    )
+                    < 0
+                ):
+                    raise ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price! "
+                    )
