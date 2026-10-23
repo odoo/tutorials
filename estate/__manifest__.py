@@ -9,6 +9,7 @@
     'depends': ['base'],
     'data': [
         'security/ir.access.csv',
+        'views/estate_inherited_user.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',

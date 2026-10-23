@@ -55,6 +55,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max((offer.price for offer in record.offer_ids if offer.status != 'refused'), default=0.0)
 
+    # TODO : ASK MATHO or JEDEL why not doing this ...
     @api.depends("offer_ids", "offer_ids.status")
     def _compute_state(self):
         for record in self:
@@ -93,3 +94,9 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, precision_rounding=0.001) and float_compare(record.selling_price, (0.9 * record.expected_price), precision_rounding=0.001) == -1:
                 raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))
+
+    @api.ondelete(at_uninstall=False)
+    def delete_estate_property(self):
+        for record in self:
+            if record.state not in ['cancelled', 'new']:
+                raise UserError(self.env._("The property cannot be deleted"))
