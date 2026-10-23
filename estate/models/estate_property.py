@@ -13,9 +13,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
-    _check_expected_price = models.Constraint("CHECK (expected_price > 0)", "Expected price must be stricly positive")
     selling_price = fields.Float(readonly=True, copy=False)
-    _check_selling_price = models.Constraint("CHECK (selling_price > 0)", "Selling price must be positive")
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -30,7 +28,6 @@ class EstateProperty(models.Model):
             ('west', 'West')
         ])
     active = fields.Boolean(default=True)
-
     state = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -44,14 +41,17 @@ class EstateProperty(models.Model):
         default='new'
         )
 
-    total_area = fields.Float(compute="_compute_total_area")
-    best_price = fields.Char(compute="_compute_best_price")
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    _check_expected_price = models.Constraint("CHECK (expected_price > 0)", "Expected price must be stricly positive")
+    _check_selling_price = models.Constraint("CHECK (selling_price >= 0)", "Selling price must be positive")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -92,14 +92,14 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def property_sold(self):
+    def action_property_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled property: cannot be sold.")
             record.state = "sold"
         return True
 
-    def property_cancel(self):
+    def action_property_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError("Sold property: cannot be cancelled.")
