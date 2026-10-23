@@ -66,6 +66,22 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_90(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            if float_compare(record.selling_price, 0.9 * record.expected_price,
+                             precision_digits=2) < 0:
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price."
+                )
+
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if self.state == 'new':
+            self.state = 'offer_received'
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -88,19 +104,3 @@ class EstateProperty(models.Model):
                 raise UserError("Sold property: cannot be cancelled.")
             record.state = "cancelled"
         return True
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price_90(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue
-            if float_compare(record.selling_price, 0.9 * record.expected_price,
-                             precision_digits=2) < 0:
-                raise ValidationError(
-                    "The selling price must be at least 90% of the expected price."
-                )
-
-    @api.onchange("offer_ids")
-    def _onchange_offer_ids(self):
-        if self.state == 'new':
-            self.state = 'offer_received'

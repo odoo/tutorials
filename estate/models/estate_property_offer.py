@@ -19,6 +19,8 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
 
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
