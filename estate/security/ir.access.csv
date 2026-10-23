@@ -1,11 +1,11 @@
 id,name,model_id,group_id/id,operation,domain
-access_test_model,access_test_model,test_model,estate_group_user,crud,
-access_estate_property,access_estate_property,estate_property,estate_group_user,cru,"['&', ('salesman_id', 'in', [user.id, False]), '|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
-access_estate_property_type,access_estate_property_type,estate_property_type,estate_group_user,r,
-access_estate_property_tag,access_estate_property_tag,estate_property_tag,estate_group_user,r,
-access_estate_property_offer,access_estate_property_offer,estate_property_offer,estate_group_user,crud,"['&', ('property_id.salesman_id', 'in', [user.id, False]), '|', ('property_id.company_id', '=', False), ('property_id.company_id', 'in', company_ids)]"
-access_manager_test_model,access_manger_test_model,test_model,estate_group_manager,crud,
-access_manger_estate_property,access_manger_estate_property,estate_property,estate_group_manager,cru,
-access_manger_estate_property_type,access_manger_estate_property_type,estate_property_type,estate_group_manager,crud,
-access_manger_estate_property_tag,access_manger_estate_property_tag,estate_property_tag,estate_group_manager,crud,
-access_manger_estate_property_offer,access_manger_estate_property_offer,estate_property_offer,estate_group_manager,crud,
+access_test_model,access_test_model,test_model,estate.estate_group_user,crud,
+access_estate_property,access_estate_property,estate_property,estate.estate_group_user,cru,"['&', ('salesman_id', 'in', [user.id, False]), '|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+access_estate_property_type,access_estate_property_type,estate_property_type,estate.estate_group_user,r,
+access_estate_property_tag,access_estate_property_tag,estate_property_tag,estate.estate_group_user,r,
+access_estate_property_offer,access_estate_property_offer,estate_property_offer,estate.estate_group_user,crud,"['&', ('property_id.salesman_id', 'in', [user.id, False]), '|', ('property_id.company_id', '=', False), ('property_id.company_id', 'in', company_ids)]"
+access_manager_test_model,access_manger_test_model,test_model,estate.estate_group_manager,crud,
+access_manger_estate_property,access_manger_estate_property,estate_property,estate.estate_group_manager,cru,
+access_manger_estate_property_type,access_manger_estate_property_type,estate_property_type,estate.estate_group_manager,crud,
+access_manger_estate_property_tag,access_manger_estate_property_tag,estate_property_tag,estate.estate_group_manager,crud,
+access_manger_estate_property_offer,access_manger_estate_property_offer,estate_property_offer,estate.estate_group_manager,crud,

@@ -59,10 +59,10 @@
                     <h1>
                         <field name="name"/>
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="estate_group_manager"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="estate.estate_group_manager"/>
                     <group>
                         <group>
-                            <field name="property_type_id" options="{'no_create': true}" groups="estate_group_manager">Property Type</field>
+                            <field name="property_type_id" options="{'no_create': true}" groups="estate.estate_group_manager">Property Type</field>
                             <field name="company_id" options="{'no_create': true}">Company</field>
                             <field name="postcode">Postcode</field>
                             <field name="date_availability">Availabile From</field>
