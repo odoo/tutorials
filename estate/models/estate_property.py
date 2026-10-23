@@ -1,4 +1,6 @@
-from odoo import api, fields, models, exceptions
+from odoo.tools.float_utils import float_compare
+
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -40,6 +42,13 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0.)",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -80,3 +89,11 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
+
+    # every single attribute used within a constrain method must be specified !!!!!!!!!!!!!!!!!
+    @api.constrains("expected_price", "selling_price", "state")
+    def _constraint_selling_price(self):
+        for record in self:
+            price_condition = float_compare(record.selling_price, (9/10) * record.expected_price, precision_rounding=0.01) >= 0
+            if record.state not in ["new", "offer_received"] and not price_condition:
+                raise exceptions.ValidationError(f"The selling price must be at least {(9/10) * record.expected_price} !")

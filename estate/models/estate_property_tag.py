@@ -8,3 +8,7 @@ class PropertyTag(models.Model):
     _description = "Estate property tag info"
 
     name = fields.Char(required=True)
+
+    _unique_name = models.Constraint(
+        "UNIQUE(name)",
+    )

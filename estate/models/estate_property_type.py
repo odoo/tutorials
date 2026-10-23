@@ -8,3 +8,7 @@ class PropertyType(models.Model):
     _description = "Estate property type info"
 
     name = fields.Char(required=True)
+
+    _unique_name = models.Constraint(
+        "UNIQUE(name)",
+    )
