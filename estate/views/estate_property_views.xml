@@ -3,14 +3,14 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form,search</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Listview">
+            <list string="List view">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -18,6 +18,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -26,7 +27,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Formview">
+            <form string="Form view">
                 <sheet>
                     <group>
                         <h1>
@@ -34,19 +35,23 @@
                         </h1>
                     </group>
                     <group>
-                        <group>
-                            <field name="postcode" class="oe_inline oe_left"/>
-                        </group>
-                        <group>
-                            <field name="expected_price" class="oe_inline oe_right"/>
-                        </group>
+                        <field name="tag_ids" widget="many2many_tags" nolabel="1"/>
                     </group>
                     <group>
-                        <group>                        
-                            <field name="date_availability" class="oe_inline oe_left"/>
+                        <group>
+                            <field name="property_type_id"/>
                         </group>
                         <group>
-                            <field name="selling_price" class="oe_inline oe_right"/>
+                            <field name="expected_price"/>
+                        </group>
+                        <group>
+                            <field name="postcode"/>
+                        </group>
+                        <group>
+                            <field name="selling_price"/>
+                        </group>
+                        <group>                        
+                            <field name="date_availability"/>
                         </group>
                     </group>
                     <notebook>
@@ -62,6 +67,22 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                        <page string="Added for tutorial needs">
+                            <group>
+                                <field name="state"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -72,7 +93,7 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Searchview">
+            <search string="Search view">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
@@ -80,9 +101,9 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <separator/>
-                <filter name="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer received'])]"/>
                 <separator/>
-                <filter name="Postcode" context="{'group_by':'postcode'}"/>
+                <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>

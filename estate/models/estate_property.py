@@ -3,10 +3,10 @@ from odoo import fields, models
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Real Estate Property Manager"
+    _description = "Information about the properties"
 
     name = fields.Char(string="Title", required=True)
-    description = fields.Text(default="when duplicated, status and date are not copied")
+    description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(string="Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
@@ -31,3 +31,8 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    seller_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
