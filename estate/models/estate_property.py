@@ -104,6 +104,8 @@ class EstateProperty(models.Model):
         self.ensure_one()
         if self.state == 'cancel':
             raise exceptions.UserError("Cancelled properties cannot be sold")
+        elif not (self.buyer_id and self.selling_price) :
+            raise exceptions.UserError("You need a buyer and a selling price")
         self.state = 'sold' if self.state != 'sold' else 'new'
         return True
 
