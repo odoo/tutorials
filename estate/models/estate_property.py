@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -28,7 +28,6 @@ class EstateProperty(models.Model):
     )
     selling_price = fields.Float(readonly=True, copy=False)
 
-    # Description
     description = fields.Text()
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
@@ -50,22 +49,19 @@ class EstateProperty(models.Model):
         compute="_compute_total_area",
     )
 
-    # Other Infos
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     user_id = fields.Many2one(
         "res.users",
         string="Salesperson",
         default=lambda self: self.env.user,
     )
 
-    # Offers
     offer_ids = fields.One2many(
         "estate.property.offer",
         inverse_name="property_id",
         string="Offers",
     )
 
-    # Hidden
     state = fields.Selection(
         string="Status",
         selection=[
@@ -80,8 +76,6 @@ class EstateProperty(models.Model):
         copy=False,
     )
     active = fields.Boolean(default=True)
-
-    # Compute logic
 
     @api.depends("living_area", "garden", "garden_area")
     def _compute_total_area(self):
@@ -100,3 +94,29 @@ class EstateProperty(models.Model):
         has_garden = self.garden
         self.garden_area = 10 if has_garden else 0
         self.garden_orientation = "north" if has_garden else False
+
+    def action_property_sold(self):
+        msg = ""
+        for property in self:
+            if property.state == "sold":
+                msg = "Already sold property"
+            if property.state == "cancelled":
+                msg = "Can't sold a cancelled property"
+
+            if msg:
+                raise exceptions.ValidationError(msg)
+            property.state = "sold"
+        return True
+
+    def action_property_refused(self):
+        msg = ""
+        for property in self:
+            if property.state == "cancelled":
+                msg = "Already cancelled property"
+            if property.state == "sold":
+                msg = "Can't cancel an already sold property"
+
+            if msg:
+                raise exceptions.ValidationError(msg)
+            property.state = "cancelled"
+        return True
