@@ -66,6 +66,12 @@ class EstateProperty(models.Model):
         "price must be strictly positive",
     )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Only new and cancelled properties can be deleted.")
+
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for property in self:
@@ -107,12 +113,10 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if not record.offer_id:
-                raise UserError("You cannot sell a property without an offer.")
-            if record.state == "cancelled":
-                raise UserError("A cancelled property cannot set to be sold")
-            if record.state == "offer_accepted":
-                record.state = "sold"
+            accepted_offer = record.offer_id.filtered(lambda o: o.status == "accepted")
+            if not accepted_offer:
+                raise UserError("Cannot set as sold: Please accept an offer first.")
+            record.state = "sold"
 
     def action_cancel(self):
         for record in self:

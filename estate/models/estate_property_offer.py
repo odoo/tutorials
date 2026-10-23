@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class PropertyOffer(models.Model):
@@ -33,6 +34,23 @@ class PropertyOffer(models.Model):
         "CHECK (price > 0.0)",
         "Offer price must be strictly positive",
     )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        property_id = {v["property_id"] for v in vals_list if v.get("property_id")}
+        properties = self.env["estate.property"].browse(list(property_id))
+        best = {p.id: p.best_price for p in properties}
+
+        for vals in vals_list:
+            pid = vals.get("property_id")
+            if pid and vals["price"] < best[pid]:
+                raise ValidationError(
+                    "Can't add this offer, price is lower than an existing offer."
+                )
+
+        properties.state = "offer_received"
+        offer = super().create(vals_list)
+        return offer
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
