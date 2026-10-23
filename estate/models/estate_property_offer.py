@@ -47,10 +47,10 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            if record.create_date:
-                record.validity = (record.date_deadline - record.create_date).days
-            else:
-                record.validity = (record.date_deadline - fields.Date.today()).days
+            start_date = (
+                record.create_date.date() if record.create_date else fields.Date.today()
+            )
+            record.validity = (record.date_deadline - start_date).days
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -64,6 +64,10 @@ class EstatePropertyOffer(models.Model):
                         raise exceptions.UserError(
                             f"The offer must be strictly higher than {max_offer:,.2f}",
                         )
+                if prop.stage == "sold":
+                    raise exceptions.UserError(
+                        "Cannot create an offer for a sold property!"
+                    )
 
                 prop.stage = "offer_received"
 

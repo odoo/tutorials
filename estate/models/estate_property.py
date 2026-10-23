@@ -1,5 +1,7 @@
-from odoo import api, exceptions, fields, models
+from odoo.orm.utils import ValidationError
 from odoo.tools import float_compare, float_is_zero
+
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -124,14 +126,35 @@ class EstateProperty(models.Model):
                     "Selling price cannot be lower than 90% of the expected price.",
                 )
 
+    @api.constrains("stage")
+    def _check_accepted_offer_when_sold(self):
+        for record in self:
+            if record.stage == "sold":
+                if record.offer_ids and "accepted" in record.offer_ids.mapped("status"):
+                    pass
+                else:
+                    raise exceptions.ValidationError(
+                        "Cannot sell a property with no accepted offers on it."
+                    )
+
+    @api.constrains("garden")
+    def _check_garden_props(self):
+        for record in self:
+            if not record.garden and (
+                record.garden_orientation or record.garden_area != 0
+            ):
+                raise ValidationError(
+                    "Garden Orientation and garden area cannot have values when garden is unchecked."
+                )
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_orientation = "north"
             self.garden_area = 10
         else:
-            self.garden_orientation = None
-            self.garden_area = None
+            self.garden_orientation = False
+            self.garden_area = 0
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
