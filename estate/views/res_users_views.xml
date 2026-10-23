@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_users_property_view_form" model="ir.ui.view">
+        <field name="name">estate.users.property.view.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <field name="name"/>
+            <xpath expr="//notebook" position="inside">
+                <page name="page_property" string="Real Estate Properties">
+                    <field name="property_ids"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_users_action" model="ir.actions.act_window">
+        <field name="name">Users &amp; Companies</field>
+        <field name="res_model">res.users</field>
+        <field name="context">{'property_ids': True}</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('base.view_users_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('estate_users_property_view_form')})
+        ]"/>
+    </record>
+
+</odoo>
