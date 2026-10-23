@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.playground">
+     <t t-name="awesome_owl.playground">
         <div class="p-3">
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
             <div>Sum: <t t-esc="state.sum"/></div>
             <div class="mt-3">
-                <Card title="'markup demo'" content="safeHtml"/>
-                <Card title="'escaped demo'" content="unsafeString"/>
+                <Card title="'Card with HTML'">
+                    <span class="text-success fw-bold">This is real HTML</span>
+                </Card>
+                <Card title="'Card with Counter'">
+                    <Counter onChange.bind="incrementSum"/>
+                </Card>
+                <Card title="'Card with TodoList'">
+                    <TodoList/>
+                </Card>
             </div>
             <div class="mt-3">
-                <TodoList />
+                <TodoList/>
             </div>
         </div>
     </t>
