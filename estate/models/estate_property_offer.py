@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -26,12 +26,33 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_obj = self.env['estate.property'].browse(vals['property_id'])
+
             if property_obj.state in ['offer_accepted', 'sold', 'cancelled']:
                 raise UserError(self.env._('Cannot create an offer for a property that is accepted, sold or cancelled'))
+
+            if property_obj.best_price > vals['price']:
+                raise ValidationError(self.env._('Cannot create an offer with a lower price than the best offer for that property.'))
+
             if property_obj.state == 'new':
                 property_obj.state = 'offer_received'
 
         return super().create(vals_list)
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete(self):
+        self._unlink_prevent_accepted()
+        self._unlink_update_property_state()
+
+    def _unlink_prevent_accepted(self):
+        for record in self:
+            if record.status == 'accepted':
+                raise UserError(self.env._('Cannot delete an accepted offer'))
+
+    def _unlink_update_property_state(self):
+        properties = self.mapped('property_id')
+        for p in properties:
+            if not p.offer_ids and p.state == 'offer_received':
+                p.state = 'new'
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):

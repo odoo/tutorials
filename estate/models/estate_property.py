@@ -64,6 +64,12 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
                 raise ValidationError(self.env._('The selling price cannot be lower than 90%% of the expected price.'))
 
+    @api.ondelete(at_uninstall=False)
+    def _prevent_delete_active(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(self.env._('Cannot delete a property with active offers.'))
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
