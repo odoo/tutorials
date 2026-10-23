@@ -25,13 +25,13 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
-         ('cancelled', 'Cancelled')], default='new', copy=False, required=True, readonly=True, string="Status", store="True", compute="_compute_state")
+         ('cancelled', 'Cancelled')], default='new', copy=False, required=True, readonly=True, string="Status",
+        store="True", compute="_compute_state")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.uid, string="Salesperson")
     buyer_id = fields.Many2one("res.partner", copy=False, string="Buyer")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
@@ -53,7 +53,8 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max((offer.price for offer in record.offer_ids if offer.status != 'refused'), default=0.0)
+            record.best_price = max((offer.price for offer in record.offer_ids if offer.status != 'refused'),
+                                    default=0.0)
 
     # TODO : ASK MATHO or JEDEL why not doing this ...
     @api.depends("offer_ids", "offer_ids.status")
@@ -65,11 +66,33 @@ class EstateProperty(models.Model):
                     record.state = 'offer_accepted'
                     break
 
+    @api.constrains('expected_price')
+    def _constrains_expected_price(self):
+        for record in self:
+            if (not float_is_zero(record.selling_price, precision_rounding=0.001)
+                    and float_compare(record.selling_price, (0.9 * record.expected_price),
+                                      precision_rounding=0.001) == -1):
+                raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))
+
+    @api.constrains('selling_price')
+    def _constrains_selling_price(self):
+        for record in self:
+            if (not float_is_zero(record.selling_price, precision_rounding=0.001)
+                    and float_compare(record.selling_price, (0.9 * record.expected_price),
+                                      precision_rounding=0.001) == -1):
+                raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))
+
     @api.onchange("garden")
     def _onchange_garden(self):
         for record in self:
             record.garden_area = 10 if record.garden else 0.0
             record.garden_orientation = 'north' if record.garden else None
+
+    @api.ondelete(at_uninstall=False)
+    def delete_estate_property(self):
+        for record in self:
+            if record.state not in ['cancelled', 'new']:
+                raise UserError(self.env._("The property cannot be deleted"))
 
     def action_sold_estate_property(self):
         for record in self:
@@ -82,21 +105,3 @@ class EstateProperty(models.Model):
             if record.state == 'sold':
                 raise UserError(self.env._("Sold property cannot be cancelled"))
             record.state = 'cancelled'
-
-    @api.constrains('selling_price')
-    def _constrains_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_rounding=0.001) and float_compare(record.selling_price, (0.9 * record.expected_price), precision_rounding=0.001) == -1:
-                raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))
-
-    @api.constrains('expected_price')
-    def _constrains_expected_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_rounding=0.001) and float_compare(record.selling_price, (0.9 * record.expected_price), precision_rounding=0.001) == -1:
-                raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))
-
-    @api.ondelete(at_uninstall=False)
-    def delete_estate_property(self):
-        for record in self:
-            if record.state not in ['cancelled', 'new']:
-                raise UserError(self.env._("The property cannot be deleted"))
