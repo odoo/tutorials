@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+access_estate_property,"Internal users: full access to estate properties",estate.property,base.group_user,crud,
+access_estate_property_type,"Internal users: full access to estate property types",estate.property.type,base.group_user,crud,
+access_estate_property_tag,"Internal users: full access to estate property tags",estate.property.tag,base.group_user,crud,
+access_estate_property_offer,"Internal users: full access to estate property offers",estate.property.offer,base.group_user,crud,
