@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="offer1" model="estate.property.offer">
+        <field name="partner_id" ref="1"/>
+        <field name="property_id" ref="estate.101"/>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="datetime.now().date()"/>
+    </record>
+
+    <record id="offer2" model="estate.property.offer">
+        <field name="partner_id" ref="1"/>
+        <field name="property_id" ref="estate.101"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="datetime.now().date()"/>
+    </record>
+
+    <record id="offer3" model="estate.property.offer">
+        <field name="partner_id" ref="1"/>
+        <field name="property_id" ref="estate.101"/>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="datetime.now().date()"/>
+    </record>
+
+    <function model="estate.property.offer" name="action_accept">
+        <value eval="[ref('estate.offer3')]"/>
+    </function>
+
+</odoo>
