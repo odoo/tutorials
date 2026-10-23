@@ -24,7 +24,7 @@
                         type="object"
                         icon="fa-times"
                         invisible="status in ['accepted', 'refused']"/>
-                <field name="status" column_invisible="True"/>
+                <field name="status" column_invisible="True"/><!-- Required for list decoration and buttons -->
             </list>
         </field>
     </record>
