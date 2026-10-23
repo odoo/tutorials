@@ -1,4 +1,4 @@
-{
+{  # noqa: B018
     'name': "Real Estate Account",
 
     'summary': """
@@ -11,7 +11,7 @@
 
     'author': "Dimitris Mystriotis",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials',
+    'category': 'Real Estate/Brokerage',
     'version': '0.1',
     'application': True,
     'installable': True,

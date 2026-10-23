@@ -6,7 +6,8 @@ class EstateProperty(models.Model):
     _description = 'Estate Property'
 
     def action_sold_estate_property(self):
-        self.env['account.move'].create({
+        self.check_access('write')
+        self.env['account.move'].sudo().create({
             'move_type': 'out_invoice',
             'partner_id': self.buyer_id.id,
             'invoice_line_ids': [Command.create({

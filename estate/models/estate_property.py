@@ -33,6 +33,7 @@ class EstateProperty(models.Model):
         required=True, copy=False, default='new')
 
     property_type_id = fields.Many2one('estate_property_type', string='Property Type')
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
 

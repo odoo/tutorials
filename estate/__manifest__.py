@@ -1,4 +1,4 @@
-{
+{  # noqa: B018
     'name': "Real Estate",
 
     'summary': """
@@ -11,7 +11,7 @@
 
     'author': "Dimitris Mystriotis",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials',
+    'category': 'Real Estate/Brokerage',
     'version': '0.1',
     'application': True,
     'installable': True,
@@ -19,6 +19,7 @@
 
     'data': [
         'security/ir.access.csv',
+        'security/security.xml',
 
         'views/test_views.xml',
         'views/estate_property_views.xml',
