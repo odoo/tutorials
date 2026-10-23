@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
-    @api.depends('validity')
+    @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
@@ -22,4 +22,20 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
+            if record.create_date:
+                record.validity = (record.date_deadline - record.create_date.date()).days
+            else:
+                record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def accept_offer(self):
+        for offer in self.property_id.property_offer_ids:
+            if offer.status == 'accepted':
+                raise UserError(self.env._("An offer has already been accepted"))
+        self.status = 'accepted'
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        return True
+
+    def refuse_offer(self):
+        self.status = 'refused'
+        return True

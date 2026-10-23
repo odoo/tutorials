@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="New offer">
                 <sheet>
-                    <field name="price" string="Price"/>
+                    <field name="price"/>
                     <field name="partner_id"/>
                     <field name="validity"/>
                     <field name="date_deadline" string="Deadline"/>
@@ -25,6 +25,8 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline" string="Deadline"/>
+                <button name="accept_offer" type="object" icon="check"/>
+                <button name="refuse_offer" type="object" icon="close"/>
                 <field name="status" string="Status"/>
             </list>
         </field>

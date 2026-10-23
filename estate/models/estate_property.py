@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -28,7 +29,12 @@ class EstateProperty(models.Model):
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         string='Status',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[
+            ('new', 'New'), 
+            ('offer_received', 'Offer Received'), 
+            ('offer_accepted', 'Offer Accepted'), 
+            ('sold', 'Sold'), 
+            ('cancelled', 'Cancelled')],
         copy=False,
         required=True,
         default='new'
@@ -59,4 +65,20 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation is None
+            self.garden_orientation = None
+
+    def sell_property(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(self.env._("Cancelled properties cannot be sold"))
+            else:
+                record.state = 'sold'
+                return True
+
+    def cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(self.env._("Sold properties cannot be cancelled"))
+            else:
+                record.state = 'cancelled'
+                return True
