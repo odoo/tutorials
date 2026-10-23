@@ -14,14 +14,14 @@
                     type="object"
                     title="Accept offer"
                     icon="check"
-                    invisible="status == 'accepted' or status == 'refused'"
+                    invisible="status"
                 />
                 <button
                     name="action_offer_refused"
                     type="object"
                     title="Refuse offer"
                     icon="close"
-                    invisible="status == 'accepted' or status == 'refused'"
+                    invisible="status"
                 />
                 <field name="status" />
             </list>

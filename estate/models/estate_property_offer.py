@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+from odoo.exceptions import ValidationError
+
 from odoo import api, fields, models
 
 
@@ -30,12 +32,14 @@ class EstatePropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - create_date) / timedelta(days=1)
 
     def action_offer_accepted(self):
-        for offer in self:
-            offer.status = "accepted"
-            offer.property_id.state = "accepted"
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
+        self.ensure_one()
+        if any(offer.status == "accepted" for offer in self.property_id.offer_ids):
+            raise ValidationError("Property has already an ongoing accepted offer")
+        self.status = "accepted"
+        self.property_id.state = "accepted"
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
 
     def action_offer_refused(self):
-        for offer in self:
-            offer.status = "refused"
+        self.ensure_one()
+        self.status = "refused"

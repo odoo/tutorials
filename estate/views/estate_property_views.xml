@@ -91,7 +91,7 @@
                                 <field name="user_id"/>
                             </group>
                         </page>
-                    </notebook> 
+                    </notebook>
                 </sheet>
             </form>
         </field>
