@@ -45,11 +45,11 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-        property_list = self.env["estate.property"].browse(
-            (x["property_id"] for x in vals_list)
-        )
-        for idx, record in enumerate(vals_list):
-            property = property_list[idx]
+        property_ids = [x["property_id"] for x in vals_list]
+        properties = self.env["estate.property"].browse(property_ids)
+        property_dict = dict(zip(property_ids, properties))
+        for record in vals_list:
+            property = property_dict[record.get("property_id")]
             if float_compare(record.get("price"), property.best_price, 2) == -1:
                 raise ValidationError(
                     "A new offer price can't be lower than the best price"

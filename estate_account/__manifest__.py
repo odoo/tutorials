@@ -6,5 +6,4 @@
     "author": "Arno (arpig)",
     "installable": True,
     "license": "LGPL-3",
-    "data": [],
 }
