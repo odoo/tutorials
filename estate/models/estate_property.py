@@ -56,7 +56,6 @@ class EstateProperty(models.Model):
             record.best_price = max((offer.price for offer in record.offer_ids if offer.status != 'refused'),
                                     default=0.0)
 
-    # TODO : ASK MATHO or JEDEL why not doing this ...
     @api.depends("offer_ids", "offer_ids.status")
     def _compute_state(self):
         for record in self:
