@@ -17,10 +17,37 @@
                     >
                         Leads
                     </button>
-                </div>
-            </t>
-           <div class="p-3">
+                    <div class="p-3">
                 hello dashboard
+            </div>
+                </div>
+
+            </t>
+           <div class="d-flex flex-wrap gap-3 p-3">
+                <DashboardItem>
+                     <div>
+                      <h5 class="card-title">New orders this month</h5>
+                         <t t-if="state.statistics">
+                          <p class="card-text"><t t-esc="state.statistics.nb_new_orders"/></p>
+                      </t>
+                  </div>
+                </DashboardItem>
+               <DashboardItem size="2">
+                 <div>
+                      <h5 class="card-title">Total amount</h5>
+                     <t t-if="state.statistics">
+                          <p class="card-text"><t t-esc="state.statistics.total_amount"/></p>
+                      </t>
+                  </div>
+                </DashboardItem>
+               <DashboardItem>
+                    <div>
+                      <h5 class="card-title">Cancelled orders</h5>
+                        <t t-if="state.statistics">
+                          <p class="card-text"><t t-esc="state.statistics.nb_cancelled_orders"/></p>
+                      </t>
+                  </div>
+                </DashboardItem>
             </div>
         </Layout>
     </t>
