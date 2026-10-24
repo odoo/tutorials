@@ -1,0 +1,6 @@
+{
+    "python.languageServer": "None",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/odoo"
+    ]
+}
