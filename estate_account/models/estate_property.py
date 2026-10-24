@@ -1,5 +1,6 @@
 from odoo import models, Command
 
+
 class EstateProperty(models.Model):
     _inherit = ["estate.property"]
 
@@ -21,6 +22,6 @@ class EstateProperty(models.Model):
                     }),
                 ],
             }
-            moves = self.env['account.move'].create(invoice_vals_list)
+            self.env['account.move'].create(invoice_vals_list)
 
         return super().action_sold_property()
