@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <t t-set="stats" t-value="this.reporting.stats"/>
+        <Layout display="{controlPanel: {buttons: true} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-buttons">
+                <button class="btn btn-primary" t-on-click="this.openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="this.openLeads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="this.openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="oi" data-icon="settings"/>
+                </button>
+            </t>
+            <div class="d-flex flex-wrap" t-if="stats()">
+                <t t-foreach="this.items()" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="!this.disabledItems().includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(stats()) : {'data' : stats()}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you wish to see?
+            <t t-foreach="this.props.items" t-as="item" t-key="item.id">
+                <CheckBox value="this.isEnabled(item)" onChange="(checked) => this.onChange(checked, item)">
+                    <t t-out="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="this.done">Done</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
