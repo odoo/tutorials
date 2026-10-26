@@ -1,0 +1,10 @@
+id,name,model_id,group_id/id,operation,domain
+access_estate_property_manager,estate.property.manager,estate.property,estate_group_manager,crud,
+access_estate_property_type_manager,estate.property.type.manager,estate.property.type,estate_group_manager,crud,
+access_estate_property_tag_manager,estate.property.tag.manager,estate.property.tag,estate_group_manager,crud,
+access_estate_property_offer_manager,estate.property.offer.manager,estate.property.offer,estate_group_manager,crud,
+access_estate_property_user,estate.property.user,estate.property,estate_group_user,c,
+access_estate_property_user_other,estate.property.user.other,estate.property,estate_group_user,ru,"['&', ('seller_id', 'in', [user.id, False]), '|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+access_estate_property_type_user,estate.property.type.user,estate.property.type,estate_group_user,r,
+access_estate_property_tag_user,estate.property.tag.user,estate.property.tag,estate_group_user,r,
+access_estate_property_offer_user,estate.property.offer.user,estate.property.offer,estate_group_user,crud,
