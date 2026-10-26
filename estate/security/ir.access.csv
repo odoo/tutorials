@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+estate_property,Estate Property,estate.property,base.group_user,crud,
+estate_property_type,Type of Estate Property,estate.property.type,base.group_user,crud,
+estate_property_tag,Estate Property Tag,estate.property.tag,base.group_user,crud,
+estate_property_offer,Estate property Offer,estate.property.offer,base.group_user,crud,
