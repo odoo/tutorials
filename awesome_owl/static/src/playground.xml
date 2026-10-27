@@ -1,10 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="d-flex flex-row align-items-center gap-2">
+            <div t-out="props.content"/>
+            <h2><t t-esc="props.label"/></h2>
+            <button
+                class="btn btn-primary btn-lg px-5 py-3"
+                t-on-click="changeValue">
+                <t t-esc="state.value"/>
+            </button>
         </div>
     </t>
-
 </templates>

@@ -1,0 +1,42 @@
+.o_todo_page {
+    min-height: 100vh;
+    padding: 6rem 1rem 1rem;
+}
+
+.o_todo_input_bar {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 2rem);
+    max-width: 32rem;
+    margin: 0;
+    padding: 0.5rem 0;
+    background: var(--bs-body-bg, white);
+    z-index: 10;
+}
+
+.o_todo_list_container {
+    max-width: 32rem;
+    margin: 0 auto;
+}
+
+.o_todo_item {
+    .o_todo_control {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &:hover .o_todo_control,
+    &:focus-within .o_todo_control {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+@media (hover: none) {
+    .o_todo_item .o_todo_control {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}

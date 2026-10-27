@@ -1,0 +1,10 @@
+[[config]]
+name = "default"
+odoo_path = "/home/odoo/odoo19/community"
+addons_paths = [
+    "/home/odoo/odoo19/community/addons",
+    "/home/odoo/odoo19/enterprise",
+    "/home/odoo/odoo19/tutorials"
+]
+python_path = "python3"
+TsServerCommand = "/home/odoo/.local/share/zed/languages/vtsls/node_modules/@vtsls/language-service/node_modules/typescript/bin/tsserver"

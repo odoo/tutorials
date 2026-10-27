@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@odoo/owl": [
+        "../../../../community/addons/web/static/lib/owl/owl.js"
+      ],
+      "@web/env": [
+        "../../../../community/addons/web/static/src/env.js"
+      ]
+    },
+    "checkJs": true,
+    "allowJs": true,
+    "moduleResolution": "node"
+  },
+  "include": [
+    "**/*.js",
+    "**/*.ts"
+  ],
+  "exclude": [
+    "**/node_modules"
+  ]
+}
