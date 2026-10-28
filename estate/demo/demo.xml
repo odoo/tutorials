@@ -1,0 +1,73 @@
+<odoo noupdate="1">
+    <record id="type_1" model="estate.property.type">
+        <field name="name">Residential</field>
+      </record>
+    <record id="type_2" model="estate.property.type">
+        <field name="name">Commercial</field>
+    </record>
+    <record id="type_3" model="estate.property.type">
+        <field name="name">Industrial</field>
+    </record>
+    <record id="type_4" model="estate.property.type">
+        <field name="name">Land</field>
+    </record>
+
+    <record id="property_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="type_id" search="[('name', '=', 'Residential')]"/>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability" eval="DateTime.now().replace(month=2, day=2, year=2020)"/>
+        <field name="expected_price" type="float">1600000</field>
+        <field name="bedrooms" type="int">6</field>
+        <field name="living_area" type="int">100</field>
+        <field name="facades" type="int">4</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area" type="int">100000</field>
+        <field name="garden_orientation">south</field>
+    </record>
+        <record id="property_2" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="type_id" search="[('name', '=', 'Residential')]"/>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability" eval="DateTime.now().replace(month=1, day=1, year=1970)"/>
+        <field name="expected_price" type="float">100000</field>
+        <field name="selling_price" type="float">120000</field>
+        <field name="bedrooms" type="int">1</field>
+        <field name="living_area" type="int">10</field>
+        <field name="facades" type="int">4</field>
+        <field name="garage" eval="False"/>
+            <field name="offer_ids" eval="[
+                Command.create({
+                    'price': 99000,
+                    'buyer_id': ref('base.res_partner_18')
+                })
+            ]"/>
+    </record>
+
+    <record id="property_offer_1" model="estate.property.offer">
+        <field name="property_id" ref="property_1"/>
+        <field name="buyer_id" ref="base.res_partner_12"/>
+        <field name="price" type="float">10000</field>
+        <field name="validity" type="int">14</field>
+        <field name="create_date" eval="DateTime.now() - timedelta(days=7)"/>
+    </record>
+    <record id="property_offer_2" model="estate.property.offer">
+        <field name="property_id" ref="property_1"/>
+        <field name="buyer_id" ref="base.res_partner_12"/>
+        <field name="price" type="float">1500000</field>
+        <field name="validity" type="int">14</field>
+        <field name="create_date" eval="DateTime.now() - timedelta(days=5)"/>
+    </record>
+    <record id="property_offer_3" model="estate.property.offer">
+        <field name="property_id" ref="property_1"/>
+        <field name="buyer_id" ref="base.res_partner_18"/>
+        <field name="price" type="float">1500001</field>
+        <field name="validity" type="int">14</field>
+        <field name="create_date" eval="DateTime.now() - timedelta(days=3)"/>
+    </record>
+</odoo>
