@@ -1,0 +1,12 @@
+.o_pie_chart {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.o_pie_chart canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}

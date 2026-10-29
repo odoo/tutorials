@@ -5,6 +5,19 @@
         <div class="p-3">
             hello world
         </div>
+        <!-- <p>Counter: <t t-out="this.state.value"/></p>
+        <button class="btn-primary" t-on-click="this.increment">Increment</button> -->
+        <div class="counter-wrapper d-flex gap-3">
+            <Counter />
+            <Counter />
+        </div>
+        <div class="card-wrapper">
+            <Card title="this.card1.title" content="this.card1.content"/>
+            <Card title="this.card2.title" content="this.card2.content"/>
+        </div>
+        <div class="todo-list-wrapper">
+            <TodoList todos="this.todos" />
+        </div>
     </t>
 
 </templates>
