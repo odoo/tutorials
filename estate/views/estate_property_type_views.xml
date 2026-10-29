@@ -15,11 +15,11 @@
                 <sheet class="mx-auto">
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Property Type Name" />
+                            <field name="name" placeholder="Property Type Name"/>
                         </h1>
                     </div>
                     <group>
-                        <field name="active" />
+                        <field name="active"/>
                     </group>
                 </sheet>
             </form>

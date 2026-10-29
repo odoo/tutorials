@@ -8,16 +8,19 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
-    name = fields.Char(string="Property Title", required=True, help="Enter the Name of the property", index="trigram")
+    name = fields.Char(
+        string="Property Title",
+        required=True,
+        help="Enter the Name of the property",
+        index="trigram",
+    )
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
         index="btree",
         string="Available From",
         copy=False,
-        default=lambda self: (
-            fields.Date.today() + relativedelta(months=3)
-            ),
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float(required=True, string="Expected Price")
     selling_price = fields.Float(readonly=True, copy=False, string="Selling Price")
@@ -29,26 +32,26 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         [
-            ('north', 'North'),
-            ('south', 'South'),
-            ('east', 'East'),
-            ('west', 'West')
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West")
         ],
         string="Garden Orientation"
     )
     active = fields.Boolean(default=False, string="Active")
     state = fields.Selection(
         [
-            ('new', 'New'),
-            ('offer_received', 'Offer Received'),
-            ('offer_accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         string="State",
         required=True,
         copy=False,
-        default='new'
+        default="new",
     )
     property_type_ids = fields.Many2one(
         comodel_name="estate.property.type",
@@ -76,6 +79,29 @@ class EstateProperty(models.Model):
         "property_id",
         string="Property Offers"
     )
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Price")
+    validity = fields.Integer(string="Validity (days)", default=7)
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            prices = record.offer_ids.mapped("price")
+            record.best_price = max(prices, default=0.0)
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     @api.constrains("expected_price")
     def _check_expected_price(self):

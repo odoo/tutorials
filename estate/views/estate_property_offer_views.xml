@@ -6,9 +6,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <field name="price" />
-                    <field name="partner_id" string="Partner" />
-                    <field name="status" string="Status" />
+                    <field name="price"/>
+                    <field name="partner_id" string="Partner"/>
+                    <field name="status" string="Status"/>
+                    <field name="date_deadline"/>
+                    <field name="validity"/>
                 </sheet>
             </form>
         </field>
@@ -19,9 +21,11 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Property Offers" editable="bottom">
-                <field name="price" />
-                <field name="partner_id" />
-                <field name="status" />
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+                <field name="date_deadline"/>
+                <field name="validity"/>
             </list>
         </field>
     </record>
