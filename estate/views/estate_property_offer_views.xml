@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="New offer">
+                <sheet>
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                    <field name="validity"/>
+                    <field name="date_deadline" string="Deadline"/>
+                    <field name="status" string="Status"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_list_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers List" 
+                    editable="bottom" 
+                    decoration-success="status == 'accepted'" 
+                    decoration-danger="status == 'refused'">
+                <field name="price" string="Price"/>
+                <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline" string="Deadline"/>
+                <button name="accept_offer" type="object" title="Accept Offer" icon="check" invisible="status in ['accepted', 'refused']"/>
+                <button name="refuse_offer" type="object" title="Refuse Offer" icon="close" invisible="status in ['accepted', 'refused']"/>
+            </list>
+        </field>
+    </record>
+    
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Estate Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+        <field name="context">{'search_default_available_properties': True}</field>
+    </record>
+</odoo>
