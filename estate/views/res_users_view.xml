@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_res_users_action" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">res.users</field>
+        <field name="context">{'property_ids': True}</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_res_users_view_form" model="ir.ui.view">
+        <field name="name">estate.property.res.users.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <field name="name"/>
+            <xpath expr="//notebook" position="inside">
+                <page name="properties" string="R.E. Properties">
+                    <field name="property_ids"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_res_users_simple_view_form" model="ir.ui.view">
+        <field name="name">estate.property.res.users.form.inherit.simple</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_simple_form"/>
+        <field name="arch" type="xml">
+            <field name="name"/>
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page name="properties" string="R.E. Properties">
+                        <field name="property_ids"/>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>
