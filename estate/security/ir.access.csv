@@ -1,0 +1,11 @@
+id,name,model_id,group_id/id,operation,domain
+access_estate_property_comp_rule,Estate Property multi company,estate.property,,crud,"['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]"
+access_estate_property_manager,Managers: access to estate property except delete,estate.property,estate_group_manager,cru,
+access_estate_property_type_manager,Managers: full access to estate property type,estate.property.type,estate_group_manager,crud,
+access_estate_property_tag_manager,Managers: full access to estate property tag,estate.property.tag,estate_group_manager,crud,
+access_estate_property_offer_manager,Managers: full access to estate property offer,estate.property.offer,estate_group_manager,crud,
+access_estate_property_user_read,Agents: create estate property,estate.property,estate_group_user,c,
+access_estate_property_user_self,Agents: read/edit access to own estate property,estate.property,estate_group_user,ru,"[('seller_id', 'in', [user.id, False])]"
+access_estate_property_type_user,Agents: read estate property type,estate.property.type,estate_group_user,r,
+access_estate_property_tag_user,Agents: read estate property tag,estate.property.tag,estate_group_user,r,
+access_estate_property_offer_user,Agents: read estate property offer,estate.property.offer,estate_group_user,crud,
