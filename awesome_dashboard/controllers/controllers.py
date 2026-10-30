@@ -4,7 +4,6 @@ import logging
 import random
 
 from odoo import http
-from odoo.http import request
 
 logger = logging.getLogger(__name__)
 
