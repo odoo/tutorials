@@ -3,7 +3,7 @@
     "version": "1.0",
     "summary": "Manage housing properties",
     "category": "Marketing",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "data": [
         "security/ir.model.access.csv",
         "views/res_users.xml",

@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is a Estate property model containing all the data associated with housing."
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     _auto = True
     _log_access = False
@@ -51,6 +52,7 @@ class EstateProperty(models.Model):
         ],
         copy=False,
         default="new",
+        tracking=True,
     )
     property_type_id = fields.Many2one("estate.property.type", "Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -115,7 +117,32 @@ class EstateProperty(models.Model):
                 "An estate property cannot be sold which is already marked as cancelled"
             )
 
+        ctx = {
+            "default_model": "estate.property",
+            # email from
+            "default_res_ids": self.ids,
+            # email to
+            "default_partner_ids": self.buyer_id.ids,
+            # "default_composition_mode": "comment",
+            # "default_composition_mode": "mass_mail",
+        }
+
+        template_id = self.env.ref("estate.email_template_sold")
+        if template_id:
+            ctx.update({"default_template_id": template_id.id})
+
+        action = {
+            "name": self.env._("Send"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "target": "new",
+            "context": ctx,
+        }
+
         self.state = "sold"
+
+        return action
 
     def action_cancel_property(self):
         self.ensure_one()
