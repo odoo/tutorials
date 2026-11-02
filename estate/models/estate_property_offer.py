@@ -37,8 +37,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
+        property = self.env['estate.property'].browse(vals_list[0]['property_id'])
         for record_vals in vals_list:
-            property = self.env['estate.property'].browse(record_vals['property_id'])
+            if property.state == 'sold':
+                raise exceptions.UserError(
+                    self.env._("%(property)s: It is not allowed to add an offer for a sold property",
+                               property=property.name))
             partner = self.env['res.partner'].browse(record_vals['partner_id'])
             if record_vals['price'] <= property.best_price:
                 raise exceptions.UserError(

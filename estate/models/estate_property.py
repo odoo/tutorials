@@ -12,7 +12,8 @@ class EstateProperty(models.Model):
     name = fields.Char('Title', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date('Available From', copy=False,
+                                    default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
@@ -27,7 +28,8 @@ class EstateProperty(models.Model):
         help="Main orientation of the garden")
     state = fields.Selection(
         string='Status',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'),
+                   ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         required=True,
         copy=False,
         default='new',
@@ -73,8 +75,9 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if (not float_is_zero(record.selling_price, precision_digits=0)
-                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0):
-                raise exceptions.ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price"))
+                    and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0):
+                raise exceptions.ValidationError(
+                    self.env._("The selling price cannot be lower than 90% of the expected price"))
 
     @api.ondelete(at_uninstall=False)
     def _ondelete_property(self):
@@ -84,8 +87,13 @@ class EstateProperty(models.Model):
 
     def action_property_sold(self):
         for record in self:
+            if not any(map(lambda offer: offer.status =='offer_accepted', record.offer_ids)):
+                raise exceptions.UserError(
+                    self.env._("%(property)s: It is not allowed to sell a property without an accepted offer!",
+                               property=record.name))
             if record.state == 'cancelled':
-                raise exceptions.UserError(self.env._("Cancelled properties cannot be sold!"))
+                raise exceptions.UserError(self.env._("%(property)s: Cancelled properties cannot be sold!",
+                                                      property=record.name))
             record.state = 'sold'
 
     def action_property_cancel(self):
