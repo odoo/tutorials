@@ -1,0 +1,9 @@
+1) git commit --fixup <commit hash>
+(I'm not good at ASCII art ok ?)
+fixup changes the commit content but not the log (commit message)
+
+2) git rebase -i --autosquash <parent-commit hash>
+You don't target the commit you want to fixup but its parent. 
+Why ? Because the target of a rebase is a new base so it's not included in the rebase.
+Targeting the commit you fix(ed)up does nothing. Git rebase excludes the base so git is not squashing automatically.
+(Don't forget to "reword" the commit instead of "pick")
