@@ -3,12 +3,16 @@ from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
-    _description = "this model defines property type"
+    _description = "Property Type"
     _order = "name"
 
     name = fields.Char("Type", required=True)
-    property_ids = fields.One2many("estate.property", "property_type_id")
-    offer_ids = fields.One2many("estate.property.offer", "property_type_id")
+    property_ids = fields.One2many(
+        "estate.property", "property_type_id", string="Properties"
+    )
+    offer_ids = fields.One2many(
+        "estate.property.offer", "property_type_id", string="Offers"
+    )
     offer_count = fields.Integer("Offer Count", compute="_compute_offer_count")
     sequence = fields.Integer("Sequence", help="Used to order list.")
 
