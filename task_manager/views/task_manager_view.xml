@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="task_manager_view_list" model="ir.ui.view">
+        <field name="name">task.manager.list</field>
+        <field name="model">task.manager</field>
+        <field name="arch" type="xml">
+            <list string="Tasks">
+                <header>
+                    <button string="Quick Archive" class="btn-secondary" name="quick_archive"
+                        type="object" display="always" />
+                        <button string="Print Count" class="btn-secondary" name="print_task_count"
+                        type="object" display="always" />
+                        <button string="Generate Task" class="btn-secondary" name="generate_multiple_tasks"
+                        type="object" display="always" />
+                </header>
+                <field name="name" />
+                <field
+                    name="tag_ids" widget="many2many_tags"
+                    options="{'color_field': 'color'}" />
+                <field name="deadline" />
+                <field name="count_of_assignes" />
+                <field name="assigned_user" />
+                <field name="status" />
+                <field name="days_remaining" />
+            </list>
+        </field>
+    </record>
+
+    <record id="task_manager_view_form" model="ir.ui.view">
+        <field name="name">task.manager.form</field>
+        <field name="model">task.manager</field>
+        <field name="arch" type="xml">
+            <form string="Task">
+                <header>
+                    <field name="status" widget="statusbar" />
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Task's Name" />
+                    </h1>
+                    <field
+                        name="tag_ids" widget="many2many_tags"
+                        options="{'color_field': 'color'}" />
+                    <separator />
+                    <group>
+                        <group>
+                            <field name="deadline" />
+                            <field name="status" />
+                        </group>
+                        <group>
+                            <field name="assigned_user" />
+                        </group>
+                    </group>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="task_manager_view_kanban" model="ir.ui.view">
+        <field name="name">task.manager.view.kanban</field>
+        <field name="model">task.manager</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status">
+                <field name="status" />
+                <template>
+                    <t t-name="card">
+                        <div>
+                            <field name="name" class="fw-bold fs-5" />
+                        </div>
+                    </t>
+                </template>
+            </kanban>
+        </field>
+
+    </record>
+
+    <record id="task_manager_action_view" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">task.manager</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+
+</odoo>
