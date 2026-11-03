@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">x_estate.property.view.search</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Estate Properties">
+                <field name="x_name"/>
+                <field name="x_postcode"/>
+                <field name="x_expected_price"/>
+                <field name="x_bedrooms"/>
+                <field name="x_living_area" filter_domain="[('x_living_area', '>=', self)]"/>
+                <field name="x_facades"/>
+                <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'x_postcode', 'residual_visible':True}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">x_estate.property.list</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="x_name"/>
+                <field name="x_postcode"/>
+                <field name="x_bedrooms"/>
+                <field name="x_living_area"/>
+                <field name="x_expected_price"/>
+                <field name="x_selling_price"/>
+                <field name="x_date_availability" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">x_estate.property.form</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property"> 
+                <sheet>
+                    <h1>
+                        <field name="x_name"/>
+                    </h1>
+                    <field name="x_property_tag_ids" widget="many2many_tags" />
+                    <group>
+                        <group>
+                            <field name="x_property_type_id" options="{'no_create': true}" >Property Type</field>
+                            <field name="x_postcode">Postcode</field>
+                            <field name="x_date_availability">Availabile From</field>
+                        </group>
+                        <group>
+                            <field name="x_expected_price">Expected Price</field>
+                            <field name="x_selling_price">Selling Price</field>
+                            <field name="x_api_published">API Published</field>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <div class="w-50">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_description" string="Description"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_description"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_bedrooms" string="Bedrooms"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_bedrooms"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_living_area" string="Living Area"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_living_area"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_facades" string="Facades"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_facades"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_garage" string="Garage"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_garage"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_garden" string="Garden"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_garden"/>
+                                    </div>
+                                </div>
+                                <div class="row" invisible="not x_garden">
+                                    <div class="col">
+                                        <label for="x_garden_area" string="Garden Area"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_garden_area"/>
+                                    </div>
+                                </div>
+                                <div class="row" invisible="not x_garden">
+                                    <div class="col">
+                                        <label for="x_garden_orientation" string="Garden Orientation"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_garden_orientation"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_total_area" string="Total Area"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_total_area"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+
+                        <page string="Offers">
+                            <field name="x_property_offer_ids"/>
+                        </page>
+
+                        <page string="Other Info">
+                            <div class="w-50">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_user_id" string="Salesman"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_user_id"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="x_partner_id" string="Buyer"/>
+                                    </div>
+                                    <div class="col">
+                                        <field name="x_partner_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Property</field>
+        <field name="res_model">x_estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+</odoo>

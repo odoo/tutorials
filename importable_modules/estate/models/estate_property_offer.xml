@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="model_real_estate_property_offer" model="ir.model">
+        <field name="name">Real Estate Property Offer</field>
+        <field name="model">x_estate.property.offer</field>
+    </record>
+
+    <record id="field_real_estate_property_offer_price" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property_offer" />
+        <field name="name">x_price</field>
+        <field name="field_description">Price</field>
+        <field name="ttype">float</field>
+        <field name="required">True</field>
+    </record>
+
+    <record id="field_real_estate_property_offer_status" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property_offer" />
+        <field name="name">x_status</field>
+        <field name="field_description">Status</field>
+        <field name="ttype">selection</field>
+    </record>
+    <record id="selection_real_estate_property_accepted" model="ir.model.fields.selection">
+        <field name="field_id" ref="field_real_estate_property_offer_status" />
+        <field name="name">Accepted</field>
+        <field name="value">accepted</field>
+        <field name="sequence">0</field>
+    </record>
+    <record id="selection_real_estate_property_refused" model="ir.model.fields.selection">
+        <field name="field_id" ref="field_real_estate_property_offer_status" />
+        <field name="name">Refused</field>
+        <field name="value">refused</field>
+        <field name="sequence">1</field>
+    </record>
+    
+    <record id="field_real_estate_property_offer_partner" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property_offer" />
+        <field name="name">x_partner_id</field>
+        <field name="field_description">Partner</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.partner</field>
+        <field name="required">True</field>
+        <field name="on_delete">restrict</field>
+    </record>
+
+    <record id="field_real_estate_property_offer_property" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property_offer" />
+        <field name="name">x_property_id</field>
+        <field name="field_description">Property</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_estate.property</field>
+        <field name="required">True</field>
+        <field name="on_delete">cascade</field>
+    </record>
+
+    <record id="field_real_estate_offer_ids" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property" />
+        <field name="name">x_property_offer_ids</field>
+        <field name="field_description">Offers</field>
+        <field name="ttype">one2many</field>
+        <field name="relation">x_estate.property.offer</field>
+        <field name="relation_field">x_property_id</field>
+    </record>
+
+    <record id="action_x_estate_property_accept_offer" model="ir.actions.server">
+        <field name="name">Accept offer</field>
+        <field name="model_id" ref="estate.model_real_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="estate.model_real_estate_property_offer"/>
+        <field name="binding_view_types">list</field>
+        <field name="code"><![CDATA[
+for offer in records:
+    offer.write({'x_status': 'accepted'})
+    property = offer.x_property_id
+    property.write({'x_selling_price': offer.x_price, 'x_partner_id': offer.x_partner_id})
+
+    for other in property.x_property_offer_ids:
+        if other.id != offer.id:
+            other.write({'x_status': 'refused'})
+        ]]></field>
+    </record>
+</odoo>

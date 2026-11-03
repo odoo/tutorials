@@ -1,0 +1,7 @@
+id,name,model_id,group_id/id,operation,domain
+access_estate_property_public_read,access_estate_property_public_read,x_estate.property,base.group_public,r,"[('x_api_published', '=', True)]"
+access_estate_property_public_write,access_estate_property_public_write,x_estate.property,base.group_public,u,"[('id', '=', False)]"
+access_estate_property,access_estate_property,x_estate.property,base.group_user,crud,
+access_estate_property_type,access_estate_property_type,x_estate.property.type,base.group_user,crud,
+access_estate_property_tag,access_estate_property_tag,x_estate.property.tag,base.group_user,crud,
+access_estate_property_offer,access_estate_property_offer,x_estate.property.offer,base.group_user,crud,
