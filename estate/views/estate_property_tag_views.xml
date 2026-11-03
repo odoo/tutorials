@@ -13,7 +13,7 @@
         <field name="arch" type="xml">
             <form string="create or edit">
                 <group>
-                    <field name="name" />
+                    <field name="name" placeholder="Title" />
                 </group>
             </form>
         </field>
