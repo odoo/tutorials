@@ -7,7 +7,7 @@
             <form>
                 <sheet>
                     <field name="price"/>
-                    <field name="partner_id" string="Partner"/>
+                    <field name="partner_ids" string="Partner"/>
                     <field name="status" string="Status"/>
                     <button name="action_to_accept_offer" type="object" icon="fa-check" title="Accept Offer"
                             class="btn-success"/>
@@ -26,7 +26,7 @@
         <field name="arch" type="xml">
             <list string="Property Offers" editable="bottom">
                 <field name="price"/>
-                <field name="partner_id"/>
+                <field name="partner_ids"/>
                 <field name="status"/>
                 <button name="action_to_accept_offer" type="object" title="Accept Offer" icon="fa-check"/>
                 <button name="action_to_reject_offer" type="object" title="Refused Offer" icon="fa-times"/>

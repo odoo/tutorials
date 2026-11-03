@@ -18,9 +18,6 @@
                             <field name="name" placeholder="Property Type Name"/>
                         </h1>
                     </div>
-                    <group>
-                        <field name="active"/>
-                    </group>
                 </sheet>
             </form>
         </field>
