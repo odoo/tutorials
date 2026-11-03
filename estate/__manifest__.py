@@ -1,0 +1,27 @@
+{
+    "name": "Realest Estate",
+    "version": "1.0",
+    "summary": "Manage housing properties",
+    "category": "Marketing",
+    "depends": ["base", "mail"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/res_users.xml",
+        "views/estate_property_offer_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/estate_property_tag_views.xml",
+        "views/estate_property_views.xml",
+        "views/estate_property_menus.xml",
+    ],
+    "demo": [
+        "data/estate_property_tag_demo.xml",
+        "data/estate_property_type_demo.xml",
+        "data/estate_partner_demo.xml",
+        "data/estate_property_demo.xml",
+        "data/estate_property_offer_demo.xml",
+    ],
+    "application": True,
+    "installable": True,
+    "license": "LGPL-3",
+    "author": "Smit Patel",
+}
