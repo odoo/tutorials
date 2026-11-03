@@ -5,9 +5,10 @@
     "description": "This is my first estate module.",
     "author": "Gautam",
     "license": "LGPL-3",
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "data": [
         "security/ir.model.access.csv",
+        "data/mail_template_data.xml",
         "views/res.users.xml",
         "views/estate_property_offer.xml",
         "views/estate_property_views.xml",

@@ -1,11 +1,12 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Real Estate Property"
     _order = "id desc"
 
@@ -44,6 +45,7 @@ class EstateProperty(models.Model):
         default="new",
         compute="_change_offer_state",
         store=True,
+        tracking=True,
     )
 
     property_type_id = fields.Many2one("estate.property.type")
@@ -87,10 +89,46 @@ class EstateProperty(models.Model):
             self.garden_orientation = ""
 
     def action_on_sold_button(self):
-        if self.state == "offer_accepted":
+        """Sale order ke action_quotation_send() jaisa exact mail composer action"""
+        self.ensure_one()
+        if self.state != "offer_accepted":
+            raise UserError(_("Property can only be sold once an offer is accepted."))
+
+        if not self.buyer:
+            raise UserError(
+                _("Please assign a Buyer before sending the Sold confirmation email.")
+            )
+
+        template = self.env.ref(
+            "estate.email_template_estate_sold", raise_if_not_found=False
+        )
+
+        return {
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(False, "form")],
+            "view_id": False,
+            "target": "new",
+            "context": {
+                "default_model": "estate.property",
+                "default_email_to": self.buyer.email,
+                "default_partner_ids": [self.buyer.id],
+                "default_res_ids": self.ids,
+                "default_template_id": template.id if template else False,
+                "default_composition_mode": "comment",
+                "mark_estate_as_sold": True,
+            },
+        }
+
+    def message_post(self, **kwargs):
+        res = super().message_post(**kwargs)
+        if (
+            self.env.context.get("mark_estate_as_sold")
+            and self.state == "offer_accepted"
+        ):
             self.state = "sold"
-        else:
-            raise UserError("Property cannot be sold")
+        return res
 
     def action_on_cancel_button(self):
         if self.state != "sold":
@@ -102,7 +140,6 @@ class EstateProperty(models.Model):
         "CHECK(expected_price >= 0)",
         "The expected price of property must be positive",
     )
-
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)",
         "The selling price of property must be positive",

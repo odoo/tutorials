@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="email_template_estate_sold" model="mail.template">
+            <field name="name">Real Estate: Property Sold Confirmation</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="subject">Congrats ,{{ object.name }} -sold to you</field>
+             <field name="email_from">{{object.salesperson.email}}</field>
+            <field name="partner_to">{{ object.buyer.ids}}</field>
+            <field name="partner_to" eval="False"/>
+            <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Hello <t t-out="object.buyer.name or ''">Customer</t>,
+        <br/><br/>
+        Your property <span style="font-weight: bold;" t-out="object.name or ''">Modern Villa</span>
+        <t t-if="object.property_type_id">
+            (Type: <t t-out="object.property_type_id.name or ''">Residential</t>)
+        </t>
+        amounting in <span style="font-weight: bold;" t-out="object.selling_price or object.expected_price or 0.0">$ 250,000.00</span> has been confirmed as <span style="font-weight: bold;">SOLD</span>.
+        <br/><br/>
+        Here are the property details:
+        <ul style="margin-bottom: 0;">
+            <t t-if="object.property_type_id">
+                <li style="font-size: 13px;">
+                    Property Type: <span style="font-weight: bold;" t-out="object.property_type_id.name or ''">Residential</span>
+                </li>
+            </t>
+            <t t-if="object.bedrooms">
+                <li style="font-size: 13px;">
+                    Bedrooms: <span style="font-weight: bold;" t-out="object.bedrooms or 0">2</span>
+                </li>
+            </t>
+            <t t-if="object.living_area or object.total_area">
+                <li style="font-size: 13px;">
+                    Living Area: <span style="font-weight: bold;" t-out="object.living_area or object.total_area or 0">120</span> sq m
+                </li>
+            </t>
+            <t t-if="object.postcode">
+                <li style="font-size: 13px;">
+                    Postcode: <span style="font-weight: bold;" t-out="object.postcode or ''">380001</span>
+                </li>
+            </t>
+        </ul>
+        <br/>
+        Do not hesitate to contact us if you have any questions.
+        <br/><br/>
+        --<br/>
+        <t t-out="object.salesperson.name or user.name or ''">Mitchell Admin</t><br/>
+        <t t-if="object.salesperson.email or user.email">
+            <t t-out="object.salesperson.email or user.email or ''">admin@example.com</t>
+        </t>
+    </p>
+</div>   
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>
