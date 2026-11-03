@@ -55,7 +55,7 @@
         <field name="arch" type="xml">
             <form string="estate_property_form">
                 <header>
-                    <button string="Sold" name="action_sold_property" type="object" invisible="state in ('sold', 'cancelled')"/>
+                    <button string="Sold" name="action_sold_property" type="object" invisible="state != 'offer_accepted'"/>
                     <button string="Cancel" name="action_cancel_property" type="object" invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_accepted,offer_received,sold" options="{'clickable': '1'}"/>
                 </header>
