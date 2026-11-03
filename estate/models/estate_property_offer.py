@@ -9,16 +9,18 @@ class EstatePropertyOffer(models.Model):
     _description = "Property Offer"
     _order = "price desc"
 
-    price = fields.Float("Price")
+    price = fields.Float()
     status = fields.Selection(
-        selection=[("accepted", "Accepted"), ("refused", "Refused")],
+        selection=[
+            ('accepted', "Accepted"),
+            ('refused', "Refused"),
+        ],
         copy=False,
-        string="Status",
     )
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
+    partner_id = fields.Many2one("res.partner", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(
-        related="property_id.property_type_id", string="Property Type", store=True
+        related="property_id.property_type_id", store=True
     )
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date(
@@ -61,8 +63,8 @@ class EstatePropertyOffer(models.Model):
                     "You cannot create offer lower than an existing offer."
                 )
 
-            if property.state != "o_received":
-                property.state = "o_received"
+            if property.state != "offer_received":
+                property.state = "offer_received"
 
         return super().create(vals_list)
 
@@ -71,7 +73,7 @@ class EstatePropertyOffer(models.Model):
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id
         self.status = "accepted"
-        self.property_id.state = "o_accepted"
+        self.property_id.state = "offer_accepted"
 
     def action_offer_reject(self):
         self.ensure_one()

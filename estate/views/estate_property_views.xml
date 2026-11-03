@@ -38,7 +38,7 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-muted="state == 'sold'" decoration-success="state in ('o_received','o_accepted')" decoration-bf="state == 'o_accepted'">
+            <list decoration-muted="state == 'sold'" decoration-success="state in ('offer_received','offer_accepted')" decoration-bf="state == 'offer_accepted'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -57,7 +57,7 @@
                 <header>
                     <button string="Sold" name="action_sold_property" type="object" invisible="state in ('sold', 'cancelled')"/>
                     <button string="Cancel" name="action_cancel_property" type="object" invisible="state in ('sold', 'cancelled')"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,o_accepted,o_received,sold" options="{'clickable': '1'}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_accepted,offer_received,sold" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <group>
@@ -97,7 +97,7 @@
                             </group>
                         </page>
                         <page name="offer" string="Offers">
-                            <field name="offer_ids" readonly="state in ('o_accepted', 'sold', 'cancelled')">
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
                                 <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name="price"/>
                                     <field name="partner_id"/>
@@ -139,11 +139,11 @@
                             Expected Price:
                             <field name="expected_price"/>
                         </div>
-                        <div t-if="record.state.raw_value == 'o_received'">
+                        <div t-if="record.state.raw_value == 'offer_received'">
                             Best Price:
                             <field name="best_price"/>
                         </div>
-                        <div t-if="record.state.raw_value == 'o_accepted'">
+                        <div t-if="record.state.raw_value == 'offer_accepted'">
                             Selling Price:
                             <field name="selling_price"/>
                         </div>
@@ -171,7 +171,7 @@
                 <separator/>
 
                 <filter name="achieved" string="Achieved" domain="[('active', '=', 'False')]"/>
-                <filter name="state" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'o_received')]"/>
+                <filter name="state" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="group_by_garden" string="With Garden" context="{'group_by': 'garden'}"/>
                 <filter name="group_by_garage" string="With Garage" context="{'group_by': 'garage'}"/>
                 <filter name="group_by_postcode" string="By Postcode" context="{'group_by': 'postcode'}"/>

@@ -16,6 +16,7 @@
     "demo": [
         "data/estate_property_tag_demo.xml",
         "data/estate_property_type_demo.xml",
+        "data/estate_partner_demo.xml",
         "data/estate_property_demo.xml",
         "data/estate_property_offer_demo.xml",
     ],

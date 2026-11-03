@@ -8,13 +8,17 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char("Type", required=True)
     property_ids = fields.One2many(
-        "estate.property", "property_type_id", string="Properties"
+        "estate.property",
+        "property_type_id",
+        string="Properties",
     )
     offer_ids = fields.One2many(
-        "estate.property.offer", "property_type_id", string="Offers"
+        "estate.property.offer",
+        "property_type_id",
+        string="Offers",
     )
-    offer_count = fields.Integer("Offer Count", compute="_compute_offer_count")
-    sequence = fields.Integer("Sequence", help="Used to order list.")
+    offer_count = fields.Integer(compute="_compute_offer_count")
+    sequence = fields.Integer(help="Used to order list.")
 
     _name_uniq = models.Constraint(
         "unique (name)",
