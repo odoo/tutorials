@@ -63,10 +63,15 @@ class EstatePropertyOffer(models.Model):
                     "You cannot create offer lower than an existing offer."
                 )
 
-            if property.state != "offer_received":
-                property.state = "offer_received"
+        offers = super().create(vals_list)
+        properties = offers.mapped('property_id').filtered(
+            lambda p: p.state != 'offer_received'
+        )
 
-        return super().create(vals_list)
+        if properties:
+            properties.write({'state': 'offer_received'})
+
+        return offers
 
     def action_offer_accept(self):
         self.ensure_one()
@@ -74,6 +79,12 @@ class EstatePropertyOffer(models.Model):
         self.property_id.buyer_id = self.partner_id
         self.status = "accepted"
         self.property_id.state = "offer_accepted"
+
+        existing_offers = self.property_id.offer_ids.filtered(
+            lambda offer: offer.id != self.id
+        )
+        if existing_offers:
+            existing_offers.status = 'refused'
 
     def action_offer_reject(self):
         self.ensure_one()

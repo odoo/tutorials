@@ -103,6 +103,11 @@
         <field name="state">offer_accepted</field>
     </record>
 
+
+    <record id="estate_property_3" model="estate.property">
+        <field name="state">offer_accepted</field>
+    </record>
+
     <record id="estate_property_3" model="estate.property">
         <field name="selling_price">670000</field>
         <field name="buyer_id" ref="partner_rohan_patel" />

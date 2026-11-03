@@ -103,6 +103,40 @@ class EstateProperty(models.Model):
                 "Selling Price must not be less than 90% of expected price."
             )
 
+    def write(self, vals):
+        if "state" in vals:
+            new_state = vals["state"]
+
+            for property in self:
+                if new_state == "offer_received" and not property.offer_ids:
+                    raise ValidationError("A property must have at least one offer.")
+
+                if (
+                    new_state == "offer_accepted"
+                    and "accepted" not in property.offer_ids.mapped("status")
+                ):
+                    raise ValidationError(
+                        "An offer must be accepted to sell the property."
+                    )
+
+                if new_state == "sold":
+                    if property.state in ("new", "offer_received"):
+                        raise ValidationError(
+                            "Accept an offer before selling the property."
+                        )
+
+                    if property.state == "cancelled":
+                        raise ValidationError(
+                            "An estate property cannot be sold if it is already cancelled."
+                        )
+
+                if new_state == "cancelled" and property.state == "sold":
+                    raise ValidationError(
+                        "An estate property cannot be cancelled if it is already sold."
+                    )
+
+        return super().write(vals)
+
     def action_sold_property(self):
         self.ensure_one()
         if self.state == "cancelled":
