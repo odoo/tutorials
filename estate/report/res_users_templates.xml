@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_user_offers_document">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <b>Salesman: </b>
+                            <span t-field="user.name"/>
+                        </h1>
+
+                        <t t-foreach="user.property_ids" t-as="property">
+                            <t t-call="estate.property_offers"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,30 @@
+.o_dashboard {
+    background: gray;
+}
+
+.o_dashboard_grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.o_dashboard_grid > .card {
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    .o_dashboard_grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .o_dashboard_grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .o_dashboard_grid > .card {
+        grid-column: span 1 !important;
+    }
+}
