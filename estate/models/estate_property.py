@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -39,7 +39,7 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation"
     )
-    active = fields.Boolean(default=False, string="Active")
+    active = fields.Boolean(default=True, string="Active")
     state = fields.Selection(
         [
             ("new", "New"),
@@ -103,8 +103,16 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.constrains("expected_price")
-    def _check_expected_price(self):
+    def action_to_sold(self):
         for record in self:
-            if record.expected_price <= 0:
-                raise ValidationError("Expected price must be greater than Zero")
+            if record.state == "cancelled":
+                raise UserError("A Cancelled Property Cannot be Cancelled")
+            record.state = "sold"
+        return True
+
+    def action_to_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("A Sold Property Cannot be Cancelled")
+            record.state = "cancelled"
+        return True
