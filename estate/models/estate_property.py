@@ -12,6 +12,8 @@ class EstatePropertyModel(models.Model):
     postcode = fields.Char(string="Postal code")
     date_availability = fields.Date(string="Available From", copy=False,
                                     default=lambda self: fields.Date.add(fields.Date.today(), months=3))
+    buyer_id = fields.Many2one(comodel_name="res.users", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one(comodel_name="res.partner", string="Salesperson", default=lambda self: self.env.user)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(string="No of Bedrooms", default=2.00)
