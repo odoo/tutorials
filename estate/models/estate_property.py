@@ -16,6 +16,7 @@ class EstatePropertyModel(models.Model):
                                     default=lambda self: fields.Date.add(fields.Date.today(), months=3))
     buyer_id = fields.Many2one(comodel_name="res.users", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(comodel_name="res.partner", string="Salesperson", default=lambda self: self.env.user)
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name="property_id", string="Offers")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(string="No of Bedrooms", default=2.00)
