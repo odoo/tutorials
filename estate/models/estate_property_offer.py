@@ -37,20 +37,26 @@ class PropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        property_id = {v["property_id"] for v in vals_list if v.get("property_id")}
-        properties = self.env["estate.property"].browse(list(property_id))
-        best = {p.id: p.best_price for p in properties}
+        if vals_list:
+            property_id = self.env["estate.property"].browse(
+                vals_list[0].get("property_id")
+            )
+            best_price = property_id.best_price
 
-        for vals in vals_list:
-            pid = vals.get("property_id")
-            if pid and vals["price"] < best[pid]:
-                raise ValidationError(
-                    "Can't add this offer, price is lower than an existing offer."
-                )
+            for vals in vals_list:
+                if vals["price"] < best_price:
+                    raise ValidationError(
+                        "Can't add this offer, price is lower than an existing offer."
+                    )
 
-        properties.state = "offer_received"
-        offer = super().create(vals_list)
-        return offer
+            property_id.state = "offer_received"
+        return super().create(vals_list)
+
+    @api.ondelete(at_uninstall=False)
+    def unlink_offer(self):
+
+        if len(self.property_id.offer_id) == len(self):
+            self.property_id.state = "new"
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -69,13 +75,12 @@ class PropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
+            refused_offer = record.property_id.offer_id - record
+            refused_offer.status = "refused"
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.state = "offer_accepted"
-            refused_offer = record.property_id.offer_id - record
-            for offer in refused_offer:
-                offer.status = "refused"
 
     def action_refuse(self):
         for record in self:

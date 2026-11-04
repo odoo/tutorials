@@ -1,6 +1,6 @@
 {
     "name": "Real Estate",
-    "depends": ["base"],
+    "depends": ["base", "calendar", "mail"],
     "application": True,
     "installable": True,
     "author": "Aditya Maurya",
@@ -8,6 +8,7 @@
     "category": "Real Estate",
     "data": [
         "security/ir.model.access.csv",
+        "views/estate_visitor.xml",
         "views/res_user_view.xml",
         "views/estate_property_offer.xml",
         "views/estate_property_type_views.xml",
