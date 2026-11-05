@@ -10,8 +10,8 @@ class EstateProperty(models.Model):
     _inherit = ["mail.thread"]
 
     name = fields.Char("Title", required=True)
-    description = fields.Text("Description")
-    postcode = fields.Char("Postcode")
+    description = fields.Text()
+    postcode = fields.Char()
     visit_count = fields.Integer("count", compute="_compute_visitor_count")
     visitor_id = fields.One2many("estate.visitor", "property_id")
 
@@ -26,12 +26,12 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
-    sales_man_id = fields.Many2one(
+    salesman_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_id = fields.One2many("estate.property.offer", "property_id", "Offer")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", "Offer")
     active = fields.Boolean(string="Active", default=True)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer()
@@ -61,7 +61,7 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    total_area = fields.Float("Total Area", compute="_compute_total")
+    total_area = fields.Float("Total Area", compute="_compute_total_area")
     best_price = fields.Float("Best Price", compute="_compute_best_price", store=True)
 
     _check_positive_price = models.Constraint(
@@ -99,7 +99,7 @@ class EstateProperty(models.Model):
                 )
 
     @api.depends("living_area", "garden_area")
-    def _compute_total(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
@@ -112,15 +112,15 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.depends("offer_id.price")
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        if self.offer_id:
-            self.best_price = max(self.offer_id.mapped("price"))
+        if self.offer_ids:
+            self.best_price = max(self.offer_ids.mapped("price"))
         else:
             self.best_price = 0.0
 
     def action_sold(self):
-        accepted_offer = self.offer_id.filtered(lambda o: o.status == "accepted")
+        accepted_offer = self.offer_ids.filtered(lambda o: o.status == "accepted")
         if not accepted_offer:
             raise UserError("Cannot set as sold: Please accept an offer first.")
 

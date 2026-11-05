@@ -5,6 +5,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
+        result = super().action_sold()
         self.env["account.move"].create(
             {
                 "partner_id": self.buyer_id.id,
@@ -27,4 +28,4 @@ class EstateProperty(models.Model):
                 ],
             }
         )
-        return super().action_sold()
+        return result

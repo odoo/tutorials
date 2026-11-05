@@ -1,11 +1,11 @@
 from odoo import fields, models
 
 
-class ResUSers(models.Model):
+class ResUsers(models.Model):
     _inherit = "res.users"
 
     property_id = fields.One2many(
         "estate.property",
-        "sales_man_id",
+        "salesman_id",
         domain=[("state", "in", ("new", "offer_received"))],
     )

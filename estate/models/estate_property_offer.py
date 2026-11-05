@@ -55,7 +55,7 @@ class PropertyOffer(models.Model):
     @api.ondelete(at_uninstall=False)
     def unlink_offer(self):
 
-        if len(self.property_id.offer_id) == len(self):
+        if len(self.property_id.offer_ids) == len(self):
             self.property_id.state = "new"
 
     @api.depends("create_date", "validity")
@@ -75,7 +75,7 @@ class PropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            refused_offer = record.property_id.offer_id - record
+            refused_offer = record.property_id.offer_ids - record
             refused_offer.status = "refused"
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id

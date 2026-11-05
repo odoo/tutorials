@@ -72,9 +72,9 @@
     <field name="arch" type="xml">
       <form string="Property">
         <header>
-          <button name="action_sold" type="object" string="SOLD" invisible="state in ['sold', 'cancelled']"/>
+          <button name="action_sold" type="object" string="SOLD" invisible="state in ['sold', 'cancelled','new','offer_received']"/>
           <button name="action_cancel" type="object" string="CANCEL" invisible="state in ['sold', 'cancelled']"/>
-          <field name="state" widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+          <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="new,offer_received,offer_accepted"/>
         </header>
         <sheet>
           <div class="oe_button_box" name="button_box">
@@ -129,12 +129,12 @@
 
             <page string="Other Info" name="Info">
               <group>
-                <field name="sales_man_id" widget="many2one_avatar_user"/>
+                <field name="salesman_id" widget="many2one_avatar_user"/>
                 <field name="buyer_id" widget="many2one_avatar_user"/>
               </group>
             </page>
             <page string="Offer" name="offer">
-              <field name="offer_id" readonly="state in ['sold', 'cancelled', 'offer_accepted']">
+              <field name="offer_ids" readonly="state in ['sold', 'cancelled', 'offer_accepted']">
                 <list editable="top" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                   <field name="price"/>
                   <field name="partner_id" widget="many2one_avatar_user"/>
