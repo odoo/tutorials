@@ -5,9 +5,10 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_on_sold_button(self):
+        res = super().action_on_sold_button()
         self.env["account.move"].create(
             {
-                "partner_id": self.buyer,
+                "partner_id": self.buyer.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [
                     Command.create(
@@ -27,3 +28,4 @@ class EstateProperty(models.Model):
                 ],
             }
         )
+        return res
