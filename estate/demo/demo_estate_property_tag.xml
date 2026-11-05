@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_tag_demo_data_1" model="estate.property.tag">
+            <field name="name" >Luxury</field>
+        </record>
+        <record id="estate_property_tag_demo_data_2" model="estate.property.tag">
+            <field name="name" >Renovated</field>
+        </record>
+        <record id="estate_property_tag_demo_data_3" model="estate.property.tag">
+            <field name="name" >Swimming Pool</field>
+        </record>
+        <record id="estate_property_tag_demo_data_4" model="estate.property.tag">
+            <field name="name" >New</field>
+        </record>
+        <record id="estate_property_tag_demo_data_5" model="estate.property.tag">
+            <field name="name" >Furnished</field>
+        </record>
+        <record id="estate_property_tag_demo_data_6" model="estate.property.tag">
+            <field name="name" >Unfurnished</field>
+        </record>
+        <record id="estate_property_tag_demo_data_7" model="estate.property.tag">
+            <field name="name" >Ready to Move</field>
+        </record>
+    </data>
+</odoo>
