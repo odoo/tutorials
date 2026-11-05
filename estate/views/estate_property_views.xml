@@ -11,7 +11,8 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" decoration-success="state in ('sold')"
+                decoration-danger="state == 'cancelled'">
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="postcode" />
@@ -30,8 +31,13 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"
+                        invisible="state in ('sold', 'canceled')" />
+                    <button name="action_cancel" type="object" string="Cancel"
+                        invisible="state in ('sold', 'canceled')" />
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                        statusbar_visible="new,offer_received,offer_accepted,sold"
+                        options="{'clickable':1}" />
                 </header>
                 <sheet>
                     <h1>
@@ -71,7 +77,7 @@
                             </group>
                         </page>
                         <page string="offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" />
                         </page>
                         <page string="Other Info">
                             <group>
