@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todolist">
+        <input type="text" placeholder="Enter a new task: " t-on-keyup="addTodo" t-ref="taskInput"
+               style="height:80px;"/>
+        <div class="d-flex justify-content-center gap-3">
+            <t t-foreach="this.todos" t-as="todo" t-key="todo.id">
+                <TodoItem id="todo.id" description="todo.description" isCompleted="todo.isCompleted"
+                          toggleState.bind="this.toggleTodo" deleteTodo.bind="this.deleteTodo"/>
+            </t>
+        </div>
+    </t>
+</templates>

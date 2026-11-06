@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body d-flex align-items-center gap-3">
+                <input
+                        type="checkbox"
+                        class="form-check-input mt-0"
+                        t-att-checked="this.props.isCompleted"
+                        t-on-change="onchange"
+                />
+                <div class="flex-grow-1">
+                    <h3 class="card-title mb-1">
+                        Todo #<t t-out="this.props.id"/>
+                    </h3>
+                    <p t-attf-class="card-text mb-0 {{ (this.props.isCompleted ? 'text-muted text-decoration-line-through' : 'text-primary') }}">
+                        <t t-out="this.props.description"/>
+                    </p>
+                </div>
+                <span t-attf-class="{{ this.props.isCompleted ? 'badge text-bg-success' : 'badge text-bg-warning' }}">
+                    <t t-out="this.props.isCompleted ? 'Completed' : 'Pending'"/>
+                </span>
+                <span class="fa fa-remove" t-on-click="removeTodo">
+                </span>
+            </div>
+        </div>
+    </t>
+</templates>
