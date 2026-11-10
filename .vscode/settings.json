@@ -1,0 +1,59 @@
+{
+	"folders": [
+		{
+			"path": "/home/odoo/odoo"
+		},
+		{
+			"path": "/home/enterprise"
+		},
+        {
+            "path": "/home/tutorials"
+        }
+	],
+	"settings": {
+		"launch": {
+			"version": "0.2.0",
+			"configurations": [
+				{
+					"name": "Odoo Server",
+					"type": "debugpy",
+					"request": "launch",
+					"program": "/home/odoo/odoo/odoo-bin",
+					"args" : [
+						"--addons-path", "/home/odoo/odoo/addons/,/home/enterprise/,/home/tutorials",
+						"-d", "rd_demo",
+						"--dev", "all",
+						"--without-demo", "all",
+						"-p", "8069",
+						"--limit-time-cpu", "0",
+						"--limit-time-real", "0",
+						// "-i", "",
+					],
+					"console": "integratedTerminal",
+					"variablePresentation": {}
+				},
+				{
+					"name": "Test Odoo",
+					// "preLaunchTask": "drop_test_db",
+					"type": "debugpy",
+					"request": "launch",
+					"program": "/home/odoo/odoo/odoo-bin",
+					"args" : [
+						"--addons-path", "/home/odoo/odoo/addons/,/home/enterprise/,/home/tutorials",
+						"-d", "DB_NAMEtest",
+						"-p", "8071",
+						"--limit-time-cpu", "0",
+						"--limit-time-real", "0",
+						"--without-demo", "all",
+						"--stop-after-init",
+						//"-i", "",
+						"--test-tags", "",
+						//"--log-level", "error",
+					],
+					"console": "integratedTerminal",
+					"variablePresentation": {}
+				}
+			]
+		}
+	}
+}
