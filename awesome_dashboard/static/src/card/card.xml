@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.Card">
+        <DashboardItem>
+            <h3 class="card-title">Dashboard Item - 1</h3>
+            <p class="card-text">This card uses the default size.</p>
+        </DashboardItem>
+        <DashboardItem size="2">
+            <h3 class="card-title">Dashboard Item - 2</h3>
+            <p class="card-text">This card uses the custom size.</p>
+        </DashboardItem>
+    </t>
+</templates>
