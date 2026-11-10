@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todoList">
+        <p t-foreach="props.model.model.getTodos()" t-as="item" t-key="item.id">
+             <TodoItem id="item.id" model="props.model"/>
+        </p>
+    </t>
+
+</templates>
