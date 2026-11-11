@@ -3,7 +3,7 @@
     <t t-name="awesome_dashboard.Card">
     <div class="container-fluid p-3">
         <div class="row g-3">
-            <t t-foreach="items" t-as="item" t-key="item.id">
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size || 1">
                     <t t-set="itemProp"
                        t-value="item.props ? item.props(statistics) : {'data': statistics}"/>

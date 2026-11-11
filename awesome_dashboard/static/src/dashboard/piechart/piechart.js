@@ -9,6 +9,8 @@ export class PieChart extends Component {
         this.canvasRef = useRef("canvas");
         this.statistics = useService("awesome_dashboard.statistics");
 
+        this.action = useService("action");
+
         onWillStart(async () => {
             await loadJS("/web/static/lib/Chart/Chart.js");
         });
@@ -16,10 +18,12 @@ export class PieChart extends Component {
         onMounted(() => {
             const orders = this.statistics.orders_by_size;
 
+            const labels = ["S", "M", "XL"];
+
             this.chart = new Chart(this.canvasRef.el, {
                 type: "pie",
                 data: {
-                    labels: ["S", "M", "XL"],
+                    labels,
                     datasets: [
                         {
                             data: [
@@ -30,11 +34,42 @@ export class PieChart extends Component {
                         },
                     ],
                 },
+                options: {
+                    onClick: (event, elements) => {
+                        if (!elements.length) {
+                            return;
+                        }
+
+                        const index = elements[0].index;
+                        const size = labels[index];
+
+                        this.openOrdersBySize(size);
+                    },
+                },
             });
         });
 
         onWillUnmount(() => {
             this.chart?.destroy();
+        });
+    }
+
+    onSectionClick(size) {
+        this.props.onSectionClick(size);
+    }
+
+    openOrdersBySize(size) {
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: `Orders - ${size}`,
+            res_model: "sale.order",
+            views: [
+                [false, "list"],
+                [false, "form"],
+            ],
+            domain: [
+                ["size", "=", size],
+            ],
         });
     }
 }
