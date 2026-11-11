@@ -7,15 +7,14 @@ export class PieChart extends Component {
 
     setup() {
         this.canvasRef = useRef("canvas");
-        this.loadStatistics = useService("awesome_dashboard.statistics");
+        this.statistics = useService("awesome_dashboard.statistics");
 
         onWillStart(async () => {
             await loadJS("/web/static/lib/Chart/Chart.js");
-            this.data = await this.loadStatistics();
         });
 
         onMounted(() => {
-            const orders = this.data.orders_by_size;
+            const orders = this.statistics.orders_by_size;
 
             this.chart = new Chart(this.canvasRef.el, {
                 type: "pie",
