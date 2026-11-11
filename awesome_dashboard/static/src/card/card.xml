@@ -1,13 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.Card">
-        <DashboardItem>
-            <h3 class="card-title">Dashboard Item - 1</h3>
-            <p class="card-text">This card uses the default size.</p>
-        </DashboardItem>
-        <DashboardItem size="2">
-            <h3 class="card-title">Dashboard Item - 2</h3>
-            <p class="card-text">This card uses the custom size.</p>
-        </DashboardItem>
+        <div class="container-fluid p-3">
+            <div class="row g-3">
+                <DashboardItem>
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Average Quantity</div>
+                            <h2 class="fw-bold text-primary mb-0">
+                                <t t-out="statistics.average_quantity"/>
+                            </h2>
+                        </div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Average Time</div>
+                            <h2 class="fw-bold text-info mb-0">
+                                <t t-out="statistics.average_time"/>
+                            </h2>
+                        </div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Cancelled Orders</div>
+                            <h2 class="fw-bold text-danger mb-0">
+                                <t t-out="statistics.nb_cancelled_orders"/>
+                            </h2>
+                        </div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">New Orders</div>
+                            <h2 class="fw-bold text-success mb-0">
+                                <t t-out="statistics.nb_new_orders"/>
+                            </h2>
+                        </div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Orders By Size</div>
+                            <PieChart/>
+                        </div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <div class="text-muted small">Total Amount</div>
+                            <h2 class="fw-bold text-primary mb-0">
+                                <t t-out="statistics.total_amount"/>
+                            </h2>
+                        </div>
+                    </div>
+                </DashboardItem>
+            </div>
+        </div>
     </t>
 </templates>

@@ -1,3 +1,6 @@
-.o_dashboard{
-  background-color:grey;
+.o_dashboard {
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: grey;
 }
