@@ -1,0 +1,34 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardSettings">
+        <Dialog title="'Dashboard Settings'">
+            <div class="o_dashboard_settings">
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <div class="form-check mb-2">
+                        <input
+                                type="checkbox"
+                                class="form-check-input"
+                                t-att-id="item.id"
+                                t-att-checked="!state.removedItems.includes(item.id)"
+                                t-on-change="(ev) => this.toggleItem(item.id, ev.target.checked)"
+                        />
+                        <label
+                                class="form-check-label"
+                                t-att-for="item.id"
+                        >
+                            <t t-out="item.description"/>
+                        </label>
+                    </div>
+                </t>
+            </div>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">
+                    Apply
+                </button>
+                <button class="btn btn-secondary" t-on-click="props.close">
+                    Cancel
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

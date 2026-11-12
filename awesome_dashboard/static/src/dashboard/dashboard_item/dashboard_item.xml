@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="o_dashboard_item h-100">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+</templates>

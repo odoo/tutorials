@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="counter.Counter">
+        <div class="p-3 d-flex justify-content-evenly">
+            <p>Hello world</p>
+            <p>Counter: <t t-esc="state.value"/></p>
+            <button class="btn text-bg-primary" t-on-click="increment">Increment</button>
+            <button class="btn text-bg-primary" t-on-click="decrement">Decrement</button>
+        </div>
+    </t>
+</templates>
