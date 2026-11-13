@@ -3,7 +3,9 @@
     "version": "1.0",
     "category": "Real Estate",
     "summary": "Real estate module",
-    "depends": ["base"],
+    "depends": [
+        "base",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_offer_views.xml",
