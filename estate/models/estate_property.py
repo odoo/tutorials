@@ -2,13 +2,13 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero
-from odoo.tools.float_utils import float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(
         string="Property Title",
@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
         string="State",
         required=True,
         copy=False,
-        default="new",
+        default="new"
     )
     property_type_ids = fields.Many2one(
         comodel_name="estate.property.type",
