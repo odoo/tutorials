@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="estate_property_demo_1" model="estate.property">
+            <field name="name">Cozy Suburban Cottage</field>
+            <field name="description">A lovely 2-bedroom house with a spacious backyard.</field>
+            <field name="postcode">90210</field>
+            <field name="date_availability">2026-09-01</field>
+            <field name="expected_price">250000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">120</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">50</field>
+            <field name="garden_orientation">south</field>
+        </record>
+
+        <record id="estate_property_demo_2" model="estate.property">
+            <field name="name">Modern City Apartment</field>
+            <field name="description">A stylish 3-bedroom apartment located in the heart of the
+                city.</field>
+            <field name="postcode">10001</field>
+            <field name="date_availability">2026-10-15</field>
+            <field name="expected_price">450000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">180</field>
+            <field name="facades">1</field>
+            <field name="garage">True</field>
+            <field name="garden">False</field>
+            <field name="garden_area">0</field>
+            <field name="garden_orientation">north</field>
+        </record>
+
+        <record id="estate_property_demo_3" model="estate.property">
+            <field name="name">Spacious Family Villa</field>
+            <field name="description">A beautiful 4-bedroom villa with a large garden and private
+                garage.</field>
+            <field name="postcode">90210</field>
+            <field name="date_availability">2026-11-01</field>
+            <field name="expected_price">750000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">300</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">150</field>
+            <field name="garden_orientation">east</field>
+        </record>
+
+        <record id="estate_property_demo_4" model="estate.property">
+            <field name="name">Charming Townhouse</field>
+            <field name="description">A comfortable 2-bedroom townhouse ideal for a small family.</field>
+            <field name="postcode">30301</field>
+            <field name="date_availability">2026-12-01</field>
+            <field name="expected_price">325000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">140</field>
+            <field name="facades">2</field>
+            <field name="garage">False</field>
+            <field name="garden">True</field>
+            <field name="garden_area">40</field>
+            <field name="garden_orientation">west</field>
+        </record>
+
+        <record id="estate_property_demo_5" model="estate.property">
+            <field name="name">Luxury Lakeside House</field>
+            <field name="description">An elegant 5-bedroom luxury house with a large garden and
+                beautiful views.</field>
+            <field name="postcode">60614</field>
+            <field name="date_availability">2027-01-15</field>
+            <field name="expected_price">1200000</field>
+            <field name="selling_price">0</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">450</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">250</field>
+            <field name="garden_orientation">south</field>
+        </record>
+
+    </data>
+</odoo>
