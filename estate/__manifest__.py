@@ -2,7 +2,9 @@
     "name": "Real Estate",
     "version": "1.0",
     "depends": ["base"],
-    "data": [],
+    "data": [
+        "security/ir.access.csv",
+    ],
     "installable": True,
     "application": True,
     "license": "LGPL-3",
