@@ -8,31 +8,6 @@
         <field name="context">{'search_default_state': 1}</field>
     </record>
 
-    <record id="email_template_sold" model="mail.template">
-        <field name="name">Estate Property: Sold</field>
-        <field name="model_id" ref="estate.model_estate_property"/>
-        <field name="email_from">{{ object.buyer_id.email}}</field>
-        <field name="use_default_to" eval="True"/>
-        <field name="body_html" type="html">
-            <div style="margin: 0px; padding: 0px;">
-                <p style="margin: 0px; padding: 0px; font-size: 13px;">
-                    Your Property
-                    <t>
-                        <span style="font-weight: bold;" t-out="object.name"></span>
-                    </t>
-                    with selling price
-                    <t>
-                        <span style="font-weight: bold;" t-out="object.selling_price"></span>
-                    </t>
-                    Has been sold to
-                    <t>
-                        <span style="font-weight: bold;" t-out="object.buyer_id.name"></span>
-                    </t>
-                </p>
-            </div>
-        </field>
-    </record>
-
     <!-- List View -->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
