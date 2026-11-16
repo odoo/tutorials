@@ -11,7 +11,7 @@
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form>
+            <form decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <sheet>
                     <field name="price"/>
                     <field name="partner_ids" string="Partner"/>
@@ -31,7 +31,8 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offers" editable="bottom">
+            <list string="Property Offers" editable="bottom" decoration-success="status == 'accepted'"
+                  decoration-danger="status == 'refused'">
                 <field name="price"/>
                 <field name="partner_ids"/>
                 <field name="status"/>

@@ -7,4 +7,5 @@ class EstatePropertyTag(models.Model):
     _order = "name"
 
     name = fields.Char(string="Property Tag", required=True)
+    color = fields.Integer(string="Color")
     _unique_name = models.UniqueIndex("(name)", "A role with the same name already exists.")
