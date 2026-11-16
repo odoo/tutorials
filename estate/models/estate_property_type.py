@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class PropertyType(models.Model):
@@ -13,7 +13,7 @@ class PropertyType(models.Model):
     offer_count = fields.Integer(compute="_compute_offer_count")
 
     _check_name = models.Constraint(
-        "unique(name)", _("The name of the property type must be unique")
+        "unique(name)", "The name of the property type must be unique"
     )
 
     @api.depends("offer_ids")

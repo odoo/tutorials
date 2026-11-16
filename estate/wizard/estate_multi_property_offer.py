@@ -5,7 +5,8 @@ from odoo import fields, models
 
 class EstateMultiPropertyOffer(models.TransientModel):
     _name = 'estate.multi.property.offer'
-    _descrpition = 'Multi property offers'
+    _description = 'Multi property offers'
+
     price = fields.Float()
     partner_id = fields.Many2one("res.partner")
     property_id = fields.Many2one(

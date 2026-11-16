@@ -63,11 +63,10 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
 
     _check_expected_price = models.Constraint(
-        "check(expected_price>0)", _(
-            "Expected price must be strictly positive")
+        "check(expected_price>0)", "Expected price must be strictly positive"
     )
     _check_selling_price = models.Constraint(
-        "check(selling_price>=0)", _("Selling price must be positive")
+        "check(selling_price>=0)", "Selling price must be positive"
     )
 
     def action_open_offer_wizard(self):
@@ -128,7 +127,7 @@ class EstateProperty(models.Model):
     def _unlink_new_cancel_state(self):
         for rec in self:
             if rec.state not in ("new", "cancelled"):
-                raise UserError(_(
+                raise UserError(self.env._(
                     "Property cannot be deleted"))
 
     def action_property_sold(self):

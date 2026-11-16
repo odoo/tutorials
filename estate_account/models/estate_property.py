@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import Command, models
 
 
 class EstatePropertyAccount(models.Model):
@@ -13,18 +13,14 @@ class EstatePropertyAccount(models.Model):
                     "partner_id": property.buyer.id,
                     "move_type": "out_invoice",
                     "invoice_line_ids": [
-                        (
-                            0,
-                            0,
+                        Command.create(
                             {
                                 "name": "Property Sales Commission",
                                 "quantity": 1,
                                 "price_unit": property.selling_price * 0.06,
                             },
                         ),
-                        (
-                            0,
-                            0,
+                        Command.create(
                             {
                                 "name": "Administrative Fees",
                                 "quantity": 1,
