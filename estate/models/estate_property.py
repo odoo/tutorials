@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=lambda _: fields.Date.add(fields.Date.today(), months=3),
     )
-    expected_price = fields.Float(required=False)
+    expected_price = fields.Float()
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer("Total Bedrooms", default=2)
     living_area = fields.Integer("Living Area (sqm)")
@@ -54,7 +54,7 @@ class EstateProperty(models.Model):
         string="Salesperson",
         default=lambda self: self.env.user,
     )
-    tags_ids = fields.Many2many("estate.property.tag", "Tag")
+    tags_ids = fields.Many2many("estate.property.tag", string="Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     active = fields.Boolean(default=True)
 
@@ -68,12 +68,6 @@ class EstateProperty(models.Model):
         "A property selling price must be positive",
     )
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled(self):
-        for record in self:
-            if record.state not in ("new", "cancelled"):
-                raise UserError("Only new and cancelled properties can be deleted.")
-
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -84,6 +78,16 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        if (
+            not float_is_zero(self.selling_price, 2)
+            and float_compare(self.selling_price, (self.expected_price * 0.9), 2) == -1
+        ):
+            raise ValidationError(
+                self.env._("Selling Price must not be less than 90% of expected price.")
+            )
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -93,15 +97,13 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        if (
-            not float_is_zero(self.selling_price, 2)
-            and float_compare(self.selling_price, (self.expected_price * 0.9), 2) == -1
-        ):
-            raise ValidationError(
-                "Selling Price must not be less than 90% of expected price."
-            )
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    self.env._("Only new and cancelled properties can be deleted.")
+                )
 
     def write(self, vals):
         if "state" in vals:
@@ -109,73 +111,51 @@ class EstateProperty(models.Model):
 
             for property in self:
                 if new_state == "offer_received" and not property.offer_ids:
-                    raise ValidationError("A property must have at least one offer.")
+                    raise ValidationError(
+                        self.env._("A property must have at least one offer.")
+                    )
 
                 if (
                     new_state == "offer_accepted"
                     and "accepted" not in property.offer_ids.mapped("status")
                 ):
                     raise ValidationError(
-                        "An offer must be accepted to sell the property."
+                        self.env._("An offer must be accepted to sell the property.")
                     )
 
                 if new_state == "sold":
                     if property.state in ("new", "offer_received"):
                         raise ValidationError(
-                            "Accept an offer before selling the property."
+                            self.env._("Accept an offer before selling the property.")
                         )
 
                     if property.state == "cancelled":
                         raise ValidationError(
-                            "An estate property cannot be sold if it is already cancelled."
+                            self.env._(
+                                "An estate property cannot be sold if it is already cancelled."
+                            )
                         )
 
                 if new_state == "cancelled" and property.state == "sold":
                     raise ValidationError(
-                        "An estate property cannot be cancelled if it is already sold."
+                        self.env._(
+                            "An estate property cannot be cancelled if it is already sold."
+                        )
                     )
 
         return super().write(vals)
 
     def action_sold_property(self):
         self.ensure_one()
-        if self.state == "cancelled":
-            raise ValidationError(
-                "An estate property cannot be sold which is already marked as cancelled"
-            )
-
-        ctx = {
-            "default_model": "estate.property",
-            # email from
-            "default_res_ids": self.ids,
-            # email to
-            "default_partner_ids": self.buyer_id.ids,
-            # "default_composition_mode": "comment",
-            # "default_composition_mode": "mass_mail",
-        }
-
-        template_id = self.env.ref("estate.email_template_sold")
-        if template_id:
-            ctx.update({"default_template_id": template_id.id})
-
-        action = {
-            "name": self.env._("Send"),
-            "type": "ir.actions.act_window",
-            "view_mode": "form",
-            "res_model": "mail.compose.message",
-            "target": "new",
-            "context": ctx,
-        }
-
         self.state = "sold"
-
-        return action
 
     def action_cancel_property(self):
         self.ensure_one()
         if self.state == "sold":
             raise ValidationError(
-                "An estate property cannot be cancel which is already marked as sold"
+                self.env._(
+                    "An estate property cannot be cancel which is already marked as sold"
+                )
             )
 
         self.state = "cancelled"

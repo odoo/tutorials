@@ -60,7 +60,9 @@ class EstatePropertyOffer(models.Model):
 
             if price < property.best_price:
                 raise ValidationError(
-                    "You cannot create offer lower than an existing offer."
+                    self.env._(
+                        "You cannot create offer lower than an existing offer."
+                    )
                 )
 
         offers = super().create(vals_list)

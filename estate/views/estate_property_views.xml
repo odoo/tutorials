@@ -86,7 +86,7 @@
                         <page name="info" string="Other Info">
                             <group>
                                 <field name="seller_id" widget="many2one_avatar_user"/>
-                                <field name="buyer_id" widget="many2one_avatar_user"/>
+                                <field name="buyer_id" widget="many2one_avatar"/>
                             </group>
                         </page>
                     </notebook>
