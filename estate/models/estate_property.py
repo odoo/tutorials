@@ -1,12 +1,13 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "This is a dummy table"
-    _order = "id desc"
+    _description = "A new Estate Property"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     def _cal_date(self):
         return fields.Date.today() + relativedelta(months=3)
@@ -41,6 +42,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        tracking=True
     )
     active = fields.Boolean("Active", default=True)
     property_type_id = fields.Many2one(
@@ -51,37 +53,46 @@ class EstateProperty(models.Model):
         column1="estate_property_id",
         column2="estate_property_tag_id",
     )
-    buyer = fields.Many2one("res.partner", string="buyer", copy=False)
+    buyer = fields.Many2one("res.partner", copy=False)
     user_id = fields.Many2one(
         "res.users", string="salesperson", default=lambda self: self.env.user
     )
     offer_ids = fields.One2many("estate.property.offers", "property_id")
     total_offers = fields.Integer(compute="_compute_total_offers")
     total_area = fields.Float(compute="_compute_total_area")
-    best_price = fields.Integer(compute="_compute_best_price")
+    best_price = fields.Float(compute="_compute_best_price")
 
     _check_expected_price = models.Constraint(
-        "check(expected_price>0)", "Expected price must be strictly positive"
+        "check(expected_price>0)", _(
+            "Expected price must be strictly positive")
+    )
+    _check_selling_price = models.Constraint(
+        "check(selling_price>=0)", _("Selling price must be positive")
     )
 
-    _check_selling_price = models.Constraint(
-        "check(selling_price>=0)", "Selling price must be positive"
-    )
+    def action_open_offer_wizard(self):
+        return {
+            "type": "ir.actions.act_window",
+            "name": "Multi Property Offers",
+            "res_model": "estate.multi.property.offer",
+            "view_mode": "form",
+            "target": "new"
+        }
 
     @api.constrains("selling_price")
     def _selling_price_check(self):
         for rec in self:
             if rec.selling_price < (rec.expected_price * 0.9):
-                raise ValidationError(
+                raise ValidationError(_(
                     "Selling Price Cannot be lower than 90% of the expected price."
-                )
+                ))
 
     @api.constrains("name", "description")
     def _check_description(self):
         for record in self:
             if record.name == record.description:
-                raise ValidationError(
-                    "Fields name and description should not be equal")
+                raise ValidationError(_(
+                    "Fields name and description should not be equal"))
 
     @api.depends("offer_ids")
     def _compute_total_offers(self):
@@ -96,12 +107,12 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for records in self:
-            records.best_price = max(
-                records.offer_ids.filtered(lambda r: r.status != "refused").mapped(
-                    "price"
-                ),
-                default=0,
-            )
+            offers = records.offer_ids.filtered(
+                lambda r: r.status != "refused")
+            max_price = 0
+            for offer in offers:
+                max_price = max(max_price, offer.price)
+            records.best_price = max_price
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -117,12 +128,11 @@ class EstateProperty(models.Model):
     def _unlink_new_cancel_state(self):
         for rec in self:
             if rec.state not in ("new", "cancelled"):
-                raise UserError(
-                    "New or Cancelled Properties cannot be deleted")
+                raise UserError(_(
+                    "Property cannot be deleted"))
 
     def action_property_sold(self):
         self.ensure_one()
-
         if self.state == "cancelled":
             raise UserError("Cancelled property cannot be sold")
         elif self.state == "sold":
@@ -134,17 +144,8 @@ class EstateProperty(models.Model):
 
     def action_property_cancel(self):
         self.ensure_one()
-
         if self.state == "sold":
-            raise UserError("Sold property cannot be cancelled")
+            raise UserError(_("Sold property cannot be cancelled"))
         elif self.state == "cancelled":
-            raise UserError("Property is already cancelled")
+            raise UserError(_("Property is already cancelled"))
         self.state = "cancelled"
-
-    def copy_data(self, default=None):
-        default = dict(default or {})
-        vals_list = super().copy_data(default=default)
-        if "name" not in default:
-            for template, vals in zip(self, vals_list):
-                vals["name"] = _("%s (copy)", template.name)
-        return vals_list

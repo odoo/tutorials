@@ -1,6 +1,8 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
-from odoo.exceptions import UserError
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools.profiler import Profiler
 
 
 class PropertyOffer(models.Model):
@@ -26,7 +28,7 @@ class PropertyOffer(models.Model):
     validity_days = fields.Integer(default=7, copy=False)
 
     _check_price = models.Constraint(
-        "check(price>0)", "Offer price must be strictly positive"
+        "check(price>0)", _("Offer price must be strictly positive")
     )
 
     @api.depends("validity_days")
@@ -51,41 +53,38 @@ class PropertyOffer(models.Model):
             records.validity_days = diff.days
 
     def action_confirm(self):
-        offers = self.property_id.offer_ids.filtered(lambda r: r.id != self.id)
-        offers.status = "refused"
-        self.status = "accepted"
-        self.property_id.buyer = self.partner_id
-        self.property_id.state = "offer_accepted"
-        self.property_id.selling_price = self.price
+        with Profiler():
+            offers = self.property_id.offer_ids.filtered(
+                lambda r: r.id != self.id)
+            offers.status = "refused"
+            self.status = "accepted"
+            self.property_id.write({
+                'state': 'offer_accepted',
+                'buyer': self.partner_id.id,
+                'selling_price': self.price
+            })
+            self.property_id.flush_recordset(['state'])
 
     def action_cancel(self):
         for rec in self:
             rec.status = "refused"
 
-    @api.model
-    def create(self, vals):
-        property_id = None
-        for val in vals:
-            property_id = val["property_id"]
-            price = val["price"]
-
-            last_offer = self.search(
-                ["&", ("property_id", "=", property_id),
-                 ("status", "!=", "refused")],
-                order="id desc",
-                limit=1,
+    @api.model_create_multi
+    def create(self, vals_list):
+        if vals_list:
+            property_id = self.env["estate.property"].browse(
+                vals_list[0].get("property_id")
             )
+            best_price = property_id.best_price
 
-            if last_offer and price < last_offer.price:
-                raise UserError(
-                    "Current Property Offer price cannot be less than the previous Offer"
-                )
+            for vals in vals_list:
+                if vals["price"] < best_price:
+                    raise ValidationError(
+                        "Can't add this offer, price is lower than an existing offer."
+                    )
 
-        if property_id:
-            properties = self.env["estate.property"].search(
-                [("id", "=", property_id)])
-            properties.state = "offer_received"
-        return super().create(vals)
+            property_id.state = "offer_received"
+        return super().create(vals_list)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_offer(self):

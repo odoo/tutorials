@@ -12,6 +12,8 @@
                         invisible="state=='sold' or state=='cancelled'" />
                     <button string="Cancel" name="action_property_cancel" type="object"
                         invisible="state=='sold' or state=='cancelled'" />
+                    <button string="Reject" name="%(estate_property_reject_offers)d"
+                        type="action" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold"
                         readonly="False" options="{'clickable': '1'}" />
@@ -87,6 +89,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>
@@ -118,6 +121,9 @@
                 decoration-success="state in ('offer_accepted','offer_received')"
                 decoration-muted="state=='sold'" decoration-bf="state=='offer_accepted'"
                 decoration-danger="state=='cancelled'">
+                <header>
+                    <button string="Offers" name="action_open_offer_wizard" type="object" />
+                </header>
                 <field name="name" string="Title" width="14.2%" />
                 <field name="property_type_id" string="Property Type" width="14.2%" />
                 <field name="postcode" width="14.2%" />
@@ -133,11 +139,38 @@
         </field>
     </record>
 
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate property kanban views</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by='property_type_id'>
+                <field name="state" />
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <field name="name" />
+                            <div> Expected price : <field name="expected_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_received'"> Best Price : <field
+                                    name="best_price" />
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price : <field
+                                    name="selling_price" />
+                            </div>
+                            <field name="property_tag_ids" widget="many2many_tags"
+                            />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <!-- actions  -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="search_view_id" ref="estate_property_search_views" />
         <field name="context">{'search_default_date_availability':True}</field>
     </record>

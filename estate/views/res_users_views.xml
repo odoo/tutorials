@@ -13,7 +13,7 @@
                         <list decoration-success="state in ('offer_accepted','offer_received')"
                             decoration-muted="state=='sold'" decoration-bf="state=='offer_accepted'"
                             decoration-danger="state=='cancelled'">
-                            <field name="name" />
+                            <field name="name" string="Property Name" />
                             <field name="expected_price" />
                             <field name="state" />
                         </list>

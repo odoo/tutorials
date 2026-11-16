@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import _, fields, models
 
 
 class PropertyTag(models.Model):
@@ -10,5 +10,5 @@ class PropertyTag(models.Model):
     color = fields.Integer("Color Index", default=0)
 
     _check_name = models.Constraint(
-        "unique(name)", "The name of the property tag name must be unique"
+        "unique(name)", _("The name of the property tag name must be unique")
     )
