@@ -1,5 +1,4 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -26,7 +25,15 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+        store=True,
     )
+    property_type_ids = fields.Many2one(
+        comodel_name="estate.property.type",
+        string="Property Type",
+        related="property_ids.property_type_ids",
+        store=True,
+    )
+
     _check_price = models.Constraint(
         'CHECK(price > 0)',
         'Offer Price can be strictly positive'
@@ -56,15 +63,13 @@ class EstatePropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - start_date).days
 
     def action_to_accept_offer(self):
-        for offer in self:
-            if "accepted" in offer.property_ids.offer_ids.mapped("status"):
-                raise UserError("An Offer already is accepted")
-            offer.status = "accepted"
-            other_offer = offer.property_ids.offer_ids - offer
-            other_offer.status = "refused"
-            offer.property_ids.buyer_ids = offer.partner_ids
-            offer.property_ids.selling_price = offer.price
-            offer.property_ids.state = "offer_accepted"
+        self.ensure_one()
+        refused_offer = self.property_ids.offer_ids - self
+        refused_offer.status = "refused"
+        self.status = "accepted"
+        self.property_ids.buyer_ids = self.partner_ids
+        self.property_ids.selling_price = self.price
+        self.property_ids.state = "offer_accepted"
 
     def action_to_reject_offer(self):
         self.status = "refused"
