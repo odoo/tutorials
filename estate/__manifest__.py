@@ -10,7 +10,8 @@
     'license': 'LGPL-3',
     # data files always loaded at installation
     'data': [
-    'security/ir.access.csv',
-],
-    # data files containing optionally loaded demonstration data
+        'security/ir.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
+    ],
 }
