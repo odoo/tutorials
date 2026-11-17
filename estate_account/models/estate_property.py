@@ -32,12 +32,10 @@ class EstateProperty(models.Model):
             }
         )
 
-        invoice.action_post()
-
         # Post message in chatter
         self.message_post(
             body=Markup("Customer invoice created: %s")
-            % invoice._get_html_link(title=invoice.name)
+            % invoice._get_html_link(title="View Invoice")
         )
 
         # Mail wizard
