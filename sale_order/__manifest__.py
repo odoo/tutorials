@@ -8,6 +8,5 @@
     'data': [
         'views/sale_order_views.xml',
     ],
-    'licence':'LGPL-3',
+    'license': 'LGPL-3',
 }
-
