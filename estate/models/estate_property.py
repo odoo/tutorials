@@ -1,7 +1,7 @@
 from odoo import models, fields
 
 class EstateProperty(models.Model):
-    _name = 'estate_property'
+    _name = 'estate.property'
     _description = 'There is the differents properties of the estate model'
     #_order = 'sequence'
 
