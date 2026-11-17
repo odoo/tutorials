@@ -1,9 +1,13 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base'],
     'author': 'sadis',
     'description': """
     Description text
     """,
+    'category': 'Tutorials',
+    'depends': ['base'],
+    'data': [
+        'security/ir.access.csv',
+    ],
 }
