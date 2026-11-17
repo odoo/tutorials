@@ -1,3 +1,7 @@
+from calendar import month
+from datetime import timedelta
+from email.policy import default
+
 from odoo import fields, models
 
 
@@ -5,13 +9,16 @@ class EstateProperty(models.Model):
     _name= 'estate.property'
     _description = 'Estate Property'
 
-    name = fields.Char('Property Name', required=True)
+    name = fields.Char('Property Name', required=True, default="Unknown")
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Available From', default=fields.Date.today)
+    date_availability = fields.Date('Available From', default=lambda self: fields.Date.context_today(
+        self,
+        timestamp=fields.Datetime.now() + timedelta(0,0,0,0,0,0,3*4)),
+        copy=False)
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price')
-    bedrooms = fields.Integer('Bedrooms')
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area')
     facades = fields.Integer('Facades')
     garage = fields.Boolean('Garage')
@@ -21,4 +28,15 @@ class EstateProperty(models.Model):
         string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
     )
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(
+        string='Status',
+        selection=[('new', 'New'),
+                ('offer_received', 'Offer Received'),
+                ('offer_accepted', 'Offer Accepted'),
+                ('sold', 'Sold'),
+                ('canceled', 'Canceled')],
+        default='new'
+    )
+    last_seen = fields.Datetime('Last Seen', default=fields.Datetime.now)
 
