@@ -4,4 +4,7 @@
     'summary': 'Sales real estates',
     'website': 'https://www.odoo.com/app/estate',
     'application': True,
+    'data': [
+        'security/ir.access.csv',
+    ]
 }
