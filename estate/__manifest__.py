@@ -12,7 +12,6 @@
         'security/ir.access.csv'
     ],
     # data files containing optionally loaded demonstration data
-
     'installable': True,
     'application': True,
     'license': 'LGPL-3',

@@ -19,10 +19,7 @@ class Property(models.Model):
     facades = fields.Integer('# Facades')
     living_area = fields.Integer('Living area')
     garden_area = fields.Integer('garden area')
-    garden_orientation = fields.Selection(
-        string='Orientation', 
-        selection = [('N', 'North'), ('S', 'South'), ('E', 'East'), ('W', 'West')])
-
+    garden_orientation = fields.Selection(string='Orientation', selection = [('N','North'),('S','South'),('E','East'),('W','West')])
     garage = fields.Boolean('Has a Garage', default=False)
     garden = fields.Boolean('Has a Garden', default=False)
 
@@ -42,4 +39,4 @@ class Property(models.Model):
         "CHECK(facades >= 0)",
         "The facade number has to be positive."
     )
-
+    
