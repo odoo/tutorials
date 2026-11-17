@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="estate_property_type_demo_data_1" model="estate.property.type">
+            <field name="name">House</field>
+        </record>
+        <record id="estate_property_type_demo_data_2" model="estate.property.type">
+            <field name="name">Apartment</field>
+        </record>
+        <record id="estate_property_type_demo_data_3" model="estate.property.type">
+            <field name="name">Villa</field>
+        </record>
+        <record id="estate_property_type_demo_data_4" model="estate.property.type">
+            <field name="name">Bungalow</field>
+        </record>
+        <record id="estate_property_type_demo_data_5" model="estate.property.type">
+            <field name="name">Penthouse</field>
+        </record>
+        <record id="estate_property_type_demo_data_6" model="estate.property.type">
+            <field name="name">Residential Plot</field>
+        </record>
+        <record id="estate_property_type_demo_data_7" model="estate.property.type">
+            <field name="name">Farmhouse</field>
+        </record>
+        <record id="estate_property_type_demo_data_8" model="estate.property.type">
+            <field name="name">Industrial Building</field>
+        </record>
+    </data>
+</odoo>
