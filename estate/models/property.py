@@ -11,7 +11,7 @@ class Property(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='Current Status',
-        selection=[('new','New'), ('offer_received','Offer Received'), ('offer_accepted','Offer Accepted'), ('sold','Sold'), ('cancelled','Cancelled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         default='new',
         required=True
     )
@@ -27,6 +27,6 @@ class Property(models.Model):
     garden_area = fields.Integer('Garden Area (m²)')
     garden_orientation = fields.Selection(
         string='Orientation',
-        selection=[('north','North'),('south','South'),('east','East'),('west','West')],
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Indicates the orientation of the garden"
     )
