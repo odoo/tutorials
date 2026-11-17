@@ -9,6 +9,8 @@
     'application': True,
     'license': 'LGPL-3',
     # data files always loaded at installation
-    'data': [],
+    'data': [
+    'security/ir.access.csv',
+],
     # data files containing optionally loaded demonstration data
 }
