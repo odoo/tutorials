@@ -1,0 +1,2 @@
+id,name,model_id,group_id/id,operation
+access_estate_property_user,estate_property_user,estate.property,base.group_user,crud
