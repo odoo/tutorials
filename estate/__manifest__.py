@@ -7,9 +7,10 @@
     ],
     'data': [
         'security/ir.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
     ],
     'author': 'frbal',
     'application': True,
     'license': 'LGPL-3',
-    'author': 'frbal',
 }
