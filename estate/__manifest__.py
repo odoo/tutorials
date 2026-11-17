@@ -9,4 +9,7 @@
     'installable': True,
     'application': True,
     'author': 'Odoo tutorial (with help of Thing)',
+    'data': [
+        'security/ir.access.csv',
+    ],
 }
