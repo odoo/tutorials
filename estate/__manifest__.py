@@ -8,5 +8,8 @@
     'application': True,
     'installable': True,
     'category': 'Tutorials',
-    'license': 'LGPL-3'
+    'license': 'LGPL-3',
+    'data': [
+        'security/ir.access.csv'
+    ]
 }
