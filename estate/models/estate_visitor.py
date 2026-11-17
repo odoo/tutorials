@@ -1,5 +1,4 @@
-from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import Command, api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -8,7 +7,7 @@ class EstateVisitor(models.Model):
     _description = "Estate Property Visitor"
 
     visit_id = fields.Many2one("res.partner", string="Visitor", required=True)
-    event_id = fields.Many2one("calendar.event", string="Calender Event")
+    event_id = fields.Many2one("calendar.event", string="Calendar Event")
     start_date_time = fields.Datetime("Appointment Time", required=True)
     end_date_time = fields.Datetime(compute="_compute_end_date_time", store=True)
     stage = fields.Selection(
@@ -18,7 +17,12 @@ class EstateVisitor(models.Model):
 
     @api.depends("start_date_time")
     def _compute_end_date_time(self):
-        self.end_date_time = self.start_date_time + relativedelta(hours=1)
+        for rec in self:
+            rec.end_date_time = (
+                fields.Datetime.add(rec.start_date_time, hours=1)
+                if rec.start_date_time
+                else False
+            )
 
     @api.constrains("start_date_time")
     def _check_appointment(self):
@@ -27,17 +31,13 @@ class EstateVisitor(models.Model):
                 [
                     ("id", "!=", rec.id),
                     ("property_id", "=", rec.property_id.id),
-                    (
-                        "start_date_time",
-                        "<",
-                        rec.start_date_time + relativedelta(hours=1),
-                    ),
+                    ("start_date_time", "<", rec.start_date_time + rec.end_date_time),
                     ("end_date_time", ">", rec.start_date_time),
                 ],
                 limit=1,
             )
             if overlap:
-                raise ValidationError("Time solt is already booked")
+                raise ValidationError(self.env._("Time slot is already booked"))
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -51,8 +51,8 @@ class EstateVisitor(models.Model):
                     "stop": visitor.end_date_time,
                     "user_id": self.env.user.id,
                     "partner_ids": [
-                        (4, self.env.user.partner_id.id),
-                        (4, visitor.visit_id.id),
+                        Command.link(self.env.user.partner_id.id),
+                        Command.link(visitor.visit_id.id),
                     ],
                 }
             )

@@ -4,6 +4,7 @@
     "author": "Aditya Maurya",
     "license": "LGPL-3",
     "version": "0.1",
+    "auto_install": True,
     # any module necessary for this one to work correctly
     "depends": ["base", "estate", "account"],
     # always loaded

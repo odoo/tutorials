@@ -60,7 +60,7 @@
         <field name="living_area"/>
         <field name="expected_price"/>
         <field name="selling_price"/>
-        <field name="best_price"></field>
+        <field name="best_price"/>
         <field name="state" widget="badge"/>
       </list>
     </field>
@@ -72,7 +72,7 @@
     <field name="arch" type="xml">
       <form string="Property">
         <header>
-          <button name="action_sold" type="object" string="SOLD" invisible="state in ['sold', 'cancelled','new','offer_received']"/>
+          <button name="action_sold" type="object" string="SOLD" invisible="state != 'offer_accepted'"/>
           <button name="action_cancel" type="object" string="CANCEL" invisible="state in ['sold', 'cancelled']"/>
           <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="new,offer_received,offer_accepted"/>
         </header>
@@ -130,17 +130,16 @@
             <page string="Other Info" name="Info">
               <group>
                 <field name="salesman_id" widget="many2one_avatar_user"/>
-                <field name="buyer_id" widget="many2one_avatar_user"/>
+                <field name="buyer_id" widget="many2one_avatar"/>
               </group>
             </page>
             <page string="Offer" name="offer">
               <field name="offer_ids" readonly="state in ['sold', 'cancelled', 'offer_accepted']">
                 <list editable="top" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                   <field name="price"/>
-                  <field name="partner_id" widget="many2one_avatar_user"/>
+                  <field name="partner_id" widget="many2one_avatar"/>
                   <field name="date_deadline"/>
                   <field name="validity"/>
-                  <field name="property_id" />
                   <button name="action_accept" type="object" title="Accept" icon="fa-check" invisible="status" />
                   <button name="action_refuse" type="object" title="Refuse" icon="oi-close" invisible="status"/>
                   <field name="status" widget="badge" optional="hide"/>

@@ -4,8 +4,8 @@ from odoo import Command, models
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def action_sold(self):
-        result = super().action_sold()
+    def _create_invoice(self):
+        self.ensure_one()
         self.env["account.move"].create(
             {
                 "partner_id": self.buyer_id.id,
@@ -28,4 +28,4 @@ class EstateProperty(models.Model):
                 ],
             }
         )
-        return result
+        self.message_post(body=self.env._("Invoice is Created"))

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="estate_property_tag_luxury" model="estate.property.tag">
+        <field name="name">Luxury</field>
+    </record>
+
+    <record id="estate_property_tag_modern" model="estate.property.tag">
+        <field name="name">Modern</field>
+    </record>
+
+    <record id="estate_property_tag_family" model="estate.property.tag">
+        <field name="name">Family Friendly</field>
+    </record>
+
+    <record id="estate_property_tag_beachfront" model="estate.property.tag">
+        <field name="name">Beachfront</field>
+    </record>
+
+    <record id="estate_property_tag_historic" model="estate.property.tag">
+        <field name="name">Historic</field>
+    </record>
+
+    <record id="estate_property_tag_spacious" model="estate.property.tag">
+        <field name="name">Spacious</field>
+    </record>
+
+    <record id="estate_property_tag_garden" model="estate.property.tag">
+        <field name="name">Garden</field>
+    </record>
+
+    <record id="estate_property_tag_investment" model="estate.property.tag">
+        <field name="name">Investment</field>
+    </record>
+</odoo>

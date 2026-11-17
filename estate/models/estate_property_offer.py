@@ -2,15 +2,12 @@ from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class PropertyOffer(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer for Estate Property"
     _order = "price desc"
 
-    price = fields.Float(
-        "Price",
-        required=True,
-    )
+    price = fields.Float(required=True)
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
         copy=False,
@@ -28,12 +25,28 @@ class PropertyOffer(models.Model):
     date_deadline = fields.Date(
         "Deadline",
         compute="_compute_date_deadline",
-        inverse="_compute_inverse_deadline",
+        inverse="_inverse_date_deadline",
     )
+
     _check_offer_price = models.Constraint(
         "CHECK (price > 0.0)",
         "Offer price must be strictly positive",
     )
+
+    @api.depends("create_date", "validity")
+    def _compute_date_deadline(self):
+        for offer in self:
+            create_date = offer.create_date or fields.Date.today()
+            offer.date_deadline = fields.Date.add(
+                fields.Date.to_date(create_date), days=offer.validity
+            )
+
+    def _inverse_date_deadline(self):
+        for offer in self:
+            create_date = offer.create_date or fields.Date.today()
+            offer.validity = (
+                offer.date_deadline - fields.Date.to_date(create_date)
+            ).days
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -44,9 +57,11 @@ class PropertyOffer(models.Model):
             best_price = property_id.best_price
 
             for vals in vals_list:
-                if vals["price"] < best_price:
+                if vals.get("price", 0.0) < best_price:
                     raise ValidationError(
-                        "Can't add this offer, price is lower than an existing offer."
+                        self.env._(
+                            "Can't add this offer, price is lower than an existing offer."
+                        )
                     )
 
             property_id.state = "offer_received"
@@ -57,21 +72,6 @@ class PropertyOffer(models.Model):
 
         if len(self.property_id.offer_ids) == len(self):
             self.property_id.state = "new"
-
-    @api.depends("create_date", "validity")
-    def _compute_date_deadline(self):
-        for offer in self:
-            create_date = offer.create_date or fields.Date.today()
-            offer.date_deadline = fields.Date.add(
-                fields.Date.to_date(create_date), days=offer.validity
-            )
-
-    def _compute_inverse_deadline(self):
-        for offer in self:
-            create_date = offer.create_date or fields.Date.today()
-            offer.validity = (
-                offer.date_deadline - fields.Date.to_date(create_date)
-            ).days
 
     def action_accept(self):
         for record in self:
