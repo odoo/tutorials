@@ -5,15 +5,16 @@ from odoo import fields, models
 
 
 class Property(models.Model):
-    _name = "property"
-    _description = "the real estate property table"
+    _name = "estate.property"
+    _description = "Property"
 
     name = fields.Char('Name', required=True)
+    expected_price = fields.Float('Expected Price', digits=(12, 2), required=True)
     description = fields.Char('Description')
-    postcode = fields.Char('Postcode')
-    selling_price = fields.Float('Selling Price', digits=(12, 2))
-    expected_price = fields.Float('Expected Price', digits=(12, 2))
+
     date_availability = fields.Date()
+    selling_price = fields.Float('Selling Price', digits=(12, 2))
+    postcode = fields.Char('Postcode')
     bedrooms = fields.Integer('# Bedrooms')
     facades = fields.Integer('# Facades')
     living_area = fields.Integer('Living area')
