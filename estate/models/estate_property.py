@@ -4,10 +4,11 @@ class RecurringPlan(models.Model):
     _name = "estate.property"
     _description = "Real estate"
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, string='Title')
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Datetime(copy=False,
+    date_availability = fields.Datetime(string='Available From',
+                                        copy=False,
                                         default=fields.Date.add(fields.Date.today(), months=3))
 
     expected_price = fields.Float(required=True)
