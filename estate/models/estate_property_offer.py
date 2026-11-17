@@ -1,4 +1,5 @@
 from datetime import date
+
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
@@ -41,9 +42,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
             if record.validity < 0:
-                raise UserError("Date cannot be earlier than today.")
+                raise UserError("Please pick today or a future date.")
 
-    def action_property_sold(self):
+    def action_offer_accept(self):
         self.status = "accepted"
         records = self.property_id.offer_ids
         self.property_id.selling_price = self.price
