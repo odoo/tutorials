@@ -5,6 +5,7 @@
     'depends': [
         'base',
     ],
+    'author': 'frbal',
     'application': True,
     'license': 'LGPL-3',
     'author': 'frbal',
