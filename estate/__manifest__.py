@@ -7,4 +7,5 @@
     'depends': [
         'base'
     ],
+    'application': True,
 }
