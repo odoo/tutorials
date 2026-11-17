@@ -122,3 +122,9 @@ class EstateProperty(models.Model):
                         record.expected_price,
                     )
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Only new and canceled properties can be deleted.")

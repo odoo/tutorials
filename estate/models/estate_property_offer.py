@@ -80,3 +80,12 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.buyer_id = False
                 offer.property_id.selling_price = 0
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            prop = self.env["estate.property"].browse(vals["property_id"])
+            if vals["price"] < prop.best_price:
+                raise UserError(f"The offer must be higher than {prop.best_price}")
+            prop.state = "offer_received"
+        return super().create(vals_list)
