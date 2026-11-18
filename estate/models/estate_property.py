@@ -11,6 +11,8 @@ class EstateProperty(models.Model):
 
     name = fields.Char('Property Name', required=True, default="Unknown")
     description = fields.Text('Description')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Available From', default=lambda self: fields.Date.context_today(
         self,
@@ -39,4 +41,7 @@ class EstateProperty(models.Model):
         default='new'
     )
     last_seen = fields.Datetime('Last Seen', default=fields.Datetime.now)
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
