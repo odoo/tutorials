@@ -5,6 +5,9 @@
     'depends': [
         'base'
     ],
+    'data': [
+        'security/ir.access.csv',
+    ],
     'application': True,
     'author': 'mabes',
     'license': 'LGPL-3',
