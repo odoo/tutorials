@@ -4,33 +4,33 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
-    _description = "Real Estate Property Offer"
+    _description = 'Real Estate Property Offer'
 
     price = fields.Float()
     status = fields.Selection(
         selection=[
-            ('accepted', "Accepted"),
-            ('refused', "Refused"),
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused'),
         ],
         copy=False,
     )
-    partner_id = fields.Many2one(comodel_name='res.partner', string="Partner", required=True)
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Partner', required=True)
     property_id = fields.Many2one(
         comodel_name='estate.property',
-        string="Property",
+        string='Property',
         required=True,
         index=True,
     )
-    validity = fields.Integer(string="Validity (days)", default=7)
+    validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(
-        string="Deadline",
+        string='Deadline',
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
     )
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',
-        "The offer price must be strictly positive.",
+        'The offer price must be strictly positive.',
     )
 
     @api.depends('create_date', 'validity')
@@ -49,12 +49,12 @@ class EstatePropertyOffer(models.Model):
         """Accept the offer: copy its price and partner onto the property and mark it accepted."""
         for offer in self:
             if offer.property_id.state in ('sold', 'cancelled'):
-                raise UserError(self.env._("Offers on sold or cancelled properties cannot be accepted."))
+                raise UserError(self.env._('Offers on sold or cancelled properties cannot be accepted.'))
             other_accepted = offer.property_id.offer_ids.filtered(
                 lambda o: o.status == 'accepted' and o != offer,
             )
             if other_accepted:
-                raise UserError(self.env._("An offer has already been accepted for this property."))
+                raise UserError(self.env._('An offer has already been accepted for this property.'))
             offer.status = 'accepted'
             offer.property_id.write({
                 'state': 'offer_accepted',
@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         if 'accepted' in self.mapped('status'):
-            raise UserError(self.env._("Accepted offers cannot be refused."))
+            raise UserError(self.env._('Accepted offers cannot be refused.'))
         self.status = 'refused'
         return True
 

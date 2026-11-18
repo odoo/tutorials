@@ -28,9 +28,12 @@
                     <button name="action_cancel" type="object" string="Cancel"/>
                 </header>
                 <sheet>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
@@ -78,7 +81,7 @@
         <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Properties">
+            <search>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
