@@ -5,4 +5,82 @@
         <field name='res_model'>estate.property</field>
         <field name='view_mode'>list,form</field>
     </record>
+
+    <record id='estate_property_view_tree' model='ir.ui.view'>
+        <field name='name'>estate.property.list</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <list string='Properties'>
+                <field name='name'/>
+                <field name='postcode'/>
+                <field name='bedrooms'/>
+                <field name='living_area'/>
+                <field name='expected_price'/>
+                <field name='selling_price'/>
+                <field name='date_availability'/>
+            </list>
+        </field>
+    </record>
+
+    <record id='estate_property_view_form' model='ir.ui.view'>
+        <field name='name'>estate.property.form</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <form string='Properties'>
+                <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name='name' placeholder="Property Title"/>
+                            </h1>
+                        </div>
+                    <group>
+                        <group>
+                            <field name='postcode'/>
+                            <field name='date_availability'/>
+                        </group>
+                        <group>
+                            <field name='expected_price'/>
+                            <field name='selling_price'/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string='Description'>
+                            <group>
+                                <field name='description' placeholder="Add a description..."/>
+                                <field name='bedrooms'/>
+                                <field name='living_area'/>
+                                <field name='facades'/>
+                                <field name='garage'/>
+                                <field name='garden'/>
+                                <field name='garden_area'/>
+                                <field name='garden_orientation'/>
+                            </group>
+                            <group> <!--Used this to have the previous group only take half of the horizontal space-->
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id='estate_property_search' model='ir.ui.view'>
+        <field name='name'>estate.property.search</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <search string='Properties'>
+                <field name='name'/>
+                <field name='postcode'/>
+                <field name='expected_price'/>
+                <field name='bedrooms'/>
+                <field name='living_area'/>
+                <field name='facades'/>
+                <separator/>
+                <filter string='Available' name='available' domain="[('state', 'in', ['new', 'received'])]"/>
+                <group>
+                    <filter string='Postcodes' name='postcode' context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 </odoo>
