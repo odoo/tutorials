@@ -20,6 +20,11 @@ class EstatePropertyOffer(models.Model):
     deadline = fields.Date(compute='_computed_date_deadline', inverse="_inverted_date_deadline")
     date = fields.Date(required=True, default=fields.Date.today(), string='Offer made on')
 
+    _strictly_positive_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be a positive value'
+    )
+
     @api.depends('validity', 'create_date')
     def _computed_date_deadline(self):
         for offer in self:

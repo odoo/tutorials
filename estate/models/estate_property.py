@@ -1,5 +1,6 @@
 from odoo import api, models, fields
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -28,7 +29,7 @@ class EstateProperty(models.Model):
         ('south', 'South'),
         ('east', 'East')
     ])
-    active = fields.Boolean(default=False)
+    active = fields.Boolean()
     state = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -49,6 +50,34 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
+    ####################################################
+    # CONSTRAINTS
+    ####################################################
+
+    _strictly_positive_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be a positive value'
+    )
+
+    _positive_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price cannot be a negative value'
+    )
+
+    @api.constrains('selling_price')
+    def _check_valid_selling_price(self):
+        for record in self:
+            if(
+                float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0
+                and not float_is_zero(record.selling_price, precision_digits=2)
+            ):
+                raise ValidationError("The accepted offer price should never be under 90% of the selling price")
+
+
+    ####################################################
+    # COMPUTE METHODS
+    ####################################################
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -59,21 +88,38 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
+    ####################################################
+    # ONCHANGE METHODS
+    ####################################################
+
     @api.onchange("garden")
     def _onchange_garden(self):
-        if(self.garden):
-            self.garden_orientation = self.garden_orientation or 'north'
-            self.garden_area = self.garden_area or 10
-        else:
-            self.garden_orientation = None
-            self.garden_area = None
+        for property in self:
+            if(property.garden):
+                property.garden_orientation = property.garden_orientation or 'north'
+                property.garden_area = property.garden_area or 10
+            else:
+                property.garden_orientation = None
+                property.garden_area = None
 
     @api.onchange("garden_orientation", "garden_area")
     def _onchange_garden_info(self):
-        if(self.garden_orientation or self.garden_area):
-            self.garden = True
-        else:
-            self.garden = False
+        for property in self:
+            if property.garden_orientation or property.garden_area:
+                property.garden = True
+            else:
+                property.garden = False
+
+    ## On offer received move state
+    @api.onchange("offer_ids")
+    def _onchange_offers(self):
+        for property in self:
+            if property.offer_ids and property.state is 'new':
+                property.state = 'received'
+
+    ####################################################
+    # ACTIONS
+    ####################################################
 
     def cancel_property(self):
         for property in self:
