@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Define offers for properties"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
@@ -12,6 +13,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -24,6 +26,14 @@ class EstatePropertyOffer(models.Model):
             start = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - start).days
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == "new":
+                offer.property_id.state = "offer_received"
+        return offers
+
     def action_accept(self):
         for record in self:
             if "accepted" in record.property_id.offer_ids.mapped("status"):
@@ -31,6 +41,7 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
+            record.property_id.state = "offer_accepted"
         return True
 
     def action_refuse(self):
