@@ -1,6 +1,7 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+
+from odoo import api, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -27,12 +28,16 @@ class EstatePropertyOffer(models.Model):
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for offer in self:
-            base_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            base_date = (
+                offer.create_date.date() if offer.create_date else fields.Date.today()
+            )
             offer.date_deadline = base_date + relativedelta(days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
-            base_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            base_date = (
+                offer.create_date.date() if offer.create_date else fields.Date.today()
+            )
             offer.validity = (offer.date_deadline - base_date).days
 
     def action_accept(self):
@@ -51,6 +56,6 @@ class EstatePropertyOffer(models.Model):
         return True
 
     _check_price = models.Constraint(
-        'CHECK(price > 0)',
-        'The offer price must be strictly positive.',
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive.",
     )

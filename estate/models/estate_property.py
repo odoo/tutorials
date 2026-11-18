@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -25,7 +26,9 @@ class EstateProperty(models.Model):
     )
 
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
+    date_availability = fields.Date(
+        copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
+    )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -43,22 +46,24 @@ class EstateProperty(models.Model):
         ],
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesperson_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
 
-    @api.depends('living_area', 'garden_area')
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offer_ids.price')
+    @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped('price'), default=0.0)
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -87,7 +92,7 @@ class EstateProperty(models.Model):
         "CHECK(expected_price > 0)",
         "The expected price must be strictly positive.",
     )
-    
+
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)",
         "The selling price must be positive.",
@@ -98,7 +103,14 @@ class EstateProperty(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
-            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=0.01) < 0:
+            if (
+                float_compare(
+                    record.selling_price,
+                    0.9 * record.expected_price,
+                    precision_rounding=0.01,
+                )
+                < 0
+            ):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
