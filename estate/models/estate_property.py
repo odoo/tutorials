@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
         column1="estate_property_id",
         column2="estate_property_tag_id",
     )
-    buyer = fields.Many2one("res.partner", copy=False)
+    buyer_id = fields.Many2one("res.partner", copy=False)
     user_id = fields.Many2one(
         "res.users", string="salesperson", default=lambda self: self.env.user
     )

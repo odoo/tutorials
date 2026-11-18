@@ -63,7 +63,7 @@ class PropertyOffer(models.Model):
             self.status = "accepted"
             self.property_id.write({
                 'state': 'offer_accepted',
-                'buyer': self.partner_id.id,
+                'buyer_id': self.partner_id.id,
                 'selling_price': self.price
             })
             self.property_id.flush_recordset(['state'])

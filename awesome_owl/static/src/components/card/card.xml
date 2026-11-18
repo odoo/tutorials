@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <t t-name="awesome_owl.card" >
+        <div class="card w-25 h-100"  >
+            <div class="d-flex justify-content-center" >
+                <t t-esc="props.title" ></t>
+            </div>
+            <div class="card-body">
+                <t t-out="props.content" ></t>
+            </div>
+        </div>
+    </t>
+
+</odoo>

@@ -83,7 +83,7 @@
 
                         <page string="Other info" name="other_info">
                             <group>
-                                <field name="buyer" widget="many2one_avatar_user" />
+                                <field name="buyer_id" widget="many2one_avatar_user" />
                                 <field name="user_id" widget="many2one_avatar_user" />
                             </group>
                         </page>
