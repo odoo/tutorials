@@ -11,5 +11,7 @@
         'views/estate_menus.xml',
         'views/estate_property_views.xml',
         'security/ir.access.csv',
-    ]
+    ],
+    'author': 'Odoo S.A.',
+    'license': 'OEEL-1',
 }

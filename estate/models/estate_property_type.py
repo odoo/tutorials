@@ -8,4 +8,3 @@ class EstatePropertyType(models.Model):
     _description = 'Estate Property test model'
 
     name = fields.Char(required=True)
-    
