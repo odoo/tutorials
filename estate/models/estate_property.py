@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "List of estate property"
 
     name = fields.Char(required=True)
@@ -17,4 +17,4 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection([('North', 'North'), ('South', 'South'), ('East', 'East'), ('West', 'West')])
+    garden_orientation = fields.Selection([("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
