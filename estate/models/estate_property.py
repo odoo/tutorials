@@ -55,6 +55,7 @@ class EstateProperty(models.Model):
         comodel_name='res.users',
         string='Salesperson',
         default=lambda self: self.env.user,
+        index=True,
     )
     tag_ids = fields.Many2many(comodel_name='estate.property.tag', string='Tags')
     offer_ids = fields.One2many(
@@ -104,6 +105,11 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        if any(state not in ('new', 'cancelled') for state in self.mapped('state')):
+            raise UserError(self.env._('Only new or cancelled properties can be deleted.'))
 
     def action_cancel(self):
         if 'sold' in self.mapped('state'):
