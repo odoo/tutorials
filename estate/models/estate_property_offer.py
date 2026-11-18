@@ -1,19 +1,21 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
 
-    _status_options = [
-        ('refused', 'Refused'),
-        ('accepted', 'Accepted'),
-    ]
-
     price = fields.Float()
-    status = fields.Selection(_status_options, copy=False)
+    status = fields.Selection(
+        selection=[
+            ('refused', 'Refused'),
+            ('accepted', 'Accepted'),
+        ], 
+        copy=False,
+    )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7, string="Validity (Days)")
@@ -30,3 +32,25 @@ class EstatePropertyOffer(models.Model):
 
     def _get_start_date(self, offer):
             return fields.Date.to_date(offer.create_date) or fields.Date.today()
+
+    def accept_offer(self):
+        for offer in self:
+            if 'accepted' in offer.property_id.offer_ids.mapped('status'):
+                raise UserError('An offer has already been accepted')
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'accepted'
+            offer.property_id.partner_id = offer.partner_id
+        return True
+
+    def refuse_offer(self):
+        for offer in self:
+            offer.status = 'refused'
+            if (
+                offer.property_id.state == 'accepted' 
+                and 'accepted' not in offer.property_id.offer_ids.mapped('status')
+            ):
+                offer.property_id.selling_price = 0.0
+                offer.property_id.state = 'received'
+                offer.property_id.partner_id = False
+        return True
