@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -76,3 +77,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_cancel(self):
+        if 'sold' in self.mapped('state'):
+            raise UserError(self.env._("Sold properties cannot be cancelled."))
+        self.state = 'cancelled'
+        return True
+
+    def action_sold(self):
+        if 'cancelled' in self.mapped('state'):
+            raise UserError(self.env._("Cancelled properties cannot be sold."))
+        self.state = 'sold'
+        return True

@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -38,6 +39,30 @@ class EstatePropertyOffer(models.Model):
         for offer in self.filtered('date_deadline'):
             start = offer._get_start_date()
             offer.validity = (offer.date_deadline - start).days
+
+    def action_accept(self):
+        """Accept the offer: copy its price and partner onto the property and mark it accepted."""
+        for offer in self:
+            if offer.property_id.state in ('sold', 'cancelled'):
+                raise UserError(self.env._("Offers on sold or cancelled properties cannot be accepted."))
+            other_accepted = offer.property_id.offer_ids.filtered(
+                lambda o: o.status == 'accepted' and o != offer,
+            )
+            if other_accepted:
+                raise UserError(self.env._("An offer has already been accepted for this property."))
+            offer.status = 'accepted'
+            offer.property_id.write({
+                'state': 'offer_accepted',
+                'selling_price': offer.price,
+                'buyer_id': offer.partner_id.id,
+            })
+        return True
+
+    def action_refuse(self):
+        if 'accepted' in self.mapped('status'):
+            raise UserError(self.env._("Accepted offers cannot be refused."))
+        self.status = 'refused'
+        return True
 
     def _get_start_date(self):
         """Return the creation date, or today while the offer is not saved yet."""
