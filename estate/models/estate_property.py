@@ -5,20 +5,6 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property test model'
-    _states = [
-            ('new', 'New'),
-            ('received', 'Offer Received'),
-            ('accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
-    ]
-
-    _orientations = [
-        ('north', 'North'),
-        ('west', 'West'),
-        ('south', 'South'),
-        ('east', 'East')
-    ]
 
     def _get_availability_default():
         today = fields.Date.today()
@@ -36,9 +22,25 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(_orientations)
+    garden_orientation = fields.Selection([
+        ('north', 'North'),
+        ('west', 'West'),
+        ('south', 'South'),
+        ('east', 'East')
+    ])
     active = fields.Boolean(default=False)
-    state = fields.Selection(selection=_states, required=True, readonly=True, default='new')
+    state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('received', 'Offer Received'),
+            ('accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ], 
+        required=True, 
+        readonly=True, 
+        default='new'
+    )
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     type_id = fields.Many2one("estate.property.type", string="Property Type")
