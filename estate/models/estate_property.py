@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
@@ -9,24 +8,22 @@ class EstateProperty(models.Model):
     _explanation = "Represents a real estate property"
     _order = "sequence"
 
-    title = fields.Char('Title', required=True)
-    description = fields.Text('Description')
+    title = fields.Char(required=True)
+    description = fields.Text()
     # property_type = fields.Selection([('house', 'House'), ('apartment', 'Apartment')], required=True)
-    postcode = fields.Char('Postcode')
+    postcode = fields.Char()
     # tags = 
-    date_availability = fields.Date('Data availability')
-    # expected_price = fields.Monetary('Expected Price')
-    # selling_price = fields.Monetary('Selling Price')
-    expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price')
-    bedrooms = fields.Integer('Bedrooms')
+    date_availability = fields.Date()
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float()
+    bedrooms = fields.Integer()
     living_area = fields.Integer('Living Area (sqm)')
-    facades = fields.Integer('Facades')
-    garage = fields.Boolean('Garage')
-    garden = fields.Boolean('Garden')
-    garden_area = fields.Integer('Garden area')
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    sequence = fields.Integer('Sequence', default=10)
+    sequence = fields.Integer(default=10)
 
     _check_bedrooms = models.Constraint(
         'CHECK(bedrooms >= 0)',
