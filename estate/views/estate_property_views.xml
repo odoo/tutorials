@@ -26,17 +26,19 @@
         <field name='name'>estate.property.form</field>
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
-            <form string='Properties'>
+            <form string='Property'>
                 <sheet>
                         <div class="oe_title">
                             <h1>
                                 <field name='name' placeholder="Property Title"/>
                             </h1>
+                            <field name='property_tag_ids' widget="many2many_tags"/>
                         </div>
                     <group>
                         <group>
                             <field name='postcode'/>
                             <field name='date_availability'/>
+                            <field name='property_type_id'/>
                         </group>
                         <group>
                             <field name='expected_price'/>
@@ -56,6 +58,19 @@
                                 <field name='garden_orientation'/>
                             </group>
                             <group> <!--Used this to have the previous group only take half of the horizontal space-->
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group> <!--Same as above comment-->
+                            <group>
                             </group>
                         </page>
                     </notebook>
