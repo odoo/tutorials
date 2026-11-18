@@ -2,6 +2,12 @@ from odoo import fields, models
 from odoo.tools import date_utils
 
 
+class PropertyType(models.Model):
+    _name = "estate.property.type"
+    _description = "Property type"
+
+    name = fields.Char('Name', required=True)
+
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property"
@@ -16,7 +22,7 @@ class Property(models.Model):
         required=True
     )
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Availability Date', default=lambda self: date_utils.add(fields.Datetime.today(),months=3), copy=False)
+    date_availability = fields.Date('Availability Date', default=lambda self: date_utils.add(fields.Datetime.today(), months=3), copy=False)
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', help="Number of bedrooms", default=2)
@@ -30,3 +36,9 @@ class Property(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Indicates the orientation of the garden"
     )
+
+    type_id = fields.Many2one("estate.property.type", string="Property Type")
+    user_id = fields.Many2one('res.users', string='Salesperson', index=True, tracking=True, default=lambda self: self.env.user)
+    partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
