@@ -1,6 +1,7 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import datetime as dt
+from odoo.tools import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -19,6 +20,11 @@ class EstatePropertyOffer(models.Model):
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+        
+    _check_positive_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price must be strictly positive.'
+    )
 
     @api.depends('validity')
     def _compute_date_deadline(self):
@@ -43,3 +49,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    @api.constrains('price', 'status')
+    def _check_selling_price_not_too_low(self):
+        for record in self:
+            if record.status == 'accepted' and float_compare(record.price, record.property_id.expected_price * 0.9, 2) < 0:
+                raise ValidationError('The selling price must be atleast 90% of the expected price.')
