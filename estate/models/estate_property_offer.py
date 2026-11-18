@@ -18,18 +18,16 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7, string="Validity (Days)")
     deadline = fields.Date(compute='_computed_date_deadline', inverse="_inverted_date_deadline")
+    date = fields.Date(required=True, default=fields.Date.today(), string='Offer made on')
 
     @api.depends('validity', 'create_date')
     def _computed_date_deadline(self):
         for offer in self:
-            offer.deadline = fields.Date.add(self._get_start_date(offer), days=offer.validity)
+            offer.deadline = fields.Date.add(offer.date, days=offer.validity)
 
     def _inverted_date_deadline(self):
         for offer in self:
-            offer.validity = (offer.deadline - self._get_start_date(offer)).days
-
-    def _get_start_date(self, offer):
-            return fields.Date.to_date(offer.create_date) or fields.Date.today()
+            offer.validity = (offer.deadline - offer.date).days
 
     def accept_offer(self):
         for offer in self:

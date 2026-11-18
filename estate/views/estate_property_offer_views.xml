@@ -9,6 +9,7 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id" />
+                        <field name="date" />
                         <field name="validity" />
                         <field name="deadline" />
                         <field name="status" />
