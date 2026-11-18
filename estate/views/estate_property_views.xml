@@ -19,6 +19,7 @@
                 <field name="selling_price"/>
                 <field name="date_availability"/>
                 <field name="property_type_id"/>
+                <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -31,11 +32,13 @@
                 <sheet>
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
-                    </div>  
+                    </div>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="property_type_id"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -54,7 +57,6 @@
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                     <field name="state"/>
-                                    <field name="property_type_id"/>
                                 </group>
                             </page>
                             <page string="Other info">
