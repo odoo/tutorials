@@ -7,5 +7,8 @@
     'installable': True,
     'category': 'Tutorials',
     'author': "logar",
-    'license': 'LGPL-3'
+    'license': 'LGPL-3',
+    'data': [
+        'security/ir.access.csv'
+    ]
 }
