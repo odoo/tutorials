@@ -89,13 +89,13 @@
                                         title='accept'
                                         name="accept_offer" 
                                         type="object" 
-                                        icon="oi-check" 
+                                        icon="check" 
                                     />
                                     <button 
                                         title='refuse'
                                         name="refuse_offer" 
                                         type="object" 
-                                        icon="oi-close" 
+                                        icon="close" 
                                     />
                                     <field name="status"/>
                                 </list>
