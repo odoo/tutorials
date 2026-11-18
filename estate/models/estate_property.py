@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 import datetime as dt
 
@@ -12,7 +14,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
 
-    date_availability = fields.Date(copy=False, default=fields.Date.today() + dt.timedelta(weeks=3*4))
+    date_availability = fields.Date(copy=False, default=fields.Date.today() + relativedelta(months=3))
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(compute="_compute_selling_price", copy=False)
@@ -70,8 +72,12 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = 'north' if self.garden else None
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
 
     def action_set_property_cancelled(self):
         for record in self:
