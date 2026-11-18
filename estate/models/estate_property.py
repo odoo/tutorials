@@ -33,3 +33,5 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Char()
     active = fields.Boolean(default=False)
     state = fields.Selection(selection=_states, required=True, readonly=True, default='new')
+    partner_id = fields.Many2one("res.partner", string="Partner")
+    type_id = fields.Many2one("estate.property.type", string="Type")

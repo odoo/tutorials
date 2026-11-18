@@ -36,6 +36,7 @@
                     </div>
                     <group>
                         <group>
+                            <field name="type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>

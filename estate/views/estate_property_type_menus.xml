@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem
+        id="estate_type_menu_root"
+        name="Real Estate Types"
+        action="estate_property_type_action"
+    />
+</odoo>

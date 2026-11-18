@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <menuitem
-        id="real_estate_menu_root"
+        id="estate_menu_root"
         name="Real Estate"/>
 
     <menuitem
