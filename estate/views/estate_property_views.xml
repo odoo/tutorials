@@ -98,6 +98,11 @@
                     domain="['|', ('status', '=', 'new'),
                   ('status', '=', 'offer_received')]"
                 />
+                <filter 
+                    string="Archived"
+                    name="archived"
+                    domain="[('active', '=', 'false')]"
+                />
                 <filter string="Postcode" name="group_by_postcode"
                     context="{'group_by':'postcode'}" />
             </search>
