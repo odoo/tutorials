@@ -16,9 +16,12 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
                 </sheet>
             </form>
         </field>

@@ -3,11 +3,11 @@ from odoo import fields, models
 
 class EstatePropertyTag(models.Model):
     _name = 'estate.property.tag'
-    _description = "Real Estate Property Tag"
+    _description = 'Real Estate Property Tag'
 
     name = fields.Char(required=True)
 
     _unique_name = models.Constraint(
         'UNIQUE(name)',
-        "A property tag with this name already exists.",
+        'A property tag with this name already exists.',
     )
