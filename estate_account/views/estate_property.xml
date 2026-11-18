@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_property_view_form_account" model="ir.ui.view">
+        <field name="name">estate.property.view.form.account</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_view_invoices" type="object" string="Invoices" class="oe_stat_button" icon="fa-file-text-o"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

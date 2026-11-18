@@ -62,3 +62,16 @@ class EstateProperty(models.Model):
         }
 
         return action
+
+    def action_view_invoices(self):
+        return {
+            "name": self.env._("Invoices"),
+            "type": "ir.actions.act_window",
+            "res_model": "account.move",
+            "view_mode": "list,form",
+            "domain": [
+                ("partner_id", "=", self.buyer_id.id),
+                ("move_type", "=", "out_invoice"),
+            ],
+            "context": {"default_partner_id": self.buyer_id.id},
+        }

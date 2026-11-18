@@ -9,6 +9,7 @@
     """,
     "version": "1.0",
     "depends": ["estate", "account"],
+    "data": ['views/estate_property.xml'],
     "auto_install": True,
     "author": "Smit Patel",
     "application": False,
