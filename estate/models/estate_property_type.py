@@ -9,4 +9,4 @@ class EstatePropertyType(models.Model):
     _check_unique_name = models.Constraint(
         'UNIQUE (name)',
         'The property type name must be unique.',
-    )    
+    )

@@ -4,6 +4,8 @@
     'summary': 'Sales real estates',
     'website': 'https://www.odoo.com/app/estate',
     'application': True,
+    'author': 'lobas',
+    'license': 'LGPL-3',
     'data': [
         'security/ir.access.csv',
         'views/estate_property_views.xml',

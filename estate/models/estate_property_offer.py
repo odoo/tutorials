@@ -42,4 +42,3 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'The price should be strictly positive',
     )
-    

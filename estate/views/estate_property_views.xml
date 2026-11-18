@@ -32,8 +32,6 @@
                     <header>
                         <button name="action_sold" type="object" string="SOLD"/>
                         <button name="action_cancel" type="object" string="CANCEL"/>
-                        <button type="action" name="%(estate_property_action)d" string="Property Types"/>
-
                     </header>
                     <sheet>
                         <h1>
