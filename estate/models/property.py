@@ -1,4 +1,6 @@
-from odoo import fields, models
+from typing import cast
+
+from odoo import api, fields, models
 from odoo.tools import date_utils
 
 
@@ -60,3 +62,32 @@ class Property(models.Model):
         'property_id',
         string='Offers',
     )
+    total_area = fields.Integer(
+        'Total Area (sqm)',
+        compute='_compute_total_area',
+    )
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self) -> None:
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    best_price = fields.Float('Best Offer', compute='_compute_best_price')
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self) -> None:
+        for record in self:
+            offer_prices = cast(
+                'list[int]',
+                record.offer_ids.mapped('price'),
+            )
+            record.best_price = max(offer_prices) if offer_prices else 0
+
+    @api.onchange('garden')
+    def _onchange_garden(self) -> None:
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
