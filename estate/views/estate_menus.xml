@@ -7,7 +7,7 @@
     <menuitem
         id="estate_menu_properties"
         name="Properties"
-        parent="real_estate_menu_root"
+        parent="estate_menu_root"
         sequence="1"/>
 
     <menuitem
@@ -16,4 +16,18 @@
         parent="estate_menu_properties"
         action="estate_property_action"
         sequence="1"/>
+
+    <menuitem
+        id="estate_menu_properties_settings"
+        name="Settings"
+        parent="estate_menu_root"
+        sequence="2"/>
+
+    <menuitem
+        id="estate_property_type_menu"
+        name="Property Types"
+        parent="estate_menu_properties_settings"
+        action="estate_property_type_action"
+        sequence="1"/>
+
 </odoo>
