@@ -8,6 +8,7 @@ class PropertyType(models.Model):
 
     name = fields.Char('Name', required=True)
 
+
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property"
@@ -38,8 +39,8 @@ class Property(models.Model):
     )
 
     type_id = fields.Many2one("estate.property.type", string="Property Type")
-    user_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
-    partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
@@ -66,3 +67,11 @@ class Property(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    def action_sold(self):
+        for record in self:
+            record.state = 'sold'
+
+    def action_cancel(self):
+        for record in self:
+            record.state = 'cancelled'

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Configuration/Offer -->
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Offer">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="price"/>
+                            <field name="buyer_id"/>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="validity"/>
+                            <field name="date_deadline"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="create_date" optional="show" string="Offer Date"/>
+                <field name="price"/>
+                <field name="buyer_id" optional="show"/>
+                <field name="validity" optional="show"/>
+                <field name="date_deadline" optional="show"/>
+                <button name="action_accept" title="Accept" type="object" icon="fa-check" invisible="state == 'accepted' or state == 'refused'"/>
+                <button name="action_refuse" title="Refuse" type="object" icon="fa-level-down" invisible="state == 'accepted' or state == 'refused'"/>
+                <field name="state" readonly="0"/>
+            </list>
+        </field>
+    </record>
+</odoo>
