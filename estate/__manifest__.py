@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
-
 {
     'name': 'Estate',
     'summary': 'Real estate module',
     'application': True,
     'installable': True,
+    'author': 'Thing-odoo',
+    'license': 'LGPL-3',
     'depends': [
         'base'
     ],

@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class RecurringPlan(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Offer"
