@@ -1,11 +1,9 @@
-# This defines the model for properties
-
-from odoo import models, fields
+from odoo import fields, models
 
 
-class Properties(models.Model):
-    _name = "estate.property"
-    _description = "Real Estate Property"
+class EstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = 'Real Estate Property'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -19,9 +17,11 @@ class Properties(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West")
-        ])
+    garden_orientation = fields.Selection(
+        selection=[
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West")
+        ],
+    )
