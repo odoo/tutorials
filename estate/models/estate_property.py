@@ -33,28 +33,25 @@ class RecurringPlan(models.Model):
         selection=[('north', 'North'), ('east', 'East'),
                    ('south', 'South'), ('west', 'West')],
         help="Type is used to separate Leads and Opportunities")
-
-    # Computed fields
+    active = fields.Boolean(default=True)
+    state = fields.Selection(
+        default='new', required=True, copy=False,
+        selection=[('new', 'New'), ('received', 'Offer Received'),
+                   ('accepted', 'Offer Accepted'), ('sold', 'Sold'),
+                   ('cancelled', 'Cancelled')])
     total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    best_price = fields.Float(compute="_find_best_price")
     @api.depends("offer_ids", "offer_ids.price")
-    def _find_best_price(self):
+    def _compute_best_price(self):
         for record in self:
             best_price = float('inf')
             for offer in self.offer_ids:
                 best_price = min(best_price, offer.price)
             if best_price == float('inf'):      best_price = 0
             record.best_price = best_price
-
-    # Reserved fields
-    active = fields.Boolean(default=True)
-    state = fields.Selection(
-        default='new', required=True, copy=False,
-        selection=[('new', 'New'), ('received', 'Offer Received'),
-                    ('accepted', 'Offer Accepted'), ('sold', 'Sold'),
-                    ('cancelled', 'Cancelled')])
