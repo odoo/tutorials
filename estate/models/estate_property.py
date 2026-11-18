@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields
+
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -15,8 +15,8 @@ class EstateProperty(models.Model):
     ]
 
     def _get_availability_default():
-            today = fields.Date.today()
-            return fields.Date.add(today, months=3)
+        today = fields.Date.today()
+        return fields.Date.add(today, months=3)
 
     name = fields.Char(required=True)
     description = fields.Text()
