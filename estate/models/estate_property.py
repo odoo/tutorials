@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -51,12 +52,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids", "offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            best_price = float('inf')
-            for offer in self.offer_ids:
-                best_price = min(best_price, offer.price)
-            if best_price == float('inf'):
-                best_price = 0
-            record.best_price = best_price
+            record.best_price = max(record.offer_ids.mapped('price'), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -66,3 +62,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_sell_property(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(self.env._("Cancelled properties cannot be sold"))
+            else:
+                record.state = 'sold'
+        return True
+
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(self.env._("Sold properties cannot be cancelled"))
+            else:
+                record.state = 'cancelled'
+        return True
