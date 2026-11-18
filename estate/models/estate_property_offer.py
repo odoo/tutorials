@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -50,6 +51,26 @@ class EstatePropertyOffer(models.Model):
         for offer in self.filtered('date_deadline'):
             start = offer._get_start_date()
             offer.validity = (offer.date_deadline - start).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        property_ids = {vals['property_id'] for vals in vals_list if vals.get('property_id')}
+        properties = self.env['estate.property'].browse(property_ids)
+        best_price_by_property = {prop.id: prop.best_price for prop in properties}
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            if property_id not in best_price_by_property:
+                continue
+            price = vals.get('price', 0.0)
+            if float_compare(price, best_price_by_property[property_id], precision_digits=2) < 0:
+                raise UserError(self.env._(
+                    'The offer must be at least %(price)s, the best existing offer.',
+                    price=best_price_by_property[property_id],
+                ))
+            best_price_by_property[property_id] = price
+        offers = super().create(vals_list)
+        offers.property_id.filtered(lambda prop: prop.state == 'new').state = 'offer_received'
+        return offers
 
     def action_accept(self):
         """Accept the offer: copy its price and partner onto the property and mark it accepted."""
