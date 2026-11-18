@@ -39,7 +39,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
-    best_price = fields.Integer(compute="_compute_best_price", string="Best Offer")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):

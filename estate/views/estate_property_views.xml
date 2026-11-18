@@ -66,6 +66,8 @@
                                 <list create="true">
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <field name="validity"/>
+                                    <field name="deadline"/>
                                     <field name="status"/>
                                 </list>
                             </field>
