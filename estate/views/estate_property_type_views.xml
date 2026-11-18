@@ -51,6 +51,9 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list>
+                <header>
+                    <button string="Assign Properties" name="action_assign_type" type="object"/>
+                </header>
                 <field name="name"/>
                 <field name="sequence" widget="handle"/>
             </list>
