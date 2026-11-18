@@ -1,12 +1,12 @@
 <odoo>
-
-    <record id="estate_custom_view_list" model="ir.ui.view">
-        <field name="name">estate.custom.view.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="estate list">
                 <field name="name"/>
                 <field name="property_type_id"/>
+                <field name="tag_ids"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -17,8 +17,8 @@
         </field>
     </record>
 
-    <record id="estate_custom_view_form" model="ir.ui.view">
-        <field name="name">estate.custom.view.form</field>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="estate form">
@@ -28,6 +28,7 @@
                             <field name="name"/>
                         </h1>
                     </group>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="property_type_id"/>
@@ -54,6 +55,9 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <group>
@@ -68,8 +72,8 @@
         </field>
     </record>
 
-    <record id="estate_custom_view_search" model="ir.ui.view">
-        <field name="name">estate.custom.view.search</field>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="estate list">
@@ -89,7 +93,7 @@
         </field>
     </record>
 
-    <record id="action_estates" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estates</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
