@@ -5,6 +5,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Estate Property Type">
+                <button type="action" class="oe_stat_button" name="%(estate.estate_property_offers_type_action)d" string="Offers of this type"/>
                 <sheet>
                     <div class="oe_title">
                         <div class="oe_edit_only">
@@ -14,6 +15,25 @@
                             <field name="name" class="mb16"/>
                         </h1>
                     </div>
+                    <group>
+                        <field name="offer_count"/>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="All associated offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -24,6 +44,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Properties">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>

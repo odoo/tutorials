@@ -6,11 +6,12 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
+    # _order = "id desc" # Added a view ordering instead
     _check_expected_price = models.Constraint("CHECK (expected_price > 0)",
                                                 "The expected price needs to be strictly positive")
     _check_selling_price = models.Constraint("CHECK (selling_price >= 0)",
                                             "The selling price needs to be positive")
-                                            
+
     name = fields.Char(required=True, string='Title')
     description = fields.Text()
     postcode = fields.Char()
@@ -31,7 +32,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     garage = fields.Boolean()
-    garden = fields.Boolean()
+    garden = fields.Boolean(default=False)
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Garden orientation',
@@ -41,6 +42,7 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean(default=True)
     state = fields.Selection(
+        string='Status',
         default='new', required=True, copy=False,
         selection=[('new', 'New'), ('received', 'Offer Received'),
                    ('accepted', 'Offer Accepted'), ('sold', 'Sold'),

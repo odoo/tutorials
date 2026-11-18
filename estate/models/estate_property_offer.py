@@ -1,10 +1,10 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Offer"
+    _order = "price desc"
     _check_price = models.Constraint("CHECK (price > 0)",
                                     "The price of an offer needs to be strictly positive")
 
@@ -13,13 +13,15 @@ class EstatePropertyOffer(models.Model):
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False
     )
+
     create_date = fields.Date(default=fields.Date.today())
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+    
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
@@ -36,7 +38,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             # All of the offers we accepted previously are reverted to refused
             record.property_id.offer_ids.filtered(lambda o: o.status == "accepted").status = "refused"
-            
+
             record.status = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
@@ -44,5 +46,5 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         for record in self:
-            record.status = 'refused' 
+            record.status = 'refused'
         return True
