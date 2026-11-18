@@ -1,5 +1,7 @@
 from odoo import fields, models
 
+from odoo.tools import date_utils
+
 
 class Property(models.Model):
     _name = 'estate.property'
@@ -11,6 +13,7 @@ class Property(models.Model):
     date_availability = fields.Date(
         'Available From',
         copy=False,
+        default=lambda _: date_utils.add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
@@ -29,3 +32,16 @@ class Property(models.Model):
             ('west', 'West'),
         ],
     )
+    state = fields.Selection(
+        string='Status',
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ],
+        required=True,
+        default='new',
+    )
+    active = fields.Boolean('Active', default=True)
