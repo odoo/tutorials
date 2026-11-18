@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -10,13 +11,15 @@ class EstateProperty(models.Model):
     name = fields.Char('Property Name', required=True, default="Unknown")
     description = fields.Text()
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    salesperson_id = fields.Many2one(
+        'res.users', string='Salesperson', default=lambda self: self.env.user
+    )
     postcode = fields.Char()
 
     def _default_date_availability(self):
         return fields.Date.context_today(
             self,
-            timestamp=fields.Datetime.now() + timedelta(weeks=3*4),
+            timestamp=fields.Datetime.now() + timedelta(weeks=3 * 4),
         )
 
     date_availability = fields.Date(
@@ -33,18 +36,25 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ]
     )
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         string='Status',
-        selection=[('new', 'New'),
-                ('offer_received', 'Offer Received'),
-                ('offer_accepted', 'Offer Accepted'),
-                ('sold', 'Sold'),
-                ('canceled', 'Canceled')],
-        default='new'
-)
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled'),
+        ],
+        default='new',
+    )
     last_seen = fields.Datetime(default=fields.Datetime.now)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
@@ -73,3 +83,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('Sold properties cannot be canceled.')
+            record.state = 'canceled'
+            return True
+
+    def action_sold_property(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError('Canceled properties cannot be sold.')
+            record.state = 'sold'
+            return True
