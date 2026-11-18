@@ -8,7 +8,7 @@ class EstatePropertyOffer(models.Model):
     _description = 'Estate Property Offer'
 
     _status_options = [
-        ('refused', 'Refused'), 
+        ('refused', 'Refused'),
         ('accepted', 'Accepted'),
     ]
 
