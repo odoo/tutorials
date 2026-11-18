@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class EstateProperty(models.Model):
@@ -38,4 +38,15 @@ class EstateProperty(models.Model):
     type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-    
+    total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
+    best_price = fields.Integer(compute="_compute_best_price", string="Best Offer")
+
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
