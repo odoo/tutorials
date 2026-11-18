@@ -18,6 +18,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
             </list>
         </field>
     </record>
@@ -53,6 +54,7 @@
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
                                     <field name="state"/>
+                                    <field name="property_type_id"/>
                                 </group>
                             </page>
                         </notebook>
