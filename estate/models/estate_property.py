@@ -23,3 +23,11 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation of the garden"
     )
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'),
+                   ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        required=True,
+        copy=False,
+        default='new'
+    )
