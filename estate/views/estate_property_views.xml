@@ -28,11 +28,12 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <sheet>
-                    <div class="oe_title">
-                        <h1 class="mb32">
+                    <div class="oe_title mb16">
+                        <h1 class="mb16">
                             <field name="name"/>
                         </h1>
                         <field name="active" invisible="1"/>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
