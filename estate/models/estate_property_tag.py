@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class RecurringPlan(models.Model):
+class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Tag of property"
 

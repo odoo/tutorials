@@ -5,7 +5,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate property">
-                <field name="name" string="Title" />
+                <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
