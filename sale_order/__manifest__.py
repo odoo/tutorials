@@ -4,7 +4,7 @@
     'author': "Hansil",
     'category': 'Sales/Sales',
     'version': '0.1',
-    'depends': ['base', 'sale'],
+    'depends': ['base', 'sale', 'stock'],
     'data': [
         'views/sale_order_views.xml',
     ],
