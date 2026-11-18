@@ -14,6 +14,13 @@ class EstateProperty(models.Model):
             ('cancelled', 'Cancelled')
     ]
 
+    _orientations = [
+        ('north', 'North'),
+        ('west', 'West'),
+        ('south', 'South'),
+        ('east', 'East')
+    ]
+
     def _get_availability_default():
         today = fields.Date.today()
         return fields.Date.add(today, months=3)
@@ -30,7 +37,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Char()
+    garden_orientation = fields.Selection(_orientations)
     active = fields.Boolean(default=False)
     state = fields.Selection(selection=_states, required=True, readonly=True, default='new')
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -50,3 +57,19 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if(self.garden):
+            self.garden_orientation = self.garden_orientation or 'north'
+            self.garden_area = self.garden_area or 10
+        else:
+            self.garden_orientation = None
+            self.garden_area = None
+
+    @api.onchange("garden_orientation", "garden_area")
+    def _onchange_garden_info(self):
+        if(self.garden_orientation or self.garden_area):
+            self.garden = True
+        else:
+            self.garden = False
