@@ -147,7 +147,6 @@ class EstateProperty(models.Model):
 
     def action_sold_property(self):
         self.ensure_one()
-        self.state = "sold"
 
         # Mail wizard
         template_id = self.env.ref("estate.email_template_sold")
@@ -161,6 +160,8 @@ class EstateProperty(models.Model):
             "default_composition_mode": "comment",
             # "default_composition_mode": "mass_mail",
             "default_template_id": template_id.id if template_id else False,
+            "mark_property_as_sold": True,
+            "property_ids_to_sell": self.ids,
         }
 
         action = {
@@ -173,6 +174,9 @@ class EstateProperty(models.Model):
         }
 
         return action
+
+    def action_finalize_sale(self):
+        self.write({"state": "sold"})
 
     def action_cancel_property(self):
         self.ensure_one()
