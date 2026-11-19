@@ -12,6 +12,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list
+                delete="0"
                 decoration-muted="state == 'sold'"
                 decoration-success="state in ('received', 'accepted')"
                 decoration-bf="state == 'accepted'" 
@@ -19,7 +20,12 @@
                 <field name="name" width="200"/>
                 <field name="type_id" width="100"/>
                 <field name="postcode" width="100"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}" width="200"/>
+                <field 
+                    name="tag_ids" 
+                    widget="many2many_tags" 
+                    options="{'color_field': 'color', 'on_tag_click': 'edit_color'}" 
+                    width="200"
+                />
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -100,7 +106,11 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" context="{'list_view_ref': 'estate.estate_property_offer_list'}" readonly="state in ('accepted', 'sold', 'cancelled')"/>
+                            <field 
+                                name="offer_ids"
+                                context="{'list_view_ref': 'estate.estate_property_offer_list'}"
+                                readonly="state in ('accepted', 'sold', 'cancelled')"
+                            />
                         </page>
                         <page string="Other Info">
                             <group>
