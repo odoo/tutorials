@@ -32,6 +32,12 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     # endregion
 
+    # region constraints
+    _check_price = models.Constraint(
+        "CHECK(price > 0)", "The offer price must be strictly positive."
+    )
+    # endregion
+
     # region private methods
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
