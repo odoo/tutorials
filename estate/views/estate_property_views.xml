@@ -30,24 +30,28 @@
                 <header>
                     <button name="action_set_sold" string="Sold"
                             type="object" title="Mark as Sold"
-                            invisible="state in ['sold', 'cancelled']"/>
+                            invisible="state != 'accepted'"
+                            class="oe_highlight"/>
+                    <button name="action_set_sold" string="Sold"
+                            type="object" title="Mark as Sold"
+                            invisible="state in ['sold', 'cancelled', 'accepted']"/>
                     <button name="action_set_cancelled" string="Cancelled"
                             type="object" title="Mark as Cancelled"
                             invisible="state in ['sold', 'cancelled']"/>
+                    <field name='state' widget="statusbar" statusbar_visible="new,received,accepted, sold"/>
                 </header>
                 <sheet>
                         <div class="oe_title">
                             <h1>
                                 <field name='name' placeholder="Property Title"/>
                             </h1>
-                            <field name='property_tag_ids' widget="many2many_tags"/>
+                            <field name='property_tag_ids' widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
                         </div>
                     <group>
                         <group>
-                            <field name='state'/>
                             <field name='postcode'/>
                             <field name='date_availability'/>
-                            <field name='property_type_id'/>
+                            <field name='property_type_id' options="{'no_create': true, 'no_open': true}"/>
                         </group>
                         <group>
                             <field name='expected_price'/>
@@ -64,8 +68,8 @@
                                 <field name='facades'/>
                                 <field name='garage'/>
                                 <field name='garden'/>
-                                <field name='garden_area'/>
-                                <field name='garden_orientation'/>
+                                <field name='garden_area' invisible="not garden"/>
+                                <field name='garden_orientation' invisible="not garden"/>
                                 <field name='total_area'/>
                             </group>
                             <group> <!--Used this to have the previous group only take half of the horizontal space-->
@@ -73,7 +77,7 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids"/>
+                                <field name="offer_ids" readonly="state in ['accepted', 'sold', 'cancelled']"/>
                             </group>
                         </page>
                         <page string="Other Info">
