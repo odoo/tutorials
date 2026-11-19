@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, exceptions, fields, models
 from odoo.tools.float_utils import float_compare
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "List of estate property"
@@ -36,7 +37,7 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
-    @api.depends("garden_area","living_area")
+    @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
