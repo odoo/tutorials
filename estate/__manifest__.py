@@ -9,6 +9,9 @@
         'base'
     ],
     'data': [
+        'views/estate_property_views.xml',
+        'views/estate_menu_views.xml',
+
         'security/ir.access.csv',
     ],
     'application': True,

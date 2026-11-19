@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top menu item -->
+    <!--
+        This menu item's purpose is to overwrite another one defined in
+        the base module in order to set new groups.
+    -->
+    <menuitem
+        id="estate_menu_root"
+        name="Estate"
+        groups="base.group_user"
+        sequence="25"/>
+        <!-- web_icon="crm,static/description/icon.png" -->
+
+    <!-- My First Level Menu (MAIN USER MENU) -->
+    <menuitem
+        id="estate_menu_first_level_menu"
+        name="My First Level Menu"
+        parent="estate_menu_root"
+        sequence="1"/>
+    <menuitem
+        id="estate_menu_myaction"
+        name="My Action"
+        parent="estate_menu_first_level_menu"
+        action="estate.estate_property_action"
+        sequence="1"/>
+</odoo>
