@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
+    _order = 'price desc'
 
     price = fields.Float('Price')
     _check_price = models.Constraint(
@@ -24,6 +25,11 @@ class EstatePropertyOffer(models.Model):
         string='Deadline',
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
+    )
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        string='Property Type',
+        related='property_id.property_type_id',
     )
 
     def _get_create_date(self):
