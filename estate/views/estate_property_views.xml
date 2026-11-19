@@ -34,7 +34,9 @@
                             <field name="name"/>
                         </b>
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags"/>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
                     <group>
                         <group>
                             <field name="property_type_id"/>
