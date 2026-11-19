@@ -8,6 +8,7 @@ from odoo import api, fields, models
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Description"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -23,6 +24,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        string="Status"
     )
 
     postcode = fields.Char()

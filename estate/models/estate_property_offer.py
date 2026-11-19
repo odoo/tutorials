@@ -7,6 +7,7 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Offer Description"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -24,6 +25,7 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
