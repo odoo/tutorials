@@ -6,6 +6,7 @@
     'description': """
     Description text
     """,
+    'license': 'LGPL-3',
     'depends': [
         'base'
     ],
