@@ -20,6 +20,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7, string="Validity (Days)")
     deadline = fields.Date(compute='_computed_date_deadline', inverse="_inverted_date_deadline")
     date = fields.Date(required=True, default=fields.Date.today(), string='Offer made on')
+    property_type_id = fields.Many2one(related="property_id.type_id", stored=True)
 
     _strictly_positive_offer_price = models.Constraint(
         'CHECK(price > 0)',
