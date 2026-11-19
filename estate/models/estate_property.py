@@ -15,6 +15,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Monetary(currency_field='currency_id', required=True)
+    best_price = fields.Monetary(currency_field='currency_id', compute="_compute_best_price")
     selling_price = fields.Monetary(currency_field='currency_id', readonly=True)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Float()
@@ -23,7 +24,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Float()
     garden_orientation = fields.Selection([('n', 'N'), ('s', 'S'), ('w', 'W'), ('e', 'E')])
-    total_area = fields.Integer(compute="_compute_area", readonly=True)
+    total_area = fields.Integer(compute="_compute_area")
     active = fields.Boolean(default=True)
     state = fields.Selection([('new', 'New'), ('offer_received', 'Offer received'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], default='new', required=True, string="Status")
     user_id = fields.Many2one('res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
@@ -31,9 +32,14 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', "property_id", string="Offers")
 
-    @api.depends("living_area", "garden_area")
+    @api.depends("living_area", "garden_area", "garden")
     def _compute_area(self):
         for record in self:
             record.total_area = record.living_area
-            if record.garden_area > 0:
+            if record.garden:
                 record.total_area += record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
