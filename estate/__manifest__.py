@@ -6,7 +6,7 @@
     'version': '1.0',
     'summary': 'Sell real estate',
     'depends': [
-        'base'
+        'base',
     ],
     'data': [
         'views/estate_property_views.xml',

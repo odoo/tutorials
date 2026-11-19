@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     _explanation = "Represents a real estate property"
     _order = "id desc"
 
-    title = fields.Char(required=True)
+    name = fields.Char('Title', required=True)
     description = fields.Text()
     # property_type = fields.Selection([('house', 'House'), ('apartment', 'Apartment')], required=True)
     postcode = fields.Char()
