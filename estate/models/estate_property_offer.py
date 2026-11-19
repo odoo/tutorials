@@ -36,7 +36,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.validity = (offer.deadline - offer.date).days
 
-    def accept_offer(self):
+    def action_accept_offer(self):
         for offer in self:
             if 'accepted' in offer.property_id.offer_ids.mapped('status'):
                 raise UserError('An offer has already been accepted')
@@ -48,7 +48,7 @@ class EstatePropertyOffer(models.Model):
             })
         return True
 
-    def refuse_offer(self):
+    def action_refuse_offer(self):
         for offer in self:
             offer.status = 'refused'
             if (
