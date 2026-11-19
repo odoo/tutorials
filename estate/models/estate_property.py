@@ -8,9 +8,10 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "A Free Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char('Name', required=True, translate=True)
-    description = fields.Text('Description', required=False, translate=True)
+    description = fields.Text('Description', translate=True)
 
     salesman_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -20,15 +21,15 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
     postcode = fields.Char('Postcode', required=False, translate=True)
-    date_availability = fields.Datetime('Available From', required=False, copy=False, default=fields.Datetime.today() + relativedelta(months=3))
+    date_availability = fields.Datetime('Availability date', required=False, copy=False, default=fields.Datetime.today() + relativedelta(months=3))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', required=False, readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', required=False, default=2)
-    living_area = fields.Integer('Living area (sqm)', required=False)
-    facades = fields.Integer('Facades', required=False)
-    garage = fields.Boolean('Garage', required=False)
-    garden = fields.Boolean('Garden', required=False)
-    garden_area = fields.Integer('Garden Area (sqm)', required=False)
+    living_area = fields.Integer('Living area (sqm)')
+    facades = fields.Integer('Facades')
+    garage = fields.Boolean('Garage')
+    garden = fields.Boolean('Garden')
+    garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(string='Garden orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Determines garden's orientation")

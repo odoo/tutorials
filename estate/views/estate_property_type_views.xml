@@ -11,6 +11,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Channel">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -21,7 +22,36 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
-                <field name="name"/>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                            <field name="offer_count" widget="statinfo" class="oe_stat_button" string="Offers"/>
+                        </h1>
+                    </div>
+                    <button name="%(estate.estate_property_offer_model_action)d" type="action" string="Offers" widget="statinfo" class="oe_stat_button"/>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list string="Properties">
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list string="Offers">
+                                    <field name="price"/>
+                                    <field name="status"/>
+                                    <field name="partner_id"/>
+                                    <field name="property_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>
