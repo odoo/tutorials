@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate"
+    _order = "id desc"
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -23,7 +24,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
-        default=fields.Date.today() + relativedelta(months=+3),
+        default=lambda self: fields.Date.today() + relativedelta(months=+3),
         string="Available From"
     )
     expected_price = fields.Float(required=True)
@@ -46,7 +47,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="State",
+        string="Status",
         selection=[
             ("new", "New"),
             ("received", "Offer Received"),
@@ -56,7 +57,9 @@ class EstateProperty(models.Model):
         ],
         required=True,
         default="new",
-        copy=False
+        copy=False,
+        compute="_compute_sale",
+        store=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, compute="_compute_sale", store=True)
@@ -82,13 +85,18 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids", "offer_ids.status", "offer_ids.price", "offer_ids.partner_id")
     def _compute_sale(self):
         for record in self:
+            if record.state in ["sold", "cancelled"]:
+                continue
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
             if accepted_offer:
                 record.selling_price = accepted_offer.price
                 record.buyer_id = accepted_offer.partner_id
+                record.state = "accepted"
             else:
                 record.selling_price = 0.0
                 record.buyer_id = False
+                record.state = "received" if record.offer_ids else "new"
+        return True
 
     @api.onchange("garden")
     def _onchange_garden(self):

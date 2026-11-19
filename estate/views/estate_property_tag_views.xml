@@ -13,6 +13,7 @@
             <form string='Property'>
                 <sheet>
                     <field name='name' placeholder="Tag"/>
+                    <field name='color'/>
                 </sheet>
             </form>
         </field>
