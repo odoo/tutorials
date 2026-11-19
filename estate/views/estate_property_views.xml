@@ -6,7 +6,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
-                <field name="sequence" widget="handle"/>
                 <field name="title"/>
                 <field name="description"/>
                 <field name="expected_price"/>

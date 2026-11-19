@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
     _explanation = "Represents a real estate property"
-    _order = "sequence"
+    _order = "id desc"
 
     title = fields.Char(required=True)
     description = fields.Text()
@@ -37,7 +37,6 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new')
-    sequence = fields.Integer(default=10)
 
     _check_bedrooms = models.Constraint(
         'CHECK(bedrooms >= 0)',
