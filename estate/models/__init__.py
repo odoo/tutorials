@@ -1,3 +1,3 @@
-from . import estate_proprety
+from . import estate_property
 
-__all__ = ["estate_proprety"]
+__all__ = ["estate_property"]
