@@ -7,4 +7,6 @@
         parent="estate_property_menu_root" />
     <menuitem id="estate_property_menu_type" name="Property Types"
         parent="estate_property_configuration_menu" action="estate_property_type_action" />
+    <menuitem id="estate_property_menu_tag" name="Property Tags"
+        parent="estate_property_configuration_menu" action="estate_property_tag_action" />
 </odoo>
