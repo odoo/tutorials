@@ -41,7 +41,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         required=True, copy=False,
         selection=[
-            ('new', 'New'), 
+            ('new', 'New'),
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
@@ -92,7 +92,7 @@ class EstateProperty(models.Model):
     def action_set_property_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError('Sold properties cannot be cancelled!')    
+                raise UserError('Sold properties cannot be cancelled!')
             record.state = 'cancelled'
         return True
 
@@ -103,13 +103,12 @@ class EstateProperty(models.Model):
             record.state = 'sold'
         return True
 
-
     @api.depends('offer_ids.status')
     def _compute_selling_price(self):
         for record in self:
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
             if accepted_offer:
-                record.selling_price = accepted_offer.mapped('price')[0] # fallback to first if somehow multiple record, TODO: constraints later?
+                record.selling_price = accepted_offer.mapped('price')[0]
             else:
                 record.selling_price = 0.0
 

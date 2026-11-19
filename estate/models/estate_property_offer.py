@@ -3,6 +3,7 @@ from odoo.exceptions import UserError, ValidationError
 import datetime as dt
 from odoo.tools import float_compare
 
+
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
@@ -22,7 +23,7 @@ class EstatePropertyOffer(models.Model):
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline', string='Deadline')
-        
+
     _check_positive_price = models.Constraint(
         'CHECK(price > 0)',
         'Offer price must be strictly positive.'
@@ -32,7 +33,7 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date and record.validity:
-                record.date_deadline = record.create_date + dt.timedelta(days=record.validity) 
+                record.date_deadline = record.create_date + dt.timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
