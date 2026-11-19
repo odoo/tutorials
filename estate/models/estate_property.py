@@ -23,7 +23,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer()
     garage = fields.Boolean()
     total_area = fields.Integer(compute="_compute_total_area")
-    best_price = fields.Integer("Best Offer", compute="_compute_best_offer")
+    best_price = fields.Float("Best Offer", compute="_compute_best_offer")
     garden = fields.Boolean()
     garden_area = fields.Integer("Garden Area (sqms)")
     garden_orientation = fields.Selection(

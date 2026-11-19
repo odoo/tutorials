@@ -14,6 +14,7 @@
         <field name="arch" type="xml">
             <list editable="top">
                 <field name="name"/>
+                <field name="color" widget="color_picker"/>
             </list>
         </field>
     </record>
