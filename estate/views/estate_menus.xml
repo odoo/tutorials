@@ -25,7 +25,7 @@
         id="estate_property_type_menu"
         name="Property Types"
         parent="estate_property_settings_menu"
-        action="estate_type_action"
+        action="estate_property_type"
     />
 
     <menuitem
@@ -33,6 +33,20 @@
         name="Property Tags"
         parent="estate_property_settings_menu"
         action="estate_tag_action"
+    />
+
+    <menuitem
+        id="estate_property_offer_menu"
+        name="Property Offers"
+        parent="estate_property_settings_menu"
+        action="estate_offer_action"
+    />
+
+    <menuitem
+        id="estate_property_maintance_menu"
+        name="Property Maintance"
+        parent="estate_property_settings_menu"
+        action="estate_proprty_maintance"
     />
 
 </odoo>
