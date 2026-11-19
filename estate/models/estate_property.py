@@ -38,9 +38,9 @@ class EstateProperty(models.Model):
             ('accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
-        ], 
-        required=True, 
-        readonly=True, 
+        ],
+        required=True,
+        readonly=True,
         default='new'
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -68,12 +68,11 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_valid_selling_price(self):
         for record in self:
-            if(
+            if (
                 float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0
                 and not float_is_zero(record.selling_price, precision_digits=2)
             ):
                 raise ValidationError("The accepted offer price should never be under 90% of the selling price")
-
 
     ####################################################
     # COMPUTE METHODS
@@ -96,7 +95,7 @@ class EstateProperty(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         for property in self:
-            if(property.garden):
+            if property.garden:
                 property.garden_orientation = property.garden_orientation or 'north'
                 property.garden_area = property.garden_area or 10
             else:
@@ -115,7 +114,7 @@ class EstateProperty(models.Model):
     @api.onchange("offer_ids")
     def _onchange_offers(self):
         for property in self:
-            if property.offer_ids and property.state is 'new':
+            if property.offer_ids and property.state == 'new':
                 property.state = 'received'
 
     ####################################################

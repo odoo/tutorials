@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
         selection=[
             ('refused', 'Refused'),
             ('accepted', 'Accepted'),
-        ], 
+        ],
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", required=True)
@@ -49,11 +49,10 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = 'refused'
             if (
-                offer.property_id.state == 'accepted' 
+                offer.property_id.state == 'accepted'
                 and 'accepted' not in offer.property_id.offer_ids.mapped('status')
             ):
                 offer.property_id.selling_price = 0.0
                 offer.property_id.state = 'received'
                 offer.property_id.partner_id = False
         return True
-        
