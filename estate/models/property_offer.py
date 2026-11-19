@@ -34,6 +34,11 @@ class PropertyOffer(models.Model):
 
     create_date: fields.Datetime  # From Model
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price of an offer must be strictly positive.',
+    )
+
     @api.depends('validity')
     def _compute_deadline(self) -> None:
         today = fields.Date.today()
