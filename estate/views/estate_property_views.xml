@@ -28,7 +28,7 @@
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="estate_property_form">
+            <form>
                 <header>
                     <button string="Sold" name="action_sold_property" type="object" invisible="state != 'offer_accepted'"/>
                     <button string="Cancel" name="action_cancel_property" type="object" invisible="state in ('sold', 'cancelled')"/>
@@ -145,7 +145,7 @@
 
                 <separator/>
 
-                <filter name="achieved" string="Achieved" domain="[('active', '=', 'False')]"/>
+                <filter name="Archived" string="Archived" domain="[('active', '=', 'False')]"/>
                 <filter name="state" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="group_by_garden" string="With Garden" context="{'group_by': 'garden'}"/>
                 <filter name="group_by_garage" string="With Garage" context="{'group_by': 'garage'}"/>
