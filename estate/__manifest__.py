@@ -1,5 +1,9 @@
 {  # pyright: ignore[reportUnusedExpression] # ruff: ignore[useless-expression]
     'name': 'Real Estate',
+    'version': '0.1',
+    'category': 'Administration',
+    'author': 'Guillaume BRUN (gubru)',
+    'license': 'Other OSI approved licence',
     'depends': ['base'],
     'application': True,
     'data': [
