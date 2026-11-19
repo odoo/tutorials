@@ -7,6 +7,12 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(required=True)
 
+    # region relationships
+    property_ids = fields.One2many(
+        "estate.property", "property_type_id", string="Properties"
+    )
+    # endregion
+
     # region constraints
     _unique_name = models.Constraint(
         "UNIQUE(name)", "The property type name must be unique"
