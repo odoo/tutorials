@@ -86,7 +86,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = False
 
     def action_set_property_cancelled(self):
         for record in self:
@@ -119,7 +119,7 @@ class EstateProperty(models.Model):
             if accepted_offer:
                 record.buyer_id = accepted_offer.mapped('partner_id')[0]
             else:
-                record.buyer_id = None
+                record.buyer_id = False
 
     @api.constrains('expected_price')
     def _check_selling_price_not_too_low(self):
