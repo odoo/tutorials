@@ -45,6 +45,7 @@
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="best_price" />
                         </group>
                     </group>
                     <notebook>
@@ -62,8 +63,8 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list>
+                            <field name="offer_ids" context="{'default_property_id': id}">
+                                <list editable="bottom">
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="status" />
