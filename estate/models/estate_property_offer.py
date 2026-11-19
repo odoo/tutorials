@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -28,3 +28,17 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - record.create_date).days
             else:
                 record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
+        return True
+
+    def action_accept(self):
+        for record in self:
+            if record.property_id.selling_price:
+                raise exceptions.UserError("An other is already accepted")
+            else:
+                record.status = "accepted"
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
