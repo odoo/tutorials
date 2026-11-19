@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_visit" model="ir.actions.act_window">
+        <field name="name">Visitor</field>
+        <field name="res_model">estate.visitor</field>
+        <field name="domain">[('property_id','=',active_id)]</field>
+        <field name="context">{'default_property_id':active_id}</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_visitor_view" model="ir.ui.view">
+        <field name="name">estate.visitor.view</field>
+        <field name="model">estate.visitor</field>
+        <field name="arch" type="xml">
+            <list string="Visitor">
+                <field name="visit_id" class="fw-bold"/>
+                <field name="start_date_time"/>
+                <field name="stage"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="estate_visitor_form" model="ir.ui.view">
+        <field name="name">estate.visitor.form</field>
+        <field name="model">estate.visitor</field>
+
+
+        <field name="arch" type="xml">
+            <form string="Visitor">
+                <header>
+                    <field name="stage" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="visit_id"/>
+                        <field name="start_date_time" />
+                        <field name="property_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+
+</odoo>
