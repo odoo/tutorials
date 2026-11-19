@@ -149,6 +149,31 @@ class EstateProperty(models.Model):
         self.ensure_one()
         self.state = "sold"
 
+        # Mail wizard
+        template_id = self.env.ref("estate.email_template_sold")
+
+        ctx = {
+            "default_model": "estate.property",
+            # email_from
+            "default_res_ids": self.ids,
+            # email_to
+            "default_partner_ids": self.buyer_id.ids,
+            "default_composition_mode": "comment",
+            # "default_composition_mode": "mass_mail",
+            "default_template_id": template_id.id if template_id else False,
+        }
+
+        action = {
+            "name": self.env._("Send"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "target": "new",
+            "context": ctx,
+        }
+
+        return action
+
     def action_cancel_property(self):
         self.ensure_one()
         if self.state == "sold":
