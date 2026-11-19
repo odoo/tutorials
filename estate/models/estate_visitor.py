@@ -31,7 +31,7 @@ class EstateVisitor(models.Model):
                 [
                     ("id", "!=", rec.id),
                     ("property_id", "=", rec.property_id.id),
-                    ("start_date_time", "<", rec.start_date_time + rec.end_date_time),
+                    ("start_date_time", "<", rec.end_date_time),
                     ("end_date_time", ">", rec.start_date_time),
                 ],
                 limit=1,
@@ -42,9 +42,10 @@ class EstateVisitor(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         visitors = super().create(vals_list)
+        event_vals_list = []
 
         for visitor in visitors:
-            event = self.env["calendar.event"].create(
+            event_vals_list.append(
                 {
                     "name": f"Property Visit -{visitor.property_id.name}",
                     "start": visitor.start_date_time,
@@ -56,6 +57,8 @@ class EstateVisitor(models.Model):
                     ],
                 }
             )
+        events = self.env["calendar.event"].create(event_vals_list)
+        for visitor, event in zip(visitors, events):
             visitor.event_id = event.id
 
         return visitors

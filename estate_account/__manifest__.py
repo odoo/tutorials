@@ -8,5 +8,5 @@
     # any module necessary for this one to work correctly
     "depends": ["base", "estate", "account"],
     # always loaded
-    "data": [],
+    "data": ["security/ir.model.access.csv"],
 }

@@ -81,10 +81,11 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        if self.offer_ids:
-            self.best_price = max(self.offer_ids.mapped("price"))
-        else:
-            self.best_price = 0.0
+        for rec in self:
+            if rec.offer_ids:
+                rec.best_price = max(rec.offer_ids.mapped("price"))
+            else:
+                rec.best_price = 0.0
 
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
@@ -124,6 +125,7 @@ class EstateProperty(models.Model):
                 )
 
     def action_sold(self):
+        self.ensure_one()
         accepted_offer = self.offer_ids.filtered(lambda o: o.status == "accepted")
         if not accepted_offer:
             raise UserError(
