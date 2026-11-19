@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property test model'
+    _order = "id desc"
 
     def _get_availability_default():
         today = fields.Date.today()
