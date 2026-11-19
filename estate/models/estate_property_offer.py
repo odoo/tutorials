@@ -56,3 +56,4 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.state = 'received'
                 offer.property_id.partner_id = False
         return True
+        
