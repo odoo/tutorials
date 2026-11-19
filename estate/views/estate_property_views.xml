@@ -28,6 +28,10 @@
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
       <form string="New property">
+        <header>
+          <button type="object" name="action_sold" string="Sold" />
+          <button type="object" name="action_cancel" string="Cancel" />
+        </header>
         <field name="active" invisible="1" />
         <!-- Keep the archival actions visible in the actions button. -->
         <sheet>

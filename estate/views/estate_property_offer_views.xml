@@ -8,6 +8,8 @@
         <field name="partner_id" />
         <field name="validity" />
         <field name="date_deadline" />
+        <button type="object" name="action_accept" title="Accept" icon="check" />
+        <button type="object" name="action_refuse" title="Refuse" icon="close" />
         <field name="status" />
       </list>
     </field>

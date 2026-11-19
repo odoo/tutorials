@@ -1,6 +1,7 @@
 from typing import cast
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import date_utils
 
 
@@ -91,3 +92,21 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold(self) -> bool:
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError('Cannot sell a cancelled property.')
+
+            record.state = 'sold'
+
+        return True
+
+    def action_cancel(self) -> bool:
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('Cannot cancel a sold property.')
+
+            record.state = 'cancelled'
+
+        return True

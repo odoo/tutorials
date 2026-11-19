@@ -1,6 +1,13 @@
-from odoo import fields, models
+import typing
+
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import date_utils
+
+if typing.TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from .property import Property
 
 
 class PropertyOffer(models.Model):
@@ -44,3 +51,31 @@ class PropertyOffer(models.Model):
                 record.date_deadline - record.create_date.date()
             ).days if record.date_deadline and record.create_date else 0
             record.validity = delta_days
+
+    def action_accept(self) -> bool:
+        for record in self:
+            property = typing.cast('Property', record.property_id)
+            offers = typing.cast('Iterable[PropertyOffer]', property.offer_ids)
+
+            if any(
+                offer.status == 'accepted'
+                for offer in offers
+            ):
+                raise UserError(
+                    'An offer is already accepted for this property.'
+                )
+
+            record.status = 'accepted'
+            property.selling_price = record.price
+            property.buyer_id = record.partner_id
+
+        return True
+
+    def action_refuse(self) -> bool:
+        for record in self:
+            property = typing.cast('Property', record.property_id)
+            record.status = 'refused'
+            property.selling_price = property.expected_price
+            property.buyer_id = False
+
+        return True
