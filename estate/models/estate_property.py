@@ -1,27 +1,25 @@
 from odoo import fields, models
-from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    name = fields.Char(string="Name", required=True)
-    description = fields.Text(string="Description")
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
-    living_area = fields.Integer(string="Living Area")
-    postcode = fields.Char(string="Postcode")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
-    garden_area = fields.Integer(string="Garden Area")
+
+    name = fields.Char(required=True)
+    description = fields.Text()
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    living_area = fields.Integer()
+    postcode = fields.Char()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
     date_availability = fields.Date(
-        string="Availability Date",
-        default=lambda self: fields.Date.today() + relativedelta(months=3),
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
         copy=False,
     )
     garden_orientation = fields.Selection(
-        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("south", "South"),
@@ -29,10 +27,9 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    active = fields.Boolean(string="Active", default=False)
+    bedrooms = fields.Integer(default=2)
+    active = fields.Boolean()
     state = fields.Selection(
-        string="State",
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),

@@ -7,7 +7,6 @@
         "views/estate_property_views.xml",
         "views/estate_property_menus.xml"
     ],
-    "installable": True,
     "application": True,
     "license": "LGPL-3",
     "author": "Aayush kdm",
