@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
         string="Available From"
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(store=True, copy=False, compute="_compute_selling_price")
+    selling_price = fields.Float(store=True, copy=False, compute="_compute_sale")
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
@@ -48,7 +48,7 @@ class EstateProperty(models.Model):
         copy=False
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, compute="_compute_selling_price")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, compute="_compute_sale", store=True)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
@@ -69,7 +69,7 @@ class EstateProperty(models.Model):
                 record.best_price = 0.0
 
     @api.depends("offer_ids", "offer_ids.status", "offer_ids.price", "offer_ids.partner_id")
-    def _compute_selling_price(self):
+    def _compute_sale(self):
         for record in self:
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
             if accepted_offer:
