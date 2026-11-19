@@ -51,6 +51,12 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
+    @api.ondelete(at_uninstall=False)
+    def _unshift_only_new(self):
+        for property in self:
+            if property.state not in ('new', 'cancelled'):
+                raise UserError('Only new and cancelled properties can be deleted')
+
     ####################################################
     # CONSTRAINTS
     ####################################################
@@ -107,13 +113,6 @@ class EstateProperty(models.Model):
         for property in self:
             if not (property.garden_orientation and property.garden_area):
                 property.garden = False
-
-    ## On offer received move state
-    @api.onchange("offer_ids")
-    def _onchange_offers(self):
-        for property in self:
-            if property.offer_ids:
-                property.state = 'received'
 
     ####################################################
     # ACTIONS

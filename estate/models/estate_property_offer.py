@@ -27,6 +27,15 @@ class EstatePropertyOffer(models.Model):
         'The offer price must be a positive value'
     )
 
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            asset = self.env['estate.property'].browse(vals['property_id'])
+            asset.write({
+                'state': 'received',
+            })
+        return super().create(vals_list)
+
     @api.depends('validity', 'create_date')
     def _computed_date_deadline(self):
         for offer in self:
