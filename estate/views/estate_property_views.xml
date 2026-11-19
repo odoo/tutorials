@@ -41,7 +41,7 @@
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                     </div>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
                     <group>
                         <group>
                             <field name="state"/>
