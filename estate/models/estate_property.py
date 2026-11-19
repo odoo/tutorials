@@ -55,12 +55,12 @@ class EstateProperty(models.Model):
     # CONSTRAINTS
     ####################################################
 
-    _strictly_positive_expected_price = models.Constraint(
+    _constraint_strictly_positive_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price must be a positive value'
     )
 
-    _positive_selling_price = models.Constraint(
+    _constraint_positive_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)',
         'The selling price cannot be a negative value'
     )
@@ -99,8 +99,8 @@ class EstateProperty(models.Model):
                 property.garden_orientation = property.garden_orientation or 'north'
                 property.garden_area = property.garden_area or 10
             else:
-                property.garden_orientation = None
-                property.garden_area = None
+                property.garden_orientation = False
+                property.garden_area = 0
 
     @api.onchange("garden_orientation", "garden_area")
     def _onchange_garden_info(self):
@@ -119,7 +119,7 @@ class EstateProperty(models.Model):
     # ACTIONS
     ####################################################
 
-    def cancel_property(self):
+    def action_cancel_property(self):
         for property in self:
             if property.state == 'sold':
                 raise UserError(self.env._("You cannot set a previously sold property as Cancelled"))
@@ -127,7 +127,7 @@ class EstateProperty(models.Model):
             property.active = 0
         return True
 
-    def sell_property(self):
+    def action_sell_property(self):
         for property in self:
             if property.state == 'cancelled':
                 raise UserError(self.env._("You cannot set a previously cancelled property as Sold"))

@@ -22,7 +22,7 @@ class EstatePropertyOffer(models.Model):
     date = fields.Date(required=True, default=fields.Date.today(), string='Offer made on')
     property_type_id = fields.Many2one(related="property_id.type_id", stored=True)
 
-    _strictly_positive_offer_price = models.Constraint(
+    _constraint_strictly_positive_offer_price = models.Constraint(
         'CHECK(price > 0)',
         'The offer price must be a positive value'
     )
@@ -41,9 +41,11 @@ class EstatePropertyOffer(models.Model):
             if 'accepted' in offer.property_id.offer_ids.mapped('status'):
                 raise UserError('An offer has already been accepted')
             offer.status = 'accepted'
-            offer.property_id.selling_price = offer.price
-            offer.property_id.state = 'accepted'
-            offer.property_id.partner_id = offer.partner_id
+            offer.property_id.write({
+                'selling_price': offer.price,
+                'state': 'accepted',
+                'partner_id': offer.partner_id
+            })
         return True
 
     def refuse_offer(self):
@@ -53,7 +55,9 @@ class EstatePropertyOffer(models.Model):
                 offer.property_id.state == 'accepted'
                 and 'accepted' not in offer.property_id.offer_ids.mapped('status')
             ):
-                offer.property_id.selling_price = 0.0
-                offer.property_id.state = 'received'
-                offer.property_id.partner_id = False
+                offer.property_id.write({
+                    'selling_price': 0.0,
+                    'state': 'received',
+                    'partner_id': False
+                })
         return True

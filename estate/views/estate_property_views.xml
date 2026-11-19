@@ -41,12 +41,12 @@
                 <header>
                     <div invisible="state in ('sold', 'cancelled')">
                         <button 
-                            name="sell_property"
+                            name="action_sell_property"
                             type="object" 
                             string="Sell"
                         />
                         <button 
-                            name="cancel_property" 
+                            name="action_cancel_property" 
                             type="object" 
                             string="Cancel"
                         />
