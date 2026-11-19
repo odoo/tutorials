@@ -19,6 +19,7 @@
                 <button name="action_accept" type="object" icon="check" string="Accept" invisible="status"/>
                 <button name="action_refuse" type="object" icon="close" string="Refuse" invisible="status"/>
                 <field name="status" column_invisible="True"/>
+                <!-- needed by the row decorations and the buttons invisible attribute -->
                 <field name="property_type_id"/>
             </list>
         </field>
