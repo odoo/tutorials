@@ -13,7 +13,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
 
-    date_availability = fields.Date(copy=False, default=fields.Date.today() + relativedelta(months=3), string='Available From')
+    date_availability = fields.Date(copy=False, string='Available From',
+        default=fields.Date.today() + relativedelta(months=3))
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(compute="_compute_selling_price", copy=False)
