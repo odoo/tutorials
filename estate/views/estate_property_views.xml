@@ -18,6 +18,7 @@
                 <filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <separator/>
+                <filter string="State" name="groupby_state" context="{'group_by':'state'}"/>
                 <filter string="Postcode" name="groupby_postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
@@ -30,7 +31,7 @@
             <form string="Property">
                 <header>
                     <button name="action_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>

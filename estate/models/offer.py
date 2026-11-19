@@ -18,6 +18,11 @@ class PropertyOffer(models.Model):
     buyer_id = fields.Many2one('res.partner', string='Buyer', required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price for the offer must be strictly positive'
+    )
+
     @api.depends("create_date")
     def _util_from_date(self, record):
         return record.create_date.date() if record.create_date else fields.Date.today()
@@ -35,7 +40,10 @@ class PropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             record.state = 'accepted'
+            record.property_id.accept_offer(record.id)
+        return True
 
     def action_refuse(self):
         for record in self:
             record.state = 'refused'
+        return True

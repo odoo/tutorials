@@ -17,3 +17,8 @@ class PropertyTag(models.Model):
         string='Color Index', default=lambda self: self._default_color(),
         help='Tag color. No color means no display in kanban or front-end, to distinguish internal tags from public categorization tags.'
     )
+
+    _name_uniq = models.Constraint(
+        'unique(name)',
+        'A property tag with the same name already exists.',
+    )
