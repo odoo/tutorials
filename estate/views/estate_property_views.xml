@@ -91,7 +91,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <filter string="Available" name="available" domain="[('date_availability', '&lt;=', 'today')]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
