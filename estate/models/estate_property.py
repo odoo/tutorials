@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
         string="Available From"
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    selling_price = fields.Float(store=True, copy=False, compute="_compute_selling_price")
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
@@ -48,7 +48,7 @@ class EstateProperty(models.Model):
         copy=False
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, compute="_compute_selling_price")
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
@@ -68,6 +68,17 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
+    @api.depends("offer_ids", "offer_ids.status", "offer_ids.price", "offer_ids.partner_id")
+    def _compute_selling_price(self):
+        for record in self:
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
+            if accepted_offer:
+                record.selling_price = accepted_offer.price
+                record.buyer_id = accepted_offer.partner_id
+            else:
+                record.selling_price = 0.0
+                record.buyer_id = False
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -76,3 +87,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state != "cancelled":
+                record.state = "sold"
+            else:
+                raise exceptions.UserError(self.env._("Cancelled properties cannot be sold."))
+        return True
+
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state != "sold":
+                record.state = "cancelled"
+            else:
+                raise exceptions.UserError(self.env._("Sold properties cannot be cancelled."))
+        return True

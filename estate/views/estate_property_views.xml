@@ -27,6 +27,14 @@
         <field name='model'>estate.property</field>
         <field name='arch' type='xml'>
             <form string='Property'>
+                <header>
+                    <button name="action_set_sold" string="Sold"
+                            type="object" title="Mark as Sold"
+                            invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_set_cancelled" string="Cancelled"
+                            type="object" title="Mark as Cancelled"
+                            invisible="state in ['sold', 'cancelled']"/>
+                </header>
                 <sheet>
                         <div class="oe_title">
                             <h1>
@@ -36,6 +44,7 @@
                         </div>
                     <group>
                         <group>
+                            <field name='state'/>
                             <field name='postcode'/>
                             <field name='date_availability'/>
                             <field name='property_type_id'/>
