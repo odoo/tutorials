@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Float()
     garden_orientation = fields.Selection([('n', 'N'), ('s', 'S'), ('w', 'W'), ('e', 'E')])
     active = fields.Boolean(default=True)
-    status = fields.Selection([('_new', 'New'), ('offer_received', 'Offer received'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], default='_new', required=True)
+    state = fields.Selection([('new', 'New'), ('offer_received', 'Offer received'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], default='new', required=True, string="Status")
     user_id = fields.Many2one('res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
     partner_id = fields.Many2one('res.partner', string='Buyer', index=True)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")

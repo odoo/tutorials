@@ -6,9 +6,9 @@ class EstatePropertyOffer(models.Model):
     _description = "ESTATE property tag"
 
     currency_id = fields.Many2one(
-        'res.currency',
-        default=lambda self: self.env.company.currency_id, required=True)
+        "res.currency",
+        related="property_id.currency_id")
     price = fields.Monetary(currency_field='currency_id')
-    status = fields.Selection([("Accepted", "Accepted"), ("Refused", "Refused")], copy=False)
+    state = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")], copy=False)
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", required=True)
