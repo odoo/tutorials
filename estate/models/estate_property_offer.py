@@ -49,29 +49,26 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-        for val in vals_list:
-            property_id = val.get("property_id")
+        property_ids = {
+            vals.get("property_id") for vals in vals_list if vals.get("property_id")
+        }
+        properties = self.env["estate.property"].browse(property_ids)
+        properties_by_id = {property.id: property for property in properties}
 
-            if not property_id:
-                continue
+        for vals in vals_list:
+            property = properties_by_id.get(vals.get("property_id"))
+            price = vals.get("price", 0)
 
-            property = self.env["estate.property"].browse(property_id)
-            price = val.get("price", 0)
-
-            if price < property.best_price:
+            if property and price < property.best_price:
                 raise ValidationError(
-                    self.env._(
-                        "You cannot create offer lower than an existing offer."
-                    )
+                    self.env._("You cannot create offer lower than an existing offer.")
                 )
 
         offers = super().create(vals_list)
-        properties = offers.mapped('property_id').filtered(
-            lambda p: p.state != 'offer_received'
-        )
 
+        properties = offers.mapped("property_id").filtered(lambda p: p.state == "new")
         if properties:
-            properties.write({'state': 'offer_received'})
+            properties.write({"state": "offer_received"})
 
         return offers
 
