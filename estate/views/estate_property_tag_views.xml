@@ -15,7 +15,7 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="color"/>
+                        <field name="color" widget="color"/>
                     </group>
                 </sheet>
             </form>

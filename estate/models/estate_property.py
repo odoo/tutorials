@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -15,9 +17,8 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True, string='Title')
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Datetime(string='Available From',
-                                        copy=False,
-                                        default=fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Datetime(string='Available From', copy=False,
+                                        default=lambda self: fields.Date.context_today(self) + relativedelta(months=3))
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -38,7 +39,7 @@ class EstateProperty(models.Model):
         string='Garden orientation',
         selection=[('north', 'North'), ('east', 'East'),
                    ('south', 'South'), ('west', 'West')],
-        help="Type is used to separate Leads and Opportunities")
+        help="Orientation of the garden")
 
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -50,6 +51,12 @@ class EstateProperty(models.Model):
 
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+
+    @api.ondelete(at_uninstall=False)
+    def delete_restrictions(self):
+        for record in self:
+            if record.state == 'new' or record.state == 'cancelled':
+                raise UserError("Can't delete a new or cancelled property!")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -68,22 +75,20 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = False
 
     def action_sell_property(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(self.env._("Cancelled properties cannot be sold"))
-            else:
-                record.state = 'sold'
+            record.state = 'sold'
         return True
 
     def action_cancel_property(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError(self.env._("Sold properties cannot be cancelled"))
-            else:
-                record.state = 'cancelled'
+            record.state = 'cancelled'
         return True
 
     @api.constrains('selling_price', 'expected_price')

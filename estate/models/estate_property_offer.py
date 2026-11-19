@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,7 +22,19 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
-    
+
+    @api.model
+    def create(self, vals):
+        max_new_offers_price = max([offer['price'] for offer in vals],
+                                    default=0)
+        # TODO - cleaner way than taking vals[0] ?
+        for offer in self.env['estate.property'].browse(vals[0]['property_id']).offer_ids:
+            if offer.price > max_new_offers_price:
+                raise UserError("A new offer can't be lower in price than an existing offer!")
+
+        self.env['estate.property'].browse(vals[0]['property_id']).state = 'received'
+        return super().create(vals)
+
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
