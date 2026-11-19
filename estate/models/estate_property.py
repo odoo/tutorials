@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
         ('south', 'South'),
         ('east', 'East')
     ])
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
             ('new', 'New'),
@@ -105,16 +105,14 @@ class EstateProperty(models.Model):
     @api.onchange("garden_orientation", "garden_area")
     def _onchange_garden_info(self):
         for property in self:
-            if property.garden_orientation or property.garden_area:
-                property.garden = True
-            else:
+            if not (property.garden_orientation and property.garden_area):
                 property.garden = False
 
     ## On offer received move state
     @api.onchange("offer_ids")
     def _onchange_offers(self):
         for property in self:
-            if property.offer_ids and property.state == 'new':
+            if property.offer_ids:
                 property.state = 'received'
 
     ####################################################
