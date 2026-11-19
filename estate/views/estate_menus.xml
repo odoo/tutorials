@@ -2,7 +2,7 @@
 <odoo>
     <menuitem id="property_menu_root" name="Real Estate" web_icon="estate,static/icon.png">
         <menuitem id="property_menu" name="Advertisements">
-            <menuitem id="property_sub" name="Properties" action="estate_property_action"/>
+            <menuitem id="property_sub" action="estate_property_action"/>
         </menuitem>
     </menuitem>
 </odoo>
