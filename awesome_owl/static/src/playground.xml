@@ -1,9 +1,43 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container py-4">
+            <h3 class="mb-3">Todo List</h3>
+            <div class="mb-3">
+                <TodoList />
+            </div>
+
+            <h3 class="mb-3">Counter Playground</h3>
+            <div class="mb-3">
+                <div class="d-flex flex-wrap gap-3 mb-3">
+                    <Counter onChange.bind="incrementSum"/>
+                    <Counter onChange.bind="incrementSum"/>
+                    <div class="card p-4 m-3 shadow-sm" style="max-width: 350px;">
+                        <div class="card-body text-center">
+                            <h1 class="fw-bold mb-4">
+                                <t t-out="this.sum.value"/>
+                            </h1>
+                            <br/>
+                            <span class="fw-bold">Total Sum</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="mb-3">Cards</h3>
+            <div class="mb-3">
+                <div class="d-flex flex-wrap gap-3 mb-3">
+                    <Card title="'With Markup'">
+                        <t t-out="this.html"/>
+                    </Card>
+                    <Card title="'Plain Text'">
+                        <t t-esc="this.html2"/>
+                    </Card>
+                    <Card title="'Counter in a Card'">
+                        <Counter onChange.bind="incrementSum"/>
+                    </Card>
+                </div>
+            </div>
         </div>
     </t>
 
