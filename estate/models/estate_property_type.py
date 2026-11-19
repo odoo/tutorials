@@ -6,4 +6,3 @@ class EstatePropertyType(models.Model):
     _description = "What kind of estate property"
 
     name = fields.Char('Name', required=True, translate=True)
-

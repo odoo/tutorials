@@ -1,6 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 
 class EstateProperty(models.Model):
@@ -35,6 +37,20 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float('Total Area (sqm)', compute='_sum_total_area')
     best_price = fields.Float('Best Offer', compute='_compute_best_price')
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(self.env._('Cancelled property cannot be sold.'))
+            record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(self.env._('You cannot cancel a sold property.'))
+            record.state = 'cancelled'
+        return True
 
     @api.depends("living_area", "garden_area")
     def _sum_total_area(self):
