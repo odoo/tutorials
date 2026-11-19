@@ -58,7 +58,9 @@ class EstatePropertyOffer(models.Model):
     # region public methods
     def action_accept(self):
         for record in self:
-            if "accepted" in record.property_id.offer_ids.mapped("state"):
+            # not asked in the tutorial, but this prevents from having a UserError when clicking "Accept" on a already accepted offer
+            other_offers = record.property_id.offer_ids - record
+            if "accepted" in other_offers.mapped("state"):
                 raise UserError(
                     _("Only one offer can be accepted for a given property.")
                 )
