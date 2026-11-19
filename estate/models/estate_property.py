@@ -12,18 +12,18 @@ class EstateProperty(models.Model):
         today = fields.Date.today()
         return fields.Date.add(today, months=3)
 
-    name = fields.Char(required=True)
+    name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=_get_availability_default())
+    date_availability = fields.Date(string="Available from", copy=False, default=_get_availability_default())
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection([
         ('north', 'North'),
         ('west', 'West'),
@@ -124,6 +124,7 @@ class EstateProperty(models.Model):
             if property.state == 'sold':
                 raise UserError(self.env._("You cannot set a previously sold property as Cancelled"))
             property.state = "cancelled"
+            property.active = 0
         return True
 
     def sell_property(self):

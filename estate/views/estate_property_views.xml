@@ -10,14 +10,23 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
-                <field name="name" string="Title" width="200"/>
-                <field name="postcode" width="50"/>
+            <list
+                decoration-muted="state == 'sold'"
+                decoration-success="state in ('received', 'accepted')"
+                decoration-bf="state == 'accepted'" 
+            >
+                <field name="name" width="200"/>
+                <field name="type_id" width="100"/>
+                <field name="postcode" width="100"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}" width="200"/>
                 <field name="bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available from"/>
+                <field 
+                    name="date_availability"
+                    optional="hide"
+                />
             </list>
         </field>
     </record>
@@ -54,7 +63,7 @@
                         <group>
                             <field name="type_id" options="{'no_create': true}" />
                             <field name="postcode"/>
-                            <field name="date_availability" string="Available From"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -68,13 +77,13 @@
                                 <group>
                                     <field name="description"/>
                                     <field name="bedrooms"/>
-                                    <field name="living_area" string="Living Area (sqm)"/>
+                                    <field name="living_area"/>
                                     <field name="facades"/>
                                     <field name="garage"/>
                                 </group>
                                 <group>
                                     <field name="garden"/>
-                                    <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
                                     <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_area"/>
                                 </group>
@@ -82,7 +91,11 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ('accepted', 'sold', 'cancelled')">
-                                <list create="true">
+                                <list 
+                                    editable="bottom"
+                                    decoration-danger="status == 'refused'"
+                                    decoration-success="status == 'accepted'"
+                                >
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
@@ -101,7 +114,6 @@
                                         icon="close"
                                         invisible="status"
                                     />
-                                    <field name="status"/>
                                 </list>
                             </field>
                         </page>
@@ -122,7 +134,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" string="Title"/>
+                <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
