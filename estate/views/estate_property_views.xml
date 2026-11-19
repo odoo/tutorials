@@ -48,6 +48,9 @@
                                     <field name="garden_area" string="Garden Area (sqm)"/>
                                     <field name="garden_orientation"/>
                                 </group>
+                                <group>
+                                    <field name="total_area" string="Total Area"/>
+                                </group>
                             </page>
                             <page string="Offers">
                                 <field name="offer_ids"/>
