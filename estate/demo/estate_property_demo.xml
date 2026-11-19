@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="estate_property_demo_1" model="estate.property">
+        <field name="name">Villa </field>
+        <field name="description">A beautiful villa with a large garden area.</field>
+        <field name="postcode">38000</field>
+        <field name="date_availability">2026-11-25</field>
+        <field name="expected_price">500000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">250</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">south</field>
+    </record>
+
+    <record id="estate_property_demo_2" model="estate.property">
+        <field name="name">Apartment</field>
+        <field name="description">A modern apartment in the TownShip.</field>
+        <field name="postcode">380002</field>
+        <field name="date_availability">2026-09-15</field>
+        <field name="expected_price">300000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">120</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">east</field>
+    </record>
+
+    <record id="estate_property_demo_3" model="estate.property">
+        <field name="name">Row House</field>
+        <field name="description">This is for the family House with the space and the garden.</field>
+        <field name="postcode">380003</field>
+        <field name="date_availability">2027-01-10</field>
+        <field name="expected_price">400000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">80</field>
+        <field name="garden_orientation">north</field>
+    </record>
+
+</odoo>
