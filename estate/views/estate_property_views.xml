@@ -22,6 +22,7 @@
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state" column_invisible="True"/>
+                <!-- needed by the row decorations -->
             </list>
         </field>
     </record>
