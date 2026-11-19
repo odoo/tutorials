@@ -37,9 +37,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <label for="name"/>
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <label for="tag_ids"/>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
                     <group>
                         <group>

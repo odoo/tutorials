@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             start = record.create_date.date() if record.create_date else fields.Date.today()
-            record.date_deadline = fields.Date.add(start, days=record.validity)
+            record.date_deadline = fields.Date.add(start, days=record.validity) #if validity is not set, it is treated as 0
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -36,18 +36,21 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if "accepted" in record.property_id.offer_ids.mapped("status"):
-                raise UserError("An offer has already been accepted for this property.")
+            match record.property_id.state:
+                case "offer_accepted":
+                    raise UserError("An offer has already been accepted for this property.")
+                case "sold":
+                    raise UserError("The property has already been sold")
+                case "cancelled":
+                    raise UserError("This property has been cancelled")
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = "offer_accepted"
-        return True
 
     def action_refuse(self):
         for record in self:
             record.status = "refused"
-        return True
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',
