@@ -6,8 +6,8 @@ from odoo import Command, models
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def action_sold_property(self):
-        action = super().action_sold_property()
+    def action_finalize_sale(self):
+        super().action_finalize_sale()
 
         invoice = self.env["account.move"].create(
             {
@@ -37,8 +37,6 @@ class EstateProperty(models.Model):
             body=Markup("Customer invoice created: %s")
             % invoice._get_html_link(title="View Invoice")
         )
-
-        return action
 
     def action_view_invoices(self):
         return {
