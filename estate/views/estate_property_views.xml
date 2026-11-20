@@ -24,8 +24,6 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
-                <!-- state is needed for the row decorations -->
-                <field name="state" column_invisible="True"/>
             </list>
         </field>
     </record>
