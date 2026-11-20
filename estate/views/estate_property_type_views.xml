@@ -23,6 +23,10 @@
         <field name="arch" type="xml">
             <form string="Property type">
                 <sheet>
+                        <button class="oe_stat_button" icon="payments" type="action" name="%(estate.estate_property_offer_action)d">
+                            <span> <field name="offer_count"/></span>
+                            <span> Offers</span>
+                        </button>
                     <h1>
                         <b>
                             <field name="name"/>

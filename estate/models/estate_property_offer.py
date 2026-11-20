@@ -16,6 +16,7 @@ class EstatePropertyOffer(models.Model):
     create_date = fields.Date(default=fields.Date.today())
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id")
 
     """
     @api.model_create_multi
