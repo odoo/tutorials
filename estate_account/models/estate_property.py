@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
                 {
                     "partner_id": record.buyer_id.id,
                     "move_type": "out_invoice",
+                    "journal_id": 1,
                     "invoice_line_ids": [
                         Command.create({
                             "name": f"{record.name} - 6% commission",
