@@ -13,6 +13,7 @@ if typing.TYPE_CHECKING:
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Offer'
+    _order = 'price DESC'
 
     price = fields.Float('Price')
     status = fields.Selection(
@@ -30,6 +31,10 @@ class PropertyOffer(models.Model):
         'Deadline',
         compute='_compute_deadline',
         inverse='_inverse_deadline',
+    )
+    property_type_id = fields.Many2one(
+        'estate.property.type',
+        related='property_id.property_type_id',
     )
 
     create_date: fields.Datetime  # From Model
@@ -73,6 +78,7 @@ class PropertyOffer(models.Model):
             record.status = 'accepted'
             property.selling_price = record.price
             property.buyer_id = record.partner_id
+            property.state = 'offer_accepted'
 
         return True
 

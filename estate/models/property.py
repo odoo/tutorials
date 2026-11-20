@@ -8,6 +8,7 @@ from odoo.tools import date_utils, float_utils
 class Property(models.Model):
     _name = 'estate.property'
     _description = 'Property'
+    _order = 'id DESC'
 
     name = fields.Char('Title', required=True, translate=True)
     description = fields.Text('Description', translate=True)
@@ -120,6 +121,20 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.onchange('offer_ids')
+    def _onchange_offer_ids(self) -> None:
+        if (
+            self.state == 'new'
+            and len(self._origin.offer_ids) < len(self.offer_ids)
+        ):
+            self.state = 'offer_received'
+
+        elif (
+            self.state == 'offer_received'
+            and not self.offer_ids
+        ):
+            self.state = 'new'
 
     def action_sold(self) -> bool:
         for record in self:
