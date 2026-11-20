@@ -1,7 +1,7 @@
 from odoo import Command, models
 
 
-class InheritedEstateProperty(models.Model):
+class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
