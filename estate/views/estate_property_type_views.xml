@@ -4,12 +4,12 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="estate property type form">
-                <div class="oe_button_box" name="button_box">
-                    <button class="oe_stat_button" name="%(estate.estate_property_offer_action)d" type="action" icon="sell">
-                        <field name="offer_count" widget="statinfo" string="Offers"/>
-                    </button>
-                </div>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="%(estate.estate_property_offer_action)d" type="action" icon="sell">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
                     <h1>
                         <field name="name"/>
                     </h1>
