@@ -1,0 +1,17 @@
+.o_dashboard {
+  background-color: #262a36;
+}
+
+.o_dashboard_item {
+  min-height: 8rem;
+}
+
+.o_dashboard_pie_chart {
+  max-height: 18rem;
+}
+
+@media (max-width: 767.98px) {
+  .o_dashboard_item {
+    width: calc(100% - 1rem) !important;
+  }
+}
