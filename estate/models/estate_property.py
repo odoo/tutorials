@@ -59,13 +59,17 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if self.offer_ids and self.state == "new":
+            self.state = "offer_received"
+
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
                 raise exceptions.UserError("Cancelled property cannot be sold")
             else:
                 record.state = "sold"
-                return True
 
     def action_cancel(self):
         for record in self:
@@ -73,7 +77,6 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Sold property cannot be cancelled")
             else:
                 record.state = "cancelled"
-                return True
 
     @api.constrains("selling_price")
     def _check_selling_price(self):
