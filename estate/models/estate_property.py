@@ -117,9 +117,8 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    (
-                        "the selling price must be atleast 90% of expected price. which is =",
-                        record.expected_price,
+                    self.env._(
+                        f"the selling price must be atleast 90% of expected price. which is = {record.expected_price}"
                     )
                 )
 
