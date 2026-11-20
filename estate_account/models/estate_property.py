@@ -28,4 +28,4 @@ class EstateProperty(models.Model):
                     ],
                 }
             )
-        return super(EstateProperty, self).action_sold()
+        return super().action_sold()
