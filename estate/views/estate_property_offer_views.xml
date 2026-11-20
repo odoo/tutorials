@@ -13,12 +13,13 @@
         <field name="arch" type="xml">
             <list string="Offers" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price"/>
-                <field name="partner_id"/>
+                <field name="buyer_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <button name="action_accept" type="object" icon="check" string="Accept" invisible="status"/>
-                <button name="action_refuse" type="object" icon="close" string="Refuse" invisible="status"/>
+                <button name="action_accept" type="object" icon="check" string="Accept" invisible="status or not can_be_accepted"/>
+                <button name="action_refuse" type="object" icon="close" string="Refuse" invisible="status or not can_be_accepted"/>
                 <field name="status" column_invisible="True"/>
+                <field name="can_be_accepted" column_invisible="True"/>
                 <!-- needed by the row decorations and the buttons invisible attribute -->
                 <field name="property_type_id"/>
             </list>
@@ -33,7 +34,7 @@
                 <sheet>
                     <group>
                         <field name="price"/>
-                        <field name="partner_id"/>
+                        <field name="buyer_id"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
                         <field name="status"/>
