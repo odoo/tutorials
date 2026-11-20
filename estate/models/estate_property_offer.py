@@ -1,5 +1,8 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import api
+from odoo import fields
+from odoo import models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -39,3 +42,12 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             record.status = 'refused'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("property_id"):
+                property_rec = self.env["estate.property"].browse(vals["property_id"])
+                if property_rec.state == "sold":
+                    raise UserError(self.env._("You cannot create an offer for a sold property."))
+        return super().create(vals_list)

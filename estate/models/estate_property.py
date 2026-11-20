@@ -46,6 +46,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(self.env._('Cancelled property cannot be sold.'))
+            if not record.buyer_id:
+                raise UserError(self.env._('You cannot sell a property that has no buyer.'))
             record.state = 'sold'
         return True
 
