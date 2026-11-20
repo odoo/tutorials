@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Estate property" decoration-success="state == 'offer_received' or state == 'offer_accepted'"
+                  decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="date_availability" optional="True"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate property">
+                <header>
+                    <button name="action_do_sell" type="object" string="Sold"
+                            invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="action_do_cancel" type="object" string="Cancel"
+                            invisible="state == 'sold' or state == 'cancelled'"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
+                    <widget name="web_ribbon" title="Cancelled" bg_color="text-bg-danger"
+                            invisible="state != 'cancelled'"/>
+                    <div class="oe_title">
+                        <label for="name" string="Name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Residential"/>
+                        </h1>
+                        <field name="tag_ids" widget="many2many_tags"
+                               options="{'color_field': 'color', 'no_edit_color': false, 'edit_tags': true, 'on_tag_click': 'edit_color'}"/>
+                        <br/>
+                        <br/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price" invisible="state != 'sold'"/>
+                            <button type="action" name="%(estate.estate_property_offer_action_offers)d"
+                                    string="Show offers"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"
+                                       readonly="state == 'accepted' or state == 'sold' or state == 'cancelled'"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate property">
+                <filter name="available" string="Available" domain="[('state','!=','sold')]"
+                        help="Show only available properties"/>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]" string="Minimum living area"/>
+                <field name="facades"/>
+                <separator/>
+                <filter name="new" string="New" domain="[('state', '=', 'New')]"/>
+                <filter name="offer_received" string="Offer received" domain="[('state', '=', 'offer_received')]"/>
+                <group>
+                    <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
