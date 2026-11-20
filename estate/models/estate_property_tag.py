@@ -7,6 +7,7 @@ class EstatePropertyTag(models.Model):
     _order = "name asc"
 
     name = fields.Char(required=True)
+    color = fields.Integer(default=0)
 
     _name_unique = models.UniqueIndex(
         "(LOWER(name))",

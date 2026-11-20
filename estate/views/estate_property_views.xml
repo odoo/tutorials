@@ -6,6 +6,10 @@
             <list string="Properties">
                 <field name="name"/>
                 <field name="state" string="Status"/>
+                <field name="tag_ids" 
+                    widget="many2many_tags" 
+                    options="{'color_field': 'color',
+                    'on_tag_click': 'edit_color'}"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -41,7 +45,10 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" 
+                                widget="many2many_tags" 
+                                options="{'color_field': 'color',
+                                'on_tag_click': 'edit_color'}"/>
                             <field name="postcode"/>
                         </group>
                         <group>
