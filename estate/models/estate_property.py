@@ -1,4 +1,3 @@
-from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -29,7 +28,7 @@ class EstateProperty(models.Model):
 
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
+        copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)

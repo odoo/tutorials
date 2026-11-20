@@ -1,4 +1,3 @@
-from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
 from odoo import api, fields, models
@@ -34,7 +33,7 @@ class EstatePropertyOffer(models.Model):
             base_date = (
                 offer.create_date.date() if offer.create_date else fields.Date.today()
             )
-            offer.date_deadline = base_date + relativedelta(days=offer.validity)
+            offer.date_deadline = fields.Date.add(base_date, days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
