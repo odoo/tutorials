@@ -128,6 +128,8 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         for property in self:
+            if 'accepted' not in property.offer_ids.mapped('status'):
+                raise UserError(self.env._("You can't sell a property without an accepted offer"))
             if property.state == 'cancelled':
                 raise UserError(self.env._("You cannot set a previously cancelled property as Sold"))
             property.state = "sold"

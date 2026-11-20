@@ -31,6 +31,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             asset = self.env['estate.property'].browse(vals['property_id'])
+            if asset.state in ('sold', 'canceled'):
+                raise UserError("Offers cannot be made for %s properties" % (asset.state))
             if ( 
                 len(asset.offer_ids)
                 and vals['price'] <= min(asset.offer_ids.mapped('price'))
