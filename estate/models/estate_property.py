@@ -12,6 +12,8 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     name = fields.Char('Title', required=True)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     description = fields.Text()
     # property_type = fields.Selection([('house', 'House'), ('apartment', 'Apartment')], required=True)
     postcode = fields.Char()
@@ -37,6 +39,11 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new')
+
+    offer_ids = fields.One2many('estate.property.offer', inverse_name='property_id', copy=False)
+
+    user_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
+    partner_id = fields.Many2one('res.partner', string="Buyer", copy=False)
 
     _check_bedrooms = models.Constraint(
         'CHECK(bedrooms >= 0)',
