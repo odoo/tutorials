@@ -25,7 +25,12 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
-    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -70,5 +75,9 @@ class EstatePropertyOffer(models.Model):
                 max_offer = max(prop.mapped("offer_ids.price"))
                 if float_compare(vals["price"], max_offer, precision_digits=2) < 0:
                     raise UserError(f"The offer must be higher than {max_offer:.2f}.")
+                elif prop.state == "sold":
+                    raise UserError(
+                        "This property has already been sold so you cannot create a new offer for it."
+                    )
             prop.state = "offer_received"
         return super().create(vals_list)

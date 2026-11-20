@@ -23,7 +23,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
-        string="Status"
+        string="Status",
     )
 
     postcode = fields.Char()
@@ -79,6 +79,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "canceled":
                 raise UserError("Canceled properties cannot be sold.")
+            elif record.state != "offer_accepted":
+                raise UserError("Properties with accepted offers cannot be sold.")
             record.state = "sold"
         return True
 
