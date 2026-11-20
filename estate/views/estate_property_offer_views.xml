@@ -10,14 +10,17 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property offer">
+            <list string="Property offer" editable="top" decoration-success="state == 'accepted'"
+                  decoration-bf="state == 'accepted'" decoration-danger="state == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <field name="state"/>
-                <button name="action_do_accept" type="object" icon="check" string="Accept"/>
-                <button name="action_do_refuse" type="object" icon="close" string="Decline"/>
+                <button name="action_do_accept" type="object" icon="check" string="Accept"
+                        invisible="property_state == 'sold'"/>
+                <button name="action_do_refuse" type="object" icon="close" string="Decline"
+                        invisible="state != 'accepted' and property_state == 'sold'"/>
+                <field name="property_type_id"/>
             </list>
         </field>
     </record>

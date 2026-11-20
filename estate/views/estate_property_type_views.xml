@@ -11,6 +11,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property type">
+                <field name="sequence" widget="handle"/>
                 <field name="name" string="Title"/>
             </list>
         </field>
@@ -28,6 +29,25 @@
                             <field name="name" placeholder="e.g. Residential"/>
                         </h1>
                     </div>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_offers"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="hourglass_bottom">
+                            <field string="Offers" name="offer_count" widget="statinfo"/>
+                        </button> <!-- type=object if python action; type=action with name=%(action)d if xml -->
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list string="Properties" editable="top">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

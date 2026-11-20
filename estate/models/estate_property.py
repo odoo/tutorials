@@ -1,12 +1,14 @@
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
-    name = fields.Char(required=True, string="title")
+    name = fields.Char(required=True, string="Title")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(string="Available from", copy=False,
@@ -25,9 +27,8 @@ class EstateProperty(models.Model):
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
         selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"),
-                   ("sold", "Sold"), ("cancelled", "Cancelled")], required=True,
-        copy=False, default="new")
-    type_id = fields.Many2one("estate.property.type", string="Property Type")
+                   ("sold", "Sold"), ("cancelled", "Cancelled")], required=True, copy=False, default="new")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     salesperson = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -36,8 +37,8 @@ class EstateProperty(models.Model):
     best_price = fields.Integer(compute="_compute_best_price")
 
     _check_positive_selling_price = models.Constraint('CHECK(selling_price >= 0)',
-                                                      'The selling price can\'t be negative.', )
-    _check_expected_price = models.Constraint('CHECK(expected_price >= 0)', 'The expected price can\'t be negative.', )
+                                                      'The selling price can\'t be negative.')
+    _check_expected_price = models.Constraint('CHECK(expected_price >= 0)', 'The expected price can\'t be negative.')
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -58,7 +59,7 @@ class EstateProperty(models.Model):
     def action_do_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError(_("Sold properties cannot be canceled"))
+                raise UserError(_("Sold properties cannot be cancelled"))
             else:
                 record.state = "cancelled"
         return True
