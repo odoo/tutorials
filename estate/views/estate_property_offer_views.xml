@@ -17,7 +17,7 @@
                             <field name="date_deadline"/>
                         </group>
                         <group>
-                            <field name="status"/>
+                            <field name="state"/>
                         </group>
                     </group>
                 </sheet>

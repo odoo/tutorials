@@ -25,8 +25,8 @@
             <form string="Property">
                 <header>
                     <field name="state" widget="statusbar"/>
-                    <button name="action_sold_property" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <button name="action_cancel_property" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="action_sold_property" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_cancel_property" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
                 </header>
                 <sheet>
                     <h1>
@@ -61,13 +61,13 @@
                         </page>
                         <page string='Offers'>
                             <field name="offer_ids" readonly="state in ('sold', 'offer_accepted', 'cancelled')">
-                                <list string="Offers" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'" editable="bottom">
+                                <list string="Offers" decoration-success="state == 'accepted'" decoration-danger="state == 'refused'" editable="bottom">
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
-                                    <button name="action_accept_offer" type="object" icon="check" title="Accept Offer" invisible="status in ('accepted', 'refused')"/>
-                                    <button name="action_refuse_offer" type="object" icon="close" title="Refuse Offer" invisible="status in ('accepted', 'refused')"/>
+                                    <button name="action_accept_offer" type="object" icon="check" title="Accept Offer" invisible="state in ('accepted', 'refused')"/>
+                                    <button name="action_refuse_offer" type="object" icon="close" title="Refuse Offer" invisible="state in ('accepted', 'refused')"/>
                                 </list>
                             </field>
                         </page>
@@ -94,8 +94,7 @@
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="expected_price"/>
                 <field name="facades"/>
-                <filter name="available" string="Available" domain="['|',
-                    ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <group>
                     <filter name="postcode_group" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
