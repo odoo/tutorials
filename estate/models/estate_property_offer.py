@@ -1,5 +1,3 @@
-from dateutil.relativedelta import relativedelta
-
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -8,10 +6,6 @@ class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Property Offer'
     _order = "price desc"
-    _check__price = models.Constraint(
-        'CHECK(price > 0)',
-        'The price of an offer must be strictly positive.'
-    )
 
     price = fields.Float()
     status = fields.Selection(
@@ -31,16 +25,33 @@ class EstatePropertyOffer(models.Model):
     )
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
+    _check__price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price of an offer must be strictly positive.'
+    )
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
             start_date = record.create_date if record.create_date else fields.Date.today()
-            record.date_deadline = start_date + relativedelta(days=+record.validity)
+            record.date_deadline = fields.Date.add(start_date, days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
             start_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - start_date).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        property_ids = self.env["estate.property"].browse(vals.get("property_id") for vals in vals_list)
+        property_ids.mapped("offer_ids.price")
+        property_map = {prop.id: prop for prop in property_ids}
+
+        for vals in vals_list:
+            property_record = property_map.get(vals.get("property_id"))
+            if vals.get("price") <= property_record.best_price:
+                raise UserError(self.env._("The offer must be higher than %s !", property_record.best_price))
+        return super().create(vals_list)
 
     def action_accept_offer(self):
         for record in self:
@@ -54,14 +65,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
-
-    @api.model
-    def create(self, vals):
-        for val in vals:
-            property_record = self.env["estate.property"].browse(val["property_id"])
-            property_record.state = "received"
-
-            existing_prices = property_record.offer_ids.mapped("price")
-            if existing_prices and val["price"] < min(existing_prices):
-                raise UserError(self.env._(f"The offer must be higher than {min(existing_prices)} !"))
-        return super().create(vals)

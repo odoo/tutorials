@@ -1,5 +1,3 @@
-from dateutil.relativedelta import relativedelta
-
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -10,21 +8,12 @@ class EstateProperty(models.Model):
     _description = "Estate"
     _order = "id desc"
 
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected price must be strictly positive.'
-    )
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'The selling price must be positive.'
-    )
-
     name = fields.Char(required=True, string='Title')
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
-        default=lambda self: fields.Date.today() + relativedelta(months=+3),
+        default=lambda _: fields.Date.add(fields.Date.today(), months=3),
         string="Available From"
     )
     expected_price = fields.Float(required=True)
@@ -69,6 +58,15 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.'
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive.'
+    )
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -77,12 +75,9 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_price = 0.0
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
 
-    @api.depends("offer_ids", "offer_ids.status", "offer_ids.price", "offer_ids.partner_id")
+    @api.depends("state", "offer_ids.status", "offer_ids.price", "offer_ids.partner_id")
     def _compute_sale(self):
         for record in self:
             if record.state in ["sold", "cancelled"]:
@@ -95,9 +90,17 @@ class EstateProperty(models.Model):
             else:
                 record.selling_price = 0.0
                 record.buyer_id = False
-                if not record.offer_ids:
-                    record.state = "new"
+                record.state = "received" if record.offer_ids else "new"
         return True
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_minimum(self):
+        for record in self:
+            if (
+                not float_is_zero(record.selling_price, precision_digits=2)
+                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0
+            ):
+                raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price."))
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -107,6 +110,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def delete_property(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(self.env._("Only new and cancelled properties can be deleted."))
 
     def action_set_sold(self):
         for record in self:
@@ -123,18 +132,3 @@ class EstateProperty(models.Model):
             else:
                 raise UserError(self.env._("Sold properties cannot be cancelled."))
         return True
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if (
-                not float_is_zero(record.selling_price, precision_digits=2)
-                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0
-            ):
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
-
-    @api.ondelete(at_uninstall=False)
-    def delete_property(self):
-        for record in self:
-            if record.state not in ['new', 'cancelled']:
-                raise UserError(self.env._("Only new and cancelled properties can be deleted."))
