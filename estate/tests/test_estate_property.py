@@ -1,5 +1,5 @@
 from odoo.exceptions import UserError
-from odoo.tests import TransactionCase, tagged
+from odoo.tests import Form, TransactionCase, tagged
 
 
 @tagged('post_install', '-at_install')
@@ -55,3 +55,17 @@ class TestEstateProperty(TransactionCase):
 
         with self.assertRaises(UserError):
             self._create_offer(99000)
+
+    def test_garden_onchange(self):
+        """Unchecking the garden resets its area and orientation."""
+        with Form(self.env['estate.property']) as property_form:
+            property_form.name = 'Garden House'
+            property_form.expected_price = 100000
+
+            property_form.garden = True
+            self.assertEqual(property_form.garden_area, 10)
+            self.assertEqual(property_form.garden_orientation, 'north')
+
+            property_form.garden = False
+            self.assertEqual(property_form.garden_area, 0)
+            self.assertFalse(property_form.garden_orientation)
