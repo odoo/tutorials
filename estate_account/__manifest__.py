@@ -5,8 +5,6 @@
     'application': False,
     'author': 'lobas',
     'license': 'LGPL-3',
-    'data': [
-    ],
     'depends': [
         'estate',
         'account'
