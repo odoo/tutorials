@@ -5,7 +5,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Estate Property Type">
-                <button type="action" class="oe_stat_button" name="%(estate.estate_property_offers_type_action)d" string="Offers of this type"/>
+                <button type="action" class="oe_stat_button" name="estate.estate_property_offers_type_action" string="Offers of this type"/>
                 <sheet>
                     <div class="oe_title">
                         <div class="oe_edit_only">

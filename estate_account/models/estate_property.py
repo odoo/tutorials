@@ -6,9 +6,10 @@ class EstateProperty(models.Model):
 
     def action_sell_property(self):
         for record in self:
+            account_journal = record.env['account.journal'].search([('name', '=', 'Sales')])
             self.env['account.move'].create({'partner_id': record.buyer_id.id,
                                             'move_type': 'out_invoice',
-                                            'journal_id': 1,
+                                            'journal_id': account_journal.id,
                                             'invoice_line_ids': [
                                                 Command.create({
                                                     "name": "Initial payment",
@@ -22,6 +23,4 @@ class EstateProperty(models.Model):
                                                 })
                                             ],
                                             })
-        # TODO - journal_id? I went in DEV mode to hardcode the sales journal, but how to find it from config?
-
         return super().action_sell_property()

@@ -25,14 +25,18 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        max_new_offers_price = max([offer['price'] for offer in vals],
-                                    default=0)
-        # TODO - cleaner way than taking vals[0] ?
-        for offer in self.env['estate.property'].browse(vals[0]['property_id']).offer_ids:
-            if offer.price > max_new_offers_price:
+        # Group all current offers by property_id, and extract the minimum price of its offers
+        min_price_by_property_id = {
+            property.id : min(group_orders.mapped('price'))
+            for property, group_orders in self.env['estate.property.offer'].search([('property_id', 'in', [offer['property_id'] for offer in vals])]).grouped('property_id').items()
+        }
+
+        for offer in vals:
+            min_curr_price = min_price_by_property_id.get(offer['property_id'], 0)
+            if offer['price'] < min_curr_price:
                 raise UserError("A new offer can't be lower in price than an existing offer!")
 
-        self.env['estate.property'].browse(vals[0]['property_id']).state = 'received'
+        self.env['estate.property'].search([('id', 'in', [offer['property_id'] for offer in vals])]).state = 'received'
         return super().create(vals)
 
     @api.depends("create_date", "validity")
