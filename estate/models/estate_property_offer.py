@@ -28,14 +28,15 @@ class EstatePropertyOffer(models.Model):
     )
 
     _check_price = models.Constraint(
-        'CHECK(price > 0)', 'The offer price must be strictly positive.'
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive.',
     )
 
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
             record.date_deadline = record._get_create_date() + timedelta(
-                days=record.validity
+                days=record.validity,
             )
 
     def _inverse_date_deadline(self):
@@ -47,11 +48,10 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             estate_property = self.env['estate.property'].browse(vals['property_id'])
             if estate_property.offer_ids and vals['price'] <= max(
-                estate_property.offer_ids.mapped('price')
+                estate_property.offer_ids.mapped('price'),
             ):
-                raise UserError(
-                    'The offer price must be greater than the existing offers.'
-                )
+                msg = 'The offer price must be greater than the existing offers.'
+                raise UserError(msg)
             if estate_property.state == 'new':
                 estate_property.state = 'offer_received'
         return super().create(vals_list)
@@ -59,11 +59,14 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         for record in self:
             if record.property_id.state == 'canceled':
-                raise UserError('Canceled properties cannot accept offers.')
+                msg = 'Canceled properties cannot accept offers.'
+                raise UserError(msg)
             if record.property_id.state == 'sold':
-                raise UserError('Sold properties cannot accept offers.')
+                msg = 'Sold properties cannot accept offers.'
+                raise UserError(msg)
             if record.property_id.state == 'offer_accepted':
-                raise UserError('An offer has already been accepted.')
+                msg = 'An offer has already been accepted.'
+                raise UserError(msg)
             record.state = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
