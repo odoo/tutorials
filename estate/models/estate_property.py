@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     _description = "Estate"
     _order = "id desc"
 
-    name = fields.Char(required=True, string='Title')
+    name = fields.Char(required=True, string="Title")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -59,12 +59,12 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
     _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected price must be strictly positive.'
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive."
     )
     _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'The selling price must be positive.'
+        "CHECK(selling_price >= 0)",
+        "The selling price must be positive."
     )
 
     @api.depends("garden_area", "living_area")
@@ -75,14 +75,14 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.depends("state", "offer_ids.status", "offer_ids.price", "offer_ids.partner_id")
     def _compute_sale(self):
         for record in self:
             if record.state in ["sold", "cancelled"]:
                 continue
-            accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")
             if accepted_offer:
                 record.selling_price = accepted_offer.price
                 record.buyer_id = accepted_offer.partner_id
@@ -93,7 +93,7 @@ class EstateProperty(models.Model):
                 record.state = "received" if record.offer_ids else "new"
         return True
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price_minimum(self):
         for record in self:
             if (
@@ -114,7 +114,7 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def delete_property(self):
         for record in self:
-            if record.state not in ['new', 'cancelled']:
+            if record.state not in ["new", "cancelled"]:
                 raise UserError(self.env._("Only new and cancelled properties can be deleted."))
 
     def action_set_sold(self):
