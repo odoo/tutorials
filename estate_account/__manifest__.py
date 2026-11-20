@@ -8,11 +8,7 @@
     """,
     'category': 'Tutorials',
     'depends': [
-        'base',
         'estate',
         'account',
-    ],
-    'data': [
-        'security/ir.access.csv'
     ]
 }

@@ -7,9 +7,10 @@ class Property(models.Model):
 
     def action_sold(self):
         for property in self:
-            self.env["account.move"].sudo().with_context(default_move_type="out_invoice").create({
+            self.env["account.move"].sudo().create({
                 'partner_id': property.buyer_id.id,
                 'journal_id': 1,
+                'move_type': 'out_invoice',
                 'line_ids': [
                     Command.create({
                         "name": property.name,

@@ -46,7 +46,6 @@
                         </h1>
                         <label for="tag_ids" class="me-2"/>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_edit_color': false, 'edit_tags': true}"/>
-                        <!-- The active field is only required to show the ribbon -->
                         <field name="active" invisible="1"/>
                         <!-- The active field is only required to show the ribbon -->
                     </div>
