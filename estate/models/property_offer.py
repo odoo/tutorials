@@ -2,7 +2,7 @@ import typing
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
-from odoo.tools import date_utils
+from odoo.tools import date_utils, float_utils
 
 if typing.TYPE_CHECKING:
     from collections.abc import Iterable
@@ -61,6 +61,49 @@ class PropertyOffer(models.Model):
                 record.date_deadline - record.create_date.date()
             ).days if record.date_deadline and record.create_date else 0
             record.validity = delta_days
+
+    @api.model
+    def create(  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        args: list[dict[str, typing.Any]]
+    ) -> typing.Any:
+        for record in args:
+            property_id: int = record['property_id']
+            property = typing.cast(
+                'Property',
+                self.env['estate.property'].browse(property_id)
+            )
+            property.ensure_one()
+
+            for offer in typing.cast(
+                'Iterable[PropertyOffer]',
+                property.offer_ids,
+            ):
+                if float_utils.float_compare(
+                    self.price,
+                    offer.price,
+                    precision_rounding=.01,
+                ) == -1:
+                    raise UserError(
+                        "Can't create an offer with a lower amount than an "
+                        'existing offer.'
+                    )
+
+            if property.state == 'new':
+                property.state = 'offer_received'
+
+        return super().create(args)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_and_reset_property_state(self) -> None:
+        for record in self:
+            property = typing.cast('Property', record.property_id)
+            if (
+                property.state == 'offer_received'
+                and len(property.offer_ids) == 1
+                and property.offer_ids[0].id == record.id
+            ):
+                property.state = 'new'
 
     def action_accept(self) -> bool:
         for record in self:

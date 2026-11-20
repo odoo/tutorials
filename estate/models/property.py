@@ -122,19 +122,15 @@ class Property(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.onchange('offer_ids')
-    def _onchange_offer_ids(self) -> None:
-        if (
-            self.state == 'new'
-            and len(self._origin.offer_ids) < len(self.offer_ids)
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_new_or_cancelled(self) -> None:
+        if any(
+            property.state not in {'new', 'cancelled'}
+            for property in self
         ):
-            self.state = 'offer_received'
-
-        elif (
-            self.state == 'offer_received'
-            and not self.offer_ids
-        ):
-            self.state = 'new'
+            raise UserError(
+                'Only new and cancelled properties can be deleted.'
+            )
 
     def action_sold(self) -> bool:
         for record in self:
