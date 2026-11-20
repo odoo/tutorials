@@ -1,6 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError, UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -32,6 +34,29 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', "property_id", string="Offers")
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price >=0)',
+        'Expected price must be positive'
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >=0)',
+        'Selling price must be positive'
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not record.selling_price:
+                continue
+
+            if float_compare(record.selling_price,
+                             record.expected_price * 0.9,
+                             precision_rounding=record.currency_id.rounding,
+                             ) < 0:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
+
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
         for record in self:
@@ -50,3 +75,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cannot sell a cancelled property")
+            else:
+                record.state = "sold"
+
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Cannot cancell a sold property")
+            else:
+                record.state = "cancelled"

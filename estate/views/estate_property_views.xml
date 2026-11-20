@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name"/>
+                <field name="state" string="Status"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -20,6 +21,22 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Edit Property">
+                <header>
+                    <button name="action_set_sold"
+                            type="object"
+                            string="Sold"
+                            class="btn-primary"
+                            invisible="state in ('sold', 'cancelled')"/>
+
+                    <button name="action_set_cancelled"
+                            type="object"
+                            string="Cancel"
+                            invisible="state in ('sold', 'cancelled')"/>
+
+                    <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="new,offer_received,sold"/>
+                </header>
                 <sheet>
                     <group>
                         <group>

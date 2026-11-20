@@ -12,11 +12,16 @@ class EstatePropertyOffer(models.Model):
         "res.currency",
         related="property_id.currency_id")
     price = fields.Monetary(currency_field='currency_id')
-    state = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")], copy=False)
+    state = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")], copy=False, readonly=True)
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7, compute="_compute_validity", inverse="_inverse_validity")
     date_deadline = fields.Date()
+
+    _check_price = models.Constraint(
+        'CHECK(price >= 0)',
+        'Price must be positive'
+    )
 
     @api.depends("date_deadline", "create_date")
     def _compute_validity(self):
