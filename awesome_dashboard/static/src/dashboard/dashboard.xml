@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.NiceAndAwesomeDashboard">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+
+            <t t-set-slot="layout-buttons">
+                <button class="btn text-bg-primary" t-on-click="this.openSettings">
+                    Customers
+                </button>
+                <button class="btn text-bg-primary" t-on-click="this.openLeads">
+                    Leads
+                </button>
+                <button class="btn btn-light fa fa-gear" title="Dashboard settings" t-on-click="openSettingsDialog"/>
+            </t>
+
+            <div class="d-flex flex-wrap p-3">
+                <t t-foreach="settings.items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(this.state) : {'data': this.state}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+            </div>
+
+        </Layout>
+    </t>
+
+</templates>

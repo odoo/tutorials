@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="estate_assign_type_view_form" model="ir.ui.view">
+        <field name="name">estate.assign.type.view.form</field>
+        <field name="model">estate.assign.type.wizard</field>
+        <field name="arch" type="xml">
+            <form string="estate_property_assign_type_form">
+                <sheet>
+                    <group>
+                        <field name="property_type_id"/>
+                    </group>
+                    <group>
+                        <field name="property_ids" domain="[('property_type_id', '!=', property_type_id)]" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Assign Types" name="action_assign_type" type="object" class="oe_highlight" data-hotkey="q"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

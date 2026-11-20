@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="partner_arjun_mehta" model="res.partner">
+        <field name="name">Arjun Mehta</field>
+        <field name="email">arjun.mehta@example.com</field>
+        <field name="phone">+91 98765 43210</field>
+        <field name="city">Mumbai</field>
+        <field name="country_id" ref="base.in" />
+    </record>
+
+    <record id="partner_neha_sharma" model="res.partner">
+        <field name="name">Neha Sharma</field>
+        <field name="email">neha.sharma@example.com</field>
+        <field name="phone">+91 98765 43211</field>
+        <field name="city">Delhi</field>
+        <field name="country_id" ref="base.in" />
+    </record>
+
+    <record id="partner_rohan_patel" model="res.partner">
+        <field name="name">Rohan Patel</field>
+        <field name="email">rohan.patel@example.com</field>
+        <field name="phone">+91 98765 43212</field>
+        <field name="city">Ahmedabad</field>
+        <field name="country_id" ref="base.in" />
+    </record>
+
+    <record id="partner_kavya_iyer" model="res.partner">
+        <field name="name">Kavya Iyer</field>
+        <field name="email">kavya.iyer@example.com</field>
+        <field name="phone">+91 98765 43213</field>
+        <field name="city">Bengaluru</field>
+        <field name="country_id" ref="base.in" />
+    </record>
+
+</odoo>

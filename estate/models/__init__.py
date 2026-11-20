@@ -1,0 +1,6 @@
+from . import estate_property
+from . import estate_property_type
+from . import estate_property_tag
+from . import estate_property_offer
+from . import mail_compose_message
+from . import res_users
