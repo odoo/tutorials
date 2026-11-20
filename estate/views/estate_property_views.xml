@@ -23,9 +23,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <field name="state" widget="statusbar"/>
                     <button name="action_sold_property" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'"/>
                     <button name="action_cancel_property" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
-                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -93,7 +95,7 @@
                 <field name="expected_price"/>
                 <field name="facades"/>
                 <filter name="available" string="Available" domain="['|',
-                    ('state', '=', 'new'), ('state', '=', 'offer')]"/>
+                    ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <group>
                     <filter name="postcode_group" string="Postcode" context="{'group_by':'postcode'}"/>
                 </group>
