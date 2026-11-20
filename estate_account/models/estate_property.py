@@ -22,12 +22,12 @@ class EstateProperty(models.Model):
                         "price_unit": record.selling_price * 0.06
                     }),
                     Command.create({
-                        "name": self.env._(f"Administrative fees"),
+                        "name": self.env._("Administrative fees"),
                         "quantity": 1,
                         "price_unit": 100.00
                     }),
                 ]
             }
-            moves = self.env["account.move"].create(vals)
+            self.env["account.move"].create(vals)
 
         return super().action_set_sold()
