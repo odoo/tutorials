@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import date_utils, float_utils as fu
 
@@ -6,18 +6,29 @@ from odoo.tools import date_utils, float_utils as fu
 class PropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Property type"
+    _order = 'sequence'
 
     name = fields.Char('Name', required=True)
+    sequence = fields.Integer('Sequence', default=0)
+    property_ids = fields.One2many('estate.property', 'type_id', string="Properties")
+    offer_ids = fields.One2many('estate.property.offer', 'property_type_id', 'Offers')
+    offer_count = fields.Integer(compute="_compute_offer_count")
 
     _name_uniq = models.Constraint(
         'unique(name)',
         'A property type with the same name already exists.',
     )
 
+    @api.depends("offer_ids")
+    def _compute_offer_count(self):
+        for offer in self:
+            offer.offer_count = len(offer.offer_ids.ids)
+
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _order = 'id desc'
 
     name = fields.Char('Property Name', required=True)
     description = fields.Text('Property Description')
@@ -67,12 +78,10 @@ class Property(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            best_offer = 0.0 if not record.best_offer else record.best_offer
-            for offer in record.offer_ids:
-                record.best_offer = max(best_offer, offer.price)
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -86,42 +95,21 @@ class Property(models.Model):
     @api.constrains("selling_price", "expected_price")
     def check_selling_price(self):
         for record in self:
-            if not fu.float_is_zero(record.selling_price, precision_digits=2) and fu.float_compare(record.selling_price, (record.expected_price * 0.9), precision_rounding=0.01) < 0:
-                raise ValidationError(_('The selling price must be at least 90%% of the expected_price : \n The accepted Selling Price (%s) is %s %% of the expected price (%s)') % (record.selling_price, fu.float_round((record.selling_price / record.expected_price) * 100, 2), record.expected_price))
-
-    @api.depends("selling_price", "offer_ids", "buyer_id")
-    def accept_offer(self, offer_id):
-        for record in self:
-            for offer in record.offer_ids:
-                if offer.id == offer_id:
-                    record.selling_price = offer.price
-                    record.buyer_id = offer.buyer_id
-                else:
-                    offer.state = 'refused'
-
-    @api.constrains("offer_ids")
-    def check_offer_ids(self):
-        for record in self:
-            accepted = 0
-            for offer in record.offer_ids:
-                if offer.state == 'accepted':
-                    accepted +=1
-                if accepted > 1:
-                    raise ValidationError('Only one offer can be accepted, refuse the previous accepted offer before accepted another one.')
+            if record.state in ('new', 'cancelled'):
+                continue
+            if fu.float_compare(record.selling_price, (record.expected_price * 0.9), precision_rounding=0.01) < 0:
+                raise ValidationError(self.env._('The selling price must be at least 90%% of the expected_price : \n The accepted Selling Price (%s) is %s %% of the expected price (%s)', record.selling_price, fu.float_round((record.selling_price / record.expected_price) * 100, 2), record.expected_price))
 
     @api.onchange("offer_ids")
-    @api.depends("selling_price", "buyer_id")
     def _onchange_offer_ids(self):
         for record in self:
-            for offer in record.offer_ids:
-                if offer.state == 'accepted':
-                    record.selling_price = offer.price
-                    record.buyer_id = offer.buyer_id
+            if record.state not in ('offer_accepted', 'sold', 'cancelled'):
+                record.state = 'offer_received' if len(record.offer_ids.ids) > 0 else 'new'
 
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError('Canceled property cannot be sold')
+                raise UserError('Cancelled property cannot be sold')
             else:
                 record.state = 'sold'
         return True
@@ -129,7 +117,7 @@ class Property(models.Model):
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError('Sold property cannot be canceled')
+                raise UserError('Sold property cannot be cancelled')
             else:
                 record.state = 'cancelled'
         return True

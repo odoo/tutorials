@@ -11,7 +11,7 @@
                         <group>
                             <field name="price"/>
                             <field name="buyer_id"/>
-                            <field name="state"/>
+                            <field name="state" readonly="1"/>
                         </group>
                         <group>
                             <field name="validity"/>
@@ -27,7 +27,12 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
+            <list 
+            string="Offers" 
+            editable="top"
+            decoration-success="state == 'accepted'"
+            decoration-danger="state == 'refused'"
+            >
                 <field name="create_date" optional="show" string="Offer Date"/>
                 <field name="price"/>
                 <field name="buyer_id" optional="show"/>
@@ -35,8 +40,14 @@
                 <field name="date_deadline" optional="show"/>
                 <button name="action_accept" title="Accept" type="object" icon="check" invisible="state == 'accepted' or state == 'refused'"/>
                 <button name="action_refuse" title="Refuse" type="object" icon="close" invisible="state == 'accepted' or state == 'refused'"/>
-                <field name="state" readonly="0"/>
             </list>
         </field>
+    </record>
+
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 </odoo>
