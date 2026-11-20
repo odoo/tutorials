@@ -26,6 +26,19 @@ class PropertyOffer(models.Model):
         'The price for the offer must be strictly positive'
     )
 
+    def _util_from_date(self):
+        self.ensure_one()
+        return self.create_date or fields.Datetime.today()
+
+    @api.depends("validity")
+    def _compute_deadline(self):
+        for record in self:
+            record.date_deadline = date_utils.add(record._util_from_date(), days=+record.validity)
+
+    def _inverse_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline - record._util_from_date().date()).days
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -41,19 +54,6 @@ class PropertyOffer(models.Model):
     def _unlink_except_accepted_offer(self):
         if any(offer.state == 'accepted' for offer in self):
             raise UserError("Can't delete accepted offer")
-
-    def _util_from_date(self):
-        self.ensure_one()
-        return self.create_date or fields.Datetime.today()
-
-    @api.depends("validity")
-    def _compute_deadline(self):
-        for record in self:
-            record.date_deadline = date_utils.add(record._util_from_date(), days=+record.validity)
-
-    def _inverse_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - record._util_from_date().date()).days
 
     def action_accept(self):
         for record in self:

@@ -73,11 +73,6 @@ class Property(models.Model):
         'The selling price must be strictly positive'
     )
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_only_new_or_cancelled(self):
-        if any(record.state not in ('new', 'cancelled') for record in self):
-            raise UserError("Can't delete a property linked to offers that is not cancelled")
-
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -91,8 +86,8 @@ class Property(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area = self.garden_area if self.garden_area else 10
-            self.garden_orientation = self.garden_orientation if self.garden_orientation else 'north'
+            self.garden_area = self.garden_area or 10
+            self.garden_orientation = self.garden_orientation or 'north'
         else:
             self.garden_area = None
             self.garden_orientation = None
@@ -111,18 +106,21 @@ class Property(models.Model):
             if record.state in ('new', 'offer_received'):
                 record.state = 'offer_received' if record.offer_ids else 'new'
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_only_new_or_cancelled(self):
+        if any(record.state not in ('new', 'cancelled') for record in self):
+            raise UserError("Can't delete a property linked to offers that is not cancelled")
+
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError('Cancelled property cannot be sold')
-            else:
-                record.state = 'sold'
+            record.state = 'sold'
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError('Sold property cannot be cancelled')
-            else:
-                record.state = 'cancelled'
+            record.state = 'cancelled'
         return True
