@@ -63,5 +63,5 @@ class EstatePropertyOffer(models.Model):
 
             existing_prices = property_record.offer_ids.mapped("price")
             if existing_prices and val["price"] < min(existing_prices):
-                raise UserError(self.env._(f"The offer must be higher than ${min(existing_prices)} !"))
+                raise UserError(self.env._(f"The offer must be higher than {min(existing_prices)} !"))
         return super().create(vals)
