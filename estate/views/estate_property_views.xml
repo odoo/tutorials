@@ -31,6 +31,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
+                    <field name="state" readonly="True" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
@@ -43,7 +44,6 @@
                     </group>
                     <group>
                         <group>
-                            <field name="state" readonly="True"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
