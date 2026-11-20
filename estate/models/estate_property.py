@@ -1,7 +1,7 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class Property(models.Model):
@@ -24,7 +24,7 @@ class Property(models.Model):
     garden = fields.Boolean('Has a Garden', default=False)
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("canceled", "Cancelled")],
+        selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
         required=True,
         default="new",
         copy=False
@@ -53,6 +53,22 @@ class Property(models.Model):
         "The facade number has to be positive."
     )
 
+    def action_property_cancelled(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = "cancelled"
+            else:
+                raise exceptions.UserError('A sold property can\'t be cancelled')
+        return True
+
+    def action_property_sold(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = "sold"
+            else:
+                exceptions.UserError('A cancelled property can\'t be sold')
+        return True
+
     @api.depends('garden_area', 'living_area')
     def _compute_total(self):
         for record in self:
@@ -63,11 +79,18 @@ class Property(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0)
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
+
+    @api.onchange('state')
+    def _onchange_selling_price(self):
+        for record in self:
+            if record.state != 'sold':
+                record.selling_price = 0
