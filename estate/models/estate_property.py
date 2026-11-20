@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
         default=fields.Date.today() + relativedelta(months=3))
 
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(compute="_compute_selling_price", copy=False)
+    selling_price = fields.Float(compute="_compute_selling_price", copy=False, store=True)
 
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -121,7 +121,7 @@ class EstateProperty(models.Model):
             else:
                 record.buyer_id = False
 
-    @api.constrains('expected_price')
+    @api.constrains('expected_price', 'selling_price')
     def _check_selling_price_not_too_low(self):
         for record in self:
             if not float_is_zero(record.selling_price, 2) and float_compare(record.selling_price, record.expected_price * 0.9, 2) < 0:

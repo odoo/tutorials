@@ -54,12 +54,6 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
         return True
 
-    @api.constrains('price', 'status')
-    def _check_selling_price_not_too_low(self):
-        for record in self:
-            if record.status == 'accepted' and float_compare(record.price, record.property_id.expected_price * 0.9, 2) < 0:
-                raise ValidationError('The selling price must be atleast 90% of the expected price.')
-
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
