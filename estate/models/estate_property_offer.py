@@ -1,6 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -47,3 +49,14 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         self.status = 'refused'
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            prop = self.env['estate.property'].browse(vals['property_id'])
+            if prop.offer_ids:
+                max_offer = max(prop.offer_ids.mapped('price'))
+                if float_compare(vals['price'], max_offer, precision_rounding=0.01) <= 0:
+                    raise ValidationError(self.env._('The amount must be higher than %s.', max_offer))
+            prop.state = 'offer_received'
+        return super().create(vals)
