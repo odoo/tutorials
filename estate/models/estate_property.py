@@ -22,15 +22,11 @@ class EstateProperty(models.Model):
 
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
+    best_price = fields.Float(compute="_compute_best_price")
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
     facades = fields.Integer()
-
-    property_type_id = fields.Many2one("estate.property.type")
-    buyer_id = fields.Many2one("res.partner", copy=False)
-    salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    living_area = fields.Integer()
+    total_area = fields.Integer(compute="_compute_total_area")
 
     garage = fields.Boolean()
     garden = fields.Boolean(default=False)
@@ -41,6 +37,12 @@ class EstateProperty(models.Model):
                    ('south', 'South'), ('west', 'West')],
         help="Orientation of the garden")
 
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='Status',
@@ -48,15 +50,6 @@ class EstateProperty(models.Model):
         selection=[('new', 'New'), ('received', 'Offer Received'),
                    ('accepted', 'Offer Accepted'), ('sold', 'Sold'),
                    ('cancelled', 'Cancelled')])
-
-    total_area = fields.Integer(compute="_compute_total_area")
-    best_price = fields.Float(compute="_compute_best_price")
-
-    @api.ondelete(at_uninstall=False)
-    def delete_restrictions(self):
-        for record in self:
-            if record.state == 'new' or record.state == 'cancelled':
-                raise UserError("Can't delete a new or cancelled property!")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -76,6 +69,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def delete_restrictions(self):
+        for record in self:
+            if record.state == 'new' or record.state == 'cancelled':
+                raise UserError("Can't delete a new or cancelled property!")
 
     def action_sell_property(self):
         for record in self:

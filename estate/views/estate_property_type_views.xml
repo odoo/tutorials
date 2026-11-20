@@ -5,14 +5,12 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Estate Property Type">
-                <button type="action" class="oe_stat_button" name="estate.estate_property_offers_type_action" string="Offers of this type"/>
+                <button type="action" class="oe_stat_button" name="estate.estate_property_offer_type_action" string="Offers of this type"/>
                 <sheet>
                     <div class="oe_title">
-                        <div class="oe_edit_only">
-                            <label for="name"/>
-                        </div>
-                        <h1 class="mb32">
-                            <field name="name" class="mb16"/>
+                        <label for="name"/>
+                        <h1>
+                            <field name="name"/>
                         </h1>
                     </div>
                     <group>
