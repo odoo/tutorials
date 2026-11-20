@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
         ],
     )
     bedrooms = fields.Integer(default=2)
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
             ("new", "New"),
