@@ -32,7 +32,7 @@
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="where does this go">
+            <form>
                 <header>
                     <button name="action_set_property_sold" type="object" string="Sold"
                         invisible="state in ('sold', 'cancelled')"/>
@@ -51,7 +51,6 @@
                         options="{'color_field': 'color', 'on_tag_click': 'edit_color'}"/>
                     <group>
                         <group>
-                            <field name="state"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="property_type_id" options="{'no_create': true}"/>
@@ -135,7 +134,7 @@
                     filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <filter string="Available" name="available"
-                    domain="[('date_availability', '&lt;=', 'today')]"/>
+                    domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <group>
                     <filter string="Postcode" name="postcode"
                         context="{'group_by':'postcode', 'residual_visible':True}"/>

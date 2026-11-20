@@ -54,7 +54,7 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
         return True
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals['property_id'])
