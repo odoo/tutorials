@@ -3,15 +3,15 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-    _name = 'estate.property.offer'
-    _description = 'Property Offer'
+    _name = "estate.property.offer"
+    _description = "Property Offer"
     _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
         selection=[
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused'),
+            ("accepted", "Accepted"),
+            ("refused", "Refused"),
         ],
         copy=False
     )
@@ -26,8 +26,8 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _check__price = models.Constraint(
-        'CHECK(price > 0)',
-        'The price of an offer must be strictly positive.'
+        "CHECK(price > 0)",
+        "The price of an offer must be strictly positive."
     )
 
     @api.depends("validity", "create_date")

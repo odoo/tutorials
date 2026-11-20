@@ -7,12 +7,9 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
 
-        # journal = self.env['account.move'].with_context(default_move_type='out_invoice')._search_default_journal()
-        # if not journal:
-        #     raise UserError(_('Please define an accounting sales journal for the company %s (%s).') % (self.company_id.name, self.company_id.id))
         res = super().action_set_sold()
 
-        account_journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
+        account_journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
         vals_list = []
 
         for record in self:
