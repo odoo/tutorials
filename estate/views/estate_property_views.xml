@@ -45,18 +45,25 @@
             <form string="Form">
                 <field name="active" invisible="1"/>
                 <header>
-                    <div invisible="state in ('sold', 'cancelled')">
-                        <button 
-                            name="action_sell_property"
-                            type="object" 
-                            string="Sell"
-                        />
-                        <button 
-                            name="action_cancel_property" 
-                            type="object" 
-                            string="Cancel"
-                        />
-                        </div>
+                    <button 
+                        name="action_sell_property"
+                        type="object" 
+                        string="Sell"
+                        class='btn-primary'
+                        invisible="state != 'accepted'"
+                    />
+                    <button 
+                        name="action_sell_property"
+                        type="object" 
+                        string="Sell"
+                        invisible="state in ('sold', 'cancelled', 'accepted')"
+                    />
+                    <button 
+                        name="action_cancel_property" 
+                        type="object" 
+                        string="Cancel"
+                        invisible="state in ('sold', 'cancelled')"
+                    />
                     <field
                         name="state" 
                         widget="statusbar" 
