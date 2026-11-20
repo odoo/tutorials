@@ -83,4 +83,18 @@ class EstatePropertyOffer(models.Model):
             record.state = "refused"
         return True
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("property_id"):
+                prop = self.env["estate.property"].browse(vals["property_id"])
+                if prop.offer_ids:
+                    max_offer = max(prop.mapped("offer_ids.price"))
+                    if vals.get("price", 0) <= max_offer:
+                        raise UserError(
+                            _("The offer must be higher than %.2f", max_offer)
+                        )
+                prop.state = "offer_received"
+        return super().create(vals_list)
+
     # endregion
