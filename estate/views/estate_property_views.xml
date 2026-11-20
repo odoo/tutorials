@@ -13,7 +13,7 @@
         <field name="arch" type="xml">
             <form string="Testingform">
                 <header>
-                    <button name="action_sold" type="object" string="Mark as Sold" invisible="state == 'sold' or state == 'cancelled'" class="btn-primary"/>
+                    <button name="action_sold" type="object" string="Mark as Sold" invisible="state == 'sold' or state == 'cancelled' or not buyer_id or not selling_price" class="btn-primary"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'" class="btn-secondary"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>

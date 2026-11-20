@@ -1,4 +1,6 @@
-from odoo import Command, models
+from odoo import Command
+from odoo import models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -7,6 +9,10 @@ class EstateProperty(models.Model):
     def action_sold(self):
         res = super().action_sold()
         for record in self:
+            if not record.buyer_id:
+                raise UserError("You cannot sell a property that has no buyer.")
+            if not record.selling_price:
+                raise UserError("You cannot sell a property that has no selling price.")
             self.env['account.move'].create(
                 {
                     'partner_id': record.buyer_id.id,
