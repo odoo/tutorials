@@ -20,13 +20,24 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Property type">
                 <sheet>
                     <h1>
                         <b>
                             <field name="name"/>
                         </b>
                     </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
