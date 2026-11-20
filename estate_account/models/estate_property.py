@@ -1,5 +1,4 @@
 from odoo import Command, models
-from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -7,8 +6,6 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if not record.selling_price:
-                raise UserError(self.env._("You can only sell a property with an accepted offer."))
             self.env["account.move"].create(
                 {
                     "partner_id": record.buyer_id.id,
