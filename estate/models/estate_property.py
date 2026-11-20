@@ -1,7 +1,9 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
@@ -52,13 +54,30 @@ class Property(models.Model):
         "CHECK(facades >= 0)",
         "The facade number has to be positive."
     )
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price has to be strictly positive"
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price has to be positive."
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                not float_is_zero(record.selling_price, precision_digits=0)
+                and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=0) < 0
+                ):
+                raise ValidationError('The selling price has to be min. 90% of the expected price')
 
     def action_property_cancelled(self):
         for record in self:
             if record.state != 'sold':
                 record.state = "cancelled"
             else:
-                raise exceptions.UserError('A sold property can\'t be cancelled')
+                raise UserError('A sold property can\'t be cancelled')
         return True
 
     def action_property_sold(self):
@@ -66,7 +85,7 @@ class Property(models.Model):
             if record.state != 'cancelled':
                 record.state = "sold"
             else:
-                exceptions.UserError('A cancelled property can\'t be sold')
+                UserError('A cancelled property can\'t be sold')
         return True
 
     @api.depends('garden_area', 'living_area')
@@ -88,9 +107,3 @@ class Property(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
-
-    @api.onchange('state')
-    def _onchange_selling_price(self):
-        for record in self:
-            if record.state != 'sold':
-                record.selling_price = 0

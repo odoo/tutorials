@@ -14,6 +14,11 @@ class PropertyOffer(models.Model):
     validity_days = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
+    _check_price = models.Constraint(
+        "CHECK(price >= 0)",
+        "The offer's price has to be positive."
+    )
+
     def action_offer_accepted(self):
         for record in self:
             if record.property_id.state in ['sold', 'cancelled']:
