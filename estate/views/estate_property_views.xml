@@ -23,6 +23,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="New Property">
+                <header>
+                    <button name="action_estate_sold" string="Sold"
+                            type="object" class="oe_highlight" data-hotkey="s" title="Mark as sold"
+                            invisible="state == 'cancelled'"/>
+                    <button name="action_estate_cancelled" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -65,6 +71,8 @@
                                     <field name="status"/>
                                     <field name="validity"/>
                                     <field name="deadline"/>
+                                    <button name="action_confirm_offer" title="Accept offer" type="object" icon="check"/>
+                                    <button name="action_cancel_offer" title="Refuse offer" type="object" icon="close"/>
                                 </list>
                             </field>
                         </page>
@@ -95,7 +103,7 @@
                 <separator/>
                 <filter string="Available" name="filter_availability" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <group>
-                    <filter string="Postcode" name="groupby_postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
