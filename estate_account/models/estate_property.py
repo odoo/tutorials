@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
 
     def action_set_property_sold(self):
         res = super().action_set_property_sold()
-        
+
         vals_list = []
         for property in self:
             partner_id = property.buyer_id.id
@@ -28,7 +28,6 @@ class EstateProperty(models.Model):
                 'move_type': move_type,
                 'invoice_line_ids': invoice_line_ids
                 })
-
 
         self.env['account.move'].create(vals_list)
         return res
