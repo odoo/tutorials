@@ -9,5 +9,5 @@
     "data": [],
     "author": "frbal",
     "application": False,
-    "licence": "LGPL-3",
+    "license": "LGPL-3",
 }
