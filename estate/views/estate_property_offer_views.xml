@@ -20,8 +20,6 @@
                 <field name="date_deadline"/>
                 <button name="action_accept" type="object" title="Accept" icon="check" class="btn-link text-success" invisible="state"/>
                 <button name="action_refuse" type="object" title="Refuse" icon="close" class="text-danger" invisible="state"/>
-                <!-- Used in list decorations and buttons visibility -->
-                <field name="state" column_invisible="1"/>
             </list>
         </field>
     </record>

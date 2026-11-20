@@ -23,8 +23,6 @@
                 <field name="date_availability" optional="hide"/>
                 <field name="property_type_id" string="Property Type"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'on_tag_click':'edit_color'}"/>
-                <!-- Used in list decorations -->
-                <field name="state" column_invisible="1"/>
             </list>
         </field>
     </record>
