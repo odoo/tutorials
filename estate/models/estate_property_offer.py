@@ -31,6 +31,12 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             asset = self.env['estate.property'].browse(vals['property_id'])
+            if ( 
+                len(asset.offer_ids)
+                and vals['price'] <= min(asset.offer_ids.mapped('price'))
+            ):
+                raise UserError('New offers should always be higher than a minimum offer previously made')
+
             asset.write({
                 'state': 'received',
             })
