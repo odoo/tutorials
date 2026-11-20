@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -53,3 +54,14 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property_record = self.env["estate.property"].browse(val["property_id"])
+            property_record.state = "received"
+
+            existing_prices = property_record.offer_ids.mapped("price")
+            if existing_prices and val["price"] < min(existing_prices):
+                raise UserError(self.env._(f"The offer must be higher than ${min(existing_prices)} !"))
+        return super().create(vals)
