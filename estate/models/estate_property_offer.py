@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -74,3 +75,18 @@ class EstatePropertyOffer(models.Model):
     def action_to_reject_offer(self):
         self.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_ids"])
+
+            if property.offer_ids:
+                highest_offer = max(property.offer_ids.mapped("price"))
+
+                if vals["price"] <= highest_offer:
+                    raise UserError("The Offer must higher than the existing price")
+
+        offers = super().create(vals_list)
+        offers.mapped("property_ids").state = "offer_received"
+        return offers
