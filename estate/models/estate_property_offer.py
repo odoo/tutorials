@@ -27,7 +27,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         # Group all current offers by property_id, and extract the minimum price of its offers
         min_price_by_property_id = {
-            property.id : min(group_orders.mapped('price'))
+            property.id: min(group_orders.mapped('price'))
             for property, group_orders in self.env['estate.property.offer'].search([('property_id', 'in', [offer['property_id'] for offer in vals])]).grouped('property_id').items()
         }
 
