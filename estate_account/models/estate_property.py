@@ -2,14 +2,15 @@ from odoo import Command, models
 
 
 class EstateProperty(models.Model):
-    _inherit = 'estate.property'
+    _inherit = "estate.property"
 
     def action_sold_property(self):
+        res = super().action_sold_property()
         for record in self:
-            self.env['account.move'].create(
+            self.env["account.move"].create(
                 {
-                    'partner_id': record.buyer_id.id,
-                    'move_type': 'out_invoice',
+                    "partner_id": record.buyer_id.id,
+                    "move_type": "out_invoice",
                     "line_ids": [
                         Command.create(
                             {
@@ -20,7 +21,7 @@ class EstateProperty(models.Model):
                         ),
                         Command.create(
                             {
-                                "name": "Administative fees",
+                                "name": "Administrative fees",
                                 "quantity": 1,
                                 "price_unit": 100,
                             }
@@ -28,4 +29,4 @@ class EstateProperty(models.Model):
                     ],
                 }
             )
-        return super().action_sold_property()
+        return res

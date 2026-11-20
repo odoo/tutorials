@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="property_view_kanban" model="ir.ui.view">
+    <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -31,7 +31,7 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" decoration-success="state in ('offer received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+            <list string="Properties" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
