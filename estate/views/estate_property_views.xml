@@ -3,27 +3,10 @@
     <record id="estate_prop_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_date_availability': True}</field>
     </record>
 
-    <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">estate.property.view.list</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <list string="Channel" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="property_type_id"/>
-                <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability" string="Available from" optional="hide"/>
-            </list>
-        </field>
-    </record>
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
@@ -90,6 +73,54 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban string="Estate Properties" default_group_by="property_type_id" records_draggable="False" create="False">
+                <templates>
+                    <t t-name="card">
+                        <div class="o_kanban_details">
+                            <div>
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div>
+                                expected price: <field name="expected_price"/>
+                            </div>
+                            <div t-if="record.best_price.raw_value">
+                                Best Offer: <field name="best_price"/>
+                            </div>
+                            <div t-if="record.selling_price.raw_value">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
+                            <div>
+                                Tags: <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Channel" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="property_type_id"/>
+                <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" string="Available from" optional="hide"/>
+            </list>
         </field>
     </record>
     <record id="estate_property_view_search" model="ir.ui.view">
