@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 import datetime as dt
 from odoo.tools import float_compare
 
