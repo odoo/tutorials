@@ -6,10 +6,8 @@
         'estate',
         'account'
     ],
-    'data': [
-        'security/ir.access.csv',
-
-    ],
+    'data': [],
     'license': 'LGPL-3',
-    'author': 'mabes'
+    'author': 'mabes',
+    'auto_install': True,
 }
