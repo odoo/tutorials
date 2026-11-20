@@ -16,6 +16,16 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
+    """
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            estate_property = self.env["estate.property"].browse(vals["property_id"])
+            if estate_property.state == "new":
+                estate_property.state = "offer_received"
+        return super().create(vals_list)
+    """
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
