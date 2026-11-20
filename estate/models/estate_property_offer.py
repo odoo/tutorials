@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "ESTATE property tag"
+    _order = "price desc"
 
     currency_id = fields.Many2one(
         "res.currency",

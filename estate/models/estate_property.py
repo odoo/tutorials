@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "ESTATE property"
+    _order = "id desc"
 
     currency_id = fields.Many2one(
         'res.currency',
