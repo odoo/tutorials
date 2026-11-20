@@ -56,6 +56,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         property_ids = {vals['property_id'] for vals in vals_list if vals.get('property_id')}
         properties = self.env['estate.property'].browse(property_ids)
+        if 'sold' in properties.mapped('state'):
+            raise UserError(self.env._('Offers cannot be created on sold properties.'))
         best_price_by_property = {prop.id: prop.best_price for prop in properties}
         for vals in vals_list:
             property_id = vals.get('property_id')
