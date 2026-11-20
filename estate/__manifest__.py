@@ -4,7 +4,7 @@
     'author': 'sadis',
     'license': 'LGPL-3',
     'description': """
-    Description text
+    Real Estate Application
     """,
     'category': 'Tutorials',
     'depends': [
@@ -18,6 +18,7 @@
         'views/estate_property_offer_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menu_views.xml',
+        'views/res_users_view.xml',
     ],
     'application': True,
 }

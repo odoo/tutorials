@@ -73,6 +73,11 @@ class Property(models.Model):
         'The selling price must be strictly positive'
     )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_only_new_or_cancelled(self):
+        if any(record.state not in ('new', 'cancelled') for record in self):
+            raise UserError("Can't delete a property linked to offers that is not cancelled")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -103,8 +108,8 @@ class Property(models.Model):
     @api.onchange("offer_ids")
     def _onchange_offer_ids(self):
         for record in self:
-            if record.state not in ('offer_accepted', 'sold', 'cancelled'):
-                record.state = 'offer_received' if len(record.offer_ids.ids) > 0 else 'new'
+            if record.state in ('new', 'offer_received'):
+                record.state = 'offer_received' if record.offer_ids else 'new'
 
     def action_sold(self):
         for record in self:

@@ -28,12 +28,14 @@ class PropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        records = super().create(vals_list)
-        for record in records:
-            property = record.property_id
-            if property.state == 'new':
-                property.state = 'offer_received'
-        return records
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            best_offer = property.best_offer
+            if vals['price'] <= best_offer:
+                raise UserError(self.env._('Offer must be higher than %s', best_offer))
+        offers = super().create(vals_list)
+        offers.property_id.filtered(lambda p: p.state == 'new').state = 'offer_received'
+        return offers
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_accepted_offer(self):
