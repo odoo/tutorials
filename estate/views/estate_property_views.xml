@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<odoo><data>
+<odoo>
 
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
@@ -8,13 +8,12 @@
             <form string="Property">
                 <sheet>
                     <div class="oe_title">
-                        <!-- <label for="name"/> -->
                         <h1>
                             <field name="name" placeholder="e.g. Renovated house in Antwerp"/>
                         </h1>
                     </div>
                     <group>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" placeholder="Add tags…"/>
                         <group>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
@@ -53,7 +52,7 @@
         </field>
     </record>
 
-    <record id="estate_property_view_tree" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -84,7 +83,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-                <filter string="Available" name="available" domain="['|', ('status', '=', 'new'), ('status', '=', 'offer_received')]" help="Available properties"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]" help="Available properties"/>
                 <group>
                     <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
                 </group>
@@ -104,4 +103,4 @@
         </field>
     </record>
 
-</data></odoo>
+</odoo>

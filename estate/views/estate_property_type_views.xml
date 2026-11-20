@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<odoo><data>
+<odoo>
 
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.type.view.form</field>
@@ -8,7 +8,6 @@
             <form string="Property Type">
                 <sheet>
                     <div class="oe_title">
-                        <!-- <label for="name"/> -->
                         <h1>
                             <field name="name" placeholder="e.g. House"/>
                         </h1>
@@ -18,7 +17,7 @@
         </field>
     </record>
 
-    <record id="estate_property_type_view_tree" model="ir.ui.view">
+    <record id="estate_property_type_view_list" model="ir.ui.view">
         <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
@@ -50,5 +49,4 @@
         </field>
     </record>
 
-</data></odoo>
-
+</odoo>

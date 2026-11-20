@@ -5,7 +5,6 @@
         name="Estate"
         groups="base.group_user"
         sequence="25">
-        <!-- web_icon="crm,static/description/icon.png" -->
 
         <menuitem
             id="estate_menu_property"
