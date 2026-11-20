@@ -16,6 +16,11 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price should be strictly positive',
+    )
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
@@ -30,9 +35,9 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property = self.env["estate.property"].browse(vals["property_id"])
-            if float_compare(vals.get("price", 0.0), property.best_price, precision_digits=2) < 0:
-                raise UserError("The offer must be higher than %.2f." % property.best_price)
+            estate_property = self.env["estate.property"].browse(vals["property_id"])
+            if float_compare(vals.get("price", 0.0), estate_property.best_price, precision_digits=2) < 0:
+                raise UserError(self.env._("The offer must be higher than %(price).2f.", price=estate_property.best_price))
         offers = super().create(vals_list)
         for offer in offers:
             if offer.property_id.state == "new":
@@ -43,11 +48,11 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             match record.property_id.state:
                 case "offer_accepted":
-                    raise UserError("An offer has already been accepted for this property.")
+                    raise UserError(self.env._("An offer has already been accepted for this property."))
                 case "sold":
-                    raise UserError("The property has already been sold")
+                    raise UserError(self.env._("The property has already been sold."))
                 case "cancelled":
-                    raise UserError("This property has been cancelled")
+                    raise UserError(self.env._("This property has been cancelled."))
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
@@ -56,8 +61,3 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.status = "refused"
-
-    _check_price = models.Constraint(
-        'CHECK(price > 0)',
-        'The price should be strictly positive',
-    )
