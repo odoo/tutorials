@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -8,7 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
-    # _order = 'sequence'
+    _order = 'id desc'
 
     name = fields.Char('Title', required=True)
     description = fields.Text()
@@ -54,6 +54,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Integer(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
+    property_type_id = fields.Many2one('estate.property.type')
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -84,16 +85,16 @@ class EstateProperty(models.Model):
         for record in self:
             if (
                 not float_is_zero(record.selling_price, precision_rounding=0.01)
-                and float_compare(record.selling_price,record.expected_price * 0.9, precision_rounding=0.01) < 0
+                and float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0
             ):
-                raise ValidationError(_('The selling price cannot be lower than 90% of the expected price.'))
+                raise ValidationError(self.env._('The selling price cannot be lower than 90% of the expected price.'))
 
     def action_sold_estate(self):
         if self.state == 'cancelled':
-            raise UserError(_('Cancelled Properties cannot be sold.'))
+            raise UserError(self.env._('Cancelled Properties cannot be sold.'))
         self.state = 'sold'
 
     def action_cancel_estate(self):
         if self.state == 'sold':
-            raise UserError(_('Sold Properties cannot be cancelled.'))
+            raise UserError(self.env._('Sold Properties cannot be cancelled.'))
         self.state = 'cancelled'
