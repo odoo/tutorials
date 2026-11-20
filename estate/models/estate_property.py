@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _description = "List of estate property"
     _check_expected_price = models.Constraint("CHECK(expected_price > 0)", "The expected price must be positive")
     _check_selling_price = models.Constraint("CHECK(selling_price > 0)", "The selling price must be positive")
+    _order = "id desc"
 
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
