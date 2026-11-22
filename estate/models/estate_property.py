@@ -1,9 +1,10 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _explanation = "Real Estate Property"
 
     title = fields.Char(required=True)
     description = fields.Text()
@@ -44,3 +45,29 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag")
     # The One2many needs the inverse field name.
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    total_area = fields.Float(compute="_compute_total")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total(self):
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
+
+    best_price = fields.Float(compute="_highest_price", string="Best Offer")
+
+    @api.depends("offer_ids")
+    def _highest_price(self):
+        for offers in self:
+            if not offers.offer_ids:
+                offers.best_price = 0.0
+            else:
+                offers.best_price = max(offers.offer_ids.mapped("price"))
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
