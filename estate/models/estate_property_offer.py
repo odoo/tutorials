@@ -39,7 +39,6 @@ class EstatePropertyOffer(models.Model):
                 ).days
             else:
                 record.validity = record.default_get(["validity"])["validity"]
-                # would be easier to use a const?
 
     def _inverse_validity(self):
         for record in self:

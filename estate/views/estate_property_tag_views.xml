@@ -12,7 +12,17 @@
                 </sheet>
             </form>
         </field>
+    </record>
 
+    <record id="estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field> 
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
     </record>
 
     <record id="estate_property_tag_action" model="ir.actions.act_window">

@@ -3,7 +3,11 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties"
+                decoration-bf="state == 'accepted'"
+                decoration-success="state in ('offer_received','accepted')"
+                decoration-muted="state == 'sold'"
+                decoration-danger="state == 'cancelled'">
                 <field name="name"/>
                 <field name="state" string="Status"/>
                 <field name="tag_ids" 
@@ -14,8 +18,9 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability" string="Available from"/>
+                <field name="best_price"/>
+                <field name="selling_price" optional="hide"/>
+                <field name="date_availability" string="Available from" optional="hide"/>
             </list>
         </field>
     </record>
@@ -103,7 +108,7 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="new or sold" name="state" domain="['|',('state','=','_new'),('state','=','sold')]"/>
+                <filter string="new or sold" name="state" domain="['|',('state','=','new'),('state','=','sold')]"/>
                 <group>
                     <filter string="By postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
