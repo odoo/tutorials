@@ -38,13 +38,13 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property = self.env["estate.property"].browse(vals["property_id"])
-            if property.state == "sold":
+            estate_property = self.env["estate.property"].browse(vals["property_id"])
+            if estate_property.state == "sold":
                 raise UserError(self.env._("Cannot create an offer for a sold property."))
-            if float_compare(vals["price"], max(property.offer_ids.mapped("price"), default=0), 2) < 0:
+            if float_compare(vals["price"], max(estate_property.offer_ids.mapped("price"), default=0), 2) < 0:
                 raise UserError(self.env._("Cannot create an offer with a lower amount than an existing offer."))
             else:
-                property.state = "offer_received"
+                estate_property.state = "offer_received"
 
         return super().create(vals_list)
 
@@ -54,6 +54,8 @@ class EstatePropertyOffer(models.Model):
             if other_accepted:
                 raise UserError(self.env._("An offer has already been accepted for this property!"))
             record.status = "accepted"
+
+            # TODO: check if its possible to call a method to change state on estate.property for transparency
             record.property_id.state = "offer_accepted"
         return True
 
