@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
         'res.currency',
         default=lambda self: self.env.company.currency_id, required=True)
     name = fields.Char(required=True)
-    property_type = fields.Many2one("estate.property.type", string="Partner", required=True)
+    property_type = fields.Many2one("estate.property.type", string="Type", required=True)
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Monetary(currency_field='currency_id', required=True)
