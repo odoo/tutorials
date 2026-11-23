@@ -3,6 +3,7 @@ from odoo import Command, models
 
 class EstateProperty(models.Model):
     _inherit = ["estate.property"]
+    _name = "estate.property"
 
     def action_sold(self):
         self.env["account.move"].create({
