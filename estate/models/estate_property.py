@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -48,13 +48,21 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Float(compute="_compute_total")
+    best_price = fields.Float(compute="_highest_price", string="Best Offer")
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "A property expected price must be strictly positive.",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "A property selling price must be positive.",
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for property in self:
             property.total_area = property.living_area + property.garden_area
-
-    best_price = fields.Float(compute="_highest_price", string="Best Offer")
 
     @api.depends("offer_ids")
     def _highest_price(self):
@@ -88,3 +96,18 @@ class EstateProperty(models.Model):
                 raise UserError(self.env._("Sold properties cannot be cancelled."))
             property.state = "cancelled"
             return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for property in self:
+            if property.state in {"new", "offer_received"}:
+                return True
+            if (
+                fields.Float.compare(
+                    property.selling_price * 0.9, property.expected_price, precision_digits=2
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    self.env._("The selling price cannot be lower than 90% of the expected price.")
+                )

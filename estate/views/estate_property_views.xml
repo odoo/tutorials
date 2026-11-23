@@ -25,7 +25,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Estate Property">
                 <header>
                     <button name="action_sold" type="object" string="Sold"/>
                     <button name="action_cancelled" type="object" string="Cancelled"/>
