@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="estate_menu_root"
+        name="Estate"
+        groups="base.group_user"
+        sequence="25">
+
+        <menuitem
+            id="estate_menu_property"
+            name="Properties"
+            action="estate.estate_property_action"/>
+
+        <menuitem
+            id="estate_menu_configuration"
+            name="Configuration"
+            sequence="100">
+            <menuitem
+                id="estate_menu_property_type"
+                name="Property Types"
+                action="estate.estate_property_type_action"/>
+            <menuitem
+                id="estate_menu_property_tag"
+                name="Property Tags"
+                action="estate.estate_property_tag_action"/>
+        </menuitem>
+
+    </menuitem>
+</odoo>
