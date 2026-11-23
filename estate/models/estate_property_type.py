@@ -32,15 +32,13 @@ class EstatePropertyType(models.Model):
             record.offer_count = len(record.offer_ids)
 
     def action_assign_type(self):
-        active_ids = self.env.context.get('active_ids')
-
-        if active_ids and len(active_ids) > 1:
+        if len(self) > 1:
             raise UserError(
                 self.env._("Select any one type to assign it to properties")
             )
 
         action = {
-            "name": self.env._("Send"),
+            "name": self.env._("Assign Type"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "estate.assign.type.wizard",
