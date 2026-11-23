@@ -92,6 +92,7 @@ class EstateProperty(models.Model):
         if self.state == 'cancelled':
             raise UserError(self.env._('Cancelled Properties cannot be sold.'))
         self.state = 'sold'
+        return True
 
     def action_cancel_estate(self):
         if self.state == 'sold':
