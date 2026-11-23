@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="estate_property_1" model="estate.property">
+        <field name="name">Luxury Villa</field>
+        <field name="description">Spacious luxury villa with a private swimming pool, landscaped garden, and modern interiors.</field>
+        <field name="postcode">560001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3)).date()"/>
+        <field name="expected_price">800000.00</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">320</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">180</field>
+        <field name="garden_orientation">south</field>
+        <field name="selling_price">750000</field>
+        <field name="buyer_id" ref="partner_neha_sharma" />
+        <field name="state">offer_accepted</field>
+        <field name="property_type_id" ref="type_mansion" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_spacious'),
+                ref('tag_luxury'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_2" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="description">Elegant apartment located in the city center with a balcony and dedicated parking.</field>
+        <field name="postcode">110001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=5)).date()"/>
+        <field name="expected_price">500000.00</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">95</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation" />
+        <field name="state">offer_received</field>
+        <field name="property_type_id" ref="type_apartment" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_compact'),
+                ref('tag_renovated'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_3" model="estate.property">
+        <field name="name">Cozy Country Cottage</field>
+        <field name="description">Charming countryside cottage surrounded by greenery, ideal for a peaceful family lifestyle.</field>
+        <field name="postcode">411001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=2)).date()"/>
+        <field name="expected_price">700000.00</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">170</field>
+        <field name="facades">3</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">250</field>
+        <field name="garden_orientation">east</field>
+        <field name="selling_price">670000</field>
+        <field name="buyer_id" ref="partner_rohan_patel" />
+        <field name="state">sold</field>
+        <field name="property_type_id" ref="type_house" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_cozy'),
+                ref('tag_maintenance'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">Riverside Villa</field>
+        <field name="description">Bright family villa near the river with spacious rooms, a covered garage, and a landscaped garden.</field>
+        <field name="postcode">400001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=7)).date()"/>
+        <field name="expected_price">950000.00</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">240</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">140</field>
+        <field name="garden_orientation">west</field>
+        <field name="state">offer_received</field>
+        <field name="property_type_id" ref="type_villa" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_spacious'),
+                ref('tag_renovated'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_5" model="estate.property">
+        <field name="name">City Center Flat</field>
+        <field name="description">Well-connected city flat with an open-plan living area, modern kitchen, and excellent natural light.</field>
+        <field name="postcode">700001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=4)).date()"/>
+        <field name="expected_price">360000.00</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation" />
+        <field name="state">offer_received</field>
+        <field name="property_type_id" ref="type_flat" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_compact'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_6" model="estate.property">
+        <field name="name">Hilltop Mansion</field>
+        <field name="description">Premium hilltop residence offering panoramic views, generous living spaces, and a private garden.</field>
+        <field name="postcode">600001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=9)).date()"/>
+        <field name="expected_price">1850000.00</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">410</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">300</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="type_mansion" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_luxury'),
+                ref('tag_spacious'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_7" model="estate.property">
+        <field name="name">Lakeside Apartment</field>
+        <field name="description">Comfortable apartment overlooking the lake with two bedrooms, a balcony, and secure parking.</field>
+        <field name="postcode">500001</field>
+        <field name="date_availability" eval="DateTime.today().date()"/>
+        <field name="expected_price">575000.00</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">110</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="garden_area">0</field>
+        <field name="garden_orientation" />
+        <field name="selling_price">565000</field>
+        <field name="buyer_id" ref="partner_arjun_mehta" />
+        <field name="state">offer_accepted</field>
+        <field name="property_type_id" ref="type_apartment" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_cozy'),
+                ref('tag_renovated'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_8" model="estate.property">
+        <field name="name">Heritage Guest House</field>
+        <field name="description">Characterful heritage guest house with multiple bedrooms, traditional details, and a private courtyard.</field>
+        <field name="postcode">380001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=10)).date()"/>
+        <field name="expected_price">1100000.00</field>
+        <field name="bedrooms">7</field>
+        <field name="living_area">360</field>
+        <field name="facades">3</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">190</field>
+        <field name="garden_orientation">east</field>
+        <field name="selling_price">1080000</field>
+        <field name="buyer_id" ref="partner_rohan_patel" />
+        <field name="state">offer_accepted</field>
+        <field name="property_type_id" ref="type_hotel" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_luxury'),
+                ref('tag_cozy'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_9" model="estate.property">
+        <field name="name">Old Town Bungalow</field>
+        <field name="description">Traditional bungalow requiring renovation, with a quiet courtyard and convenient access to local amenities.</field>
+        <field name="postcode">302001</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=8)).date()"/>
+        <field name="expected_price">420000.00</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">145</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">95</field>
+        <field name="garden_orientation">south</field>
+        <field name="state">cancelled</field>
+        <field name="property_type_id" ref="type_house" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_cozy'),
+                ref('tag_maintenance'),
+            ])
+        ]" />
+    </record>
+
+    <record id="estate_property_10" model="estate.property">
+        <field name="name">Garden Apartment</field>
+        <field name="description">Ground-floor apartment with a private garden space, practical layout, and nearby public transport.</field>
+        <field name="postcode">201001</field>
+        <field name="date_availability" eval="DateTime.today().date()"/>
+        <field name="expected_price">390000.00</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">90</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">55</field>
+        <field name="garden_orientation">north</field>
+        <field name="state">cancelled</field>
+        <field name="property_type_id" ref="type_apartment" />
+        <field name="tags_ids" eval="[
+            Command.set([
+                ref('tag_compact'),
+                ref('tag_renovated'),
+            ])
+        ]" />
+    </record>
+
+</odoo>

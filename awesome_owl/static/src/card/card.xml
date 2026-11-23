@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-3 shadow-sm" style="min-width: 300px;">
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h3 class="card-title mb-0">
+                    <t t-out="props.title"/>
+                </h3>
+                <button t-attf-class="btn btn-sm {{state.isOpen ? 'text-bg-secondary' :'text-bg-primary'}}" t-on-click="toggleOpen">
+                    <t t-if="state.isOpen">Hide</t>
+                    <t t-else="">Show</t>
+                </button>
+            </div>
+            <div t-att-class="state.isOpen ? 'card-body' : 'card-body d-none'">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+
+</templates>

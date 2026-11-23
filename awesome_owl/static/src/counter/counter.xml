@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <div class="card p-4 m-3 shadow-sm" style="max-width: 350px;">
+            <div class="card-body text-center">
+                <h1 class="fw-bold mb-4">
+                    <t t-esc="state.value"/>
+                </h1>
+
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-primary" t-on-click="increment">
+                        <i class="fa fa-plus me-1"/>
+                        Increment
+                    </button>
+
+                    <button class="btn btn-danger" t-on-click="decrement">
+                        <i class="fa fa-minus me-1"/>
+                        Decrement
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
