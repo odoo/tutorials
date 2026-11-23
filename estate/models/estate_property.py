@@ -1,7 +1,6 @@
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-
-from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -56,6 +55,16 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
 
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
+
+    _check_selling_price_positive = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price must be positive.",
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -65,41 +74,6 @@ class EstateProperty(models.Model):
     def _compute_best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
-
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = None
-
-    def action_sold(self):
-        for record in self:
-            if record.state == "canceled":
-                raise UserError("Canceled properties cannot be sold.")
-            elif record.state != "offer_accepted":
-                raise UserError("Properties with accepted offers cannot be sold.")
-            record.state = "sold"
-        return True
-
-    def action_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold properties cannot be canceled.")
-            record.state = "canceled"
-        return True
-
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "The expected price must be strictly positive.",
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "The selling price must be positive.",
-    )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -118,8 +92,37 @@ class EstateProperty(models.Model):
                     "The selling price cannot be lower than 90% of the expected price."
                 )
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_canceled(self):
         for record in self:
             if record.state not in ("new", "canceled"):
-                raise UserError("Only new and canceled properties can be deleted.")
+                raise UserError(
+                    self.env._("Only new and canceled properties can be deleted.")
+                )
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "canceled":
+                raise UserError(self.env._("Canceled properties cannot be sold."))
+            elif record.state != "offer_accepted":
+                raise UserError(
+                    self.env._("Properties with accepted offers cannot be sold.")
+                )
+            record.state = "sold"
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(self.env._("Sold properties cannot be canceled."))
+            record.state = "canceled"
+        return True

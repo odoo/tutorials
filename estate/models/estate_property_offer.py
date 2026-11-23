@@ -1,6 +1,5 @@
-from odoo.exceptions import UserError
-
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
 
 
@@ -50,7 +49,9 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for offer in self:
             if "accepted" in offer.property_id.offer_ids.mapped("status"):
-                raise UserError("An offer has already been accepted for this property.")
+                raise UserError(
+                    self.env._("An offer has already been accepted for this property.")
+                )
             offer.status = "accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
@@ -69,15 +70,28 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        property_ids = {
+            vals["property_id"] for vals in vals_list if vals.get("property_id")
+        }
+        properties_by_id = {
+            prop.id: prop for prop in self.env["estate.property"].browse(property_ids)
+        }
+
         for vals in vals_list:
-            prop = self.env["estate.property"].browse(vals["property_id"])
-            if prop.offer_ids:
-                max_offer = max(prop.mapped("offer_ids.price"))
-                if float_compare(vals["price"], max_offer, precision_digits=2) < 0:
-                    raise UserError(f"The offer must be higher than {max_offer:.2f}.")
-                elif prop.state == "sold":
-                    raise UserError(
+            prop = properties_by_id.get(vals.get("property_id"))
+            if not prop:
+                continue
+            if prop.state == "sold":
+                raise UserError(
+                    self.env._(
                         "This property has already been sold so you cannot create a new offer for it."
                     )
+                )
+            max_offer = max(prop.offer_ids.mapped("price"), default=0)
+            if float_compare(vals.get("price", 0), max_offer, precision_digits=2) < 0:
+                raise UserError(
+                    self.env._("The offer must be higher than %.2f.", max_offer)
+                )
             prop.state = "offer_received"
+
         return super().create(vals_list)
