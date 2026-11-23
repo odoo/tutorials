@@ -16,7 +16,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
-    _check_price = models.Constraint(
+    _check_price_positive = models.Constraint(
         "CHECK(price > 0)",
         "An offer price must be strictly positive.",
     )
@@ -38,7 +38,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for offer in self:
-            if offer.property_id.state == "sold" or offer.property_id.state == "offer_accepted":
+            if offer.property_id.state in {"sold", "offer_accepted"}:
                 raise UserError(self.env._("An offer had already been accepted."))
             if offer.property_id.state == "cancelled":
                 raise UserError(self.env._("The sales had been cancelled."))
@@ -50,7 +50,6 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for offer in self:
-            if offer.property_id.state == "sold" or offer.property_id.state == "cancelled":
-                return True
-            offer.status = "refused"
+            if offer.property_id.state not in {"sold", "cancelled"}:
+                offer.status = "refused"
         return True
