@@ -11,13 +11,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties">
-                <field name="name" string="Title"></field>
-                <field name="postcode"></field>
-                <field name="bedrooms"></field>
-                <field name="living_area" string="Living Area (sqm)"></field>
-                <field name="expected_price"></field>
-                <field name="selling_price"></field>
-                <field name="date_availability" string="Available From"></field>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
             </list>
         </field>
     </record>
@@ -28,32 +28,32 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
-                     <div class="oe_title">
+                    <div class="oe_title">
                         <h1 class="mb32">
-                            <field name="name" placeholder="Property Name" class="mb16"></field>
+                            <field name="name" placeholder="Property Name" class="mb16"/>
                         </h1>
-                     </div>
+                    </div>
                     <group>
                         <group>
-                            <field name="postcode"></field>
-                            <field name="date_availability" string="Available From"></field>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price"></field>
-                            <field name="selling_price"></field>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"></field>
-                                <field name="bedrooms"></field>
-                                <field name="living_area" string="Living Area (sqm)"></field>
-                                <field name="facades"></field>
-                                <field name="garage"></field>
-                                <field name="garden"></field>
-                                <field name="garden_area" string="Garden Area (sqm)"></field>
-                                <field name="garden_orientation"></field>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
                             </group>
                         </page>
                     </notebook>
