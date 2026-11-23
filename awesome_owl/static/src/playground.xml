@@ -2,8 +2,47 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="p-3 d-flex gap-4 align-items-start">
+
+            <div class="flex-grow-1">
+                <div class="d-inline-flex align-items-center gap-3 border rounded p-3 m-1">
+                    <span>Hello Owl</span>
+                    <Counter onChange.bind="incrementSum"/>
+                </div>
+
+                <div>
+                    <Counter onChange.bind="incrementSum"/>
+                </div>
+
+                <div class="d-inline-block my-2 border rounded p-3">
+                    Sum: <t t-out="sum.value"/>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <div>
+                        <Card title="'Simple text'">
+                            <p class="card-text">Any content you like.</p>
+                        </Card>
+                    </div>
+
+                    <div>
+                        <Card title="'Rich content'">
+                            <t t-out="HtmlContent"/>
+                        </Card>
+                    </div>
+
+                    <div>
+                        <Card title="'A counter inside a card'">
+                            <Counter onChange.bind="incrementSum"/>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-shrink-0" style="width: 350px;">
+                <TodoList/>
+            </div>
+
         </div>
     </t>
 
