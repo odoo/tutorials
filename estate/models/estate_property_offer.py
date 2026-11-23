@@ -18,15 +18,15 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id")
 
-    """
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             estate_property = self.env["estate.property"].browse(vals["property_id"])
+            if vals["price"] <= estate_property.best_price:
+                raise exceptions.UserError(f"The offer must be higher than {estate_property.best_price}")
             if estate_property.state == "new":
                 estate_property.state = "offer_received"
         return super().create(vals_list)
-    """
 
     @api.depends("validity")
     def _compute_date_deadline(self):
