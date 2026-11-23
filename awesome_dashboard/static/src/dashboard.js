@@ -3,18 +3,19 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 import { DashboardItem } from "./dashboard_item";
-import { rpc } from "@web/core/network/rpc";
+import { ReportingPlugin } from "./reporting_plugin";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem };
 
     action = usePlugin(ActionPlugin);
+    reporting = usePlugin(ReportingPlugin);
     statistics = signal(null);
 
     setup() {
         onWillStart(async () => {
-            const data = await rpc("/awesome_dashboard/statistics");
+            const data = await this.reporting.loadStatistics();
             this.statistics.set(data);
         });
     }
