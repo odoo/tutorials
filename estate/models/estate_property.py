@@ -35,21 +35,18 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', "property_id", string="Offers")
 
-    _check_expected_price = models.Constraint(
+    _check_positive_expected_price = models.Constraint(
         'CHECK(expected_price >=0)',
         'Expected price must be positive'
     )
-    _check_selling_price = models.Constraint(
+    _check_positive_selling_price = models.Constraint(
         'CHECK(selling_price >=0)',
         'Selling price must be positive'
     )
 
     @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if not record.selling_price:
-                continue
-
+    def _check_90percent_selling_price(self):
+        for record in self.filtered("selling_price"):
             if float_compare(record.selling_price,
                              record.expected_price * 0.9,
                              precision_rounding=record.currency_id.rounding,

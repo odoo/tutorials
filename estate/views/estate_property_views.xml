@@ -1,5 +1,5 @@
 <odoo>
-    <record id="estate_custom_list" model="ir.ui.view">
+    <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -9,7 +9,7 @@
                 decoration-muted="state == 'sold'"
                 decoration-danger="state == 'cancelled'">
                 <field name="name"/>
-                <field name="state" string="Status"/>
+                <field name="state"/>
                 <field name="tag_ids" 
                     widget="many2many_tags" 
                     options="{'color_field': 'color',
@@ -25,7 +25,7 @@
         </field>
     </record>
 
-    <record id="estate_custom_form" model="ir.ui.view">
+    <record id="estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -67,20 +67,20 @@
                         <notebook>
                             <page string="Details">
                                 <group>
-                                    <field name="property_type" string="Type"/>
+                                    <field name="property_type"/>
                                     <field name="bedrooms"/>
                                     <field name="living_area" string="Living Area (sqm)"/>
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="state" string="Status"/>
+                                    <field name="state"/>
                                 </group>
                                 <group invisible="not garden">
                                     <field name="garden_area" string="Garden Area (sqm)"/>
                                     <field name="garden_orientation"/>
                                 </group>
                                 <group>
-                                    <field name="total_area" string="Total Area"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
