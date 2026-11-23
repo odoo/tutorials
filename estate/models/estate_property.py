@@ -99,7 +99,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if (
+            if record.selling_price != 0 and (
                 float_compare(
                     record.selling_price,
                     0.9 * record.expected_price,
