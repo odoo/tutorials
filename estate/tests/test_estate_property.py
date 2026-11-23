@@ -64,6 +64,13 @@ class TestEstateProperty(TransactionCase):
         with self.assertRaises(UserError):
             self._create_offer(99000)
 
+    def test_create_offer_on_cancelled_property(self):
+        """No offer can be created on a cancelled property."""
+        self.estate_property.action_cancel()
+
+        with self.assertRaises(UserError):
+            self._create_offer(95000)
+
     def test_garden_onchange(self):
         """Unchecking the garden resets its area and orientation."""
         with Form(self.env['estate.property']) as property_form:
