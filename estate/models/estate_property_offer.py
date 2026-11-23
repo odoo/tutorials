@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-    validity = fields.Integer(default=7, string="Validity (days)")
+    validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
@@ -54,6 +54,7 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept_offer(self):
+        self.ensure_one()
         for record in self:
             record.status = "accepted"
             for offer in record.property_id.offer_ids:
@@ -62,6 +63,7 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_reject_offer(self):
+        self.ensure_one()
         for record in self:
             record.status = "refused"
         return True
