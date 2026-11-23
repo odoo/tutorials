@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -29,3 +30,22 @@ class EstatePropertyOffer(models.Model):
                 offer.create_date.date() if offer.create_date else fields.Date.context_today(offer)
             )
             offer.validity = (offer.date_deadline - start_date).days
+
+    def action_accept(self):
+        for offer in self:
+            if offer.property_id.state == "sold" or offer.property_id.state == "offer_accepted":
+                raise UserError(self.env._("An offer had already been accepted."))
+            if offer.property_id.state == "cancelled":
+                raise UserError(self.env._("The sales had been cancelled."))
+            offer.status = "accepted"
+            offer.property_id.state = "offer_accepted"
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+        return True
+
+    def action_refuse(self):
+        for offer in self:
+            if offer.property_id.state == "sold" or offer.property_id.state == "cancelled":
+                return True
+            offer.status = "refused"
+        return True
