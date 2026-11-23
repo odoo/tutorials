@@ -43,10 +43,10 @@
     />
 
     <menuitem
-        id="estate_property_maintance_menu"
-        name="Property Maintance"
+        id="estate_property_maintenance_menu"
+        name="Property Maintenance"
         parent="estate_property_settings_menu"
-        action="estate_proprty_maintance"
+        action="estate_property_maintenance"
     />
 
 </odoo>

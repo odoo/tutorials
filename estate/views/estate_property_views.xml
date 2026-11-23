@@ -104,8 +104,8 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Maintance">
-                            <field name="maintance_ids">
+                        <page string="Maintenance">
+                            <field name="maintenance_ids">
                                 <list editable="top">
                                     <field name="issue" string="Issue" />
                                     <field name="agent_ids" />
@@ -159,4 +159,5 @@
             </search>
         </field>
     </record>
+
 </odoo>

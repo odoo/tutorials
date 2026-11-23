@@ -9,12 +9,12 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
-    def caluate_date(self):
+    def calculate_date(self):
         return fields.Date.today() + relativedelta(months=3)
 
     name = fields.Char(required=True)
     description = fields.Text()
-    date_availability = fields.Date(default=caluate_date)
+    date_availability = fields.Date(default=calculate_date)
     postcode = fields.Char(required=True)
     expected_price = fields.Float(required=True, default=False)
     bedrooms = fields.Integer()
@@ -64,10 +64,10 @@ class EstateProperty(models.Model):
         string="Offers",
     )
 
-    maintance_ids = fields.One2many(
-        "estate.property.maintance",
+    maintenance_ids = fields.One2many(
+        "estate.property.maintenance",
         "property_id",
-        string="Maintance",
+        string="Maintenance",
     )
 
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
@@ -77,7 +77,7 @@ class EstateProperty(models.Model):
     )
 
     _check_unique_name = models.Constraint(
-        "unique(name, postcode)", "Property Name should be Unique "
+        "unique(name, postcode)", "Property Name should be Unique"
     )
 
     _check_positive = models.Constraint(
@@ -98,7 +98,9 @@ class EstateProperty(models.Model):
                     < 0
                 ):
                     raise ValidationError(
-                        "The Selling Must be 90% of the Expected Price. "
+                        self.env._(
+                            "The selling price must be at least 90% of the expected price."
+                        )
                     )
 
     @api.depends("offer_ids.price")
@@ -121,16 +123,33 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in {"new", "canceled"}:
+                raise UserError(
+                    self.env._("Only new and canceled properties can be deleted.")
+                )
+
     def action_sold(self):
         for record in self:
+            if record.state == "new":
+                raise UserError(
+                    self.env._(f"This Property:  {record.name} do not have any offer.")
+                )
             if record.state == "canceled":
-                raise UserError("A cancelled property cannot be set as sold.")
-            record.state = "sold"
+                raise UserError(
+                    self.env._(
+                        f"A cancelled property: {record.name} cannot be set as sold."
+                    )
+                )
+            if record.state == "offer_accepted":
+                record.state = "sold"
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("A sold property cannot be cancelled.")
+                raise UserError(self.env._("A sold property cannot be cancelled."))
             record.state = "canceled"
         return True
