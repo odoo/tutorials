@@ -46,8 +46,8 @@ class EstateProperty(models.Model):
         string="Status",
     )
     active = fields.Boolean(default=True)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer_id = fields.Many2one("res.partner", copy=False)
     salesperson_id = fields.Many2one(
         "res.users",
         string="Salesman",
@@ -58,11 +58,11 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
-    _check_expected_price = models.Constraint(
+    _check_expected_price_strictly_positive = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price must be strictly positive.',
     )
-    _check_selling_price = models.Constraint(
+    _check_selling_price_positive = models.Constraint(
         'CHECK(selling_price >= 0)',
         'The selling price must be positive.',
     )
@@ -78,7 +78,7 @@ class EstateProperty(models.Model):
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
-    def _orange_garden(self):
+    def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
@@ -97,6 +97,9 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'sold':
                 raise UserError(self.env._("Cannot cancel a sold property."))
+            record.offer_ids.write({'state': 'refused'})
+            record.buyer_id = False
+            record.selling_price = 0
             record.state = 'cancelled'
         return True
 
