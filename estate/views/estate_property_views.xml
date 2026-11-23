@@ -60,6 +60,7 @@
                             <field name="expected_price"/>
                             <field name="best_price"/>
                             <field name="selling_price"/>
+                            <field name="date_availability"/>
                         </group>
                     </group>
                     <group>
@@ -105,10 +106,11 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" operator=">="/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="new or sold" name="state" domain="['|',('state','=','new'),('state','=','sold')]"/>
+                    <filter string="new or sold" name="state" domain="[('state', 'in', ['new', 'sold'])]"/>
+                    <filter name="available" string="Available" domain="[('date_availability', '&lt;=', context_today())]"/>
                 <group>
                     <filter string="By postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -121,5 +123,13 @@
         <field name="name">Estate test action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_report_action" model="ir.actions.act_window">
+        <field name="name">Available Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="estate_property_view_search"/>
+        <field name="context">{'search_default_available':1}</field>
     </record>
 </odoo>
