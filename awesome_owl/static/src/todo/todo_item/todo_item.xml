@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <button t-attf-class="btn btn-sm text-bg-danger" t-on-click="() => props.removeTodo(props.todo.id)">
+            <button class="btn btn-sm text-bg-danger" t-on-click="() => props.removeTodo(props.todo.id)">
                 Delete
             </button>
         </div>

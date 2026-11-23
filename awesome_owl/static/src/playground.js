@@ -12,11 +12,7 @@ export class Playground extends Component {
     this.html2 = "<p>This is some content</p>";
     this.sum = useState({ value: 0 });
   }
-  incrementSum(increment) {
-    if (increment) {
-      this.sum.value++;
-    } else {
-      this.sum.value--;
-    }
+  calculateSum(delta) {
+    this.sum.value += delta;
   }
 }

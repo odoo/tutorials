@@ -11,8 +11,8 @@
             <h3 class="mb-3">Counter Playground</h3>
             <div class="mb-3">
                 <div class="d-flex flex-wrap gap-3 mb-3">
-                    <Counter onChange.bind="incrementSum"/>
-                    <Counter onChange.bind="incrementSum"/>
+                    <Counter onChange.bind="calculateSum"/>
+                    <Counter onChange.bind="calculateSum"/>
                     <div class="card p-4 m-3 shadow-sm" style="max-width: 350px;">
                         <div class="card-body text-center">
                             <h1 class="fw-bold mb-4">
@@ -34,7 +34,7 @@
                         <t t-esc="this.html2"/>
                     </Card>
                     <Card title="'Counter in a Card'">
-                        <Counter onChange.bind="incrementSum"/>
+                        <Counter onChange.bind="calculateSum"/>
                     </Card>
                 </div>
             </div>

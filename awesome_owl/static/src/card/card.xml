@@ -12,7 +12,7 @@
                     <t t-else="">Show</t>
                 </button>
             </div>
-            <div class="card-body" t-if="state.isOpen">
+            <div t-att-class="state.isOpen ? 'card-body' : 'card-body d-none'">
                 <t t-slot="default"/>
             </div>
         </div>

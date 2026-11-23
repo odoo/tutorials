@@ -19,7 +19,7 @@
 
                     <t t-if="!this.state.todos.length">
                         <div class="text-center text-muted py-5">
-                            <i class="fa fa-clipboard-check fa-3x mb-3"/>
+                            <i class="fa fa-clipboard fa-3x mb-3"/>
                             <p class="mb-0">No tasks available!</p>
                         </div>
                     </t>

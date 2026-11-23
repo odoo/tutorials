@@ -12,12 +12,12 @@ export class Counter extends Component {
 
   increment() {
     this.state.value++;
-    this.props.onChange?.(true);
+    this.props.onChange?.(1);
   }
   decrement() {
     if (this.state.value > 0) {
       this.state.value--;
-      this.props.onChange?.();
+      this.props.onChange?.(-1);
     }
   }
 }
