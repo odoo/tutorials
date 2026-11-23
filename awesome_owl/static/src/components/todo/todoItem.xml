@@ -13,9 +13,10 @@
             </div>
             <div>
                 <span>
-                    <input type="checkbox" id="'mark_complete'" t-att-checked="props.todo.isCompleted===true" t-on-click="markComplete" ></input>
+                    <input type="checkbox" id="'mark_complete'" t-att-checked="props.todo.isCompleted===true" t-on-click="markComplete" />
                 </span>
             </div>
+            <span t-on-click="deleteTodo" class="fa fa-remove"/>
         </div>
     </t>
 

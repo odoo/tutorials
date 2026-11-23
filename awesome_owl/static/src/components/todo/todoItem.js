@@ -10,11 +10,23 @@ export class TodoItem extends Component{
                 description:String,
                 isCompleted:Boolean,
             }
+        },
+        onChange:{
+            type:Function,
+        },
+        onDelete:{
+            type:Function
         }
+    }   
+
+    markComplete(){        
+        this.props.onChange(this.props.todo.id)
     }
 
-    markComplete(){
-        this.props.todo.isCompleted = !this.props.todo.isCompleted
+    deleteTodo(){
+        console.log("Todo Item",this.props.todo);
+        this.props.onDelete(this.props.todo.id)
+        
     }
 
 }
