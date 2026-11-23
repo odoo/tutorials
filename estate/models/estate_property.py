@@ -69,7 +69,7 @@ class EstateProperty(models.Model):
 
     _check_positive_selling_price = models.Constraint("CHECK(selling_price >= 0)", "Selling price must be positive.")
 
-    @api.depends("offer_ids.status")
+    @api.depends("state", "offer_ids.price")  # property state changes in offer's accept action
     def _compute_selling_price(self):
         for record in self:
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")
@@ -83,7 +83,7 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids.status")
+    @api.depends("offer_ids.status", "offer_ids.partner_id")
     def _compute_buyer(self):
         for record in self:
             accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")
