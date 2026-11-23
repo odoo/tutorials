@@ -50,7 +50,7 @@ class EstateProperty(models.Model):
         string='Property Type',
         index='btree_not_null',
     )
-    buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
+    buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer', readonly=True, copy=False)
     salesperson_id = fields.Many2one(
         comodel_name='res.users',
         string='Salesperson',
