@@ -36,10 +36,18 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
+        list_unique_property_ids = list(set([offer['property_id'] for offer in vals]))
+
+        # 1 - Can't create an offer for a property that has been sold
+        for state in self.env['estate.property'].search([('id', 'in', list_unique_property_ids)]).mapped('state'):
+            if state == 'sold':
+                raise UserError("An offer can't be made on a property that has been sold!")
+
+        # 2 - Can't create an offer whose price is less than one of the offers already created
         # Group all current offers by property_id, and extract the minimum price of its offers
         min_price_by_property_id = {
             property.id: min(group_orders.mapped('price'))
-            for property, group_orders in self.env['estate.property.offer'].search([('property_id', 'in', [offer['property_id'] for offer in vals])]).grouped('property_id').items()
+            for property, group_orders in self.env['estate.property.offer'].search([('property_id', 'in', list_unique_property_ids)]).grouped('property_id').items()
         }
 
         for offer in vals:
@@ -47,7 +55,7 @@ class EstatePropertyOffer(models.Model):
             if offer['price'] < min_curr_price:
                 raise UserError("A new offer can't be lower in price than an existing offer!")
 
-        self.env['estate.property'].search([('id', 'in', [offer['property_id'] for offer in vals])]).state = 'received'
+        self.env['estate.property'].search([('id', 'in', list_unique_property_ids)]).state = 'received'
         return super().create(vals)
 
     def action_accept_offer(self):
