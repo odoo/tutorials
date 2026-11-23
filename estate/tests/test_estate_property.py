@@ -1,4 +1,3 @@
-from odoo import api
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase
 from odoo.tests import Form
@@ -8,7 +7,7 @@ class EstateTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstateTestCase, cls).setUpClass()
+        super().setUpClass()
         cls.property_type = cls.env['estate.property.type'].create({
             'name': 'Test Property Type'
         })
