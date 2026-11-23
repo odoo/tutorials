@@ -17,7 +17,7 @@
                         invisible="status"/>
                 <button name="action_refuse" type="object" title="Refuse" icon="close"
                         invisible="status"/>
-                <field name="status" column_invisible="True"/>
+                <field name="status" column_invisible="True"/> <!-- needed by the row decorations and the buttons -->
             </list>
         </field>
     </record>

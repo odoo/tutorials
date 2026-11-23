@@ -8,7 +8,7 @@
                   decoration-success="state in ('offer_received', 'offer_accepted')"
                   decoration-bf="state == 'offer_accepted'"
                   decoration-muted="state == 'sold'">
-                <field name="state" column_invisible="True"/>
+                <field name="state" column_invisible="True"/> <!-- needed by the row decorations -->
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget="many2many_tags"/>
