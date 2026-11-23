@@ -59,9 +59,9 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(self.env._("There is already an accepted offer."))
             # record.property_id.offer_ids.write({"state": "refused"})
             record.state = "accepted"
-            record.property_id.state = "sold"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id.id
+            record.property_id.action_do_sell()
         return True
 
     def action_do_refuse(self):
