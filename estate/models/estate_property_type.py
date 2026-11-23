@@ -13,7 +13,7 @@ class EstatePropertyType(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_type_id")
     offer_count = fields.Integer(compute="_compute_count_offer")
 
-    _unique_tag_name = models.Constraint("UNIQUE(name)", "Tag name must be unique.")
+    _unique_type_name = models.Constraint("UNIQUE(name)", "Type name must be unique.")
 
     @api.depends("offer_ids")
     def _compute_count_offer(self):

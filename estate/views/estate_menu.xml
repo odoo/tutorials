@@ -2,9 +2,6 @@
 <odoo>
 
         <!-- Root Menu -->
-        <menuitem id="estate_menu_root" name="Real Estate" />
-
-        <!-- Iamge icon-->
         <menuitem
                 id="estate_menu_root"
                 name="Real Estate"
@@ -33,7 +30,7 @@
         <menuitem id="estate_menu_property_type"
                 name="Property Type"
                 parent="estate_setting_menu"
-                action="estate_propert_type_view" />
+                action="estate_property_type_view" />
 
         <!-- estate property tag -->
         <menuitem id="estate_menu_property_tag"

@@ -12,13 +12,11 @@ class EstatePropertyTag(models.Model):
 
     @api.constrains("name")
     def _check_unique_tag_name(self):
-        tag_list = (
-            self.env["estate.property.tag"]
-            .search([("id", "not in", self.id)])
-            .mapped("name")
+        if len(self) > 1:
+            raise ValidationError(self.env._("Tag duplication not allowed"))
+        tag_present = self.search_count(
+            [("id", "!=", self.id), ("name", "=ilike", self.name)]
         )
-        existing_tag_list = [word.lower() for word in tag_list]
 
-        for record in self:
-            if record.name.lower() in existing_tag_list:
-                raise ValidationError("Tag already present")
+        if tag_present:
+            raise ValidationError(self.env._("A tag with this name already exists."))

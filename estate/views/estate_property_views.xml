@@ -16,13 +16,13 @@
                 decoration-primary="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title" />
                 <field name="property_type_id" string="Property Type" />
-                <field name="postcode" string="Postcode" />
+                <field name="postcode" />
                 <field name="tag_ids" string="Tags" widget="many2many_tags"
                     options="{'color_field':'color'}" />
-                <field name="bedrooms" string="Bedrooms" />
+                <field name="bedrooms" />
                 <field name="living_area" string="Living area (sqm)" />
-                <field name="expected_price" string="Expected Price" />
-                <field name="selling_price" string="Selling Price" />
+                <field name="expected_price" />
+                <field name="selling_price" />
                 <field name="date_availability" string="Available From" optional="hide" />
             </list>
         </field>
@@ -35,7 +35,7 @@
             <form>
                 <header class="o_navbar">
                     <div invisible="state == 'sold' or state == 'cancelled'">
-                        <button name="action_on_sold_button" type="object" string="SOLD" />
+                        <button name="action_on_sold_button" type="object" string="SOLD" invisible="state != 'offer_accepted'"/>
                         <button name="action_on_cancel_button" type="object" string="CANCEL" />
                     </div>
                     <field name="state" widget="statusbar"
@@ -73,7 +73,7 @@
                                     <field name="garden_area" string="Garden area (sqm)"
                                         invisible="garden == False" />
                                     <field name="garden_orientation" string="Garden Orientation"
-                                        invisible="garden == False" />
+                                        invisible="not garden" />
                                     <field name="total_area" string="Total Area (sqm)" />
                                 </group>
                             </page>
@@ -89,7 +89,7 @@
                                         <button name="action_offer_accept" type="object" string=""
                                             icon="fa-check"
                                             invisible="status in ('accepted', 'refuse')" />
-                                        <button name="action_property_cancel" type="object"
+                                        <button name="action_property_refuse" type="object"
                                             string="" icon="fa-times"
                                             invisible="status in ('accepted', 'refuse')" />
                                         <field name="status" string="Status" optional="hide" />
@@ -98,8 +98,8 @@
                             </page>
                             <page string="Other info">
                                 <group>
-                                    <field name="salesperson" string="Salesman" />
-                                    <field name="buyer" string="Buyer" />
+                                    <field name="salesperson_id" string="Salesman" />
+                                    <field name="buyer_id" string="buyer_id" />
                                 </group>
                             </page>
                         </notebook>

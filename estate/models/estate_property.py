@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -33,7 +33,7 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ]
     )
-    active = fields.Boolean("Active", default=True)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         [
             ("new", "New"),
@@ -43,14 +43,13 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         default="new",
-        compute="_change_offer_state",
         store=True,
         tracking=True,
     )
 
     property_type_id = fields.Many2one("estate.property.type")
-    buyer = fields.Many2one("res.partner", copy=False)
-    salesperson = fields.Many2one("res.users", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
@@ -67,18 +66,6 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
-    @api.depends("offer_ids")
-    def _change_offer_state(self):
-        for record in self:
-            if record.offer_ids and record.state not in (
-                "offer_accepted",
-                "sold",
-                "cancelled",
-            ):
-                record.state = "offer_received"
-            elif record.state not in ("offer_accepted", "sold", "cancelled"):
-                record.state = "new"
-
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -90,12 +77,12 @@ class EstateProperty(models.Model):
 
     def action_on_sold_button(self):
         self.ensure_one()
-        if self.state != "offer_accepted":
-            raise UserError(_("Property can only be sold once an offer is accepted."))
 
-        if not self.buyer:
+        if not self.buyer_id:
             raise UserError(
-                _("Please assign a Buyer before sending the Sold confirmation email.")
+                self.env._(
+                    "Please assign a buyer_id before sending the Sold confirmation email."
+                )
             )
 
         template = self.env.ref(
@@ -111,8 +98,8 @@ class EstateProperty(models.Model):
             "target": "new",
             "context": {
                 "default_model": "estate.property",
-                "default_email_to": self.buyer.email,
-                "default_partner_ids": [self.buyer.id],
+                "default_email_to": self.buyer_id.email,
+                "default_partner_ids": [self.buyer_id.id],
                 "default_res_ids": self.ids,
                 "default_template_id": template.id if template else False,
                 "default_composition_mode": "comment",
@@ -127,16 +114,20 @@ class EstateProperty(models.Model):
             and self.state == "offer_accepted"
         ):
             self.state = "sold"
+            # self.create_invoice()
         return res
+
+    # def create_invoice(self):
+    #     return True
 
     def action_on_cancel_button(self):
         if self.state != "sold":
             self.state = "cancelled"
         else:
-            raise UserError("Sold property cannot be cancelled")
+            raise UserError(self.env._("Sold property cannot be cancelled."))
 
     _check_expected_price = models.Constraint(
-        "CHECK(expected_price >= 0)",
+        "CHECK(expected_price > 0)",
         "The expected price of property must be positive",
     )
     _check_selling_price = models.Constraint(
@@ -157,11 +148,13 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    "Selling price cannot be less than 90% of expected price."
+                    self.env._(
+                        "Selling price cannot be less than 90% of expected price."
+                    )
                 )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_not_new_and_cancelled(self):
         for record in self:
             if record.state not in ("new", "cancelled"):
-                raise UserError("Property can't be deleted")
+                raise UserError(self.env._("Property can't be deleted"))
