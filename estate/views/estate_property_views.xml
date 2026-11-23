@@ -110,7 +110,7 @@
                 <field name="facades"/>
                 <separator/>
                     <filter string="new or sold" name="state" domain="[('state', 'in', ['new', 'sold'])]"/>
-                    <filter name="available" string="Available" domain="[('date_availability', '&lt;=', context_today())]"/>
+                    <filter name="available" string="Available" domain="[('state', 'not in', ['sold', 'cancelled'])]"/>
                 <group>
                     <filter string="By postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
