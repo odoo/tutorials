@@ -120,6 +120,8 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if 'cancelled' in self.mapped('state'):
             raise UserError(self.env._('Cancelled properties cannot be sold.'))
+        if 'sold' in self.mapped('state'):
+            raise UserError(self.env._('Sold properties cannot be sold again.'))
         if self.filtered(lambda estate_property: 'accepted' not in estate_property.offer_ids.mapped('status')):
             raise UserError(self.env._('Properties without an accepted offer cannot be sold.'))
         self.state = 'sold'

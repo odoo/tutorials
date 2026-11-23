@@ -48,6 +48,14 @@ class TestEstateProperty(TransactionCase):
 
         self.assertNotEqual(self.estate_property.state, 'sold')
 
+    def test_sell_property_twice(self):
+        """An already sold property cannot be sold again."""
+        self._create_offer(95000).action_accept()
+        self.estate_property.action_sold()
+
+        with self.assertRaises(UserError):
+            self.estate_property.action_sold()
+
     def test_create_offer_on_sold_property(self):
         """No offer can be created on a sold property."""
         self._create_offer(95000).action_accept()
