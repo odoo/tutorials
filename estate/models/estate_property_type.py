@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -26,7 +26,7 @@ class EstatePropertyType(models.Model):
     def action_open_offers(self):
         self.ensure_one()
         return {
-            "name": _("Offers"),
+            "name": self.env._("Offers"),
             "view_mode": "list,form",
             "res_model": "estate.property.offer",
             "type": "ir.actions.act_window",

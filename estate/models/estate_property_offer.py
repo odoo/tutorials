@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -54,7 +54,7 @@ class EstatePropertyOffer(models.Model):
                 state == "accepted"
                 for state in record.property_id.mapped("offer_ids.state")
             ):
-                raise UserError(_("There is already an accepted offer."))
+                raise UserError(self.env._("There is already an accepted offer."))
             # record.property_id.offer_ids.write({"state": "refused"})
             record.state = "accepted"
             record.property_id.state = "sold"

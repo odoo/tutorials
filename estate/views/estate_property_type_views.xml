@@ -35,7 +35,7 @@
                                 class="oe_stat_button"
                                 icon="hourglass_bottom">
                             <field string="Offers" name="offer_count" widget="statinfo"/>
-                        </button> <!-- type=object if python action; type=action with name=%(action)d if xml -->
+                        </button>
                     </div>
                     <notebook>
                         <page string="Properties">
