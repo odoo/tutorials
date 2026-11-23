@@ -76,3 +76,18 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(self.env._("This offer has already been processed."))
             record.state = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            the_property = self.env["estate.property"].browse(vals["property_id"])
+            best_offer = max(the_property.offer_ids.mapped("price"), default=0)
+            if best_offer >= vals["price"]:
+                raise UserError("Cannot enter a new offer smaller than the best existing offer")
+        offers = super().create(vals_list)
+
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer_received'
+
+        return offers

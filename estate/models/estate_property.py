@@ -87,3 +87,8 @@ class EstateProperty(models.Model):
                 raise UserError(self.env._("Cannot cancell a sold property"))
             else:
                 record.state = "cancelled"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        if any(record.state not in ['new', 'cancelled'] for record in self):
+            raise UserError("Can't delete a new or cancelled property")
