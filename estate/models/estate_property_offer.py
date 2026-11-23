@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 
@@ -24,7 +24,7 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
-    _check_price = models.Constraint(
+    _check_price_positive = models.Constraint(
         'CHECK(price > 0)',
         'The offer for the property must be strictly positive'
     )
@@ -42,10 +42,16 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - base_date).days
 
     def action_accept_offer(self):
-        self.property_id.buyer = self.partner_id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer_accepted'
-        self.status = 'accepted'
+        for record in self:
+            if record.property_id.state not in ('new', 'offer_received'):
+                raise UserError(self.env._('You cannot accept offers for sold, cancelled and accepted properties.'))
+            record.property_id.buyer = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
+            record.status = 'accepted'
+
+            offers_pending = record.property_id.offer_ids.filtered(lambda offer: not offer.status)
+            offers_pending.write({'status': 'refused'})
 
     def action_refuse_offer(self):
         self.status = 'refused'
@@ -55,7 +61,7 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             prop = self.env['estate.property'].browse(vals['property_id'])
             if prop.offer_ids:
-                max_offer = max(prop.offer_ids.mapped('price'))
+                max_offer = prop.best_price
                 if float_compare(vals['price'], max_offer, precision_rounding=0.01) <= 0:
                     raise ValidationError(self.env._('The amount must be higher than %s.', max_offer))
             prop.state = 'offer_received'
