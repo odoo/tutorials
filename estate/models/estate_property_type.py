@@ -2,13 +2,17 @@ from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
+    """A kind of property (house, apartment...)."""
+
     _name = "estate.property.type"
     _description = "Real Estate Property Type"
+    # The sequence allows ordering the types manually (handle widget).
     _order = "sequence, name"
 
     name = fields.Char(string="Name", required=True)
     sequence = fields.Integer(string="Sequence", default=1)
     property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
+    # Possible thanks to the stored related property_type_id on the offers.
     offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offers")
     offer_count = fields.Integer(string="Offers Count", compute="_compute_offer_count")
 

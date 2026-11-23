@@ -11,12 +11,30 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
+            <list string="Offers"
+                  decoration-danger="status == 'refused'"
+                  decoration-success="status == 'accepted'">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="property_id"/>
+                <field name="property_type_id" optional="hide"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_list_editable" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.list.editable</field>
+        <field name="model">estate.property.offer</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
             <list string="Offers" editable="bottom"
                   decoration-danger="status == 'refused'"
                   decoration-success="status == 'accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="property_type_id" optional="hide"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button name="action_accept" type="object" icon="fa-check" title="Accept"
@@ -34,6 +52,7 @@
             <form string="Offer">
                 <sheet>
                     <group>
+                        <field name="property_id"/>
                         <field name="price"/>
                         <field name="partner_id"/>
                         <field name="validity"/>

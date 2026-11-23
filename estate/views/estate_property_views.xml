@@ -4,6 +4,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,kanban,form</field>
+        <!-- Only show the available properties by default -->
         <field name="context">{'search_default_available': True}</field>
     </record>
 
@@ -68,20 +69,23 @@
                            statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <!-- Sold and cancelled properties are read-only (also enforced in write) -->
                     <h1>
-                        <field name="name"/>
+                        <field name="name" readonly="state in ('sold', 'cancelled')"/>
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" placeholder="Tags"
-                           options="{'color_field': 'color'}"/>
+                           options="{'color_field': 'color'}"
+                           readonly="state in ('sold', 'cancelled')"/>
                     <group>
                         <group>
                             <field name="property_type_id"
-                                   options="{'no_create': True, 'no_open': True}"/>
-                            <field name="postcode"/>
-                            <field name="date_availability"/>
+                                   options="{'no_create': True, 'no_open': True}"
+                                   readonly="state in ('sold', 'cancelled')"/>
+                            <field name="postcode" readonly="state in ('sold', 'cancelled')"/>
+                            <field name="date_availability" readonly="state in ('sold', 'cancelled')"/>
                         </group>
                         <group>
-                            <field name="expected_price"/>
+                            <field name="expected_price" readonly="state in ('sold', 'cancelled')"/>
                             <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
@@ -89,24 +93,29 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" invisible="not garden"/>
-                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="description" readonly="state in ('sold', 'cancelled')"/>
+                                <field name="bedrooms" readonly="state in ('sold', 'cancelled')"/>
+                                <field name="living_area" readonly="state in ('sold', 'cancelled')"/>
+                                <field name="facades" readonly="state in ('sold', 'cancelled')"/>
+                                <field name="garage" readonly="state in ('sold', 'cancelled')"/>
+                                <field name="garden" readonly="state in ('sold', 'cancelled')"/>
+                                <field name="garden_area" invisible="not garden"
+                                       readonly="state in ('sold', 'cancelled')"/>
+                                <field name="garden_orientation" invisible="not garden"
+                                       readonly="state in ('sold', 'cancelled')"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
+                            <!-- No new offer once an offer is accepted; the editable
+                                 list is loaded explicitly (lower priority view) -->
                             <field name="offer_ids"
-                                   readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
+                                   readonly="state in ('offer_accepted', 'sold', 'cancelled')"
+                                   context="{'list_view_ref': 'estate.estate_property_offer_view_list_editable'}"/>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesperson_id"/>
+                                <field name="salesperson_id" readonly="state in ('sold', 'cancelled')"/>
                                 <field name="buyer_id"/>
                             </group>
                         </page>
@@ -126,6 +135,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
+                <!-- Search the properties of at least the given living area -->
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <separator/>
