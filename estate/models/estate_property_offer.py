@@ -72,3 +72,9 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.state = "offer_received" if offers else "new"
             record.state = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        properties = super().create(vals_list)
+        properties.property_id.state = "offer_received"
+        return properties
