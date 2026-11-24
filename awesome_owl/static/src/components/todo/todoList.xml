@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <t t-name="awesome_owl.todoList">
+        <div class="border border-black p-1" style="width:200px;" >
+            <div class="d-flex justify-content-between">
+                <input  placeholder="Enter a new task" t-ref="input" t-on-keyup="addTodo" />
+            </div>
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo" onChange.bind="markTodo" onDelete.bind="deleteTodos"/>
+            </t>
+        </div>
+    </t>
+
+</odoo>

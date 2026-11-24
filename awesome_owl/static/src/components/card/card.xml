@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <t t-name="awesome_owl.card" >
+        <div class="card "  >
+            <div class="d-flex justify-content-center" >
+                <t t-esc="props.title" ></t>
+                <button t-on-click="toggle">
+                    <t t-if="state.isOpen">Hide</t>
+                    <t t-else="">Open</t>
+                </button>
+            </div>
+            
+            <div class="card-body">
+                <t t-slot="default" />
+                <t t-if="this.state.isOpen">
+                    <p>this is demo content</p>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</odoo>

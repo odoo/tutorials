@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_multi_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate_multi_property_offer_view_form</field>
+        <field name="model">estate.multi.property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="price" />
+                        <field name="partner_id" />
+                        <field name="validity_days" />
+                        <field name="deadline" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Create Offer" name="action_multi_property_offer" type="object"
+                        class="oe_highlight" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

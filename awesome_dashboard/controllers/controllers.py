@@ -4,9 +4,9 @@ import logging
 import random
 
 from odoo import http
-from odoo.http import request
 
 logger = logging.getLogger(__name__)
+
 
 class AwesomeDashboard(http.Controller):
     @http.route('/awesome_dashboard/statistics', type='jsonrpc', auth='user')
@@ -31,6 +31,9 @@ class AwesomeDashboard(http.Controller):
                 's': random.randint(0, 150),
                 'xl': random.randint(0, 150),
             },
-            'total_amount': random.randint(100, 1000)
+            'total_amount': random.randint(100, 1000),
+            'qty_by_size': {
+                'labels': ["S", "M", "L", "XL", "XXL"],
+                'values': [15, 25, 30, 20, 10]
+            }
         }
-

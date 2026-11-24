@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Real Estate Brokerage module category -->
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="name">Real Estate Brokerage</field>
+    </record>
+
+    <!-- Real Estate group privilege -->
+    <record id="groups_privilege_real_estate" model="res.groups.privilege">
+        <field name="name">Real Estate</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+    </record>
+
+    <!-- Agent group -->
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="privilege_id" ref="groups_privilege_real_estate" />
+    </record>
+
+    <!-- Manager group -->
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="groups_privilege_real_estate" />
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
+    </record>
+
+    <!-- Record Rule -->
+    <record id="estate_agent_ir" model="ir.rule">
+        <field name="name">Estate Agent Rule</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups"
+            eval="[
+            (4, ref('estate_group_user')),
+        ]" />
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+    </record>
+
+    <record id="estate_manager_ir" model="ir.rule">
+        <field name="name">Estate Manager Rule</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups"
+            eval="
+            [
+                (4,ref('estate_group_manager')),
+            ]"
+        />
+        <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <t t-name="awesome_owl.todoItem">
+        <div class="d-flex justify-content-between align-items-center p-2" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' :''">
+            <div>
+                <span>
+                    <t t-esc="props.todo.id"/>
+                </span>
+                <span>
+                    :<t for="'mark_complete'" t-out="props.todo.description"/>
+                </span>
+            </div>
+            <div>
+                <span>
+                    <input type="checkbox" id="'mark_complete'" t-att-checked="props.todo.isCompleted===true" t-on-click="markComplete" />
+                </span>
+            </div>
+            <span t-on-click="deleteTodo" class="fa fa-remove"/>
+        </div>
+    </t>
+
+</odoo>
