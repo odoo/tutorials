@@ -60,12 +60,6 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
-    """@api.onchange("offer_ids")
-    def _onchange_offer_ids(self):
-        if self.offer_ids and self.state == "new":
-            self.state = "offer_received"
-    """
-
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
