@@ -28,6 +28,12 @@ class EstatePropertyOffer(models.Model):
                 estate_property.state = "offer_received"
         return super().create(vals_list)
 
+    @api.model
+    def write(self, vals: dict):
+        if "price" in vals and vals["price"] <= self.property_id.best_price:
+            raise exceptions.UserError(f"The offer must be higher than {self.property_id.best_price}")
+        return super().write(vals)
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
