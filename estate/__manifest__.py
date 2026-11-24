@@ -17,4 +17,9 @@
         'views/estate_property_type_menus.xml',
         'views/res_users_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'estate/static/src/css/estate.css',
+        ],
+    },
 }

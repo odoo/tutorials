@@ -1,0 +1,21 @@
+.o_compact_buttons {
+    --btn-count: 1;
+}
+
+.o_compact_buttons:has(td.o_list_button div > :nth-child(2)) {
+    --btn-count: 2;
+}
+
+.o_compact_buttons:has(td.o_list_button div > :nth-child(3)) {
+    --btn-count: 3;
+}
+
+.o_compact_buttons th.o_list_button,
+.o_compact_buttons td.o_list_button {
+    width: calc(var(--btn-count) * 25px) !important;
+    padding-right: 0.3rem !important;
+}
+
+.o_compact_buttons td.o_list_button div {
+    justify-content: flex-end;
+}

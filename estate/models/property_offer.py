@@ -13,7 +13,7 @@ if typing.TYPE_CHECKING:
 class PropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Offer'
-    _order = 'price DESC'
+    _order = 'price DESC, id'
 
     price = fields.Float('Price')
     status = fields.Selection(

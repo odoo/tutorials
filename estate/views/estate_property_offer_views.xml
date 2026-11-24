@@ -6,6 +6,8 @@
       <list
         string="Property offers"
         editable="bottom"
+        delete="false"
+        class="o_compact_buttons"
         decoration-success="status == 'accepted'"
         decoration-danger="status == 'refused'"
       >
@@ -18,6 +20,7 @@
           name="action_accept"
           title="Accept"
           icon="check"
+          class="text-success"
           invisible="status"
         />
         <button
@@ -25,7 +28,16 @@
           name="action_refuse"
           title="Refuse"
           icon="close"
+          class="text-danger"
           invisible="status"
+        />
+        <button
+          type="object"
+          name="unlink"
+          title="Delete"
+          icon="delete"
+          class="text-danger"
+          invisible="parent.state in ('offer_accepted', 'sold', 'cancelled')"
         />
       </list>
     </field>
