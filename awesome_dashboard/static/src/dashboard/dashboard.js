@@ -3,12 +3,14 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
 import { DashboardItem } from "./dashboard_item";
-import { PieChart } from "./pie_chart";
 import { ReportingPlugin } from "./reporting_plugin";
+import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
+
+    items = items;
 
     action = usePlugin(ActionPlugin);
     reporting = usePlugin(ReportingPlugin);
