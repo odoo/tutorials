@@ -80,7 +80,7 @@ class PropertyOffer(models.Model):
                 property.offer_ids,
             ):
                 if float_utils.float_compare(
-                    self.price,
+                    record['price'],
                     offer.price,
                     precision_rounding=.01,
                 ) == -1:
