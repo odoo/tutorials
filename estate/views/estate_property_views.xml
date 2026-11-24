@@ -115,8 +115,47 @@
                     <filter string="By postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
-            
         </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban  
+                default_group_by="property_type"
+                records_draggable="False"
+                groups_draggable="False">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <field name="name"/>
+                        <div>
+                            Expected price: <field name="expected_price"/>
+                        </div>
+                        <div t-if="record.state.raw_value =='offer_received'">
+                            Best price: <field name="best_price"/>
+                        </div>
+                        <div t-if="record.state.raw_value =='sold'">
+                            Selling price: <field name="selling_price"/>
+                        </div>
+                        <field name="tag_ids"
+                            widget="many2many_tags" 
+                            options="{'color_field': 'color',
+                                'on_tag_click': 'edit_color'}"/>
+                        <div t-if="record.state.raw_value == 'new'">
+                            <p><b>NEW</b></p>
+                        </div>
+                    </t>
+                </templates>                
+            </kanban>
+        </field>
+    </record>
+
+    <record id="estate_property_kanban_action" model="ir.actions.act_window">
+        <field name="name">kanban</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban, form, list</field>
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">
