@@ -1,4 +1,4 @@
-from odoo import Command, models
+from odoo import Command, exceptions, models
 
 
 class EstateProperty(models.Model):
@@ -6,6 +6,9 @@ class EstateProperty(models.Model):
     _name = "estate.property"
 
     def action_sold(self):
+        if not self.buyer_id:
+            raise exceptions.UserError('The house need a buyer to be sold. An accepted offer is needed to validate the buyer')
+        super().action_sold()
         self.env["account.move"].create({
             "partner_id": self.buyer_id.id,
             "move_type": "out_invoice",
@@ -22,4 +25,3 @@ class EstateProperty(models.Model):
                 })
             ]
         })
-        return super().action_sold()
