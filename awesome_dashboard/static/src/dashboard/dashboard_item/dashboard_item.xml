@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="awesome_dashboard.DashboardItem"> 
+        <div class="card mt-1 " t-att-style="'width:' +(props.size*18)+'rem'">
+            <!-- <h1>
+                some content
+            </h1> -->
+            <div class="card-body">
+                <t t-slot="default"/>
+            </div>
+        </div>
+        </t>
+</templates>

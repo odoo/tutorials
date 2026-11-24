@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="fs-5 text-muted mb-2">
+            <t t-esc="props.title"/>
+        </div>
+        <PieChart data="props.values" label="props.title"/>
+    </t>
+</templates>
