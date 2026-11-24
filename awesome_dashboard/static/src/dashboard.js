@@ -1,4 +1,4 @@
-import { Component, usePlugin, onWillStart } from "@odoo/owl";
+import { Component, usePlugin } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
@@ -12,10 +12,6 @@ class AwesomeDashboard extends Component {
 
     action = usePlugin(ActionPlugin);
     reporting = usePlugin(ReportingPlugin);
-
-    setup() {
-        onWillStart(() => this.reporting.loadStatistics());
-    }
 
     openCustomerView() {
         this.action.doAction("base.action_partner_form");
