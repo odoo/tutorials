@@ -11,6 +11,7 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     name = fields.Char(required=True)
+    age = fields.Interger()
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
