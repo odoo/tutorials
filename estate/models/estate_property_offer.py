@@ -10,12 +10,14 @@ class EstatePorpertyOffer(models.Model):
         ('accepted', 'Accepted'), ('refused', 'Refused')
     ])
     validity = fields.Integer(default=7)
+
+    # Compute Fields
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
     # Relational Fields
     partner_id = fields.Many2one("res.partner", "Partner", required=True)
-    Property_id = fields.Many2one("estate.property", "Property", required=True)
+    property_id = fields.Many2one("estate.property", "Property", required=True)
 
     # Compute Methods
     @api.depends("validity")
