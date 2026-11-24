@@ -118,4 +118,32 @@
             </search>
         </field>
     </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False">
+                <templates>
+                    <t t-name="card">
+                        <div class="fw-bolder fs-3 mb-1">
+                            <field name="name"/>
+                        </div>
+                        <span class="mb-1">
+                            <span class="me-1">Expected price:</span>
+                            <field name="expected_price"/>
+                            <span class="ms-1">€</span>
+                        </span>
+                        <div t-if="record.state == 'offer_received'" class="mb-1">
+                            <span class="me-1">Best price:</span>
+                            <field name="best_price"/>
+                            <span class="me-1">€</span>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags"
+                               options="{'color_field': 'color'}" class="mt-2"/>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
 </odoo>
