@@ -6,13 +6,16 @@ from odoo import api, exceptions, fields, models
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer"
+    _order = 'price desc'
 
     price = fields.Float('Price', digits=(12, 2), required=True)
-    partner = fields.Many2one("res.partner", string='Partner', required=True)
-    status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], default=False)
-    property_id = fields.Many2one("estate.property", "property_id", required=True, readonly=True)
+    status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     validity_days = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+    partner_id = fields.Many2one("res.partner", string='Buyer', required=True)
+    property_id = fields.Many2one("estate.property", required=True, readonly=True)
+    property_status = fields.Selection(related="property_id.state")
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _check_price = models.Constraint(
         "CHECK(price >= 0)",
@@ -29,7 +32,12 @@ class PropertyOffer(models.Model):
                 record.status = 'accepted'
                 record.property_id.state = 'offer_accepted'
                 record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner
+                record.property_id.buyer_id = record.partner_id
+
+                # for offers in record.property_id.offer_ids:
+                #     if offers.id != record.id:
+                #         offers.status = 'refused'
+                (record.property_id.offer_ids - record).write({'status': 'refused'})
         return True
 
     def action_offer_refused(self):
