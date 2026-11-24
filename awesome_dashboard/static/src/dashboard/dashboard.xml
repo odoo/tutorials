@@ -9,7 +9,7 @@
             </t>
             <t t-set="stats" t-value="this.reporting.stats"/>
             <div class="d-flex flex-wrap" t-if="stats()">
-                <t t-foreach="this.items" t-as="item" t-key="item.id">
+                <t t-foreach="this.items()" t-as="item" t-key="item.id">
                     <DashboardItem size="item.size || 1">
                         <t t-set="itemProp" t-value="item.props ? item.props(stats()) : {'data': stats()}"/>
                         <t t-component="item.Component" t-props="itemProp"/>
