@@ -66,7 +66,7 @@ class PropertyOffer(models.Model):
                 'buyer_id': self.partner_id.id,
                 'selling_price': self.price
             })
-            self.property_id.flush_recordset(['state'])
+            # self.property_id.flush_recordset(['state'])
 
     def action_cancel(self):
         for rec in self:

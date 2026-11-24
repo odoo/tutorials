@@ -1,10 +1,10 @@
-
 import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboardItem";
 import { PieChart } from "./pie_chart/pie_chart";
+import { ConfigurationDialog } from "./configuration_dialog";
 import "./dashboard_items";
 
 console.log("dashboard.js loaded");
@@ -20,13 +20,37 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.dialog = useService("dialog");
 
-        const statisticsService = useService(
-            "awesome_dashboard.statistics"
+        const statisticsService = useService("awesome_dashboard.statistics");
+        this.statistics = useState(statisticsService);
+
+        const removedItems = JSON.parse(
+            localStorage.getItem("awesome_dashboard_configuration") || "[]"
         );
 
-        this.statistics = useState(statisticsService);
-        this.items = registry.category("awesome_dashboard").getAll();
+        this.items = useState(
+            registry.category("awesome_dashboard")
+                .getAll()
+                .filter((item) => !removedItems.includes(item.id))
+        );
+    }
+
+    openSettings() {
+        this.dialog.add(ConfigurationDialog, {
+            items: registry.category("awesome_dashboard").getAll(),
+            onApply: (removedItems) => {
+                const visibleItems = registry.category("awesome_dashboard")
+                    .getAll()
+                    .filter((item) => !removedItems.includes(item.id));
+
+                this.items.splice(
+                    0,
+                    this.items.length,
+                    ...visibleItems
+                );
+            },
+        });
     }
 
     openCustomers() {

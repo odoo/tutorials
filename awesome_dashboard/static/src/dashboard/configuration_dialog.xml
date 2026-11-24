@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Configure Dashboard'">
+            <div class="o_awesome_dashboard_config">
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <div class="form-check">
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            t-att-id="item.id"
+                            t-att-checked="isItemVisible(item)"
+                            t-on-change="() => toggleItem(item.id)"
+                        />
+                        <label
+                            class="form-check-label"
+                            t-att-for="item.id">
+                            <t t-esc="item.description"/>
+                        </label>
+                    </div>
+                </t>
+            </div>
+
+            <t t-set-slot="footer">
+                <button
+                    class="btn btn-primary"
+                    t-on-click="apply">
+                    Apply
+                </button>
+                <button
+                    class="btn btn-secondary"
+                    t-on-click="props.close">
+                    Discard
+                </button>
+            </t>
+        </Dialog>
+    </t>
+    
+</templates>

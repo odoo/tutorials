@@ -2,7 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.PieChart">
-        <canvas t-ref="pieChartCanvas"/>
+        <div class="o_pie_chart_container">
+            <canvas t-ref="pieChartCanvas"/>
+        </div>
     </t>
 
 </templates>
