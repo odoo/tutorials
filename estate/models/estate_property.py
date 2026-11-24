@@ -101,6 +101,8 @@ class EstateProperty(models.Model):
                     ("property_id", "=", record.id),
                     ("state", "=", "accepted"),
                 ])
+                if not accepted_offer:
+                    raise UserError(self.env._("No accepted offer found"))
                 record.selling_price = accepted_offer.price
                 record.buyer_id = accepted_offer.partner_id.id
                 record.state = "sold"
@@ -126,5 +128,5 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ("new", "cancelled"):
                 raise UserError(
-                    self.env._("Only new or sold properties can be deleted.")
+                    self.env._("Only new or cancelled properties can be deleted.")
                 )

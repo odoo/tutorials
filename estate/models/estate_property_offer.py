@@ -68,8 +68,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-        if self.property_id.state in ("offer_accepted", "sold"):
-            raise UserError(self.env._("There is already an accepted offer."))
-        properties = super().create(vals_list)
-        properties.property_id.state = "offer_received"
-        return properties
+        for vals in vals_list:
+            prop = self.env["estate.property"].browse(vals["property_id"])
+            if prop.state in ("offer_accepted", "sold"):
+                raise UserError(self.env._("There is already an accepted offer."))
+            prop.state = "offer_received"
+        return super().create(vals_list)

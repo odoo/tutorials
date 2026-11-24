@@ -17,9 +17,9 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button name="action_do_accept" type="object" icon="check" string="Accept"
-                        invisible="property_state in ('sold', 'offer_accepted')"/>
+                        invisible="property_state in ('sold', 'offer_accepted', 'cancelled')"/>
                 <button name="action_do_refuse" type="object" icon="close" string="Decline"
-                        invisible="state != 'accepted' and property_state in ('sold', 'offer_accepted')"/>
+                        invisible="state != 'accepted' and property_state in ('sold', 'offer_accepted', 'cancelled')"/>
                 <field name="property_type_id"/>
             </list>
         </field>
