@@ -24,7 +24,9 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
     )
     validity = fields.Integer(default=7)
-    property_state = fields.Selection(related="property_id.state", readonly=True)
+    property_state = fields.Selection(
+        related="property_id.state", readonly=True, string="Property State"
+    )
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True, readonly=False
     )
