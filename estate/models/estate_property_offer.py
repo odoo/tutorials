@@ -8,7 +8,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Property offer"
     _order = "price desc"
 
-    price = fields.Float('Price')
+    price = fields.Float('Price', digits=(10, 3))
     status = fields.Selection(string='Status', selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
@@ -30,6 +30,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
+            if record.price <= 0:
+                raise UserError("The price must be strictly positive.")
+            if not record.partner_id:
+                raise UserError("The buyer must be specified.")
             record.status = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.state = 'offer_accepted'
@@ -39,6 +43,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         for record in self:
+            if record.price <= 0:
+                raise UserError("The price must be strictly positive.")
+            if not record.partner_id:
+                raise UserError("The buyer must be specified.")
             record.status = 'refused'
 
     @api.model_create_multi
