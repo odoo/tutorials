@@ -17,7 +17,11 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.add(fields.Date.today(), months=3),
         required=True,
     )
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(
+        required=True,
+        string="Expected Price",
+        help="The expected price of the property",
+    )
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2, required=True)
     living_area = fields.Integer()
@@ -34,7 +38,7 @@ class EstateProperty(models.Model):
         ],
         help="Orientation of the garden",
     )
-    active = fields.Boolean("Active", default=True)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
             ("new", "New"),
@@ -47,12 +51,12 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    salesperson = fields.Many2one(
+    salesperson_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Integer(compute="_compute_best_price")
@@ -60,7 +64,7 @@ class EstateProperty(models.Model):
     _check_positive_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)", "The selling price can't be negative."
     )
-    _check_expected_price = models.Constraint(
+    _check_positive_expected_price = models.Constraint(
         "CHECK(expected_price >= 0)", "The expected price can't be negative."
     )
 
@@ -72,7 +76,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids", "offer_ids.state")
     def _compute_best_price(self):
         for record in self:
-            offers = self.offer_ids.filtered(lambda offer: offer.state == "accepted")
+            offers = self.offer_ids.filtered(lambda offer: offer.state != "refused")
             record.best_price = max(offers.mapped("price")) if offers else 0
 
     @api.onchange("garden")
@@ -93,6 +97,12 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError(self.env._("Cancelled properties cannot be sold"))
             else:
+                accepted_offer = self.env["estate.property.offer"].search([
+                    ("property_id", "=", record.id),
+                    ("state", "=", "accepted"),
+                ])
+                record.selling_price = accepted_offer.price
+                record.buyer_id = accepted_offer.partner_id.id
                 record.state = "sold"
         return True
 
@@ -114,7 +124,7 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_prevent_if_not_new_or_sold(self):
         for record in self:
-            if record.state not in ("new", "sold"):
+            if record.state not in ("new", "cancelled"):
                 raise UserError(
                     self.env._("Only new or sold properties can be deleted.")
                 )
