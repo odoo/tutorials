@@ -15,6 +15,7 @@ export class PieChart extends Component {
     props = useProps({
         label: t.string(),
         data: t.object(),
+        onClick: t.function().optional(),
     });
 
     canvasRef = useChart(() => {
@@ -35,6 +36,13 @@ export class PieChart extends Component {
             },
             options: {
                 maintainAspectRatio: false,
+                onClick: (_event, elements) => {
+                    if (!elements.length) {
+                        return;
+                    }
+                    const size = keys[elements[0].index];
+                    this.props.onClick?.(size);
+                },
             },
         };
     });
