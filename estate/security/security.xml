@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.module.category" id="estate_my_category">
+        <field name="name">Real Estate</field>
+    </record>
+
+    <record model="res.groups.privilege" id="estate_my_privilege">
+        <field name="name">Real Estate</field>
+        <field name="category_id" ref="estate_my_category"/>
+    </record>
+
+    <record model="res.groups" id="estate_group_normal_user">
+        <field name="name">Normal User</field>
+        <field name="privilege_id" ref="estate_my_privilege"/>
+    </record>
+
+    <record model="res.groups" id="estate_group_portal_user">
+        <field name="name">Portal User</field>
+        <field name="privilege_id" ref="estate_my_privilege"/>
+    </record>
+    <record model="res.groups" id="estate_group_admin_user">
+        <field name="name">Admin User</field>
+        <field name="privilege_id" ref="estate_my_privilege"/>
+    </record>
+</odoo>
