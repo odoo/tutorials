@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="display">
+            <div class="o_dashboard_content overflow-auto" style="height: 100%;">
+
+                <t t-set-slot="control-panel-additional-actions">
+                    <button class="btn btn-primary me-2" t-on-click="openCustomer">Customers</button>
+                    <button class="btn btn-secondary" t-on-click="openLead">Leads</button>
+                    <button class="btn btn-light" t-on-click="openConfiguration" title="Configure dashboard">
+                        <i class="fa fa-cog"/>
+                    </button>
+                </t>
+
+                <t t-if="statistics.isReady">
+                    <div class="d-flex flex-wrap gap-3 p-3">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                            <t t-component="item.Component" t-props="itemProp"/>
+                        </DashboardItem>
+                        <t t-foreach="visibleItems" t-as="item" t-key="item.id"></t>
+                    </t>
+                </div>
+            </t>
+            <div t-else="" class="text-center text-muted p-5">Loading...</div>
+        </div>
+        </Layout>
+    </t>
+
+</templates>
