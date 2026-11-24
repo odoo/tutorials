@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -68,9 +68,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             # not asked in the tutorial, but this prevents from having a UserError when clicking "Accept" on a already accepted offer
             other_offers = record.property_id.offer_ids - record
-            if "accepted" in other_offers.mapped("state"):
+            if other_offers.filtered(lambda o: o.state == "accepted"):
                 raise UserError(
-                    _("Only one offer can be accepted for a given property.")
+                    self.env._("Only one offer can be accepted for a given property.")
                 )
             record.state = "accepted"
             record.property_id.buyer_id = record.partner_id
@@ -85,16 +85,27 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        for vals in vals_list:
-            if vals.get("property_id"):
-                prop = self.env["estate.property"].browse(vals["property_id"])
-                if prop.offer_ids:
+        property_ids = [
+            vals["property_id"] for vals in vals_list if vals.get("property_id")
+        ]
+
+        if property_ids:
+            properties = self.env["estate.property"].search(
+                [("id", "in", property_ids)]
+            )
+            properties_by_id = {prop.id: prop for prop in properties}
+
+            for vals in vals_list:
+                prop = properties_by_id.get(vals.get("property_id"))
+                if prop and prop.offer_ids:
                     max_offer = max(prop.mapped("offer_ids.price"))
                     if vals.get("price", 0) <= max_offer:
                         raise UserError(
-                            _("The offer must be higher than %.2f", max_offer)
+                            self.env._("The offer must be higher than %.2f", max_offer)
                         )
-                prop.state = "offer_received"
+                    prop.state = "offer_received"
+
         return super().create(vals_list)
 
-    # endregion
+
+# endregion

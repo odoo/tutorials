@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -89,7 +89,7 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    _(
+                    self.env._(
                         "The selling price cannot be lower than 90% of the expected price."
                     )
                 )
@@ -119,7 +119,9 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_on_state_new_or_cancelled(self):
         if any(record.state not in ("new", "cancelled") for record in self):
-            raise UserError(_("Only new and cancelled properties can be deleted."))
+            raise UserError(
+                self.env._("Only new and cancelled properties can be deleted.")
+            )
 
     # endregion
 
@@ -127,14 +129,14 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError(_("Cancelled properties cannot be sold."))
+                raise UserError(self.env._("Cancelled properties cannot be sold."))
             record.state = "sold"
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
-                raise UserError(_("Sold properties cannot be cancelled."))
+                raise UserError(self.env._("Sold properties cannot be cancelled."))
             record.state = "cancelled"
         return True
 
