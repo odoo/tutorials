@@ -6,7 +6,6 @@
     'summary': 'Auto send invoicing on sell',
     'website': 'https://www.odoo.com/app/crm',
     'depends': [
-        'base',
         'estate',
         'account'
     ],

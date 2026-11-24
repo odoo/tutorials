@@ -3,12 +3,12 @@ from odoo import Command
 
 
 class EstateProperty(models.Model):
-    _inherit = ["estate.property"]
-    _name = "estate.property"
+    _inherit = "estate.property"
 
     def action_set_sold(self):
+        datas_invoice = []
         for record in self:
-            datas_invoice = {
+            datas_invoice.append({
                 "partner_id": record.partner_id.id,
                 "move_type": 'out_invoice',
                 "invoice_line_ids": [
@@ -23,6 +23,6 @@ class EstateProperty(models.Model):
                         "price_unit": 100.00
                     })
                 ]
-            }
-            self.env['account.move'].create(datas_invoice)
+            })
+        self.env['account.move'].create(datas_invoice)
         return super().action_set_sold()

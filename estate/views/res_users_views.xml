@@ -1,6 +1,6 @@
 <odoo>    
-    <record id="res_users_view_form" model="ir.ui.view">
-        <field name="name">res.users.view.form.inherit.estate</field>
+    <record id="users_view_form" model="ir.ui.view">
+        <field name="name">users.view.form</field>
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
