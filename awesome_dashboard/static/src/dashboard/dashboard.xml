@@ -25,7 +25,7 @@
     </t>
 
     <t t-name="awesome_dashboard.ConfigurationDialog">
-        <Dialog title="'Dashboard items configuration'">
+        <Dialog title.translate="Dashboard items configuration">
             Which cards do you wish to see?
             <t t-foreach="this.props.items" t-as="item" t-key="item.id">
                 <CheckBox value="this.isEnabled(item)" onChange="(checked) => this.onChange(checked, item)">

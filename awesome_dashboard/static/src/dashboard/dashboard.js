@@ -2,6 +2,7 @@ import { Component, signal, usePlugin, useProps } from "@odoo/owl";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { Dialog } from "@web/core/dialog/dialog";
 import { DialogPlugin } from "@web/core/dialog/dialog_plugin";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { ActionPlugin } from "@web/webclient/actions/action_plugin";
@@ -41,7 +42,7 @@ class AwesomeDashboard extends Component {
     openLeads() {
         this.action.doAction({
             type: "ir.actions.act_window",
-            name: "All leads",
+            name: _t("All leads"),
             res_model: "crm.lead",
             views: [
                 [false, "list"],
