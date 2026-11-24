@@ -7,6 +7,7 @@
     'category': 'Tutorials',
     'license': 'LGPL-3',
     'data': [
+        'security/estate_security.xml',
         'security/ir.access.csv',
         'views/estate_property_views.xml',
         'views/estate_menus.xml'
