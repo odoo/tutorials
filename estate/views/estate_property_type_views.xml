@@ -12,6 +12,11 @@
         <field name="arch" type="xml">
             <form string="Property Type Form">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="action" name="%(estate_property_offer_action)d" icon="payments">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -22,7 +27,7 @@
                             <!-- Define inline list views -->
                             <field name="property_ids">
                                 <list>
-                                    <field name="title"/>
+                                    <field name="name"/>
                                     <field name="expected_price"/>
                                     <field name="state"/>
                                 </list>
@@ -33,4 +38,16 @@
             </form>
         </field>
     </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
 </odoo>

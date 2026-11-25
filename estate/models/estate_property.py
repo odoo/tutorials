@@ -1,13 +1,15 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
     _explanation = "Real Estate Property"
+    _order = "id desc"
 
-    title = fields.Char(required=True)
+    name = fields.Char(required=True, string="Title")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -48,7 +50,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Float(compute="_compute_total")
-    best_price = fields.Float(compute="_highest_price", string="Best Offer")
+    best_price = fields.Float(compute="_compute_highest_price", string="Best Offer")
 
     _check_expected_price_positive = models.Constraint(
         "CHECK(expected_price > 0)",
@@ -65,7 +67,7 @@ class EstateProperty(models.Model):
             property.total_area = property.living_area + property.garden_area
 
     @api.depends("offer_ids")
-    def _highest_price(self):
+    def _compute_highest_price(self):
         for offers in self:
             if not offers.offer_ids:
                 offers.best_price = 0.0
@@ -100,11 +102,11 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for property in self:
-            if property.state in {"new", "offer_received"}:
+            if float_is_zero(property.selling_price, precision_rounding=2):
                 return True
             if (
-                fields.Float.compare(
-                    property.selling_price * 0.9, property.expected_price, precision_digits=2
+                float_compare(
+                    property.selling_price, property.expected_price * 0.9, precision_digits=2
                 )
                 < 0
             ):
