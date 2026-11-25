@@ -54,11 +54,37 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="state"/>
                             </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+
+                <filter name="filter_available"
+                        string="Available"
+                        domain="[('state', 'in', ('new', 'offer_received'))]"/>
+
+                <group>
+                    <filter name="group_by_postcode"
+                            string="Postcode"
+                            context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
         </field>
     </record>
     
