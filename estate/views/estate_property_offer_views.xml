@@ -18,8 +18,7 @@
                 <field name="date_deadline"/>
                 <button name="action_accept" type="object" icon="check" title="Accept" invisible="status"/>
                 <button name="action_refuse" type="object" icon="close" title="Refuse" invisible="status"/>
-                <!-- Status is handle by the buttons-->
-                <field name="status" column_invisible="1"/>
+                <field name="status" column_invisible="1"/><!-- Status is handle by the buttons-->
             </list>
         </field>
     </record>
