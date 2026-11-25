@@ -4,6 +4,7 @@
         <field name="name">Properties</field>
         <field name="res_model">x_estate.property</field>
         <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'default_x_user_id': uid}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -18,6 +19,7 @@
                 <field name="x_expected_price"/>
                 <field name="x_selling_price"/>
                 <field name="x_date_availability" optional="hide"/>
+                <field name="x_property_type_id"/>
             </list>
         </field>
     </record>
@@ -34,6 +36,7 @@
                     </h1>
                     <group>
                         <group>
+                            <field name="x_property_type_id"/>
                             <field name="x_postcode"/>
                             <field name="x_date_availability"/>
                         </group>
@@ -55,6 +58,12 @@
                                 <field name="x_garden_orientation" invisible="not x_garden"/>
                             </group>
                         </page>
+                        <page string="Other Infos">
+                            <group>
+                                <field name="x_partner_id"/>
+                                <field name="x_user_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -72,6 +81,7 @@
                 <field name="x_bedrooms"/>
                 <field name="x_living_area" filter_domain="[('x_living_area', '>=', self)]"/>
                 <field name="x_facades"/>
+                <field name="x_property_type_id"/>
                 <separator/>
                 <filter name="postcode" string="Postcode" context="{'group_by': 'x_postcode'}"/>
             </search>
@@ -82,7 +92,7 @@
         <field name="name">x_estate.property.view.kanban</field>
         <field name="model">x_estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="x_property_type_id">
                 <templates>
                     <t t-name="card">
                         <field name="x_name" class="fw-bold fs-5"/>
