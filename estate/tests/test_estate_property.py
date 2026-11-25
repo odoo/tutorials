@@ -1,4 +1,4 @@
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 from odoo.tests import Form, TransactionCase
 from odoo.tools import mute_logger
 
@@ -51,7 +51,7 @@ class EstateTestCase(TransactionCase):
     def test_best_price_computing(self):
         """Should choose the maximum best price offer"""
 
-        #No offers, best price is 0
+        # No offers, best price is 0
         self.assertRecordValues(self.property, [
            {'name': 'Test Property 1', 'best_price': 0}
         ])
@@ -99,7 +99,12 @@ class EstateTestCase(TransactionCase):
             {'name': 'Test Property 1', 'best_price': 0}
         ])
 
-    #FORM
+    def test_selling_price_not_set(self):
+        """Test what happens while a selling_price is not set"""
+        self.assertEqual(self.property.selling_price, 0)
+        self.property.state = 'sold'
+
+    # FORM
 
     def test_creation_required_fields_name_and_property_type(self):
         new_property = Form(self.env['estate.property'])
@@ -110,19 +115,19 @@ class EstateTestCase(TransactionCase):
         with self.assertRaises(AssertionError):
             new_property.save()
         new_property.property_type_id = self.property_type
-        new_property.save() # should not raise error
+        new_property.save()  # should not raise error
 
     def test_creation_expected_price_must_be_strictly_positive(self):
         existing_property = Form(self.property)
 
-        for invalid_price in (-100000, 0, 0.0001): #0.0001 is lower than espilon for currency value
+        for invalid_price in (-100000, 0, 0.0001):  # 0.0001 is lower than espilon for currency value
             with self.subTest(msg=f"Invalid price: {invalid_price}", invalid_price=invalid_price):
                 existing_property.expected_price = invalid_price
                 with self.assertRaisesRegex(Exception, 'estate_property_positive_expected_price'), mute_logger('odoo.sql_db'):
                     with self.cr.savepoint():
                         existing_property.save()
 
-        existing_property.expected_price = 0.001 #0.001 is just enough to be higher than 0. Will still be displayed as 0 however.
+        existing_property.expected_price = 0.001  # 0.001 is just enough to be higher than 0. Will still be displayed as 0 however.
         existing_property.save()
         self.assertEqual(self.property.expected_price, 0.001)
 
@@ -145,7 +150,7 @@ class EstateTestCase(TransactionCase):
         offer.price = -100000
         offer.partner_id = partner
         offer.property_id = self.property
-        for negative_offer_price in (-10000,-0.001, 0, 0.000499999):
+        for negative_offer_price in (-10000, -0.001, 0, 0.000499999):
             with self.subTest(msg=f"Invalid price: {negative_offer_price}", negative_offer_price=negative_offer_price):
                 offer.price = negative_offer_price
                 with self.assertRaisesRegex(Exception, 'estate_property_offer_check_price'), mute_logger('odoo.sql_db'):
@@ -180,11 +185,11 @@ class EstateTestCase(TransactionCase):
         """Test that offering a price below 90% of expected price throws an error."""
         partner = self.env['res.partner'].create({'name': 'Test Buyer'})
 
-        self.property.expected_price = 10000 # when we test a specific value, it's better to have it on hand rather than having it far away in setup
+        self.property.expected_price = 10000  # when we test a specific value, it's better to have it on hand rather than having it far away in setup
 
         # Create an offer with a price below 90% of expected price
         offer = self.env['estate.property.offer'].create({
-            'price': 8000, #use specific value rather than depending on float's inaccurate multiplication
+            'price': 8000,  # use specific value rather than depending on float's inaccurate multiplication
             'partner_id': partner.id,
             'property_id': self.property.id,
         })
@@ -192,17 +197,21 @@ class EstateTestCase(TransactionCase):
         with self.assertRaises(UserError):
             offer.action_accept_offer()
 
-        offer.price = 8999.99 #Close but not enough
+        offer.price = 8999.99  # Close but not enough
         with self.assertRaises(UserError):
             offer.action_accept_offer()
 
-        offer.price = 8999.999 #should not round at 3 digits (unless ? accounting policy is usually to have 3 digits for monetary values but I'm not sure)
+        offer.price = 8999.999  # should not round at 3 digits (unless ? accounting policy is usually to have 3 digits for monetary values but I'm not sure)
         with self.assertRaises(UserError):
             offer.action_accept_offer()
 
-        offer.price = 8999.9994999 #should not round up yet
+        offer.price = 8999.9994999  # should not round up yet
         with self.assertRaises(UserError):
             offer.action_accept_offer()
 
-        offer.price = 8999.9995 #ought to round up therefore should be ok
+        offer.price = 8999.9995  # ought to round up therefore should be ok
         offer.action_accept_offer()
+
+
+    # constraints actually throw an error if we try to write an invalid value
+    # try to create a 2 tags or two types with the same name

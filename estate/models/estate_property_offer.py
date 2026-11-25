@@ -21,12 +21,13 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
-            record.date_deadline = (record.create_date or fields.Date.today()) + relativedelta(days=record.validity)
+            record.date_deadline = (record.create_date or fields.Datetime.now()) + relativedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline and record.create_date:
-                record.validity = (record.date_deadline - fields.Datetime.now()).days
+                base_date = record.create_date or fields.Datetime.now()
+                record.validity = (record.date_deadline - base_date).days
 
     def action_accept_offer(self):
         for record in self:
@@ -40,6 +41,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             offer_ids = record.property_id.offer_ids
             (offer_ids - record).status = 'refused'
+        return True
 
     def action_refuse_offer(self):
         for record in self:
@@ -48,6 +50,7 @@ class EstatePropertyOffer(models.Model):
             if not record.partner_id:
                 raise UserError("The buyer must be specified.")
             record.status = 'refused'
+        return True
 
     @api.model_create_multi
     def create(self, vals_list):
