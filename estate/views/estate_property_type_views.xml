@@ -10,7 +10,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list editable="bottom" open_form_view="True">
+            <list editable="bottom">
                 <field name="sequence" widget="handle" />
                 <field name="name" string="Type"/>
             </list>

@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, exceptions, fields, models
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -12,9 +13,9 @@ class PropertyOffer(models.Model):
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     validity_days = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
-    partner_id = fields.Many2one("res.partner", string='Buyer', required=True)
+    buyer_id = fields.Many2one("res.partner", string='Buyer', required=True)
     property_id = fields.Many2one("estate.property", required=True, readonly=True)
-    property_status = fields.Selection(related="property_id.state")
+    property_status = fields.Selection(related="property_id.state", readonly=False)
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _check_price = models.Constraint(
@@ -32,12 +33,9 @@ class PropertyOffer(models.Model):
                 record.status = 'accepted'
                 record.property_id.state = 'offer_accepted'
                 record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner_id
+                record.property_id.buyer_id = record.buyer_id
 
-                # for offers in record.property_id.offer_ids:
-                #     if offers.id != record.id:
-                #         offers.status = 'refused'
-                (record.property_id.offer_ids - record).write({'status': 'refused'})
+                (record.property_id.offer_ids - record).status = 'refused'
         return True
 
     def action_offer_refused(self):
@@ -59,3 +57,19 @@ class PropertyOffer(models.Model):
             if record.date_deadline:
                 delta_dates = record.date_deadline - start_date
                 record.validity_days = delta_dates.days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            property_records = self.env['estate.property'].browse(val['property_id'])
+            # not very convenient to do queries inside the loop, but I don't understand the data structure
+            if property_records.offer_ids:
+                max_offer = max(offer.price for offer in property_records.offer_ids)
+                if max_offer >= val['price']:
+                    raise UserError(self.env._('The offer has to be greater than %.2f' % max_offer))
+
+        records = super().create(vals_list)
+        for record in records:
+            record['property_status'] = 'offer_received'
+
+        return records

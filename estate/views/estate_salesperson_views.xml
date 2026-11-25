@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_salesperson_list_inherit_estate" model="ir.ui.view">
+        <field name="name">res.users.list.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <!-- find field description and add the field
+                new_field after it -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+            <field name="partner_id"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_salesperson_form_inherit_estate" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <!-- find field description and add the field
+                new_field after it -->
+            
+            <xpath expr="//notebook" position="inside">
+            <page name="Properties" string="Properties">
+            <field name="partner_id"/>
+            <field name="property_ids"/>
+            </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_salesperson_action" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">res.users</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
