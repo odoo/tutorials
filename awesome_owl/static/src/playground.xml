@@ -5,11 +5,13 @@
         <div class="p-3">
             <h3>Owl Playground</h3>
             <div class="mb-3">
-                <Counter />
+                <Counter onChange.bind="incrementsum"/>
     
-                <Counter />
+                <Counter onChange.bind="incrementsum"/>
     
-                <Counter />
+                <Counter onChange.bind="incrementsum"/>
+
+                <p class="mt-2 fw-bold">Sum:<t t-esc="state.sum"/></p>
 
             </div>
 
@@ -17,6 +19,9 @@
                 <Card title="'Card 1'" content="'This is the first Card Context'" />
                 <Card title="'Card 2 (HTML)'" content="htmlContent" />
             </div>
+
+            <TodoList/>
+
         </div>
     </t>
 
