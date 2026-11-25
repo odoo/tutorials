@@ -1,9 +1,9 @@
 {
     'name': "Real Estate",
     'version': '1.0',
+    'depends': ['base'],
     'author': "elluo",
     'license': 'LGPL-3',
-    'depends': ['base'],
     'application': True,
     'installable': True,
     'data': [
