@@ -1,9 +1,34 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            
+            <h3>Owl Playground</h3>
+            <div class="mb-3">
+                <Counter onChange.bind="incrementsum"/>
+    
+                <Counter onChange.bind="incrementsum"/>
+    
+                <Counter onChange.bind="incrementsum"/>
+
+                <p class="mt-2 fw-bold">Sum:<t t-esc="state.sum"/></p>
+
+            </div>
+
+            <div class="d-flex mb-3">
+                <Card title="'Info Card'">
+                    <p class="text-primary">This content was passed through a <b>slot</b>!</p>
+                </Card>
+
+                <Card title="'Counter inside a Card'">
+                    <p>Click below to count:</p>
+                    <Counter/>
+                </Card>
+            </div>
+
+            <TodoList/>
+
         </div>
     </t>
 
