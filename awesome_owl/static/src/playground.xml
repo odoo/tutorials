@@ -3,6 +3,7 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
+            
             <h3>Owl Playground</h3>
             <div class="mb-3">
                 <Counter onChange.bind="incrementsum"/>
@@ -15,9 +16,15 @@
 
             </div>
 
-            <div class="d-flex">
-                <Card title="'Card 1'" content="'This is the first Card Context'" />
-                <Card title="'Card 2 (HTML)'" content="htmlContent" />
+            <div class="d-flex mb-3">
+                <Card title="'Info Card'">
+                    <p class="text-primary">This content was passed through a <b>slot</b>!</p>
+                </Card>
+
+                <Card title="'Counter inside a Card'">
+                    <p>Click below to count:</p>
+                    <Counter/>
+                </Card>
             </div>
 
             <TodoList/>
