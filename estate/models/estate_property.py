@@ -81,8 +81,12 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10
-        self.garden_orientation = "north"  # return {'warning': {  #     'title': ("Warning"),  #     'message': ('Garden area and description set')}}
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"  # return {'warning': {  #     'title': ("Warning"),  #     'message': ('Garden area and description set')}}
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def action_do_cancel(self):
         for record in self:

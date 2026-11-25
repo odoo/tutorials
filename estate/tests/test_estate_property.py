@@ -1,4 +1,4 @@
-from odoo.tests import TransactionCase
+from odoo.tests import Form, TransactionCase
 from odoo.exceptions import UserError
 
 
@@ -50,3 +50,12 @@ class EstateTestCase(TransactionCase):
 
         with self.assertRaises(UserError):
             self.properties.action_do_sell()
+
+    def test_reset_garden_area(self):
+        """Test that garden area is reset to 0 when garden is set to False."""
+
+        prop = Form(self.env["estate.property"])
+        prop.garden = True
+        self.assertEqual(prop.garden_area, 10)
+        prop.garden = False
+        self.assertEqual(prop.garden_area, 0)
