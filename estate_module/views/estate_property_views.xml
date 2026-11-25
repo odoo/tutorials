@@ -20,6 +20,7 @@
                 <field name="x_selling_price"/>
                 <field name="x_date_availability" optional="hide"/>
                 <field name="x_property_type_id"/>
+                <field name="x_property_tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -36,6 +37,7 @@
                     </h1>
                     <group>
                         <group>
+                            <field name="x_property_tag_ids" widget="many2many_tags"/>
                             <field name="x_property_type_id"/>
                             <field name="x_postcode"/>
                             <field name="x_date_availability"/>
@@ -98,6 +100,7 @@
                         <field name="x_name" class="fw-bold fs-5"/>
                         <div>Expected Price: <field name="x_expected_price"/></div>
                         <div t-if="record.x_selling_price.raw_value">Selling Price: <field name="x_selling_price"/></div>
+                        <field name="x_property_tag_ids" widget="many2many_tags"/>
                     </t>
                 </templates>
             </kanban>
