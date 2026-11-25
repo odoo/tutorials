@@ -17,10 +17,32 @@
         group_delete="false"
         records_draggable="false"
       >
-        <field name="state" />
+        <progressbar
+          field="state"
+          colors='{
+            "new": "muted",
+            "offer_received": "success",
+            "offer_accepted": "success",
+            "sold": "primary",
+            "cancelled": "warning"
+          }'
+        />
         <templates>
           <t t-name="card">
-            <h2><field name="name" /></h2>
+            <t
+              t-set="state_class_map"
+              t-value="{
+                'offer_received': 'text-success',
+                'offer_accepted': 'text-success fw-bolder',
+                'sold': 'text-muted',
+                'cancelled': 'text-muted',
+              }"
+            />
+            <h2
+              t-att-class="state_class_map[record.state.raw_value]"
+            >
+              <field name="name" />
+            </h2>
             <div class="d-flex gap-1">
               <label for="expected_price">Expected Price:</label>
               <field name="expected_price" />
@@ -39,12 +61,24 @@
               <label for="best_price">Selling Price:</label>
               <field name="selling_price" />
             </div>
-            <field
-              name="tag_ids"
-              widget="kanban.many2many_tags"
-              options="{'color_field': 'color'}"
-              class="mt-1"
-            />
+            <div class="d-flex justify-content-between align-items-center mt-1">
+              <field
+                name="tag_ids"
+                widget="many2many_tags"
+                options="{'color_field': 'color'}"
+              />
+              <field
+                name="state"
+                widget="label_selection"
+                options="{'classes': {
+                  'offer_received': 'success fw-normal',
+                  'offer_accepted': 'success',
+                  'sold': 'muted',
+                  'cancelled': 'warning',
+                }}"
+                class="d-flex align-items-center"
+              />
+            </div>
           </t>
         </templates>
       </kanban>
