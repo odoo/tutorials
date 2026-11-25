@@ -42,10 +42,11 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - base_date).days
 
     def action_accept_offer(self):
+        print("yes i did it hourraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         for record in self:
             if record.property_id.state not in ('new', 'offer_received'):
                 raise UserError(self.env._('You cannot accept offers for sold, cancelled and accepted properties.'))
-            record.property_id.buyer = record.partner_id
+            record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
             record.property_id.state = 'offer_accepted'
             record.status = 'accepted'
@@ -65,4 +66,4 @@ class EstatePropertyOffer(models.Model):
                 if float_compare(vals['price'], max_offer, precision_rounding=0.01) <= 0:
                     raise ValidationError(self.env._('The amount must be higher than %s.', max_offer))
             prop.state = 'offer_received'
-        return super().create(vals)
+        return super().create(vals_list)

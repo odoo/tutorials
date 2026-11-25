@@ -48,8 +48,8 @@ class EstateProperty(models.Model):
         default='new'
     )
     property_type_id = fields.Many2one('estate.property.type')
-    buyer = fields.Many2one('res.partner', copy=False)
-    salesperson = fields.Many2one('res.users', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', copy=False)
+    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Integer(compute='_compute_total_area')
@@ -80,7 +80,7 @@ class EstateProperty(models.Model):
         self.garden_direction = 'north' if self.garden else False
 
     @api.constrains('selling_price', 'expected_price')
-    def check_selling_price(self):
+    def _check_selling_price(self):
         for record in self:
             if (
                 not float_is_zero(record.selling_price, precision_rounding=0.01)
