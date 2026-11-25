@@ -49,12 +49,13 @@ class EstatePropertyOffer(models.Model):
 
         for vals in vals_list:
             property_record = property_map.get(vals.get("property_id"))
+            if property_record.state == "sold":
+                raise UserError(self.env._("Cannot create an offer on a sold property"))
             if vals.get("price") <= property_record.best_price:
                 raise UserError(self.env._("The offer must be higher than %s !", property_record.best_price))
         return super().create(vals_list)
 
     def action_accept_offer(self):
-        self.ensure_one()
         for record in self:
             record.status = "accepted"
             for offer in record.property_id.offer_ids:
@@ -63,7 +64,6 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_reject_offer(self):
-        self.ensure_one()
         for record in self:
             record.status = "refused"
         return True

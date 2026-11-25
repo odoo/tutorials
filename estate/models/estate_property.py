@@ -118,16 +118,22 @@ class EstateProperty(models.Model):
                 raise UserError(self.env._("Only new and cancelled properties can be deleted."))
 
     def action_set_sold(self):
-        self.ensure_one()
         for record in self:
-            if record.state != "cancelled":
-                record.state = "sold"
-            else:
+            if record.state == "cancelled":
                 raise UserError(self.env._("Cancelled properties cannot be sold."))
+
+            accepted_offers = record.offer_ids.filtered(lambda o: o.status == "accepted")
+            if not accepted_offers:
+                raise UserError(self.env._("Cannot sell a property with no acctepted offers."))
+            if len(accepted_offers) > 1:
+                raise UserError(self.env._("A property cannot have more than one accepted offers."))
+            if not accepted_offers.partner_id or accepted_offers.price <= 0:
+                raise UserError(self.env._("The accepted offer must have a valid buyer and a positive price."))
+
+            record.state = "sold"
         return True
 
     def action_set_cancelled(self):
-        self.ensure_one()
         for record in self:
             if record.state != "sold":
                 record.state = "cancelled"

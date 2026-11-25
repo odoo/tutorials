@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
 
         for record in self:
             if not record.buyer_id:
-                raise UserError(self.env._("Cannot create an invoice without no buyer"))
+                raise UserError(self.env._("Cannot create an invoice without a buyer"))
             vals = {
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
