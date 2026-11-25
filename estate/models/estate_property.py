@@ -71,7 +71,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
-    def delete_restrictions(self):
+    def _unlink_if_new_or_cancelled(self):
         for record in self:
             if record.state == 'new' or record.state == 'cancelled':
                 raise UserError("Can't delete a new or cancelled property!")
