@@ -60,6 +60,9 @@
                                 <field name="x_garden_orientation" invisible="not x_garden"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="x_offer_ids"/>
+                        </page>
                         <page string="Other Infos">
                             <group>
                                 <field name="x_partner_id"/>
