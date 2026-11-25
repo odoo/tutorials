@@ -6,7 +6,6 @@
     'author': 'Thing-odoo',
     'license': 'LGPL-3',
     'depends': [
-        'base',
         'estate',
         'account'
     ],
