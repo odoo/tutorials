@@ -1,4 +1,4 @@
 id,name,model_id,group_id/id,operation,domain
 access_estate_property_normal_user_cru,access_estate_property,estate.property,estate.estate_group_normal_user,crud
-access_estate_property_portal_user_r,access_estate_property,estate.property,estate.estate_group_portal_user,r
+access_estate_property_portal_user_r,access_estate_property,estate.property,base.group_portal,r
 access_estate_property_admin_user_crud,access_estate_property,estate.property,estate.estate_group_admin_user,crud
