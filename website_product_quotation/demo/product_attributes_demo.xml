@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- SizeW Attribute -->
+    <record id="product_attribute_sizew" model="product.attribute">
+        <field name="name">SizeW</field>
+    </record>
+    <record id="product_attribute_sizew_s" model="product.attribute.value">
+        <field name="name">S</field>
+        <field name="attribute_id" ref="product_attribute_sizew"/>
+    </record>
+    <record id="product_attribute_sizew_m" model="product.attribute.value">
+        <field name="name">M</field>
+        <field name="attribute_id" ref="product_attribute_sizew"/>
+    </record>
+    <record id="product_attribute_sizew_l" model="product.attribute.value">
+        <field name="name">L</field>
+        <field name="attribute_id" ref="product_attribute_sizew"/>
+    </record>
+    <record id="product_attribute_sizew_xl" model="product.attribute.value">
+        <field name="name">XL</field>
+        <field name="attribute_id" ref="product_attribute_sizew"/>
+    </record>
+
+    <!-- Color Attribute -->
+    <record id="product_attribute_color" model="product.attribute">
+        <field name="name">Color</field>
+    </record>
+    <record id="product_attribute_color_white" model="product.attribute.value">
+        <field name="name">White</field>
+        <field name="attribute_id" ref="product_attribute_color"/>
+    </record>
+    <record id="product_attribute_color_black" model="product.attribute.value">
+        <field name="name">Black</field>
+        <field name="attribute_id" ref="product_attribute_color"/>
+    </record>
+    <record id="product_attribute_color_wood" model="product.attribute.value">
+        <field name="name">Wood</field>
+        <field name="attribute_id" ref="product_attribute_color"/>
+    </record>
+
+    <!-- Fabric Attribute -->
+    <record id="product_attribute_fabric" model="product.attribute">
+        <field name="name">Fabric</field>
+    </record>
+    <record id="product_attribute_fabric_plastic" model="product.attribute.value">
+        <field name="name">Plastic</field>
+        <field name="attribute_id" ref="product_attribute_fabric"/>
+    </record>
+    <record id="product_attribute_fabric_leather" model="product.attribute.value">
+        <field name="name">Leather</field>
+        <field name="attribute_id" ref="product_attribute_fabric"/>
+    </record>
+    <record id="product_attribute_fabric_custom" model="product.attribute.value">
+        <field name="name">Custom</field>
+        <field name="attribute_id" ref="product_attribute_fabric"/>
+    </record>
+
+    <!-- Print Attribute -->
+    <record id="product_attribute_print" model="product.attribute">
+        <field name="name">Print</field>
+    </record>
+    <record id="product_attribute_print_text" model="product.attribute.value">
+        <field name="name">Text</field>
+        <field name="attribute_id" ref="product_attribute_print"/>
+    </record>
+    <record id="product_attribute_print_graphics" model="product.attribute.value">
+        <field name="name">Graphics</field>
+        <field name="attribute_id" ref="product_attribute_print"/>
+    </record>
+    <record id="product_attribute_print_pattern" model="product.attribute.value">
+        <field name="name">Pattern</field>
+        <field name="attribute_id" ref="product_attribute_print"/>
+    </record>
+    <record id="product_attribute_print_solid" model="product.attribute.value">
+        <field name="name">Solid</field>
+        <field name="attribute_id" ref="product_attribute_print"/>
+    </record>
+</odoo>
