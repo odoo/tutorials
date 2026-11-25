@@ -23,17 +23,17 @@ class SellPropertyNoAcceptedOfferCase(TransactionCase):
         })
         self.offer1 = self.env['estate.property.offer'].create({
             'price': 100_000,
-            'status': "refused",
+            'state': "refused",
             'partner_id': self.partner.id,
             'property_id': self.property_two_offers.id
         })
         self.offer2 = self.env['estate.property.offer'].create({
             'price': 150_000,
-            'status': "refused",
+            'state': "refused",
             'partner_id': self.partner.id,
             'property_id': self.property_two_offers.id
         })
-        
+
     def test_sell_property_no_offer(self):
         with self.assertRaises(UserError):
             self.property_no_offers.action_sell_property()

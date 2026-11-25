@@ -8,11 +8,6 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
-    # _order = "id desc" # Added a view ordering instead
-    _check_expected_price = models.Constraint("CHECK (expected_price > 0)",
-                                                "The expected price needs to be strictly positive")
-    _check_selling_price = models.Constraint("CHECK (selling_price >= 0)",
-                                            "The selling price needs to be positive")
 
     name = fields.Char(required=True, string='Title')
     description = fields.Text()
@@ -51,6 +46,11 @@ class EstateProperty(models.Model):
                    ('accepted', 'Offer Accepted'), ('sold', 'Sold'),
                    ('cancelled', 'Cancelled')])
 
+    _check_expected_price_strict_positive = models.Constraint("CHECK (expected_price > 0)",
+                                                "The expected price needs to be strictly positive")
+    _check_selling_price_positive = models.Constraint("CHECK (selling_price >= 0)",
+                                            "The selling price needs to be positive")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -73,14 +73,14 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for record in self:
-            if record.state == 'new' or record.state == 'cancelled':
-                raise UserError("Can't delete a new or cancelled property!")
+            if record.state != 'new' and record.state != 'cancelled':
+                raise UserError("Can only delete a new or cancelled property")
 
     def action_sell_property(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(self.env._("Cancelled properties cannot be sold"))
-            if len(list(filter(lambda offer: offer.status == 'accepted',record.offer_ids))) != 1:
+            if record.state != 'accepted':
                 raise UserError(self.env._("Can't sell a property that doesn't have an accepted offer!"))
             record.state = 'sold'
         return True

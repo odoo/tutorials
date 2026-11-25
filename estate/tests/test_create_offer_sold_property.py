@@ -18,7 +18,7 @@ class CreateOfferSoldPropertyCase(TransactionCase):
         })
         self.offer = self.env['estate.property.offer'].create({
             'price': 200_000,
-            'status': "accepted",
+            'state': "accepted",
             'partner_id': self.partner.id,
             'property_id': self.property.id
         })
@@ -27,7 +27,7 @@ class CreateOfferSoldPropertyCase(TransactionCase):
     def test_create_offer_sold_property(self):
         with self.assertRaises(UserError):
             # New offer that we will try to add to the property
-            new_offer = self.env['estate.property.offer'].create({
+            self.env['estate.property.offer'].create({
                 'price': 222_000,
                 'partner_id': self.partner.id,
                 'property_id': self.property.id
