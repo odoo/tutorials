@@ -28,6 +28,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="create or edit">
+                <header>
+                    <button name="sold_property" string="Sold" type="object" class="oe_highlight" />
+                    <button name="cancel_property" string="Cancel" type="object"  />
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" placeholder="Title" />
@@ -38,6 +42,7 @@
                     <br />
                     <group>
                         <group>
+                            <field name="status" />
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
