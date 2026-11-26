@@ -6,7 +6,6 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='order_details']" position="inside">
-                <field name="has_access_zero_stock_approval" invisible="1"/>
                 <field name="zero_stock_approval" readonly="not has_access_zero_stock_approval"/>
             </xpath>
         </field>

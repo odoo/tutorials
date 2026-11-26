@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<odoo>
+    <record id="sale_order_privilage" model="res.groups.privilege">
+        <field name="name">Sale Order Privilege</field>
+        <field name="category_id" ref="base.module_category_sales"/>
+    </record>
+    <record id="sale_order_approval_group" model="res.groups">
+        <field name="name">Sale Approval Group</field>
+        <field name="privilege_id" ref="sale_order_privilage"/>
+    </record>
+</odoo>

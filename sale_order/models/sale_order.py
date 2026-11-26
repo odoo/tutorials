@@ -11,18 +11,20 @@ class SaleOrder(models.Model):
         copy=False,
     )
     has_access_zero_stock_approval = fields.Boolean(
-        compute='_compute_hash_access',
+        compute='_compute_has_access',
     )
 
-    def _compute_hash_access(self):
-        has_access = self.env.user.has_group('sales_team.group_sale_manager')
+    def _compute_has_access(self):
+        has_access = self.env.user.has_group('sale_order.sale_order_approval_group') or self.env.user.has_group(
+            'sales_team.group_sale_manager')
         for order in self:
             order.has_access_zero_stock_approval = has_access
 
     def write(self, vals):
         if 'zero_stock_approval' in vals:
-            if not self.env.user.has_group(
-                    'sales_team.group_sale_manager'
+            if not (
+                    self.env.user.has_group('sale_order.sale_order_approval_group')
+                    or self.env.user.has_group('sales_team.group_sale_manager')
             ):
                 raise AccessError(
                     _("Only Sales Administrators can modify this field.")
@@ -40,9 +42,6 @@ class SaleOrder(models.Model):
             return _("Please add at least one order line.")
 
         for line in self.order_line:
-            if line.display_type or line.is_downpayment:
-                continue
-
             product = line.product_id
 
             if not product.is_storable:

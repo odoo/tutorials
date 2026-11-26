@@ -6,6 +6,8 @@
     'version': '0.1',
     'depends': ['base', 'sale', 'stock'],
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/sale_order_views.xml',
     ],
     'license': 'LGPL-3',
