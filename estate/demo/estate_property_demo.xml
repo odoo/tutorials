@@ -83,10 +83,9 @@
         <field name="date_deadline" eval="(datetime.now() + relativedelta(days=14)).date()"/>
     </record>
 
+    <!-- Accepting an offer automatically refuses the other offers
+         on the same property. -->
     <function model="estate.property.offer" name="action_accept">
         <value eval="[ref('offer_big_villa_acme')]"/>
-    </function>
-    <function model="estate.property.offer" name="action_refuse">
-        <value eval="[ref('offer_big_villa_azure_1'), ref('offer_big_villa_azure_2')]"/>
     </function>
 </odoo>
