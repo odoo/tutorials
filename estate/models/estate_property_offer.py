@@ -20,6 +20,11 @@ class EstatePropertyOfferModel(models.Model):
     property_id = fields.Many2one(
         comodel_name='estate.property', required=True)
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The Price must be strictly positive!'
+    )
+
     @api.depends('validity')
     def _compute_deadline(self):
         for record in self:
