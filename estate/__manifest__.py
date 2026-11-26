@@ -9,7 +9,9 @@
     'data': [
         'security/estate_security.xml',
         'security/ir.access.csv',
+        'data/estate_property_type_data.xml',
         'views/estate_property_views.xml',
+        'views/estate_property_type_views.xml',
         'views/estate_menus.xml'
     ]
 }

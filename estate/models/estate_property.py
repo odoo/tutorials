@@ -31,7 +31,8 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="Status",
+        copy=False,
+        default='new',
         selection=[
             ('new', "New"),
             ('offer_received', "Offer Received"),
@@ -39,6 +40,19 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
+        string="Status"
+    )
+    property_type = fields.Many2one(
+        comodel_name="estate.property.type"
+    )
+    buyer_id = fields.Many2one(
         copy=False,
-        default='new'
+        comodel_name="res.partner",
+        string="Buyer"
+    )
+    salesperson_id = fields.Many2one(
+        copy=False,
+        comodel_name="res.users",
+        default=lambda self: self.env.user,
+        string="Salesperson"
     )
