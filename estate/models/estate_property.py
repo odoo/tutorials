@@ -98,6 +98,16 @@ class EstateProperty(models.Model):
                 record.garden_area = 0
                 record.garden_orientation = False
 
+    @api.onchange('state', 'selling_price', 'best_price')
+    def _onchange_state(self):
+        for record in self:
+            if record.state not in ['sold', 'offer_accepted']:
+                record.selling_price = 0
+                record.offer_ids.status = False
+                record.buyer_id = False
+            if record.state not in ['offer_received', 'offer_accepted', 'sold']:
+                record.best_price = 0
+
     # crud
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_new_or_cancel(self):
@@ -120,6 +130,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(self.env._('A cancelled property can\'t be sold'))
+            if not record.selling_price:
+                raise UserError(self.env._('A selling price is required. Verify if an offer had been accepted.'))
+            if not record.buyer_id:
+                raise UserError(self.env._('A buyer is required. Verify if an offer had been accepted.'))
             record.state = "sold"
 
     # business methods
