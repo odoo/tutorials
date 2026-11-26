@@ -13,7 +13,8 @@ class EstatePropertyOffer(models.Model):
             ("accepted", "Accepted"),
             ("refused", "Refused"),
         ],
-        copy=False
+        copy=False,
+        readonly=True,
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
@@ -21,49 +22,49 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
-        string="Deadline"
+        string="Deadline",
     )
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
-    _check__price = models.Constraint(
+    _check_price = models.Constraint(
         "CHECK(price > 0)",
-        "The price of an offer must be strictly positive."
+        "The price of an offer must be strictly positive.",
     )
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
-        for record in self:
-            start_date = record.create_date if record.create_date else fields.Date.today()
-            record.date_deadline = fields.Date.add(start_date, days=record.validity)
+        for offer in self:
+            start_date = offer.create_date if offer.create_date else fields.Date.today()
+            offer.date_deadline = fields.Date.add(start_date, days=offer.validity)
 
     def _inverse_date_deadline(self):
-        for record in self:
-            start_date = record.create_date.date() if record.create_date else fields.Date.today()
-            record.validity = (record.date_deadline - start_date).days
+        for offer in self:
+            start_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.validity = (offer.date_deadline - start_date).days
 
     @api.model_create_multi
     def create(self, vals_list):
-        property_ids = self.env["estate.property"].browse(vals.get("property_id") for vals in vals_list)
-        property_ids.mapped("offer_ids.price")
-        property_map = {prop.id: prop for prop in property_ids}
+        properties = self.env["estate.property"].browse(vals.get("property_id") for vals in vals_list)  # Prefetching to limit db requests
+        properties.mapped("offer_ids.price")
+        property_map = properties.grouped("id")
 
         for vals in vals_list:
-            property_record = property_map.get(vals.get("property_id"))
-            if property_record.state == "sold":
-                raise UserError(self.env._("Cannot create an offer on a sold property"))
-            if vals.get("price") <= property_record.best_price:
+            property_record = property_map.get(vals.get("property_id"), self.env["estate.property"])
+            if property_record.state in ["sold", "cancelled"]:
+                raise UserError(self.env._("Cannot create an offer on a sold/cancelled property"))
+            if vals.get("price", 0) <= property_record.best_price:
                 raise UserError(self.env._("The offer must be higher than %s !", property_record.best_price))
         return super().create(vals_list)
 
     def action_accept_offer(self):
-        for record in self:
-            record.status = "accepted"
-            for offer in record.property_id.offer_ids:
-                if offer.id != record.id:
-                    offer.status = "refused"
-        return True
+        for offer in self:
+            if offer.property_id.state == "accepted":
+                raise UserError(self.env._("Cannot accept multiple offers."))
+            if offer.property_id.state in ["sold", "cancelled"]:
+                raise UserError(self.env._("Cannot accept an offer on a sold/cancelled property."))
+            offer.status = "accepted"
+            (offer.property_id.offer_ids - offer).status = "refused"
 
     def action_reject_offer(self):
-        for record in self:
-            record.status = "refused"
-        return True
+        for offer in self:
+            offer.status = "refused"

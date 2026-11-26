@@ -5,7 +5,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Estate"
+    _description = "Property"
     _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
@@ -19,11 +19,9 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        required=True,
-        default="new",
         copy=False,
         compute="_compute_sale",
-        store=True
+        store=True,
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -34,7 +32,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         string="Available From",
         default=lambda _: fields.Date.add(fields.Date.today(), months=3),
-        copy=False
+        copy=False,
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(copy=False, compute="_compute_sale", store=True)
@@ -52,7 +50,7 @@ class EstateProperty(models.Model):
             ("west", "West"),
             ("east", "East"),
         ],
-        help="Defines the orientation of the garden area."
+        help="Defines the orientation of the garden area.",
     )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area")
@@ -60,11 +58,11 @@ class EstateProperty(models.Model):
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
-        "The expected price must be strictly positive."
+        "The expected price must be strictly positive.",
     )
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)",
-        "The selling price must be positive."
+        "The selling price must be positive.",
     )
 
     @api.depends("state", "offer_ids.status", "offer_ids.price", "offer_ids.partner_id")
@@ -72,7 +70,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state in ["sold", "cancelled"]:
                 continue
-            accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == "accepted")[:1]
             if accepted_offer:
                 record.selling_price = accepted_offer.price
                 record.buyer_id = accepted_offer.partner_id
@@ -81,7 +79,6 @@ class EstateProperty(models.Model):
                 record.selling_price = 0.0
                 record.buyer_id = False
                 record.state = "received" if record.offer_ids else "new"
-        return True
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -112,7 +109,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
-    def delete_property(self):
+    def _unlink_except_new_or_cancelled(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
                 raise UserError(self.env._("Only new and cancelled properties can be deleted."))
@@ -127,11 +124,8 @@ class EstateProperty(models.Model):
                 raise UserError(self.env._("Cannot sell a property with no acctepted offers."))
             if len(accepted_offers) > 1:
                 raise UserError(self.env._("A property cannot have more than one accepted offers."))
-            if not accepted_offers.partner_id or accepted_offers.price <= 0:
-                raise UserError(self.env._("The accepted offer must have a valid buyer and a positive price."))
 
             record.state = "sold"
-        return True
 
     def action_set_cancelled(self):
         for record in self:
@@ -139,4 +133,3 @@ class EstateProperty(models.Model):
                 record.state = "cancelled"
             else:
                 raise UserError(self.env._("Sold properties cannot be cancelled."))
-        return True

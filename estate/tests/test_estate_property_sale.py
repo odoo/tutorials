@@ -7,11 +7,13 @@ class EstateTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstateTestCase, cls).setUpClass()
+        super().setUpClass()
 
-        cls.buyer = cls.env['res.partner'].create({
-            "name": "test Buyer"
-        })
+        cls.buyer = cls.env["res.partner"].create(
+            {
+                "name": "test Buyer",
+            },
+        )
 
         cls.properties = cls.env["estate.property"].create([
             {
@@ -47,11 +49,13 @@ class EstateTestCase(TransactionCase):
         with self.assertRaises(UserError):
             self.properties[0].action_set_sold()
 
-        self.env["estate.property.offer"].create({
-            "price": 1000000,
-            "partner_id": self.buyer.id,
-            "property_id": self.properties[0].id
-        })
+        self.env["estate.property.offer"].create(
+            {
+                "price": 1000000,
+                "partner_id": self.buyer.id,
+                "property_id": self.properties[0].id,
+            },
+        )
 
         with self.assertRaises(UserError):
             self.properties[0].action_set_sold()
@@ -75,8 +79,10 @@ class EstateTestCase(TransactionCase):
         self._sell_properties(self.properties)
 
         with self.assertRaises(UserError):
-            self.env["estate.property.offer"].create({
-                "price": 2000000,
-                "partner_id": self.buyer.id,
-                "property_id": self.properties[0].id
-            })
+            self.env["estate.property.offer"].create(
+                {
+                    "price": 2000000,
+                    "partner_id": self.buyer.id,
+                    "property_id": self.properties[0].id,
+                },
+            )

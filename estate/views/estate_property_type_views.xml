@@ -7,7 +7,7 @@
         <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="%(estate.estate_property_offer_action)d"
@@ -27,9 +27,9 @@
                         <page string="Properties">
                             <field name="property_ids">
                                 <list>
-                                <field name="name"/>
-                                <field name="expected_price"/>
-                                <field name="state"/>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
                                 </list>
                             </field>
                         </page>
@@ -43,7 +43,7 @@
         <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Types">
+            <list>
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
