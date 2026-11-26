@@ -64,10 +64,14 @@ class EstatePropertyOffer(models.Model):
             # Instantiate an estate.property object
             estate = self.env["estate.property"].browse(vals["property_id"])
             if estate.state in {"cancelled", "sold"}:
-                raise ValidationError(self.env._("You cannot make an offer on this property anymore."))
+                raise ValidationError(
+                    self.env._("You cannot make an offer on this property anymore.")
+                )
             if estate.state == "new":
                 estate.state = "offer_received"
             best_offer = max(estate.offer_ids.mapped("price"), default=0.0)
             if vals.get("price", 0.0) < best_offer:
-                raise ValidationError(self.env._(f"The offer must be higher than {best_offer:,.2f}."))
+                raise ValidationError(
+                    self.env._(f"The offer must be higher than {best_offer:,.2f}.")
+                )
         return super().create(vals_list)
