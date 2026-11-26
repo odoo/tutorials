@@ -12,7 +12,7 @@
 
 .o_compact_buttons th.o_list_button,
 .o_compact_buttons td.o_list_button {
-    width: calc(var(--btn-count) * 25px) !important;
+    width: calc(var(--btn-count) * 35px) !important;
     padding-right: 0.3rem !important;
 }
 

@@ -1,12 +1,13 @@
-from typing import TYPE_CHECKING
+import typing
 
 from odoo import fields, models
-from odoo.tools import float_utils
 
-if TYPE_CHECKING:
-    from estate.models.property import (
-        Property as BaseProperty,
-    )
+if typing.TYPE_CHECKING:
+    from odoo.addons.base.models.res_company import ResCompany
+    from odoo.addons.base.models.res_currency import ResCurrency
+
+    from estate.models.property import Property as BaseProperty
+
 else:
     BaseProperty = models.Model
 
@@ -15,13 +16,24 @@ class Property(BaseProperty):
     _inherit = 'estate.property'
 
     def action_sold(self) -> bool:
-        invoice_line_values = [
+        order_values = {
+            'move_type': 'out_invoice',
+            'partner_id': self.buyer_id.id,
+            'invoice_line_ids': [
+                fields.Command.create(invoice_line_value)
+                for invoice_line_value in self._make_invoice_lines()
+            ],
+        }
+        self.env['account.move'].create(order_values)
+        return super().action_sold()
+
+    def _make_invoice_lines(self) -> list[dict[str, typing.Any]]:
+        company = typing.cast('ResCompany', self.env.company)
+        currency = typing.cast('ResCurrency', company.currency_id)
+        return [
             {
                 'name': 'Commission (6% of sale price)',
-                'price_unit': float_utils.float_round(
-                    .06 * self.selling_price,
-                    precision_rounding=.01,
-                ),
+                'price_unit': currency.round(.06 * self.selling_price),
                 'quantity': 1,
             },
             {
@@ -30,13 +42,3 @@ class Property(BaseProperty):
                 'quantity': 1,
             },
         ]
-        order_values = {
-            'move_type': 'out_invoice',
-            'partner_id': self.buyer_id.id,
-            'invoice_line_ids': [
-                fields.Command.create(invoice_line_value)
-                for invoice_line_value in invoice_line_values
-            ],
-        }
-        self.env['account.move'].create(order_values)
-        return super().action_sold()
