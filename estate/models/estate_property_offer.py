@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -17,8 +17,8 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_state = fields.Selection(related="property_id.state")
-    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     # A related field must have the same type as the field it points to.
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _check_price_positive = models.Constraint(
         "CHECK(price > 0)",
@@ -57,3 +57,17 @@ class EstatePropertyOffer(models.Model):
             if offer.property_id.state not in {"sold", "cancelled"}:
                 offer.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Instantiate an estate.property object
+            estate = self.env["estate.property"].browse(vals["property_id"])
+            if estate.state in {"cancelled", "sold"}:
+                raise ValidationError(self.env._("You cannot make an offer on this property anymore."))
+            if estate.state == "new":
+                estate.state = "offer_received"
+            best_offer = max(estate.offer_ids.mapped("price"), default=0.0)
+            if vals.get("price", 0.0) < best_offer:
+                raise ValidationError(self.env._(f"The offer must be higher than {best_offer:,.2f}."))
+        return super().create(vals_list)
