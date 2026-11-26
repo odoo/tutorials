@@ -54,6 +54,9 @@
         <field name="on_delete">cascade</field>
     </record>
 
+    <!-- This one2many is a field of the property, but it is declared here
+         because it needs the offer model and its x_property_id inverse
+         field, which only exist once this file is loaded. -->
     <record id="field_real_estate_property_offer_ids" model="ir.model.fields">
         <field name="model_id" ref="model_real_estate_property" />
         <field name="name">x_offer_ids</field>
@@ -61,5 +64,20 @@
         <field name="ttype">one2many</field>
         <field name="relation">x_estate.property.offer</field>
         <field name="relation_field">x_property_id</field>
+    </record>
+
+    <record id="action_x_estate_property_accept" model="ir.actions.server">
+        <field name="name">Accept an offer</field>
+        <field name="model_id" ref="model_real_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for offer in records:
+    offer.write({'x_status': 'accepted'})
+    offer.x_property_id.write({
+        'x_selling_price': offer.x_price,
+        'x_partner_id': offer.x_partner_id.id,
+    })
+    (offer.x_property_id.x_offer_ids - offer).write({'x_status': 'refused'})
+]]></field>
     </record>
 </odoo>
