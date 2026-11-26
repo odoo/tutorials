@@ -16,7 +16,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    property_state = fields.Selection(related="property_id.state")
+    property_state = fields.Selection(related="property_id.state", string="Property State")
     # A related field must have the same type as the field it points to.
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
