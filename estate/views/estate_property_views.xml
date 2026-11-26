@@ -73,12 +73,13 @@
                         <list decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                             <field name="price" string="Offer"/>
                             <field name="buyer_id" string="Buyer"/>
+                            <!-- property_status invisible: must appear here because of the action buttons below !-->
                             <field name="status" string="Status" column_invisible="1"/>
                             <field name="validity_days" />
                             <field name="date_deadline" />
-                            <button name='action_offer_accepted' type='object' class='oe_stat_button' 
+                            <button name='action_offer_accepted' type='object' 
                             icon='check' title='mark as accepted' invisible="status" />
-                            <button name='action_offer_refused' type='object' class='oe_stat_button' 
+                            <button name='action_offer_refused' type='object' 
                             icon='close' title='mark as refused' invisible="status" />
                         </list>
                         </field>
