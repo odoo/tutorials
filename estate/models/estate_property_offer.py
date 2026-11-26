@@ -1,10 +1,8 @@
-from dateutil.relativedelta import relativedelta
-
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
-class PropertyOffer(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer"
     _order = 'price desc'
@@ -19,57 +17,53 @@ class PropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _check_price = models.Constraint(
-        "CHECK(price >= 0)",
+        "CHECK(price > 0)",
         "The offer's price has to be positive."
     )
-
-    def action_offer_accepted(self):
-        for record in self:
-            if record.property_id.state in ['sold', 'cancelled']:
-                raise exceptions.UserError('This property is already sold or has been cancelled!')
-            if record.property_id.state in ['offer_accepted']:
-                raise exceptions.UserError('An offer has already been accepted.')
-            else:
-                record.status = 'accepted'
-                record.property_id.state = 'offer_accepted'
-                record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.buyer_id
-
-                (record.property_id.offer_ids - record).status = 'refused'
-        return True
-
-    def action_offer_refused(self):
-        for record in self:
-            if record.property_id.state in ['sold', 'cancelled']:
-                raise exceptions.UserError('This property is already sold or has been cancelled!')
-            else:
-                record.status = 'refused'
-        return True
 
     @api.depends('validity_days', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
-            record.date_deadline = (record.create_date or fields.Date.today()) + relativedelta(days=record.validity_days)
+            start_date = fields.Date.to_date(record.create_date) or fields.Date.today()
+            record.date_deadline = fields.Date.add(start_date, days=record.validity_days)
 
     def _inverse_date_deadline(self):
         for record in self:
-            start_date = record.create_date.date() or fields.Date.today()
+            start_date = fields.Date.to_date(record.create_date) or fields.Date.today()
             if record.date_deadline:
                 delta_dates = record.date_deadline - start_date
                 record.validity_days = delta_dates.days
 
     @api.model_create_multi
     def create(self, vals_list):
-        for val in vals_list:
-            property_records = self.env['estate.property'].browse(val['property_id'])
-            # not very convenient to do queries inside the loop, but I don't understand the data structure
-            if property_records.offer_ids:
-                max_offer = max(offer.price for offer in property_records.offer_ids)
-                if max_offer >= val['price']:
-                    raise UserError(self.env._('The offer has to be greater than %.2f' % max_offer))
+        property_ids = {val['property_id'] for val in vals_list}
+        property_records = self.env['estate.property'].browse(property_ids)
+        best_prices = {prop.id: prop.best_price for prop in property_records}
+        for offer in vals_list:
+            prop_id = offer['property_id']
+            if best_prices[prop_id] >= offer['price']:
+                raise UserError(self.env._('The offer has to be greater than %.2f', best_prices[prop_id]))
+            best_prices[prop_id] = offer['price']
 
-        records = super().create(vals_list)
-        for record in records:
-            record['property_status'] = 'offer_received'
+        res = super().create(vals_list)
+        res.filtered(lambda p: p.property_status == 'new').property_status = 'offer_received'
+        return res
 
-        return records
+    def action_offer_accepted(self):
+        for record in self:
+            if record.property_id.state in ['sold', 'cancelled']:
+                raise UserError(self.env._('This property is already sold or has been cancelled!'))
+            if record.property_id.state in ['offer_accepted']:
+                raise UserError(self.env._('An offer has already been accepted.'))
+
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.buyer_id
+            record.property_id.state = 'offer_accepted'
+            record.status = 'accepted'
+            (record.property_id.offer_ids - record).status = 'refused'
+
+    def action_offer_refused(self):
+        for record in self:
+            if record.property_id.state in ['sold', 'cancelled']:
+                raise UserError(self.env._('This property is already sold or has been cancelled!'))
+            record.status = 'refused'

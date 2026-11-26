@@ -1,3 +1,6 @@
+# module in development, ignore for now
+estate_account/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

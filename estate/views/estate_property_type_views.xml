@@ -10,7 +10,7 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <list>
                 <field name="sequence" widget="handle" />
                 <field name="name" string="Type"/>
             </list>
@@ -21,11 +21,11 @@
         <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="name">
+            <form>
             <sheet name="property_type_form">
-            <div class="oe_button_box" name="button_box" groups="base.group_user">
+            <div class="oe_button_box" name="button_box">
                 <button
-                class="oe_stat_button" type="action" icon="group" icon_class="oi-filled" 
+                class="oe_stat_button" type="action" icon="group"
                 name="%(estate_property_offer_action)d" invisible="offer_count == 0" >
                     <div class="o_form_field o_stat_info">
                         <span class="o_stat_value">
