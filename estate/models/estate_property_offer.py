@@ -61,8 +61,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        property_ids = [vals['property_id'] for vals in vals_list]
+        properties = self.env['estate.property'].search([('id', 'in', property_ids)])
+        properties_by_id = {prop.id: prop for prop in properties}
+
         for vals in vals_list:
-            property_record = self.env['estate.property'].browse(vals['property_id'])
+            property_record = properties_by_id[vals['property_id']]
             if float_compare(vals.get('price', 0.0), property_record.best_price, precision_rounding=0.01) < 0:
                 raise UserError(self.env._(
                     "The offer must be higher than the existing offers (%s).",
