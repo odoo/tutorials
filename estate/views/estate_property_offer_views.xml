@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">x_estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Offer">
+                <sheet>
+                    <group>
+                        <field name="x_price"/>
+                        <field name="x_partner_id"/>
+                        <field name="x_status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">x_estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list 
+                editable="bottom"
+                decoration-danger="x_status == 'x_refused'"
+                decoration-success="x_status == 'x_accepted'"
+            >
+                <field name="x_price"/>
+                <field name="x_partner_id"/>
+                <button 
+                    title='accept'
+                    name="%(estate.action_x_estate_property_offer_accept)d"                    
+                    type="action"
+                    icon="check"
+                    invisible="x_status"
+                />
+            </list>
+        </field>
+    </record>
+</odoo>
