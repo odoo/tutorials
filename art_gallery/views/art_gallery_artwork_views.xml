@@ -11,8 +11,10 @@
         <field name="model">art.gallery.artwork</field>
         <field name="arch" type="xml">
             <kanban>
+                <field name="status"/>
                 <templates>
                     <t t-name="card" class="flex-row">
+                        <widget name="web_ribbon" title="Sold" invisible="status != 'sold'"/>
                         <aside class="o_card_aside_full">
                             <div class="o_card_image_fill position-relative w-100">
                                 <field name="image" widget="image" class="h-100"
@@ -37,7 +39,8 @@
         <field name="name">art.gallery.artwork.view.list</field>
         <field name="model">art.gallery.artwork</field>
         <field name="arch" type="xml">
-            <list string="Artworks">
+            <list string="Artworks" decoration-muted="status == 'sold'">
+                <field name="status" column_invisible="True"/>
                 <field name="name"/>
                 <field name="artist" optional="hide"/>
                 <field name="year" optional="hide"/>
@@ -69,7 +72,7 @@
                             <field name="year"/>
                         </group>
                         <group>
-                            <field name="price"/>
+                            <field name="price" readonly="status == 'sold'"/>
                         </group>
                     </group>
                     <field name="description" placeholder="Description"/>

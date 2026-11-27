@@ -50,3 +50,8 @@ class ArtGalleryArtwork(models.Model):
         for record in self:
             record.status = "sold"
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_sold(self):
+        if any(record.status == "sold" for record in self):
+            raise UserError(self.env._("You cannot delete a sold artwork"))
