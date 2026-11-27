@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -52,6 +53,26 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many(
         "estate.property.offer", "property_id", "Offers")
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be positive !'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive !'
+    )
+
+    @api.constrains("selling_price")
+    def _check_minimum_selling_price_limit(self):
+        for record in self:
+            is_zero = float_is_zero(record.selling_price, 2)
+            comparison_invalid = float_compare(
+                record.selling_price, (record.expected_price * 0.9), 2) == -1
+            if not is_zero and comparison_invalid:
+                raise ValidationError(
+                    "This selling price is too low to be allow !")
 
     # Compute Methods
     @api.depends("living_area", "garden_area")
