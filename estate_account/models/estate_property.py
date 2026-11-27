@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
                             "name": self.env._("6%% of %s price", record.name),
                             "quantity": 1,
                             "price_unit": record.selling_price * 0.06,
-                        }
+                        },
                     ),
                     Command.create(
                         {

@@ -18,6 +18,10 @@
             <menuitem id="estate_property_tag_menu_action"
                 action="estate_property_tag_action"
             />
+
+            <menuitem id="estate_property_offer_menu_action"
+                action="estate_property_offer_main_action"
+            />
         </menuitem>
     </menuitem>
 </odoo>
