@@ -37,7 +37,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        set_unique_property_ids = set([offer['property_id'] for offer in vals])
+        set_unique_property_ids = {offer['property_id'] for offer in vals}
 
         # 1 - Can't create an offer for a property that has been sold
         for state in self.env['estate.property'].search([('id', 'in', set_unique_property_ids)]).mapped('state'):

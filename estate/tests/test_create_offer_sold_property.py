@@ -22,6 +22,7 @@ class CreateOfferSoldPropertyCase(TransactionCase):
             'partner_id': self.partner.id,
             'property_id': self.property.id
         })
+        self.property.state = "accepted"
         self.property.action_sell_property()
 
     def test_create_offer_sold_property(self):
