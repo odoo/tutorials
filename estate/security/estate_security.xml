@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="module_category_estate" model="ir.module.category">
+        <field name="name">Real Estate</field>
+        <field name="description">Set access for estate module</field>
+    </record>
+
+    <record id="privilege_estate_property" model="res.groups.privilege">
+        <field name="name">Property</field>
+        <field name="category_id" ref="module_category_estate"/>
+        <field name="description">Set access for estate property</field>
+        <field name="placeholder">No/None</field>
+    </record>
+    
+    <record id="group_estate_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="privilege_id" ref="privilege_estate_property"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_estate_admin" model="res.groups">
+        <field name="name">Admin</field>
+        <field name="privilege_id" ref="privilege_estate_property"/>
+        <field name="implied_ids" eval="[(4, ref('group_estate_user'))]"/>
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+</odoo>

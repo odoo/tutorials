@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+        <record id="property_type_house" model="estate.property.type">
+            <field name="name">House</field>
+        </record>
+
+         <record id="property_type_villa" model="estate.property.type">
+            <field name="name">Villa</field>
+        </record>
+
+         <record id="property_type_flat" model="estate.property.type">
+            <field name="name">Flat/Apartment</field>
+        </record>
+
+         <record id="property_type_penthouse" model="estate.property.type">
+            <field name="name">Penthouse</field>
+        </record>
+
+         <record id="property_type_commercial" model="estate.property.type">
+            <field name="name">Commercial</field>
+        </record>
+
+         <record id="property_type_industrial" model="estate.property.type">
+            <field name="name">Industrial</field>
+        </record>
+
+         <record id="property_type_land" model="estate.property.type">
+            <field name="name">Land/Plot</field>
+        </record>
+    </data>
+
+</odoo>

@@ -1,0 +1,13 @@
+id,name,model_id,group_id/id,operation,domain
+access_estate_property_portal,access_estate_property_portal,estate.property,base.group_portal,r,
+access_estate_property_user,access_estate_property_user,estate.property,group_estate_user,cru,
+access_estate_property_admin,access_estate_property_admin,estate.property,group_estate_admin,crud,
+access_estate_property_type_user_cr,access_estate_property_type_user_cr,estate.property.type,group_estate_user,cr,
+access_estate_property_type_user_ud_own,access_estate_property_type_user_ud_own,estate.property.type,group_estate_user,ud,"[('create_uid','=',user.id)]"
+access_estate_property_type_admin,access_estate_property_type_admin,estate.property.type,group_estate_admin,crud,
+access_estate_property_tag_user_cr,access_estate_property_tag_user_cr,estate.property.tag,group_estate_user,cr,
+access_estate_property_tag_user_ud_own,access_estate_property_tag_user_ud_own,estate.property.tag,group_estate_user,ud,"[('create_uid','=',user.id)]"
+access_estate_property_tag_admin,access_estate_property_tag_admin,estate.property.tag,group_estate_admin,crud,
+access_estate_property_offer_user_cr,access_estate_property_offer_user_cr,estate.property.offer,group_estate_user,cr,
+access_estate_property_offer_user_ud_own,access_estate_property_offer_user_ud_own,estate.property.offer,group_estate_user,ud,"[('create_uid','=',user.id)]"
+access_estate_property_offer_admin,access_estate_property_offer_admin,estate.property.offer,group_estate_admin,crud,
