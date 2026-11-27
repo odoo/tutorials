@@ -8,6 +8,7 @@
                 <field name="x_price"/>
                 <field name="x_partner_id"/>
                 <field name="x_status"/>
+                <button name="estate.action_x_estate_property_offer_accept" type="action" string="Accept" icon="fa-check"/>
             </list>
         </field>
     </record>
