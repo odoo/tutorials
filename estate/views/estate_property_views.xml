@@ -39,6 +39,7 @@
                             name="x_property_tag_ids" 
                             widget="many2many_tags" 
                         />
+                        <field name="x_api_published" />
                     </div>
                     <group>
                         <group>
@@ -65,6 +66,7 @@
                                     <field name="x_garden"/>
                                     <field name="x_garden_area" invisible="not x_garden"/>
                                     <field name="x_garden_orientation" invisible="not x_garden"/>
+                                    <field name="x_total_area"/>
                                 </group>
                             </group>
                         </page>

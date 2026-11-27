@@ -1,5 +1,6 @@
-id,name,model_id,group_id/id,operation
-estate_property_rules,Real Estate Properties,x_estate.property,base.group_user,crud
-estate_property_type_rules,Real Estate Properties Types,x_estate.property.type,base.group_user,crud
-estate_property_tag_rules,Real Estate Properties Tags,x_estate.property.tag,base.group_user,crud
-estate_property_offer_rules,Real Estate Properties Offers,x_estate.property.offer,base.group_user,crud
+id,name,model_id,group_id/id,operation,domain
+estate_property_api_read_rule,API Read Properties,x_estate.property,base.group_public,r,"[('x_api_published', '=', True)]"
+estate_property_rules,Real Estate Properties,x_estate.property,base.group_user,crud,
+estate_property_type_rules,Real Estate Properties Types,x_estate.property.type,base.group_user,crud,
+estate_property_tag_rules,Real Estate Properties Tags,x_estate.property.tag,base.group_user,crud,
+estate_property_offer_rules,Real Estate Properties Offers,x_estate.property.offer,base.group_user,crud,

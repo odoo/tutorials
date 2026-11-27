@@ -22,11 +22,18 @@
         <field name="arch" type="xml">
             <list 
                 editable="bottom"
-                decoration-danger="x_status == 'refused'"
-                decoration-success="x_status == 'accepted'"
+                decoration-danger="x_status == 'x_refused'"
+                decoration-success="x_status == 'x_accepted'"
             >
                 <field name="x_price"/>
                 <field name="x_partner_id"/>
+                <button 
+                    title='accept'
+                    name="%(estate.action_x_estate_property_offer_accept)d"                    
+                    type="action"
+                    icon="check"
+                    invisible="x_status"
+                />
             </list>
         </field>
     </record>
