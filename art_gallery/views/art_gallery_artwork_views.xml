@@ -51,6 +51,13 @@
         <field name="model">art.gallery.artwork</field>
         <field name="arch" type="xml">
             <form string="Artwork">
+                <header>
+                    <button name="action_reserve" type="object" string="Reserve" class="btn-primary"
+                            invisible="status != 'available'"/>
+                    <button name="action_sell" type="object" string="Sell"
+                            invisible="status == 'sold'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
                 <sheet>
                     <field name="image" widget="image" class="oe_avatar" options="{'zoom': true}"/>
                     <h1>

@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class ArtGalleryArtwork(models.Model):
@@ -13,6 +13,14 @@ class ArtGalleryArtwork(models.Model):
     description = fields.Text()
     image = fields.Image(max_width=1024, max_height=1024)
     price = fields.Float()
+
+    status = fields.Selection(
+        string='Status',
+        selection=[('available', 'Available'), ('reserved', 'Reserved'), ('sold', 'Sold')],
+        required=True,
+        default='available',
+        copy=False,
+    )
 
     _check_price = models.Constraint(
         'CHECK(price >= 0)',
@@ -30,3 +38,15 @@ class ArtGalleryArtwork(models.Model):
         for artwork in self:
             if artwork.year > current_year:
                 raise ValidationError(self.env._("The year cannot be in the future."))
+
+    def action_reserve(self):
+        for record in self:
+            if record.status == "sold":
+                raise UserError("You cannot reserve a sold artwork")
+            record.status = "reserved"
+        return True
+
+    def action_sell(self):
+        for record in self:
+            record.status = "sold"
+        return True
