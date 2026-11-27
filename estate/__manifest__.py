@@ -5,7 +5,7 @@
 
     'version': '0.1',
     'application': True,
-    'depends': ['base', 'base_import_module', 'website'],
+    'depends': ['base', 'base_import_module', 'website', 'base_automation'],
     'data': [
         'models/estate_property_type.xml',
         'models/estate_property_tag.xml',

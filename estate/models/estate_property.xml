@@ -99,30 +99,6 @@
         <field name="selection">[('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')]</field>
     </record>
 
-    <record id="field_real_estate_property_garden_orientation_north" model="ir.model.fields.selection">
-        <field name="field_id" ref="field_real_estate_property_garden_orientation" />
-        <field name="value">x_north</field>
-        <field name="name">North</field>
-    </record>
-
-    <record id="field_real_estate_property_garden_orientation_west" model="ir.model.fields.selection">
-        <field name="field_id" ref="field_real_estate_property_garden_orientation" />
-        <field name="value">x_west</field>
-        <field name="name">West</field>
-    </record>
-
-    <record id="field_real_estate_property_garden_orientation_south" model="ir.model.fields.selection">
-        <field name="field_id" ref="field_real_estate_property_garden_orientation" />
-        <field name="value">x_south</field>
-        <field name="name">South</field>
-    </record>
-
-    <record id="field_real_estate_property_garden_orientation_east" model="ir.model.fields.selection">
-        <field name="field_id" ref="field_real_estate_property_garden_orientation" />
-        <field name="value">x_east</field>
-        <field name="name">East</field>
-    </record>
-
     <record id="default_real_estate_property_expected_price" model="ir.default">
         <field name="field_id" ref="field_real_estate_property_expected_price" />
         <field name="json_value">100000</field>
@@ -180,6 +156,28 @@ for property in self:
         <field name="name">x_api_published</field>
         <field name="field_description">API Published</field>
         <field name="ttype">boolean</field>
+    </record>
+
+    <record id="action_x_estate_property_write_garden" model="ir.actions.server">
+        <field name="name">Update garden</field>
+        <field name="model_id" ref="model_real_estate_property"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for property in records:
+    if property.x_garden:
+        property.write({
+            'x_garden_area': 10,
+            'x_garden_orientation': 'north'
+        })
+        ]]></field>
+    </record>
+
+    <record id="automation_rule_x_estate_property_create_from_sale_order" model="base.automation">
+        <field name="name">Create property from sale order</field>
+        <field name="model_id" ref="model_real_estate_property"/>
+        <field name="trigger">on_write</field>
+        <field name="trigger_field_ids" eval="[(6, 0, [ref('field_real_estate_property_garden')])]"/>
+        <field name="action_server_ids" eval="[(4, ref('action_x_estate_property_write_garden'))]"/>
     </record>
 
 </odoo>
