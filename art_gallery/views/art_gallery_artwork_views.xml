@@ -70,10 +70,18 @@
                     <group>
                         <group>
                             <field name="artist"/>
-                            <field name="year"/>
+                            <label for="year"/>
+                            <div class="o_row">
+                                <field name="year"/>
+                                <span class="text-muted" invisible="not year">
+                                    (<field name="age" class="oe_inline"/> years old)
+                                </span>
+                            </div>
                         </group>
                         <group>
                             <field name="price" readonly="status == 'sold'"/>
+                            <field name="commission_rate"/>
+                            <field name="artist_payout"/>
                         </group>
                     </group>
                     <field name="description" placeholder="Description"/>

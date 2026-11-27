@@ -10,9 +10,12 @@ class ArtGalleryArtwork(models.Model):
     name = fields.Char(string="Title", required=True)
     artist = fields.Char()
     year = fields.Integer()
+    age = fields.Integer(compute="_compute_age")
     description = fields.Text()
     image = fields.Image(max_width=1024, max_height=1024)
     price = fields.Float()
+    commission_rate = fields.Integer(string="Commission (%)")
+    artist_payout = fields.Float(compute="_compute_artist_payout")
 
     status = fields.Selection(
         string='Status',
@@ -31,6 +34,21 @@ class ArtGalleryArtwork(models.Model):
         'UNIQUE(name, artist)',
         'An artist cannot have 2 artworks with the same title.',
     )
+
+    _check_commission_rate = models.Constraint(
+        'CHECK(commission_rate BETWEEN 0 AND 100)',
+        'The commission must be between 0 and 100%.',
+    )
+
+    @api.depends('year')
+    def _compute_age(self):
+        for record in self:
+            record.age = fields.Date.today().year - record.year if record.year else 0
+
+    @api.depends('price', 'commission_rate')
+    def _compute_artist_payout(self):
+        for record in self:
+            record.artist_payout = record.price * (1 - record.commission_rate / 100)
 
     @api.constrains('year')
     def _check_year(self):
