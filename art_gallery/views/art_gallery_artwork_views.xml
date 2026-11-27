@@ -25,6 +25,7 @@
         <field name="arch" type="xml">
             <form string="Artwork">
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar" options="{'zoom': true}"/>
                     <h1>
                         <field name="name" placeholder="Title"/>
                     </h1>

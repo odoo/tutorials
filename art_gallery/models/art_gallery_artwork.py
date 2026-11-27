@@ -10,4 +10,5 @@ class ArtGalleryArtwork(models.Model):
     artist = fields.Char()
     year = fields.Integer()
     description = fields.Text()
+    image = fields.Image(max_width=1024, max_height=1024)
     price = fields.Float()
