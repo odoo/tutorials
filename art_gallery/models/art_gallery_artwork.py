@@ -30,6 +30,8 @@ class ArtGalleryArtwork(models.Model):
         copy=False,
     )
 
+    exhibition_ids = fields.Many2many("art.gallery.exhibition", string="Exhibitions")
+
     _check_price = models.Constraint(
         'CHECK(price >= 0)',
         'The price must be positive.',
@@ -61,6 +63,10 @@ class ArtGalleryArtwork(models.Model):
         for artwork in self:
             if artwork.year > current_year:
                 raise ValidationError(self.env._("The year cannot be in the future."))
+
+    @api.constrains('exhibition_ids')
+    def _check_exhibition_dates(self):
+        self.exhibition_ids._check_dates_for_each_artwork()
 
     def action_reserve(self):
         for record in self:

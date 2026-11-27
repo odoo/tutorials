@@ -85,6 +85,17 @@
                         </group>
                     </group>
                     <field name="description" placeholder="Description"/>
+                    <notebook>
+                        <page string="Exhibitions" name="exhibitions">
+                            <field name="exhibition_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
