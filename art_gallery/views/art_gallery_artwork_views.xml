@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="art_gallery_artwork_action" model="ir.actions.act_window">
+        <field name="name">Artworks</field>
+        <field name="res_model">art.gallery.artwork</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_available': 1}</field>
+    </record>
+
+    <record id="art_gallery_artwork_view_kanban" model="ir.ui.view">
+        <field name="name">art.gallery.artwork.view.kanban</field>
+        <field name="model">art.gallery.artwork</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card" class="flex-row">
+                        <widget name="web_ribbon" title="Sold" invisible="status != 'sold'"/>
+                        <aside class="o_card_aside_full">
+                            <div class="o_card_image_fill position-relative w-100">
+                                <field name="image" widget="image" class="h-100"
+                                       options="{'img_class': 'object-fit-cover', 'zoom': true, 'zoom_delay': 500}"/>
+                            </div>
+                        </aside>
+                        <main class="ms-2">
+                            <field name="name" class="fw-bold fs-5"/>
+                            <field name="artist_id" class="text-muted"/>
+                            <field name="year"/>
+                            <footer class="pt-1">
+                                <field name="price" class="ms-auto"/>
+                            </footer>
+                        </main>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="art_gallery_artwork_view_list" model="ir.ui.view">
+        <field name="name">art.gallery.artwork.view.list</field>
+        <field name="model">art.gallery.artwork</field>
+        <field name="arch" type="xml">
+            <list string="Artworks" decoration-muted="status == 'sold'">
+                <field name="status" column_invisible="True"/>
+                <field name="name"/>
+                <field name="artist_id" optional="hide"/>
+                <field name="year" optional="hide"/>
+                <field name="price" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="art_gallery_artwork_view_form" model="ir.ui.view">
+        <field name="name">art.gallery.artwork.view.form</field>
+        <field name="model">art.gallery.artwork</field>
+        <field name="arch" type="xml">
+            <form string="Artwork">
+                <header>
+                    <button name="action_reserve" type="object" string="Reserve" class="btn-primary"
+                            invisible="status != 'available'"/>
+                    <button name="action_sell" type="object" string="Sell"
+                            invisible="status == 'sold'"/>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar" options="{'zoom': true}"/>
+                    <h1>
+                        <field name="name" placeholder="Title"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="artist_id"/>
+                            <label for="year"/>
+                            <div class="o_row">
+                                <field name="year"/>
+                                <span class="text-muted" invisible="not year">
+                                    (<field name="age" class="oe_inline"/> years old)
+                                </span>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="price" readonly="status == 'sold'"/>
+                            <field name="commission_rate"/>
+                            <field name="artist_payout"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Description"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="art_gallery_artwork_view_search" model="ir.ui.view">
+        <field name="name">art.gallery.artwork.view.search</field>
+        <field name="model">art.gallery.artwork</field>
+        <field name="arch" type="xml">
+            <search string="Artworks">
+                <field name="name"/>
+                <field name="artist_id"/>
+                <field name="year"/>
+                <field name="price"/>
+                <separator/>
+                <filter name="available" string="Available" domain="[('status', '=', 'available')]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
