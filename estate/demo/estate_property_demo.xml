@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="property_big_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability" eval="datetime.now()"/>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>
+
+    <record id="property_trailer_home" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability" eval="datetime.now()"/>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="False"/>
+        <field name="property_type_id" ref="property_type_residential"/>
+
+    </record>
+        <record id="property_cozy_cottage" model="estate.property">
+        <field name="name">Cozy Cottage</field>
+        <field name="description">A small cottage in the countryside</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability" eval="datetime.now()"/>
+        <field name="expected_price">250000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">60</field>
+        <field name="facades">2</field>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">300</field>
+        <field name="garden_orientation">west</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="offer_ids" eval="[
+            Command.clear(),
+            Command.create({
+                'buyer_id': ref('base.res_partner_12'),
+                'price': 230000,
+                'date_deadline': (datetime.now() + relativedelta(days=14)).date(),
+            }),
+            Command.create({
+                'buyer_id': ref('base.res_partner_2'),
+                'price': 240000,
+                'date_deadline': (datetime.now() + relativedelta(days=14)).date(),
+            }),
+        ]"/>
+    </record>
+
+    <!-- Offers must be created in increasing price order: each new offer
+         must be higher than the property's best offer. -->
+    <record id="offer_big_villa_azure_1" model="estate.property.offer">
+        <field name="property_id" ref="property_big_villa"/>
+        <field name="buyer_id" ref="base.res_partner_12"/>
+        <field name="price">10000</field>
+        <field name="date_deadline" eval="(datetime.now() + relativedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_big_villa_azure_2" model="estate.property.offer">
+        <field name="property_id" ref="property_big_villa"/>
+        <field name="buyer_id" ref="base.res_partner_12"/>
+        <field name="price">1500000</field>
+        <field name="date_deadline" eval="(datetime.now() + relativedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_big_villa_acme" model="estate.property.offer">
+        <field name="property_id" ref="property_big_villa"/>
+        <field name="buyer_id" ref="base.res_partner_2"/>
+        <field name="price">1500001</field>
+        <field name="date_deadline" eval="(datetime.now() + relativedelta(days=14)).date()"/>
+    </record>
+
+    <!-- Accepting an offer automatically refuses the other offers
+         on the same property. -->
+    <function model="estate.property.offer" name="action_accept">
+        <value eval="[ref('offer_big_villa_acme')]"/>
+    </function>
+</odoo>

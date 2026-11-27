@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Public JSON API, available at /website/action/estate.
+         It runs as the public user, so the access rules only let it
+         see the properties marked as published on the API. -->
+    <record id="action_estate_api" model="ir.actions.server">
+        <field name="name">Estate API</field>
+        <field name="model_id" ref="model_real_estate_property"/>
+        <field name="state">code</field>
+        <field name="website_published">True</field>
+        <field name="website_path">estate</field>
+        <field name="code"><![CDATA[
+properties = env['x_estate.property'].search_read(
+    [('x_api_published', '=', True)],
+    [
+        'x_name', 'x_description', 'x_postcode', 'x_date_availability',
+        'x_expected_price', 'x_selling_price', 'x_bedrooms', 'x_living_area',
+        'x_facades', 'x_garage', 'x_garden', 'x_garden_area',
+        'x_garden_orientation', 'x_total_area',
+    ],
+)
+response = request.make_json_response(properties)
+]]></field>
+    </record>
+</odoo>
