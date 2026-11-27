@@ -89,7 +89,9 @@ class EstateProperty(models.Model):
                 < 0
             ):
                 raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
+                    self.env._(
+                        "The selling price cannot be lower than 90% of the expected price."
+                    )
                 )
 
     @api.onchange("garden")
@@ -115,7 +117,7 @@ class EstateProperty(models.Model):
                 raise UserError(self.env._("Canceled properties cannot be sold."))
             elif record.state != "offer_accepted":
                 raise UserError(
-                    self.env._("Properties with accepted offers cannot be sold.")
+                    self.env._("Properties without accepted offers cannot be sold.")
                 )
             record.state = "sold"
         return True

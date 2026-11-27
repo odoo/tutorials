@@ -31,6 +31,11 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
 
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive.",
+    )
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for offer in self:
@@ -52,6 +57,12 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     self.env._("An offer has already been accepted for this property.")
                 )
+            if offer.property_id.state in ("sold", "canceled"):
+                raise UserError(
+                    self.env._("This property has already been sold or canceled.")
+                )
+            if offer.date_deadline < fields.Date.today():
+                raise UserError(self.env._("This offer is already expired."))
             offer.status = "accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
@@ -63,28 +74,23 @@ class EstatePropertyOffer(models.Model):
             offer.status = "refused"
         return True
 
-    _check_price = models.Constraint(
-        "CHECK(price > 0)",
-        "The offer price must be strictly positive.",
-    )
-
     @api.model_create_multi
     def create(self, vals_list):
         property_ids = {
             vals["property_id"] for vals in vals_list if vals.get("property_id")
         }
-        properties_by_id = {
-            prop.id: prop for prop in self.env["estate.property"].browse(property_ids)
-        }
+        properties_by_id = (
+            self.env["estate.property"].browse(property_ids).grouped("id")
+        )
 
         for vals in vals_list:
             prop = properties_by_id.get(vals.get("property_id"))
             if not prop:
                 continue
-            if prop.state == "sold":
+            if prop.state in ("sold", "canceled", "offer_accepted"):
                 raise UserError(
                     self.env._(
-                        "This property has already been sold so you cannot create a new offer for it."
+                        "This property has already been sold, canceled or has an accepted offer so you cannot create a new offer for it."
                     )
                 )
             max_offer = max(prop.offer_ids.mapped("price"), default=0)
@@ -92,6 +98,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     self.env._("The offer must be higher than %.2f.", max_offer)
                 )
-            prop.state = "offer_received"
 
-        return super().create(vals_list)
+        res = super().create(vals_list)
+        res.property_id.filtered(lambda p: p.state == "new").state = "offer_received"
+        return res
