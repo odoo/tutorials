@@ -56,3 +56,12 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
         string="Salesperson"
     )
+    tag_ids = fields.Many2many(
+        comodel_name="estate.property.tag",
+        string="Tags"
+    )
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+        string="Offers"
+    )
