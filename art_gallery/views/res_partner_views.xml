@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="art_gallery_artist_action" model="ir.actions.act_window">
+        <field name="name">Artists</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('is_artist', '=', True)]</field>
+        <field name="context">{'default_is_artist': True}</field>
+    </record>
+
+    <record id="res_partner_view_form_inherit_art_gallery" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.art.gallery</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+                <field name="is_artist"/>
+            </field>
+            <notebook position="inside">
+                <page string="Artworks" name="artworks" invisible="not is_artist">
+                    <field name="artwork_ids">
+                        <list>
+                            <field name="name"/>
+                            <field name="year"/>
+                            <field name="price"/>
+                            <field name="status"/>
+                        </list>
+                    </field>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

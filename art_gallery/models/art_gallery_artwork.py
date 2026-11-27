@@ -8,7 +8,12 @@ class ArtGalleryArtwork(models.Model):
     _order = "name asc"
 
     name = fields.Char(string="Title", required=True)
-    artist = fields.Char()
+    artist_id = fields.Many2one(
+        "res.partner",
+        string="Artist",
+        domain=[('is_artist', '=', True)],
+        context={'default_is_artist': True},
+    )
     year = fields.Integer()
     age = fields.Integer(compute="_compute_age")
     description = fields.Text()
@@ -31,7 +36,7 @@ class ArtGalleryArtwork(models.Model):
     )
 
     _check_unique_title = models.Constraint(
-        'UNIQUE(name, artist)',
+        'UNIQUE(name, artist_id)',
         'An artist cannot have 2 artworks with the same title.',
     )
 

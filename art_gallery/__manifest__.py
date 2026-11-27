@@ -9,6 +9,7 @@
     'data': [
         'security/ir.access.csv',
         'views/art_gallery_artwork_views.xml',
+        'views/res_partner_views.xml',
         'views/art_gallery_menus.xml',
     ],
 }
