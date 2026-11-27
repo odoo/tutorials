@@ -1,0 +1,24 @@
+<odoo>
+    <record id="res_partner_deco_addict" model="res.partner">
+        <field name="name">Deco Addict</field>
+        <field name="is_company" eval="True"/>
+    </record>
+    <record id="offer1" model="estate.property.offer">
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="id1"/>
+        <field name="partner_id" ref="base.res_partner_12"/>
+    </record>
+    <record id="offer2" model="estate.property.offer">
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="id1"/>
+        <field name="partner_id" ref="base.res_partner_12"/>
+    </record>
+    <record id="offer3" model="estate.property.offer">
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="id1"/>
+        <field name="partner_id" ref="res_partner_deco_addict"/>
+    </record>
+</odoo>
