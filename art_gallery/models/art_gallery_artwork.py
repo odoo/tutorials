@@ -68,6 +68,11 @@ class ArtGalleryArtwork(models.Model):
     def _check_exhibition_dates(self):
         self.exhibition_ids._check_dates_for_each_artwork()
 
+    def write(self, vals):
+        if 'price' in vals and any(record.status == 'sold' for record in self):
+            raise UserError(self.env._("You cannot change the price of a sold artwork."))
+        return super().write(vals)
+
     def action_reserve(self):
         for record in self:
             if record.status == "sold":
