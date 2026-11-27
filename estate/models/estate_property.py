@@ -128,6 +128,14 @@ class EstateProperty(models.Model):
     # region public methods
     def action_sold(self):
         for record in self:
+            if not record.offer_ids or not any(
+                offer.state == "accepted" for offer in record.offer_ids
+            ):
+                raise UserError(
+                    self.env._(
+                        "A property must have an accepted offer before it can be sold."
+                    )
+                )
             if record.state == "cancelled":
                 raise UserError(self.env._("Cancelled properties cannot be sold."))
             record.state = "sold"

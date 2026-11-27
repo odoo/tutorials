@@ -97,12 +97,21 @@ class EstatePropertyOffer(models.Model):
 
             for vals in vals_list:
                 prop = properties_by_id.get(vals.get("property_id"))
-                if prop and prop.offer_ids:
-                    max_offer = max(prop.mapped("offer_ids.price"))
-                    if vals.get("price", 0) <= max_offer:
+                if prop:
+                    if prop.state == "sold":
                         raise UserError(
-                            self.env._("The offer must be higher than %.2f", max_offer)
+                            self.env._(
+                                "Offers cannot be added to a property that has already been sold."
+                            )
                         )
+                    if prop.offer_ids:
+                        max_offer = max(prop.mapped("offer_ids.price"))
+                        if vals.get("price", 0) <= max_offer:
+                            raise UserError(
+                                self.env._(
+                                    "The offer must be higher than %.2f", max_offer
+                                )
+                            )
                     prop.state = "offer_received"
 
         return super().create(vals_list)
