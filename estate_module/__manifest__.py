@@ -4,7 +4,7 @@
     'summary': 'Sales real estates',
     'author': 'lobas',
     'license': 'LGPL-3',
-    'depends': ['base', 'base_import_module', 'website'],
+    'depends': ['base', 'base_import_module', 'website', 'web_tour'],
     'data': [
         'models/estate_property_type.xml',
         'models/estate_property_tag.xml',
@@ -17,5 +17,11 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
+        'data/new_estate_tour.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'estate_module/static/src/js/tour.js',
+        ],
+    },
 }
