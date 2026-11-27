@@ -6,6 +6,7 @@
         <menuitem id="art_gallery_first_level_menu" name="Gallery">
             <menuitem id="art_gallery_artwork_menu_action" action="art_gallery_artwork_action" sequence="10"/>
             <menuitem id="art_gallery_artist_menu_action" action="art_gallery_artist_action" sequence="20"/>
+            <menuitem id="art_gallery_exhibition_menu_action" action="art_gallery_exhibition_action" sequence="30"/>
         </menuitem>
     </menuitem>
 </odoo>
