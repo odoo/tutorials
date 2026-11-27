@@ -14,12 +14,8 @@ class AwesomeDashboard extends Component {
 
     reporting = usePlugin(ReportingPlugin)
 
-    statistics = signal(null);
-
     setup() {
-        onWillStart( async () => {
-            this.statistics.set(await this.reporting.loadStatistics())
-        })
+        onWillStart( async () => this.reporting.loadStatistics())
     }
 
     openCustomerView() {

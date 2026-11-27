@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
+        <t t-set="stats" t-value="this.reporting.stats"/>
         <Layout display="{controlPanel: {buttons: true} }" className="'o_dashboard h-100'">
             <t t-set-slot="control-panel-buttons">
                 <button class="btn btn-primary" t-on-click="this.openCustomerView">Customers</button>
@@ -11,31 +12,31 @@
                 <DashboardItem>
                     Number of new orders this month
                     <div class="text-center margin-10 text-success" style="font-size: 3rem;">
-                        <t t-out="this.statistics().nb_new_orders"/>
+                        <t t-out="stats().nb_new_orders"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     Total amount of new orders this month
                     <div class="text-center margin-10 text-success" style="font-size: 3rem;">
-                        <t t-out="this.statistics().total_amount"/>
+                        <t t-out="stats().total_amount"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     Average amount of t-shirt by order this month
                     <div class="text-center margin-10 text-success" style="font-size: 3rem;">
-                        <t t-out="this.statistics().average_quantity"/>
+                        <t t-out="stats().average_quantity"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     Number of cancelled orders this month
                     <div class="text-center margin-10 text-success" style="font-size: 3rem;">
-                        <t t-out="this.statistics().nb_cancelled_orders"/>
+                        <t t-out="stats().nb_cancelled_orders"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
                     <div class="text-center margin-10 text-success" style="font-size: 3rem;">
-                        <t t-out="this.statistics().average_time"/>
+                        <t t-out="stats().average_time"/>
                     </div>
                 </DashboardItem>
             </div>
