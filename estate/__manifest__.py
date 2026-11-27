@@ -1,6 +1,6 @@
 {
     "name": "Real Estate",
-    "depends": ["base"],
+    "depends": ["base", "website"],
 
     "data": [
         "models/estate_property_type.xml",
