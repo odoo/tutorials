@@ -2,7 +2,44 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {buttons: true} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-buttons">
+                <button class="btn btn-primary" t-on-click="this.openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="this.openLeads">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    Number of new orders this month
+                    <div class="text-center margin-10 text-success" style="font-size: 3rem;">
+                        <t t-out="this.statistics().nb_new_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of new orders this month
+                    <div class="text-center margin-10 text-success" style="font-size: 3rem;">
+                        <t t-out="this.statistics().total_amount"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average amount of t-shirt by order this month
+                    <div class="text-center margin-10 text-success" style="font-size: 3rem;">
+                        <t t-out="this.statistics().average_quantity"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <div class="text-center margin-10 text-success" style="font-size: 3rem;">
+                        <t t-out="this.statistics().nb_cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                    <div class="text-center margin-10 text-success" style="font-size: 3rem;">
+                        <t t-out="this.statistics().average_time"/>
+                    </div>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
